@@ -1,0 +1,674 @@
+<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewJobWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CssClass="navigation"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnPreviousButtonClick="wizardPrev"
+		OnNextButtonClick="wizardNext"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-upload w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="What" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Where" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3  ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-question w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="How" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clock w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="When" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 5 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-paper-plane"></i> &nbsp;<%[ Create job ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - basic information about new job ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New backup job wizard ]%></h2>
+					<p><%[ This wizard enables you to create in easy way a new backup job. ]%></p>
+					<!--p><%[ To start please select job type that you wish to create. ]%></p-->
+				</div>
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="Name"
+					DirectiveName="Name"
+					Label="Job Name"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="Description"
+					DirectiveName="Description"
+					Label="Description"
+					ValidationGroup="NewJobDirective"
+					Required="false"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="JobDefs"
+					DirectiveName="JobDefs"
+					Label="JobDefs"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - what you want to backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Client and FileSet ]%></h2>
+					<p><%[ Please select Client from which you want to backup data and please select FileSet with files/directories definition to backup. ]%></p>
+					<p><%[ If your FileSet for this backup does not exist yet, you can create it. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Client"
+					DirectiveName="Client"
+					Label="Client"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Fileset"
+					DirectiveName="Fileset"
+					Label="FileSet"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_fileset').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new FileSet ]%></a></span>
+				<div id="fileset_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<div id="job_wizard_new_fileset" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ New FileSet ]%></h3>
+					<com:Application.Web.Portlets.BaculaConfigDirectives
+						ID="FilesetConfig"
+						ComponentType="dir"
+						ResourceType="Fileset"
+						ShowCancelButton="false"
+						SaveDirectiveActionOk="$('#job_wizard_new_fileset').slideUp(); set_new_fileset(); $('#fileset_save_ok').show();"
+					/>
+				</div>
+			</div>
+			<com:TCallback ID="LoadFilesetList" OnCallback="LoadFilesetList" />
+			<script type="text/javascript">
+				function set_new_fileset() {
+					var container_id = 'job_wizard_new_fileset';
+					var resource_id = '<%=$this->Fileset->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					var cb = <%=$this->LoadFilesetList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - where you want to backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Storage and Pool ]%></h2>
+					<p><%[ Please select Storage where you want to backup data and please select Pool with volumes which Storage will use to store backup data. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Storage"
+					DirectiveName="Storage"
+					Label="Storage"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_storage_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Storage directives for Job ]%></a></span>
+				<div id="job_wizard_storage_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ Spool setting ]%></h3>
+					<com:Application.Web.Portlets.DirectiveCheckBox
+						ID="SpoolData"
+						DirectiveName="SpoolData"
+						Label="Spool Data"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Application.Web.Portlets.DirectiveCheckBox
+						ID="SpoolAttributes"
+						DirectiveName="SpoolAttributes"
+						Label="Spool Attributes"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Application.Web.Portlets.DirectiveSize
+						ID="SpoolSize"
+						DirectiveName="SpoolSize"
+						Label="Spool Size"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Pool"
+					DirectiveName="Pool"
+					Label="Pool"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					 />
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_pool_directives').hide(); $('#job_wizard_new_pool').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Pool ]%></a></span>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_pool').hide(); $('#job_wizard_pool_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Pool directives for Job ]%></a></span>
+				<div id="pool_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<div id="job_wizard_new_pool" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ New Pool ]%></h3>
+					<com:Application.Web.Portlets.BaculaConfigDirectives
+						ID="PoolConfig"
+						ComponentType="dir"
+						ResourceType="Pool"
+						ShowCancelButton="false"
+						SaveDirectiveActionOk="$('#job_wizard_new_pool').slideUp(); set_new_pool(); $('#pool_save_ok').show();"
+					/>
+				</div>
+				<div id="job_wizard_pool_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ Pool setting ]%></h3>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="FullBackupPool"
+						DirectiveName="FullBackupPool"
+						Label="Full Backup Pool"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="IncrementalBackupPool"
+						DirectiveName="IncrementalBackupPool"
+						Label="Incremental Backup Pool"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="DifferentialBackupPool"
+						DirectiveName="DifferentialBackupPool"
+						Label="Differential Backup Pool"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+			</div>
+			<com:TCallback ID="LoadPoolList" OnCallback="LoadPoolList" />
+			<script type="text/javascript">
+				function set_new_pool() {
+					var container_id = 'job_wizard_new_pool';
+					var resource_id = '<%=$this->Pool->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					var cb = <%=$this->LoadPoolList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - how would you like to backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div class="w3-container">
+					<h2><%[ Job directives ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Level"
+					DirectiveName="Level"
+					Label="Level"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveCheckBox
+					ID="Accurate"
+					DirectiveName="Accurate"
+					DefaultValue="0"
+					Label="Accurate"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					 />
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="MaximumConcurrentJobs"
+					DirectiveName="MaximumConcurrentJobs"
+					DefaultValue="1"
+					Label="Maximum Concurrent Jobs"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					 />
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="Priority"
+					DirectiveName="Priority"
+					DefaultValue="10"
+					Label="Priority"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					 />
+				<com:Application.Web.Portlets.DirectiveCheckBox
+					ID="ReRunFailedLevels"
+					DirectiveName="ReRunFailedLevels"
+					DefaultValue="0"
+					Label="ReRun Failed Levels"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					 />
+				<div class="w3-container">
+					<h2><%[ Other directives ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Messages"
+					DirectiveName="Messages"
+					Label="Messages"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - when would you like to run backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div class="w3-container">
+					<h2><%[ Schedule ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Schedule"
+					DirectiveName="Schedule"
+					Label="Schedule"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_schedule_directives').hide(); $('#job_wizard_new_schedule').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Schedule ]%></a></span>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_schedule').hide(); $('#job_wizard_reschedule_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Reschedule directives ]%></a></span>
+				<div id="schedule_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<div id="job_wizard_new_schedule" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ New Schedule ]%></h3>
+					<com:Application.Web.Portlets.BaculaConfigDirectives
+						ID="ScheduleConfig"
+						ComponentType="dir"
+						ResourceType="Schedule"
+						ShowCancelButton="false"
+						SaveDirectiveActionOk="$('#job_wizard_new_schedule').slideUp(); set_new_schedule(); $('#schedule_save_ok').show();"
+					/>
+				</div>
+				<div id="job_wizard_reschedule_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ Reschedule setting ]%></h3>
+					<com:Application.Web.Portlets.DirectiveCheckBox
+						ID="RescheduleOnError"
+						DirectiveName="RescheduleOnError"
+						DefaultValue="0"
+						Label="Reschedule On Error"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Application.Web.Portlets.DirectiveCheckBox
+						ID="RescheduleIncompleteJobs"
+						DirectiveName="RescheduleIncompleteJobs"
+						DefaultValue="0"
+						Label="Reschedule Incomplete Jobs"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Application.Web.Portlets.DirectiveTimePeriod
+						ID="RescheduleInterval"
+						DirectiveName="RescheduleInterval"
+						DefaultValue="1800"
+						Label="Reschedule Interval"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Application.Web.Portlets.DirectiveInteger
+						ID="RescheduleTimes"
+						DirectiveName="RescheduleTimes"
+						Label="Reschedule Times"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+				</div>
+			</div>
+			<com:TCallback ID="LoadScheduleList" OnCallback="LoadScheduleList" />
+			<script type="text/javascript">
+				function set_new_schedule() {
+					var container_id = 'job_wizard_new_schedule';
+					var resource_id = '<%=$this->Schedule->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					var cb = <%=$this->LoadScheduleList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step6" Title="<%[ Step 6 - summary ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Job Name</div>
+						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Description</div>
+						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">JobDefs</div>
+						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ What ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Client</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Client->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">FileSet</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Fileset->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Fileset', $this->Fileset->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Where ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Storage</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Storage->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Spool Data</div>
+						<div class="w3-threequarter bold">
+							<%=$this->SpoolData->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No')%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('SpoolData', $this->SpoolData->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Spool Attributes</div>
+						<div class="w3-threequarter bold">
+							<%=$this->SpoolAttributes->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No')%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('SpoolAttributes', $this->SpoolAttributes->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Spool Size</div>
+						<div class="w3-threequarter bold size">
+							<%=$this->SpoolSize->getDirectiveValue() ?: '0'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('SpoolSize', $this->SpoolSize->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Pool->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Full Backup Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->FullBackupPool->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('FullBackupPool', $this->FullBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Incremental Backup Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->IncrementalBackupPool->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('IncrementalBackupPool', $this->IncrementalBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Differential Backup Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->DifferentialBackupPool->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('DifferentialBackupPool', $this->DifferentialBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ How ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Level</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Level->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Level', $this->Level->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Accurate</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Accurate->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Accurate', $this->Accurate->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Maximum Concurrent Jobs</div>
+						<div class="w3-threequarter bold">
+							<%=$this->MaximumConcurrentJobs->getDirectiveValue() ?: $this->MaximumConcurrentJobs->getDefaultValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('MaximumConcurrentJobs', $this->MaximumConcurrentJobs->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Priority</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Priority', $this->Priority->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">ReRun Failed Levels</div>
+						<div class="w3-threequarter bold">
+							<%=$this->ReRunFailedLevels->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('ReRunFailedLevels', $this->ReRunFailedLevels->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ When ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Schedule</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Reschedule On Error</div>
+						<div class="w3-threequarter bold">
+							<%=$this->RescheduleOnError->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleOnError', $this->RescheduleOnError->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Reschedule Incomplete Jobs</div>
+						<div class="w3-threequarter bold">
+							<%=$this->RescheduleIncompleteJobs->getDirectiveValue() ? Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleIncompleteJobs', $this->RescheduleIncompleteJobs->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Reschedule Interval</div>
+						<div class="w3-threequarter bold time">
+							<%=$this->RescheduleInterval->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleInterval', $this->RescheduleInterval->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Reschedule Times</div>
+						<div class="w3-threequarter bold">
+							<%=$this->RescheduleTimes->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleTimes', $this->RescheduleTimes->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Other directives ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Messages</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+	<script type="text/javascript">
+		function set_new_resource(container_id, resource_id) {
+			var resource_container =  document.getElementById(container_id);
+			var new_resource = resource_container.querySelector('div.directive_value input').value;
+			var resource_el = document.getElementById(resource_id);
+			var opt = document.createElement('OPTION');
+			var txt = document.createTextNode(new_resource);
+			opt.appendChild(txt);
+			opt.value = new_resource;
+			resource_el.appendChild(opt);
+			resource_el.value = new_resource;
+		}
+	</script>
+</com:TContent>

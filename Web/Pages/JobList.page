@@ -1,0 +1,217 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-tasks"></i> <%[ Job list ]%></b>
+		</h5>
+	</header>
+	<div class="w3-margin-left">
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Job'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
+		<com:TActiveLinkButton
+			CssClass="w3-button w3-margin-bottom w3-green"
+			OnClick="loadRunJobModal"
+			Attributes.onclick="document.getElementById('run_job').style.display='block'"
+		>
+			<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
+		</com:TActiveLinkButton>
+	</div>
+	<div class="w3-container">
+		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Status ]%></th>
+					<th><%[ Name ]%></th>
+					<th><%[ Type ]%></th>
+					<th><%[ Enabled ]%></th>
+					<th>Max. concur. jobs</th>
+					<th><%[ Priority ]%></th>
+					<th><%[ Actions ]%></th>
+				</tr>
+			</thead>
+			<tbody id="job_history_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Status ]%></th>
+					<th><%[ Name ]%></th>
+					<th><%[ Type ]%></th>
+					<th><%[ Enabled ]%></th>
+					<th>Max. concur. jobs</th>
+					<th><%[ Priority ]%></th>
+					<th><%[ Actions ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+<script type="text/javascript">
+var oJobList = {
+	ids: {
+		job_history_list: 'job_history_list',
+		job_history_list_body: 'job_history_list_body'
+	},
+	css: {
+		weather_icon: 'job_weather_icon'
+	},
+	table: null,
+	job_weather: {},
+	init: function() {
+		this.set_table();
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.job_history_list).DataTable({
+			data: <%=json_encode($this->jobs)%>,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'job',
+					render: function(data, type, row) {
+						var ret = '';
+						if (Object.keys(this.job_weather).length > 0) {
+							if (type == 'display' || type == 'filter') {
+								if (!this.job_weather.hasOwnProperty(data)) {
+									// for jobs that haven't been never running
+									this.job_weather[data] = {count: 0, error: 0};
+								}
+								var icon = Weather.get_weather_icon(this.job_weather[data].error);
+								var img = document.createElement('IMG');
+								img.src = '<%=$this->getPage()->getTheme()->getBaseUrl()%>/' + icon;
+								img.className = this.css.weather_icon;
+								var title;
+								if (this.job_weather[data].error > 0) {
+									title = '<%[ Last %errors/%count jobs finished with error. ]%>';
+								} else {
+									title = '<%[ All last %count jobs finished successfully. ]%>';
+								}
+								title = title.replace('%errors', this.job_weather[data].error);
+								title = title.replace('%count', this.job_weather[data].count);
+								img.title = title;
+								ret = img.outerHTML;
+							} else if (type == 'sort') {
+								ret = this.job_weather[data].error;
+							}
+						}
+						return ret;
+					}.bind(this),
+					responsivePriority: 3
+				},
+				{
+					data: 'job',
+					responsivePriority: 1
+				},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					},
+					responsivePriority: 2
+				},
+				{
+					data: 'enabled',
+					render: function(data, type, row) {
+						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
+					},
+					responsivePriority: 4
+				},
+				{data: 'maxjobs'},
+				{
+					data: 'priority',
+					visible: false
+				},
+				{
+					data: 'job',
+					render: function(data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-list-ul';
+						var label = document.createTextNode(' <%[ Details ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 3, 4, 5, 6, 7 ]
+			}],
+			order: [2, 'asc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 4, 5, 6]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	set_weather: function() {
+		var jobs = oData.terminated_jobs;
+		var jobs_len = jobs.length;
+		for (var i = 0; i < jobs_len; i++) {
+			if (!this.job_weather.hasOwnProperty(jobs[i].name)) {
+				this.job_weather[jobs[i].name] = {count: 0, error: 0};
+			}
+			if (this.job_weather[jobs[i].name].count >= 5) {
+				continue;
+			}
+			this.job_weather[jobs[i].name].count++;
+			if (JobStatus.is_error(jobs[i].jobstatus)) {
+				this.job_weather[jobs[i].name].error++;
+			}
+		}
+		this.table.rows().invalidate('data').draw(false);
+	}
+};
+oJobList.init();
+MonitorParams = {jobs: null};
+$(function() {
+	MonitorCalls.push(oJobList.set_weather.bind(oJobList));
+});
+</script>
+</com:TContent>

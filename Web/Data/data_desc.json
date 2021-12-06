@@ -1,0 +1,4947 @@
+{
+	"BaculaVersion": "9.4.4",
+	"BaculaDate": "28 May 2019",
+	"GenerateTime": "2019-08-20 20:28:55",
+	"Description": "",
+	"dir": {
+		"Director": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"QueryFile": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"WorkingDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PluginDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ScriptsDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PidDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SubsysDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"VerId": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"CommCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"EventsRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 2592000,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"Catalog": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"MaximumReloadRequests": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 32,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumConsoleConnections": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 20,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"DirPort": {
+				"Required": false,
+				"ValueType": "addresses_port",
+				"DefaultValue": 9101,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"DirAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"DirAddresses": {
+				"Required": false,
+				"ValueType": "addresses",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"DirSourceAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 1,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"FdConnectTimeout": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 180,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"SdConnectTimeout": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"AutoPrune": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"StatisticsRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 160704000,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			}
+		},
+		"Client": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Catalog": {
+				"Required": true,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox"
+			},
+			"FdPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 9102,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"FdStorageAddress": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"SDCallsClient": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Networking"
+			},
+			"AllowFDConnections": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Networking"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 1,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumBandwidthPerJob": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			},
+			"AutoPrune": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"JobRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 15552000,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"FileRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 5184000,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"SnapshotRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"Job": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": false,
+				"ValueType": "jobtype",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Backup", "Restore", "Copy", "Verify", "Migrate", "Admin"],
+				"Section": "General"
+			},
+			"Level": {
+				"Required": false,
+				"ValueType": "level",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Full", "Incremental", "Differential", "VirtualFull", "Base", "InitCatalog", "Catalog", "VolumeToCatalog", "DiskToCatalog", "Data"],
+				"Section": "General"
+			},
+			"Client": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Client",
+				"Section": "General"
+			},
+			"Fileset": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Fileset",
+				"Section": "General"
+			},
+			"Pool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Storage": {
+				"Required": false,
+				"ValueType": "alist_res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Schedule": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Schedule",
+				"Section": "General"
+			},
+			"JobDefs": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "JobDefs",
+				"Section": "General"
+			},
+			"Priority": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 10,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"Accurate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Run": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"FullBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"IncrementalBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"DifferentialBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"MaxFullInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"MaxDiffInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"WriteBootstrap": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"SpoolData": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"SpoolAttributes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"SpoolSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Backup"
+			},
+			"ReRunFailedLevels": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"PreferMountedVolumes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleOnError": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleIncompleteJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"RescheduleTimes": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Backup"
+			},
+			"WritePartAfterJob": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"Base": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ListBox",
+				"Resource": "Job",
+				"Section": "Backup"
+			},
+			"PluginOptions": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"AllowIncompleteJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"VirtualFullBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Virtual full backup"
+			},
+			"MaxVirtualFullInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Virtual full backup"
+			},
+			"BackupsToKeep": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Virtual full backup"
+			},
+			"DeleteConsolidatedJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Virtual full backup"
+			},
+			"NextPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Copy and migration"
+			},
+			"SelectionType": {
+				"Required": false,
+				"ValueType": "migtype",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["SmallestVolume", "OldestVolume", "Client", "Volume", "Job", "SqlQuery", "PoolOccupancy", "PoolTime", "PoolUncopiedJobs"],
+				"Section": "Copy and migration"
+			},
+			"SelectionPattern": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Copy and migration"
+			},
+			"MaximumSpawnedJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 600,
+				"FieldType": "Integer",
+				"Section": "Copy and migration"
+			},
+			"PurgeMigrationJob": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Copy and migration"
+			},
+			"VerifyJob": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Job",
+				"Section": "Verify"
+			},
+			"JobToVerify": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Job",
+				"Section": "Verify"
+			},
+			"WriteVerifyList": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Verify"
+			},
+			"Where": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"Replace": {
+				"Required": false,
+				"ValueType": "replace",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Always", "IfNewer", "IfOlder", "Never"],
+				"Section": "Restore"
+			},
+			"PrefixLinks": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Restore"
+			},
+			"RegexWhere": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"StripPrefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"AddPrefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"AddSuffix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"Bootstrap": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 1,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumBandwidth": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			},
+			"MaxStartDelay": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxRunSchedTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"FullMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"IncrementalMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"DifferentialMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxWaitTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"PruneJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"PruneFiles": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"PruneVolumes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"SnapshotRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"Runscript": {
+				"Required": false,
+				"ValueType": "runscript",
+				"DefaultValue": 0,
+				"FieldType": "Runscript",
+				"SubSections": {
+					"RunsWhen": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "ComboBox",
+						"Data": ["Before", "After", "Always", "AfterVSS"]
+					},
+					"RunsOnSuccess": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"RunsOnFailure": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"RunsOnClient": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"FailJobOnError": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"Command": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"Console": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					}
+				}
+			},
+			"AllowMixedPriority": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"AllowDuplicateJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelLowerLevelDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelQueuedDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelRunningDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			}
+		},
+		"Storage": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"AllowCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"SdPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 9103,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"FdStorageAddress": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"Device": {
+				"Required": true,
+				"ValueType": "device",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Device"
+			},
+			"MediaType": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Device"
+			},
+			"Autochanger": {
+				"Required": false,
+				"ValueType": "ac_res",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Device"
+			},
+			"Autochanger": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Device"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 1,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumConcurrentReadjobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"Catalog": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DbPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"DbName": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"User": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"dbdriver": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DbSocket": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"dbsslkey": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"dbsslcert": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"dbsslca": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"dbsslcapath": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"dbsslcipher": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DisableBatchInsert": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			}
+		},
+		"Schedule": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Run": {
+				"Required": false,
+				"ValueType": "run",
+				"DefaultValue": 0,
+				"FieldType": "Schedule",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			}
+		},
+		"Fileset": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"IgnoreFilesetChanges": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"EnableVss": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"EnableSnapshot": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Include": {
+				"Required": false,
+				"ValueType": "inc",
+				"DefaultValue": 0,
+				"FieldType": "FileSet",
+				"Section": "General",
+				"SubSections": {
+					"File" : {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"Compression": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "ComboBox",
+						"Data": ["Gzip", "Gzip1", "Gzip2", "Gzip3", "Gzip4", "Gzip5", "Gzip6", "Gzip7", "Gzip8", "Gzip9", "Lzo"]
+					},
+					"Signature": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "ComboBox",
+						"Data": ["Sha1", "Md5"]
+					},
+					"BaseJob": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"Accurate": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"Verify": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"OneFs": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"HonorNoDumpFlag": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"Portable": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"Recurse": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"Sparse": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"ReadFifo": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"NoAtime": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"MtimeOnly": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"KeepAtime": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"CheckFileChanges": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"HardLinks": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"Wild": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"WildDir": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"WildFile": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"Regex": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"RegexDir": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"RegexFile": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"Exclude": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"AclSupport": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"XattrSupport": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"IgnoreCase": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"FsType": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"DriveType": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "MultiTextBox"
+					},
+					"HfsPlusSupport": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"StripPath": {
+						"Required": false,
+						"ValueType": "int32",
+						"DefaultValue": 0,
+						"FieldType": "Integer"
+					}
+				}
+			},
+			"Exclude": {
+				"Required": false,
+				"ValueType": "inc",
+				"DefaultValue": 0,
+				"FieldType": "FileSet",
+				"Section": "General"
+			}
+		},
+		"Pool": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PoolType": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Backup"],
+				"Section": "General"
+			},
+			"LabelFormat": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"LabelType": {
+				"Required": false,
+				"ValueType": "label",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Bacula", "ANSI", "IBM"],
+				"Section": "General"
+			},
+			"CleaningPrefix": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ScratchPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "General"
+			},
+			"UseCatalog": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"CatalogFiles": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Storage": {
+				"Required": false,
+				"ValueType": "alist_res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Catalog": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"MaximumVolumes": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumVolumeJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumVolumeFiles": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumVolumeBytes": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Limitations"
+			},
+			"VolumeUseDuration": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"UseVolumeOnce": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Limitations"
+			},
+			"Recycle": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Volume recycling"
+			},
+			"RecyclePool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Volume recycling"
+			},
+			"PurgeOldestVolume": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Volume recycling"
+			},
+			"RecycleOldestVolume": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Volume recycling"
+			},
+			"RecycleCurrentVolume": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Volume recycling"
+			},
+			"VolumeRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 31536000,
+				"FieldType": "TimePeriod",
+				"Section": "Volume recycling"
+			},
+			"AutoPrune": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"ActionOnPurge": {
+				"Required": false,
+				"ValueType": "actiononpurge",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Pruning"
+			},
+			"JobRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"FileRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"MigrationTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Copy and migration"
+			},
+			"MigrationHighBytes": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Copy and migration"
+			},
+			"MigrationLowBytes": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Copy and migration"
+			},
+			"NextPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Copy and migration"
+			},
+			"CopyPool": {
+				"Required": false,
+				"ValueType": "alist_res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Copy and migration"
+			}
+		},
+		"Messages": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MailCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"OperatorCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Destinations": {
+				"Required": false,
+				"ValueType": "destinations",
+				"DefaultValue": 0,
+				"FieldType": "Messages",
+				"Section": "General"
+			}
+		},
+		"Counter": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Minimum": {
+				"Required": false,
+				"ValueType": "int32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"Maximum": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 2147483647,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"WrapCounter": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Catalog": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			}
+		},
+		"Console": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"JobAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Job",
+				"Section": "Access-control list"
+			},
+			"ClientAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Client",
+				"Section": "Access-control list"
+			},
+			"StorageAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Storage",
+				"Section": "Access-control list"
+			},
+			"ScheduleAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Schedule",
+				"Section": "Access-control list"
+			},
+			"RunAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"PoolAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Pool",
+				"Section": "Access-control list"
+			},
+			"CommandAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"FilesetAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Fileset",
+				"Section": "Access-control list"
+			},
+			"CatalogAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Catalog",
+				"Section": "Access-control list"
+			},
+			"WhereAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"PluginOptionsAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"BackupClientAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Client",
+				"Section": "Access-control list"
+			},
+			"RestoreClientAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiComboBox",
+				"Resource": "Client",
+				"Section": "Access-control list"
+			},
+			"UserIdAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"DirectoryAcl": {
+				"Required": false,
+				"ValueType": "acl",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Access-control list"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"JobDefs": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": false,
+				"ValueType": "jobtype",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Backup", "Restore", "Copy", "Verify", "Migrate", "Admin"],
+				"Section": "General"
+			},
+			"Level": {
+				"Required": false,
+				"ValueType": "level",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Full", "Incremental", "Differential", "VirtualFull", "Base", "InitCatalog", "Catalog", "VolumeToCatalog", "DiskToCatalog", "Data"],
+				"Section": "General"
+			},
+			"Client": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Client",
+				"Section": "General"
+			},
+			"Fileset": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Fileset",
+				"Section": "General"
+			},
+			"Pool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Storage": {
+				"Required": false,
+				"ValueType": "alist_res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"Schedule": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Schedule",
+				"Section": "General"
+			},
+			"JobDefs": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "JobDefs",
+				"Section": "General"
+			},
+			"Priority": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 10,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"Accurate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Run": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"FullBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"IncrementalBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"DifferentialBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Backup"
+			},
+			"MaxFullInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"MaxDiffInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"WriteBootstrap": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"SpoolData": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"SpoolAttributes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"SpoolSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Backup"
+			},
+			"ReRunFailedLevels": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"PreferMountedVolumes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleOnError": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleIncompleteJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"RescheduleInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Backup"
+			},
+			"RescheduleTimes": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Backup"
+			},
+			"WritePartAfterJob": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"Base": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ListBox",
+				"Resource": "Job",
+				"Section": "Backup"
+			},
+			"PluginOptions": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"AllowIncompleteJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Backup"
+			},
+			"VirtualFullBackupPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Virtual full backup"
+			},
+			"MaxVirtualFullInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Virtual full backup"
+			},
+			"BackupsToKeep": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Virtual full backup"
+			},
+			"DeleteConsolidatedJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Virtual full backup"
+			},
+			"NextPool": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Pool",
+				"Section": "Copy and migration"
+			},
+			"SelectionType": {
+				"Required": false,
+				"ValueType": "migtype",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["SmallestVolume", "OldestVolume", "Client", "Volume", "Job", "SqlQuery", "PoolOccupancy", "PoolTime", "PoolUncopiedJobs"],
+				"Section": "Copy and migration"
+			},
+			"SelectionPattern": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Copy and migration"
+			},
+			"MaximumSpawnedJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 600,
+				"FieldType": "Integer",
+				"Section": "Copy and migration"
+			},
+			"PurgeMigrationJob": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Copy and migration"
+			},
+			"VerifyJob": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Job",
+				"Section": "Verify"
+			},
+			"JobToVerify": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Job",
+				"Section": "Verify"
+			},
+			"WriteVerifyList": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Verify"
+			},
+			"Where": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"Replace": {
+				"Required": false,
+				"ValueType": "replace",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Always", "IfNewer", "IfOlder", "Never"],
+				"Section": "Restore"
+			},
+			"PrefixLinks": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Restore"
+			},
+			"RegexWhere": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"StripPrefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"AddPrefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"AddSuffix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"Bootstrap": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Restore"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 1,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumBandwidth": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			},
+			"MaxStartDelay": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxRunSchedTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"FullMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"IncrementalMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"DifferentialMaxRunTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"MaxWaitTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Limitations"
+			},
+			"PruneJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"PruneFiles": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"PruneVolumes": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Pruning"
+			},
+			"SnapshotRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
+			"Runscript": {
+				"Required": false,
+				"ValueType": "runscript",
+				"DefaultValue": 0,
+				"FieldType": "Runscript",
+				"SubSections": {
+					"RunsWhen": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "ComboBox",
+						"Data": ["Before", "After", "Always", "AfterVSS"]
+					},
+					"RunsOnSuccess": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"RunsOnFailure": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 0,
+						"FieldType": "CheckBox"
+					},
+					"RunsOnClient": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"FailJobOnError": {
+						"Required": false,
+						"ValueType": "bool",
+						"DefaultValue": 1,
+						"FieldType": "CheckBox"
+					},
+					"Command": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					},
+					"Console": {
+						"Required": false,
+						"ValueType": "str",
+						"DefaultValue": 0,
+						"FieldType": "TextBox"
+					}
+				}
+			},
+			"AllowMixedPriority": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"AllowDuplicateJobs": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelLowerLevelDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelQueuedDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			},
+			"CancelRunningDuplicates": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Duplicates and priorities"
+			}
+		},
+		"Statistics": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["CSV", "Graphite"],
+				"Section": "General"
+			},
+			"Interval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"Metrics": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "General"
+			},
+			"Prefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MangleMetric": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"File": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "CSV file"
+			},
+			"Host": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Graphite"
+			},
+			"Port": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Graphite"
+			}
+		}
+	},
+	"sd": {
+		"Director": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Monitor": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"Storage": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"WorkingDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PidDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SubsysDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PluginDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ScriptsDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"VerId": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"CommCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"SdAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"SdAddresses": {
+				"Required": false,
+				"ValueType": "addresses",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"SdPort": {
+				"Required": false,
+				"ValueType": "addresses_port",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"ClientConnectTimeout": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"ClientConnectWait": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 20,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"Device": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DeviceType": {
+				"Required": false,
+				"ValueType": "devtype",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["File", "Tape", "Cloud", "Fifo"],
+				"Section": "General"
+			},
+			"ArchiveDevice": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DriveIndex": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"MediaType": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"RemovableMedia": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"RandomAccess": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"AutomaticMount": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"LabelMedia": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"AlwaysOpen": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Autochanger": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"AutoSelect": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"MaximumVolumeSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "General"
+			},
+			"MaximumFileSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 1000000000,
+				"FieldType": "Size",
+				"Section": "General"
+			},
+			"MaximumFileIndex": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 100000000,
+				"FieldType": "Size",
+				"Section": "General"
+			},
+			"VolumeCapacity": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "General"
+			},
+			"Cloud": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Cloud",
+				"Section": "General"
+			},
+			"RequiresMount": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"MountPoint": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Disk"
+			},
+			"MountCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Disk"
+			},
+			"UnmountCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Disk"
+			},
+			"WritePartCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Disk"
+			},
+			"FreeSpaceCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Disk"
+			},
+			"MaximumPartSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Disk"
+			},
+			"MinimumFeeSpace": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 5000000,
+				"FieldType": "Size",
+				"Section": "Disk"
+			},
+			"ReadOnly": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"AlertCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Tape"
+			},
+			"WormCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Tape"
+			},
+			"HardwareEndOfFile": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"HardwareEndOfMedium": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"BackwardSpaceRecord": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"BackwardSpaceFile": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"BsfAtEom": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"TwoEof": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"ForwardSpaceRecord": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"ForwardSpaceFile": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"FastForwardSpaceFile": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"CloseOnPoll": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"VolumePollInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Tape"
+			},
+			"BlockPositioning": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"BlockChecksum": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"UseMtiocGet": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"CheckLabels": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"OfflineOnUnmount": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
+			"MaximumChangerWait": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Tape"
+			},
+			"MaximumOpenWait": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Tape"
+			},
+			"MaximumRewindWait": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Tape"
+			},
+			"MinimumBlockSize": {
+				"Required": false,
+				"ValueType": "size32",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Tape"
+			},
+			"MaximumBlockSize": {
+				"Required": false,
+				"ValueType": "maxblocksize",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Tape"
+			},
+			"LabelType": {
+				"Required": false,
+				"ValueType": "label",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["Bacula", "ANSI", "IBM"],
+				"Section": "Tape"
+			},
+			"ControlDevice": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Tape"
+			},
+			"ChangerDevice": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Tape"
+			},
+			"ChangerCommand": {
+				"Required": false,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Tape"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumNetworkBufferSize": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"PaddingSize": {
+				"Required": false,
+				"ValueType": "size32",
+				"DefaultValue": 4096,
+				"FieldType": "Size",
+				"Section": "Deduplication optimized volumes"
+			},
+			"FileAlignment": {
+				"Required": false,
+				"ValueType": "size32",
+				"DefaultValue": 4096,
+				"FieldType": "Size",
+				"Section": "Deduplication optimized volumes"
+			},
+			"SpoolDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Spooling"
+			},
+			"MaximumSpoolSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Spooling"
+			},
+			"MaximumJobSpoolSize": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "Spooling"
+			}
+		},
+		"Messages": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MailCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"OperatorCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Destinations": {
+				"Required": false,
+				"ValueType": "destinations",
+				"DefaultValue": 0,
+				"FieldType": "Messages",
+				"Section": "General"
+			}
+		},
+		"Autochanger": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Device": {
+				"Required": true,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ListBox",
+				"Resource": "Device",
+				"Section": "General"
+			},
+			"ChangerDevice": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ChangerCommand": {
+				"Required": true,
+				"ValueType": "strname",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			}
+		},
+		"Statistics": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Interval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["CSV", "Graphite"],
+				"Section": "General"
+			},
+			"Metrics": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "General"
+			},
+			"Prefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MangleMetric": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"File": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "CSV file"
+			},
+			"Host": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Graphite"
+			},
+			"Port": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Graphite"
+			}
+		},
+		"Cloud": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Driver": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["S3", "File"],
+				"Section": "General"
+			},
+			"HostName": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"BucketName": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"AccessKey": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SecretKey": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Region": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Protocol": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "HTTPS",
+				"FieldType": "ComboBox",
+				"Data": ["HTTP", "HTTPS"],
+				"Section": "General"
+			},
+			"BlobEndpoint": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"FileEndpoint": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"QueueEndpoint": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"TableEndpoint": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"EndpointSuffix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"UriStyle": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "VirtualHost",
+				"FieldType": "ComboBox",
+				"Data": ["VirtualHost", "Path"],
+				"Section": "General"
+			},
+			"TruncateCache": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "No",
+				"FieldType": "ComboBox",
+				"Data": ["No", "AfterUpload", "AtEndOfJob", "ConfDefault"],
+				"Section": "General"
+			},
+			"Upload": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "No",
+				"FieldType": "ComboBox",
+				"Data": ["No", "Manual", "EachPart", "AtEndOfJob"],
+				"Section": "General"
+			},
+			"DriverCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"TransferPriority": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "High",
+				"FieldType": "ComboBox",
+				"Data": ["High", "Medium", "Low"],
+				"Section": "General"
+			},
+			"TransferRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 432000,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"MaximumConcurrentUploads": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 3,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumConcurrentDownloads": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 3,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumUploadBandwidth": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			},
+			"MaximumDownloadBandwidth": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			}
+		}
+	},
+	"fd": {
+		"Director": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DirPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 9101,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"ConnectToDirector": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Schedule": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Schedule",
+				"Section": "General"
+			},
+			"ReconnectionTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 2700,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"Monitor": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"Remote": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"DisableCommand": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Console": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"MaximumBandwidthPerJob": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			}
+		},
+		"FileDaemon": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"WorkingDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PidDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SubsysDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PluginDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ScriptsDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SnapshotCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"VerId": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DisableCommand": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"CommCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"FdPort": {
+				"Required": false,
+				"ValueType": "addresses_port",
+				"DefaultValue": 9102,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"FdAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"FdAddresses": {
+				"Required": false,
+				"ValueType": "addresses",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"FdSourceAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"SdConnectTimeout": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"MaximumNetworkBufferSize": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"PkiSignatures": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Data encryption"
+			},
+			"PkiEncryption": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Data encryption"
+			},
+			"PkiKeyPair": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"PkiSigner": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"PkiMasterKey": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 20,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumBandwidthPerJob": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			}
+		},
+		"Messages": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MailCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"OperatorCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Destinations": {
+				"Required": false,
+				"ValueType": "destinations",
+				"DefaultValue": 0,
+				"FieldType": "Messages",
+				"Section": "General"
+			}
+		},
+		"Console": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DirPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 9101,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsVerifyPeer": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAllowedCn": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsDhFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			}
+		},
+		"Client": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"WorkingDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PidDirectory": {
+				"Required": true,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SubsysDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"PluginDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"ScriptsDirectory": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"SnapshotCommand": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Messages": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Section": "General"
+			},
+			"VerId": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DisableCommand": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"CommCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"FdPort": {
+				"Required": false,
+				"ValueType": "addresses_port",
+				"DefaultValue": 9102,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"FdAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"FdAddresses": {
+				"Required": false,
+				"ValueType": "addresses",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"FdSourceAddress": {
+				"Required": false,
+				"ValueType": "addresses_address",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Networking"
+			},
+			"SdConnectTimeout": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 1800,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			},
+			"MaximumNetworkBufferSize": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Networking"
+			},
+			"PkiSignatures": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Data encryption"
+			},
+			"PkiEncryption": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Data encryption"
+			},
+			"PkiKeyPair": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"PkiSigner": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"PkiMasterKey": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Data encryption"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"MaximumConcurrentJobs": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 20,
+				"FieldType": "Integer",
+				"Section": "Limitations"
+			},
+			"MaximumBandwidthPerJob": {
+				"Required": false,
+				"ValueType": "speed",
+				"DefaultValue": 0,
+				"FieldType": "Speed",
+				"Section": "Limitations"
+			}
+		},
+		"Statistics": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Interval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["CSV", "Graphite"],
+				"Section": "General"
+			},
+			"Metrics": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "General"
+			},
+			"Prefix": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"MangleMetric": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"File": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "CSV file"
+			},
+			"Host": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Graphite"
+			},
+			"Port": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
+				"Section": "Graphite"
+			}
+		},
+		"Schedule": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Connect": {
+				"Required": false,
+				"ValueType": "run",
+				"DefaultValue": 0,
+				"FieldType": "Schedule",
+				"Section": "General"
+			},
+			"Enabled": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			}
+		}
+	},
+	"bcons": {
+		"Console": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"RCFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"Director": {
+				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Resource": "Director",
+				"Section": "General"
+			},
+			"CommCompression": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			}
+		},
+		"Director": {
+			"Name": {
+				"Required": true,
+				"ValueType": "name",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Description": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"DirPort": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 9101,
+				"FieldType": "Integer",
+				"Section": "General"
+			},
+			"Address": {
+				"Required": true,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"Password": {
+				"Required": true,
+				"ValueType": "password",
+				"DefaultValue": 0,
+				"FieldType": "Password",
+				"Section": "General"
+			},
+			"HistoryFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "General"
+			},
+			"HistoryFileSize": {
+				"Required": false,
+				"ValueType": "size32",
+				"DefaultValue": 0,
+				"FieldType": "Size",
+				"Section": "General"
+			},
+			"TlsPskEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsEnable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsRequire": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsAuthenticate": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Communications encryption"
+			},
+			"TlsKey": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCertificate": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateFile": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"TlsCaCertificateDir": {
+				"Required": false,
+				"ValueType": "dir",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Communications encryption"
+			},
+			"HeartbeatInterval": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 300,
+				"FieldType": "TimePeriod",
+				"Section": "Networking"
+			}
+		}
+	}
+}

@@ -1,0 +1,12 @@
+<%@ MasterClass="Application.Web.Layouts.Simple" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<div style="width: 100%; height: 100%;">
+		<com:TPanel ID="SelectAPIHostForm" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px">
+			<img src="<%=$this->getPage()->getTheme()->getBaseUrl()%>/logo_xl.png" alt="Baculum - The Bacula web interface" class="w3-block" style="margin-bottom: 10px"/>
+			<h3><%[ Please select API host ]%></h3>
+			<div class="w3-section">
+				<label for="<%=$this->UserAPIHosts->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ API host: ]%></label> <com:TDropDownList ID="UserAPIHosts" CssClass="w3-input w3-border w3-show-inline-block" Style="width: 335px" AutoPostBack="true" OnTextChanged="setAPIHost" />
+			</div>
+		</com:TPanel>
+	</div>
+</com:TContent>

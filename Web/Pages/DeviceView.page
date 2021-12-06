@@ -1,0 +1,86 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-hdd"></i> <%[ Device details ]%></b>
+		</h5>
+	</header>
+	<h3 class="w3-margin-left">[<%[ Storage: ]%> <%=$this->getStorageName()%>] <%[ Device: ]%> <%=$this->getDeviceName()%> &nbsp;</h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('StorageView', array('storageid' => $this->getStorageId()))%>"><i class="fa fa-angle-left"></i></a>
+		<button id="btn_device_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'device_actions');"><%[ Actions ]%></button>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'configure_device');"
+			Text="<%[ Configure device ]%>"
+			Visible="<%=!empty($_SESSION['sd'])%>"
+			OnClick="setDevice"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="device_actions">
+		<com:TValidationSummary
+			ID="ValidationSummary"
+			CssClass="validation-error-summary"
+			ValidationGroup="DeviceGroup"
+			AutoUpdate="true"
+			Display="Dynamic"
+			HeaderText="<%[ There is not possible to run selected action because: ]%>"
+		/>
+		<com:TActiveLinkButton
+			ID="Mount"
+			OnClick="mount"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="DeviceGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="$('#status_device_loading').show();"
+			ClientSide.OnSuccess="$('#status_device_loading').hide();"
+		>
+			<prop:Text><%=Prado::localize('Mount')%> &nbsp;<i class="fa fa-caret-down"></i></prop:Text>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="Release"
+			OnClick="release"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="DeviceGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="$('#status_device_loading').show();"
+			ClientSide.OnSuccess="$('#status_device_loading').hide();"
+		>
+			<prop:Text><%=Prado::localize('Release')%> &nbsp;<i class="fa fa-caret-right"></i></prop:Text>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="Umount"
+			OnClick="umount"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="DeviceGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="$('#status_device_loading').show();"
+			ClientSide.OnSuccess="$('#status_device_loading').hide();"
+		>
+			<prop:Text><%=Prado::localize('Umount')%> &nbsp;<i class="fa fa-caret-up"></i></prop:Text>
+		</com:TActiveLinkButton>
+		<i id="status_device_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super;"></i>
+		<div class="w3-row">
+			<div class="w3-quarter w3-container">
+				<%[ Slot number: ]%>
+				<com:TActiveTextBox ID="Slot" AutoPostBack="false" Text="0" MaxLength="3" CssClass="w3-input smallbox" />
+				<com:TDataTypeValidator ID="SlotValidator" ValidationGroup="AutoChangerGroup" ControlToValidate="Slot" ErrorMessage="<%[ Slot number must be integer. ]%>" Display="None" DataType="Integer" />
+			</div>
+		</div>
+		<div class="w3-panel w3-card w3-light-grey">
+			<div class="w3-code notranslate">
+				<pre><com:TActiveLabel ID="DeviceLog" /></pre>
+			</div>
+		</div>
+		
+	</div>
+	<div class="w3-container tab_item" id="configure_device" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="DeviceConfig"
+			ComponentType="sd"
+			ResourceType="Device"
+			ShowCancelButton="false"
+		/>
+	</div>
+</com:TContent>

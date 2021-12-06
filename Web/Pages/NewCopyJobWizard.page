@@ -1,0 +1,1913 @@
+<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewJobWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnPreviousButtonClick="wizardPrev"
+		OnNextButtonClick="wizardNext"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-upload w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="What" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-question w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="How" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3  ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Where" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clipboard-list w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Options" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 5 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewCopyJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewCopyJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-paper-plane"></i> &nbsp;<%[ Create job ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - basic information about new job ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New copy job wizard ]%></h2>
+					<p><%[ Copy jobs run copying backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. All process runs without using file daemon. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="Name"
+					DirectiveName="Name"
+					Label="Job Name"
+					ValidationGroup="NewCopyJobDirective"
+					Required="true"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="Description"
+					DirectiveName="Description"
+					Label="Description"
+					ValidationGroup="NewCopyJobDirective"
+					Required="false"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="JobDefs"
+					DirectiveName="JobDefs"
+					Label="JobDefs"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - what you want to copy ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Source Pool ]%></h2>
+					<p><%[ Please select a pool from which you want to copy data. ]%></p>
+					<p><%[ The source pool will be examined for finding backup jobs to copy. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Pool"
+					DirectiveName="Pool"
+					Label="Source Pool"
+					Show="true"
+					ValidationGroup="NewCopyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					Attributes.onchange="set_storage_from_pool(); oVolumeList.show_volumes_in_pool_btn(this.value);oVolumeList.show_volumes_in_pool_table(false);"
+					/>
+				<a id="volumes_in_pool_btn" href="javascript:void(0)" onclick="oVolumeList.load_data(document.getElementById('<%=$this->Pool->Directive->ClientID%>').value);" style="display: none; width: 300px; margin: 0 auto;"><%[ See volumes in selected pool ]%></a>
+				<div>
+					<h2><%[ Source Storage ]%></h2>
+					<p><%[ Please select a storage using which you want to read copy data. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="SourceStorage"
+					DirectiveName="Storage"
+					Label="Source Storage"
+					Show="true"
+					ValidationGroup="NewCopyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+				<com:TCallback ID="SetSourceStorageByPool" OnCallback="setSourceStorageByPool" />
+<script>
+function set_storage_from_pool() {
+	var cb = <%=$this->SetSourceStorageByPool->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+function set_storage_from_pool_cb(storage) {
+	if (storage) {
+		var st = document.getElementById('<%=$this->SourceStorage->Directive->ClientID%>');
+		st.value = storage;
+	}
+}
+</script>
+			</div>
+			<div id="source_pool_volume_list" class="w3-container w3-margin" style="display: none">
+				<table id="volume_list" class="w3-table w3-striped w3-white w3-margin-bottom" style="width: 100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th>MediaId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Slot ]%></th>
+							<th>PoolId</th>
+							<th><%[ Pool ]%></th>
+							<th>InChanger</th>
+							<th>StorageId</th>
+							<th><%[ Storage ]%></th>
+							<th>DeviceId</th>
+							<th><%[ Vol. status ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th><%[ Recycle ]%></th>
+							<th>MediaType</th>
+							<th>MediaTypeId</th>
+							<th>LabelType</th>
+							<th><%[ First written ]%></th>
+							<th><%[ Last written ]%></th>
+							<th><%[ Vol. bytes ]%></th>
+							<th><%[ Max. vol. bytes ]%></th>
+							<th><%[ Max. vol. jobs ]%></th>
+							<th><%[ Max. vol. files ]%></th>
+							<th><%[ Vol. capacity bytes ]%></th>
+							<th><%[ Vol. abytes ]%></th>
+							<th><%[ Vol. apadding ]%></th>
+							<th><%[ Vol. hole bytes ]%></th>
+							<th><%[ Vol. holes ]%></th>
+							<th><%[ Vol. parts ]%></th>
+							<th><%[ Vol. errors ]%></th>
+							<th><%[ Vol. writes ]%></th>
+							<th><%[ Label date ]%></th>
+							<th><%[ Vol. jobs ]%></th>
+							<th><%[ Vol. files ]%></th>
+							<th><%[ Vol. blocks ]%></th>
+							<th><%[ Vol. mounts ]%></th>
+							<th><%[ Action on purge ]%></th>
+							<th><%[ Vol. retention ]%></th>
+							<th><%[ Cache retention ]%></th>
+							<th><%[ Vol. use duration ]%></th>
+							<th><%[ Media addressing ]%></th>
+							<th><%[ Vol. read time ]%></th>
+							<th><%[ Vol. write time ]%></th>
+							<th><%[ Vol. type ]%></th>
+							<th><%[ Vol. cloud parts ]%></th>
+							<th><%[ Last part bytes ]%></th>
+							<th><%[ End file ]%></th>
+							<th><%[ End block ]%></th>
+							<th>LocationId</th>
+							<th><%[ Recycle count ]%></th>
+							<th><%[ Initial write ]%></th>
+							<th>ScratchPoolId</th>
+							<th><%[ Scratch pool ]%></th>
+							<th>RecyclePoolId</th>
+							<th><%[ Recycle pool ]%></th>
+							<th><%[ Comment ]%></th>
+							<th><%[ When expire ]%></th>
+						</tr>
+					</thead>
+					<tbody id="pool_list_body"></tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>MediaId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Slot ]%></th>
+							<th>PoolId</th>
+							<th><%[ Pool ]%></th>
+							<th>InChanger</th>
+							<th>StorageId</th>
+							<th><%[ Storage ]%></th>
+							<th>DeviceId</th>
+							<th><%[ Vol. status ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th><%[ Recycle ]%></th>
+							<th>MediaType</th>
+							<th>MediaTypeId</th>
+							<th>LabelType</th>
+							<th><%[ First written ]%></th>
+							<th><%[ Last written ]%></th>
+							<th><%[ Vol. bytes ]%></th>
+							<th><%[ Max. vol. bytes ]%></th>
+							<th><%[ Max. vol. jobs ]%></th>
+							<th><%[ Max. vol. files ]%></th>
+							<th><%[ Vol. capacity bytes ]%></th>
+							<th><%[ Vol. abytes ]%></th>
+							<th><%[ Vol. apadding ]%></th>
+							<th><%[ Vol. hole bytes ]%></th>
+							<th><%[ Vol. holes ]%></th>
+							<th><%[ Vol. parts ]%></th>
+							<th><%[ Vol. errors ]%></th>
+							<th><%[ Vol. writes ]%></th>
+							<th><%[ Label date ]%></th>
+							<th><%[ Vol. jobs ]%></th>
+							<th><%[ Vol. files ]%></th>
+							<th><%[ Vol. blocks ]%></th>
+							<th><%[ Vol. mounts ]%></th>
+							<th><%[ Action on purge ]%></th>
+							<th><%[ Vol. retention ]%></th>
+							<th><%[ Cache retention ]%></th>
+							<th><%[ Vol. use duration ]%></th>
+							<th><%[ Media addressing ]%></th>
+							<th><%[ Vol. read time ]%></th>
+							<th><%[ Vol. write time ]%></th>
+							<th><%[ Vol. type ]%></th>
+							<th><%[ Vol. cloud parts ]%></th>
+							<th><%[ Last part bytes ]%></th>
+							<th><%[ End file ]%></th>
+							<th><%[ End block ]%></th>
+							<th>LocationId</th>
+							<th><%[ Recycle count ]%></th>
+							<th><%[ Initial write ]%></th>
+							<th>ScratchPoolId</th>
+							<th><%[ Scratch pool ]%></th>
+							<th>RecyclePoolId</th>
+							<th><%[ Recycle pool ]%></th>
+							<th><%[ Comment ]%></th>
+							<th><%[ When expire ]%></th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+<com:TCallback ID="LoadVolumeList" OnCallback="loadVolumes" />
+<script>
+var oVolumeList = {
+	table: null,
+	ids: {
+		volume_list: 'volume_list',
+		volume_list_body: 'volume_list_body',
+		volumes_in_pool_btn: 'volumes_in_pool_btn',
+		source_pool_volume_list: 'source_pool_volume_list'
+	},
+	init: function(data) {
+		if (this.table) {
+			var page = this.table.page();
+			this.table.clear().rows.add(data).draw();
+			this.table.page(page).draw(false);
+		} else {
+			this.set_table(data);
+		}
+		this.show_volumes_in_pool_table(true);
+	},
+	update: function(data) {
+		oVolumeList.init(data);
+	},
+	load_data: function(pool) {
+		var cb = <%=$this->LoadVolumeList->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(pool);
+		cb.dispatch();
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.volume_list).DataTable({
+			data: data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'mediaid'},
+				{data: 'volumename'},
+				{data: 'slot'},
+				{
+					data: 'poolid',
+					visible: false
+				},
+				{
+					data: 'pool',
+					visible: false
+				},
+				{
+					data: 'inchanger',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					}
+				},
+				{
+					data: 'storageid',
+					visible: false
+				},
+				{
+					data: 'storage',
+					visible: false
+				},
+				{
+					data: 'deviceid',
+					visible: false
+				},
+				{data: 'volstatus'},
+				{
+					data: 'enabled',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{
+					data: 'recycle',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{data: 'mediatype'},
+				{
+					data: 'mediatypeid',
+					visible: false
+				},
+				{
+					data: 'labeltype',
+					visible: false
+				},
+				{
+					data: 'firstwritten',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'lastwritten',
+					render: render_date
+				},
+				{
+					data: 'volbytes',
+					render: render_bytes
+				},
+				{
+					data: 'maxvolbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'maxvoljobs',
+					visible: false
+				},
+				{
+					data: 'maxvolfiles',
+					visible: false
+				},
+				{
+					data: 'volcapacitybytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volabytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volapadding',
+					visible: false
+				},
+				{
+					data: 'volholebytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volholes',
+					visible: false
+				},
+				{
+					data: 'volparts',
+					visible: false
+				},
+				{
+					data: 'volerrors',
+					visible: false
+				},
+				{
+					data: 'volwrites',
+					visible: false
+				},
+				{
+					data: 'labeldate',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'voljobs',
+					visible: false
+				},
+				{
+					data: 'volfiles',
+					visible: false
+				},
+				{
+					data: 'volblocks',
+					visible: false
+				},
+				{
+					data: 'volmounts',
+					visible: false
+				},
+				{
+					data: 'actiononpurge',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{
+					data: 'volretention',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'cacheretention',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'voluseduration',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'mediaaddressing',
+					visible: false
+				},
+				{
+					data: 'volreadtime',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'volwritetime',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'voltype',
+					visible: false
+				},
+				{
+					data: 'volcloudparts',
+					visible: false
+				},
+				{
+					data: 'lastpartbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'endfile',
+					visible: false
+				},
+				{
+					data: 'endblock',
+					visible: false
+				},
+				{
+					data: 'locationid',
+					visible: false
+				},
+				{
+					data: 'recyclecount',
+					visible: false
+				},
+				{
+					data: 'initialwrite',
+					visible: false
+				},
+				{
+					data: 'scratchpoolid',
+					visible: false
+				},
+				{
+					data: 'scratchpool',
+					visible: false
+				},
+				{
+					data: 'recyclepoolid',
+					visible: false
+				},
+				{
+					data: 'recyclepool',
+					visible: false
+				},
+				{
+					data: 'comment',
+					visible: false
+				},
+				{
+					data: 'whenexpire',
+					render: render_date_ex,
+					visible: false
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55 ]
+			},
+			{
+				className: "dt-body-right",
+				targets: [ 18 ]
+			}],
+			order: [3, 'asc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 6, 10, 13]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 3) {
+						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	show_volumes_in_pool_btn: function(show) {
+		var volumes_in_pool_btn = document.getElementById(this.ids.volumes_in_pool_btn);
+		volumes_in_pool_btn.style.display = show ? 'block' : 'none';
+	},
+	show_volumes_in_pool_table: function(show) {
+		var source_pool_volume_list = document.getElementById(this.ids.source_pool_volume_list);
+		source_pool_volume_list.style.display = show ? 'block' : 'none';
+		if (show && this.table) {
+			this.table.responsive.recalc();
+		}
+	}
+};
+</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - how would you like to copy ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Backup jobs selection criteria ]%></h2>
+					<p><%[ Please select the criteria that will be used for selecting backup jobs to copy. ]%></p>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="SelectionType"
+					DirectiveName="SelectionType"
+					Label="Selection Type"
+					Show="true"
+					ValidationGroup="NewCopyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					Attributes.onchange="oSelectionType.show_opts(this.value);"
+					/>
+				<div id="selection_type_job" style="float: none; display: none; margin: auto;">
+					<com:Application.Web.Portlets.DirectiveTextBox
+						ID="SelectionPatternJob"
+						DirectiveName="SelectionPattern"
+						Label="Selection Pattern Job"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="false"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<a id="selection_type_jobs_btn" href="javascript:void(0)" onclick="oJobList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See backup jobs ]%></a>
+				</div>
+				<div id="selection_type_client" style="float: none; display: none; margin: auto;">
+					<com:Application.Web.Portlets.DirectiveTextBox
+						ID="SelectionPatternClient"
+						DirectiveName="SelectionPattern"
+						Label="Selection Pattern Client"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="false"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<a id="selection_type_clients_btn" href="javascript:void(0)" onclick="oClientList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See clients ]%></a>
+				</div>
+				<div id="selection_type_volume" style="float: none; display: none; margin: auto;">
+					<com:Application.Web.Portlets.DirectiveTextBox
+						ID="SelectionPatternVolume"
+						DirectiveName="SelectionPattern"
+						Label="Selection Pattern Volume"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="false"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<a id="selection_type_volumes_btn" href="javascript:void(0)" onclick="oVolumeList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See volumes ]%></a>
+				</div>
+				<div id="selection_type_smallest_volume" style="display: none">
+				</div>
+				<div id="selection_type_oldest_volume" style="display: none">
+				</div>
+				<div id="selection_type_sql_query" style="float: none; display: none; margin: auto;">
+					<com:Application.Web.Portlets.DirectiveTextBox
+						ID="SelectionPatternSQLQuery"
+						DirectiveName="SelectionPattern"
+						Label="Selection Pattern SQL Query"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="false"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+				<div id="selection_type_uncopied_jobs" style="display: none">
+				</div>
+			</div>
+			<div id="selection_type_jobs_table" class="w3-container w3-margin" style="display: none">
+				<table id="job_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th><%[ Name ]%></th>
+							<th><%[ Type ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th>Max. concur. jobs</th>
+							<th><%[ Priority ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</thead>
+					<tbody id="job_list_body"></tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th><%[ Name ]%></th>
+							<th><%[ Type ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th>Max. concur. jobs</th>
+							<th><%[ Priority ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</tfoot>
+				</table>
+<com:TCallback ID="LoadJobList" OnCallback="loadJobList" />
+<script>
+var oJobList = {
+	ids: {
+		job_list: 'job_list',
+		job_list_body: 'job_list_body'
+	},
+	table: null,
+	init: function(data) {
+		oJobList.set_table(data);
+		oSelectionType.show_jobs_btn(false);
+		oSelectionType.show_jobs_table(true);
+		oJobList.table.responsive.recalc();
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.job_list).DataTable({
+			data: data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'job',
+					responsivePriority: 1
+				},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					},
+					responsivePriority: 2
+				},
+				{
+					data: 'enabled',
+					render: function(data, type, row) {
+						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
+					},
+					responsivePriority: 4
+				},
+				{data: 'maxjobs'},
+				{
+					data: 'priority',
+					visible: false
+				},
+				{
+					data: 'job',
+					render: function(data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-crosshairs';
+						var label = document.createTextNode(' <%[ Pick job name ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternJob->Directive->ClientID%>').value = '" + data + "';");
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5, 6 ]
+			}],
+			order: [1, 'asc'],
+			initComplete: function () {
+				this.api().columns([1, 3, 4, 5]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	load_data: function() {
+		var cb = <%=$this->LoadJobList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	}
+};
+</script>
+			</div>
+			<div id="selection_type_clients_table" class="w3-container w3-margin" style="display: none">
+				<table id="client_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th>ClientId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Uname ]%></th>
+							<th><%[ AutoPrune ]%></th>
+							<th><%[ Job retention ]%></th>
+							<th><%[ File retention ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</thead>
+					<tbody id="client_list_body"></tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>ClientId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Uname ]%></th>
+							<th><%[ AutoPrune ]%></th>
+							<th><%[ Job retention ]%></th>
+							<th><%[ File retention ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</tfoot>
+				</table>
+<com:TCallback ID="LoadClientList" OnCallback="loadClientList" />
+<script>
+var oClientList = {
+	ids: {
+		client_list: 'client_list',
+		client_list_body: 'client_list_body'
+	},
+	table: null,
+	init: function(data) {
+		oClientList.set_table(data);
+		oSelectionType.show_clients_btn(false);
+		oSelectionType.show_clients_table(true);
+		oClientList.table.responsive.recalc();
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.client_list).DataTable({
+			data: data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'clientid'},
+				{data: 'name'},
+				{data: 'uname'},
+				{
+					data: 'autoprune',
+					render: function(data, type, row) {
+						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
+					}
+				},
+				{
+					data: 'jobretention',
+					render: render_time_period
+				},
+				{
+					data: 'fileretention',
+					render: render_time_period
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-crosshairs';
+						var label = document.createTextNode(' <%[ Pick client name ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternClient->Directive->ClientID%>').value = '" + data + "';");
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 4, 5, 6, 7 ]
+			}],
+			order: [2, 'asc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 4, 5, 6]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 5 || column[0][0] == 6) {
+						column.data().unique().sort(sort_natural).each(function (d, j) {
+							var time = Units.format_time_period(d);
+							var time_f = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');
+							if (column.search() == '^' + dtEscapeRegex(time_f) + '$') {
+								select.append('<option value="' + time_f + '" selected>' + time_f + '</option>');
+							} else {
+								select.append('<option value="' + time_f + '">' + time_f + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (d) {
+								if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+									select.append('<option value="' + d + '" selected>' + d + '</option>');
+								} else {
+									select.append('<option value="' + d + '">' + d + '</option>');
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	load_data: function() {
+		var cb = <%=$this->LoadClientList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	}
+};
+</script>
+			</div>
+			<div id="selection_type_volumes_table" class="w3-container w3-margin" style="display: none">
+				<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th>MediaId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Slot ]%></th>
+							<th>PoolId</th>
+							<th><%[ Pool ]%></th>
+							<th>InChanger</th>
+							<th>StorageId</th>
+							<th><%[ Storage ]%></th>
+							<th>DeviceId</th>
+							<th><%[ Vol. status ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th><%[ Recycle ]%></th>
+							<th>MediaType</th>
+							<th>MediaTypeId</th>
+							<th>LabelType</th>
+							<th><%[ First written ]%></th>
+							<th><%[ Last written ]%></th>
+							<th><%[ Vol. bytes ]%></th>
+							<th><%[ Max. vol. bytes ]%></th>
+							<th><%[ Max. vol. jobs ]%></th>
+							<th><%[ Max. vol. files ]%></th>
+							<th><%[ Vol. capacity bytes ]%></th>
+							<th><%[ Vol. abytes ]%></th>
+							<th><%[ Vol. apadding ]%></th>
+							<th><%[ Vol. hole bytes ]%></th>
+							<th><%[ Vol. holes ]%></th>
+							<th><%[ Vol. parts ]%></th>
+							<th><%[ Vol. errors ]%></th>
+							<th><%[ Vol. writes ]%></th>
+							<th><%[ Label date ]%></th>
+							<th><%[ Vol. jobs ]%></th>
+							<th><%[ Vol. files ]%></th>
+							<th><%[ Vol. blocks ]%></th>
+							<th><%[ Vol. mounts ]%></th>
+							<th><%[ Action on purge ]%></th>
+							<th><%[ Vol. retention ]%></th>
+							<th><%[ Cache retention ]%></th>
+							<th><%[ Vol. use duration ]%></th>
+							<th><%[ Media addressing ]%></th>
+							<th><%[ Vol. read time ]%></th>
+							<th><%[ Vol. write time ]%></th>
+							<th><%[ Vol. type ]%></th>
+							<th><%[ Vol. cloud parts ]%></th>
+							<th><%[ Last part bytes ]%></th>
+							<th><%[ End file ]%></th>
+							<th><%[ End block ]%></th>
+							<th>LocationId</th>
+							<th><%[ Recycle count ]%></th>
+							<th><%[ Initial write ]%></th>
+							<th>ScratchPoolId</th>
+							<th><%[ Scratch pool ]%></th>
+							<th>RecyclePoolId</th>
+							<th><%[ Recycle pool ]%></th>
+							<th><%[ Comment ]%></th>
+							<th><%[ When expire ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</thead>
+					<tbody id="pool_list_body"></tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>MediaId</th>
+							<th><%[ Name ]%></th>
+							<th><%[ Slot ]%></th>
+							<th>PoolId</th>
+							<th><%[ Pool ]%></th>
+							<th>InChanger</th>
+							<th>StorageId</th>
+							<th><%[ Storage ]%></th>
+							<th>DeviceId</th>
+							<th><%[ Vol. status ]%></th>
+							<th><%[ Enabled ]%></th>
+							<th><%[ Recycle ]%></th>
+							<th>MediaType</th>
+							<th>MediaTypeId</th>
+							<th>LabelType</th>
+							<th><%[ First written ]%></th>
+							<th><%[ Last written ]%></th>
+							<th><%[ Vol. bytes ]%></th>
+							<th><%[ Max. vol. bytes ]%></th>
+							<th><%[ Max. vol. jobs ]%></th>
+							<th><%[ Max. vol. files ]%></th>
+							<th><%[ Vol. capacity bytes ]%></th>
+							<th><%[ Vol. abytes ]%></th>
+							<th><%[ Vol. apadding ]%></th>
+							<th><%[ Vol. hole bytes ]%></th>
+							<th><%[ Vol. holes ]%></th>
+							<th><%[ Vol. parts ]%></th>
+							<th><%[ Vol. errors ]%></th>
+							<th><%[ Vol. writes ]%></th>
+							<th><%[ Label date ]%></th>
+							<th><%[ Vol. jobs ]%></th>
+							<th><%[ Vol. files ]%></th>
+							<th><%[ Vol. blocks ]%></th>
+							<th><%[ Vol. mounts ]%></th>
+							<th><%[ Action on purge ]%></th>
+							<th><%[ Vol. retention ]%></th>
+							<th><%[ Cache retention ]%></th>
+							<th><%[ Vol. use duration ]%></th>
+							<th><%[ Media addressing ]%></th>
+							<th><%[ Vol. read time ]%></th>
+							<th><%[ Vol. write time ]%></th>
+							<th><%[ Vol. type ]%></th>
+							<th><%[ Vol. cloud parts ]%></th>
+							<th><%[ Last part bytes ]%></th>
+							<th><%[ End file ]%></th>
+							<th><%[ End block ]%></th>
+							<th>LocationId</th>
+							<th><%[ Recycle count ]%></th>
+							<th><%[ Initial write ]%></th>
+							<th>ScratchPoolId</th>
+							<th><%[ Scratch pool ]%></th>
+							<th>RecyclePoolId</th>
+							<th><%[ Recycle pool ]%></th>
+							<th><%[ Comment ]%></th>
+							<th><%[ When expire ]%></th>
+							<th><%[ Actions ]%></th>
+						</tr>
+					</tfoot>
+				</table>
+<com:TCallback ID="LoadVolumeList2" OnCallback="loadVolumes" />
+<script>
+var oVolumeList = {
+	table: null,
+	ids: {
+		volume_list: 'volume_list',
+		volume_list_body: 'volume_list_body'
+	},
+	init: function(data) {
+		oVolumeList.set_table(data);
+		oSelectionType.show_volumes_table(true);
+		oSelectionType.show_volumes_btn(false);
+		oVolumeList.table.responsive.recalc();
+	},
+	update: function(data) {
+		oVolumeList.init(data);
+	},
+	load_data: function() {
+		var cb = <%=$this->LoadVolumeList2->ActiveControl->Javascript%>;
+		cb.setCallbackParameter('<%=$this->Pool->getDirectiveValue()%>');
+		cb.dispatch();
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.volume_list).DataTable({
+			data: data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'mediaid'},
+				{data: 'volumename'},
+				{data: 'slot'},
+				{
+					data: 'poolid',
+					visible: false
+				},
+				{
+					data: 'pool',
+					visible: false
+				},
+				{
+					data: 'inchanger',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					}
+				},
+				{
+					data: 'storageid',
+					visible: false
+				},
+				{
+					data: 'storage',
+					visible: false
+				},
+				{
+					data: 'deviceid',
+					visible: false
+				},
+				{data: 'volstatus'},
+				{
+					data: 'enabled',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{
+					data: 'recycle',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{data: 'mediatype'},
+				{
+					data: 'mediatypeid',
+					visible: false
+				},
+				{
+					data: 'labeltype',
+					visible: false
+				},
+				{
+					data: 'firstwritten',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'lastwritten',
+					render: render_date
+				},
+				{
+					data: 'volbytes',
+					render: render_bytes
+				},
+				{
+					data: 'maxvolbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'maxvoljobs',
+					visible: false
+				},
+				{
+					data: 'maxvolfiles',
+					visible: false
+				},
+				{
+					data: 'volcapacitybytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volabytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volapadding',
+					visible: false
+				},
+				{
+					data: 'volholebytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'volholes',
+					visible: false
+				},
+				{
+					data: 'volparts',
+					visible: false
+				},
+				{
+					data: 'volerrors',
+					visible: false
+				},
+				{
+					data: 'volwrites',
+					visible: false
+				},
+				{
+					data: 'labeldate',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'voljobs',
+					visible: false
+				},
+				{
+					data: 'volfiles',
+					visible: false
+				},
+				{
+					data: 'volblocks',
+					visible: false
+				},
+				{
+					data: 'volmounts',
+					visible: false
+				},
+				{
+					data: 'actiononpurge',
+					render: function(data, type, row) {
+						return (data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>';
+					},
+					visible: false
+				},
+				{
+					data: 'volretention',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'cacheretention',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'voluseduration',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'mediaaddressing',
+					visible: false
+				},
+				{
+					data: 'volreadtime',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'volwritetime',
+					render: render_time_period,
+					visible: false
+				},
+				{
+					data: 'voltype',
+					visible: false
+				},
+				{
+					data: 'volcloudparts',
+					visible: false
+				},
+				{
+					data: 'lastpartbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{
+					data: 'endfile',
+					visible: false
+				},
+				{
+					data: 'endblock',
+					visible: false
+				},
+				{
+					data: 'locationid',
+					visible: false
+				},
+				{
+					data: 'recyclecount',
+					visible: false
+				},
+				{
+					data: 'initialwrite',
+					visible: false
+				},
+				{
+					data: 'scratchpoolid',
+					visible: false
+				},
+				{
+					data: 'scratchpool',
+					visible: false
+				},
+				{
+					data: 'recyclepoolid',
+					visible: false
+				},
+				{
+					data: 'recyclepool',
+					visible: false
+				},
+				{
+					data: 'comment',
+					visible: false
+				},
+				{
+					data: 'whenexpire',
+					render: render_date_ex,
+					visible: false
+				},
+				{
+					data: 'volumename',
+					render: function (data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-crosshairs';
+						var label = document.createTextNode(' <%[ Pick volume name ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternVolume->Directive->ClientID%>').value = '" + data + "';");
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56 ]
+			},
+			{
+				className: "dt-body-right",
+				targets: [ 18 ]
+			}],
+			order: [3, 'asc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 6, 10, 13]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 3) {
+						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+};
+</script>
+			</div>
+<script>
+var oSelectionType = {
+	ids: {
+		types: {
+			Job: 'selection_type_job',
+			Client: 'selection_type_client',
+			Volume: 'selection_type_volume',
+			SmallestVolume: 'selection_type_smallest_volume',
+			OldestVolume: 'selection_type_oldest_volume',
+			SQLQuery: 'selection_type_sql_query',
+			PoolUncopiedJobs: 'selection_type_uncopied_jobs'
+		},
+		tables: {
+			Job: 'selection_type_jobs_table',
+			Client: 'selection_type_clients_table',
+			Volume: 'selection_type_volumes_table'
+		},
+		btns: {
+			Job: 'selection_type_jobs_btn',
+			Client: 'selection_type_clients_btn',
+			Volume: 'selection_type_volumes_btn'
+		}
+	},
+	init: function() {
+		var value = document.getElementById('<%=$this->SelectionType->Directive->ClientID%>').value;
+		this.show_opts(value);
+	},
+	show_opts: function(type) {
+		this.hide_all();
+		if (type) {
+			var el = document.getElementById(this.ids.types[type]);
+			el.style.display = '';
+			if (type == 'Job' && oJobList.table) {
+				this.show_jobs_table(true);
+			} else if (type == 'Client' && oClientList.table) {
+				this.show_clients_table(true);
+			} else if (type == 'Volume' && oVolumeList.table) {
+				this.show_volumes_table(true);
+			}
+		}
+	},
+	hide_all: function() {
+		var type;
+		for (var type in this.ids.types) {
+			type = document.getElementById(this.ids.types[type]);
+			type.style.display = 'none';
+		}
+		var table;
+		for (var table in this.ids.tables) {
+			table = document.getElementById(this.ids.tables[table]);
+			table.style.display = 'none';
+		}
+	},
+	show_jobs_btn: function(show) {
+		var jobs_btn = document.getElementById(this.ids.btns.Job);
+		jobs_btn.style.display = show ? 'block' : 'none';
+	},
+	show_jobs_table: function(show) {
+		var jobs_list = document.getElementById(this.ids.tables.Job);
+		jobs_list.style.display = show ? 'block' : 'none';
+	},
+	show_clients_btn: function(show) {
+		var clients_btn = document.getElementById(this.ids.btns.Client);
+		clients_btn.style.display = show ? 'block' : 'none';
+	},
+	show_clients_table: function(show) {
+		var clients_list = document.getElementById(this.ids.tables.Client);
+		clients_list.style.display = show ? 'block' : 'none';
+	},
+	show_volumes_btn: function(show) {
+		var volumes_btn = document.getElementById(this.ids.btns.Volume);
+		volumes_btn.style.display = show ? 'block' : 'none';
+	},
+	show_volumes_table: function(show) {
+		var volume_list = document.getElementById(this.ids.tables.Volume);
+		volume_list.style.display = show ? 'block' : 'none';
+	}
+};
+oSelectionType.init();
+</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - where you like to copy ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Destination Pool ]%></h2>
+					<p><%[ Please select destination pool to which will be stored data. ]%></p>
+				</div>
+				<div style="float: none; margin: auto">
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="NextPool"
+						DirectiveName="NextPool"
+						Label="Destination Pool (NextPool)"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						Attributes.onchange="set_storage_from_nextpool();"
+						/>
+			<com:TCallback ID="SetDestinationStorageByPool" OnCallback="setDestinationStorageByPool" />
+			<com:TCallback ID="GetJobsUsingPool" OnCallback="getJobsUsingPool" />
+<script>
+var storage_from_pool;
+var previous_storage = '';
+function set_storage_from_nextpool() {
+	var cb = <%=$this->SetDestinationStorageByPool->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+function set_storage_from_pool_cb(storage) {
+	storage_from_pool = storage;
+	if (storage) {
+		var st = document.getElementById('<%=$this->DestinationStorage->Directive->ClientID%>');
+		st.value = storage;
+		previous_storage = storage;
+	}
+}
+function set_storage(storage) {
+	var pool = document.getElementById('<%=$this->NextPool->Directive->ClientID%>');
+	if (storage && pool.value && storage !== storage_from_pool) {
+		var param = {
+			storage: storage,
+			pool: pool.value
+		};
+		var cb = <%=$this->GetJobsUsingPool->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(param);
+		cb.dispatch();
+	}
+}
+
+function apply_storage() {
+	var storage = document.getElementById('<%=$this->DestinationStorage->Directive->ClientID%>');
+	previous_storage = storage.value;
+}
+
+function revert_storage() {
+	var storage = document.getElementById('<%=$this->DestinationStorage->Directive->ClientID%>');
+	storage.value = previous_storage;
+}
+</script>
+				<div id="warning_message_box" class="w3-modal" style="display: none">
+					<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:600px">
+						<header class="w3-container w3-orange">
+							<span onclick="revert_storage(); document.getElementById('warning_message_box').style.display='none'" class="w3-button w3-display-topright">×</span>
+							<h2><%[ Warning ]%></h2>
+						</header>
+						<div class="w3-panel w3-padding">
+							<p><strong><%[ Note. ]%></strong> <span id="warning_message_note"></span></p>
+						</div>
+						<div class="w3-container">
+							<a href="javascript:void(0)" onclick="$('#warning_message_job_list').slideToggle();"><%[ See all jobs that use the pool ]%></a>
+						</div>
+						<div id="warning_message_job_list" class="w3-panel w3-padding" style="display: none">
+							<ul id="warning_message_jobs"></ul>
+						</div>
+						<footer class="w3-container w3-center">
+							<button type="button" class="w3-button w3-section w3-red" onclick="revert_storage(); document.getElementById('warning_message_box').style.display='none'"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+							<button type="button" class="w3-button w3-section w3-green" onclick="apply_storage(); document.getElementById('warning_message_box').style.display='none'"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></button>
+						</footer>
+					</div>
+				</div>
+<script>
+function show_storage_warning(storage, pool, jobs) {
+	if (jobs.length == 0) {
+		previous_storage = storage;
+	}
+	var msg = '<%[ To chosen destination pool %pool will be assigned new Storage %storage. This action can affect all jobs (listed below) that use this pool. Are you sure you want to assign the storage %storage to pool %pool? ]%>';
+	msg = msg.replace(/%pool/g, pool);
+	msg = msg.replace(/%storage/g, storage);
+	var warn_box = document.getElementById('warning_message_box');
+	var warn_msg = document.getElementById('warning_message_note');
+	var ul = document.getElementById('warning_message_jobs');
+	ul.innerHTML = '';
+	var li, txt;
+	for (var i = 0; i < jobs.length; i++) {
+		li = document.createElement('LI');
+		li.textContent = jobs[i];
+		ul.appendChild(li);
+	}
+	warn_msg.textContent = msg;
+	warn_box.style.display = 'block';
+}
+</script>
+				</div>
+				<div>
+					<h2><%[ Destination Storage ]%></h2>
+					<p><%[ Please select a storage using which you want to write copied data. ]%></p>
+				</div>
+				<div style="float: none; margin: auto">
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="DestinationStorage"
+						DirectiveName="Storage"
+						Label="Destination Storage"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						Attributes.onchange="set_storage(this.value);"
+						/>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - copy job options ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Limits ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveTextBox
+					ID="MaximumSpawnedJobs"
+					DirectiveName="MaximumSpawnedJobs"
+					DefaultValue="600"
+					Label="Maximum Spawned Jobs"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<div>
+					<h2><%[ Schedule ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Schedule"
+					DirectiveName="Schedule"
+					Label="Schedule"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<div>
+					<h2><%[ Messages ]%></h2>
+				</div>
+				<com:Application.Web.Portlets.DirectiveComboBox
+					ID="Messages"
+					DirectiveName="Messages"
+					Label="Messages"
+					Show="true"
+					ValidationGroup="NewCopyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<div style="float: none; margin: auto">
+					<a href="javascript:void(0)" onclick="$('#copy_job_wizard_other_options').slideToggle();"><%[ Other options ]%></a>
+				</div>
+				<div id="copy_job_wizard_other_options" style="float: none; margin: auto; display: none;">
+					<p><%[ Level, Client and FileSet are not used during copy jobs running but they are required to define in copy job resource as the standard Job directives. ]%></p>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="Level"
+						DirectiveName="Level"
+						Label="Level"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="Client"
+						DirectiveName="Client"
+						Label="Client"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Application.Web.Portlets.DirectiveComboBox
+						ID="FileSet"
+						DirectiveName="Fileset"
+						Label="FileSet"
+						Show="true"
+						ValidationGroup="NewCopyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step6" Title="<%[ Step 6 - summary ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Job Name</div>
+						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Description</div>
+						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">JobDefs</div>
+						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ What ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Source Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Pool->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Source Storage</div>
+						<div class="w3-threequarter bold">
+							<%=$this->SourceStorage->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->SourceStorage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ How ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Selection Type</div>
+						<div class="w3-threequarter bold">
+							<%=$this->sel_types[$this->SelectionType->getDirectiveValue()]%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('SelectionType', $this->SelectionType->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Selection Pattern</div>
+						<div class="w3-threequarter bold">
+							<%=$this->getPage()->getSelectionPatternValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('SelectionPattern', ($this->getSelectionPatternControl() ? $this->getSelectionPatternControl()->getDirectiveValue() : '')) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Where ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Destination Pool (NextPool)</div>
+						<div class="w3-threequarter bold">
+							<%=$this->NextPool->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('NextPool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Destination Storage</div>
+						<div class="w3-threequarter bold">
+							<%=$this->DestinationStorage->getDirectiveValue()%>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Options ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Maximum Spawned Jobs</div>
+						<div class="w3-threequarter bold">
+							<%=$this->MaximumSpawnedJobs->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('MaximumSpawnedJobs', $this->MaximumSpawnedJobs->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Schedule</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Messages</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Level</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Level->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Level', $this->Level->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Client</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Client->getDirectiveValue()%>
+							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">FileSet</div>
+						<div class="w3-threequarter bold">
+							<%=$this->FileSet->getDirectiveValue()%>
+							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Fileset', $this->FileSet->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>

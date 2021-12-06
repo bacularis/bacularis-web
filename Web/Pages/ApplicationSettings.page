@@ -1,0 +1,159 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<com:BClientScript ScriptUrl=<%~ ../../vendor/bower-asset/opentip/downloads/opentip-jquery.min.js %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../vendor/bower-asset/opentip/css/opentip.css %> />
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-cog"></i> <%[ Application settings ]%></b>
+		</h5>
+	</header>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Enable debug ]%></div>
+		<div class="w3-third w3-col">
+			<com:TCheckBox
+				ID="Debug"
+				CssClass="w3-check"
+				Attributes.onclick="if (this.checked){document.getElementById('debug_confirm').style.display='block';}"
+			/>
+		</div>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Max. number of jobs visible in tables ]%></div>
+		<div class="w3-third w3-col">
+			<com:TTextBox
+				ID="MaxJobs"
+				CssClass="w3-input w3-border w3-show-inline-block"
+				ValidationGroup="AppSetting"
+				Width="120px"
+			/>
+			<i class="fa fa-asterisk w3-text-red"></i>
+			<com:TRequiredFieldValidator
+				ID="MaxJobsRequiredValidator"
+				ValidationGroup="AppSetting"
+				ControlToValidate="MaxJobs"
+				ErrorMessage="<%[ Field required. ]%>"
+				Display="Dynamic"
+			/>
+			<com:TDataTypeValidator
+				ID="MaxJobsTypeValidator"
+				ValidationGroup="AppSetting"
+				ControlToValidate="MaxJobs"
+				ErrorMessage="<%[ Max. number of jobs value must be integer greather than 0. ]%>"
+				Display="Dynamic"
+				DataType="Integer"
+			/>
+		</div>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Show size values as: ]%></div>
+		<div class="w3-third w3-col">
+			<p><com:TRadioButton
+				ID="DecimalBytes"
+				CssClass="w3-radio"
+				GroupName="SizeBytes"
+			/> <com:TLabel ForControl="DecimalBytes"><%[ Decimal Bytes (1 mega = 10<sup>6</sup>) ]%></com:TLabel></p>
+			<p>
+			<com:TRadioButton
+				ID="BinaryBytes"
+				CssClass="w3-radio"
+				GroupName="SizeBytes"
+			/> <com:TLabel ForControl="BinaryBytes"><%[ Binary Bytes (1 mebi = 2<sup>20</sup>) ]%></com:TLabel></p>
+		</div>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Show time in job log: ]%></div>
+		<div class="w3-third w3-col">
+			<com:TCheckBox
+				ID="TimeInJobLog"
+				CssClass="w3-check"
+			/>
+		</div>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Date and time format: ]%></div>
+		<div class="w3-third w3-col">
+			<com:TTextBox
+				ID="DateTimeFormat"
+				CssClass="w3-input w3-border w3-show-inline-block"
+				ValidationGroup="AppSetting"
+				Width="120px"
+			/>
+			<i class="fa fa-asterisk w3-text-red"></i>
+			<com:TRequiredFieldValidator
+				ValidationGroup="AppSetting"
+				ControlToValidate="DateTimeFormat"
+				ErrorMessage="<%[ Field required. ]%>"
+				Display="Dynamic"
+			/>
+		</div>
+		<script>
+			var dt = document.getElementById('<%=$this->DateTimeFormat->ClientID%>');
+			dt.addEventListener('mouseover', function() {
+				var tip_fields = [
+					'Y - <%[ full 4 digits year, ex. 2021 ]%>',
+					'y - <%[ 2 digits year, ex, 21 ]%>',
+					'M - <%[ 2 digits month 01..12 ]%>',
+					'm - <%[ 1-2 digits month 1..12 ]%>',
+					'D - <%[ 2 digits day 01..31 ]%>',
+					'd - <%[ 1-2 digits day 1..31 ]%>',
+					'H - <%[ 2 digits 24-hour format hour 00..23 ]%>',
+					'h - <%[ 1-2 digits 24-hour format hour 0..23 ]%>',
+					'G - <%[ 2 digits 12-hour format hour 01..12 ]%>',
+					'g - <%[ 1-2 digits 12-hour format hour 1..12 ]%>',
+					'I - <%[ 2 digits minutes 00..59 ]%>',
+					'i - <%[ 1-2 digits minutes 0..59 ]%>',
+					'S - <%[ 2 digits seconds 00..59 ]%>',
+					's - <%[ 1-2 digits seconds 0..59 ]%>',
+					'p - <%[ AM/PM value ]%>',
+					'R - <%[ 24-hours format time 17:22:41 ]%>',
+					'r - <%[ 12-hours format time 5:22:41 PM ]%>'
+				];
+				showTip(dt, '<%[ Available formats: ]%>', tip_fields.join('<br />'));
+			});
+		</script>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<div class="w3-third w3-col"><%[ Enable Bacula messages log window: ]%></div>
+		<div class="w3-third w3-col">
+			<com:TCheckBox
+				ID="EnableMessagesLog"
+				CssClass="w3-check"
+			/>
+			<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+			<div class="directive_help" style="display: none">
+				<dd><%[ The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned. ]%></dd>
+			</div>
+		</div>
+	</div>
+	<div class="w3-center">
+		<com:TActiveLinkButton
+			CssClass="w3-button w3-green"
+			CausesValidation="true"
+			ValidationGroup="AppSetting"
+			OnClick="save"
+		>
+			<prop:ClientSide.OnLoading>
+				document.getElementById('save_settings_loader').style.display = '';
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				setTimeout(function() {	
+					document.getElementById('save_settings_loader').style.display = 'none';
+				}, 300)
+			</prop:ClientSide.OnComplete>
+			<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+		</com:TActiveLinkButton>
+		<i id="save_settings_loader" class="fa fa-sync w3-spin" style="display: none"></i>
+	</div>
+	<div id="debug_confirm" class="w3-modal" style="display: none">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom w3-padding" style="max-width: 600px">
+			<span onclick="document.getElementById('debug_confirm').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+			<h4><%[ Enable debug ]%></h4>
+			<p class="justify"><%[ Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure? ]%></p>
+			<div class="w3-center">
+				<button class="w3-button w3-red" type="button" onclick="document.getElementById('<%=$this->Debug->ClientID%>').checked = false; document.getElementById('debug_confirm').style.display='none'"><i class="fa fa-times"></i> &nbsp;<%[ No ]%></button>
+				<button class="w3-button w3-green" type="button" onclick="document.getElementById('debug_confirm').style.display='none'"><i class="fa fa-check"></i> &nbsp;<%[ Yes ]%></button>
+			</div>
+		</div>
+	</div>
+</com:TContent>

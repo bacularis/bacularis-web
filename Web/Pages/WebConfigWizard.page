@@ -1,0 +1,250 @@
+<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="InstallWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CssClass="navigation"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnPreviousButtonClick="previousStep"
+		OnNextButtonClick="nextStep"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="<%=$this->SourceTemplateControl->first_run ? 'w3-quarter' : 'w3-third'%> w3-padding-16 w3-hide-small">
+				<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+					<div class="w3-left"><i class="fa fa-language w3-xxlarge"></i></div>
+					<div class="w3-clear"></div>
+					<h4><com:TTranslate Text="Language" /></h4>
+				</div>
+			</div>
+			<div class="<%=$this->SourceTemplateControl->first_run ? 'w3-quarter' : 'w3-third'%> w3-padding-16 w3-hide-small">
+				<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+					<div class="w3-left"><i class="fa fa-plus-square w3-xxlarge"></i></div>
+					<div class="w3-clear"></div>
+					<h4><com:TTranslate Text="Add APIs" /></h4>
+				</div>
+			</div>
+			<div class="<%=$this->SourceTemplateControl->first_run ? 'w3-quarter' : 'w3-third'%> w3-padding-16 w3-hide-small"<%=!$this->SourceTemplateControl->first_run ? ' style="display: none"' : ''%>>
+				<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+					<div class="w3-left"><i class="fa fa-key w3-xxlarge"></i></div>
+					<div class="w3-clear"></div>
+					<h4><com:TTranslate Text="Authentication" /></h4>
+				</div>
+			</div>
+			<div class="<%=$this->SourceTemplateControl->first_run ? 'w3-quarter' : 'w3-third'%> w3-padding-16 w3-hide-small">
+				<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 3 ? 'w3-light-green' : 'w3-green')%>">
+					<div class="w3-left"><i class="fa fa-check-square w3-xxlarge"></i></div>
+					<div class="w3-clear"></div>
+					<h4><com:TTranslate Text="Finish" /></h4>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLabel Visible="<%=$this->getPage()->first_run === false%>">
+					<com:TLinkButton
+						CommandName="Cancel"
+						CssClass="w3-button w3-red"
+						CausesValidation="false"
+						>
+						<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+					</com:TLinkButton>
+				</com:TLabel>
+				<com:TLinkButton
+					CommandName="NextStep"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%> &nbsp;<i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLabel Visible="<%=$this->getPage()->first_run === false%>">
+					<com:TLinkButton
+						CommandName="Cancel"
+						CssClass="w3-button w3-red"
+						CausesValidation="false"
+					>
+						<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+					</com:TLinkButton>
+				</com:TLabel>
+				<com:TLinkButton
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+					CommandName="PreviousStep"
+					Text="">
+						<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="NextButton"
+					CommandName="NextStep"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%> &nbsp;<i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		 
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLabel Visible="<%=$this->getPage()->first_run === false%>">
+					<com:TLinkButton
+						CommandName="Cancel"
+						CssClass="w3-button w3-red"
+						CausesValidation="false"
+					>
+						<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+					</com:TLinkButton>
+				</com:TLabel>
+				<com:TLinkButton
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+					CommandName="PreviousStep"
+					Text="">
+						<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TLinkButton>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - select language ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div class="w3-third"><com:TLabel ForControl="Lang" Text="<%[ Language: ]%>" /></div>
+				<div class="w3-third">
+					<com:TActiveDropDownList
+						ID="Lang"
+						CssClass="w3-select w3-border"
+						OnTextChanged="setLang"
+						CausesValidation="false"
+						ClientSide.OnComplete="location.reload();"
+						Width="150px"
+					>
+						<com:TListItem Value="en" Text="English" />
+						<com:TListItem Value="pl" Text="Polish" />
+						<com:TListItem Value="pt" Text="Portuguese" />
+						<com:TListItem Value="ja" Text="Japanese" />
+						<com:TListItem Value="ru" Text="Russian" />
+					</com:TActiveDropDownList>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - add API instances ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<p><%[ Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance. ]%></p>
+				<com:Application.Common.Portlets.NewHost
+					ID="AddNewHost"
+					ForceHostName="Main"
+					ShowButtons="false"
+					APIRequired="catalog"
+					ClientMode="true"
+				/>
+			</div>
+			<script type="text/javascript">document.getElementById('new_host').style.display = 'block';</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - authentication params to Baculum Web panel ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div class="w3-container w3-margin-bottom">
+					<div class="w3-third"><com:TLabel ForControl="WebLogin" Text="<%[ Administration login: ]%>" /></div>
+					<div class="w3-third">
+						<com:TTextBox ID="WebLogin" CssClass="w3-input w3-border" CausesValidation="false" />
+						<com:TRequiredFieldValidator CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="WebLogin" Text="<%[ Please enter login. ]%>" />
+						<com:TRegularExpressionValidator CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="WebLogin" RegularExpression="<%=BasicWebUserConfig::USER_PATTERN%>" Text="<%[ Invalid login value. Login may contain a-z A-Z 0-9 characters. ]%>" />
+					</div>
+				</div>
+				<div class="w3-container w3-margin-bottom">
+					<div class="w3-third"><com:TLabel ForControl="WebPassword" Text="<%[ Administration password: ]%>" /></div>
+					<div class="w3-third">
+						<com:TTextBox ID="WebPassword" CssClass="w3-input w3-border" TextMode="Password" MaxLength="60" PersistPassword="true" />
+						<com:TRequiredFieldValidator CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="WebPassword" Text="<%[ Please enter password. ]%>"/>
+						<com:TRegularExpressionValidator CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="WebPassword" RegularExpression="[\S\s]{5,60}" Text="<%[ Password must be longer than 4 chars. ]%>" />
+					</div>
+				</div>
+				<div class="w3-container w3-margin-bottom">
+					<div class="w3-third"><com:TLabel ForControl="RetypeWebPassword" Text="<%[ Retype administration password: ]%>" /></div>
+					<div class="w3-third">
+						<com:TTextBox ID="RetypeWebPassword" CssClass="w3-input w3-border" TextMode="Password" MaxLength="60" PersistPassword="true" />
+						<com:TRequiredFieldValidator ID="RetypeWebPasswordRequireValidator" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="RetypeWebPassword" Text="<%[ Please enter retype password. ]%>"/>
+						<com:TRegularExpressionValidator ID="RetypeWebPasswordRegexpValidator" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="RetypeWebPassword" RegularExpression="[\S\s]{5,60}" Text="<%[ Password must be longer than 4 chars. ]%>" />
+						<com:TCustomValidator ID="RetypeWebPasswordCustomValidator" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="RetypeWebPassword" OnServerValidate="validateAdministratorPassword" Text="<%[ Passwords must be the same. ]%>" />
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - Finish ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ Access to Baculum API ]%></legend>
+					<div class="w3-container w3-section">
+						<div class="w3-third"><%[ Protocol: ]%></div>
+						<div class="w3-third bold"><%=$this->AddNewHost->APIProtocol->SelectedValue%></div>
+					</div>
+					<div class="w3-container w3-section">
+						<div class="w3-third"><%[ IP Address/Hostname: ]%></div>
+						<div class="w3-third bold"><%=$this->AddNewHost->APIAddress->Text%></div>
+					</div>
+					<div class="w3-container w3-section">
+						<div class="w3-third"><%[ Port: ]%></div>
+						<div class="w3-third bold"><%=$this->AddNewHost->APIPort->Text%></div>
+					</div>
+					<div style="display: <%=$this->AddNewHost->AuthBasic->Checked ? 'block' : 'none'%>">
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ Auth Type: ]%></div>
+							<div class="w3-third bold">HTTP Basic</div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ API Login: ]%></div>
+							<div class="w3-third bold"><%=$this->AddNewHost->APIBasicLogin->Text%></div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ API Password: ]%></div>
+							<div class="w3-third bold"><%=preg_replace('/.{1}/', '*', $this->AddNewHost->APIBasicPassword->Text)%></div>
+						</div>
+					</div>
+					<div style="display: <%=$this->AddNewHost->AuthOAuth2->Checked ? 'block' : 'none'%>">
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ Auth Type: ]%></div>
+							<div class="w3-third bold">OAuth2</div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ OAuth2 Client ID: ]%></div>
+							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2ClientId->Text%></div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ OAuth2 Client Secret: ]%></div>
+							<div class="w3-third bold"><%=preg_replace('/.{1}/', '*', $this->AddNewHost->APIOAuth2ClientSecret->Text)%></div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ OAuth2 Redirect URI: ]%></div>
+							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2RedirectURI->Text%></div>
+						</div>
+						<div class="w3-container w3-section">
+							<div class="w3-third"><%[ OAuth2 Scope: ]%></div>
+							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2Scope->Text%></div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset<%=!$this->SourceTemplateControl->first_run ? ' style="display: none"' : ''%>>
+					<legend><%[ Access to Baculum Web ]%></legend>
+					<div class="w3-container w3-section">
+						<div class="w3-third"><%[ Administration login: ]%></div>
+						<div class="w3-third bold"><%=$this->WebLogin->Text%></div>
+					</div>
+					<div class="w3-container w3-section">
+						<div class="w3-third"><%[ Administration password: ]%></div>
+						<div class="w3-third bold"><%=preg_replace('/.{1}/', '*', $this->WebPassword->Text)%></div>
+					</div>
+				</fieldset>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>

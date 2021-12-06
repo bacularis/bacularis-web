@@ -1,0 +1,131 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-plus"></i> &nbsp;<%[ New ]%> <%=$this->getResourceType()%></b>
+		</h5>
+	</header>
+	<div>
+		<button type="button" class="w3-button w3-green w3-margin-left w3-margin-bottom w3-margin-right w3-show-inline-block" onclick="document.getElementById('new_resource').style.display = 'block'">
+			<i class="fa fa-plus"></i> &nbsp;<%=Prado::localize('Add new resource')%>
+		</button>
+		<span style="vertical-align: super"><%[ Copy configuration from: ]%></span>
+		<div class="directive_field w3-show-inline-block w3-margin-bottom" style="vertical-align: middle">
+			<com:TActiveDropDownList
+				ID="ResourcesToCopy"
+				CssClass="w3-select w3-border w3-show-inline-block"
+				Style="min-width: 300px"
+				OnSelectedIndexChanged="copyConfig"
+			/>
+		</div>
+		<div id="resource_save_ok_box" class="w3-modal" style="display: none">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 600px">
+				<header class="w3-container w3-green">
+					<span onclick="$('#resource_save_ok_box').hide();" class="w3-button w3-display-topright">×</span>
+					<h2><%[ Create new resource ]%></h2>
+				</header>
+				<div class="w3-panel w3-padding">
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<footer class="w3-container w3-center w3-border-top">
+					<button type="button" class="w3-button w3-section w3-green" onclick="$('#resource_save_ok_box').hide(); save_directive_post_action();"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></button>
+				</footer>
+			</div>
+		</div>
+		<div id="new_resource" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4 w3-padding">
+				<header class="w3-container"> 
+					<span onclick="document.getElementById('new_resource').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Add new resource ]%></h2>
+				</header>
+				<div class="w3-row w3-margin">
+					<div class="w3-third"><%[ Host: ]%></div>
+					<div class="w3-third">
+						<com:TActiveDropDownList
+							ID="Host"
+							CssClass="w3-select w3-border"
+							OnSelectedIndexChanged="setComponents"
+						>
+							<prop:ClientSide.OnLoading>
+								document.getElementById('component_loader').style.display = '';
+							</prop:ClientSide.OnLoading>
+							<prop:ClientSide.OnComplete>
+								document.getElementById('component_loader').style.display = 'none';
+							</prop:ClientSide.OnComplete>
+						</com:TActiveDropDownList>
+					</div>
+				</div>
+				<div class="w3-row w3-margin">
+					<div class="w3-third"><%[ Component: ]%></div>
+					<div class="w3-third">
+						<com:TActiveDropDownList
+							ID="Component"
+							CssClass="w3-select w3-border"
+							OnSelectedIndexChanged="setResource"
+						>
+							<prop:ClientSide.OnLoading>
+								document.getElementById('resource_loader').style.display = '';
+							</prop:ClientSide.OnLoading>
+							<prop:ClientSide.OnComplete>
+								document.getElementById('resource_loader').style.display = 'none';
+							</prop:ClientSide.OnComplete>
+						</com:TActiveDropDownList>
+					</div>
+					<i id="component_loader" class="fa fa-sync w3-spin w3-margin-left w3-margin-top" style="display: none"></i>
+				</div>
+				<div class="w3-row w3-margin">
+					<div class="w3-third"><%[ Resource to create: ]%></div>
+					<div class="w3-third">
+						<com:TActiveDropDownList
+							ID="Resource"
+							CssClass="w3-select w3-border"
+						/>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewResource"
+							Display="Dynamic"
+							ControlToValidate="Resource"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+					<i id="resource_loader" class="fa fa-sync w3-spin w3-margin-left w3-margin-top" style="display: none"></i>
+				</div>
+				<com:TActiveLabel ID="NewResourceLog" Display="None" CssClass="w3-panel w3-margin w3-text-red" />
+				<div class="w3-row w3-margin w3-center">
+					<com:TLinkButton
+						CssClass="w3-button w3-green w3-margin-left"
+						OnClick="createResource"
+						CausesValidation="true"
+						ValidationGroup="NewResource"
+					>
+						<prop:Text>
+							<i class="fa fa-plus"></i> &nbsp;<%=Prado::localize('Create')%>
+						</prop:Text>
+					</com:TLinkButton>
+				</div>
+			</div>
+		</div>
+		<div id="resource_config" class="w3-container">
+			<com:Application.Web.Portlets.BaculaConfigDirectives
+				ID="NewResource"
+				SaveDirectiveActionOk="save_directive_action_ok();"
+				ShowRemoveButton="false"
+				ShowCancelButton="false"
+			/>
+		</div>
+		<script>
+			function save_directive_action_ok() {
+				$('#resource_config').slideUp();
+				$('#resource_save_ok_box').show();
+			}
+			function save_directive_post_action() {
+				var origin_url = '<%=$this->getOriginUrl()%>';
+				if (origin_url) {
+					document.location.href = origin_url;
+				}
+			}
+			oBaculaConfigSection.show_sections(true);
+		</script>
+	</div>
+</com:TContent>

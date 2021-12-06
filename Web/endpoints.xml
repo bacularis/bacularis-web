@@ -1,0 +1,46 @@
+<urls>
+	<!-- webGUI endpoints -->
+	<url ServiceParameter="Dashboard" pattern="web/" />
+	<url ServiceParameter="LoginPage" pattern="web/login/" />
+	<url ServiceParameter="SelectAPIHost" pattern="web/api-host/" />
+	<url ServiceParameter="JobHistoryList" pattern="web/job/history/" />
+	<url ServiceParameter="JobHistoryView" pattern="web/job/history/{jobid}/" parameters.jobid="\d+" />
+	<url ServiceParameter="JobList" pattern="web/job/" />
+	<url ServiceParameter="JobView" pattern="web/job/{job}/" parameters.job="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="DirectorView" pattern="web/director/{director}/" parameters.director="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="StorageList" pattern="web/storage/" />
+	<url ServiceParameter="StorageView" pattern="web/storage/{storageid}/" parameters.storageid="\d+" />
+	<url ServiceParameter="StorageView" pattern="web/storage/{storage}/" parameters.storage="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="DeviceView" pattern="web/device/{storageid}/{device}/" parameters.storageid="\d+" parameters.device="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="PoolList" pattern="web/pool/" />
+	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/" parameters.poolid="\d+" />
+	<url ServiceParameter="PoolView" pattern="web/pool/{pool}/" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="VolumeList" pattern="web/volume/" />
+	<!-- @TODO: Add support for numerical volume names -->
+	<url ServiceParameter="VolumeView" pattern="web/volume/{mediaid}/" parameters.mediaid="\d+" />
+	<url ServiceParameter="VolumeView" pattern="web/volume/{media}/" parameters.media="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="ClientList" pattern="web/client/" />
+	<url ServiceParameter="ClientView" pattern="web/client/{clientid}/" parameters.clientid="\d+" />
+	<url ServiceParameter="ClientView" pattern="web/client/{client}/" parameters.client="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="FileSetList" pattern="web/fileset/" />
+	<url ServiceParameter="FileSetView" pattern="web/fileset/{fileset}/" parameters.fileset="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="ScheduleList" pattern="web/schedule/" />
+	<url ServiceParameter="ScheduleStatusList" pattern="web/schedule/status/" />
+	<url ServiceParameter="ScheduleView" pattern="web/schedule/{schedule}/" parameters.schedule="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="Graphs" pattern="web/graphs/" />
+	<url ServiceParameter="Console" pattern="web/webconsole/" />
+	<url ServiceParameter="ApplicationSettings" pattern="web/settings/" />
+	<url ServiceParameter="Security" pattern="web/security/" />
+	<url ServiceParameter="ConsoleView" pattern="web/console/" />
+	<url ServiceParameter="NewResource" pattern="web/new/{component_type}/{component_name}/{resource_type}/" parameters.component_type="\w+" parameters.component_name="[a-zA-Z0-9:.\-_ ]+" parameters.resource_type="\w+" />
+	<url ServiceParameter="NewResource" pattern="web/new/{host}/{component_type}/{component_name}/{resource_type}/" parameters.host="[a-zA-Z0-9:.\-_ ]+" parameters.component_type="\w+" parameters.component_name="[a-zA-Z0-9:.\-_ ]+" parameters.resource_type="\w+" />
+	<url ServiceParameter="WebConfigWizard" pattern="web/config/" />
+	<url ServiceParameter="RestoreWizard" pattern="web/restore/" />
+	<url ServiceParameter="RestoreWizard" pattern="web/restore/{jobid}/" parameters.jobid="\d+" />
+	<url ServiceParameter="NewBackupJobWizard" pattern="web/new/backup-job/" />
+	<url ServiceParameter="NewCopyJobWizard" pattern="web/new/copy-job/" />
+	<url ServiceParameter="NewMigrateJobWizard" pattern="web/new/migrate-job/" />
+	<url ServiceParameter="BaculumError" pattern="web/message/{error}/" parameters.error="\d+" />
+	<url ServiceParameter="Monitor" pattern="web/monitor/" />
+	<url ServiceParameter="OAuth2Redirect" pattern="web/redirect/" />
+</urls>

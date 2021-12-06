@@ -1,0 +1,626 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-hdd"></i> <%[ Volume details ]%></b>
+		</h5>
+	</header>
+	<h3 class="view_header"><%[ Volume: ]%> <%=$this->getVolumeName()%> &nbsp;<span class="w3-small">[MediaId <%=$this->getMediaId()%>]</span></h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('VolumeList')%>"><i class="fa fa-angle-left"></i></a>
+		<button id="btn_volume_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'volume_actions');"><%[ Actions ]%></button>
+		<button id="btn_jobs_on_volume" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'jobs_on_volume');oJobsOnVolumeList.table.responsive.recalc();"><%[ Jobs on volume ]%></button>
+		<button id="btn_volume_config" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'volume_config');"><%[ Configure volume ]%></button>
+	</div>
+	<div class="w3-container tab_item" id="volume_actions">
+		<div class="w3-margin-left w3-margin-bottom">
+			<com:TActiveLinkButton
+				CssClass="w3-button w3-green"
+				OnClick="prune"
+				Attributes.onclick="document.getElementById('volume_action_log').style.display='block'"
+			>
+				<i class="fa fa-shower"></i> &nbsp;<%[ Prune ]%>
+			</com:TActiveLinkButton>
+			<com:TActiveLinkButton
+				CssClass="w3-button w3-red"
+				OnClick="purge"
+				Attributes.onclick="document.getElementById('volume_action_log').style.display='block'"
+			>
+				<i class="fa fa-recycle"></i> &nbsp;<%[ Purge ]%>
+			</com:TActiveLinkButton>
+		</div>
+		<div id="volume_action_log" class="w3-panel w3-card w3-light-grey" style="display: none;">
+			<div class="w3-code notranslate">
+				<pre><com:TActiveLabel ID="VolumeActionLog" /></pre>
+			</div>
+		</div>
+		<div class="w3-row" style="display: flex; flex-wrap: wrap;">
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Limits ]%></h4>
+				<table style="width: 90%">
+					<tr>
+						<td><%[ Max. vol. jobs ]%></td>
+						<td><strong><com:TActiveLabel ID="OMaxVolJobs" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Max. vol. files ]%></td>
+						<td><strong><com:TActiveLabel ID="OMaxVolFiles" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Max. vol. bytes ]%></td>
+						<td><strong><com:TActiveLabel ID="OMaxVolBytes" CssClass="size" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. use duration ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolUseDuration" CssClass="time" /></strong></td>
+					</tr>
+				</table>
+			</div>
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Recycling ]%></h4>
+				<table style="width: 90%">
+					<tr>
+						<td class="w3-half"><%[ Recycle ]%></td>
+						<td><strong><com:TActiveLabel ID="ORecycle" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. retention ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolRetention" CssClass="time" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Recycle pool ]%></td>
+						<td><strong><com:TActiveLabel ID="ORecyclePool" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Recycle count ]%></td>
+						<td><strong><com:TActiveLabel ID="ORecycleCount" /></strong></td>
+					</tr>
+				</table>
+			</div>
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Options ]%></h4>
+				<table style="width: 90%">
+					<tr>
+						<td><%[ Enabled ]%></td>
+						<td><strong><com:TActiveLabel ID="OEnabled" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Slot ]%></td>
+						<td><strong><com:TActiveLabel ID="OSlot" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ InChanger ]%></td>
+						<td><strong><com:TActiveLabel ID="OInChanger" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Action on purge ]%></td>
+						<td><strong><com:TActiveLabel ID="OActionOnPurge" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Scratch pool ]%></td>
+						<td><strong><com:TActiveLabel ID="OScratchPool" /></strong></td>
+					</tr>
+				</table>
+			</div>
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Writing ]%></h4>
+				<table style="width: 100%">
+					<tr>
+						<td><%[ Vol. jobs ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolJobs" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. files ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolFiles" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. bytes ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolBytes" CssClass="size" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ First written ]%></td>
+						<td><strong><com:TActiveLabel CssClass="datetime" ID="OFirstWritten" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Last written ]%></td>
+						<td><strong><com:TActiveLabel CssClass="datetime" ID="OLastWritten" /></strong></td>
+					</tr>
+				</table>
+			</div>
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Status ]%></h4>
+				<table style="width: 100%">
+					<tr>
+						<td><%[ Vol. status ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolStatus" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. errors ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolErrors" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Vol. mounts ]%></td>
+						<td><strong><com:TActiveLabel ID="OVolMounts" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ When expire ]%></td>
+						<td><strong><com:TActiveLabel CssClass="datetime" ID="OWhenExpire" /></strong></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="jobs_on_volume" style="display: none">
+		<table id="jobs_on_volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ JobId ]%></th>
+					<th><%[ Name ]%></th>
+					<th><%[ Type ]%></th>
+					<th class="w3-center"><%[ Level ]%></th>
+					<th class="w3-center">ClientId</th>
+					<th class="w3-center"><%[ Client ]%></th>
+					<th class="w3-center"><%[ Scheduled time ]%></th>
+					<th class="w3-center"><%[ Start time ]%></th>
+					<th class="w3-center"><%[ End time ]%></th>
+					<th class="w3-center"><%[ Real end time ]%></th>
+					<th class="w3-center">JobTDate</th>
+					<th class="w3-center">VolSessionId</th>
+					<th class="w3-center">VolSessionTime</th>
+					<th class="w3-center"><%[ Job status ]%></th>
+					<th class="w3-center"><%[ Size ]%></th>
+					<th class="w3-center"><%[ Read bytes ]%></th>
+					<th class="w3-center"><%[ Files ]%></th>
+					<th class="w3-center"><%[ Job errors ]%></th>
+					<th class="w3-center"><%[ Job missing files ]%></th>
+					<th class="w3-center">PoolId</th>
+					<th class="w3-center"><%[ Pool ]%></th>
+					<th class="w3-center">FileSetId</th>
+					<th class="w3-center"><%[ FileSet ]%></th>
+					<th class="w3-center">PriorJobId</th>
+					<th class="w3-center"><%[ Purged files ]%></th>
+					<th class="w3-center"><%[ Has base ]%></th>
+					<th class="w3-center"><%[ Reviewed ]%></th>
+					<th class="w3-center"><%[ Comment ]%></th>
+					<th class="w3-center"><%[ File table ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="jobs_on_volume_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ JobId ]%></th>
+					<th><%[ Name ]%></th>
+					<th><%[ Type ]%></th>
+					<th class="w3-center"><%[ Level ]%></th>
+					<th class="w3-center">ClientId</th>
+					<th class="w3-center"><%[ Client ]%></th>
+					<th class="w3-center"><%[ Scheduled time ]%></th>
+					<th class="w3-center"><%[ Start time ]%></th>
+					<th class="w3-center"><%[ End time ]%></th>
+					<th class="w3-center"><%[ Real end time ]%></th>
+					<th class="w3-center">JobTDate</th>
+					<th class="w3-center">VolSessionId</th>
+					<th class="w3-center">VolSessionTime</th>
+					<th class="w3-center"><%[ Job status ]%></th>
+					<th class="w3-center"><%[ Size ]%></th>
+					<th class="w3-center"><%[ Read bytes ]%></th>
+					<th class="w3-center"><%[ Files ]%></th>
+					<th class="w3-center"><%[ Job errors ]%></th>
+					<th class="w3-center"><%[ Job missing files ]%></th>
+					<th class="w3-center">PoolId</th>
+					<th class="w3-center"><%[ Pool ]%></th>
+					<th class="w3-center">FileSetId</th>
+					<th class="w3-center"><%[ FileSet ]%></th>
+					<th class="w3-center">PriorJobId</th>
+					<th class="w3-center"><%[ Purged files ]%></th>
+					<th class="w3-center"><%[ Has base ]%></th>
+					<th class="w3-center"><%[ Reviewed ]%></th>
+					<th class="w3-center"><%[ Comment ]%></th>
+					<th class="w3-center"><%[ File table ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="w3-container tab_item" id="volume_config" style="display: none">
+		<com:TValidationSummary
+			ID="ValidationSummary"
+			CssClass="validation-error-summary"
+			ValidationGroup="VolumeGroup"
+			AutoUpdate="true"
+			Display="Dynamic"
+			HeaderText="<%[ There is not possible to run selected action because: ]%>"
+		/>
+		<div class="w3-row w3-section directive_field">
+			<div class="w3-col w3-quarter"><com:TLabel ForControl="VolumeStatus" Text="<%[ Volume status: ]%>" /></div>
+			<div class="w3-half">
+				<com:TActiveDropDownList ID="VolumeStatus" AutoPostBack="false" CssClass="w3-select w3-border" />
+			</div>
+		</div>
+		<div class="w3-row w3-section directive_field">
+			<div class="w3-col w3-quarter"><com:TLabel ForControl="Pool" Text="<%[ Pool: ]%>" /></div>
+			<div class="w3-half">
+				<com:TActiveDropDownList ID="Pool" AutoPostBack="false" CssClass="w3-select w3-border" />
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Retention period (in hours): ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="RetentionPeriod" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="RetentionPeriod"
+					ErrorMessage="<%[ Retention period value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="RetentionPeriod"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Vol. use duration (in hours): ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="UseDuration" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="UseDuration"
+					ErrorMessage="<%[ Vol. use duration value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="UseDuration"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Max. vol. jobs: ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="MaxVolJobs" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="MaxVolJobs"
+					ErrorMessage="<%[ Max. vol. jobs value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="UseDuration"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Max. vol. files: ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="MaxVolFiles" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="MaxVolFiles"
+					ErrorMessage="<%[ Max. vol. files value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="MaxVolFiles"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Max. vol. bytes: ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="MaxVolBytes" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="MaxVolBytes"
+					ErrorMessage="<%[ Max. vol. bytes value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="MaxVolBytes"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Slot number: ]%></div>
+			<div class="w3-half">
+				<com:TActiveTextBox ID="Slot" AutoPostBack="false" CssClass="w3-input w3-border smallbox" />
+				<com:TDataTypeValidator
+					ValidationGroup="VolumeGroup"
+					ControlToValidate="Slot"
+					ErrorMessage="<%[ Slot value must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+				<com:TRequiredFieldValidator
+					ValidationGroup="VolumeGroup"
+					Display="Dynamic"
+					ControlToValidate="Slot"
+					Text="<%[ Field required. ]%>"
+				/>
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Recycle: ]%></div>
+			<div class="w3-half">
+				<com:TActiveCheckBox ID="Recycle" AutoPostBack="false" CssClass="w3-check" />
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ Enabled: ]%></div>
+			<div class="w3-half">
+				<com:TActiveCheckBox ID="Enabled" AutoPostBack="false" CssClass="w3-check" />
+			</div>
+		</div>
+		<div class="w3-row w3-section">
+			<div class="w3-col w3-quarter"><%[ InChanger: ]%></div>
+			<div class="w3-half">
+				<com:TActiveCheckBox ID="InChanger" AutoPostBack="false" CssClass="w3-check" />
+			</div>
+		</div>
+		<div id="volume_config_log" class="w3-panel w3-card w3-light-grey" style="display: none">
+			<div class="w3-code notranslate">
+				<pre><com:TActiveLabel ID="VolumeConfigLog" /></pre>
+			</div>
+		</div>
+		<div class="w3-container w3-center">
+			<com:TActiveLinkButton
+				ValidationGroup="VolumeGroup"
+				CausesValidation="true"
+				CssClass="w3-button w3-green"
+				OnClick="updateVolume"
+				ClientSide.OnLoading="$('#status_volume_loading').show();"
+				ClientSide.OnSuccess="$('#status_volume_loading').hide();"
+				Attributes.onclick="document.getElementById('volume_config_log').style.display = '';"
+			>
+				<prop:Text>
+					<i class="fa fa-save"></i> &nbsp;<%=Prado::localize('Save')%>
+				</prop:Text>
+				<prop:ClientSide.OnComplete>
+					Formatters.set_formatters();
+				</prop:ClientSide.OnComplete>
+			</com:TActiveLinkButton>
+			<i id="status_volume_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super;"></i>
+		</div>
+	</div>
+<script type="text/javascript">
+var oJobsOnVolumeList = {
+	table: null,
+	ids: {
+		jobs_on_volume_list: 'jobs_on_volume_list',
+		jobs_on_volume_list_body: 'jobs_on_volume_list_body'
+	},
+	init: function() {
+		this.set_table();
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.jobs_on_volume_list).DataTable({
+			data: <%=json_encode($this->jobs_on_volume)%>,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'jobid'},
+				{data: 'name'},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					}
+				},
+				{
+					data: 'level',
+					render: function(data, type, row) {
+						return (['R', 'D'].indexOf(row.type) === -1 ? JobLevel.get_level(data) : '-');
+					}
+				},
+				{
+					data: 'clientid',
+					visible: false
+				},
+				{
+					data: 'client',
+					visible: false
+				},
+				{
+					data: 'schedtime',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'starttime',
+					render: render_date
+				},
+				{
+					data: 'endtime',
+					render: render_date
+				},
+				{
+					data: 'realendtime',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'jobtdate',
+					render: render_date_ts,
+					visible: false
+				},
+				{
+					data: 'volsessionid',
+					visible: false
+				},
+				{
+					data: 'volsessiontime',
+					render: render_date_ts,
+					visible: false
+				},
+				{
+					data: 'jobstatus',
+					render: render_jobstatus,
+					className: 'w3-center'
+				},
+				{
+					data: 'jobbytes',
+					render: render_bytes
+				},
+				{
+					data: 'readbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{data: 'jobfiles'},
+				{
+					data: 'joberrors',
+					visible: false
+				},
+				{
+					data: 'jobmissingfiles',
+					visible: false
+				},
+				{
+					data: 'poolid',
+					visible: false
+				},
+				{
+					data: 'pool',
+					visible: false
+				},
+				{
+					data: 'filesetid',
+					visible: false
+				},
+				{
+					data: 'fileset',
+					visible: false
+				},
+				{
+					data: 'priorjobid',
+					visible: false
+				},
+				{
+					data: 'purgedfiles',
+					visible: false
+				},
+				{
+					data: 'hasbase',
+					visible: false
+				},
+				{
+					data: 'reviewed',
+					visible: false
+				},
+				{
+					data: 'comment',
+					visible: false
+				},
+				{
+					data: 'filetable',
+					visible: false
+				},
+				{
+					data: 'jobid',
+					render: function (data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-list-ul';
+						var label = document.createTextNode(' <%[ Details ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 3, 4, 5, 7, 8, 9, 10 ]
+			},
+			{
+				className: "dt-body-right",
+				targets: [ 15 ]
+			}],
+			order: [1, 'desc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 4, 14]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 14) {
+						column.data().unique().sort().each(function (d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+};
+oJobsOnVolumeList.init();
+$(function() {
+	Formatters.set_formatters();
+});
+</script>
+</com:TContent>

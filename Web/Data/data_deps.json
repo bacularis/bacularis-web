@@ -1,0 +1,73 @@
+{
+	"dir": {
+		"Catalog": {
+			"Client": ["Catalog"],
+			"Counter": ["Catalog"],
+			"Messages": ["Catalog"],
+			"Pool": ["Catalog"]
+		},
+		"Client": {
+			"Job": ["Client"],
+			"JobDefs": ["Client"]
+		},
+		"Fileset": {
+			"Job": ["Fileset"],
+			"JobDefs": ["Fileset"]
+		},
+		"Job": {
+			"Job": ["Base", "JobToVerify", "VerifyJob"],
+			"JobBase": ["Base", "JobToVerify", "VerifyJob"]
+		},
+		"JobDefs": {
+			"Job": ["JobDefs"]
+		},
+		"Messages": {
+			"Director": ["Messages"],
+			"Job": ["Messages"],
+			"JobDefs": ["Messages"]
+		},
+		"Pool": {
+			"Job": ["DifferentialBackupPool", "FullBackupPool", "IncrementalBackupPool", "NextPool", "Pool"],
+			"JobDefs": ["DifferentialBackupPool", "FullBackupPool", "IncrementalBackupPool", "NextPool", "Pool"],
+			"Pool": ["CopyPool", "NextPool", "RecyclePool", "ScratchPool"],
+			"Schedule": ["DifferentialPool", "FullPool", "IncrementalPool", "NextPool", "Pool"]
+		},
+		"Storage": {
+			"Job": ["Storage"],
+			"JobDefs": ["Storage"],
+			"Pool": ["Storage"],
+			"Schedule": ["Storage"]
+		},
+		"Schedule": {
+			"Job": ["Schedule"],
+			"JobDefs": ["Schedule"]
+		}
+	},
+	"sd": {
+		"Device": {
+			"Autochanger": ["Device"]
+		},
+		"Messages": {
+			"Storage": ["Messages"]
+		},
+		"Cloud": {
+			"Device": ["Cloud"]
+		}
+	},
+	"fd": {
+		"Messages": {
+			"FileDaemon": ["Messages"]
+		},
+		"Schedule": {
+			"Director": ["Schedule"]
+		},
+		"Console": {
+			"Director": ["Console"]
+		}
+	},
+	"bcons": {
+		"Console": {
+			"Director": ["Console"]
+		}
+	}
+}

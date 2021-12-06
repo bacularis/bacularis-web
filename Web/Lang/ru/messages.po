@@ -1,0 +1,3962 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-11-16 04:18\n"
+"Project-Id-Version: b02f04a28aec0155df9503e3b78ae8cc\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Sergey Zhidkov <zhsv@bk.ru>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: b02f04a28aec0155df9503e3b78ae8cc\n"
+"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /Baculum Web/messages.po\n"
+"X-Crowdin-File-ID: 53\n"
+
+msgid "Language:"
+msgstr "Язык:"
+
+msgid "select language"
+msgstr "выберите язык"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "Licence"
+msgstr "Лицензия"
+
+msgid "Database"
+msgstr "База данных"
+
+msgid "Authentication"
+msgstr "Проверка подлинности"
+
+msgid "Finish"
+msgstr "Закончить"
+
+msgid "Console"
+msgstr "Консоль"
+
+msgid "Step 1 - select language"
+msgstr "Шаг 1 - выбор языка"
+
+msgid "Please select language."
+msgstr "Пожалуйста, выберите язык."
+
+msgid "Step 2 - add API instances"
+msgstr "Шаг 2 - добавление API экземпляров"
+
+msgid "Step 3 - params of Bacula database connection"
+msgstr "Шаг 3 - параметры подключения к базе данных Bacula"
+
+msgid "Step 4 - Baculum access to bconsole"
+msgstr "Шаг 4 - Baculum доступ к bconsole"
+
+msgid "Step 5 - authorization params to Baculum"
+msgstr "Шаг 5 - параметры авторизации на Baculum"
+
+msgid "Step 6 - Finish"
+msgstr "Шаг 6 - Завершение"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "I have read the license terms and agree to"
+msgstr "Я прочитал условия лицензии и согласен с"
+
+msgid "Database type:"
+msgstr "Тип базы данных:"
+
+msgid "select database"
+msgstr "выбрать базу данных"
+
+msgid "Need to move on to accept the license."
+msgstr "Необходимо продолжить, чтобы принять лицензию."
+
+msgid "Database name:"
+msgstr "Имя базы данных:"
+
+msgid "Please select database type."
+msgstr "Пожалуйста, выберите тип базы данных."
+
+msgid "Please enter database name."
+msgstr "Пожалуйста, введите имя базы данных."
+
+msgid "Login:"
+msgstr "Логин:"
+
+msgid "Please enter login."
+msgstr "Пожалуйста, введите логин."
+
+msgid "Password:"
+msgstr "Пароль:"
+
+msgid "IP address (or hostname):"
+msgstr "IP адрес (или имя хоста):"
+
+msgid "Please enter IP address or hostname."
+msgstr "Пожалуйста, введите IP-адрес или имя хоста."
+
+msgid "Port:"
+msgstr "Порт:"
+
+msgid "Please enter database port."
+msgstr "Пожалуйста, введите порт базы данных."
+
+msgid "SQLite database path:"
+msgstr "Путь к базе данных SQLite:"
+
+msgid "Please enter database path."
+msgstr "Пожалуйста, введите путь к базе данных."
+
+msgid "Connection test:"
+msgstr "Проверка соединения:"
+
+msgid "Loading..."
+msgstr "Загрузка..."
+
+msgid "OK"
+msgstr "ОК"
+
+msgid "Connection error"
+msgstr "Ошибка подключения"
+
+msgid "test"
+msgstr "тест"
+
+msgid "Bconsole binary file path:"
+msgstr "Путь к бинарному файлу Bconsol:"
+
+msgid "Please enter bconsole path."
+msgstr "Пожалуйста, введите путь bconsole."
+
+msgid "Please enter bconsole config file path."
+msgstr "Пожалуйста, введите путь к файлу конфигурации bconsole."
+
+msgid "Use sudo:"
+msgstr "Использовать sudo:"
+
+msgid "Bconsole connection test:"
+msgstr "Проверка соединения с Bconsole:"
+
+msgid "Administration login:"
+msgstr "Логин администратора:"
+
+msgid "Administration password:"
+msgstr "Пароль администратора:"
+
+msgid "Please enter password."
+msgstr "Пожалуйста, введите пароль."
+
+msgid "Password must be longer than 4 chars."
+msgstr "Пароль должен быть длиннее 4 символов."
+
+msgid "Retype administration password:"
+msgstr "Повторите пароль администратора:"
+
+msgid "Please enter retype password."
+msgstr "Пожалуйста, введите пароль повторно."
+
+msgid "Passwords must be the same."
+msgstr "Пароли должны совпадать."
+
+msgid "Database parameters"
+msgstr "Параметры базы данных"
+
+msgid "Database port:"
+msgstr "Порт базы данных:"
+
+msgid "Bconsole access"
+msgstr "Доступ к Bconsole"
+
+msgid "Use sudo for bconsole requests:"
+msgstr "Используйте sudo для запросов bconsole:"
+
+msgid "Authorization to Baculum panel"
+msgstr "Авторизация в панели Baculum"
+
+msgid "Step 7 - Finish"
+msgstr "Шаг 7 - Завершение"
+
+msgid "Storage name:"
+msgstr "Имя хранилища:"
+
+msgid "Console status"
+msgstr "Статус консоли"
+
+msgid "Drive number:"
+msgstr "Номер диска:"
+
+msgid "Slot number:"
+msgstr "Номер слота:"
+
+msgid "Mount"
+msgstr "Монтировать"
+
+msgid "Release"
+msgstr "Релиз"
+
+msgid "Umount"
+msgstr "Размонтировать"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Available actions"
+msgstr "Доступные действия"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Operation is in progress"
+msgstr "Операция выполняется"
+
+msgid "Volume status:"
+msgstr "Статус тома:"
+
+msgid "Pool:"
+msgstr "Пул:"
+
+msgid "Recycle:"
+msgstr "Повторное использование (Recycle):"
+
+msgid "Enabled:"
+msgstr "Включено:"
+
+msgid "In changer:"
+msgstr "В чейнджере:"
+
+msgid "Apply"
+msgstr "Применить"
+
+msgid "Volume name:"
+msgstr "Название тома:"
+
+msgid "Client name:"
+msgstr "Имя клиента:"
+
+msgid "Information about version"
+msgstr "Информация о версии"
+
+msgid "Pool name:"
+msgstr "Название пула:"
+
+msgid "Purge"
+msgstr "Очистить (Purge)"
+
+msgid "Prune"
+msgstr "Очистить (Prune)"
+
+msgid "Switch the window view (normal/details)"
+msgstr "Переключить вид окна (обычный/подробный)"
+
+msgid "Maximum volumes:"
+msgstr "Максимум томов:"
+
+msgid "AutoPrune:"
+msgstr "Авто очистка (AutoPrune):"
+
+msgid "Action on purge:"
+msgstr "Действие по очистке (purge):"
+
+msgid "Label format:"
+msgstr "Формат маркировки:"
+
+msgid "Scratch pool:"
+msgstr "Скретч-пул:"
+
+msgid "Recycle pool:"
+msgstr "Recycle pool:"
+
+msgid "Restore configuration"
+msgstr "Восстановить конфигурацию"
+
+msgid "Update volumes"
+msgstr "Обновить тома"
+
+msgid "Client:"
+msgstr "Клиент:"
+
+msgid "Job name:"
+msgstr "Имя задания:"
+
+msgid "Storage:"
+msgstr "Хранилище:"
+
+msgid "Level:"
+msgstr "Уровень:"
+
+msgid "FileSet:"
+msgstr "Набор файлов:"
+
+msgid "Priority:"
+msgstr "Приоритет:"
+
+msgid "Run job"
+msgstr "Запустить задание"
+
+msgid "Estimate job"
+msgstr "Проверка работы"
+
+msgid "Accurate:"
+msgstr "Точность (Accurate):"
+
+msgid "Storage Daemons"
+msgstr "Демоны хранения"
+
+msgid "Clients"
+msgstr "Клиенты"
+
+msgid "Volumes"
+msgstr "Тома"
+
+msgid "Pools"
+msgstr "Пулы"
+
+msgid "Jobs"
+msgstr "Задания"
+
+msgid "Limit:"
+msgstr "Лимит:"
+
+msgid "Search:"
+msgstr "Поиск:"
+
+msgid "View mode:"
+msgstr "Режим просмотра:"
+
+msgid "simple"
+msgstr "простой"
+
+msgid "details"
+msgstr "подробнее"
+
+msgid "Retention period value must be integer."
+msgstr "Значение периода хранения должно быть целым числом."
+
+msgid "There is not possible to run selected action because:"
+msgstr "Невозможно запустить выбранное действие, потому что:"
+
+msgid "Drive number must be integer."
+msgstr "Номер диска должен быть целым числом."
+
+msgid "Slot number must be integer."
+msgstr "Номер слота должен быть целым числом."
+
+msgid "File retention value must be integer."
+msgstr "Значение сохранения файла должно быть целым числом."
+
+msgid "Job retention value must be integer."
+msgstr "Хранение задания должно быть целым числом."
+
+msgid "Vol. use duration value must be integer."
+msgstr "Время использования тома должно быть целым числом."
+
+msgid "Max. vol. jobs:"
+msgstr "Макс. томов заданий:"
+
+msgid "Max. vol. jobs value must be integer."
+msgstr "Макс. томов заданий должно быть целым числом."
+
+msgid "Max. vol. files:"
+msgstr "Max. файлов тома:"
+
+msgid "Max. vol. files value must be integer."
+msgstr "Max. файлов тома должно быть целым числом."
+
+msgid "Max. vol. bytes:"
+msgstr "Макс. размер Vol. (байт):"
+
+msgid "Max. vol. bytes value must be integer."
+msgstr "Макс. размер тома должно быть целым числом."
+
+msgid "Slot value must be integer."
+msgstr "Значение слота должно быть целым числом."
+
+msgid "Max. volumes value must be integer."
+msgstr "Макс. значение томов должно быть целым числом."
+
+msgid "Use duration value must be integer."
+msgstr "Значение продолжительности (duration) vol. быть целым числом."
+
+msgid "Label format value must not be empty."
+msgstr "Значение формата метки не должно быть пустым."
+
+msgid "Priority value must be integer greather than 0."
+msgstr "Приоритетное значение должно быть целым числом больше 0."
+
+msgid "File retention value must be positive integer or zero."
+msgstr "Значение сохранения файла (retention) должно быть положительным целым числом или нулем."
+
+msgid "Job retention value must be positive integer or zero."
+msgstr "Срок хранения задания должно быть положительным целым числом или нулем."
+
+msgid "File retention (in days):"
+msgstr "Срок хранения файлов в БД (retention) в днях:"
+
+msgid "Job retention (in days):"
+msgstr "Срок хранения задания (дней.):"
+
+msgid "select pool"
+msgstr "выбрать пул"
+
+msgid "Retention period (in hours):"
+msgstr "Период хранения (в часах):"
+
+msgid "Vol. use duration (in hours):"
+msgstr "Том длительность использования (в часах.):"
+
+msgid "Job to restore:"
+msgstr "Задание для восстановления:"
+
+msgid "Backup from client:"
+msgstr "Резервная копия с клиента:"
+
+msgid "Restore to client:"
+msgstr "Восстановить на клиента:"
+
+msgid "Backup to restore:"
+msgstr "Резервное копирование для восстановления:"
+
+msgid "Step 1 - select source backup client"
+msgstr "Шаг 1 - выберите клиента"
+
+msgid "Client"
+msgstr "Клиент"
+
+msgid "Backup"
+msgstr "Резервное копирование"
+
+msgid "Step 2 - select backup to restore"
+msgstr "Шаг 2 - выберите резервную копию для восстановления"
+
+msgid "Backup selection method:"
+msgstr "Выбор резервной копии:"
+
+msgid "Selected backup"
+msgstr "Резервная копия"
+
+msgid "FileSet resource:"
+msgstr "Набор файлов ресурс:"
+
+msgid "Storage resource:"
+msgstr "Хранилище ресурс:"
+
+msgid "Pool resource:"
+msgstr "Пул ресурс:"
+
+msgid "Step 3 - select files to restore"
+msgstr "Шаг 3 - выберите файлы для восстановления"
+
+msgid "Files"
+msgstr "Файлы"
+
+msgid "To see file versions please click a file on the left files browser."
+msgstr "Чтобы увидеть версии файлов, нажмите на файл в браузере слева."
+
+msgid "To add a file to restore please click 'Add' link or please drag here the file from the top frame or from the frame on the left."
+msgstr "Чтобы добавить файл для восстановления, пожалуйста, нажмите на ссылку 'Добавить' или перетащите сюда файл из окна выше или слева."
+
+msgid "It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired)"
+msgstr "Похоже, что для выбора или записи файлов в базе данных для этого задания было очищено (истек срок хранения файлов)"
+
+msgid "Group most recent backups"
+msgstr "Группировать резервные копии"
+
+msgid "Where"
+msgstr "Куда восстановить"
+
+msgid "Restore to directory:"
+msgstr "Восстановить в папку:"
+
+msgid "Step 4 - select destination for restore"
+msgstr "Шаг 4 - выберите место назначения для восстановления"
+
+msgid "Step 5 - options for restore"
+msgstr "Шаг 5 - параметры восстановления"
+
+msgid "Replace files:"
+msgstr "Заменить файлы:"
+
+msgid "Options"
+msgstr "Параметры"
+
+msgid "Restore job priority:"
+msgstr "Приоритет восстановления:"
+
+msgid "do not replace files"
+msgstr "не заменять файлы"
+
+msgid "if files from restore are older"
+msgstr "если файлы из восстановления старые"
+
+msgid "if files from restore are newer"
+msgstr "если файлы из восстановления новее"
+
+msgid "always replace files"
+msgstr "всегда заменять файлы"
+
+msgid "Source parameters"
+msgstr "Параметры источника"
+
+msgid "Backup data from client:"
+msgstr "Резервная копия с клиента:"
+
+msgid "FileSet to restore:"
+msgstr "Наборы файлов для восстановления:"
+
+msgid "Files for restore"
+msgstr "Файлы для восстановления"
+
+msgid "Selected files count:"
+msgstr "Количество выбранных файлов:"
+
+msgid "Destination parameters"
+msgstr "Параметры назначения"
+
+msgid "Restore to path:"
+msgstr "Путь для восстановления:"
+
+msgid "Restore job options"
+msgstr "Опции задания для восстановления"
+
+msgid "Run restore"
+msgstr "Запустить восстановление"
+
+msgid "Run"
+msgstr "Запустить"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "There is no backup for restore. Please go to previous step and select another client for restore or proceed backups for the client selected in previous step."
+msgstr "Нет резервной копии для восстановления. Перейдите к предыдущему шагу и выберите другого клиента для восстановления или продолжайте резервное копирование для клиента, выбранного на предыдущем шаге."
+
+msgid "Database file path (SQLite only):"
+msgstr "Путь к файлу базы данных (только SQLite):"
+
+msgid "Selected directories count:"
+msgstr "Количество выбранных каталогов:"
+
+msgid "Delete job"
+msgstr "Удалить задание"
+
+msgid "Cancel job"
+msgstr "Отменить задание"
+
+msgid "NOTE!"
+msgstr "ПРИМЕЧАНИЕ!"
+
+msgid "Baculum needs access to bconsole by the web server."
+msgstr "Baculum необходим доступ к bconsole через веб-сервер."
+
+msgid "Director:"
+msgstr "Директор:"
+
+msgid "Jobs for run"
+msgstr "Задания для запуска"
+
+msgid "Run job again"
+msgstr "Запустить задание еще раз"
+
+msgid "Job status"
+msgstr "Статус задания"
+
+msgid "Bacula console"
+msgstr "Консоль bacula"
+
+msgid "show console"
+msgstr "показать консоль"
+
+msgid "hide console"
+msgstr "скрыть консоль"
+
+msgid "volumes tools"
+msgstr "инструменты томов"
+
+msgid "Label volume(s)"
+msgstr "Маркировка тома(ов)"
+
+msgid "Update slots using barcodes"
+msgstr "Обновить слоты с помощью штрих-кодов"
+
+msgid "Update slots without barcodes"
+msgstr "Обновить слоты без штрих-кодов"
+
+msgid "Label name:"
+msgstr "Название маркировки:"
+
+msgid "Label"
+msgstr "Метка"
+
+msgid "Use barcodes as label:"
+msgstr "Использовать штрих-коды как метку:"
+
+msgid "Update barcodes slots"
+msgstr "Обновить штрих-коды слотов"
+
+msgid "Update slots scan"
+msgstr "Обновить сканирование слотов"
+
+msgid "Label name have to contain string value from set [0-9a-zA-Z_-]."
+msgstr "Имя метки должно содержать строковое значение из набора [0-9a-zA-Z_-]."
+
+msgid "Slots for label have to contain string value from set [0-9-,]."
+msgstr "Слоты для метки должны содержать строковое значение из набора [0-9-,]."
+
+msgid "Drive has to contain digit value from set [0-9]."
+msgstr "Диск должен содержать числовое значение из набора [0-9]."
+
+msgid "Slots for update have to contain string value from set [0-9-,]."
+msgstr "Слоты для метки должны содержать строковое значение из набора [0-9-,]."
+
+msgid "Baculum problem"
+msgstr "Baculum проблема"
+
+msgid "or run"
+msgstr "или запустить"
+
+msgid "Baculum Initial Wizard"
+msgstr "Мастер инициализации Baculum"
+
+msgid "internal Baculum error."
+msgstr "внутренняя ошибка Baculum."
+
+msgid "TRY AGAIN"
+msgstr "Попробуйте еще раз"
+
+msgid "Enable debug"
+msgstr "Включить отладку"
+
+msgid "clear bvfs cache"
+msgstr "очистить кэш bvfs"
+
+msgid "Bconsole admin config file path:"
+msgstr "Путь к bconsole.conf:"
+
+msgid "Bconsole custom config file path:"
+msgstr "Путь к bconsole.conf:"
+
+msgid "Please enter bconsole custom config file path."
+msgstr "Пожалуйста, введите путь к файлу конфигурации bconsole."
+
+msgid "For need defining more Baculum users with custom access or restricted console access (Bconsole ACLs) here is possible to determine custom bconsole configuration file format for each user."
+msgstr "Для необходимости определить больше пользователей Baculum с пользовательским доступом или ограниченным доступом консоли (Bconsole ACLs) здесь можно определить пользовательский формат файла конфигурации bconsole для каждого пользователя."
+
+msgid "If there is used only one Baculum user then below field value will be ignored"
+msgstr "Если используется только один пользователь Baculum, то ниже значения поля будут проигнорированы"
+
+msgid "{user} keyword will be replaced for each logged user into according username."
+msgstr "Для каждого зарегистрированного пользователя будет заменено ключевое слово {user}."
+
+msgid "If there is used only one Baculum user then below field value will be ignored."
+msgstr "Если используется только один пользователь Baculum, то ниже значения поля будут проигнорированы."
+
+msgid "Above administration login and administration password will be used for login as administrator to Baculum WebGUI. They are your HTTP Basic authorization params by using which you will be logged in to Baculum."
+msgstr "Выше логин и пароль администратора будут использоваться для входа в систему в качестве администратора Baculum WebGUI. Это ваши параметры авторизации HTTP Basic с помощью которых вы будете авторизоваться в Baculum."
+
+msgid "If all above steps will not help or if during installation you made mistake in password in Initial Wizard, please remove settings file located in baculum/protected/Data/settings.conf and re-run Initial wizard."
+msgstr "Если все вышеперечисленные шаги не помогут или если во время установки вы совершили ошибку в пароле, удалите файл настроек, расположенный в baculum/protected/Data/settings.conf и перезапустите мастер инициализации."
+
+msgid "Action:"
+msgstr "Действие:"
+
+msgid "unmark all and close"
+msgstr "снять все и закрыть"
+
+msgid "This action will clear bvfs cache that was created during preparing restore files. There is not recommended use this action during restore job working. Are you sure?"
+msgstr "Это действие очистит кэш bvfs, созданный при подготовке файлов восстановления. Не рекомендуется использовать это действие во время восстановления задания. Вы уверены?"
+
+msgid "Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
+msgstr "Отладочные файлы позволяют сохранять большинство действий, выполняемых на Baculum WebGUI. Функциональность отладки должна быть включена, если происходит неправильная работа Baculum или что-то похожее на баг. Логи могут быть полезны для выявления проблем в работе Baculum. После подтверждения этого сообщения отладочные файлы будут постоянно сохраняться в каталоге /protected/Web/Logs/ . Вы уверены?"
+
+msgid "10 elements"
+msgstr "10 элементов"
+
+msgid "25 elements"
+msgstr "25 элементов"
+
+msgid "50 elements"
+msgstr "50 элементов"
+
+msgid "100 elements"
+msgstr "100 элементов"
+
+msgid "200 elements"
+msgstr "200 элементов"
+
+msgid "500 elements"
+msgstr "500 элементов"
+
+msgid "unlimited"
+msgstr "неограниченное"
+
+msgid "1000 elements"
+msgstr "1000 элементов"
+
+msgid "Volume name"
+msgstr "Название тома (Volume)"
+
+msgid "Slot"
+msgstr "Слот"
+
+msgid "Pool"
+msgstr "Пул"
+
+msgid "When expire"
+msgstr "Когда истекает"
+
+msgid "Storage name"
+msgstr "Имя хранилища"
+
+msgid "Autochanger"
+msgstr "Авточейнджер"
+
+msgid "No"
+msgstr "Нет"
+
+msgid "days"
+msgstr "дней"
+
+msgid "day"
+msgstr "день"
+
+msgid "Warning! You checked over 50 elements. Please note, that in case more time consuming actions, web browser request may timed out after 30 seconds. It this case action will be canceled and in consequence the action may not touch all selected elements. Are you sure you want to continue?"
+msgstr "Внимание! Вы проверили более 50 элементов. Пожалуйста, обратите внимание, что в случае, если требуется больше времени, запрос веб-браузера может истечь через 30 секунд. Это действие будет отменено и, следовательно, действие может не коснуться всех выбранных элементов. Вы уверены, что хотите продолжить?"
+
+msgid "Close the window"
+msgstr "Закрыть окно"
+
+msgid "Change the window size"
+msgstr "Изменить размер окна"
+
+msgid "Configuration of storage daemons."
+msgstr "Конфигурация демонов хранения."
+
+msgid "Configuration of clients daemons."
+msgstr "Конфигурация демонов хранения."
+
+msgid "Management of volumes."
+msgstr "Управление томами."
+
+msgid "Management of volumes pools."
+msgstr "Управление томами в пулах."
+
+msgid "Jobs settings."
+msgstr "Настройки заданий."
+
+msgid "Starting jobs."
+msgstr "Запуск заданий."
+
+msgid "Restore"
+msgstr "Восстановить"
+
+msgid "Restore wizard."
+msgstr "Мастер восстановления."
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Management settings wizard."
+msgstr "Мастер настройки."
+
+msgid "Client name"
+msgstr "Имя клиента"
+
+msgid "File Retention"
+msgstr "Срок хранения файлов в БД (retention)"
+
+msgid "Job Retention"
+msgstr "Срок хранения задания (retention)"
+
+msgid "Last written:"
+msgstr "Последняя запись:"
+
+msgid "never written"
+msgstr "никогда не записано"
+
+msgid "When expire:"
+msgstr "По истечению:"
+
+msgid "Job name"
+msgstr "Имя задания"
+
+msgid "End time"
+msgstr "Время окончания"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Level"
+msgstr "Уровень"
+
+msgid "Director"
+msgstr "Director"
+
+msgid "Enter"
+msgstr "Ввод"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "select action"
+msgstr "выбрать действие"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Output for selected job is not available yet or you do not have enabled logging job logs to the catalog database.\n\n"
+"To watch job log you need to add to the job Messages resource the following directive:\n\n"
+"Catalog = all, !debug, !skipped, !saved"
+msgstr "Вывод для выбранного задания еще не доступен или вы не включили ведение журнала заданий в базу данных каталога.\n\n"
+"Для просмотра журнала заданий вам нужно добавить в задание ресурс сообщений следующую строку:\n\n"
+"Catalog = all, !debug, !skipped, !saved"
+
+msgid "Workspace"
+msgstr "Рабочая область"
+
+msgid "Graphs"
+msgstr "Графики"
+
+msgid "select job"
+msgstr "выбрать задание"
+
+msgid "Last 6 hours"
+msgstr "Последние 6 часов"
+
+msgid "Last 12 hours"
+msgstr "Последние 12 часов"
+
+msgid "Today"
+msgstr "Сегодня"
+
+msgid "Two days"
+msgstr "Два дня"
+
+msgid "Last week"
+msgstr "Прошлая неделя"
+
+msgid "Last two weeks"
+msgstr "Последние две недели"
+
+msgid "Last month"
+msgstr "Прошлый месяц"
+
+msgid "Last three months"
+msgstr "Последние три месяца"
+
+msgid "Last six months"
+msgstr "Последние шесть месяцев"
+
+msgid "Last year"
+msgstr "Прошлый год"
+
+msgid "Date From:"
+msgstr "Дата от:"
+
+msgid "Date To:"
+msgstr "Дата до:"
+
+msgid "Legend:"
+msgstr "Лог:"
+
+msgid "select client"
+msgstr "выбрать клиента"
+
+msgid "Job size / Time"
+msgstr "Размер задания / Время"
+
+msgid "Job size"
+msgstr "Размер задания"
+
+msgid "Time"
+msgstr "Время"
+
+msgid "File retention (in sec.):"
+msgstr "Удержание файла (в сек.):"
+
+msgid "Job retention (in sec.):"
+msgstr "Срок хранения задания (в сек.):"
+
+msgid "Max. Vol. Bytes:"
+msgstr "Макс. размер Vol. (байт):"
+
+msgid "Max. Vol. Files:"
+msgstr "Max. файлов Vol.:"
+
+msgid "Max. Vol. Jobs:"
+msgstr "Макс. заданий Vol.:"
+
+msgid "Retention Period (in sec.):"
+msgstr "Период хранения (в сек.):"
+
+msgid "Storage Daemons."
+msgstr "Демоны хранения."
+
+msgid "Vol. Use Duration (in sec.):"
+msgstr "Vol. Продолжительность использования (в сек.):"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "JobId to Verify:"
+msgstr "JobId для проверки:"
+
+msgid "JobId to Verify value must be integer greather than 0."
+msgstr "Значение задания должно быть целым числом, больше 0."
+
+msgid "Job to Verify:"
+msgstr "Задание на проверку:"
+
+msgid "Verify by Job Name"
+msgstr "Проверить по наименованию задания"
+
+msgid "Verify by JobId"
+msgstr "Проверить по JobId"
+
+msgid "Verify option:"
+msgstr "Проверка опции:"
+
+msgid "Running jobs:"
+msgstr "Запущенные задания:"
+
+msgid "Finished jobs:"
+msgstr "Завершённые задания:"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Actions"
+msgstr "Действия"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Job:"
+msgstr "Задание:"
+
+msgid "Media Type"
+msgstr "Media Type"
+
+msgid "Dashboard"
+msgstr "Панель управления"
+
+msgid "Go to started job after start:"
+msgstr "Перейти к началу задания после начала:"
+
+msgid "Job status summary"
+msgstr "Сводка по заданиям"
+
+msgid "Quick job access"
+msgstr "Быстрый доступ к заданию"
+
+msgid "Finished jobs"
+msgstr "Завершённые задания"
+
+msgid "The most often used:"
+msgstr "Чаще всего используется:"
+
+msgid "Number of clients"
+msgstr "Количество клиентов"
+
+msgid "jobs"
+msgstr "задания"
+
+msgid "Job count the most used:"
+msgstr "Количество:"
+
+msgid "level"
+msgstr "уровень"
+
+msgid "status"
+msgstr "статус"
+
+msgid "Jump to job (last 100):"
+msgstr "Перейти к заданиям (последние 100):"
+
+msgid "View"
+msgstr "Вид"
+
+msgid "Total bytes:"
+msgstr "Общий размер:"
+
+msgid "Total files:"
+msgstr "Всего файлов:"
+
+msgid "Database size:"
+msgstr "Размер базы данных:"
+
+msgid "Number of pools:"
+msgstr "Количество пулов:"
+
+msgid "times"
+msgstr "раз"
+
+msgid "Execution count most used:"
+msgstr "Количество:"
+
+msgid "Total bytes"
+msgstr "Общий размер"
+
+msgid "Restore Wizard"
+msgstr "Мастер восстановления"
+
+msgid "Perform restore"
+msgstr "Выполнить восстановление"
+
+msgid "Configuration Wizard"
+msgstr "Мастер настройки"
+
+msgid "Baculum Settings"
+msgstr "Настройки Baculum"
+
+msgid "start time"
+msgstr "время начала"
+
+msgid "Users"
+msgstr "Пользователи"
+
+msgid "User name"
+msgstr "Имя пользователя"
+
+msgid "Role"
+msgstr "Роль"
+
+msgid "Remove user"
+msgstr "Удалить пользователя"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Change password"
+msgstr "Изменить пароль"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Normal user"
+msgstr "Обычный пользователь"
+
+msgid "Add new user"
+msgstr "Добавить нового пользователя"
+
+msgid "Username:"
+msgstr "Имя пользователя:"
+
+msgid "Invalid login value. Login may contain a-z A-Z 0-9 characters."
+msgstr "Неверное значение входа. Логин может содержать символы a-z A-Z 0-9."
+
+msgid "Jobs on volume"
+msgstr "Заданий в Vol."
+
+msgid "No jobs on the volume."
+msgstr "Нет заданий в Vol."
+
+msgid "Jobs for Client"
+msgstr "Задания для клиента"
+
+msgid "No jobs for the client."
+msgstr "Нет заданий для клиента."
+
+msgid "Configuration"
+msgstr "Конфигурация"
+
+msgid "bdirjson binary file path:"
+msgstr "путь к бинарному файлу bdirjson:"
+
+msgid "bsdjson binary file path:"
+msgstr "путь к бинарному файлу bsdjson:"
+
+msgid "bfdjson binary file path:"
+msgstr "путь к бинарному файлу bfdjson:"
+
+msgid "bbconsjson binary file path:"
+msgstr "Путь к бинарному файлу bbconsjson:"
+
+msgid "Main Director config file path (usually bacula-dir.conf):"
+msgstr "Путь к файлу конфигурации директора (обычно bacula-dir.conf):"
+
+msgid "Main Storage Daemon config file path (usually bacula-sd.conf):"
+msgstr "Путь к файлу конфигурации хранилища (Storage) (обычно bacula-sd.conf):"
+
+msgid "Main File Daemon config file path (usually bacula-fd.conf):"
+msgstr "Путь к файлу конфигурации основного файла (обычно bacula-fd.conf):"
+
+msgid "Admin Bconsole config file path (usually bconsole.conf):"
+msgstr "Путь к файлу конфигурации Bconsole администратора (обычно bconsole.conf):"
+
+msgid "Test configuration"
+msgstr "Тест конфигурации"
+
+msgid "General configuration"
+msgstr "Основная конфигурация"
+
+msgid "To setup configuration module please provide Bacula JSON tools paths and config files paths."
+msgstr "Для настройки модуля конфигурации предоставьте пути инструментов Bacula JSON и пути к файлам конфигурации."
+
+msgid "Error during config save"
+msgstr "Ошибка при сохранении конфигурации"
+
+msgid "There is required to provide both binary file and config file paths."
+msgstr "Необходимо указать как двоичный (binary) файл, так и пути к конфигурации."
+
+msgid "Directory path for new config files:"
+msgstr "Путь для новых конфигурационных файлов директора:"
+
+msgid "Directory path field is required."
+msgstr "Требуется путь для новых конфигурационных файлов директора."
+
+msgid "Provided directory path is not writable by web server."
+msgstr "Указанный путь не доступен для записи веб-сервером."
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Seconds"
+msgstr "Секунд"
+
+msgid "Minutes"
+msgstr "Минут"
+
+msgid "Hours"
+msgstr "Часов"
+
+msgid "Days"
+msgstr "Дней"
+
+msgid "Host:"
+msgstr "Хост:"
+
+msgid "IP Address/Hostname:"
+msgstr "IP адрес/Имя хоста:"
+
+msgid "Remove"
+msgstr "Удалить"
+
+msgid "Edit"
+msgstr "Редактирование"
+
+msgid "Show/hide all directives"
+msgstr "Показать/скрыть все поля"
+
+msgid "Show the resource raw config"
+msgstr "Показать конфигурацию лог файлом"
+
+msgid "Save the resource on multiple hosts"
+msgstr "Сохранить ресурс на нескольких узлах"
+
+msgid "Save the resource to additional path"
+msgstr "Сохранить ресурс по дополнительному пути"
+
+msgid "Download the resource config"
+msgstr "Скачать конфиг"
+
+msgid "Add APIs"
+msgstr "Добавить API"
+
+msgid "Protocol:"
+msgstr "Протокол:"
+
+msgid "API Address:"
+msgstr "API адрес:"
+
+msgid "API Login:"
+msgstr "Логин API:"
+
+msgid "API Password:"
+msgstr "Пароль API:"
+
+msgid "Please enter API address."
+msgstr "Пожалуйста, введите адрес API."
+
+msgid "Please enter API port."
+msgstr "Пожалуйста, введите порт API."
+
+msgid "Please enter API login."
+msgstr "Пожалуйста, введите логин API."
+
+msgid "Please enter API password."
+msgstr "Пожалуйста, введите пароль API."
+
+msgid "Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance."
+msgstr "Baculum веб-интерфейс должен добавить хотя бы один экземпляр Baculum API с общим доступом к каталогу. Пожалуйста, добавьте экземпляр API."
+
+msgid "Save with name:"
+msgstr "Сохранить с именем:"
+
+msgid "API connection test:"
+msgstr "Проверка соединения API:"
+
+msgid "Catalog support"
+msgstr "Поддержка каталога"
+
+msgid "Console support"
+msgstr "Поддержка консоли"
+
+msgid "Config support"
+msgstr "Поддержка конфигов"
+
+msgid "Supported"
+msgstr "Поддерживается"
+
+msgid "Not supported"
+msgstr "Не поддерживается"
+
+msgid "Step 3 - authentication params to Baculum Web panel"
+msgstr "Шаг 3 - параметры аутентификации для панели Baculum Web"
+
+msgid "Step 4 - Finish"
+msgstr "Шаг 4 - Завершение"
+
+msgid "Disabled"
+msgstr "Отключено"
+
+msgid "From month"
+msgstr "С"
+
+msgid "To month"
+msgstr "До"
+
+msgid "Month"
+msgstr "Месяц"
+
+msgid "From day"
+msgstr "С"
+
+msgid "To day"
+msgstr "До"
+
+msgid "Day"
+msgstr "День"
+
+msgid "Day of week"
+msgstr "День недели"
+
+msgid "From day of week"
+msgstr "С"
+
+msgid "To day of week"
+msgstr "До"
+
+msgid "Hour"
+msgstr "Час"
+
+msgid "Minute"
+msgstr "Минута"
+
+msgid "From week"
+msgstr "С"
+
+msgid "To week"
+msgstr "До"
+
+msgid "Week"
+msgstr "Неделя"
+
+msgid "Add new %resource_type resource on %component_name (%component_type)"
+msgstr "Добавить ресурс %resource_type на %component_name (%component_type)"
+
+msgid "Reset to default value"
+msgstr "Восстановить значение по умолчанию"
+
+msgid "Remove directive"
+msgstr "Удалить директиву"
+
+msgid "Add API host"
+msgstr "Добавить API-хост"
+
+msgid "Add host"
+msgstr "Добавить хост"
+
+msgid "Given host already exists in config file."
+msgstr "Данный узел уже существует в файле конфигурации."
+
+msgid "Problem during save to config file. Please check host config file permission."
+msgstr "Возникла проблема при сохранении конфигурационного файла. Пожалуйста, проверьте права доступа к файлу конфигурации хоста."
+
+msgid "Host added successfully."
+msgstr "Хост успешно добавлен."
+
+msgid "Save as:"
+msgstr "Сохранить как:"
+
+msgid "(optional)"
+msgstr "(опционально)"
+
+msgid "Use HTTP Basic authentication"
+msgstr "Использовать базовую проверку подлинности HTTP"
+
+msgid "Use OAuth2 for authorization and authentication"
+msgstr "Использовать OAuth2 для авторизации и аутентификации"
+
+msgid "Invalid Client ID value. Client ID may contain a-z A-Z 0-9 - _ characters."
+msgstr "Неверное значение ID клиента. ID клиента может содержать символы a-z A-Z 0-9 - _."
+
+msgid "Please enter Client ID."
+msgstr "Пожалуйста, введите ID клиента."
+
+msgid "OAuth2 Client ID:"
+msgstr "ID клиента OAuth2:"
+
+msgid "OAuth2 Client Secret:"
+msgstr "OAuth2 Клиентский секрет:"
+
+msgid "Please enter Client Secret."
+msgstr "Пожалуйста, введите секретный ключ клиента."
+
+msgid "Invalid Client Secret value. Client Secret may contain any character that is not a whitespace character."
+msgstr "Недопустимое клиентское Секретное значение. Клиентский Секрет может содержать любой символ, который не является пробелом."
+
+msgid "generate"
+msgstr "генерировать"
+
+msgid "Dedicated Bconsole config file path:"
+msgstr "Выделенный путь к файлу конфигурации Bconsole:"
+
+msgid "Please enter Redirect URI."
+msgstr "Пожалуйста, введите редирект URI."
+
+msgid "OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect):"
+msgstr "OAuth2 перенаправление URI (пример: https://baculumgui:9095/web/redirect):"
+
+msgid "OAuth2 scopes (space separated):"
+msgstr "OAuth2 области (разделенные пробелом):"
+
+msgid "Please enter OAuth2 scopes."
+msgstr "Пожалуйста, введите область OAuth2."
+
+msgid "Auth Type:"
+msgstr "Тип Авторизации:"
+
+msgid "OAuth2 Redirect URI:"
+msgstr "OAuth2 перенаправление URL:"
+
+msgid "OAuth2 Scope:"
+msgstr "Область OAuth2:"
+
+msgid "Restore job:"
+msgstr "Восстановить задание:"
+
+msgid "API host"
+msgstr "Хост API"
+
+msgid "API host:"
+msgstr "Хост API:"
+
+msgid "Select host"
+msgstr "Выберите хост"
+
+msgid "Field required."
+msgstr "Поле обязательно."
+
+msgid "Invalid value. Integer value required."
+msgstr "Неверное значение. Требуется целое значение."
+
+msgid "Resource %s \"%s\" is used in the following resources:"
+msgstr "Ресурс %s \"%s\" используется в следующих ресурсах:"
+
+msgid "Component: %s, Resource: %s \"%s\", Directive: %s"
+msgstr "Компонент: %s, Ресурсы: %s \"%s\", Директива: %s"
+
+msgid "Are you sure that you want to remove %s resource \"%s\"?"
+msgstr "Вы уверены, что вы хотите удалить %s ресурс \"%s\"?"
+
+msgid "Resource %s \"%s\" removed successfully."
+msgstr "Ресурс %s \"%s\" успешно удален."
+
+msgid "Please unassign resource %s \"%s\" from these resources and try again."
+msgstr "Пожалуйста, отмените назначение ресурса %s \"%s\" из этих ресурсов и повторите попытку."
+
+msgid "Size:"
+msgstr "Размер:"
+
+msgid "JobId:"
+msgstr "Id задания:"
+
+msgid "Volume:"
+msgstr "Volume:"
+
+msgid "InChanger:"
+msgstr "В чейнджере:"
+
+msgid "Sum:"
+msgstr "Сумма:"
+
+msgid "Select"
+msgstr "Выбрать"
+
+msgid "Path:"
+msgstr "Путь:"
+
+msgid "Restore wizard"
+msgstr "Мастер восстановления"
+
+msgid "This wizard enables you to do in easy way restore files to destination Bacula Client."
+msgstr "Этот мастер позволяет легко восстанавливать файлы до конечного клиента Bacula."
+
+msgid "To start, please select backup Client which data you want to restore."
+msgstr "Чтобы начать, выберите резервную копию клиента, какие данные вы хотите восстановить."
+
+msgid "There are two ways to select backup to restore. The selected backup way provides list of jobs from which there is possible to select a job. If you need the latest backups from the Client alternatively you can use Group most recent backups way which will select backups for you basing on backup job name and fileset resource."
+msgstr "Есть два способа выбрать резервную копию для восстановления. Выбранный способ резервного копирования предоставляет список заданий, из которых можно выбрать задание. Если вам нужны последние резервные копии от клиента, в качестве альтернативы вы можете использовать метод групповых последних резервных копий, который будет выбирать резервные копии для вас на основе имени задания резервного копирования и ресурса набора файлов."
+
+msgid "Do not relocate files"
+msgstr "Не перемещать файлы"
+
+msgid "Relocate files with prefix and/or suffix"
+msgstr "Переместить файлы с префиксом и/или суффиксом"
+
+msgid "Relocate files with regular expression"
+msgstr "Перемещение файлов с регулярным выражением"
+
+msgid "Strip prefix:"
+msgstr "Префикс:"
+
+msgid "Add prefix:"
+msgstr "Добавить префикс:"
+
+msgid "Add suffix:"
+msgstr "Добавить суффикс:"
+
+msgid "RegexWhere:"
+msgstr "RegexWhere:"
+
+msgid "File relocation option:"
+msgstr "Опция перемещения файла:"
+
+msgid "In Changer"
+msgstr "В чеинджере"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "During restore there will be used following volumes:"
+msgstr "При восстановлении будут использоваться тома:"
+
+msgid "Go back"
+msgstr "Вернуться"
+
+msgid "Start time"
+msgstr "Время начала"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "JobId"
+msgstr "Id задания"
+
+msgid "More jobs"
+msgstr "Больше заданий"
+
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+msgid "Details"
+msgstr "Подробнее"
+
+msgid "Job is running"
+msgstr "Работа выполняется"
+
+msgid "Job is finished"
+msgstr "Работа завершена"
+
+msgid "Refresh log"
+msgstr "Обновить лог"
+
+msgid "Job list"
+msgstr "Список заданий"
+
+msgid "Action"
+msgstr "Действие"
+
+msgid "Storage list"
+msgstr "Список хранилищ"
+
+msgid "Status storage"
+msgstr "Статус хранилища"
+
+msgid "Storages"
+msgstr "Хранилища"
+
+msgid "Client list"
+msgstr "Список клиентов"
+
+msgid "Uname"
+msgstr "Описание"
+
+msgid "AutoPrune"
+msgstr "Авто очистка (AutoPrune)"
+
+msgid "Job retention"
+msgstr "Срок хранения задания (retention)"
+
+msgid "File retention"
+msgstr "Срок хранения файлов в БД (retention)"
+
+msgid "Client details"
+msgstr "Детали клиента"
+
+msgid "Status client"
+msgstr "Статус клиента"
+
+msgid "Configure client"
+msgstr "Настройка клиента"
+
+msgid "Add new Client"
+msgstr "Добавить нового клиента"
+
+msgid "New"
+msgstr "Новый"
+
+msgid "Resource to create:"
+msgstr "Ресурс для создания:"
+
+msgid "Create"
+msgstr "Создать"
+
+msgid "Add new resource"
+msgstr "Добавить новый ресурс"
+
+msgid "Please select host"
+msgstr "Пожалуйста, выберите хост"
+
+msgid "Component:"
+msgstr "Компонент:"
+
+msgid "Please select component"
+msgstr "Пожалуйста, выберите компонент"
+
+msgid "Add client"
+msgstr "Добавить клиента"
+
+msgid "Add job"
+msgstr "Добавить задание"
+
+msgid "Job to run:"
+msgstr "Задание для выполнения:"
+
+msgid "Add storage"
+msgstr "Добавить хранилище"
+
+msgid "Add device"
+msgstr "Добавить устройство"
+
+msgid "Add autochanger"
+msgstr "Добавить авточейнджер"
+
+msgid "Resource has been saved successfully."
+msgstr "Ресурс успешно сохранен."
+
+msgid "Configure storage"
+msgstr "Настройка хранилища"
+
+msgid "Configure devices"
+msgstr "Настройка устройств"
+
+msgid "Configure autochanger"
+msgstr "Настройка авточейнджера"
+
+msgid "Storage details"
+msgstr "Детали Storage"
+
+msgid "Device name"
+msgstr "Имя устройства"
+
+msgid "Device details"
+msgstr "Детали устройства"
+
+msgid "Device:"
+msgstr "Устройство:"
+
+msgid "Configure device"
+msgstr "Настройка устройства"
+
+msgid "Job details"
+msgstr "Детали задания"
+
+msgid "No. vols"
+msgstr "№ Vols"
+
+msgid "Max. vols"
+msgstr "Макс Vols"
+
+msgid "Vol. retention"
+msgstr "Хранение Vol."
+
+msgid "Max. vol. jobs"
+msgstr "Макс. заданий Vol."
+
+msgid "Max. vol. bytes"
+msgstr "Макс. размер Vol. (байт)"
+
+msgid "Max. vol. files"
+msgstr "Max. файлов Vol."
+
+msgid "Recycle"
+msgstr "Перезаписываемый (Recycle)"
+
+msgid "Pool list"
+msgstr "Список пулов"
+
+msgid "Add pool"
+msgstr "Добавить пул"
+
+msgid "Update pool"
+msgstr "Обновить пул"
+
+msgid "Update all vols in pool"
+msgstr "Обновить все vols в пуле"
+
+msgid "Pool details"
+msgstr "Детали пула"
+
+msgid "Limits"
+msgstr "Лимит"
+
+msgid "Recycling"
+msgstr "Перезапись"
+
+msgid "Vol. use duration"
+msgstr "Продолжительность использования Vol."
+
+msgid "Action on purge"
+msgstr "Действие по очистке (purge)"
+
+msgid "Recycle pool"
+msgstr "Перезаписываемый Пул"
+
+msgid "Scratch pool"
+msgstr "Скретч-пул"
+
+msgid "Next pool"
+msgstr "Следующий пул"
+
+msgid "Enabled"
+msgstr "Включено"
+
+msgid "Volumes in pool"
+msgstr "Томов в пуле"
+
+msgid "Configure pool"
+msgstr "Настройка пула"
+
+msgid "First written"
+msgstr "Первая запись"
+
+msgid "Last written"
+msgstr "Последняя запись"
+
+msgid "Vol. jobs"
+msgstr "Заданий в Vol."
+
+msgid "Vol. bytes"
+msgstr "Размер Vol."
+
+msgid "Volume list"
+msgstr "Список томов"
+
+msgid "Volume details"
+msgstr "Volume подробно"
+
+msgid "Recycle count"
+msgstr "Количество рециклов "
+
+msgid "Configure volume"
+msgstr "Настроить Vol."
+
+msgid "InChanger"
+msgstr "В чейнджере"
+
+msgid "Vol. files"
+msgstr "Файлов в Vol."
+
+msgid "Writing"
+msgstr "Запись"
+
+msgid "Vol. status"
+msgstr "Статус Vol."
+
+msgid "Vol. errors"
+msgstr "Ошибки Vol."
+
+msgid "Vol. mounts"
+msgstr "Vol. монтировать"
+
+msgid "Configure job"
+msgstr "Настроить задание"
+
+msgid "Configure fileset"
+msgstr "Настроить список файлов"
+
+msgid "Configure schedule"
+msgstr "Настроить расписание"
+
+msgid "Remove resource"
+msgstr "Удалить ресурс"
+
+msgid "Job history"
+msgstr "История заданий"
+
+msgid "Job history list"
+msgstr "История заданий"
+
+msgid "Job history details"
+msgstr "История заданий подробно"
+
+msgid "Are you sure you want to remove this resource?"
+msgstr "Вы уверены, что хотите удалить этот ресурс?"
+
+msgid "FileSets"
+msgstr "Наборы файлов"
+
+msgid "FileSet list"
+msgstr "Список наборов файлов"
+
+msgid "Add fileset"
+msgstr "Добавить набор файлов"
+
+msgid "FileSet details"
+msgstr "Список файлов подробно"
+
+msgid "Schedule list"
+msgstr "Список расписаний"
+
+msgid "Add schedule"
+msgstr "Добавить расписание"
+
+msgid "Schedules"
+msgstr "Расписания"
+
+msgid "Schedule:"
+msgstr "Расписание:"
+
+msgid "Schedule details"
+msgstr "Детали расписания"
+
+msgid "Configure"
+msgstr "Настройка"
+
+msgid "Configure Bacula hosts"
+msgstr "Настройка хостов Bacula"
+
+msgid "Previous"
+msgstr "Назад"
+
+msgid "Next"
+msgstr "Вперёд"
+
+msgid "Exit wizard"
+msgstr "Выйти из мастера настройки"
+
+msgid "Time range:"
+msgstr "Диапазон времени:"
+
+msgid "Application settings"
+msgstr "Настройки приложения"
+
+msgid "Update slots"
+msgstr "Обновить слоты"
+
+msgid "Max. number of jobs visible in tables"
+msgstr "Макс. количество заданий, видимых в таблицах"
+
+msgid "Max. number of jobs value must be integer greather than 0."
+msgstr "Макс. количество заданий должно быть целым числовым больше чем 0."
+
+msgid "Log order"
+msgstr "Порядок лога"
+
+msgid "Close Menu"
+msgstr "Закрыть меню"
+
+msgid "Error code:"
+msgstr "Код ошибки:"
+
+msgid "Message:"
+msgstr "Сообщение:"
+
+msgid "Include"
+msgstr "Включить"
+
+msgid "Exclude"
+msgstr "Исключить"
+
+msgid "Step 1 - select job type"
+msgstr "Шаг 1 - выберите тип задания"
+
+msgid "New job wizard"
+msgstr "Мастер нового задания"
+
+msgid "This wizard enables you to create in easy way a new job."
+msgstr "Этот мастер позволяет вам легко создать новое задание."
+
+msgid "To start please select job type that you wish to create."
+msgstr "Чтобы начать, пожалуйста, выберите тип задания, который вы хотите создать."
+
+msgid "Step 2 - what you want to backup"
+msgstr "Шаг 2 - что вы хотите сохранить"
+
+msgid "Client and FileSet"
+msgstr "Клиент и набор файлов"
+
+msgid "Please select Client from which you want to backup data and please select FileSet with files/directories definition to backup."
+msgstr "Пожалуйста, выберите клиента, из которого вы хотите сделать резервную копию данных, и выберите FileSet с определением файлов/каталогов для резервного копирования."
+
+msgid "If your FileSet for this backup does not exist yet, you can create it."
+msgstr "Если ваш набор файлов для этой резервной копии еще не существует, вы можете его создать."
+
+msgid "Add new FileSet"
+msgstr "Добавить новый FileSet"
+
+msgid "New FileSet"
+msgstr "Новый FileSet"
+
+msgid "Step 3 - where you want to backup"
+msgstr "Шаг 3 - где вы хотите сделать резервную копию"
+
+msgid "Storage and Pool"
+msgstr "Хранилище и Пул"
+
+msgid "Spool setting"
+msgstr "Настройки ленты (Spool)"
+
+msgid "Please select Storage where you want to backup data and please select Pool with volumes which Storage will use to store backup data."
+msgstr "Пожалуйста, выберите хранилище, где вы хотите сделать резервную копию данных, и выберите Пул с томами, которые будут использоваться для резервного копирования."
+
+msgid "Show Storage directives for Job"
+msgstr "Показать настройки хранилища для задания"
+
+msgid "Show Pool directives for Job"
+msgstr "Показать настройки Пула для задания"
+
+msgid "Pool setting"
+msgstr "Настройка пула"
+
+msgid "Step 4 - how would you like to backup"
+msgstr "Шаг 4 - как вы хотите сделать резервную копию"
+
+msgid "Job directives"
+msgstr "Настройки задания"
+
+msgid "Step 5 - when would you like to run backup"
+msgstr "Шаг 5 - когда вы хотите запустить резервное копирование"
+
+msgid "Show Reschedule directives"
+msgstr "Показать перепланированные директивы"
+
+msgid "Reschedule setting"
+msgstr "Перепланирование настроек"
+
+msgid "What"
+msgstr "Что"
+
+msgid "General"
+msgstr "Основное"
+
+msgid "How"
+msgstr "Как"
+
+msgid "When"
+msgstr "Когда"
+
+msgid "Other directives"
+msgstr "Другие директивы"
+
+msgid "Step 6 - summary"
+msgstr "Шаг 6 - резюме"
+
+msgid "Add new Pool"
+msgstr "Добавить новый Пул"
+
+msgid "New Pool"
+msgstr "Новый Пул"
+
+msgid "Add new Schedule"
+msgstr "Добавить новое расписание"
+
+msgid "New Schedule"
+msgstr "Новое расписание"
+
+msgid "Summary"
+msgstr "Сводка"
+
+msgid "inherited from JobDefs"
+msgstr "унаследовано от JobDefs"
+
+msgid "Create job"
+msgstr "Создать задание"
+
+msgid "Please select Client"
+msgstr "Пожалуйста, выберите клиента"
+
+msgid "Go to path"
+msgstr "Перейти к пути"
+
+msgid "Add new include path"
+msgstr "Добавить новый путь включения"
+
+msgid "Add new global exclude path"
+msgstr "Добавить новый глобальный путь исключения"
+
+msgid "Include files to FileSet"
+msgstr "Включить файлы в FileSet"
+
+msgid "Apply file selection"
+msgstr "Применить выбор файла"
+
+msgid "Schedule"
+msgstr "Расписание"
+
+msgid "To browse Windows host please type in text field below drive letter as path, for example: C:/"
+msgstr "Для просмотра узла Windows введите текстовое поле под буквой диска в качестве пути, например: C:/"
+
+msgid "Add single file/directory"
+msgstr "Добавить один файл/каталог"
+
+msgid "Add files by file browser"
+msgstr "Добавить файлы через файловый браузер"
+
+msgid "Add options block"
+msgstr "Добавить блок опций"
+
+msgid "Add include block"
+msgstr "Добавить включающий блок"
+
+msgid "Add exclude block"
+msgstr "Добавить исключающий блок"
+
+msgid "Add file/directory"
+msgstr "Добавить файл/каталог"
+
+msgid "Plugins"
+msgstr "Плагины"
+
+msgid "Add plugin"
+msgstr "Добавить плагин"
+
+msgid "Job schedules"
+msgstr "Расписания задания"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Scheduled"
+msgstr "Расписание"
+
+msgid "FileSet"
+msgstr "Наборы файлов"
+
+msgid "Filters:"
+msgstr "Фильтры:"
+
+msgid "Date from:"
+msgstr "Дата от:"
+
+msgid "Days:"
+msgstr "Дней:"
+
+msgid "Apply filters"
+msgstr "Применить фильтры"
+
+msgid "You must enter an integer."
+msgstr "Необходимо ввести целое число."
+
+msgid "Invalid date format."
+msgstr "Неверный формат даты."
+
+msgid "Input must be between 1 and 1000."
+msgstr "Вход должен быть от 1 до 1000."
+
+msgid "Schedule status"
+msgstr "Статус расписания"
+
+msgid "Slots to label (ex. 4 or 1-5 or 2,4,6-10):"
+msgstr "Слоты для метки (например, 4 или 1-5 или 2,4,6-10):"
+
+msgid "Labeling status:"
+msgstr "Статус метки:"
+
+msgid "Ready to label"
+msgstr "Готово к метке"
+
+msgid "Finished"
+msgstr "Закончить"
+
+msgid "Updating status:"
+msgstr "Обновить статус:"
+
+msgid "Ready to update"
+msgstr "Готов к обновлению"
+
+msgid "Updating..."
+msgstr "Обновление..."
+
+msgid "Slots to update (ex. 4 or 1-5 or 2,4,6-10):"
+msgstr "Слоты для обновления (например, 4 или 1-5 или 2,4,6-10):"
+
+msgid "Command status:"
+msgstr "Статус команды:"
+
+msgid "Ready"
+msgstr "Готово"
+
+msgid "Show size values as:"
+msgstr "Показывать значения размера как:"
+
+msgid "Decimal Bytes (1 mega = 10<sup>6</sup>)"
+msgstr "Десятичные байты (1 мегабайт = 10 <sup> 6 </sup>)"
+
+msgid "Binary Bytes (1 mebi = 2<sup>20</sup>)"
+msgstr "Двоичные байты (1 mebi = 2 <sup> 20 </sup>)"
+
+msgid "Statistics list"
+msgstr "Список статистики"
+
+msgid "Add director statistics"
+msgstr "Добавить статистику директора"
+
+msgid "Add storage statistics"
+msgstr "Добавить статистику хранилища"
+
+msgid "Add file daemon statistics"
+msgstr "Добавить статистику демона файла"
+
+msgid "Component type"
+msgstr "Тип компонента"
+
+msgid "Component name"
+msgstr "Имя компонента"
+
+msgid "Statistics details"
+msgstr "Детали статистики"
+
+msgid "Statistics:"
+msgstr "Статистика:"
+
+msgid "Statistics"
+msgstr "Статистика"
+
+msgid "Job files / Time"
+msgstr "Файлы заданий / Время"
+
+msgid "Job files per day"
+msgstr "Файлы заданий в день"
+
+msgid "Files count"
+msgstr "Счетчик файлов"
+
+msgid "Jobs status / Day"
+msgstr "Статус задания / День"
+
+msgid "Job status per day"
+msgstr "Статус задания в день"
+
+msgid "Jobs count"
+msgstr "Количество заданий"
+
+msgid "Job files"
+msgstr "Файлы задания"
+
+msgid "Graph type:"
+msgstr "Тип графика:"
+
+msgid "Tip: to use zoom, please mark area on graph."
+msgstr "Совет: для использования масштаба, отметьте область на графике."
+
+msgid "Tip 2: to exit zoom, please click somewhere on graph."
+msgstr "Совет 2: для выхода из зума, нажмите где-нибудь на графике."
+
+msgid "Job size / Day"
+msgstr "Размер задания / День"
+
+msgid "Job size per day"
+msgstr "Размер задания в день"
+
+msgid "Job files / Day"
+msgstr "Файлы заданий / День"
+
+msgid "Graph:"
+msgstr "График:"
+
+msgid "Job duration"
+msgstr "Продолжительность работы"
+
+msgid "Jobs duration / Time"
+msgstr "Длительность задания / Время"
+
+msgid "Duration"
+msgstr "Продолжительность"
+
+msgid "Job size per hour"
+msgstr "Размер задания в час"
+
+msgid "Job size / Hour"
+msgstr "Размер задания / Час"
+
+msgid "Job files per hour"
+msgstr "Файлы заданий в час"
+
+msgid "Job files / Hour"
+msgstr "Файлы заданий / Час"
+
+msgid "Average job size per hour"
+msgstr "Средний размер задания в час"
+
+msgid "Average job size per day"
+msgstr "Средний размер задания в день"
+
+msgid "Average job size / Hour"
+msgstr "Средний размер задания / Час"
+
+msgid "Average job size / Day"
+msgstr "Средний размер задания / День"
+
+msgid "Average job files per hour"
+msgstr "Среднее количество файлов заданий в час"
+
+msgid "Average job files per day"
+msgstr "Среднее количество заданий в день"
+
+msgid "Average job files / Hour"
+msgstr "Среднее количество файлов заданий в час"
+
+msgid "Average job files / Day"
+msgstr "Среднее количество файлов заданий / День"
+
+msgid "Average job speed / Time"
+msgstr "Средняя скорость работы / Время"
+
+msgid "Job speed"
+msgstr "Скорость работы"
+
+msgid "Average job speed"
+msgstr "Средняя скорость работы"
+
+msgid "Job count per hour"
+msgstr "Количество заданий в час"
+
+msgid "Job count per day"
+msgstr "Количество заданий в день"
+
+msgid "Job count / Hour"
+msgstr "Количество заданий / Час"
+
+msgid "Job count"
+msgstr "Количество заданий"
+
+msgid "Job count / Day"
+msgstr "Количество заданий / День"
+
+msgid "Job level:"
+msgstr "Уровень задания:"
+
+msgid "All levels"
+msgstr "Все уровни"
+
+msgid "Full"
+msgstr "Полный (Full)"
+
+msgid "Incremental"
+msgstr "Инкрементальный"
+
+msgid "Differential"
+msgstr "Дифференциальный"
+
+msgid "Custom time range"
+msgstr "Пользовательский интервал"
+
+msgid "Version:"
+msgstr "Версия:"
+
+msgid "Add directive"
+msgstr "Добавить директиву"
+
+msgid "Go to job with jobid %jobid"
+msgstr "Перейти к заданию с jobid %jo"
+
+msgid "Go to job %job"
+msgstr "Перейти к заданию %job"
+
+msgid "Graphical status"
+msgstr "Статус задания"
+
+msgid "Raw status"
+msgstr "Статус лог"
+
+msgid "Uname:"
+msgstr "Описание:"
+
+msgid "Started time:"
+msgstr "Время начала:"
+
+msgid "Plugins:"
+msgstr "Плагины:"
+
+msgid "Bandwidth limit:"
+msgstr "Лимит пропускной способности:"
+
+msgid "No limit"
+msgstr "Без ограничений"
+
+msgid "Debug:"
+msgstr "Отладка:"
+
+msgid "No debug"
+msgstr "Без отладки"
+
+msgid "Job bytes:"
+msgstr "Размер файлов задания:"
+
+msgid "Job files:"
+msgstr "Количество файлов задания:"
+
+msgid "Average speed:"
+msgstr "Средняя скорость:"
+
+msgid "Processing file:"
+msgstr "Обработка файла:"
+
+msgid "Read bytes:"
+msgstr "Прочтено:"
+
+msgid "Examined files:"
+msgstr "Проверено файлов:"
+
+msgid "Running jobs"
+msgstr "Запущенные задания"
+
+msgid "Job errors:"
+msgstr "Ошибки задания:"
+
+msgid "Type:"
+msgstr "Тип:"
+
+msgid "Refresh interval (sec.):"
+msgstr "Интервал обновления (сек.):"
+
+msgid "To disable refreshing please type 0."
+msgstr "Чтобы отключить обновление, введите 0."
+
+msgid "No jobs running"
+msgstr "Нет запущенных заданий"
+
+msgid "Graphical client status is supported for Bacula clients version 9.0 and greater."
+msgstr "Графический статус клиента поддерживается для клиентов Bacula версии 9.0 и выше."
+
+msgid "Status request timed out. The most probably the Bacula client is not available or it is not running."
+msgstr "Истекло время ожидания запроса статуса. Вероятно, клиент Bacula не доступен или не запущен."
+
+msgid "Start"
+msgstr "Старт"
+
+msgid "Stop"
+msgstr "Стоп"
+
+msgid "Restart"
+msgstr "Перезапустить"
+
+msgid "Component action result"
+msgstr "Результат действия компонента"
+
+msgid "Component start finished successfully."
+msgstr "Запуск компонента успешно завершен."
+
+msgid "Component stop finished successfully."
+msgstr "Остановка компонента успешно завершена."
+
+msgid "Component restart finished successfully."
+msgstr "Перезагрузка компонента успешно завершена."
+
+msgid "Set bandwidth"
+msgstr "Установить пропускную способность"
+
+msgid "Set client bandwidth limit"
+msgstr "Установить лимит трафика клиента"
+
+msgid "Here you can set bandwidth limit on client. This changes is applied on running client. There is no need to restart it."
+msgstr "Здесь вы можете установить лимит пропускной способности клиента. Это изменение применяется на запущенном клиенте. Перезапускать его не нужно."
+
+msgid "Bandwidth limit"
+msgstr "Лимит пропускной способности"
+
+msgid "Here you can set bandwidth limit on client. This change is applied on running client. There is no need to restart it."
+msgstr "Здесь вы можете установить лимит пропускной способности клиента. Это изменение применяется на запущенном клиенте. Перезапускать его не нужно."
+
+msgid "Setting 0 (zero) value disables bandwidth limitation."
+msgstr "Значение 0 (ноль) отключает ограничение пропускной способности."
+
+msgid "Set job bandwidth limit"
+msgstr "Установить лимит пропускной способности задания"
+
+msgid "Here you can set bandwidth limit for job. This change is applied on running job."
+msgstr "Здесь вы можете установить ограничение пропускной способности для задания. Это изменение применяется при выполнении задания."
+
+msgid "est."
+msgstr "из"
+
+msgid "Progress bar displays estimated values"
+msgstr "Индикатор прогресса"
+
+msgid "Byte progress bar:"
+msgstr "Прогресс байт:"
+
+msgid "File progress bar:"
+msgstr "Прогресс файлы:"
+
+msgid "Running job status"
+msgstr "Текущее состояние"
+
+msgid "Raw job log"
+msgstr "Лог задания"
+
+msgid "Not available"
+msgstr "Недоступно"
+
+msgid "The storage has been selected basing on job configuration. This item may require adjusting before job run."
+msgstr "Хранилище было выбрано на основе конфигурации задания. Этот элемент может потребовать настройки перед запуском задания."
+
+msgid "Graphical job status is supported for jobs running on Bacula clients version 9.0 and greater."
+msgstr "Графический статус поддерживается для заданий, выполняемых на клиентах Bacula версии 9.0 и выше."
+
+msgid "Offset:"
+msgstr "Смещение:"
+
+msgid "List type:"
+msgstr "Тип списка:"
+
+msgid "saved items"
+msgstr "сохраненные элементы"
+
+msgid "deleted items"
+msgstr "удаленные элементы"
+
+msgid "all"
+msgstr "все"
+
+msgid "Find file or directory"
+msgstr "Найти файл или каталог"
+
+msgid "Find"
+msgstr "Найти"
+
+msgid "Item count:"
+msgstr "Количество элементов:"
+
+msgid "No item result"
+msgstr "Нет элементов"
+
+msgid "Refresh job log"
+msgstr "Обновить лог заданий"
+
+msgid "Set job log order (ascending/descending)"
+msgstr "Установить порядок журнала заданий (по возрастанию/убыванию)"
+
+msgid "Run every month"
+msgstr "Запускать каждый месяц"
+
+msgid "Run one month a year"
+msgstr "Запустить один месяц в год"
+
+msgid "Run from month to month a year (range)"
+msgstr "Запуск от месяца до месяца в год (диапазон)"
+
+msgid "Run every week"
+msgstr "Запускать каждую неделю"
+
+msgid "Run one week a month"
+msgstr "Запустить неделю в месяц"
+
+msgid "Run from week to week a month (range)"
+msgstr "Запустить от недели до недели в месяц (диапазон)"
+
+msgid "Run every day"
+msgstr "Запускать каждый день"
+
+msgid "Run one day a month"
+msgstr "Запустить один день в месяц"
+
+msgid "Run from day to day a month (range)"
+msgstr "Запускать изо дня в день в месяц (диапазон)"
+
+msgid "Run every day of week"
+msgstr "Запускать каждый день недели"
+
+msgid "Run one day of week"
+msgstr "Запускать один день недели"
+
+msgid "Run from day of week to day of week (range)"
+msgstr "Запуск от дня недели до дня недели (диапазон)"
+
+msgid "Run every full hour"
+msgstr "Запускать каждый час"
+
+msgid "Run at hour and minute"
+msgstr "Запускать в час и минуту"
+
+msgid "Run hourly at minute"
+msgstr "Почасовой запуск в минуту"
+
+msgid "Hour and minute"
+msgstr "Часы и минуты"
+
+msgid "Validation error"
+msgstr "Ошибка проверки"
+
+msgid "Please select month in Run block"
+msgstr "Пожалуйста, выберите месяц в блоке \"Выполнить\""
+
+msgid "Please select month range in Run block"
+msgstr "Пожалуйста, выберите месяц в блоке \"Выполнить\""
+
+msgid "Please select week in Run block"
+msgstr "Пожалуйста, выберите неделю в блоке \"Выполнить\""
+
+msgid "Please select week range in Run block"
+msgstr "Пожалуйста, выберите диапазон недель в блоке \"Выполнить\""
+
+msgid "Please select day in Run block"
+msgstr "Пожалуйста, выберите день в блоке \"Выполнить\""
+
+msgid "Please select day range in Run block"
+msgstr "Пожалуйста, выберите дневной диапазон в блоке \"Выполнить\""
+
+msgid "Please select day of week in Run block"
+msgstr "Пожалуйста, выберите день недели в блоке \"Выполнить\""
+
+msgid "Please select day of week range in Run block"
+msgstr "Пожалуйста, выберите дневной промежуток недели в блоке Выполнить"
+
+msgid "Please select hour in Run block"
+msgstr "Пожалуйста, выберите час в блоке \"Выполнить\""
+
+msgid "Please select hour and minute in Run block"
+msgstr "Пожалуйста, выберите час и минуту в блоке \"Выполнить\""
+
+msgid "Are you sure, you want to delete this job?"
+msgstr "Вы уверены, что хотите удалить это задание?"
+
+msgid "Access-control list"
+msgstr "Список контроля доступа"
+
+msgid "Communications encryption"
+msgstr "Опции шифрования"
+
+msgid "Copy and migration"
+msgstr "Копирование и перенос"
+
+msgid "CSV file"
+msgstr "CSV-файл"
+
+msgid "Data encryption"
+msgstr "Шифрование данных"
+
+msgid "Deduplication optimized volumes"
+msgstr "Оптимизация дедупликации томов"
+
+msgid "Device"
+msgstr "Устройство"
+
+msgid "Disk"
+msgstr "Диск"
+
+msgid "Duplicates and priorities"
+msgstr "Дубликаты и приоритеты заданий"
+
+msgid "Graphite"
+msgstr "Graphite"
+
+msgid "Limitations"
+msgstr "Ограничения"
+
+msgid "Networking"
+msgstr "Сеть"
+
+msgid "Pruning"
+msgstr "Удаление записей базы в Bacula  (Pruning)"
+
+msgid "Spooling"
+msgstr "Spooling"
+
+msgid "Tape"
+msgstr "Лента"
+
+msgid "Verify"
+msgstr "Проверка"
+
+msgid "Virtual full backup"
+msgstr "Полный виртуальный бекап (Virtual Full)"
+
+msgid "Volume recycling"
+msgstr "Перезаписываемый Vo."
+
+msgid "Tip: checking 'All' message type causes, that rest checked message types are saved with negation ex. Catalog = All, !Debug, !Saved, !Skipped"
+msgstr "Совет: при выборе типа сообщения «Все» остальные выбранные типы сообщений сохраняются с отрицанием, например, Каталог = Все,! Отладка ,! Сохранено ,! Пропущено."
+
+msgid "Enable restore from copy jobs feature:"
+msgstr "Включите функцию восстановления данных из заданий резервного копирования:"
+
+msgid "Note: if you select incremental or differential backup, on the next step will be also loaded all directories and files from older backups required to do the job restore. In other words, the selected backup determines time point from which will be loaded the selected backup and other older backups (incremental, differential) backups up till closest full backup."
+msgstr "Примечание: если вы выбираете инкрементальную или дифференциальную резервную копию, на следующем шаге будет также загружены все каталоги и файлы из старых резервных копий, необходимых для восстановления работы. Другими словами, выбранная резервная копия определяет точку времени, из которой будет загружена выбранная резервная копия и другие старые резервные копии (инкрементальные, различные) резервные копии до ближайшего полного резервного копирования."
+
+msgid "Create new resource"
+msgstr "Создать новый ресурс"
+
+msgid "The resource has been created successfully."
+msgstr "Ресурс успешно создан."
+
+msgid "Scheduled time"
+msgstr "Время расписания"
+
+msgid "Real end time"
+msgstr "Время окончания"
+
+msgid "Read bytes"
+msgstr "Прочтено байт"
+
+msgid "Job errors"
+msgstr "Ошибки задания"
+
+msgid "Job missing files"
+msgstr "Отсутствуют файлы задания"
+
+msgid "Purged files"
+msgstr "Очищенные (Purged) файлы"
+
+msgid "Has base"
+msgstr "Имеет базу"
+
+msgid "Reviewed"
+msgstr "Проверено"
+
+msgid "Comment"
+msgstr "Комментарий"
+
+msgid "File table"
+msgstr "Таблица файлов"
+
+msgid "Label date"
+msgstr "Дата метки"
+
+msgid "Vol. blocks"
+msgstr "Блоки Vol."
+
+msgid "Vol. abytes"
+msgstr "Том abytes"
+
+msgid "Vol. apadding"
+msgstr "Добавить Том"
+
+msgid "Vol. hole bytes"
+msgstr "Vol. hole bytes"
+
+msgid "Vol. holes"
+msgstr "Vol. holes"
+
+msgid "Vol. parts"
+msgstr "Части Vol."
+
+msgid "Vol. writes"
+msgstr "Записей Vol."
+
+msgid "Vol. capacity bytes"
+msgstr "Vol. байты емкости"
+
+msgid "Storage"
+msgstr "Хранилище"
+
+msgid "Media addressing"
+msgstr "Media addressing"
+
+msgid "Vol. read time"
+msgstr "Vol. времени чтения"
+
+msgid "Vol. write time"
+msgstr "Vol. время записи"
+
+msgid "End file"
+msgstr "Конечный файл"
+
+msgid "End block"
+msgstr "Конечный блок"
+
+msgid "Initial write"
+msgstr "Начальная запись"
+
+msgid "Vol. type"
+msgstr "Тип Vol."
+
+msgid "Vol. cloud parts"
+msgstr "Том часть облака"
+
+msgid "Last part bytes"
+msgstr "Последняя часть байт"
+
+msgid "Cache retention"
+msgstr "Хранение кэша"
+
+msgid "Bulk action"
+msgstr "Массовое действие"
+
+msgid "Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again."
+msgstr "Следующие задания запущены и не могут быть удалены: %running_jobs Чтобы удалить их, пожалуйста, остановите эти задания и повторите попытку."
+
+msgid "Refresh page"
+msgstr "Обновить страницу"
+
+msgid "Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection."
+msgstr "Совет: Используйте левый клик для выбора строки таблицы. Используйте CTRL + левый клик для выбора нескольких строк. Используйте SHIFT + левой кнопкой мыши, чтобы добавить диапазон строк к выделению."
+
+msgid "Show time in job log:"
+msgstr "Показывать время в журнале заданий:"
+
+msgid "Security"
+msgstr "Безопасность"
+
+msgid "Roles"
+msgstr "Роли"
+
+msgid "Long name"
+msgstr "Полное имя"
+
+msgid "Edit user"
+msgstr "Изменить пользователя"
+
+msgid "Long name:"
+msgstr "Полное имя:"
+
+msgid "Description:"
+msgstr "Описание:"
+
+msgid "E-mail:"
+msgstr "E-mail:"
+
+msgid "Roles:"
+msgstr "Роли:"
+
+msgid "Invalid e-mail address value."
+msgstr "Неверное значение адреса электронной почты."
+
+msgid "Invalid username value."
+msgstr "Неверное имя пользователя."
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Description"
+msgstr "Описание"
+
+msgid "Add user"
+msgstr "Добавить пользователя"
+
+msgid "Username field cannot be empty."
+msgstr "Поле Имя пользователя не может быть пустым."
+
+msgid "At least one role must be selected."
+msgstr "Необходимо выбрать хотя бы одну роль."
+
+msgid "Username with the given name already exists."
+msgstr "Такое имя пользователя уже существует."
+
+msgid "Edit role"
+msgstr "Изменить роль"
+
+msgid "Role with limitted access"
+msgstr "Роль с ограниченным доступом"
+
+msgid "Role with full access"
+msgstr "Роль с полным доступом"
+
+msgid "Role:"
+msgstr "Роль:"
+
+msgid "Resources:"
+msgstr "Ресурсы:"
+
+msgid "Role name"
+msgstr "Название роли"
+
+msgid "Resources"
+msgstr "Ресурсы"
+
+msgid "Add new role"
+msgstr "Добавить роль"
+
+msgid "Role field cannot be empty."
+msgstr "Поле роль не может быть пустым."
+
+msgid "At least one resource must be selected."
+msgstr "Должен быть выбран хотя бы один ресурс."
+
+msgid "Role with the given name already exists."
+msgstr "Роль с таким именем уже существует."
+
+msgid "This is native predefined role, that cannot be changed. For having custom roles please use the button to add new role."
+msgstr "Это основные определенные роли, которые не могут быть изменены. Для создания пользовательских ролей, пожалуйста, используйте кнопку добавления новой роли."
+
+msgid "The following roles are predefined and cannot be removed: %predefined_roles"
+msgstr "Следующие роли предопределены и не могут быть удалены: %predefined_roles"
+
+msgid "The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles."
+msgstr "Следующие роли используются пользователями и не могут быть удалены: %used_roles Чтобы удалить их, пожалуйста, отмените назначение всех пользователей из этих ролей."
+
+msgid "Add role"
+msgstr "Добавить роль"
+
+msgid "Authentication method"
+msgstr "Метод аутентификации"
+
+msgid "HTTP Basic authentication"
+msgstr "Базовая проверка подлинности HTTP"
+
+msgid "LDAP authentication"
+msgstr "Аутентификация LDAP"
+
+msgid "LDAP server options"
+msgstr "Настройки сервера LDAP"
+
+msgid "SSL encryption (LDAPS):"
+msgstr "SSL шифрование (LDAPS):"
+
+msgid "Protocol version:"
+msgstr "Версия протокола:"
+
+msgid "LDAP version"
+msgstr "Версия LDAP"
+
+msgid "LDAP authentication method"
+msgstr "Метод аутентификации LDAP"
+
+msgid "Anonymous authentication"
+msgstr "Анонимная аутентификация"
+
+msgid "Simple authentication"
+msgstr "Простая аутентификация"
+
+msgid "Base DN:"
+msgstr "Базовый DN:"
+
+msgid "Attributes"
+msgstr "Атрибуты"
+
+msgid "Please enter port."
+msgstr "Пожалуйста, введите порт."
+
+msgid "Please enter username."
+msgstr "Пожалуйста, введите имя пользователя."
+
+msgid "Manager DN:"
+msgstr "Менеджер DN:"
+
+msgid "Please enter IP Address/Hostname."
+msgstr "Пожалуйста, введите IP-адрес/имя хоста."
+
+msgid "Please enter username attribute."
+msgstr "Пожалуйста, введите атрибут пользователя."
+
+msgid "Test LDAP connection"
+msgstr "Проверить подключение к LDAP"
+
+msgid "Manage LDAP users"
+msgstr "Управление пользователями LDAP"
+
+msgid "Please enter Base DN."
+msgstr "Пожалуйста, введите базовый DN."
+
+msgid "LDAP user list"
+msgstr "Список пользователей LDAP"
+
+msgid "Import users"
+msgstr "Импорт пользователей"
+
+msgid "Import all users"
+msgstr "Импортировать всех пользователей"
+
+msgid "Import selected users"
+msgstr "Импорт выбранных пользователей"
+
+msgid "Import users whose fulfill criteria"
+msgstr "Импортировать пользователей, удовлетворяющих критериям"
+
+msgid "Import options:"
+msgstr "Импорт настроек:"
+
+msgid "Criteria filter:"
+msgstr "Фильтр критериев:"
+
+msgid "contains:"
+msgstr "содержит:"
+
+msgid "Reload"
+msgstr "Перезагрузка"
+
+msgid "Please select users in table to import."
+msgstr "Пожалуйста, выберите пользователей в таблице для импорта."
+
+msgid "Do not overwrite existing Baculum Web users, if they have the same username"
+msgstr "Не перезаписывать существующих пользователей Baculum Web, если они имеют то же имя пользователя"
+
+msgid "Default role for imported users:"
+msgstr "Роль по умолчанию для импортированных пользователей:"
+
+msgid "Advanced options"
+msgstr "Расширенные настройки"
+
+msgid "Default API hosts for imported users:"
+msgstr "Хосты API по умолчанию для импортируемых пользователей:"
+
+msgid "Log in"
+msgstr "Вход"
+
+msgid "Invalid username or password"
+msgstr "Неверное имя пользователя или пароль"
+
+msgid "IP address restrictions"
+msgstr "Ограничения IP-адресов"
+
+msgid "IP address restrictions:"
+msgstr "Ограничения IP-адресов:"
+
+msgid "Use CTRL + left-click to multiple item selection"
+msgstr "Использовать CTRL + левый клик для выбора нескольких пунктов"
+
+msgid "Comma separated IP addresses. Using asterisk character, there is also possible to provide subnet, for example: 192.168.1.*"
+msgstr "IP адреса, разделенные запятыми. С помощью символа звездочки, существует возможность предоставления подсети, например: 192.168.1.*"
+
+msgid "Default IP address restrictions for imported users:"
+msgstr "Ограничение IP адреса по умолчанию для импортируемых пользователей:"
+
+msgid "Set your IP address"
+msgstr "Укажите ваш IP-адрес"
+
+msgid "Invalid IP address restrictions value. This field can have comma separated IP addresses only or subnet addresses like 192.168.1.*"
+msgstr "Неверное значение ограничения IP-адреса. В этом поле могут быть разделенные запятыми IP адреса или адреса подсети типа 192.168.1.*"
+
+msgid "This type of authentication is realized by web server. To use it, the basic authentication has to be enabled in the Baculum Web web server configuration."
+msgstr "Этот тип аутентификации реализован веб-сервером. Для использования, базовая аутентификация должна быть включена в конфигурации веб-сервера Baculum."
+
+msgid "General settings"
+msgstr "Основные настройки"
+
+msgid "Default access setting for logged in users not defined in Baculum Web:"
+msgstr "Настройки доступа по умолчанию для авторизованных пользователей, не определенных в Baculum Web:"
+
+msgid "No access"
+msgstr "Нет доступа"
+
+msgid "Access with default settings"
+msgstr "Доступ с настройками по умолчанию"
+
+msgid "Default role:"
+msgstr "Роль по умолчанию:"
+
+msgid "Default API host:"
+msgstr "Хост API по умолчанию:"
+
+msgid "Users file path:"
+msgstr "Путь к файлу пользователей:"
+
+msgid "Hash algorithm:"
+msgstr "Алгоритм шифрования:"
+
+msgid "Please enter users file path value."
+msgstr "Пожалуйста, введите путь к файлу пользователей."
+
+msgid "Test"
+msgstr "Тест"
+
+msgid "The user file is not accessible."
+msgstr "Файл пользователя недоступен."
+
+msgid "The user file is not readable by web server user."
+msgstr "Файл пользователя не доступен для чтения пользователем веб-сервера."
+
+msgid "The user file is readable but not writeable by web server user."
+msgstr "Файл пользователя доступен для чтения, но недоступен для записи."
+
+msgid "Allow Baculum Web to manage the Basic authentication users (add/remove users and change their passwords)"
+msgstr "Разрешить Baculum Web управлять основными пользователями аутентификации (добавлять/удалять пользователей и изменять их пароли)"
+
+msgid "Authorization failed. Please contact the Baculum administrator to grant permissions."
+msgstr "Ошибка авторизации. Пожалуйста, свяжитесь с администратором Baculum для предоставления разрешений."
+
+msgid "Try again"
+msgstr "Попробовать еще раз"
+
+msgid "Manage Basic users"
+msgstr "Управление базовыми пользователями"
+
+msgid "Empty user list"
+msgstr "Список пользователей пуст"
+
+msgid "Basic user list"
+msgstr "Основной список пользователей"
+
+msgid "Access to Baculum API"
+msgstr "Доступ к Baculum API"
+
+msgid "Access to Baculum Web"
+msgstr "Доступ к Baculum Web"
+
+msgid "Requried support from web server side - e.g. %supported_web_server_list"
+msgstr "Необходимая поддержка с веб-сервера - например %supported_web_server_list"
+
+msgid "Apache 2.4 with apr-util 1.5+"
+msgstr "Apache 2.4 с apr-util 1.5+"
+
+msgid "Apache, Lighttpd and Nginx on most UNIX platforms"
+msgstr "Apache, Lighttpd и Nginx на большинстве UNIX платформ"
+
+msgid "Nginx on most UNIX platforms"
+msgstr "Nginx на большинстве UNIX платформ"
+
+msgid "No file found for selected backup. It can mean file records for this backup are pruned. Restoring selected files is not available but if you continue, there will be performed full restore all backup files."
+msgstr "Не найдены файлы для выбранной резервной копии. Это может означать, что файловые записи для этой резервной копии удалены. Восстановление выбранных файлов недоступно, но если вы продолжите, будет выполнено полное восстановление всех файлов резервных копий."
+
+msgid "Date and time format:"
+msgstr "Формат даты и времени:"
+
+msgid "Available formats:"
+msgstr "Доступные форматы:"
+
+msgid "full 4 digits year, ex. 2021"
+msgstr "4 полные цифры год, напр. 2021"
+
+msgid "2 digits year, ex, 21"
+msgstr "2 цифры года, напр. 21"
+
+msgid "2 digits month 01..12"
+msgstr "2 цифры месяца 01..12"
+
+msgid "1-2 digits month 1..12"
+msgstr "1-2 цифры месяца 1..12"
+
+msgid "2 digits day 01..31"
+msgstr "2 цифры день 01..31"
+
+msgid "1-2 digits day 1..31"
+msgstr "1-2 цифры день 1..31"
+
+msgid "2 digits 24-hour format hour 00..23"
+msgstr "2 цифры в 24-часовом формате 00..23"
+
+msgid "1-2 digits 24-hour format hour 0..23"
+msgstr "1-2 знака 24-часовой формат часа 0..23"
+
+msgid "2 digits 12-hour format hour 01..12"
+msgstr "2 цифры 12-часовой формат час 01..12"
+
+msgid "1-2 digits 12-hour format hour 1..12"
+msgstr "1 цифра в 2-часовом формате 12..1"
+
+msgid "2 digits minutes 00..59"
+msgstr "2 цифры месяца 00..59"
+
+msgid "1-2 digits minutes 0..59"
+msgstr "0-2 цифры месяца 1..59"
+
+msgid "2 digits seconds 00..59"
+msgstr "2 цифры секунд 00..59"
+
+msgid "1-2 digits seconds 0..59"
+msgstr "1-2 цифры секунд 0..59"
+
+msgid "AM/PM value"
+msgstr "Значение AM/PM"
+
+msgid "24-hours format time 17:22:41"
+msgstr "24-часовой формат времени 17:22:41"
+
+msgid "12-hours format time 5:22:41 PM"
+msgstr "12-часовой формат времени 5:22:41"
+
+msgid "Local user authentication"
+msgstr "Аутентификация локального пользователя"
+
+msgid "This type of authentication is fully realized by Baculum Web. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method."
+msgstr "Этот тип аутентификации полностью реализован Baculum Web. Для аутентификации используется форма входа в систему Baculum Web. Базовая аутентификация веб-сервера может быть отключена в этом методе."
+
+msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method."
+msgstr "Этот тип аутентификации реализован службой внешней директории. Для аутентификации используется форма входа в систему Baculum. Базовая аутентификация веб-сервера может быть отключена в этом методе."
+
+msgid "Console ACLs"
+msgstr "ACL консоли"
+
+msgid "Add new console"
+msgstr "Добавить новую консоль"
+
+msgid "Edit console"
+msgstr "Изменить консоль"
+
+msgid "Add console"
+msgstr "Добавить консоль"
+
+msgid "OAuth2 clients"
+msgstr "Клиенты OAuth2"
+
+msgid "Short name"
+msgstr "Короткое имя"
+
+msgid "Add new OAuth2 client"
+msgstr "Добавить новый OAuth2 клиент"
+
+msgid "Short name:"
+msgstr "Короткое имя:"
+
+msgid "Add OAuth2 client account"
+msgstr "Добавить аккаунт клиента OAuth2"
+
+msgid "set all scopes"
+msgstr "установить все области"
+
+msgid "Edit OAuth2 client account"
+msgstr "Редактировать OAuth2 аккаунт клиента"
+
+msgid "Add new API host"
+msgstr "Добавить новый API хост"
+
+msgid "Get existing API host settings:"
+msgstr "Получить существующие настройки хоста API:"
+
+msgid "Get existing OAuth2 client settings:"
+msgstr "Получить существующие настройки клиента OAuth2:"
+
+msgid "API hosts"
+msgstr "Хосты API"
+
+msgid "Edit API host"
+msgstr "Редактировать API хост"
+
+msgid "Create dedicated Bconsole config file:"
+msgstr "Создать выделенный файл конфигурации Bconsol:"
+
+msgid "Console ACL to use in new Bconsole config file:"
+msgstr "Консоль ACL для использования в новом конфигурационном файле Bconsol:"
+
+msgid "Director for Bconsole config:"
+msgstr "Director для настройки Bconsol:"
+
+msgid "The console ACLs enable to define available resources for users. The consoles are used in the Bacula configuration on the API host side. There is possible to assign the consoles to the API basic users or to the OAuth2 clients. The assign relation for the basic users is: Console ACL -&gt; API basic user -&gt; API host -&gt; User account. For OAuth2 clients the assign relation is: Console ACL -&gt; OAuth2 client -&gt; API host -&gt; User account."
+msgstr "Консольные ACL позволяют определять доступные ресурсы для пользователей. Консоли используются в конфигурации Bacula на стороне хоста API. Консоли можно назначить базовым пользователям API или клиентам OAuth2. Отношение назначения для основных пользователей: ACL консоли -&gt; Базовый пользователь API -&gt; Хост API -&gt; Учетная запись пользователя. Для клиентов OAuth2 отношение назначения выглядит следующим образом: ACL консоли -&gt; Клиент OAuth2 -&gt; Хост API -&gt; Учетная запись пользователя."
+
+msgid "The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Baculum API."
+msgstr "Клиенты OAuth2 настроены на хост-серверах API. Чтобы создать OAuth2 клиентов с этой страницы, вам нужно иметь область действия 'oauth2' в учетной записи OAuth2, связанной с вашей текущей учетной записью администратора. Учетные записи клиентов OAuth2 также можно создать непосредственно в панели Baculum API."
+
+msgid "The API hosts define connection parameters to hosts with the Baculum API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Baculum API instance."
+msgstr "Хосты API определяют параметры соединения с хостами с экземплярами Baculum API. Вы можете создать API хост-соединения, предназначенные для конкретных пользователей, назначая им хосты на вкладке Пользователи. Существует возможность создания многих соединений API хостов к тому же экземпляру Baculum API."
+
+msgid "Set all CommandAcls used by Baculum Web"
+msgstr "Установить все команды Acl, используемые Baculum Web"
+
+msgid "Find job by filename (without path):"
+msgstr "Найти задание по имени файла (без пути):"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "match exact filename"
+msgstr "соответствует точному имени файла"
+
+msgid "With this option are searched files with names equal provided filename, otherwise there are searched files with names containing provided filename like *filename*."
+msgstr "С помощью этой опции ищутся файлы с именами, равными указанному имени файла, в противном случае ищутся файлы с именами, содержащими указанное имя файла, например * имя файла *."
+
+msgid "State"
+msgstr "Состояние"
+
+msgid "saved"
+msgstr "сохранено"
+
+msgid "deleted"
+msgstr "удалено"
+
+msgid "last %days days"
+msgstr "последние %days дней"
+
+msgid "Path (optional):"
+msgstr "Путь (необязательно):"
+
+msgid "With the given path, the results narrow down to the files in the path only."
+msgstr "С указанием пути результаты сужаются только до файлов только по данному пути."
+
+msgid "Storage Daemon:"
+msgstr "Демон хранения:"
+
+msgid "# Autochangers:"
+msgstr "# Авточейнджеры:"
+
+msgid "# Devices:"
+msgstr "# Устройства:"
+
+msgid "Devices"
+msgstr "Устройства"
+
+msgid "Archive device:"
+msgstr "Устройство архивации:"
+
+msgid "Device type:"
+msgstr "Тип устройства:"
+
+msgid "Media type:"
+msgstr "Тип медиа:"
+
+msgid "Device type"
+msgstr "Тип устройства"
+
+msgid "Media type"
+msgstr "Тип медиа"
+
+msgid "Maximum concurrent jobs:"
+msgstr "Максимум одновременных задач:"
+
+msgid "Maximum volume size:"
+msgstr "Максимальный размер Тома:"
+
+msgid "Mounted:"
+msgstr "Смонтировано:"
+
+msgid "Opened:"
+msgstr "Открытый:"
+
+msgid "Waiting:"
+msgstr "Ожидание:"
+
+msgid "Blocked:"
+msgstr "Заблокированный:"
+
+msgid "Blocked description:"
+msgstr "Описание блокировки:"
+
+msgid "Read-only:"
+msgstr "Только для чтения:"
+
+msgid "Last speed:"
+msgstr "Последняя скорость:"
+
+msgid "Write pool:"
+msgstr "Пул записей:"
+
+msgid "Write device:"
+msgstr "Устройство записи:"
+
+msgid "Write volume:"
+msgstr "Записать Том:"
+
+msgid "Read pool:"
+msgstr "Чтение пула:"
+
+msgid "Read device:"
+msgstr "Чтение устройства:"
+
+msgid "Read volume:"
+msgstr "Чтение Тома:"
+
+msgid "Used space:"
+msgstr "Использованное пространство:"
+
+msgid "Status:"
+msgstr "Статус:"
+
+msgid "running"
+msgstr "запущенный"
+
+msgid "idle"
+msgstr "простое"
+
+msgid "Autochanger:"
+msgstr "Авточейнджер:"
+
+msgid "Single devices"
+msgstr "Одиночные устройства"
+
+msgid "Start time:"
+msgstr "Время начала:"
+
+msgid "End time:"
+msgstr "Время окончания:"
+
+msgid "Terminated jobs"
+msgstr "Завершенные задания"
+
+msgid "All devices"
+msgstr "Все"
+
+msgid "All device types"
+msgstr "Все"
+
+msgid "All media types"
+msgstr "Все типы медиа"
+
+msgid "All statuses"
+msgstr "Все статусы"
+
+msgid "Graphical storage status is supported for Bacula storages version 9.0 and greater."
+msgstr "Графическое отображение состояния хранилища поддерживается для хранилищ Bacula версии 9.0 и выше."
+
+msgid "Status request timed out. The most probably the Bacula storage is not available or it is not running."
+msgstr "Истекло время ожидания. Скорее всего, хранилище Bacula недоступно или не работает."
+
+msgid "Display messages log window"
+msgstr "Показать лог"
+
+msgid "Truncate log"
+msgstr "Очистить журнал"
+
+msgid "Messages"
+msgstr "Сообщения"
+
+msgid "Last %errors/%count jobs finished with error."
+msgstr "Последнее %errors/%count заданий закончились с ошибкой."
+
+msgid "All last %count jobs finished successfully."
+msgstr "Все последние %count задания успешно завершены."
+
+msgid "Drive index"
+msgstr "Индекс диска"
+
+msgid "Drive name"
+msgstr "Имя устройства"
+
+msgid "Unload"
+msgstr "Выгрузить"
+
+msgid "Manage autochanger"
+msgstr "Управление авточейнджером"
+
+msgid "Slot in device"
+msgstr "Слот в устройстве"
+
+msgid "Slot in catalog"
+msgstr "Слот в каталоге"
+
+msgid "Load"
+msgstr "Загрузка"
+
+msgid "Load drive"
+msgstr "Загрузка привода"
+
+msgid "index"
+msgstr "индекс"
+
+msgid "device"
+msgstr "устройство"
+
+msgid "Drive"
+msgstr "Привод"
+
+msgid "Empty"
+msgstr "Пустой"
+
+msgid "In drive %index (%drive)"
+msgstr "На диске %index (%drive)"
+
+msgid "Import/Export"
+msgstr "Импорт/Экспорт"
+
+msgid "Label using barcodes"
+msgstr "Метка с использованием штрих-кодов"
+
+msgid "Move to import/export slot"
+msgstr "Переместить в слот для импорта/экспорта"
+
+msgid "Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side."
+msgstr "Управление автоматическим чейнджером недоступно. Чтобы управлять авточейнджером отсюда, добавьте его к устройствам хоста API на стороне хоста API."
+
+msgid "Drive index:"
+msgstr "Индекс диска:"
+
+msgid "Slots"
+msgstr "Слоты"
+
+msgid "Release I/E"
+msgstr "Релиз I/E"
+
+msgid "Move to import/export slots"
+msgstr "Переместить в слот для импорта/экспорта"
+
+msgid "There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count."
+msgstr "Есть несколько слотов импорта / экспорта для переноса выбранных томов. Количество свободных слотов для импорта / экспорта: %slots_count, количество выбранных томов: %vols_count."
+
+msgid "Import/export slot"
+msgstr "Слот для импорта / экспорта"
+
+msgid "Destination slot"
+msgstr "Слот назначения"
+
+msgid "Release import/export slot"
+msgstr "Переместить в слот для импорта/экспорта"
+
+msgid "Tape drives"
+msgstr "Ленточные накопители"
+
+msgid "Changer slots"
+msgstr "Слоты чейнджера"
+
+msgid "Release all I/E slots"
+msgstr "Освободить все I/E слоты"
+
+msgid "There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count."
+msgstr "Есть несколько обычных слотов для переноса выбранных Томов из слотов импорта / экспорта. Полное количество слотов импорта / экспорта: %ie_slot_count, количество свободных обычных слотов: %slot_count."
+
+msgid "Tip: To use bulk autochanger actions, please select table rows."
+msgstr "Подсказка: Чтобы использовать массовые действия автосмены, выберите строку таблицы."
+
+msgid "Mount volume"
+msgstr "Монтировать Том"
+
+msgid "API hosts:"
+msgstr "Хосты API:"
+
+msgid "Please select API host"
+msgstr "Пожалуйста, выберите хост API"
+
+msgid "FD address"
+msgstr "Адрес FD"
+
+msgid "FD port"
+msgstr "Порт FD"
+
+msgid "FD API host"
+msgstr "Хост FD API"
+
+msgid "Configure file daemon"
+msgstr "Настроить файловый демон"
+
+msgid "There was a problem with loading the resource configuration. Please check if selected API host is working and if it provides access to the resource configuration."
+msgstr "Возникла проблема при загрузке конфигурации ресурса. Пожалуйста, проверьте, работает ли выбранный хост API и обеспечивает ли он доступ к конфигурации ресурса."
+
+msgid "SD API host"
+msgstr "Хост SD API"
+
+msgid "SD address"
+msgstr "Адрес SD"
+
+msgid "SD port"
+msgstr "Порт SD"
+
+msgid "Configure storage daemon"
+msgstr "Настроить демон хранения"
+
+msgid "# Directories:"
+msgstr "# Каталоги:"
+
+msgid "# Files:"
+msgstr "# Файлов:"
+
+msgid "Search..."
+msgstr "Поиск..."
+
+msgid "case sensitive"
+msgstr "учитывать регистр"
+
+msgid "Backup client"
+msgstr "Резервная копия клиента"
+
+msgid "Job type"
+msgstr "Тип задания"
+
+msgid "Restore time point"
+msgstr "Восстановить на момент времени"
+
+msgid "Catalogs"
+msgstr "Каталоги"
+
+msgid "Status director"
+msgstr "Статус директора"
+
+msgid "Configure director"
+msgstr "Настройка директора"
+
+msgid "Job"
+msgstr "Задание"
+
+msgid "Job status desc.:"
+msgstr "Описание статуса задания:"
+
+msgid "Scheduled time:"
+msgstr "Назначенное время:"
+
+msgid "Scheduled jobs"
+msgstr "Запланированные задания"
+
+msgid "No jobs scheduled"
+msgstr "Нет запланированных заданий"
+
+msgid "No jobs terminated"
+msgstr "Нет прекращенных заданий"
+
+msgid "Director details"
+msgstr "Директор подробно"
+
+msgid "Graphical director status is supported for Bacula directors version 9.0 and greater."
+msgstr "Графический статус клиента поддерживается для клиентов Bacula версии 9.0 и выше."
+
+msgid "Status request timed out. The most probably the Bacula director is not available or it is not running."
+msgstr "Истекло время ожидания запроса. Вероятно, клиент Bacula не доступен или не запущен."
+
+msgid "To use the console page please configure bbconsjson binary file path on the API side."
+msgstr "Чтобы использовать страницу консоли, настройте путь к бинарным файлам bbconsjson на стороне API."
+
+msgid "Console details"
+msgstr "Детали консоли"
+
+msgid "Configure console"
+msgstr "Настройка консоли"
+
+msgid "Mode:"
+msgstr "Режим:"
+
+msgid "Reset table mode"
+msgstr "Сбросить режим таблицы"
+
+msgid "Jobs terminated normally"
+msgstr "Задания завершены нормально"
+
+msgid "Jobs with warning"
+msgstr "Задания с предупреждением"
+
+msgid "Jobs finished with error"
+msgstr "Задания завершены с ошибкой"
+
+msgid "Jobs running"
+msgstr "Задания выполняются"
+
+msgid "Jobs canceled"
+msgstr "Отменённые задания"
+
+msgid "Copy"
+msgstr "Копировать"
+
+msgid "Column visibility"
+msgstr "Настройка столбцов"
+
+msgid "1 row selected"
+msgstr "выбрана 1 строка"
+
+msgid "%d rows selected"
+msgstr "Выбрано %d строк"
+
+msgid "Show _MENU_ entries"
+msgstr "Показать _MENU_ записей"
+
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "Показаны _START_ по _END_ из _TOTAL_ записей"
+
+msgid "First"
+msgstr "Первое"
+
+msgid "Last"
+msgstr "Последняя"
+
+msgid "No matching records found"
+msgstr "Не найдено ни одной записи"
+
+msgid "filtered from _MAX_ total entries"
+msgstr "отфильтровано из _MAX_ всего записей"
+
+msgid "No data available in table"
+msgstr "Нет данных в таблице"
+
+msgid "Jump to:"
+msgstr "Перейти к:"
+
+msgid "Previous error/warning"
+msgstr "Предыдущая ошибка/предупреждение"
+
+msgid "Next error/warning"
+msgstr "Следующая ошибка/предупреждение"
+
+msgid "New backup job"
+msgstr "Новое задание резервного копирования"
+
+msgid "New copy job"
+msgstr "Новая копия задания"
+
+msgid "Step 1 - basic information about new job"
+msgstr "Шаг 1 - базовая информация о новом задании"
+
+msgid "New copy job wizard"
+msgstr "Мастер нового задания"
+
+msgid "Copy jobs run copying backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. All process runs without using file daemon."
+msgstr "Копирование заданий запускает копирование заданий резервной копии данных из одного тома в другой. Это делается путем чтения ранее сохраненных данных из тома и записи их в другой том в другой пул. Весь процесс запускается без использования файлового демона."
+
+msgid "Step 2 - what you want to copy"
+msgstr "Шаг 2 - что вы хотите скопировать"
+
+msgid "Source Pool"
+msgstr "Исходный пул"
+
+msgid "Please select a pool from which you want to copy data."
+msgstr "Пожалуйста, выберите пул, из которого вы хотите скопировать данные."
+
+msgid "The source pool will be examined for finding backup jobs to copy."
+msgstr "Исходный пул будет исследован на предмет поиска заданий резервного копирования для копирования."
+
+msgid "See volumes in selected pool"
+msgstr "Смотреть тома в выбранном пуле"
+
+msgid "Step 3 - how would you like to copy"
+msgstr "Шаг 3 - как вы хотите сделать резервную копию"
+
+msgid "Backup jobs selection criteria"
+msgstr "Критерии выбора резервных заданий"
+
+msgid "Please select the criteria that will be used for selecting backup jobs to copy."
+msgstr "Пожалуйста, выберите критерии, которые будут использоваться для выбора заданий резервного копирования."
+
+msgid "Copy by job"
+msgstr "Копировать по заданию"
+
+msgid "Copy by client"
+msgstr "Копировать по клиенту"
+
+msgid "Copy by volume"
+msgstr "Копировать по Тому"
+
+msgid "Copy by smallest volume"
+msgstr "Копировать по наименьшему Тому"
+
+msgid "Copy by oldest volume"
+msgstr "Копировать по старым Томам"
+
+msgid "Copy by SQL query"
+msgstr "Копировать по SQL-запросу"
+
+msgid "Copy all uncopied jobs (Pool Uncopied Jobs)"
+msgstr "Скопируйте все нескопированные задания (пул нескопированных заданий)"
+
+msgid "See backup jobs"
+msgstr "Просмотреть задания резервного копирования"
+
+msgid "See clients"
+msgstr "Смотреть клиентов"
+
+msgid "See volumes"
+msgstr "Смотреть тома"
+
+msgid "Warning"
+msgstr "Предупреждение"
+
+msgid "Note."
+msgstr "Примечание."
+
+msgid "To chosen destination pool %pool will be assigned new Storage %storage. This action can affect all jobs (listed below) that use this pool. Are you sure you want to assign the storage %storage to pool %pool?"
+msgstr "Выбранному целевому пулу %pool  будет назначено новое хранилище %storage. Это действие может повлиять на все задания (перечисленные ниже), которые используют этот пул. Вы уверены, что хотите назначить хранилище %storage пулу %pool?"
+
+msgid "See all jobs that use the pool"
+msgstr "Посмотреть все задания, которые использует пул"
+
+msgid "Step 4 - where you like to copy"
+msgstr "Шаг 4 - куда вы хотите сделать резервную копию"
+
+msgid "Destination Pool"
+msgstr "Пул назначения"
+
+msgid "Please select destination pool to which will be stored data."
+msgstr "Пожалуйста, выберите пул назначения, в котором будут сохранены данные."
+
+msgid "Destination Storage"
+msgstr "Хранилище назначения"
+
+msgid "Step 5 - copy job options"
+msgstr "Шаг 5 - параметры копирования задания"
+
+msgid "Other options"
+msgstr "Другие опции"
+
+msgid "Pick job name"
+msgstr "Выберите название задания"
+
+msgid "Pick client name"
+msgstr "Выберите имя клиента"
+
+msgid "Pick volume name"
+msgstr "Выберите название Тома"
+
+msgid "Level, Client and FileSet are not used during copy jobs running but they are required to define in copy job resource as the standard Job directives."
+msgstr "Уровень, Клиент и FileSet не используются во время копирования работ, но они должны определить в копировании ресурс задания в качестве стандартных директив задания."
+
+msgid "Source Storage"
+msgstr "Исходное хранилище"
+
+msgid "Please select a storage using which you want to read copy data."
+msgstr "Пожалуйста, выберите пул, из которого вы хотите скопировать данные."
+
+msgid "Please select a storage using which you want to write copied data."
+msgstr "Пожалуйста, выберите пул, из которого вы хотите скопировать данные."
+
+msgid "Not used"
+msgstr "Не используется"
+
+msgid "New backup job wizard"
+msgstr "Мастер нового задания"
+
+msgid "This wizard enables you to create in easy way a new backup job."
+msgstr "Этот мастер позволяет вам легко создать новое задание."
+
+msgid "Monday"
+msgstr "Понедельник"
+
+msgid "Tuesday"
+msgstr "Вторник"
+
+msgid "Wednesday"
+msgstr "Среда"
+
+msgid "Thursday"
+msgstr "Четверг"
+
+msgid "Friday"
+msgstr "Пятница"
+
+msgid "Saturday"
+msgstr "Суббота"
+
+msgid "Sunday"
+msgstr "Воскресенье"
+
+msgid "Days of the week"
+msgstr "Дни недели"
+
+msgid "Weeks of the month"
+msgstr "Недели месяца"
+
+msgid "first"
+msgstr "первая"
+
+msgid "second"
+msgstr "вторая"
+
+msgid "third"
+msgstr "третья"
+
+msgid "fourth"
+msgstr "четвертая"
+
+msgid "fifth"
+msgstr "пятая"
+
+msgid "sixth"
+msgstr "шестая"
+
+msgid "Days of the month"
+msgstr "Дней месяца"
+
+msgid "Weeks of the year"
+msgstr "Недель года"
+
+msgid "All weeks"
+msgstr "Все недели"
+
+msgid "All days"
+msgstr "Все дни"
+
+msgid "Run at specified HH:MM"
+msgstr "Запуск в указанное HH:MM"
+
+msgid "Run at"
+msgstr "Запустить в"
+
+msgid "All months"
+msgstr "Все месяцы"
+
+msgid "January"
+msgstr "Январь"
+
+msgid "February"
+msgstr "Февраль"
+
+msgid "March"
+msgstr "Март"
+
+msgid "April"
+msgstr "Апрель"
+
+msgid "May"
+msgstr "Май"
+
+msgid "June"
+msgstr "Июнь"
+
+msgid "July"
+msgstr "Июль"
+
+msgid "August"
+msgstr "Август"
+
+msgid "September"
+msgstr "Сентябрь"
+
+msgid "October"
+msgstr "Октябрь"
+
+msgid "November"
+msgstr "Ноябрь"
+
+msgid "December"
+msgstr "Декабрь"
+
+msgid "Last day of the month"
+msgstr "Последний день месяца"
+
+msgid "Months of the year"
+msgstr "Месяцы года"
+
+msgid "Hourly"
+msgstr "Почасовой"
+
+msgid "Daily"
+msgstr "Ежедневный"
+
+msgid "Weekly"
+msgstr "Еженедельный"
+
+msgid "Monthly"
+msgstr "Ежемесячный"
+
+msgid "Custom"
+msgstr "Настраиваемый"
+
+msgid "Run job every hour at the specified minute"
+msgstr "Запускать задание каждый час в указанную минуту"
+
+msgid "Run job every day at the specified time"
+msgstr "Запускать задание каждый день в указанное время"
+
+msgid "Run job every week at the specified time on selected days of the week"
+msgstr "Запускать задание каждую неделю в указанное время в выбранных днях недели"
+
+msgid "Run job every month at the specified time in selected weeks of the month"
+msgstr "Запускать задание каждый месяц в указанное время в выбранные недели месяца"
+
+msgid "Setup your custom schedule"
+msgstr "Настроить индивидуальный график"
+
+msgid "Override directives"
+msgstr "Настроить"
+
+msgid "Migrate by job"
+msgstr "Миграция по заданию"
+
+msgid "Migrate by client"
+msgstr "Миграция по клиенту"
+
+msgid "Migrate by volume"
+msgstr "Миграция по Тому"
+
+msgid "Migrate by smallest volume"
+msgstr "Миграция по наименьшему Тому"
+
+msgid "Migrate by oldest volume"
+msgstr "Копировать по старому Тому"
+
+msgid "Migrate using Pool occupancy"
+msgstr "Миграция с использованием занятости пула"
+
+msgid "Migrate by Pool time"
+msgstr "Миграция по времени пула"
+
+msgid "Migrate by SQL query"
+msgstr "Миграция по SQL-запросу"
+
+msgid "New migrate job wizard"
+msgstr "Новый мастер миграции задания"
+
+msgid "Step 2 - what you want to migrate"
+msgstr "Шаг 2 - что вы хотите мигрировать"
+
+msgid "Please select a pool from which you want to migrate data."
+msgstr "Выберите пул, из которого вы хотите перенести данные."
+
+msgid "The source pool will be examined for finding backup jobs to migrate."
+msgstr "Исходный пул будет исследован на предмет заданий резервного копирования для миграции."
+
+msgid "Please select a storage using which you want to read migrate data."
+msgstr "Выберите хранилище, которое вы хотите использовать для чтения данных миграции."
+
+msgid "Because you selected migrate using Pool occupancy, to chosen source pool %pool will be added two directives: Migration Low Bytes and Migration High Bytes."
+msgstr "Поскольку вы выбрали миграцию с использованием занятости пула, к выбранному исходному пулу %pool будут добавлены две директивы: младшие байты миграции и старшие байты миграции."
+
+msgid "Because you selected migrate using Pool time, to chosen source pool %pool will be added the Migration Time directive."
+msgstr "Поскольку вы выбрали миграцию с использованием времени пула, к выбранному исходному пулу %pool будет добавлена директива времени миграции."
+
+msgid "Step 3 - how would you like to migrate"
+msgstr "Шаг 3 - как бы вы хотели мигрировать"
+
+msgid "Step 4 - where you like to migrate"
+msgstr "Шаг 4 - куда вы хотите мигрировать"
+
+msgid "Please select a storage using which you want to write migrated data."
+msgstr "Выберите хранилище, в которое вы хотите записать данные."
+
+msgid "Step 5 - migrate job options"
+msgstr "Шаг 5 - миграция параметров задания"
+
+msgid "Purge jobs"
+msgstr "Очистить задания"
+
+msgid "Level, Client and FileSet are not used during migrate jobs running but they are required to define in migrate job resource as the standard Job directives."
+msgstr "Уровень, клиент и набор файлов не используются во время выполнения заданий миграции, но они должны быть определены в ресурсе задания миграции как стандартные директивы задания."
+
+msgid "Migrate jobs run moving backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. The file catalog records associated with the original backup jobs are purged. All process runs without using file daemon."
+msgstr "Задания миграции запускают перемещение данных заданий резервного копирования с одного тома на другой. Это делается путем чтения ранее зарезервированных данных с тома и записи их на другой том в другом пуле. Записи каталога файлов, связанные с исходными заданиями резервного копирования, удаляются. Все процессы выполняются без использования файлового демона."
+
+msgid "New migrate job"
+msgstr "Новое задание миграции"
+
+msgid "Please select the criteria that will be used for selecting backup jobs to migrate."
+msgstr "Пожалуйста выберите критерии, которые будут использоваться для выбора заданий резервного копирования для миграции."
+
+msgid "The job needs media."
+msgstr "Заданию необходимы media."
+
+msgid "Please mount volume %volume or label a new one for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "Пожалуйста, смонтируйте том %volume или промаркируйте новый для хранения: %storage, пул: %pool, media type: %mediatype."
+
+msgid "Please mount volume %volume for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "Пожалуйста, смонтируйте том %volume для хранения: %storage, пул: %pool, media type: %mediatype."
+
+msgid "Please create a new volume for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "Пожалуйста, создайте новый том для хранения: %storage, пул: %pool, media type: %mediatype."
+
+msgid "Assign volumes from selected pool"
+msgstr "Назначить тома из выбранного пула"
+
+msgid "This function enables re-assigning volumes from selected pool to this pool."
+msgstr "Эта функция позволяет перераспределять тома из выбранного пула в этот пул."
+
+msgid "Please select a pool from which you would like to assign volumes to this pool."
+msgstr "Пожалуйста, выберите пул, из которого вы хотели бы назначить тома этому пулу."
+
+msgid "Assigned volume count:"
+msgstr "Количество назначенных томов:"
+
+msgid "Assign volumes"
+msgstr "Назначить тома"
+
+msgid "No volumes in the pool to assign."
+msgstr "В пуле нет томов для назначения."
+
+msgid "The pool has not been renamed but it has been copied with the new name. Please note that if the original pool contained volumes, they have not been moved and they are still assigned to the original pool in the catalog database. To re-assign volumes from the original pool to this one please go to the MAIN MENU &#10148; Pools &#10148; [NEW POOL] &#10148; Tab: Actions and please use the 'Assign volumes' button. After re-assgning volumes you can delete the original pool."
+msgstr "Пул не был переименован, но был скопирован с новым именем. Пожалуйста, обратите внимание, что если в первоначальном пуле содержались тома, они не были перемещены, и они по-прежнему назначены в исходный пул в базе данных каталога. Чтобы переназначить тома из исходного пула к этому пулу, перейдите к Главному меню &#10148; Пулы &#10148; [НОВЫЙ ПУЛ] &#10148; Вкладка: Действия и, пожалуйста, используйте кнопку «Назначить тома». После восстановления томов вы можете удалить исходный пул."
+
+msgid "Add Connect directive"
+msgstr "Добавить директиву подключения"
+
+msgid "Add Run directive"
+msgstr "Добавить директиву Run"
+
+msgid "Add Runscript block"
+msgstr "Добавить блок Runscript"
+
+msgid "Add Console directive"
+msgstr "Добавить директиву Console"
+
+msgid "Add Stdout directive"
+msgstr "Добавить директиву Stdout"
+
+msgid "Add Stderr directive"
+msgstr "Добавить директиву Stderr"
+
+msgid "Add Syslog directive"
+msgstr "Добавить директиву Syslog"
+
+msgid "Add Catalog directive"
+msgstr "Добавить директиву Catalog"
+
+msgid "Add Director directive"
+msgstr "Добавить директиву Director"
+
+msgid "Add File directive"
+msgstr "Добавить директиву File"
+
+msgid "Add Append directive"
+msgstr "Добавить директиву Append"
+
+msgid "Add Mail directive"
+msgstr "Добавить директиву Mail"
+
+msgid "Add MailOnError directive"
+msgstr "Добавить директиву MailOnError"
+
+msgid "Add MailOnSuccess directive"
+msgstr "Добавить директиву MailOnSuccess"
+
+msgid "Add Operator directive"
+msgstr "Добавить директиву Operator"
+
+msgid "Enable Bacula messages log window:"
+msgstr "Включить окно журнала сообщений Bacula:"
+
+msgid "The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned."
+msgstr "Окно журнала сообщений позволяет просматривать журналы Bacula в одном месте, доступном практически из любой части интерфейса. Для сбора логов используется команда bconsole «messages». Окно журнала сообщений отображается после нажатия на иконку конверта в правом верхнем углу интерфейса. Эта функция включена по умолчанию. Если включена, она доступна только для пользователей с ролью администратора."
+
+msgid "Copy configuration from:"
+msgstr "Копировать конфигурацию из:"
+
+msgid "API basic users"
+msgstr "Базовые пользователи API"
+
+msgid "API OAuth2 clients"
+msgstr "API OAuth2 клиенты"
+
+msgid "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Baculum Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Baculum API."
+msgstr "Базовые пользователи API настроены на хостах API, и они используются для доступа к хостам API. Изменения, внесенные на этой странице, непосредственно выполняются на текущем API-хосте. Вы можете использовать основные учетные данные пользователя для подключения хостов API к Baculum Web на вкладке 'API хосты'. Основные учетные записи пользователей также можно создать непосредственно в панели Baculum API."
+
+msgid "Add new API basic user"
+msgstr "Добавить нового базового пользователя API"
+
+msgid "API basic username:"
+msgstr "Имя базового пользователя API:"
+
+msgid "API basic password:"
+msgstr "Пароль базового пользователя API:"
+
+msgid "Retype password:"
+msgstr "Повторите пароль:"
+
+msgid "Add API basic user account"
+msgstr "Добавить учетную запись базового пользователя API"
+
+msgid "Edit API basic user account"
+msgstr "Редактирование базовой учетной записи API"
+
+msgid "Password must be longer than 4 chars and not longer than 60 chars."
+msgstr "Пароль должен быть длиннее 4 символов и не длиннее 60 символов."
+
+msgid "Please retype password."
+msgstr "Введите пароль еще раз."
+
+msgid "Invalid user. User may contain a-z A-Z 0-9 characters."
+msgstr "Недопустимый пользователь. Пользователь может содержать символы a-z A-Z 0-9."
+
+msgid "Dedicated Bconsole config"
+msgstr "Выделенная Bconsole"
+
+msgid "Get existing basic user name:"
+msgstr "Получить существующее базовое имя пользователя:"
+
+msgid "Generate new password"
+msgstr "Сгенерировать новый пароль"
+
+msgid "Show/hide password"
+msgstr "Показать/скрыть пароль"
+
+msgid "Advanced filters"
+msgstr "Расширенные фильтры"
+
+msgid "Wrong time range."
+msgstr "Неправильный диапазон времени."
+
+msgid "From"
+msgstr "От"
+
+msgid "To"
+msgstr "Кому"
+

@@ -1,0 +1,2635 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-database"></i> <%[ Storage details ]%></b>
+		</h5>
+	</header>
+	<h3 class="view_header"><%[ Storage: ]%> <%=$this->getStorageName()%> &nbsp;<span class="w3-small">[StorageId <%=$this->getStorageId()%>]</span></h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('StorageList')%>"><i class="fa fa-angle-left"></i></a>
+		<button id="btn_storage_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'storage_actions');"><%[ Actions ]%></button>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'configure_storage');clear_node('#configure_autochanger  div.directive_value');"
+			Text="<%[ Configure storage ]%>"
+			Visible="<%=!empty($_SESSION['sd'])%>"
+			OnClick="setStorage"
+		/>
+		<a id="btn_storagedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'configure_storage_daemon');">
+			<%[ Configure storage daemon ]%>
+		</a>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'manage_autochanger');"
+			Text="<%[ Manage autochanger ]%>"
+			Visible="<%=$this->getIsAutochanger()%>"
+			OnCallback="loadAutochanger"
+		/>
+		<com:TLabel ID="UserAPIHostsContainter" CssClass="w3-right w3-margin-right">
+			<%[ SD API host ]%>
+			<com:TActiveDropDownList
+				ID="UserAPIHosts"
+				CssClass="w3-select"
+				Width="200px"
+			/>
+		</com:TLabel>
+	</div>
+	<div class="w3-container tab_item" id="storage_actions">
+		<com:TValidationSummary
+			ID="ValidationSummary"
+			CssClass="validation-error-summary"
+			ValidationGroup="AutoChangerGroup"
+			AutoUpdate="true"
+			Display="Dynamic"
+			HeaderText="<%[ There is not possible to run selected action because: ]%>"
+		/>
+		<com:TActiveLinkButton
+			ID="StorageStatusBtn"
+			OnClick="status"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			CausesValidation="false"
+			ClientSide.OnLoading="$('#status_storage_loading').show();$('#status_storage_error').hide();"
+			ClientSide.OnSuccess="$('#status_storage_loading').hide(); $('#show_storage_container').hide();$('#status_storage_container').show();oGraphicalStorageStatus.set_refresh_timeout(document.getElementById('status_storage_refresh_interval').value);"
+			ClientSide.OnFailure="$('#status_storage_loading').hide();status_storage_show_error(parameter);"
+			Attributes.onclick="hide_first_tab_containers(event);"
+		>
+			<prop:Text><i class="fa fa-file-medical-alt"></i> &nbsp;<%=Prado::localize('Status storage')%></prop:Text>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="Mount"
+			OnClick="mount"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="AutoChangerGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="oStorageActions.show_loader(true);"
+		>
+			<prop:Text><i class="fa fa-caret-down"></i> &nbsp;<%=Prado::localize('Mount')%></prop:Text>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="Release"
+			OnClick="release"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="AutoChangerGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="oStorageActions.show_loader(true);"
+		>
+			<prop:Text><i class="fa fa-caret-right"></i> &nbsp;<%=Prado::localize('Release')%></prop:Text>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="Umount"
+			OnClick="umount"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			ValidationGroup="AutoChangerGroup"
+			CausesValidation="true"
+			ClientSide.OnLoading="oStorageActions.show_loader(true);"
+		>
+			<prop:Text><i class="fa fa-caret-up"></i> &nbsp;<%=Prado::localize('Umount')%></prop:Text>
+		</com:TActiveLinkButton>
+		<com:Application.Web.Portlets.ComponentActionsMenu
+			ID="CompActions"
+			BigButtons="true"
+		/>
+		<com:TCallback ID="MountLoading" OnCallback="mountLoading" />
+		<com:TCallback ID="ReleaseLoading" OnCallback="releaseLoading" />
+		<com:TCallback ID="UmountLoading" OnCallback="umountLoading" />
+		<script>
+var oStorageActions = {
+	ids: {
+		log: 'storage_action_log',
+		log_container: 'storage_action_text_output',
+		loader: 'status_storage_loading'
+	},
+	refresh_mount: function(out_id) {
+		setTimeout(function() {
+			var cb = <%=$this->MountLoading->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(out_id);
+			cb.dispatch();
+		}, 2000);
+	},
+	refresh_release: function(out_id) {
+		setTimeout(function() {
+			var cb = <%=$this->ReleaseLoading->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(out_id);
+			cb.dispatch();
+		}, 2000);
+	},
+	refresh_umount: function(out_id) {
+		setTimeout(function() {
+			var cb = <%=$this->UmountLoading->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(out_id);
+			cb.dispatch();
+		}, 2000);
+	},
+	log: function(output) {
+		var log = document.getElementById(oStorageActions.ids.log);
+		log.textContent = output;
+	},
+	clear_log: function() {
+		document.getElementById(oStorageActions.ids.log_container).style.display = 'none';
+		oStorageActions.log('');
+	},
+	show_loader: function(show) {
+		var loader = document.getElementById(oStorageActions.ids.loader);
+		if (show) {
+			oStorageActions.clear_log();
+			$('#' + oStorageActions.ids.log_container).slideDown();
+			loader.style.display = '';
+		} else {
+			loader.style.display = 'none';
+		}
+	}
+};
+		</script>
+		<i id="status_storage_loading" class="fa fa-sync w3-spin w3-margin-left" style="display: none; vertical-align: super;"></i> <span id="status_storage_error" class="w3-text-red" style="display: none"></span>
+		<com:TActivePanel ID="Autochanger" Display="None" Height="61px">
+			<div class="w3-left w3-margin-right">
+				<label><%[ Drive number: ]%></label>
+				<com:TActiveTextBox
+					ID="Drive"
+					AutoPostBack="false"
+					Text="0"
+					MaxLength="3"
+					CssClass="w3-input smallbox"
+				/>
+				<com:TDataTypeValidator
+					ID="DriveValidator"
+					ValidationGroup="AutoChangerGroup"
+					ControlToValidate="Drive"
+					ErrorMessage="<%[ Drive number must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+			</div>
+			<div class="w3-left">
+				<%[ Slot number: ]%>
+				<com:TActiveTextBox
+					ID="Slot"
+					AutoPostBack="false"
+					Text="0"
+					MaxLength="3"
+					CssClass="w3-input smallbox"
+				/>
+				<com:TDataTypeValidator
+					ID="SlotValidator"
+					ValidationGroup="AutoChangerGroup"
+					ControlToValidate="Slot"
+					ErrorMessage="<%[ Slot number must be integer. ]%>"
+					Display="None"
+					DataType="Integer"
+				/>
+			</div>
+		</com:TActivePanel>
+		<div class="w3-clear"></div>
+		<div id="storage_action_text_output" class="w3-code" style="display: none; clear: both;">
+			<pre id="storage_action_log"></pre>
+		</div>
+		<div id="storage_info_cards" class="w3-row w3-margin-top" style="display: flex; flex-wrap: wrap;">
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ General ]%></h4>
+				<table style="width: 90%">
+					<tr>
+						<td><%[ SD address ]%></td>
+						<td><strong><com:TActiveLabel ID="OSDAddress" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ SD port ]%></td>
+						<td><strong><com:TActiveLabel ID="OSDPort" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Running jobs ]%></td>
+						<td><strong><com:TActiveLabel ID="ORunningJobs" /></strong></td>
+					</tr>
+				</table>
+			</div>
+			<div class="w3-card w3-padding w3-margin-right w3-margin-bottom details_card">
+				<h4><%[ Device ]%></h4>
+				<table style="width: 90%">
+					<tr>
+						<td class="w3-half"><%[ Device name ]%></td>
+						<td><strong><com:TActiveLabel ID="ODeviceName" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Media type ]%></td>
+						<td><strong><com:TActiveLabel ID="OMediaType" CssClass="time" /></strong></td>
+					</tr>
+					<tr>
+						<td><%[ Autochanger ]%></td>
+						<td><strong><com:TActiveLabel ID="OAutoChanger" /></strong></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="w3-clear"></div>
+		<div id="status_storage_container" style="display: none">
+			<div class="w3-right w3-margin-top w3-margin-right" title="<%[ To disable refreshing please type 0. ]%>">
+				<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_storage_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="10" style="width: 50px"/>
+			</div>
+			<div class="w3-panel w3-card w3-light-grey" style="padding-bottom: 16px;">
+				<div class="w3-row">
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_storage_subtab_graphical', 'status_storage_graphical_output', 'status_storage_container');">
+						<div id="status_storage_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding"><%[ Graphical status ]%></div>
+					 </a>
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_storage_subtab_text', 'status_storage_text_output', 'status_storage_container');">
+						<div id="status_storage_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding"><%[ Raw status ]%></div>
+					</a>
+				</div>
+				<div id="status_storage_graphical_output" class="subtab_item">
+					<h4 id="status_storage_status_not_supported" style="display: none"><%[ Graphical storage status is supported for Bacula storages version 9.0 and greater. ]%></h4>
+					<div id="status_storage_graphical_container">
+						<h4><%[ Storage Daemon: ]%> <span id="status_storage_name"></span></h4>
+						<table class="w3-table w3-stripped w3-border status_table">
+							<tr>
+								<td><%[ Version: ]%></td>
+								<td id="status_storage_version"></td>
+							</tr>
+							<tr>
+								<td><%[ Uname: ]%></td>
+								<td id="status_storage_uname"></td>
+							</tr>
+							<tr>
+								<td><%[ Started time: ]%></td>
+								<td id="status_storage_started_time"></td>
+							</tr>
+							<tr>
+								<td><%[ Running jobs: ]%></td>
+								<td><span id="status_storage_jobs_running"></span></td>
+							</tr>
+							<tr>
+								<td><%[ Plugins: ]%></td>
+								<td id="status_storage_plugins"></td>
+							</tr>
+							<tr>
+								<td><%[ # Autochangers: ]%></td>
+								<td id="status_storage_no_autochangers"></td>
+							</tr>
+							<tr>
+								<td><%[ # Devices: ]%></td>
+								<td id="status_storage_no_devices"></td>
+							</tr>
+						</table>
+						<div id="status_storage_filters"></div>
+						<div id="status_storage_devices"></div>
+						<h4><%[ Terminated jobs ]%></h4>
+						<div id="status_storage_terminated"></div>
+					</div>
+<com:TJuiProgressbar Display="None" />
+<script>
+var oGraphicalStorageStatus = {
+	data: {},
+	refresh_timeout: null,
+	running_jobs: [],
+	ids: {
+		refresh_interval: 'status_storage_refresh_interval',
+		status_not_supported: 'status_storage_status_not_supported',
+		graphical_container: 'status_storage_graphical_container',
+		devices: 'status_storage_devices',
+		terminated: 'status_storage_terminated',
+		filters: 'status_storage_filters',
+		header: {
+			name: 'status_storage_name',
+			version: 'status_storage_version',
+			uname: 'status_storage_uname',
+			started_epoch: 'status_storage_started_time',
+			jobs_running: 'status_storage_jobs_running',
+			plugins: 'status_storage_plugins',
+			nautochgr: 'status_storage_no_autochangers',
+			ndevices: 'status_storage_no_devices'
+		}
+	},
+	css: {
+		gauge: 'gauge',
+		gauge_label: 'gauge_label',
+		gauge_container: 'gauge_container',
+		status_header: 'status_header',
+		device_columns: 'device_columns',
+		device_colinfo: 'device_colinfo',
+		device_header: 'device_header',
+		device_table: 'device_table',
+		running_job_header: 'running_job_header',
+		running_job_table: 'running_job_table',
+		terminated_job_header: 'terminated_job_header',
+		terminated_job_table: 'terminated_job_table'
+	},
+	gauges: {
+		space: {
+			angle: -0.2, // The span of the gauge arc
+			lineWidth: 0.2, // The line thickness
+			radiusScale: 1, // Relative radius
+			pointer: {
+				length: 0.6, // // Relative to gauge radius
+				strokeWidth: 0.035, // The thickness
+				color: '#000000' // Fill color
+			},
+			limitMax: false,     // If false, max value increases automatically if value > maxValue
+			limitMin: false,     // If true, the min value of the gauge will be fixed
+			colorStart: '#6FADCF',   // Colors
+			colorStop: '#8FC0DA',    // just experiment with them
+			strokeColor: '#E0E0E0',  // to see which ones work best for you
+			generateGradient: true,
+			highDpiSupport: true,     // High resolution support
+			// renderTicks is Optional
+			renderTicks: {
+				divisions: 5,
+				divWidth: 1.1,
+				divLength: 0.7,
+				divColor: '#333333',
+				subDivisions: 3,
+				subLength: 0.5,
+				subWidth: 0.6,
+				subColor: '#666666'
+			},
+			staticLabels: {
+				font: "10px sans-serif",  // Specifies font
+				color: "#000000",  // Optional: Label text color
+				fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+			}
+		},
+		speed: {
+			angle: -0.2, // The span of the gauge arc
+			lineWidth: 0.2, // The line thickness
+			radiusScale: 1, // Relative radius
+			pointer: {
+				length: 0.6, // // Relative to gauge radius
+				strokeWidth: 0.035, // The thickness
+				color: '#000000' // Fill color
+			},
+			limitMax: false,     // If false, max value increases automatically if value > maxValue
+			limitMin: false,     // If true, the min value of the gauge will be fixed
+			colorStart: '#6FADCF',   // Colors
+			colorStop: '#8FC0DA',    // just experiment with them
+			strokeColor: '#E0E0E0',  // to see which ones work best for you
+			generateGradient: true,
+			highDpiSupport: true,     // High resolution support
+			// renderTicks is Optional
+			renderTicks: {
+				divisions: 5,
+				divWidth: 1.1,
+				divLength: 0.7,
+				divColor: '#333333',
+				subDivisions: 3,
+				subLength: 0.5,
+				subWidth: 0.6,
+				subColor: '#666666'
+			},
+			staticLabels: {
+				font: "10px sans-serif",  // Specifies font
+				color: "#000000",  // Optional: Label text color
+				fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+			}
+		}
+	},
+	filters: {
+		name: {
+			label: '<%[ Device: ]%>',
+			init_item: '<%[ All devices ]%>',
+			val: null
+		},
+		type: {
+			label: '<%[ Device type: ]%>',
+			init_item: '<%[ All device types ]%>',
+			val: null
+		},
+		media_type: {
+			label: '<%[ Media type: ]%>',
+			init_item: '<%[ All media types ]%>',
+			val: null
+		},
+		status: {
+			label: '<%[ Status: ]%>',
+			init_item: '<%[ All statuses ]%>',
+			val: null,
+			items: {
+				running: '<%[ running ]%>',
+				idle: '<%[ idle ]%>'
+			},
+			change: function(value) {
+				// clear all devices
+				this.remove_elements('#' + this.ids.devices, true);
+				var devices_running = [];
+				var devices_idle = [];
+				for (var i = 0; i < this.running_jobs.length; i++) {
+					if (this.running_jobs[i].read_device && devices_running.indexOf(this.running_jobs[i].read_device) == -1) {
+						devices_running.push(this.running_jobs[i].read_device);
+					}
+					if (this.running_jobs[i].write_device && devices_running.indexOf(this.running_jobs[i].write_device) == -1) {
+						devices_running.push(this.running_jobs[i].write_device);
+					}
+				}
+				if (value === 'running') {
+					this.filters['name'].val = devices_running;
+				} else if (value === 'idle') {
+					for (var i = 0; i < this.data.devices.length; i++) {
+						if (devices_running.indexOf(this.data.devices[i].name) === -1) {
+							devices_idle.push(this.data.devices[i].name);
+						}
+					}
+					this.filters['name'].val = devices_idle;
+				} else {
+					this.filters['name'].val = null;
+				}
+				this.update_status();
+			}
+		}
+	},
+	initialized: false,
+	init: function() {
+		this.set_events();
+	},
+	set_data: function(data) {
+		this.data = data;
+	},
+	set_events: function() {
+		var refresh_interval_el = document.getElementById(this.ids.refresh_interval);
+		refresh_interval_el.addEventListener('keyup', function(e) {
+			var interval = refresh_interval_el.value;
+			this.set_refresh_timeout(interval);
+		}.bind(this));
+	},
+	formatters: {
+		uname: function(value) {
+			var img = document.createElement('I');
+			img.className = 'fab fa-2x';
+			if (/win\d{2}/i.test(value)) {
+				img.className += ' fa-windows';
+			} else if (/ubuntu/i.test(value)) {
+				img.className += ' fa-ubuntu';
+			} else if (/fedora/i.test(value)) {
+				img.className += ' fa-fedora';
+			} else if (/centos/i.test(value)) {
+				img.className += ' fa-centos';
+			} else if (/redhat/i.test(value)) {
+				img.className += ' fa-redhat';
+			} else if (/suse/i.test(value)) {
+				img.className += ' fa-suse';
+			} else if (/linux/i.test(value)) {
+				img.className += ' fa-linux';
+			} else if (/freebsd/i.test(value)) {
+				img.className += ' fa-freebsd';
+			} else if (/(darwin|mac\s?os)/i.test(value)) {
+				img.className += ' fa-apple';
+			} else {
+				img.className = 'fa fa-2x fa-question';
+			}
+			img.style.marginRight = '10px';
+			var el = document.createElement('SPAN');
+			var text = document.createTextNode(value);
+			el.appendChild(img);
+			el.appendChild(text);
+			return el;
+		},
+		started_epoch: function(value) {
+			return Units.format_date(value);
+		},
+		plugins: function(value) {
+			var val;
+			if (value) {
+				val = value.replace(/-fd\.so/g, '').replace(/-fd\.dll/g, '').replace(/,/g, ', ');
+			} else {
+				val = document.createElement('I');
+				val.className = 'fa';
+				val.className += ' fa-minus';
+			}
+			return val;
+		},
+		check: function(value) {
+			var img = document.createElement('I');
+			img.className = 'fa';
+			if (value == 1) {
+				img.className += ' fa-check';
+				img.title = '<%[ Yes ]%>';
+			} else {
+				img.className += ' fa-minus';
+				img.title = '<%[ No ]%>';
+			}
+			return img;
+		},
+		value: function(value) {
+			var val;
+			if (value) {
+				val = value;
+			} else {
+				val = document.createElement('I');
+				val.className = 'fa';
+				val.className += ' fa-minus';
+			}
+			return val;
+		}
+	},
+	update: function(data) {
+		this.set_data(data);
+		if (this.is_status_supported() === false) {
+			return;
+		}
+		this.set_headers();
+		var full_refresh = this.check_full_refresh();
+		if (full_refresh) {
+			// remembered job list empty so job list changed - full refresh list
+			this.remove_elements('.' + this.css.running_job_header);
+			this.remove_elements('.' + this.css.running_job_table);
+			this.remove_elements('.' + this.css.terminated_job_header);
+			this.remove_elements('.' + this.css.terminated_job_table);
+		}
+		if (this.data.hasOwnProperty('devices')) {
+			var dev_running_jobs;
+			OUTER: for (var i = 0; i < this.data.devices.length; i++) {
+				INNER: for (var key in this.filters) {
+					if (typeof(this.filters[key].val) == 'string' && this.filters[key].val !== this.data.devices[i][key]) {
+						continue OUTER;
+					} else if (Array.isArray(this.filters[key].val) && this.filters[key].val.indexOf(this.data.devices[i][key]) == -1) {
+						continue OUTER;
+					}
+				}
+				this.add_autochanger(this.data.devices[i]);
+				this.add_device(this.data.devices[i]);
+				if (!this.initialized) {
+					for (var type in this.filters) {
+						this.set_filter(type, this.data.devices[i][type], this.filters[type].label, this.filters[type].init_item);
+					}
+				}
+			}
+		}
+		if (this.data.hasOwnProperty('terminated')) {
+			for (var i = 0; i < this.data.terminated.length; i++) {
+				this.add_terminated_job(i, this.data.terminated[i]);
+			}
+		}
+		this.initialized = true;
+	},
+	set_headers: function() {
+		var el, val;
+		['header'].forEach(function(section) {
+			if (!this.data.hasOwnProperty(section)) {
+				return;
+			}
+			for (var key in this.ids[section]) {
+				if (!this.data[section].hasOwnProperty(key)) {
+					continue;
+				}
+				el = document.getElementById(this.ids[section][key]);
+				val = this.formatters.hasOwnProperty(key) ? this.formatters[key].call(this, this.data[section][key]) : this.data[section][key];
+				if (val instanceof HTMLElement) {
+					el.innerHTML = val.outerHTML;
+				} else {
+					el.textContent = val;
+				}
+			}
+		}.bind(this));
+	},
+	check_full_refresh: function() {
+		var full_refresh = false;
+		var running_jobs = [];
+		var found;
+		var to_add = [];
+		var to_rm = [];
+		// check if with data came new jobs or disapeared some finished jobs
+		for (var i = 0; i < this.data.running.length; i++) {
+			running_jobs.push(this.data.running[i]);
+			found = false;
+			for (var j = 0; j < this.running_jobs.length; j++) {
+				if (this.running_jobs[j].jobid === this.data.running[i].jobid) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				to_add.push(this.data.running[i]);
+				full_refresh = true;
+			}
+		}
+		if (!full_refresh) {
+			for (var i = 0; i < this.running_jobs.length; i++) {
+				found = false;
+				for (var j = 0; j < running_jobs.length; j++) {
+					if (running_jobs[j].jobid === this.running_jobs[i].jobid) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					to_rm.push(this.running_jobs[i]);
+					full_refresh = true;
+				}
+			}
+		}
+
+		// add new jobs
+		for (var i = 0; i < to_add.length; i++) {
+			this.running_jobs.push(to_add[i]);
+		}
+		// rm terminated jobs
+		for (var i = 0; i < to_rm.length; i++) {
+			for (var j = 0; j < this.running_jobs.length; j++) {
+				if (this.running_jobs[j].jobid === to_rm[i].jobid) {
+					this.running_jobs.splice(j, 1);
+					break;
+				}
+			}
+		}
+		return full_refresh;
+	},
+	set_filter: function(type, value, label, init_item) {
+		var filters = document.getElementById(this.ids.filters);
+		var select = filters.querySelector('select[rel="' + type + '"]');
+		var option, label;
+		if (!select) {
+			var title = document.createTextNode(label);
+			select = document.createElement('SELECT');
+			select.className = 'w3-select w3-border w3-margin-right';
+			select.setAttribute('rel', type);
+			var onchange_func;
+			if (this.filters[type].hasOwnProperty('change')) {
+				// custom onchange function
+				onchange_func = function(e) {
+					this.filters[type].change.call(this, select.value);
+				}.bind(this);
+			} else {
+				// default onchange function
+				onchange_func = function(e) {
+					// clear all devices
+					this.remove_elements('#' + this.ids.devices, true);
+					if (select.value) {
+						this.filters[type].val = select.value;
+					} else {
+						this.filters[type].val = null;
+					}
+					this.update_status();
+				}.bind(this)
+			}
+			select.addEventListener('change', onchange_func);
+			var option = document.createElement('OPTION');
+			option.value = '';
+			var label = document.createTextNode(init_item);
+			option.appendChild(label);
+			select.appendChild(option);
+			filters.appendChild(title);
+			filters.appendChild(select);
+			if (this.filters[type].hasOwnProperty('items')) {
+				// predefined items
+				for (var val in this.filters[type].items) {
+					option = document.createElement('OPTION');
+					option.value = val;
+					label = document.createTextNode(this.filters[type].items[val]);
+					option.appendChild(label);
+					select.appendChild(option);
+				}
+			}
+		}
+
+		if (!this.filters[type].hasOwnProperty('items')) {
+			// dynamically defined items
+			var found = false;
+			for (var i = 0; i < select.options.length; i++) {
+				if (select.options[i].value === value) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				option = document.createElement('OPTION');
+				option.value = value;
+				label = document.createTextNode(value);
+				option.appendChild(label);
+				select.appendChild(option);
+			}
+		}
+	},
+	get_show_info: function(device) {
+		var info;
+		if (this.data.hasOwnProperty('show')) {
+			for (var i = 0; i < this.data.show.length; i++) {
+				if (this.data.show[i].devicename === device) {
+					info = this.data.show[i];
+					break;
+				}
+			}
+		}
+		return info;
+	},
+	remove_elements: function(selector, empty) {
+		var elements = document.querySelectorAll(selector);
+		for (var i = 0; i < elements.length; i++) {
+			while (elements[i].firstChild) {
+				elements[i].removeChild(elements[i].firstChild);
+			}
+		}
+
+		if (!empty) {
+			var els = [].slice.call(elements);
+			var els_len = els.length;
+			for (var i = 0; i < els_len; i++) {
+				els[i].parentNode.removeChild(els[i]);
+			}
+		}
+	},
+	add_row: function(table, key, value) {
+		var tr = document.createElement('TR');
+		var tdl = document.createElement('TD');
+		var tdr = document.createElement('TD');
+		tdl.textContent = key;
+		if (value instanceof HTMLElement) {
+			tdr.appendChild(value);
+		} else {
+			tdr.innerHTML = value;
+		}
+		tr.appendChild(tdl);
+		tr.appendChild(tdr);
+		table.appendChild(tr);
+	},
+	get_device_headers: function() {
+		var header = document.createElement('DIV');
+		header.className = this.css.device_columns;
+		var device = document.createElement('DIV');
+		device.className = 'w3-container w3-cell w3-mobile';
+		device.textContent = '<%[ Device ]%>';
+		var status = document.createElement('DIV');
+		status.textContent = '<%[ Status ]%>';
+		var dev_type = document.createElement('DIV');
+		dev_type.textContent = '<%[ Device type ]%>';
+		var media_type = document.createElement('DIV');
+		media_type.textContent = '<%[ Media type ]%>';
+		header.appendChild(device);
+		header.appendChild(status);
+		header.appendChild(dev_type);
+		header.appendChild(media_type);
+		return header;
+	},
+	add_autochanger: function(device) {
+		if (!device.autochanger) {
+			// no autochanger, single device
+			this.add_single_device(device);
+			return;
+		}
+		var devices_el = document.getElementById(this.ids.devices);
+		var ach_container = document.createElement('DIV');
+		ach_container.setAttribute('rel', 'ach_' + device.autochanger);
+		var ach_label = document.createElement('H4');
+		ach_label.textContent = '<%[ Autochanger: ]%> ' + device.autochanger;
+		ach_container.appendChild(ach_label);
+		var ach_info = document.createElement('DIV');
+		ach_info.setAttribute('rel', 'ach_info_' + device.autochanger);
+		var info = this.get_show_info(device.autochanger);
+		if (info) {
+			var ach_jobs = document.createElement('DIV');
+			var ach_jobs_label = document.createElement('SPAN');
+			var ach_num_jobs = document.createElement('SPAN');
+			var ach_max_jobs = document.createElement('SPAN');
+			var ach_sep = document.createTextNode(' / ');
+			var maxjobs = info.maxjobs == 0 ? '<%[ unlimited ]%>' : info.maxjobs;
+			ach_jobs_label.textContent = '<%[ Running jobs: ]%> ';
+			ach_num_jobs.textContent = ' ' + info.numjobs;
+			ach_max_jobs.textContent = maxjobs;
+			ach_info.appendChild(ach_jobs_label);
+			ach_info.appendChild(ach_num_jobs);
+			ach_info.appendChild(ach_sep);
+			ach_info.appendChild(ach_max_jobs);
+			ach_container.appendChild(ach_info);
+		}
+		var ach_el = document.querySelector('div[rel="ach_' + device.autochanger + '"]');
+		var a = document.querySelector('div[rel="ach_info_' + device.autochanger + '"]');
+		if (a) {
+			ach_el.replaceChild(ach_info, a);
+		} else if (!ach_el)  {
+			var device_headers = this.get_device_headers();
+			ach_container.appendChild(device_headers);
+			devices_el.appendChild(ach_container);
+		}
+	},
+	add_single_device: function(device) {
+		var sd_el = document.querySelector('div[rel="single_devices"]');
+		if (sd_el) {
+			// single devices container already exists, return
+			return;
+		}
+		var devices_el = document.getElementById(this.ids.devices);
+		var sd_container = document.createElement('DIV');
+		sd_container.setAttribute('rel', 'single_devices');
+		var sd_label = document.createElement('H4');
+		sd_label.textContent = '<%[ Single devices ]%>';
+		sd_container.appendChild(sd_label);
+		devices_el.appendChild(sd_container);
+		var device_headers = this.get_device_headers();
+		sd_container.appendChild(device_headers);
+	},
+	add_device: function(device) {
+		var container = document.createElement('DIV');
+		container.className = [
+			this.css.device_table,
+			'w3-border'
+		].join(' ');
+		container.setAttribute('rel', 'device_' + device.name);
+		var table = document.createElement('TABLE');
+		container.appendChild(table);
+
+		// arrow icon
+		var dev_arrow_img = document.createElement('I');
+		dev_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_device_' + device.name + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				dev_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				dev_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			dev_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_device_' + device.name);
+		header.className = [
+			this.css.device_header,
+			this.css.status_header
+		].join(' ');
+
+		// device label
+		var dev_label = document.createElement('DIV');
+		dev_label.className = 'w3-container w3-cell w3-mobile';
+		dev_label.appendChild(dev_arrow_img);
+		var dev_label_colinfo = document.createElement('SPAN');
+		dev_label_colinfo.className = this.css.device_colinfo;
+		dev_label_colinfo.innerHTML = '<%[ Device ]%>: &nbsp;';
+		dev_label.appendChild(dev_label_colinfo);
+		var dev_label_txt = document.createTextNode(' ' + device.name);
+		dev_label.appendChild(dev_label_txt);
+
+		// device running
+		var dev_running_jobs = this.get_device_jobs(device.name);
+		var dev_running = document.createElement('DIV')
+		dev_running.className = 'w3-container w3-cell w3-mobile w3-center';
+		var dev_running_img = document.createElement('I');
+		var dev_running_colinfo = document.createElement('SPAN');
+		dev_running_colinfo.className = this.css.device_colinfo;
+		dev_running_colinfo.innerHTML = '<%[ Status ]%>: &nbsp;';
+		var dev_running_desc = document.createElement('SPAN');
+		var dev_running_jobs_len = dev_running_jobs.length;
+		if (dev_running_jobs_len > 0) {
+			dev_running_img.className = 'fas fa-cog fa-spin';
+			dev_running_desc.innerHTML = '&nbsp; <%[ running ]%> (' + dev_running_jobs_len + ')';
+		} else {
+			dev_running_img.className = 'fas fa-minus';
+			dev_running_desc.innerHTML = '&nbsp; <%[ idle ]%>';
+		}
+		dev_running.appendChild(dev_running_colinfo);
+		dev_running.appendChild(dev_running_img);
+		dev_running.appendChild(dev_running_desc);
+
+		// add running jobs
+		if (dev_running_jobs.length > 0) {
+			var dev_job_container = document.createElement('DIV');
+			dev_job_container.setAttribute('rel', 'device_jobs_' + device.name);
+			for (var i = 0; i < dev_running_jobs.length; i++) {
+				this.add_running_job(dev_job_container, i, dev_running_jobs[i]);
+			}
+			container.appendChild(dev_job_container);
+		}
+
+		// device type
+		var dev_type = document.createElement('DIV');
+		dev_type.className = 'w3-container w3-cell w3-mobile w3-center';
+		var dev_type_colinfo = document.createElement('SPAN');
+		dev_type_colinfo.className = this.css.device_colinfo;
+		dev_type_colinfo.innerHTML = '<%[ Device type ]%>: &nbsp;';
+		dev_type_icon = document.createElement('I');
+		switch (device.type) {
+			case 'Tape': {
+				dev_type_icon.className = 'fas fa-tape';
+				break;
+			}
+			case 'File': {
+				dev_type_icon.className = 'fas fa-hdd';
+				break;
+			}
+			case 'Fifo': {
+				dev_type_icon.className = 'fas fa-forward';
+				break;
+			}
+			default: {
+				dev_type_icon.className = 'fas fa-hdd';
+			}
+		}
+		var dev_type_desc = document.createElement('SPAN');
+		dev_type_desc.innerHTML = '&nbsp; ' + device.type;
+		dev_type.appendChild(dev_type_colinfo);
+		dev_type.appendChild(dev_type_icon);
+		dev_type.appendChild(dev_type_desc);
+
+		// media type
+		var dev_media_type = document.createElement('DIV')
+		dev_media_type.className = 'w3-container w3-cell w3-mobile w3-center';
+		var dev_media_type_img = document.createElement('I');
+		var dev_media_type_colinfo = document.createElement('SPAN');
+		dev_media_type_colinfo.className = this.css.device_colinfo;
+		dev_media_type_colinfo.innerHTML = '<%[ Media type ]%>: &nbsp;';
+		dev_media_type_img.className = 'fas fa-hashtag';
+		var dev_media_type_txt = document.createElement('SPAN');
+		dev_media_type_txt.innerHTML = ' &nbsp;' + device.media_type;
+		dev_media_type.appendChild(dev_media_type_colinfo);
+		dev_media_type.appendChild(dev_media_type_img);
+		dev_media_type.appendChild(dev_media_type_txt);
+
+		var set_space_gauge;
+		header.appendChild(dev_label);
+		header.appendChild(dev_running);
+		header.appendChild(dev_type);
+		header.appendChild(dev_media_type);
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="device_' + device.name + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				dev_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown('normal', function() {
+					set_space_gauge(true);
+				});
+				this.setAttribute('data-open', 1);
+				dev_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		table.className = 'w3-table w3-stripped status_table device_table';
+
+		// Archive device
+		this.add_row(table, '<%[ Archive device: ]%>', device.archive_device);
+
+		// Maximum concurrent jobs
+		var mcj = device.maximum_concurrent_jobs == 0 ? '<%[ unlimited ]%>' : device.maximum_concurrent_jobs;
+		var running_max_jobs = dev_running_jobs.length + ' / ' + mcj;
+		this.add_row(table, '<%[ Running jobs ]%> / <%[ Maximum concurrent jobs: ]%>', running_max_jobs);
+
+		// Maximum volume size
+		var mvs = Units.get_formatted_size(device.maximum_volume_size);
+		this.add_row(table, '<%[ Maximum volume size: ]%>', mvs);
+
+		// Is enabled
+		var enabled = this.formatters.check(device.enabled);
+		this.add_row(table, '<%[ Enabled: ]%>', enabled);
+
+		// Is autoselect
+		var autoselect = this.formatters.check(device.autoselect);
+		this.add_row(table, 'AutoSelect:', autoselect);
+
+		// Is mounted
+		var mounted = this.formatters.check(device.mounted);
+		this.add_row(table, '<%[ Mounted: ]%>', mounted);
+
+		// Is opened
+		var open = this.formatters.check(device.open);
+		this.add_row(table, '<%[ Opened: ]%>', open);
+
+		// Is waiting
+		var waiting = this.formatters.check(device.waiting);
+		this.add_row(table, '<%[ Waiting: ]%>', waiting);
+
+		// Is blocked
+		var blocked = this.formatters.check(device.blocked);
+		this.add_row(table, '<%[ Blocked: ]%>', blocked);
+
+		// Blocked description
+		if (device.blocked_desc) {
+			this.add_row(table, '<%[ Blocked description: ]%>', device.blocked_desc);
+		}
+
+		// Is read-only
+		var read_only = this.formatters.check(device.read_only);
+		this.add_row(table, '<%[ Read-only: ]%>', read_only);
+
+		// Pool
+		var pool = this.formatters.value(device.pool);
+		this.add_row(table, '<%[ Pool: ]%>', pool);
+
+		// Volume
+		var volume = this.formatters.value(device.volume);
+		this.add_row(table, '<%[ Volume: ]%>', volume);
+
+		// Free/used device space - part 1
+		var total_space = parseInt(device.total_space, 10);
+		var free_space = parseInt(device.free_space, 10);
+		var used_space = (total_space - free_space);
+		if (total_space)  {
+			var space_container = document.createElement('DIV');
+			space_container.className = this.css.gauge_container;
+			var space_label = document.createElement('SPAN');
+			space_label.className = this.css.gauge_label;
+			space_label.textContent = Units.get_formatted_size(used_space);
+			var space_gauge = document.createElement('CANVAS');
+			space_gauge.setAttribute('rel', 'space');
+			space_gauge.className = this.css.gauge;
+			space_container.appendChild(space_gauge);
+			space_container.appendChild(space_label);
+			this.add_row(table, '<%[ Used space: ]%>', space_container);
+		} else {
+			this.add_row(table, '<%[ Used space: ]%>', this.formatters.value(false));
+		}
+
+		// set default container visibility
+		if (header.getAttribute('data-open') == 0) {
+			container.style.display = 'none';
+		}
+
+		set_space_gauge = function(open) {
+			if (!total_space) {
+				// simple used space text value, no gauge
+				return;
+			}
+			var space_gauge = document.querySelector('div[rel="device_' + device.name + '"] canvas[rel="space"]');
+			var total_space_gb, used_space_gb;
+			if (typeof(SIZE_VALUES_UNIT) === 'string') {
+				if (SIZE_VALUES_UNIT === 'decimal') {
+					total_space_gb = total_space/1000/1000/1000;
+					used_space_gb = used_space/1000/1000/1000;
+				} else if (SIZE_VALUES_UNIT === 'binary') {
+					total_space_gb = total_space/1024/1024/1024;
+					used_space_gb = used_space/1024/1024/1024;
+				}
+			} else {
+				// Default decimal bytes if unit not defined
+				total_space_gb = total_space/1000/1000/1000;
+				used_space_gb = used_space/1000/1000/1000;
+			}
+
+			var val1 = 0;
+			var val2 = parseInt(total_space_gb/100*20, 10);
+			var val3 = parseInt(total_space_gb/100*40, 10);
+			var val4 = parseInt(total_space_gb/100*60, 10);
+			var val5 = parseInt(total_space_gb/100*80, 10);
+			var val6 = total_space_gb;
+			var curr_opts = {
+				staticLabels: {
+					labels: [val1, val2, val3, val4, val5, val6]  // Print labels at these values
+				},
+				staticZones: [
+					{strokeStyle: "#30B32D", min: 0, max: val4}, // Green
+					{strokeStyle: "#FFDD00", min: val4, max: val5}, // Yellow
+					{strokeStyle: "#F03E3E", min: val5, max: val6}  // Red
+				]
+			};
+			var opts = $.extend(true, curr_opts, this.gauges.space);
+			var gauge = new Gauge(space_gauge).setOptions(opts); // create gauge
+			gauge.maxValue = total_space_gb // set max gauge value
+			gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+			gauge.animationSpeed = open ? 80 : 1; // set animation speed
+			gauge.set(used_space_gb); // set actual value
+		}.bind(this);
+
+		var devices_el;
+		if (device.autochanger) {
+			devices_el = document.querySelector('div[rel="ach_' + device.autochanger + '"]');
+		} else {
+			devices_el = document.getElementById(this.ids.devices);
+		}
+		var d = devices_el.querySelector('div[rel="device_' + device.name + '"]');
+		var h = devices_el.querySelector('div[rel="header_device_' + device.name + '"]');
+		if (!d && !h) {
+			devices_el.appendChild(header);
+			devices_el.appendChild(container);
+		} else {
+			devices_el.replaceChild(container, d);
+			devices_el.replaceChild(header, h);
+		}
+
+		// Free/used device space - part 2
+		set_space_gauge();
+
+		var gauge, cname;
+		for (var i = 0; i < dev_running_jobs.length; i++) {
+			// last speed
+			cname = 'last_speed';
+			gauge = document.querySelector('div[rel="job_' + dev_running_jobs[i].jobid + '"] canvas[rel="' + cname + '"]');
+			this.set_job_gauge(dev_running_jobs[i].jobid, dev_running_jobs[i].lastbytes_sec, gauge, cname);
+
+			// average speed
+			cname = 'ave_speed';
+			gauge = document.querySelector('div[rel="job_' + dev_running_jobs[i].jobid + '"] canvas[rel="' + cname + '"]');
+			this.set_job_gauge(dev_running_jobs[i].jobid, dev_running_jobs[i].avebytes_sec, gauge, cname);
+		}
+	},
+	add_running_job: function(main_container, job_nb, job) {
+		var container = document.createElement('DIV');
+		container.className = 'w3-border';
+		container.setAttribute('rel', 'job_' + job.jobid);
+		var table = document.createElement('TABLE');
+		table.className = 'w3-table w3-stripped status_table running_job_table';
+		container.appendChild(table);
+
+		// arrow icon
+		var job_arrow_img = document.createElement('I');
+		job_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_job_' + job.jobid + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				job_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				job_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			job_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_job_' + job.jobid);
+		header.className = [
+			this.css.status_header,
+			this.css.running_job_header
+		].join(' ');
+		// set default container visibility
+		if (header.getAttribute('data-open') == 0) {
+			container.style.display = 'none';
+		}
+		var self = this;
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="job_' + job.jobid + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				job_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown('normal', function() {
+					// last speed
+					var cname = 'last_speed';
+					var gauge = document.querySelector('div[rel="job_' + job.jobid + '"] canvas[rel="' + cname + '"]');
+					self.set_job_gauge(job.jobid, job.lastbytes_sec, gauge, cname, true);
+
+					// average speed
+					var cname = 'ave_speed';
+					var gauge = document.querySelector('div[rel="job_' + job.jobid + '"] canvas[rel="' + cname + '"]');
+					self.set_job_gauge(job.jobid, job.avebytes_sec, gauge, cname, true);
+				});
+				this.setAttribute('data-open', 1);
+				job_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		// job label
+		var job_label = document.createElement('DIV');
+		job_label.className = 'w3-container w3-cell w3-mobile';
+		job_label.style.flexBasis = '770px';
+		job_label.appendChild(job_arrow_img);
+		var job_label_txt = document.createTextNode('<%[ Job: ]%> #' + (job_nb+1) + ' ' + job.job);
+		job_label.appendChild(job_label_txt);
+		header.appendChild(job_label);
+
+		// device running
+		var job_running = document.createElement('DIV')
+		job_running.className = 'w3-container w3-cell w3-mobile';
+		var job_running_img = document.createElement('I');
+		var job_running_label = document.createElement('SPAN');
+		job_running_label.innerHTML = '<%[ Status: ]%> &nbsp;';
+		var job_running_desc = document.createElement('SPAN');
+		job_running_img.className = 'fas fa-cog fa-spin';
+		job_running_desc.innerHTML = '&nbsp; <%[ running ]%>';
+		job_running.appendChild(job_running_label);
+		job_running.appendChild(job_running_img);
+		job_running.appendChild(job_running_desc);
+		header.appendChild(job_running);
+
+		// JobId
+		var jobid_img = document.createElement('I');
+		jobid_img.className = 'fa fa-external-link-alt fa-xs';
+		var jobid_a = document.createElement('A');
+		jobid_a.href = '/web/job/history/' + job.jobid + '/';
+		jobid_a.appendChild(jobid_img);
+		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		this.add_row(table, 'JobId', jobid);
+
+		// Type
+		var type = JobType.get_type(job.type);
+		this.add_row(table, '<%[ Type: ]%>', type);
+
+		// Level
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		this.add_row(table, '<%[ Level: ]%>', level);
+
+		// Last job speed
+		var last_speed = Units.format_speed(job.lastbytes_sec, null, true, true);
+		var last_job_speed = last_speed.value.toFixed(2) + ' ' + last_speed.format;
+		//this.add_row(table, '<%[ Last speed: ]%>', last_job_speed);
+
+		// Last speed - part 1
+		var last_speed_container = document.createElement('DIV');
+		last_speed_container.className = this.css.gauge_container;
+		var last_speed_label = document.createElement('SPAN');
+		last_speed_label.className = this.css.gauge_label;
+		last_speed_label.textContent = last_job_speed;
+		var last_speed_gauge = document.createElement('CANVAS');
+		last_speed_gauge.setAttribute('rel', 'last_speed');
+		last_speed_gauge.className = this.css.gauge;
+		last_speed_container.appendChild(last_speed_gauge);
+		last_speed_container.appendChild(last_speed_label);
+		this.add_row(table, '<%[ Last speed: ]%>', last_speed_container);
+
+		// Average job speed
+		var ave_speed = Units.format_speed(job.avebytes_sec, null, true, true);
+		var ave_job_speed = ave_speed.value.toFixed(2) + ' ' + ave_speed.format;
+		//this.add_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+
+		// Average job speed - part 1
+		var ave_speed_container = document.createElement('DIV');
+		ave_speed_container.className = this.css.gauge_container;
+		var ave_speed_label = document.createElement('SPAN');
+		ave_speed_label.className = this.css.gauge_label;
+		ave_speed_label.textContent = ave_job_speed;
+		var ave_speed_gauge = document.createElement('CANVAS');
+		ave_speed_gauge.setAttribute('rel', 'ave_speed');
+		ave_speed_gauge.className = this.css.gauge;
+		ave_speed_container.appendChild(ave_speed_gauge);
+		ave_speed_container.appendChild(ave_speed_label);
+		this.add_row(table, '<%[ Average speed: ]%>', ave_speed_container);
+
+
+		// Processing file
+		if (job.hasOwnProperty('processing_file') && job.processing_file) {
+			var processing_file = document.createElement('SPAN');
+			processing_file.title = job.processing_file;
+			if (job.processing_file.length > 60) {
+				processing_file.textContent = job.processing_file.substr(0, 17) + ' (..) ' + job.processing_file.substr(-37);
+			} else {
+				processing_file.textContent = job.processing_file;
+			}
+			this.add_row(table, '<%[ Processing file: ]%>', processing_file.outerHTML);
+		}
+
+		var job_name = job.job.replace(/\.\d{4}-\d{2}-\d{2}_\d{2}.\d{2}.\d{2}_\d{2}$/, '');
+		var bytes = parseInt(job.jobbytes, 10);
+		var files = parseInt(job.jobfiles, 10);
+		files = files > 0 ? (files - 1) : 0;
+		var est = estimate_job(oData.jobs, job_name, job.level);
+
+		// Progress bar bytes
+		var bytes_progress;
+		if (job.type === 'B' && est.est_bytes > 0) {
+			bytes_progress = document.createElement('DIV');
+			bytes_progress.className = 'progressbar';
+			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var bytes_label = document.createElement('DIV');
+			bytes_label.className = 'progressbar-label';
+			var bytes_perc = ((100 * bytes) / est.est_bytes);
+			if (bytes_perc > 100) {
+				bytes_perc = 100;
+			}
+			bytes_label.textContent =  Units.get_formatted_size(bytes) + ' / <%[ est. ]%> ' +  Units.get_formatted_size(est.est_bytes) + ' (' + bytes_perc.toFixed(1) + '%' + ')';
+			bytes_progress.style.width = '70%';
+			bytes_progress.appendChild(bytes_label);
+			var bytes_bar = $(bytes_progress);
+			bytes_bar.progressbar({
+				max: est.est_bytes,
+				value: bytes
+			});
+		} else {
+			bytes_progress = '<%[ Not available ]%>';
+		}
+		this.add_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+
+
+		// Progress bar files
+		var files_progress;
+		if (job.type === 'B' && est.est_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var files_perc = ((100 * files) / est.est_files);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  files + ' / <%[ est. ]%> ' +  parseInt(est.est_files, 10) + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: est.est_files,
+				value: files
+			});
+		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var fexamined = parseInt(job.files_examined, 10);
+			var fexpected = parseInt(job.expected_files, 10);
+			var files_perc = ((100 * fexamined) / fexpected);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  fexamined + ' / ' +  fexpected + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: fexpected,
+				value: fexamined
+			});
+		} else {
+			files_progress = '<%[ Not available ]%>';
+		}
+		this.add_row(table, '<%[ File progress bar: ]%>', files_progress);
+
+		// Read pool
+		if (job.read_pool) {
+			this.add_row(table, '<%[ Read pool: ]%>', job.read_pool);
+		}
+		// Read device
+		if (job.read_device) {
+			this.add_row(table, '<%[ Read device: ]%>', job.read_device);
+		}
+		// Read pool
+		if (job.read_volume) {
+			this.add_row(table, '<%[ Read volume: ]%>', job.read_volume);
+		}
+
+		// Write pool
+		if (job.write_pool) {
+			this.add_row(table, '<%[ Write pool: ]%>', job.write_pool);
+		}
+		// Write device
+		if (job.write_device) {
+			this.add_row(table, '<%[ Write device: ]%>', job.write_device);
+		}
+		// Write pool
+		if (job.write_volume) {
+			this.add_row(table, '<%[ Write volume: ]%>', job.write_volume);
+		}
+
+		// Job errors
+		this.add_row(table, '<%[ Job errors: ]%>', job.errors);
+
+		// Job bytes
+		var job_bytes = Units.get_formatted_size(job.jobbytes);
+		this.add_row(table, '<%[ Job bytes: ]%>', job_bytes);
+
+		// Examined files
+		this.add_row(table, '<%[ Job files: ]%>', job.jobfiles);
+
+		main_container.appendChild(header);
+		main_container.appendChild(container);
+	},
+	add_terminated_job: function(job_nb, job) {
+		var main_container = document.getElementById(this.ids.terminated);
+		var container = document.createElement('DIV');
+		container.className = [
+			this.css.terminated_job_table,
+			'w3-border'
+		].join(' ');
+		container.setAttribute('rel', 'job_terminated_' + job.jobid);
+		var table = document.createElement('TABLE');
+		table.className = 'w3-table w3-stripped status_table';
+		container.appendChild(table);
+
+		// arrow icon
+		var job_arrow_img = document.createElement('I');
+		job_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_job_terminated_' + job.jobid + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				job_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				job_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			job_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_job_terminated_' + job.jobid);
+		header.className = [
+			this.css.status_header,
+			this.css.terminated_job_header
+		].join(' ');
+		// set default container visibility
+		if (header.getAttribute('data-open') == 0) {
+			container.style.display = 'none';
+		}
+		var self = this;
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="job_terminated_' + job.jobid + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				job_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown();
+				this.setAttribute('data-open', 1);
+				job_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		// job label
+		var job_label = document.createElement('DIV');
+		job_label.className = 'w3-container w3-cell w3-mobile';
+		job_label.style.flexBasis = '770px';
+		job_label.appendChild(job_arrow_img);
+		var job_label_txt = document.createTextNode('<%[ Job: ]%> #' + (job_nb+1) + ' ' + job.job);
+		job_label.appendChild(job_label_txt);
+		header.appendChild(job_label);
+
+		// device terminated
+		var job_terminated = document.createElement('DIV')
+		job_terminated.className = 'w3-container w3-cell w3-mobile';
+		var job_terminated_img = document.createElement('I');
+		var job_terminated_label = document.createElement('SPAN');
+		job_terminated_label.innerHTML = '<%[ Status: ]%> &nbsp;';
+		var job_terminated_desc = document.createElement('SPAN');
+		job_terminated_desc.innerHTML = JobStatus.get_icon(job.status).outerHTML;
+		job_terminated.appendChild(job_terminated_label);
+		job_terminated.appendChild(job_terminated_img);
+		job_terminated.appendChild(job_terminated_desc);
+		header.appendChild(job_terminated);
+
+		// JobId
+		var jobid_img = document.createElement('I');
+		jobid_img.className = 'fa fa-external-link-alt fa-xs';
+		var jobid_a = document.createElement('A');
+		jobid_a.href = '/web/job/history/' + job.jobid + '/';
+		jobid_a.appendChild(jobid_img);
+		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		this.add_row(table, 'JobId', jobid);
+
+		// Type
+		var type = JobType.get_type(job.type);
+		this.add_row(table, '<%[ Type: ]%>', type);
+
+		// Start time
+		var starttime = Units.format_date(job.starttime_epoch);
+		this.add_row(table, '<%[ Start time: ]%>', starttime);
+
+		// End time
+		var endtime = Units.format_date(job.endtime_epoch);
+		this.add_row(table, '<%[ End time: ]%>', endtime);
+
+		// Level
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		this.add_row(table, '<%[ Level: ]%>', level);
+
+		// Job errors
+		this.add_row(table, '<%[ Job errors: ]%>', job.errors);
+
+		// Job bytes
+		var job_bytes = Units.get_formatted_size(job.jobbytes);
+		this.add_row(table, '<%[ Job bytes: ]%>', job_bytes);
+
+		// Examined files
+		this.add_row(table, '<%[ Job files: ]%>', job.jobfiles);
+
+		var d = main_container.querySelector('div[rel="job_terminated_' + job.jobid + '"]');
+		if (d) {
+			main_container.replaceChild(container, d);
+		} else {
+			main_container.appendChild(header);
+			main_container.appendChild(container);
+		}
+	},
+	set_gauge: function(gauge, options, value) {
+		var opts = $.extend(true, {}, this.gauges.speed, options);
+		var gauge = new Gauge(gauge).setOptions(opts); // create gauge
+		gauge.maxValue = options.maxValue; // set max gauge value
+		gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+		gauge.animationSpeed = options.animationSpeed; // set animation speed
+		gauge.set(value); // set actual value
+	},
+	set_job_gauge: function(jobid, value, gauge, name, open) {
+		value = parseInt(value, 10);
+		var value_kbps = value/1000; // covert to KB/s
+		var prev_job = this.get_running_job(jobid);
+		var max_value_kbps = 0;
+		if (prev_job) {
+			if (prev_job.hasOwnProperty(name)) {
+				max_value_kbps = prev_job[name];
+			}
+		}
+		if (value_kbps > max_value_kbps) {
+			max_value_kbps = value_kbps;
+		}
+
+		var val1 = 0;
+		var val2 = parseInt(max_value_kbps/100*20, 10);
+		var val3 = parseInt(max_value_kbps/100*40, 10);
+		var val4 = parseInt(max_value_kbps/100*60, 10);
+		var val5 = parseInt(max_value_kbps/100*80, 10);
+		var val6 = max_value_kbps;
+		var options = {
+			staticLabels: {
+				labels: [val1, val2, val3, val4, val5, val6]  // Print labels at these values
+			},
+			staticZones: [
+				{strokeStyle: "#30B32D", min: 0, max: val4}, // Green
+				{strokeStyle: "#FFDD00", min: val4, max: val5}, // Yellow
+				{strokeStyle: "#F03E3E", min: val5, max: val6}  // Red
+			],
+			animationSpeed: (open ? 80 : 1),
+			maxValue: max_value_kbps
+		};
+		this.set_gauge(gauge, options, value_kbps);
+		if (prev_job) {
+			prev_job[name] = max_value_kbps;
+			this.update_running_job(prev_job);
+		}
+	},
+	set_refresh_timeout: function(timeout) {
+		timeout = parseInt(timeout, 10) * 1000;
+		if (isNaN(timeout)) {
+			return;
+		}
+		if (this.refresh_timeout !== null) {
+			clearTimeout(this.refresh_timeout);
+		}
+		if (timeout === 0) {
+			return;
+		}
+		this.refresh_timeout = setTimeout(function() {
+			this.update_status();
+		}.bind(this), timeout);
+	},
+	update_status: function() {
+		$('#<%=$this->StorageStatusBtn->ClientID%>').click();
+	},
+	is_status_supported: function() {
+		var supported = false;
+		var not_supported = document.getElementById(this.ids.status_not_supported);
+		var graphical_container = document.getElementById(this.ids.graphical_container);
+		if (this.data && this.data.hasOwnProperty('version') && this.data.version.hasOwnProperty('major') && this.data.version.major >= 9 && this.data.version.minor >= 0 && this.data.version.release >= 0) {
+			supported = true;
+			not_supported.style.display = 'none';
+			graphical_container.style.display = '';
+		} else if (not_supported.style.display == 'none') {
+			not_supported.style.display = '';
+			graphical_container.style.display = 'none';
+			W3SubTabs.open('status_storage_subtab_text', 'status_storage_text_output', 'status_storage_container');
+		}
+		return supported;
+	},
+	get_device_jobs: function(device) {
+		var jobs = [];
+		if (this.data.hasOwnProperty('running')) {
+			for (var i = 0; i < this.data.running.length; i++) {
+				if (this.data.running[i].read_device === device || this.data.running[i].write_device === device) {
+					jobs.push(this.data.running[i]);
+				}
+			}
+		}
+		return jobs;
+	},
+	get_running_job: function(jobid) {
+		var job;
+		for (var i = 0; i < this.running_jobs.length; i++) {
+			if (this.running_jobs[i].jobid === jobid) {
+				job = this.running_jobs[i];
+				break;
+			}
+		}
+		return job;
+	},
+	update_running_job: function(job) {
+		var update = false;
+		for (var i = 0; i < this.running_jobs.length; i++) {
+			if (this.running_jobs[i].jobid === job.jobid) {
+				this.running_jobs[i] = job;
+				update = true;
+				break;
+			}
+		}
+		return update;
+	}
+};
+
+function hide_first_tab_containers(e) {
+	if (e.hasOwnProperty('originalEvent') && e.originalEvent.type == 'click') {
+		$('#storage_action_text_output').slideUp('fast');
+		$('#storage_info_cards').slideUp('fast');
+	}
+}
+
+function init_graphical_storage_status(data) {
+	oGraphicalStorageStatus.update(data);
+}
+function status_storage_show_error(error) {
+	var errmsg = error;
+	if (error === 'timeout') {
+		errmsg = '<%[ Status request timed out. The most probably the Bacula storage is not available or it is not running. ]%>';
+	}
+	var err_el = document.getElementById('status_storage_error');
+	err_el.textContent = errmsg;
+	err_el.style.display = '';
+}
+oGraphicalStorageStatus.init();
+MonitorParams = {
+	jobs: null
+};
+</script>
+				</div>
+				<div id="status_storage_text_output" class="w3-code subtab_item" style="display: none">
+					<pre><com:TActiveLabel ID="StorageLog" /></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="configure_storage" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="DIRStorageConfig"
+			ComponentType="dir"
+			ResourceType="Storage"
+			ShowCancelButton="false"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="configure_storage_daemon" style="display: none">
+		<com:TCallback ID="LoadStorageDaemonConfig" OnCallback="loadSDStorageDaemonConfig" />
+		<script>
+function load_sd_storagedaemon_config() {
+	var cb = <%=$this->LoadStorageDaemonConfig->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+		</script>
+		<com:TCallback ID="LoadStorageDaemonResourcesConfig" OnCallback="loadSDResourcesConfig" />
+		<script>
+function load_sd_res_config(resource) {
+	var cb = <%=$this->LoadStorageDaemonResourcesConfig->ActiveControl->Javascript%>;
+	cb.setCallbackParameter(resource);
+	cb.dispatch();
+}
+		</script>
+		<div class="w3-row w3-margin-bottom">
+			<a href="javascript:void(0)" onclick="load_sd_storagedaemon_config(); W3SubTabs.open('sd_storagedaemon_config_btn', 'sd_storagedaemon_config_form', 'configure_storage_daemon');">
+				<div id="sd_storagedaemon_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Storage</div>
+			 </a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Director'); W3SubTabs.open('storagedaemon_director_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_director_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Director</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Device'); W3SubTabs.open('storagedaemon_device_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_device_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Device</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Autochanger'); W3SubTabs.open('storagedaemon_autochanger_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_autochanger_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Autochanger</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Messages'); W3SubTabs.open('storagedaemon_messages_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_messages_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Messages</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Cloud'); W3SubTabs.open('storagedaemon_cloud_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_cloud_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Cloud</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Statistics'); W3SubTabs.open('storagedaemon_statistics_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+				<div id="storagedaemon_statistics_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Statistics</div>
+			</a>
+		</div>
+		<div id="sd_storagedaemon_config_form" class="subtab_item">
+			<com:TActiveLabel
+				ID="SDStorageDaemonConfigErr"
+				Text="<%[ There was a problem with loading the resource configuration. Please check if selected API host is working and if it provides access to the resource configuration. ]%>"
+				CssClass="w3-text-red"
+				Display="None"
+			/>
+			<com:Application.Web.Portlets.BaculaConfigDirectives
+				ID="SDStorageDaemonConfig"
+				ComponentType="sd"
+				ResourceType="Storage"
+				ShowCancelButton="false"
+			/>
+		</div>
+		<div id="sd_resources_config_form" class="subtab_item" style="display: none">
+			<com:Application.Web.Portlets.BaculaConfigResourceList
+				ID="StorageDaemonResourcesConfig"
+				ComponentType="sd"
+				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
+			/>
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="configure_autochanger" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="AutochangerConfig"
+			ComponentType="sd"
+			ResourceType="Autochanger"
+			ShowCancelButton="false"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="manage_autochanger" style="display: none">
+		<div id="manage_autochanger_not_available">
+			<strong><%[ Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side. ]%></strong>
+		</div>
+		<div id="drive_list_container">
+			<h5><%[ Tape drives ]%></h5>
+			<table id="drive_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ Drive index ]%></th>
+						<th><%[ Drive name ]%></th>
+						<th><%[ Device ]%></th>
+						<th><%[ Volume ]%></th>
+						<th><%[ Slot ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</thead>
+				<tbody id="drive_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ Drive index ]%></th>
+						<th><%[ Drive name ]%></th>
+						<th><%[ Device ]%></th>
+						<th><%[ Volume ]%></th>
+						<th><%[ Slot ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<com:TCallback ID="UnloadDrive" OnCallback="unloadDrive" />
+		<com:TCallback ID="UnloadedDrive" OnCallback="unloadedDrive" />
+		<script>
+var oDriveList = {
+	ids: {
+		drive_list: 'drive_list',
+		drive_list_body: 'drive_list_body'
+	},
+	table: null,
+	data: [],
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+		}
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.drive_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'index'},
+				{data: 'drive'},
+				{data: 'device'},
+				{
+					data: 'volume',
+					render: function(data, type, row) {
+						var v = data;
+						if (type == 'display' && row.mediaid > 0) {
+							var a = document.createElement('A');
+							a.href = '/web/volume/' + row.mediaid + '/';
+							var icon = document.createElement('I');
+							icon.className  = 'fa fa-external-link-alt fa-xs';
+							a.appendChild(icon);
+							v += ' ' + a.outerHTML;
+						}
+						return v;
+					}
+				},
+				{data: 'slot_ach'},
+				{
+					data: 'slot_ach',
+					render: function(data, type, row) {
+						var btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-green';
+						btn.type = 'button';
+						var i = document.createElement('I');
+						i.className = 'fa fa-upload';
+						var label = document.createTextNode(' <%[ Unload ]%>');
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.appendChild(label);
+						btn.setAttribute('onclick', 'oDrives.unload_drive("' + row.drive + '", ' + data + ')');
+						if (data === '')  {
+							btn.style.visibility = 'hidden';
+						}
+						return btn.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 5, 6 ]
+			}],
+			order: [1, 'asc']
+		});
+	}
+};
+
+var oDrives = {
+	unload_drive_timeout: 300000, // 5 minutes
+	load_drives_cb: function(data) {
+		oDriveList.data = data;
+		oDriveList.init();
+	},
+	unload_drive: function(drive, slot) {
+		var cb = <%=$this->UnloadDrive->ActiveControl->Javascript%>;
+		var param = {
+			drive: drive,
+			slot: slot
+		};
+		cb.setCallbackParameter(param);
+		cb.setRequestTimeOut(this.unload_drive_timeout);
+		cb.dispatch();
+		oSlots.show_changer_loader(true);
+	},
+	set_drive_unloading_output: function(out_id) {
+		var cb = <%=$this->UnloadedDrive->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_drive_unloading: function(out_id) {
+		setTimeout(function() {
+			oDrives.set_drive_unloading_output(out_id);
+		}, 2000)
+	}
+};
+		</script>
+		<div id="slot_list_container">
+			<h5 class="w3-show-inline-block"><%[ Changer slots ]%> &nbsp;<i id="changer_loader" class="fas fa-sync-alt w3-spin" style="display: none"></i></h5>
+			<p class="info w3-right"><%[ Tip: To use bulk autochanger actions, please select table rows. ]%></p>
+			<button type="button" id="release_all_ie_btn" class="w3-button w3-green" style="display: none" onclick="oSlots.release_all_ie();">
+				<i class="fas fa-share-square"></i> &nbsp;<%[ Release all I/E slots ]%>
+			</button>
+			<table id="slot_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ Slot in device ]%></th>
+						<th><%[ Slot in catalog ]%></th>
+						<th><%[ Volume ]%></th>
+						<th><%[ Vol. status ]%></th>
+						<th><%[ Vol. bytes ]%></th>
+						<th><%[ Pool ]%></th>
+						<th>MediaType</th>
+						<th><%[ Last written ]%></th>
+						<th><%[ When expire ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</thead>
+				<tbody id="slot_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ Slot in device ]%></th>
+						<th><%[ Slot in catalog ]%></th>
+						<th><%[ Volume ]%></th>
+						<th><%[ Vol. status ]%></th>
+						<th><%[ Vol. bytes ]%></th>
+						<th><%[ Pool ]%></th>
+						<th>MediaType</th>
+						<th><%[ Last written ]%></th>
+						<th><%[ When expire ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+		</div>
+		<com:TCallback ID="LabelUsingBarcodesAction" OnCallback="labelBarcodes" />
+		<com:TCallback ID="UpdateSlotsBarcodesAction" OnCallback="updateSlotsBarcodes" />
+		<com:TCallback ID="UpdateSlotsAction" OnCallback="updateSlots" />
+		<com:TCallback ID="MoveToImportExportSlot" OnCallback="moveToIE" />
+		<com:TCallback ID="MovingToImportExportSlot" OnCallback="movingToIE" />
+		<com:TCallback ID="MoveFromImportExportSlot" OnCallback="moveFromIE" />
+		<com:TCallback ID="MovingFromImportExportSlot" OnCallback="movingFromIE" />
+		<com:TCallback ID="ReleaseImportExportSlot" OnCallback="releaseIE" />
+		<com:TCallback ID="ReleasingImportExportSlot" OnCallback="releasingIE" />
+		<com:Application.Web.Portlets.LabelVolume
+			ID="LabelBarcodes"
+			ShowButton="false"
+			BarcodeLabel="true"
+			Storage="<%=$this->StorageName%>"
+			OnLabelStart="showChangerLoading"
+			OnLabelComplete="loadAutochanger"
+			OnLabelSuccess="hideChangerLoading"
+			OnLabelFail="hideChangerLoading"
+		/>
+		<com:Application.Web.Portlets.UpdateSlots
+			ID="UpdateSlots"
+			ShowButton="false"
+			Storage="<%=$this->StorageName%>"
+			OnUpdateStart="showChangerLoading"
+			OnUpdateComplete="loadAutochanger"
+			OnUpdateSuccess="hideChangerLoading"
+			OnUpdateFail="hideChangerLoading"
+		/>
+		<com:TActiveHiddenField ID="IESlots" />
+		<script>
+var oSlotList = {
+	table_toolbar: null,
+	actions: [
+		{
+			action: 'label',
+			label: '<%[ Label using barcodes ]%>',
+			value: 'slot_ach',
+			callback: <%=$this->LabelUsingBarcodesAction->ActiveControl->Javascript%>,
+			before: function() {
+				show_label_volume_window(true);
+			}
+		},
+		{
+			action: 'move_to_ie',
+			label: '<%[ Move to import/export slot ]%>',
+			value: 'slot_ach',
+			before: function() {
+				oSlots.show_move_to_ie_window(true);
+			},
+			validate: function(selected) {
+				oSlots.set_move_to_ie_slots();
+				var ie_slots = oSlots.get_slots(['ie_slot'], ['E']);
+				var ie_slots_count = ie_slots.length;
+				var vols_count =  oSlots.move_to_ie_slots.length;
+				if (vols_count > ie_slots_count) {
+					var emsg = '<%[ There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count. ]%>';
+					emsg = emsg.replace('%slots_count', ie_slots_count);
+					emsg = emsg.replace('%vols_count', vols_count);
+					oBulkActionsModal.set_error(emsg);
+					return false;
+				}
+				return true;
+			}
+		},
+		{
+			action: 'update_barcodes',
+			label: '<%[ Update slots using barcodes ]%>',
+			value: 'slot_ach',
+			callback: <%=$this->UpdateSlotsBarcodesAction->ActiveControl->Javascript%>,
+			before: function() {
+				set_update_slots_barcodes(true);
+				show_update_slots_window(true);
+			}
+		},
+		{
+			action: 'update',
+			label: '<%[ Update slots ]%>',
+			value: 'slot_ach',
+			callback: <%=$this->UpdateSlotsAction->ActiveControl->Javascript%>,
+			before: function() {
+				set_update_slots(true);
+				show_update_slots_window(true);
+			}
+		}
+	],
+	ids: {
+		slot_list: 'slot_list',
+		slot_list_body: 'slot_list_body',
+		release_all_ie_btn: 'release_all_ie_btn'
+	},
+	table: null,
+	data: [],
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.init_release_all_ie_btn();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+		}
+		oSlots.init();
+		this.set_release_all_ie_btn();
+	},
+	set_events: function() {
+		document.getElementById(this.ids.slot_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.slot_list).DataTable({
+			data: this.data,
+			pageLength: 100,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'slot_ach'},
+				{data: 'slot_cat'},
+				{
+					data: 'volume',
+					render: function(data, type, row) {
+						var v = data;
+						var link = '';
+						if (!row.slot_cat) {
+							for (var i = 0; i < oDriveList.data.length; i++) {
+								if (row.slot_ach === oDriveList.data[i].slot_ach) {
+									v = '<%[ In drive %index (%drive) ]%>';
+									v = v.replace('%index', oDriveList.data[i].index);
+									v = v.replace('%drive', oDriveList.data[i].drive);
+									break;
+								}
+							}
+						}
+						if (type == 'display' && row.mediaid > 0) {
+							var a = document.createElement('A');
+							a.href = '/web/volume/' + row.mediaid + '/';
+							var icon = document.createElement('I');
+							icon.className  = 'fa fa-external-link-alt fa-xs';
+							a.appendChild(icon);
+							link = ' ' + a.outerHTML;
+						}
+						if (!data && !v) {
+							if (row.state == 'F') {
+								v = '<%[ Full ]%>';
+							} else if (row.state == 'E') {
+								v = '<%[ Empty ]%>';
+							}
+						}
+						return (v + link);
+					}
+				},
+				{data: 'volstatus'},
+				{
+					data: 'volbytes',
+					render: render_bytes
+				},
+				{data: 'pool'},
+				{data: 'mediatype'},
+				{
+					data: 'lastwritten',
+					render: render_date
+				},
+				{
+					data: 'whenexpire',
+					render: render_date_ex
+				},
+				{
+					data: 'slot_ach',
+					render: function(data, type, row) {
+						var ret = '';
+						if (row.type == 'ie_slot')  {
+							if (row.state === 'F') {
+								var clear_io = document.createElement('BUTTON');
+								clear_io.className = 'w3-button w3-green';
+								clear_io.type = 'button';
+								var i = document.createElement('I');
+								i.className = 'fa fa-sign-out-alt';
+								var label = document.createTextNode(' <%[ Release I/E ]%>');
+								clear_io.appendChild(i);
+								clear_io.innerHTML += '&nbsp';
+								clear_io.appendChild(label);
+								clear_io.setAttribute('onclick', 'oSlots.release_ie_window(' + data + ');');
+								ret = clear_io.outerHTML;
+							} else {
+								ret = '<%[ Import/Export ]%>';
+							}
+						} else {
+							var load_btn = document.createElement('BUTTON');
+							load_btn.className = 'w3-button w3-green';
+							load_btn.type = 'button';
+							var i = document.createElement('I');
+							i.className = 'fa fa-download';
+							var label = document.createTextNode(' <%[ Load ]%>');
+							load_btn.appendChild(i);
+							load_btn.innerHTML += '&nbsp';
+							load_btn.appendChild(label);
+							load_btn.setAttribute('onclick', 'oSlots.load_drive_window(' + data + ');');
+							if (row.state === 'E')  {
+								load_btn.style.visibility = 'hidden';
+							}
+							ret = load_btn.outerHTML;
+						}
+						return ret;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-right",
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 2, 4 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc']
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	},
+	init_release_all_ie_btn: function() {
+		var btn = document.getElementById(this.ids.release_all_ie_btn);
+		var toolbar = document.querySelector('#' + this.ids.slot_list + '_wrapper div.dt-buttons');
+		toolbar.appendChild(btn);
+	},
+	show_release_all_ie_btn: function(show) {
+		var btn = document.getElementById(this.ids.release_all_ie_btn);
+		if (show) {
+			btn.style.display = '';
+		}  else {
+			btn.style.display = 'none';
+		}
+	},
+	set_release_all_ie_btn: function() {
+		var full = oSlots.get_slots(['ie_slot'], ['F']);
+		if (full.length > 0) {
+			this.show_release_all_ie_btn(true);
+		} else {
+			this.show_release_all_ie_btn(false);
+		}
+	}
+};
+
+var oSlots = {
+	ids: {
+		load_drive_window: 'load_drive_window',
+		load_drive_drives: 'load_drive_drives',
+		load_drive_out: 'load_drive_out',
+		load_drive_loading: 'load_drive_loading',
+		load_drive_slot: 'load_drive_slot',
+		move_to_ie_window: 'move_to_ie_window',
+		move_to_ie_slots: 'move_to_ie_slots',
+		move_to_ie_window_log: 'move_to_ie_window_log',
+		move_to_ie_loading: 'move_to_ie_loading',
+		release_ie_window: 'release_ie_window',
+		release_ie_slot: 'release_ie_slot',
+		release_ie_loading: 'release_ie_loading',
+		release_ie_window_log: 'release_ie_window_log',
+		release_ie_dest_slot: 'release_ie_dest_slot',
+		changer_loader: 'changer_loader'
+	},
+	load_drive_timeout: 300000, // 5 minutes
+	move_to_ie_timeout: 300000, // 5 minutes
+	move_from_ie_timeout: 300000, // 5 minutes
+	release_ie_timeout: 300000, // 5 minutes
+	slot: null,
+	ie_slot: null,
+	empty_slots: [],
+	full_slots: [],
+	empty_ie_slots: [],
+	full_ie_slots: [],
+	move_to_ie_slots: [],
+	free_ie_slots: [],
+	init: function() {
+		this.set_slots();
+	},
+	set_slots: function() {
+		this.empty_slots = this.get_slots(['slot'], ['E']);
+		this.full_slots = this.get_slots(['slot'], ['F']);
+		this.empty_ie_slots = this.get_slots(['ie_slot'], ['F']);
+		this.full_ie_slots = this.get_slots(['ie_slot'], ['F']);
+	},
+	load_slots_cb: function(data) {
+		oSlotList.data = data;
+		oSlotList.init();
+	},
+	load_drive_window: function(slot) {
+		this.slot = slot;
+		this.prepare_drive_list();
+		this.show_load_drive_window(true);
+	},
+	prepare_drive_list: function() {
+		var sel = document.getElementById(this.ids.load_drive_drives);
+		while(sel.firstChild) {
+			sel.removeChild(sel.firstChild);
+		}
+		var opt, text, label, state;
+		for (var i = 0; i < oDriveList.data.length; i++) {
+			opt = document.createElement('OPTION');
+			opt.value = oDriveList.data[i].drive;
+			if (oDriveList.data[i].state === 'F') {
+				opt.setAttribute('disabled', 'disabled');
+				state = '[<%[ Full ]%>] ';
+			} else if (oDriveList.data[i].state === 'E') {
+				state = '[<%[ Empty ]%>] ';
+			}
+			text = state + oDriveList.data[i].drive + ' (<%[ index ]%>: ' + oDriveList.data[i].index + ', <%[ device ]%>: ' + oDriveList.data[i].device + ')';
+			label = document.createTextNode(text);
+			opt.appendChild(label);
+			sel.appendChild(opt);
+		}
+	},
+	show_load_drive_window: function(show) {
+		this.set_load_drive_window_slot();
+		var win = document.getElementById(oSlots.ids.load_drive_window);
+		if (show) {
+			win.style.display = 'block';
+		} else {
+			win.style.display = 'none';
+		}
+	},
+	set_load_drive_window_slot: function() {
+		document.getElementById(this.ids.load_drive_slot).textContent  = this.slot;
+	},
+	load_drive_loading: function(show) {
+		var loader = document.getElementById(oSlots.ids.load_drive_loading);
+		if (show) {
+			loader.style.visibility = 'visible';
+		} else {
+			loader.style.visibility = 'hidden';
+		}
+	},
+	set_drive_window_ok: function() {
+		oSlots.load_drive_loading(false);
+		oSlots.show_load_drive_window(false);
+	},
+	load_drive: function() {
+		var sel = document.getElementById(this.ids.load_drive_drives);
+		var cb = <%=$this->LoadDrive->ActiveControl->Javascript%>;
+		if (!sel.value) {
+			// no free tape drive available
+			return false;
+		}
+		var param = {
+			drive: sel.value,
+			slot: this.slot
+		};
+		cb.setCallbackParameter(param);
+		cb.setRequestTimeOut(this.load_drive_timeout);
+		cb.dispatch();
+		this.show_changer_loader(true);
+		this.load_drive_loading(true);
+	},
+	set_drive_with_mount_loading_output: function(out_id) {
+		var cb = <%=$this->LoadedDriveWithMount->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_drive_with_mount_loading: function(out_id) {
+		setTimeout(function() {
+			oSlots.set_drive_with_mount_loading_output(out_id);
+		}, 2000)
+	},
+	set_drive_without_mount_loading_output: function(out_id) {
+		var cb = <%=$this->LoadedDriveWithoutMount->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_drive_without_mount_loading: function(out_id) {
+		setTimeout(function() {
+			oSlots.set_drive_without_mount_loading_output(out_id);
+		}, 2000)
+	},
+	get_slots: function(types, states) {
+		if (!states) {
+			states = ['E', 'F'];
+		}
+		if (!types) {
+			types = ['slot', 'ie_slot']
+		}
+		var ie_slots = [];
+		for (var i = 0; i < oSlotList.data.length; i++) {
+			if (types.indexOf(oSlotList.data[i].type) != -1 && states.indexOf(oSlotList.data[i].state) != -1) {
+				ie_slots.push(oSlotList.data[i].slot_ach);
+			}
+		}
+		return ie_slots;
+	},
+	set_ie_slots: function() {
+		this.free_ie_slots = oSlots.get_slots(['ie_slot'], ['E']);
+	},
+	show_move_to_ie_window: function(show) {
+		this.set_ie_slots();
+		this.set_move_to_ie_slots();
+		this.move_to_ie_loading(false);
+		var win = document.getElementById(oSlots.ids.move_to_ie_window);
+		if (show) {
+			win.style.display = 'block';
+		} else {
+			win.style.display = 'none';
+		}
+	},
+	set_move_to_ie_slots: function() {
+		var slots = [];
+		var selected = oSlotList.table.rows({selected: true}).data();
+		for (var i = 0; i < selected.length; i++) {
+			if (selected[i].state == 'F') {
+				slots.push(selected[i].slot_ach);
+			}
+		}
+		this.move_to_ie_slots = slots;
+		document.getElementById(this.ids.move_to_ie_slots).textContent = slots.join(',');
+	},
+	move_to_ie_loading: function(show) {
+		var loader = document.getElementById(oSlots.ids.move_to_ie_loading);
+		if (show) {
+			loader.style.visibility = 'visible';
+		} else {
+			loader.style.visibility = 'hidden';
+		}
+	},
+	move_to_ie: function() {
+		var slot = oSlots.move_to_ie_slots.shift();
+		var ie_slot = oSlots.free_ie_slots.shift();
+		if (slot && ie_slot) {
+			oSlots.move_to_ie_loading(true);
+			var param = [slot, ie_slot].join(',');
+			var cb = <%=$this->MoveToImportExportSlot->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(param);
+			cb.RequestTimeOut = oSlots.move_to_ie_timeout;
+			cb.dispatch();
+			oSlots.show_changer_loader(true);
+		} else if (!slot) {
+			oSlots.show_move_to_ie_window(false);
+			oSlotList.set_release_all_ie_btn();
+		} else if (!ie_slot) {
+			// There is not enough import/export slots to transfer all selected tapes.
+			// It shouldn't happen.
+		}
+	},
+	set_move_to_ie_log: function(log) {
+		var logbox = document.getElementById(oSlots.ids.move_to_ie_window_log);
+		if (log && logbox.style.display == 'none') {
+			logbox.style.display = 'block';
+		}
+		logbox.getElementsByTagName('PRE')[0].textContent = log;
+	},
+	set_move_to_ie_output: function(out_id) {
+		var cb = <%=$this->MovingToImportExportSlot->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_move_to_ie_loading: function(out_id) {
+		setTimeout(function() {
+			oSlots.set_move_to_ie_output(out_id);
+		}, 2000)
+	},
+	show_release_ie_window: function(show) {
+		var win = document.getElementById(oSlots.ids.release_ie_window);
+		if (show) {
+			oSlots.release_ie_loading(false);
+			oSlots.set_release_ie_log('');
+			win.style.display = 'block';
+		} else {
+			win.style.display = 'none';
+		}
+	},
+	set_release_ie_window_slot: function() {
+		document.getElementById(this.ids.release_ie_slot).textContent  = this.ie_slot;
+	},
+	release_ie_loading: function(show) {
+		var loader = document.getElementById(oSlots.ids.release_ie_loading);
+		if (show) {
+			loader.style.visibility = 'visible';
+		} else {
+			loader.style.visibility = 'hidden';
+		}
+	},
+	release_ie_window: function(slot) {
+		this.ie_slot = slot;
+		this.prepare_release_ie();
+		this.set_release_ie_window_slot();
+		this.show_release_ie_window(true);
+	},
+	prepare_release_ie: function() {
+		var sel = document.getElementById(this.ids.release_ie_dest_slot);
+		while(sel.firstChild) {
+			sel.removeChild(sel.firstChild);
+		}
+		var opt, text, label, state;
+		for (var i = 0; i < oSlotList.data.length; i++) {
+			opt = document.createElement('OPTION');
+			opt.value = oSlotList.data[i].slot_ach;
+			if (oSlotList.data[i].state === 'F') {
+				opt.setAttribute('disabled', 'disabled');
+				state = '[<%[ Full ]%>] ';
+			} else if (oSlotList.data[i].state === 'E') {
+				state = '[<%[ Empty ]%>] ';
+			}
+			text = state + '<%[ Slot ]%>: ' + oSlotList.data[i].slot_ach;
+			label = document.createTextNode(text);
+			opt.appendChild(label);
+			sel.appendChild(opt);
+		}
+	},
+	release_ie: function(finish) {
+		var sel = document.getElementById(oSlots.ids.release_ie_dest_slot);
+		if (oSlots.ie_slot && sel.value && !finish) {
+			oSlots.release_ie_loading(true);
+			var param = [oSlots.ie_slot, sel.value].join(',');
+			var cb = <%=$this->ReleaseImportExportSlot->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(param);
+			cb.RequestTimeOut = oSlots.release_ie_timeout;
+			cb.dispatch();
+			oSlots.show_changer_loader(true);
+		} else if (finish) {
+			oSlots.show_release_ie_window(false);
+			oSlotList.set_release_all_ie_btn();
+		}
+	},
+	set_release_ie_log: function(log) {
+		var logbox = document.getElementById(oSlots.ids.release_ie_window_log);
+		if (log && logbox.style.display == 'none') {
+			logbox.style.display = 'block';
+		}
+		logbox.getElementsByTagName('PRE')[0].textContent = log;
+	},
+	set_release_ie_output: function(out_id) {
+		var cb = <%=$this->ReleasingImportExportSlot->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_release_ie_loading: function(out_id) {
+		setTimeout(function() {
+			oSlots.set_release_ie_output(out_id);
+		}, 2000)
+	},
+	release_all_ie: function() {
+		var fie_len = oSlots.full_ie_slots.length;
+		var es_len = oSlots.empty_slots.length;
+		if  (fie_len > es_len) {
+			var emsg = '<%[ There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count. ]%>';
+			emsg = emsg.replace('%ie_slot_count', fie_len);
+			emsg = emsg.replace('%slot_count', es_len);
+			oBulkActionsModal.set_error(emsg);
+			return false;
+		}
+		var ie_slot = oSlots.full_ie_slots.shift()
+		var slot = oSlots.empty_slots.shift();
+
+		if (slot && ie_slot) {
+			var param = [ie_slot, slot].join(',');
+			var cb = <%=$this->MoveFromImportExportSlot->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(param);
+			cb.RequestTimeOut = oSlots.move_from_ie_timeout;
+			cb.dispatch();
+			oSlots.show_changer_loader(true);
+		} else if (!slot) {
+			oSlotList.set_release_all_ie_btn();
+		}
+	},
+	set_release_all_ie_output: function(out_id) {
+		var cb = <%=$this->MovingFromImportExportSlot->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	refresh_release_all_ie_loading: function(out_id) {
+		setTimeout(function() {
+			oSlots.set_release_all_ie_output(out_id);
+		}, 2000)
+	},
+	show_changer_loader: function(show) {
+		var loader = document.getElementById(oSlots.ids.changer_loader);
+		if (show) {
+			loader.style.display = '';
+		} else {
+			loader.style.display = 'none';
+		}
+	}
+};
+		</script>
+		<com:TCallback ID="LoadDrive" OnCallback="loadDrive" />
+		<com:TCallback ID="LoadedDriveWithoutMount" OnCallback="loadedDriveWithoutMount" />
+		<com:TCallback ID="LoadedDriveWithMount" OnCallback="loadedDriveWithMount" />
+		<div id="load_drive_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-teal">
+					<span onclick="oSlots.show_load_drive_window(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Load drive ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+					<div class="w3-row directive_field w3-margin-bottom">
+						<div class="w3-col w3-third">
+							<%[ Slot ]%>:
+						</div>
+						<div class="w3-col w3-half">
+							<strong id="load_drive_slot"></strong>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third">
+							<label for="load_drive_drives"><%[ Drive ]%>:</label>
+						</div>
+						<div class="w3-col w3-half">
+							<select id="load_drive_drives" class="w3-select w3-border"></select>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third">
+							<label for="load_drive_mount"><%[ Mount volume ]%>:</label>
+						</div>
+						<div class="w3-col w3-half">
+							<com:TActiveCheckBox ID="LoadDriveMount" CssClass="w3-check" Checked="true" />
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-red" onclick="oSlots.show_load_drive_window(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-green w3-show-inline-block" onclick="oSlots.load_drive();"><i class="fas fa-download"></i> &nbsp;<%[ Load drive ]%></button>
+					<i id="load_drive_loading" class="fas fa-sync-alt fa-spin" style="visibility: hidden"></i>
+				</footer>
+			</div>
+		</div>
+		<div id="move_to_ie_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-teal">
+					<span onclick="oSlots.show_move_to_ie_window(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Move to import/export slot ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+					<div class="w3-row w3-section">
+						<div class="w3-col w3-third">
+							<%[ Slots ]%>:
+						</div>
+						<div class="w3-col w3-half">
+							<strong id="move_to_ie_slots"></strong>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-red" onclick="oSlots.show_move_to_ie_window(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-green w3-show-inline-block" onclick="oSlots.move_to_ie();"><i class="fas fa-download"></i> &nbsp;<%[ Move to import/export slots ]%></button>
+					<i id="move_to_ie_loading" class="fas fa-sync-alt fa-spin" style="visibility: hidden"></i>
+				</footer>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 400px; overflow-x: auto;">
+					<div id="move_to_ie_window_log" class="w3-code" style="display: none">
+						<pre></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="release_ie_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-teal">
+					<span onclick="oSlots.show_release_ie_window(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Release import/export slot ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+					<div class="w3-row w3-section">
+						<div class="w3-col w3-third">
+							<%[ Import/export slot ]%>:
+						</div>
+						<div class="w3-col w3-half">
+							<strong id="release_ie_slot"></strong>
+						</div>
+					</div>
+					<div class="w3-row w3-section">
+						<div class="w3-col w3-third">
+							<label for="release_ie_dest_slot"><%[ Destination slot ]%>:</label>
+						</div>
+						<div class="w3-col w3-half">
+							<select id="release_ie_dest_slot" class="w3-select w3-border"></select>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-red" onclick="oSlots.show_release_ie_window(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-green w3-show-inline-block" onclick="oSlots.release_ie();"><i class="fas fa-download"></i> &nbsp;<%[ Release I/E ]%></button>
+					<i id="release_ie_loading" class="fas fa-sync-alt fa-spin" style="visibility: hidden"></i>
+				</footer>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 400px; overflow-x: auto;">
+					<div id="release_ie_window_log" class="w3-code" style="display: none">
+						<pre></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<com:Application.Web.Portlets.BulkActionsModal ID="BulkActions" />
+</com:TContent>

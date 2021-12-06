@@ -1,0 +1,585 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-tasks"></i> <%[ Job history details ]%></b>
+		</h5>
+	</header>
+	<h3 class="view_header"><%[ Job: ]%> <%=$this->getJobName()%> &nbsp;<span class="w3-small">[<%[ JobId ]%> <%=$this->getJobId()%>]</span></h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('JobHistoryList')%>"><i class="fa fa-angle-left"></i></a>
+		<button id="btn_job_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_actions'); job_callback_func(); oRunningJobStatus.init_refresh();"><%[ Actions ]%></button>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_config');"
+			Text="<%[ Configure job ]%>"
+			Visible="<%=!empty($_SESSION['dir'])%>"
+			OnClick="loadJobConfig"
+		/>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config');"
+			Text="<%[ Configure fileset ]%>"
+			Visible="<%=!empty($_SESSION['dir'])%>"
+			OnClick="loadFileSetConfig"
+		/>
+		<com:TActiveLinkButton
+			CssClass="w3-bar-item w3-button tab_btn"
+			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config');"
+			Text="<%[ Configure schedule ]%>"
+			Visible="<%=!empty($_SESSION['dir'])%>"
+			OnClick="loadScheduleConfig"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="job_actions">
+		<com:TActiveLinkButton
+			ID="CancelBtn"
+			OnClick="cancel"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			Display="None"
+			ClientSide.OnSuccess="job_callback_func(true);"
+		>
+			<i class="fa fa-stop"></i> &nbsp;<%[ Cancel job ]%>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			CssClass="w3-button w3-green w3-margin-bottom"
+			OnClick="loadRunJobModal"
+			Attributes.onclick="document.getElementById('run_job').style.display='block'"
+		>
+			<i class="fa fa-undo"></i> &nbsp;<%[ Run job again ]%>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton ID="DeleteBtn" CssClass="w3-button w3-red w3-margin-bottom" Attributes.onclick="$('#job_delete_confirm').show();">
+			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Delete ]%>
+		</com:TActiveLinkButton>
+		<com:TActiveLinkButton
+			ID="RestoreBtn"
+			Attributes.onclick="document.location = '<%=$this->Service->constructUrl('RestoreWizard', array('jobid' => $this->getJobId()))%>';"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			Display="None"
+		>
+			<i class="fa fa-reply"></i> &nbsp;<%[ Restore ]%>
+		</com:TActiveLinkButton>
+		<div class="w3-panel w3-card w3-light-grey">
+			<h5><%[ Job: ]%> <%=$this->getJobUname()%> &nbsp;
+				<com:TActiveLabel ID="RunningIcon" Attributes.title="<%[ Job is running ]%>">
+					<i class="fa fa-cog w3-spin"></i>
+				</com:TActiveLabel>
+				<com:TActiveLabel ID="FinishedIcon" Attributes.title="<%[ Job is finished ]%>">
+					<i class="fa fa-check"></i>
+				</com:TActiveLabel>
+			</h5>
+			<com:TCallback
+				ID="RunningJobStatusCb"
+				OnCallback="runningJobStatus"
+				ClientSide.OnLoading="oRunningJobStatus.show_loader(true);"
+				ClientSide.OnComplete="oRunningJobStatus.init_refresh(); oRunningJobStatus.show_loader(false);"
+			/>
+			<div class="w3-row">
+				<div id="status_running_job_warning_container" class="w3-panel w3-pale-yellow w3-border" style="display: none">
+					<h3><%[ Warning ]%></h3>
+					<p id="status_running_job_warning_msg"></p>
+					<div id="status_running_job_warning_label_btn" class="w3-section" style="display: none">
+						<com:Application.Web.Portlets.LabelVolume ID="LabelMedia" />
+					</div>
+				</div>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
+					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
+						<%[ Running job status ]%>
+						<i id="status_running_job_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
+					</div>
+				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');">
+					<div id="joblog_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding">
+						<%[ Raw job log ]%>
+						<i id="joblog_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
+					</div>
+				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('jobfiles_subtab_text', 'jobfiles_list'); load_job_list_files();"<%=!$this->allow_list_files_mode ? ' style="display: none"' : ''%>>
+					<div id="jobfiles_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding"><%[ Job files ]%></div>
+				</a>
+			</div>
+			<div id="status_running_job_graphical_output" class="subtab_item" style="display: none">
+				<h4 id="status_running_job_status_not_supported" style="display: none"><%[ Graphical job status is supported for jobs running on Bacula clients version 9.0 and greater. ]%></h4>
+				<div id="status_running_job_graphical_container">
+					<div class="w3-right w3-margin-top w3-margin-right" title="<%[ To disable refreshing please type 0. ]%>">
+						<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_running_job_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="5" style="width: 50px"/>
+					</div>
+					<div id="status_running_job"><table></table></div>
+					<com:Application.Web.Portlets.JobBandwidthLimit
+						ID="JobBandwidth"
+						OnCallback="runningJobStatus"
+						JobId="<%=$this->SourceTemplateControl->getJobId()%>"
+						JobUname="<%=$this->SourceTemplateControl->getJobUname()%>"
+					/>
+					<com:TJuiProgressbar Display="None" />
+				</div>
+				<script>
+var oRunningJobStatus = {
+	data: {},
+	refresh_timeout: null,
+	ids: {
+		loader: 'status_running_job_loading',
+		running_job: 'status_running_job',
+		refresh_interval: 'status_running_job_refresh_interval',
+		status_not_supported: 'status_running_job_status_not_supported',
+		graphical_container: 'status_running_job_graphical_container',
+		warning: {
+			container: 'status_running_job_warning_container',
+			msg: 'status_running_job_warning_msg',
+			label_btn: 'status_running_job_warning_label_btn'
+		},
+		header: {
+			version: 'status_client_version',
+			uname: 'status_client_uname',
+			started_epoch: 'status_client_started_time',
+			jobs_run: 'status_client_jobs_running',
+			plugins: 'status_client_plugins',
+			bwlimit: 'status_client_bwlimit',
+			debug: 'status_client_debug'
+		},
+		show: {
+			maxjobs: 'status_client_maxjobs',
+			enabled: 'status_client_enabled'
+		}
+	},
+	init: function() {
+		this.set_events();
+		this.init_refresh();
+	},
+	set_data: function(data) {
+		this.data = data;
+	},
+	set_events: function() {
+		var refresh_interval_el = document.getElementById(this.ids.refresh_interval);
+		refresh_interval_el.addEventListener('keyup', function(e) {
+			this.init_refresh();
+		}.bind(this));
+	},
+	init_refresh: function() {
+		var refresh_interval_el = document.getElementById(this.ids.refresh_interval);
+		var interval = refresh_interval_el.value;
+		this.set_refresh_timeout(interval);
+	},
+	set_refresh_timeout: function(timeout) {
+		if (!this.data.is_running) {
+			return;
+		}
+		timeout = parseInt(timeout, 10) * 1000;
+		if (isNaN(timeout)) {
+			return;
+		}
+		if (this.refresh_timeout !== null) {
+			clearTimeout(this.refresh_timeout);
+		}
+		if (timeout === 0) {
+			return;
+		}
+		this.refresh_timeout = setTimeout(function() {
+			this.refresh_status();
+		}.bind(this), timeout);
+	},
+	refresh_status: function() {
+		var cb = <%=$this->RunningJobStatusCb->ActiveControl->Javascript%>;
+		if (W3Tabs.is_open('job_actions')) {
+			cb.dispatch();
+		}
+	},
+	update: function(data) {
+		this.set_data(data);
+		if (this.is_status_supported() === false) {
+			return;
+		}
+		var el, val;
+		if (this.data.is_running) {
+			if (this.data.job.status === 'R') {
+				this.add_running_job(this.data.job);
+			} else {
+				/**
+				 * Do nothing, just wait where jobstatus will change
+				 * from 'C' into 'R'. Jobs with 'C' jobstatus are not
+				 * visible in status client output.
+				 */
+			}
+		} else {
+			clear_node('#' + this.ids.running_job);
+			$('#' + this.ids.refresh_interval).parent().hide();
+			var graphical_container = document.getElementById(this.ids.graphical_container);
+			graphical_container.style.display = 'none';
+			if (document.getElementById('jobfiles_list').style.display == 'none') {
+				W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+			}
+		}
+	},
+	add_running_job: function(job, full_refresh) {
+		var table = document.createElement('TABLE');
+		table.className = 'w3-table w3-stripped w3-border status_table running_job_table';
+		table.setAttribute('rel', job.jobid);
+
+		// Type
+		var type = JobType.get_type(job.type);
+		this.add_job_row(table, '<%[ Type: ]%>', type);
+
+		// Level
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		this.add_job_row(table, '<%[ Level: ]%>', level);
+
+		// Job bytes
+		var jobbytes = Units.get_formatted_size(job.jobbytes);
+		this.add_job_row(table, '<%[ Job bytes: ]%>', jobbytes);
+
+		// Job files
+		this.add_job_row(table, '<%[ Job files: ]%>', job.jobfiles);
+
+		// Average job speed
+		var ave_speed = Units.format_speed(job.bytes_sec, null, true, true);
+		var ave_job_speed = ave_speed.value.toFixed(2) + ' ' + ave_speed.format;
+		this.add_job_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+
+		// Processing file
+		if (job.hasOwnProperty('processing_file') && job.processing_file) {
+			var processing_file = document.createElement('SPAN');
+			processing_file.title = job.processing_file;
+			if (job.processing_file.length > 60) {
+				processing_file.textContent = job.processing_file.substr(0, 17) + ' (..) ' + job.processing_file.substr(-37);
+			} else {
+				processing_file.textContent = job.processing_file;
+			}
+			this.add_job_row(table, '<%[ Processing file: ]%>', processing_file.outerHTML);
+		}
+
+		var job_name = '<%=$this->getJobName()%>';
+		var bytes = parseInt(job.jobbytes, 10);
+		var files = parseInt(job.jobfiles, 10);
+		files = files > 0 ? (files - 1) : 0;
+		var est = estimate_job(oData.jobs, job_name, job.level);
+
+		// Progress bar bytes
+		var bytes_progress;
+		if (job.type === 'B' && est.est_bytes > 0) {
+			bytes_progress = document.createElement('DIV');
+			bytes_progress.className = 'progressbar';
+			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var bytes_label = document.createElement('DIV');
+			bytes_label.className = 'progressbar-label';
+			var bytes_perc = ((100 * bytes) / est.est_bytes);
+			if (bytes_perc > 100) {
+				bytes_perc = 100;
+			}
+			bytes_label.textContent =  Units.get_formatted_size(bytes) + ' / <%[ est. ]%> ' +  Units.get_formatted_size(est.est_bytes) + ' (' + bytes_perc.toFixed(1) + '%' + ')';
+			bytes_progress.style.width = '70%';
+			bytes_progress.appendChild(bytes_label);
+			var bytes_bar = $(bytes_progress);
+			bytes_bar.progressbar({
+				max: est.est_bytes,
+				value: bytes
+			});
+		} else {
+			bytes_progress = '<%[ Not available ]%>';
+		}
+		this.add_job_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+
+
+		// Progress bar files
+		var files_progress;
+		if (job.type === 'B' && est.est_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var files_perc = ((100 * files) / est.est_files);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  files + ' / <%[ est. ]%> ' +  parseInt(est.est_files, 10) + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: est.est_files,
+				value: files
+			});
+		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var fexamined = parseInt(job.files_examined, 10);
+			var fexpected = parseInt(job.expected_files, 10);
+			var files_perc = ((100 * fexamined) / fexpected);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  fexamined + ' / ' +  fexpected + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: fexpected,
+				value: fexamined
+			});
+		} else {
+			files_progress = '<%[ Not available ]%>';
+		}
+		this.add_job_row(table, '<%[ File progress bar: ]%>', files_progress);
+
+		// Job errors
+		this.add_job_row(table, '<%[ Job errors: ]%>', job.errors);
+
+		// Read bytes
+		var read_bytes = Units.get_formatted_size(job.readbytes);
+		this.add_job_row(table, '<%[ Read bytes: ]%>', read_bytes);
+
+		// Examined files
+		this.add_job_row(table, '<%[ Examined files: ]%>', job.files_examined);
+
+		// Bandwidth limit
+		var bwlimit = '<%[ No limit ]%>';
+		var span = document.createElement('SPAN');
+		var l = parseInt(job.bwlimit, 10);
+		if (l > 0) {
+			fl = Units.format_speed(l, null, true, true);
+			bwlimit = fl.value.toFixed(2) + ' ' + fl.format;
+		}
+		var text = document.createTextNode(bwlimit + '\u00A0\u00A0');
+		span.appendChild(text);
+		var a = document.createElement('A');
+		a.className = 'w3-hover-opacity';
+		a.href = 'javascript:void(0)';
+		a.addEventListener('click', function(e) {
+			oJobBandwidthLimit.set_value(job.bwlimit);
+			oJobBandwidthLimit.open_popup();
+		});
+		a.title = '<%[ Set job bandwidth limit ]%>';
+		var i = document.createElement('I');
+		i.className = 'fas fa-tachometer-alt w3-large';
+		a.appendChild(i);
+		span.appendChild(a);
+
+		this.add_job_row(table, '<%[ Bandwidth limit: ]%>', span);
+
+		var running_job_el = document.getElementById(this.ids.running_job);
+		var t = running_job_el.querySelector('table');
+		running_job_el.replaceChild(table, t);
+	},
+	add_job_row: function(table, key, value) {
+		var tr = document.createElement('TR');
+		var tdl = document.createElement('TD');
+		var tdr = document.createElement('TD');
+		tdl.textContent = key;
+		if (value instanceof HTMLElement) {
+			tdr.appendChild(value);
+		} else {
+			tdr.innerHTML = value;
+		}
+		tr.appendChild(tdl);
+		tr.appendChild(tdr);
+		table.appendChild(tr);
+	},
+	is_status_supported: function() {
+		var supported = false;
+		var not_supported = document.getElementById(this.ids.status_not_supported);
+		var graphical_container = document.getElementById(this.ids.graphical_container);
+		if (this.data && this.data.hasOwnProperty('header') && this.data.header && this.data.header.hasOwnProperty('version')) {
+			var match = this.data.header.version.match(/^(\d+)\.(\d+)\.(\d+)\s+\(/);
+			if (match) {
+				var major = match[1];
+				var minor = match[2];
+				var release = match[3];
+				if (major >= 9 && minor >= 0 && release >= 0) {
+					supported = true;
+					not_supported.style.display = 'none';
+					graphical_container.style.display = '';
+				}
+			}
+		} else if (not_supported.style.display == 'none') {
+			not_supported.style.display = '';
+			graphical_container.style.display = 'none';
+			W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+		}
+		return supported;
+	},
+	show_loader: function(show) {
+		document.getElementById(this.ids.loader).style.display = (show === true ? '' : 'none');
+	},
+	show_warning: function(show) {
+		var warning = document.getElementById(oRunningJobStatus.ids.warning.container);
+		warning.style.display = show ? 'block' : 'none';
+	},
+	set_media_request_msg: function(data) {
+		if (data.waiting) {
+			var msg;
+			var label_btn = document.getElementById(oRunningJobStatus.ids.warning.label_btn);
+			label_btn.style.display = 'none';
+			if (data.volume) {
+				if (data.write) {
+					msg = '<%[ The job needs media. ]%> <%[ Please mount volume %volume or label a new one for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
+					label_btn.style.display = '';
+				} else {
+					msg = '<%[ The job needs media. ]%> <%[ Please mount volume %volume for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
+				}
+				msg = msg.replace('%volume', '<strong>' + data.volume + '</strong>');
+			} else {
+				msg = '<%[ The job needs media. ]%> <%[ Please create a new volume for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
+				label_btn.style.display = '';
+			}
+			msg = msg.replace('%storage', '<strong>' + data.storage + '</strong>');
+			msg = msg.replace('%pool', '<strong>' + data.pool + '</strong>');
+			msg = msg.replace('%mediatype', '<strong>' + data.mediatype + '</strong>');
+			var message = document.getElementById(oRunningJobStatus.ids.warning.msg);
+			message.innerHTML = msg;
+			oRunningJobStatus.show_warning(true);
+		} else {
+			oRunningJobStatus.show_warning(false);
+		}
+	}
+}
+
+function init_graphical_running_job_status(data, tab_data) {
+	oRunningJobStatus.update(data);
+	var tabs = Object.keys(tab_data);
+	for (var i = 0; i < tabs.length; i++) {
+		document.getElementById(tabs[i]).parentNode.style.display = (tab_data[tabs[i]] ? '' : 'none');
+	}
+	if (document.getElementById('status_running_job_subtab_graphical').classList.contains(W3SubTabs.css.tab_item_hover)) {
+		W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output');
+	}
+}
+
+oRunningJobStatus.init();
+
+MonitorParams = {
+	jobs: {
+		name: ['<%=$this->getJobName()%>']
+	}
+};
+$(function() {
+	MonitorCalls.push(function() { oRunningJobStatus.refresh_status(); });
+});
+				</script>
+			</div>
+			<com:TConditional
+				Condition="$this->allow_graph_mode"
+			>
+				<prop:FalseTemplate>
+					<script>
+						$(function() {
+							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+						});
+					</script>
+				</prop:FalseTemplate>
+			</com:TConditional>
+			<div id="joblog_text_output" class="subtab_item" style="display: none">
+				<div class="w3-right w3-margin-top w3-margin-right" title="<%[ Refresh job log ]%>">
+					<a href="javascript:void(0)"class="w3-margin-bottom raw" onclick="job_callback_func(true);"><%[ Refresh log ]%> &nbsp;<i class="fa fa-sync"></i></a>
+				</div>
+				<com:TActiveLinkButton
+					ID="LogOrderBtn"
+					CssClass="w3-margin-top w3-margin-right w3-right raw"
+					OnClick="changeJobLogOrder"
+					Attributes.title="<%[ Set job log order (ascending/descending) ]%>"
+				>
+					<%[ Log order ]%> &nbsp;<i class="fa fa-sort-amount-down"></i>
+				</com:TActiveLinkButton>
+				<div class="w3-code">
+					<pre><com:TActiveLabel ID="JobLog" /></pre>
+				</div>
+			</div>
+			<div id="jobfiles_list" class="subtab_item" style="display: none">
+				<com:Application.Web.Portlets.JobListFiles
+					ID="FileList"
+				/>
+			</div>
+			<com:TConditional
+				Condition="$this->allow_list_files_mode"
+			>
+				<prop:TrueTemplate>
+					<script>
+						$(function() {
+							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+						});
+					</script>
+				</prop:TrueTemplate>
+			</com:TConditional>
+		</div>
+		<com:TCallback
+			ID="RefreshJobLog"
+			OnCallback="refreshJobLog"
+			ClientSide.OnLoading="show_joblog_loader(true)"
+			ClientSide.OnComplete="show_joblog_loader(false); job_callback_duration = new Date().getTime();"
+		/>
+		<script type="text/javascript">
+			var job_callback_duration;
+			var job_callback_func = function(force) {
+				var callback = <%=$this->RefreshJobLog->ActiveControl->Javascript%>;
+				var reload = document.getElementById('<%=$this->RunningIcon->ClientID%>').style.display != 'none';
+				if ((reload && W3Tabs.is_open('job_actions')) || force) {
+					callback.dispatch();
+				}
+			}
+			var show_joblog_loader = function(show) {
+				var loader = document.getElementById('joblog_loading');
+				if (show) {
+					loader.style.display = '';
+				} else {
+					loader.style.display = 'none';
+				}
+			}
+			setTimeout(function() {
+				if (oData && oData.running_jobs.length > 0) {
+					job_callback_func(true);
+				}
+			}, 3000);
+		</script>
+		<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+	</div>
+	<div class="w3-container tab_item" id="job_config" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="JobConfig"
+			ComponentType="dir"
+			ResourceType="Job"
+			ShowCancelButton="false"
+			OnSave="reloadJobInfo"
+			DisableRename="true"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="fileset_config" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="FileSetConfig"
+			ComponentType="dir"
+			ResourceType="Fileset"
+			ShowRemoveButton="false"
+			ShowCancelButton="false"
+			OnSave="reloadJobInfo"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="schedule_config" style="display: none">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="ScheduleConfig"
+			ComponentType="dir"
+			ResourceType="Schedule"
+			ShowRemoveButton="false"
+			ShowCancelButton="false"
+			OnSave="reloadJobInfo"
+		/>
+	</div>
+	<div id="job_delete_confirm" class="w3-modal" style="display: none">
+		<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+			<span onclick="$('#job_delete_confirm').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+			<h2><%[ Delete job ]%></h2>
+			<p><%[ Are you sure, you want to delete this job? ]%></p>
+			<div class="w3-center">
+				<button type="button" class="w3-button w3-red" onclick="$('#job_delete_confirm').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ID="DeleteBtnConfirm"
+					CssClass="w3-button w3-green"
+					OnClick="delete"
+					ClientSide.OnSuccess="document.location.href='<%=$this->Service->constructUrl('JobHistoryList')%>';"
+				>
+					<i class="fa fa-trash-alt"></i>  &nbsp;<%[ Delete ]%>
+				</com:TActiveLinkButton>
+			</div>
+		</div>
+</div>
+</com:TContent>

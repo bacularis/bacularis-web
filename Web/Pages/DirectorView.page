@@ -1,0 +1,1006 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-sitemap"></i> <%[ Director details ]%></b>
+		</h5>
+	</header>
+	<h3 class="view_header"><%[ Director: ]%> <%=$this->getDirectorName()%></h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<button id="btn_director_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'director_actions');"><%[ Actions ]%></button>
+		<a id="btn_director_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_director_config(); W3Tabs.open(this.id, 'director_config');"<%=empty($_SESSION['dir']) ? ' style="display: none"': ''%>>
+			<%[ Configure director ]%>
+		</a>
+	</div>
+	<div class="w3-container tab_item" id="director_actions">
+		<com:TActiveLinkButton
+			ID="DirectorStatusBtn"
+			OnCallback="status"
+			CssClass="w3-button w3-green w3-margin-bottom"
+			CausesValidation="false"
+			ClientSide.OnLoading="$('#status_director_loading').show();$('#status_director_error').hide();"
+			ClientSide.OnSuccess="$('#status_director_loading').hide();$('#show_director_container').hide();$('#status_director_container').show();oGraphicalDirectorStatus.set_refresh_timeout(document.getElementById('status_director_refresh_interval').value);"
+			ClientSide.OnFailure="$('#status_director_loading').hide();status_director_show_error(parameter);"
+		>
+			<i class="fa fa-file-medical-alt"></i> <%[ Status director ]%>
+		</com:TActiveLinkButton>
+		<com:Application.Web.Portlets.ComponentActionsMenu
+			ID="CompActions"
+			BigButtons="true"
+			ComponentType="dir"
+		/>
+		<i id="status_director_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super; margin-left: 6px;"></i> <span id="status_director_error" class="w3-text-red" style="display: none"></span>
+		<div id="status_director_container" style="display: none">
+			<div class="w3-right w3-margin-top w3-margin-right" title="<%[ To disable refreshing please type 0. ]%>">
+				<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_director_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="10" style="width: 50px"/>
+			</div>
+			<div class="w3-panel w3-card w3-light-grey" style="padding-bottom: 16px;">
+				<div class="w3-row">
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_director_subtab_graphical', 'status_director_graphical_output', 'status_director_container');">
+						<div id="status_director_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding"><%[ Graphical status ]%></div>
+					 </a>
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_director_subtab_text', 'status_director_text_output', 'status_director_container');">
+						<div id="status_director_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding"><%[ Raw status ]%></div>
+					</a>
+				</div>
+				<div id="status_director_graphical_output" class="subtab_item">
+					<h4 id="status_director_status_not_supported" style="display: none"><%[ Graphical director status is supported for Bacula directors version 9.0 and greater. ]%></h4>
+					<div id="status_director_graphical_container">
+						<table class="w3-table w3-stripped w3-border status_table">
+							<tr>
+								<td><%[ Version: ]%></td>
+								<td id="status_director_version"></td>
+							</tr>
+							<tr>
+								<td><%[ Uname: ]%></td>
+								<td id="status_director_uname"></td>
+							</tr>
+							<tr>
+								<td><%[ Started time: ]%></td>
+								<td id="status_director_started_time"></td>
+							</tr>
+							<tr>
+								<td><%[ Running jobs: ]%></td>
+								<td><span id="status_director_jobs_running"></span> / <span id="status_director_maxjobs"></span></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+						<div class="status_flex_row">
+							<div><i class="fas fa-table"></i> &nbsp;<%[ Catalogs ]%>:  <span id="status_director_catalogs"></span></div>
+							<div><i class="fas fa-desktop"></i> &nbsp;<%[ Clients ]%>: <span id="status_director_clients"></span></div>
+							<div><i class="fas fa-database"></i> &nbsp;<%[ Storages ]%>: <span id="status_director_storages"></span></div>
+							<div><i class="fas fa-tape"></i> &nbsp;<%[ Pools ]%>: <span id="status_director_pools"></span></div>
+							<div><i class="fas fa-copy"></i> &nbsp;<%[ FileSets ]%>: <span id="status_director_filesets"></span></div>
+							<div><i class="fas fa-clock"></i> &nbsp;<%[ Schedules ]%>: <span id="status_director_schedules"></span>
+						</div>
+								</td>
+							</tr>
+						</table>
+						<h3><i class="fas fa-clock w3-xlarge"></i> &nbsp;<%[ Scheduled jobs ]%></h3>
+						<h5 id="status_director_no_jobs_scheduled" style="display: none"><%[ No jobs scheduled ]%></h5>
+						<div id="status_director_scheduled_jobs">
+							<div class="status_header">
+								<div class="w3-container w3-cell w3-mobile"><%[ Job ]%></div>
+								<div class="w3-center"><%[ Type ]%></div>
+								<div class="w3-center"><%[ Level ]%></div>
+								<div class="w3-center"><%[ Scheduled ]%></div>
+								<div class="w3-center"><%[ Volume ]%></div>
+							</div>
+						</div>
+						<h3><i class="fas fa-cogs w3-xlarge"></i> &nbsp;<%[ Running jobs ]%></h3>
+						<h5 id="status_director_no_jobs_running" style="display: none"><%[ No jobs running ]%></h5>
+						<div id="status_director_running_jobs">
+							<div class="status_header">
+								<div class="w3-container w3-cell w3-mobile"><%[ Job ]%></div>
+								<div class="w3-center"><%[ Type ]%></div>
+								<div class="w3-center"><%[ Level ]%></div>
+								<div class="w3-center"><%[ Status ]%></div>
+							</div>
+						</div>
+						<h3><i class="fas fa-check w3-xlarge"></i> &nbsp;<%[ Terminated jobs ]%></h3>
+						<h5 id="status_director_no_jobs_terminated" style="display: none"><%[ No jobs terminated ]%></h5>
+						<div id="status_director_terminated_jobs">
+							<div class="status_header">
+								<div class="w3-container w3-cell w3-mobile"><%[ Job ]%></div>
+								<div class="w3-center"><%[ Type ]%></div>
+								<div class="w3-center"><%[ Level ]%></div>
+								<div class="w3-center"><%[ Finished ]%></div>
+								<div class="w3-center"><%[ Status ]%></div>
+							</div>
+						</div>
+					</div>
+<com:TJuiProgressbar Display="None" />
+<script type="text/javascript">
+var oGraphicalDirectorStatus = {
+	data: {},
+	refresh_timeout: null,
+	jobs: {scheduled: [], running: [], terminated: []},
+	ids: {
+		scheduled_jobs: 'status_director_scheduled_jobs',
+		running_jobs: 'status_director_running_jobs',
+		terminated_jobs: 'status_director_terminated_jobs',
+		refresh_interval: 'status_director_refresh_interval',
+		no_jobs_scheduled: 'status_director_no_jobs_scheduled',
+		no_jobs_running: 'status_director_no_jobs_running',
+		no_jobs_terminated: 'status_director_no_jobs_terminated',
+		status_not_supported: 'status_director_status_not_supported',
+		graphical_container: 'status_director_graphical_container',
+		header: {
+			version: 'status_director_version',
+			uname: 'status_director_uname',
+			started_epoch: 'status_director_started_time',
+			jobs_running: 'status_director_jobs_running',
+			ncats: 'status_director_catalogs',
+			nclients: 'status_director_clients',
+			nstores: 'status_director_storages',
+			npools: 'status_director_pools',
+			nfset: 'status_director_filesets',
+			nscheds: 'status_director_schedules'
+		},
+		show: {
+			maxjobs: 'status_director_maxjobs'
+		}
+	},
+	css: {
+		status_header: 'status_header',
+		status_table: 'status_table',
+		scheduled_job_table: 'scheduled_job_table',
+		running_job_table: 'running_job_table',
+		terminated_job_table: 'terminated_job_table'
+	},
+	formatters: {
+		uname: function(value) {
+			var img = document.createElement('I');
+			img.className = 'fab fa-2x';
+			if (/win\d{2}/i.test(value)) {
+				img.className += ' fa-windows';
+			} else if (/ubuntu/i.test(value)) {
+				img.className += ' fa-ubuntu';
+			} else if (/fedora/i.test(value)) {
+				img.className += ' fa-fedora';
+			} else if (/centos/i.test(value)) {
+				img.className += ' fa-centos';
+			} else if (/redhat/i.test(value)) {
+				img.className += ' fa-redhat';
+			} else if (/suse/i.test(value)) {
+				img.className += ' fa-suse';
+			} else if (/linux/i.test(value)) {
+				img.className += ' fa-linux';
+			} else if (/freebsd/i.test(value)) {
+				img.className += ' fa-freebsd';
+			} else if (/(darwin|mac\s?os)/i.test(value)) {
+				img.className += ' fa-apple';
+			} else {
+				img.className = 'fa fa-2x fa-question';
+			}
+			img.style.marginRight = '10px';
+			var el = document.createElement('SPAN');
+			var text = document.createTextNode(value);
+			el.appendChild(img);
+			el.appendChild(text);
+			return el;
+		},
+		started_epoch: function(value) {
+			return Units.format_date(value);
+		}
+	},
+	init: function() {
+		this.set_events();
+	},
+	set_data: function(data) {
+		this.data = data;
+	},
+	set_events: function() {
+		var refresh_interval_el = document.getElementById(this.ids.refresh_interval);
+		refresh_interval_el.addEventListener('keyup', function(e) {
+			var interval = refresh_interval_el.value;
+			this.set_refresh_timeout(interval);
+		}.bind(this));
+	},
+	set_refresh_timeout: function(timeout) {
+		timeout = parseInt(timeout, 10) * 1000;
+		if (isNaN(timeout)) {
+			return;
+		}
+		if (this.refresh_timeout !== null) {
+			clearTimeout(this.refresh_timeout);
+		}
+		if (timeout === 0) {
+			return;
+		}
+		this.refresh_timeout = setTimeout(function() {
+			$('#<%=$this->DirectorStatusBtn->ClientID%>').click();
+		}.bind(this), timeout);
+	},
+	update: function(data) {
+		this.set_data(data);
+		if (this.is_status_supported() === false) {
+			return;
+		}
+		this.set_formatters();
+		this.set_jobs_header();
+		this.set_jobs();
+	},
+	set_formatters: function() {
+		var el, val;
+		['header', 'show'].forEach(function(section) {
+			if (!this.data.hasOwnProperty(section)) {
+				return;
+			}
+			for (var key in this.ids[section]) {
+				if (!this.data[section].hasOwnProperty(key)) {
+					continue;
+				}
+				el = document.getElementById(this.ids[section][key]);
+				val = this.formatters.hasOwnProperty(key) ? this.formatters[key].call(this, this.data[section][key]) : this.data[section][key];
+				if (val instanceof HTMLElement) {
+					el.innerHTML = val.outerHTML;
+				} else {
+					el.textContent = val;
+				}
+			}
+		}.bind(this));
+	},
+	set_jobs: function() {
+		var job_diff = this.get_job_diff();
+		var uid, update, rm_css;
+		for (var type in job_diff) {
+			this.jobs[type] = job_diff[type].all;
+			for (var i = 0; i < this.data[type].length; i++) {
+				uid = this.get_job_uid(type, this.data[type][i]);
+				update = job_diff[type].add.indexOf(uid) == -1;
+				if (type === 'scheduled') {
+					this.add_scheduled_job(this.data[type][i], update);
+				} else if (type === 'running') {
+					this.add_running_job(this.data[type][i], update);
+				} else if (type === 'terminated') {
+					this.add_terminated_job(this.data[type][i], update);
+				}
+			}
+			for (var i = 0; i < job_diff[type].rm.length; i++) {
+				rm_css = '';
+				if (type === 'scheduled') {
+					rm_css = this.css.scheduled_job_table;
+				} else if (type === 'running') {
+					rm_css = this.css.running_job_table;
+				} else if (type === 'terminated') {
+					rm_css = this.css.terminated_job_table;
+				}
+				if (rm_css) {
+					uid = this.get_job_uid(type, job_diff[type].rm[i]);
+					this.remove_elements('.' + rm_css + '[rel="' + type + '_job_' + uid + '"]');
+				}
+			}
+		}
+	},
+	add_scheduled_job: function(job, update) {
+		var uid = this.get_job_uid('scheduled', job);
+		var container = document.createElement('DIV');
+		container.setAttribute('rel', 'scheduled_job_' + uid);
+		container.className = this.css.scheduled_job_table;
+
+		var content = document.createElement('DIV');
+		content.className = 'w3-border';
+		content.setAttribute('rel', 'scheduled_job_content_' + uid);
+		var table = document.createElement('TABLE');
+		content.appendChild(table);
+
+		// arrow icon
+		var job_arrow_img = document.createElement('I');
+		job_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_scheduled_job_' + uid + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				job_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				job_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			job_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_scheduled_job_' + uid);
+		header.className = this.css.status_header;
+
+		// set default content visibility
+		if (header.getAttribute('data-open') == 0) {
+			content.style.display = 'none';
+		}
+
+		// job label
+		var job_label = document.createElement('DIV');
+		job_label.className = 'w3-container w3-cell w3-mobile';
+		job_label.appendChild(job_arrow_img);
+		var job_label_txt = document.createTextNode(' ' + job.name);
+		job_label.appendChild(job_label_txt);
+
+		// job type
+		var job_type = document.createElement('DIV');
+		job_type.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_type_icon = JobType.get_icon(job.type);
+		var job_type_desc = document.createElement('SPAN');
+		job_type_desc.innerHTML = '&nbsp; ' + JobType.get_type(job.type);
+		job_type.appendChild(job_type_icon);
+		job_type.appendChild(job_type_desc);
+
+		// job level
+		var job_level = document.createElement('DIV');
+		job_level.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_level_icon = document.createElement('I');
+		job_level_icon.className = 'fa fa-signal';
+		var job_level_desc = document.createElement('SPAN');
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		job_level_desc.innerHTML = '&nbsp; ' + level;
+		job_level.appendChild(job_level_icon);
+		job_level.appendChild(job_level_desc);
+
+		// scheduled
+		var job_schedtime = document.createElement('DIV');
+		job_schedtime.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_schedtime_icon = document.createElement('I');
+		job_schedtime_icon.className = 'fa fa-clock';
+		var job_schedtime_desc = document.createElement('SPAN');
+		var schedtime = Units.format_date(job.schedtime_epoch);
+		job_schedtime_desc.innerHTML = '&nbsp; ' + schedtime;
+		job_schedtime.appendChild(job_schedtime_icon);
+		job_schedtime.appendChild(job_schedtime_desc);
+
+		// volume
+		var job_volume = document.createElement('DIV');
+		job_volume.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_volume_icon = document.createElement('I');
+		job_volume_icon.className = 'fa fa-hdd';
+		var job_volume_desc = document.createElement('SPAN');
+		job_volume_desc.innerHTML = '&nbsp; ' + (job.volume || '-');
+		if (job.volume) {
+			job_volume.appendChild(job_volume_icon);
+		}
+		job_volume.appendChild(job_volume_desc);
+
+		header.appendChild(job_label);
+		header.appendChild(job_type);
+		header.appendChild(job_level);
+		header.appendChild(job_schedtime);
+		header.appendChild(job_volume);
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="scheduled_job_content_' + uid + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				job_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown('normal');
+				this.setAttribute('data-open', 1);
+				job_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		table.classList.add(
+			'w3-table',
+			'w3-stripped',
+			this.css.status_table
+		);
+
+		// Pool
+		this.add_row(table, '<%[ Pool: ]%>', job.pool);
+
+		// Storage
+		this.add_row(table, '<%[ Storage: ]%>', job.storage);
+
+		// Priority
+		this.add_row(table, '<%[ Priority: ]%>', job.priority);
+
+		container.appendChild(header);
+		container.appendChild(content);
+		var scheduled_job_container = document.getElementById(this.ids.scheduled_jobs);
+		if (update) {
+			var t = scheduled_job_container.querySelector('div[rel="scheduled_job_' + uid + '"]');
+			scheduled_job_container.replaceChild(container, t);
+		} else {
+			// add new scheduled job
+			scheduled_job_container.appendChild(container);
+		}
+	},
+	add_running_job: function(job, update) {
+		var container = document.createElement('DIV');
+		container.setAttribute('rel', 'running_job_' + job.jobid);
+		container.className = this.css.running_job_table;
+
+		var content = document.createElement('DIV');
+		content.className = 'w3-border';
+		content.setAttribute('rel', 'running_job_content_' + job.jobid);
+		var table = document.createElement('TABLE');
+		content.appendChild(table);
+
+		// arrow icon
+		var job_arrow_img = document.createElement('I');
+		job_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_running_job_' + job.jobid + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				job_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				job_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			job_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_running_job_' + job.jobid);
+		header.className = this.css.status_header;
+
+		// set default content visibility
+		if (header.getAttribute('data-open') == 0) {
+			content.style.display = 'none';
+		}
+
+		// job label
+		var job_label = document.createElement('DIV');
+		job_label.className = 'w3-container w3-cell w3-mobile';
+		job_label.appendChild(job_arrow_img);
+		var job_label_txt = document.createTextNode(' ' + job.name);
+		job_label.appendChild(job_label_txt);
+
+		// job type
+		var job_type = document.createElement('DIV');
+		job_type.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_type_icon = JobType.get_icon(job.type);
+		var job_type_desc = document.createElement('SPAN');
+		job_type_desc.innerHTML = '&nbsp; ' + JobType.get_type(job.type);
+		job_type.appendChild(job_type_icon);
+		job_type.appendChild(job_type_desc);
+
+		// job level
+		var job_level = document.createElement('DIV');
+		job_level.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_level_icon = document.createElement('I');
+		job_level_icon.className = 'fa fa-signal';
+		var job_level_desc = document.createElement('SPAN');
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		job_level_desc.innerHTML = '&nbsp; ' + level;
+		job_level.appendChild(job_level_icon);
+		job_level.appendChild(job_level_desc);
+
+		// job status
+		var job_status = document.createElement('DIV')
+		job_status.className = 'w3-container w3-cell w3-mobile w3-center';
+		var job_status_img = JobStatus.get_icon(job.status);
+		var job_status_desc = document.createElement('SPAN');
+		job_status_desc.innerHTML = '&nbsp; ' + JobStatus.get_desc(job.status);
+		job_status.appendChild(job_status_img);
+		job_status.appendChild(job_status_desc);
+
+		header.appendChild(job_label);
+		header.appendChild(job_type);
+		header.appendChild(job_level);
+		header.appendChild(job_status);
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="running_job_content_' + job.jobid + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				job_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown('normal');
+				this.setAttribute('data-open', 1);
+				job_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		table.classList.add(
+			'w3-table',
+			'w3-stripped',
+			this.css.status_table
+		);
+
+		// JobId
+		var jobid_img = document.createElement('I');
+		jobid_img.className = 'fa fa-external-link-alt fa-xs';
+		var jobid_a = document.createElement('A');
+		jobid_a.href = '/web/job/history/' + job.jobid + '/';
+		jobid_a.appendChild(jobid_img);
+		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		this.add_row(table, 'JobId', jobid);
+
+		// Job status description
+		this.add_row(table, '<%[ Job status desc.: ]%>', job.status_desc);
+
+		var bytes = parseInt(job.jobbytes, 10);
+		var files = parseInt(job.jobfiles, 10);
+		files = files > 0 ? (files - 1) : 0;
+		var est = estimate_job(oData.jobs, job.name, job.level);
+
+		// Progress bar bytes
+		var bytes_progress;
+		if (job.type === 'B' && est.est_bytes > 0) {
+			bytes_progress = document.createElement('DIV');
+			bytes_progress.className = 'progressbar';
+			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var bytes_label = document.createElement('DIV');
+			bytes_label.className = 'progressbar-label';
+			var bytes_perc = ((100 * bytes) / est.est_bytes);
+			if (bytes_perc > 100) {
+				bytes_perc = 100;
+			}
+			bytes_label.textContent =  Units.get_formatted_size(bytes) + ' / <%[ est. ]%> ' +  Units.get_formatted_size(est.est_bytes) + ' (' + bytes_perc.toFixed(1) + '%' + ')';
+			bytes_progress.style.width = '70%';
+			bytes_progress.appendChild(bytes_label);
+			var bytes_bar = $(bytes_progress);
+			bytes_bar.progressbar({
+				max: est.est_bytes,
+				value: bytes
+			});
+		} else {
+			bytes_progress = '<%[ Not available ]%>';
+
+			// Job bytes
+			var jobbytes = Units.get_formatted_size(job.jobbytes);
+			this.add_row(table, '<%[ Job bytes: ]%>', jobbytes);
+		}
+		this.add_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+
+
+		// Progress bar files
+		var files_progress;
+		if (job.type === 'B' && est.est_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var files_perc = ((100 * files) / est.est_files);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  files + ' / <%[ est. ]%> ' +  parseInt(est.est_files, 10) + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: est.est_files,
+				value: files
+			});
+		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
+			files_progress = document.createElement('DIV');
+			files_progress.className = 'progressbar';
+			var files_label = document.createElement('DIV');
+			files_label.className = 'progressbar-label';
+			var fexamined = parseInt(job.files_examined, 10);
+			var fexpected = parseInt(job.expected_files, 10);
+			var files_perc = ((100 * fexamined) / fexpected);
+			if (files_perc > 100) {
+				files_perc = 100;
+			}
+			files_label.textContent =  fexamined + ' / ' +  fexpected + ' (' + files_perc.toFixed(1) + '%' + ')';
+			files_progress.style.width = '70%';
+			files_progress.appendChild(files_label);
+			var files_bar = $(files_progress);
+			files_bar.progressbar({
+				max: fexpected,
+				value: fexamined
+			});
+		} else {
+			files_progress = '<%[ Not available ]%>';
+
+			// Job files
+			this.add_row(table, '<%[ Job files: ]%>', job.jobfiles);
+		}
+		this.add_row(table, '<%[ File progress bar: ]%>', files_progress);
+
+		// Job errors
+		this.add_row(table, '<%[ Job errors: ]%>', job.errors);
+
+		// Client
+		this.add_row(table, '<%[ Client: ]%>', job.clientname);
+
+		// FileSet
+		this.add_row(table, '<%[ FileSet: ]%>', job.fileset);
+
+		// Storage
+		this.add_row(table, '<%[ Storage: ]%>', job.storage);
+
+		// Scheduled time
+		var sched_time = Units.format_date(job.schedtime_epoch);
+		this.add_row(table, '<%[ Scheduled time: ]%>', sched_time);
+
+		// Start time
+		var start_time = Units.format_date(job.starttime_epoch);
+		this.add_row(table, '<%[ Start time: ]%>', start_time);
+
+		// Priority
+		this.add_row(table, '<%[ Priority: ]%>', job.priority);
+
+		container.appendChild(header);
+		container.appendChild(content);
+		var running_job_container = document.getElementById(this.ids.running_jobs);
+		if (update) {
+			var t = running_job_container.querySelector('div[rel="running_job_' + job.jobid + '"]');
+			running_job_container.replaceChild(container, t);
+		} else {
+			// add new running job
+			running_job_container.appendChild(container);
+		}
+	},
+	add_terminated_job: function(job, update) {
+		var container = document.createElement('DIV');
+		container.setAttribute('rel', 'terminated_job_' + job.jobid);
+		container.className = this.css.terminated_job_table;
+
+		var content = document.createElement('DIV');
+		content.className = 'w3-border';
+		content.setAttribute('rel', 'terminated_job_content_' + job.jobid);
+		var table = document.createElement('TABLE');
+		content.appendChild(table);
+
+		// arrow icon
+		var job_arrow_img = document.createElement('I');
+		job_arrow_img.className = 'w3-margin-right';
+
+		var header = document.createElement('DIV');
+		var open = document.querySelector('div[rel="header_terminated_job_' + job.jobid + '"]');
+		if (open) {
+			var data_open = open.getAttribute('data-open');
+			header.setAttribute('data-open', data_open);
+			if (data_open == 1) {
+				job_arrow_img.className += ' fas fa-chevron-up';
+			} else {
+				job_arrow_img.className += ' fas fa-chevron-down';
+			}
+		} else {
+			header.setAttribute('data-open', 0);
+			job_arrow_img.className += ' fas fa-chevron-down';
+		}
+		header.setAttribute('rel', 'header_terminated_job_' + job.jobid);
+		header.className = this.css.status_header;
+
+		// set default content visibility
+		if (header.getAttribute('data-open') == 0) {
+			content.style.display = 'none';
+		}
+
+		// job label
+		var job_label = document.createElement('DIV');
+		job_label.className = 'w3-container w3-cell w3-mobile';
+		job_label.appendChild(job_arrow_img);
+		var job_name = job.job.replace(/\.\d{4}-\d{2}-\d{2}_\d{2}.\d{2}.\d{2}_\d{2}$/, '');
+		var job_label_txt = document.createTextNode(' ' + job_name);
+		job_label.appendChild(job_label_txt);
+
+		// job type
+		var job_type = document.createElement('DIV');
+		job_type.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_type_icon = JobType.get_icon(job.type);
+		var job_type_desc = document.createElement('SPAN');
+		job_type_desc.innerHTML = '&nbsp; ' + JobType.get_type(job.type);
+		job_type.appendChild(job_type_icon);
+		job_type.appendChild(job_type_desc);
+
+		// job level
+		var job_level = document.createElement('DIV');
+		job_level.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_level_icon = document.createElement('I');
+		job_level_icon.className = 'fa fa-signal';
+		var job_level_desc = document.createElement('SPAN');
+		var level = job.type === 'R' ? '-' : JobLevel.get_level(job.level);
+		job_level_desc.innerHTML = '&nbsp; ' + level;
+		job_level.appendChild(job_level_icon);
+		job_level.appendChild(job_level_desc);
+
+		// finished
+		var job_endtime = document.createElement('DIV');
+		job_endtime.className = 'w3-container w3-cell w3-mobile w3-center';
+		job_endtime_icon = document.createElement('I');
+		job_endtime_icon.className = 'fa fa-clock';
+		var job_endtime_desc = document.createElement('SPAN');
+		var endtime = Units.format_date(job.endtime_epoch);
+		job_endtime_desc.innerHTML = '&nbsp; ' + endtime;
+		job_endtime.appendChild(job_endtime_icon);
+		job_endtime.appendChild(job_endtime_desc);
+
+		// job status
+		var job_status = document.createElement('DIV')
+		job_status.className = 'w3-container w3-cell w3-mobile w3-center';
+		var job_status_img = JobStatus.get_icon(job.status);
+		var job_status_desc = document.createElement('SPAN');
+		job_status_desc.innerHTML = '&nbsp; ' + JobStatus.get_desc(job.status);
+		job_status.appendChild(job_status_img);
+		job_status.appendChild(job_status_desc);
+
+		header.appendChild(job_label);
+		header.appendChild(job_type);
+		header.appendChild(job_level);
+		header.appendChild(job_endtime);
+		header.appendChild(job_status);
+		header.addEventListener('click', function(e) {
+			var container = document.querySelector('div[rel="terminated_job_content_' + job.jobid + '"]');
+			var open = this.getAttribute('data-open');
+			if (open == 1) {
+				$(container).slideUp();
+				this.setAttribute('data-open', 0);
+				job_arrow_img.className = 'fas fa-chevron-down w3-margin-right';
+			} else {
+				$(container).slideDown('normal');
+				this.setAttribute('data-open', 1);
+				job_arrow_img.className = 'fas fa-chevron-up w3-margin-right';
+			}
+		});
+
+		table.classList.add(
+			'w3-table',
+			'w3-stripped',
+			this.css.status_table
+		);
+
+		// JobId
+		var jobid_img = document.createElement('I');
+		jobid_img.className = 'fa fa-external-link-alt fa-xs';
+		var jobid_a = document.createElement('A');
+		jobid_a.href = '/web/job/history/' + job.jobid + '/';
+		jobid_a.appendChild(jobid_img);
+		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		this.add_row(table, 'JobId', jobid);
+
+		// Job status description
+		this.add_row(table, '<%[ Job status desc.: ]%>', job.status_desc);
+
+		// Job bytes
+		var jobbytes = Units.get_formatted_size(job.jobbytes);
+		this.add_row(table, '<%[ Job bytes: ]%>', jobbytes);
+
+		// Job files
+		this.add_row(table, '<%[ Job files: ]%>', job.jobfiles);
+
+		// Job errors
+		this.add_row(table, '<%[ Job errors: ]%>', job.errors);
+
+		// Start time
+		var start_time = Units.format_date(job.starttime_epoch);
+		this.add_row(table, '<%[ Start time: ]%>', start_time);
+
+		container.appendChild(header);
+		container.appendChild(content);
+		var terminated_job_container = document.getElementById(this.ids.terminated_jobs);
+		if (update) {
+			var t = terminated_job_container.querySelector('div[rel="terminated_job_' + job.jobid + '"]');
+			terminated_job_container.replaceChild(container, t);
+		} else {
+			// add new terminated job
+			terminated_job_container.appendChild(container);
+		}
+	},
+	// check if with data came new jobs or disapeared some jobs
+	get_job_diff: function() {
+		var jobs = {
+			scheduled: {add: [], rm: [], all: []},
+			running: {add: [], rm: [], all: []},
+			terminated: {add: [], rm: [], all: []}
+		};
+		var uid1, uid2, found;
+		for (var type in jobs) {
+			for (var i = 0; i < this.data[type].length; i++) {
+				uid1 = this.get_job_uid(type, this.data[type][i]);
+				jobs[type].all.push(this.data[type][i]);
+				found = false;
+				for (var j = 0; j < this.jobs[type].length; j++) {
+					uid2 = this.get_job_uid(type, this.jobs[type][j]);
+					if (uid1 == uid2) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					jobs[type].add.push(uid1); // new job
+				}
+			}
+		}
+		for (var type in jobs) {
+			for (var i = 0; i < this.jobs[type].length; i++) {
+				uid1 = this.get_job_uid(type, this.jobs[type][i]);
+				found = false;
+				for (var j = 0; j < jobs[type].all.length; j++) {
+					uid2 = this.get_job_uid(type, jobs[type].all[j]);
+					if (uid1 == uid2) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					jobs[type].rm.push(this.jobs[type][i]); // old job (non-existing)
+				}
+			}
+		}
+		return jobs;
+	},
+	get_job_uid: function(type, job) {
+		var uids = {
+			scheduled: ['name', 'level', 'type', 'priority', 'schedtime_epoch', 'volume', 'pool', 'storage'],
+			running: ['jobid'],
+			terminated: ['jobid']
+		};
+		uid = [];
+		for (var i = 0; i < uids[type].length; i++) {
+			uid.push(job[uids[type][i]]);
+		}
+		return uid.join('_');
+	},
+	remove_elements: function(css_class) {
+		var elements = document.querySelectorAll(css_class);
+		for (var i = 0; i < elements.length; i++) {
+			while (elements[i].firstChild) {
+				elements[i].removeChild(elements[i].firstChild);
+			}
+		}
+		var els = [].slice.call(elements);
+		var els_len = els.length;
+		for (var i = 0; i < els_len; i++) {
+			els[i].parentNode.removeChild(els[i]);
+		}
+	},
+	is_status_supported: function() {
+		var supported = false;
+		var not_supported = document.getElementById(this.ids.status_not_supported);
+		var graphical_container = document.getElementById(this.ids.graphical_container);
+		if (this.data && this.data.hasOwnProperty('version') && this.data.version.hasOwnProperty('major') && this.data.version.major >= 9 && this.data.version.minor >= 0 && this.data.version.release >= 0) {
+			supported = true;
+			not_supported.style.display = 'none';
+			graphical_container.style.display = '';
+		} else if (not_supported.style.display == 'none') {
+			not_supported.style.display = '';
+			graphical_container.style.display = 'none';
+			W3SubTabs.open('status_director_subtab_text', 'status_director_text_output', 'status_director_container');
+		}
+		return supported;
+	},
+	set_jobs_header: function() {
+		var no_jobs_scheduled = document.getElementById(this.ids.no_jobs_scheduled);
+		if (this.data.hasOwnProperty('scheduled') && this.data.scheduled.length > 0) {
+			no_jobs_scheduled.style.display = 'none';
+		} else {
+			no_jobs_scheduled.style.display = '';
+		}
+		var no_jobs_running = document.getElementById(this.ids.no_jobs_running);
+		if (this.data.hasOwnProperty('running') && this.data.running.length > 0) {
+			no_jobs_running.style.display = 'none';
+		} else {
+			no_jobs_running.style.display = '';
+		}
+		var no_jobs_terminated = document.getElementById(this.ids.no_jobs_terminated);
+		if (this.data.hasOwnProperty('terminated') && this.data.terminated.length > 0) {
+			no_jobs_terminated.style.display = 'none';
+		} else {
+			no_jobs_terminated.style.display = '';
+		}
+	},
+	add_row: function(table, key, value) {
+		var tr = document.createElement('TR');
+		var tdl = document.createElement('TD');
+		var tdr = document.createElement('TD');
+		tdl.textContent = key;
+		if (value instanceof HTMLElement) {
+			tdr.appendChild(value);
+		} else {
+			tdr.innerHTML = value;
+		}
+		tr.appendChild(tdl);
+		tr.appendChild(tdr);
+		table.appendChild(tr);
+	},
+};
+
+function init_graphical_director_status(data) {
+	oGraphicalDirectorStatus.update(data);
+}
+function status_director_show_error(error) {
+	var errmsg = error;
+	if (error === 'timeout') {
+		errmsg = '<%[ Status request timed out. The most probably the Bacula director is not available or it is not running. ]%>';
+	}
+	var err_el = document.getElementById('status_director_error');
+	err_el.textContent = errmsg;
+	err_el.style.display = '';
+}
+oGraphicalDirectorStatus.init();
+MonitorParams = {
+	jobs: null
+};
+</script>
+				</div>
+				<div id="status_director_text_output" class="w3-code subtab_item" style="display: none">
+					<pre><com:TActiveLabel ID="DirectorLog" /></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="director_config" style="display: none">
+		<com:TCallback ID="LoadDirectorConfig" OnCallback="loadDirectorConfig" />
+		<script>
+function load_director_config() {
+	var cb = <%=$this->LoadDirectorConfig->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+		</script>
+		<com:TCallback ID="LoadDirectorResourcesConfig" OnCallback="loadDirectorResourcesConfig" />
+		<script>
+function load_dir_res_config(resource) {
+	// hide pool warning
+	document.getElementById('director_view_rename_resource').style.display = 'none';
+
+	// do load Director resource request
+	var cb = <%=$this->LoadDirectorResourcesConfig->ActiveControl->Javascript%>;
+	cb.setCallbackParameter(resource);
+	cb.dispatch();
+}
+		</script>
+		<div class="w3-row w3-margin-bottom">
+			<a href="javascript:void(0)" onclick="load_director_config(); W3SubTabs.open('director_director_config_btn', 'director_director_config_form', 'director_config');">
+				<div id="director_director_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Director</div>
+			 </a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('JobDefs'); W3SubTabs.open('director_jobdefs_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_jobdefs_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">JobDefs</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Job'); W3SubTabs.open('director_job_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_job_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Job</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Client'); W3SubTabs.open('director_client_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_client_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Client</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Storage'); W3SubTabs.open('director_storage_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_storage_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Storage</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Catalog'); W3SubTabs.open('director_catalog_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_catalog_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Catalog</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Schedule'); W3SubTabs.open('director_schedule_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_schedule_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Schedule</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Fileset'); W3SubTabs.open('director_fileset_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_fileset_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">FileSet</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Pool'); W3SubTabs.open('director_pool_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_pool_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Pool</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Messages'); W3SubTabs.open('director_messages_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_messages_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Messages</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Console'); W3SubTabs.open('director_console_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_console_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Console</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_dir_res_config('Statistics'); W3SubTabs.open('director_statistics_config_btn', 'director_resources_config_form', 'director_config');">
+				<div id="director_statistics_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Statistics</div>
+			</a>
+		</div>
+		<div id="director_director_config_form" class="subtab_item">
+			<com:Application.Web.Portlets.BaculaConfigDirectives
+				ID="DirDirectorConfig"
+				ComponentType="dir"
+				ResourceType="Director"
+				ShowCancelButton="false"
+			/>
+		</div>
+		<div id="director_view_rename_resource" class="w3-panel w3-pale-yellow w3-border" style="display: none">
+			<h3><%[ Warning ]%></h3>
+			<p><%[ The pool has not been renamed but it has been copied with the new name. Please note that if the original pool contained volumes, they have not been moved and they are still assigned to the original pool in the catalog database. To re-assign volumes from the original pool to this one please go to the MAIN MENU &#10148; Pools &#10148; [NEW POOL] &#10148; Tab: Actions and please use the 'Assign volumes' button. After re-assgning volumes you can delete the original pool. ]%></p>
+		</div>
+		<div id="director_resources_config_form" class="subtab_item" style="display: none">
+			<com:Application.Web.Portlets.BaculaConfigResourceList
+				ID="DirectorResourcesConfig"
+				ComponentType="dir"
+				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
+				OnRename="renameResource"
+			/>
+		</div>
+	</div>
+</com:TContent>

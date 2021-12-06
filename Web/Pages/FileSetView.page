@@ -1,0 +1,21 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-copy"></i> <%[ FileSet details ]%></b>
+		</h5>
+	</header>
+	<h3 class="view_header"><%[ FileSet: ]%> <%=$this->getFileSetName()%></h3>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a class="w3-button w3-bar-item" href="<%=$this->Service->constructUrl('FileSetList')%>"><i class="fa fa-angle-left"></i></a>
+	</div>
+	<div class="w3-container">
+		<com:Application.Web.Portlets.BaculaConfigDirectives
+			ID="FileSetConfig"
+			ComponentType="dir"
+			ResourceType="Fileset"
+			ShowCancelButton="false"
+		/>
+	</div>
+</com:TContent>

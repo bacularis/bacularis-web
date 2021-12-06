@@ -1,0 +1,44 @@
+<%@ MasterClass="Application.Web.Layouts.Simple" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<div style="width: 100%; height: 100%;">
+		<com:TPanel ID="LoginForm" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px" DefaultButton="LoginBtn">
+			<img src="<%=$this->getPage()->getTheme()->getBaseUrl()%>/logo_xl.png" alt="Baculum - The Bacula web interface" class="w3-block" style="margin-bottom: 10px"/>
+			<com:TLabel ID="Msg" CssClass="error" Display="Hidden"><%[ Invalid username or password ]%></com:TLabel>
+			<div class="w3-section">
+				<label for="<%=$this->Username->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Username: ]%></label> <com:TTextBox ID="Username" CssClass="w3-input w3-border w3-show-inline-block" Style="width: 335px" />
+			</div>
+			<div class="w3-section">
+				<label for="<%=$this->Password->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Password: ]%></label> <com:TTextBox ID="Password" CssClass="w3-input w3-border w3-show-inline-block" TextMode="Password" Style="width: 335px" />
+			</div>
+			<div class="w3-section w3-center">
+				<com:TLinkButton ID="LoginBtn" OnClick="login" CssClass="w3-button w3-green">
+					<i class="fas fa-sign-in-alt"></i> &nbsp;<%[ Log in ]%></i>
+				</com:TLinkButton>
+			</div>
+		</com:TPanel>
+		<com:TPanel ID="AuthorizationError" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px" Display="None">
+			<img src="<%=$this->getPage()->getTheme()->getBaseUrl()%>/logo_xl.png" alt="Baculum - The Bacula web interface" style="margin-bottom: 40px; width: 100%;"/>
+			<p class="w3-text-red"><%[ Authorization failed. Please contact the Baculum administrator to grant permissions. ]%></p>
+			<p class="w3-center">
+				<script>var login_form_reload_url = '<%=$this->reload_url%>';</script>
+				<com:TActiveLinkButton
+					OnClick="logout"
+				>
+					<prop:ClientSide.OnComplete>
+						if (login_form_reload_url && (!window.chrome || window.navigator.webdriver))  {
+							window.location.href = login_form_reload_url;
+						} else {
+							// For chrome this reload is required to show login Basic auth prompt
+							window.location.reload();
+						}
+					</prop:ClientSide.OnComplete>
+					<%[ Logout ]%>
+				</com:TActiveLinkButton>
+				 &nbsp;<a href="<%=$this->getModule('auth')->getReturnUrl() ?: '/'%>"><%[ Try again ]%></a>
+			</p>
+		</com:TPanel>
+	</div>
+<script>
+	document.getElementById('<%=$this->Username->ClientID%>').focus();
+</script>
+</com:TContent>

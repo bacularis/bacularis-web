@@ -1,0 +1,1509 @@
+<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../themes/Baculum-v2/css/restore-wizard.css %> />
+	<com:TWizard ID="RestoreWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="w3-container"
+		HeaderStyle.CssClass="w3-container"
+		NavigationStyle.CssClass="w3-container"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnPreviousButtonClick="wizardPrev"
+		OnNextButtonClick="wizardNext"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-desktop w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Client" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Backup" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-copy w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Files" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3  ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Where" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clipboard-list w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Options" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 5 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Run" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton CommandName="Cancel" CssClass="w3-button w3-red">
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="NextStepBtn"
+					CommandName="NextStep"
+					CssClass="w3-button w3-green"
+					Display="<%=($this->getPage()->RestoreWizard->ActiveStepIndex != 1) ? 'Dynamic' : 'None'%>"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		 
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton CommandName="Cancel" CssClass="w3-button w3-red">
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-paper-plane"></i> &nbsp;<%[ Run restore ]%>
+				</com:TLinkButton>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - select source backup client ]%>" StepType="Auto">
+			<div class="w3-half" style="margin: auto; float: none;">
+				<h2><%[ Restore wizard ]%></h2>
+				<p>
+					<%[ This wizard enables you to do in easy way restore files to destination Bacula Client. ]%>
+					<%[ To start, please select backup Client which data you want to restore. ]%>
+				</p>
+				<div class="w3-panel">
+					<div class="w3-third"><com:TLabel ForControl="BackupClient" Text="<%[ Backup from client: ]%>" /></div>
+					<div class="w3-third">
+						<com:TDropDownList ID="BackupClient" CssClass="w3-select w3-border" CausesValidation="false" />
+					</div>
+				</div>
+				<div class="w3-section">
+					<div class="w3-third"><com:TLabel ForControl="EnableCopyJobRestore" Text="<%[ Enable restore from copy jobs feature: ]%>" /></div>
+					<div class="w3-third">
+						<com:TCheckBox ID="EnableCopyJobRestore" CssClass="w3-check" CausesValidation="false" Checked="true" />
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - select backup to restore ]%>" StepType="Auto">
+			<div class="w3-margin-bottom">
+				<div class="w3-threequarter w3-section" style="float: none; margin: auto">
+					<p class="w3-hide-small">
+						<%[ There are two ways to select backup to restore. The selected backup way provides list of jobs from which there is possible to select a job. If you need the latest backups from the Client alternatively you can use Group most recent backups way which will select backups for you basing on backup job name and fileset resource. ]%>
+					</p>
+					<div class="w3-third"><com:TLabel Text="<%[ Backup selection method: ]%>" /></div>
+					<div class="w3-third">
+						<com:TRadioButton
+							ID="OnlySelectedBackupSelection"
+							GroupName="BackupSelection"
+							CssClass="w3-radio"
+							Checked="true"
+							Attributes.onclick="$('#group_backup_to_restore_field').hide(); $('#backup_to_restore_field').show();"
+						/>
+						<com:TLabel ForControl="OnlySelectedBackupSelection" Text="<%[ Selected backup ]%>" />
+						<i class="fas fa-info-circle help_icon w3-text-green"style="margin-left: 0 !important;"  onclick="$('#backup_to_restore_info').slideToggle('fast');"></i> &nbsp;
+						<com:TRadioButton
+							ID="GroupBackupSelection"
+							GroupName="BackupSelection"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#backup_to_restore_field').hide(); $('#group_backup_to_restore_field').show();"
+						/>
+						<com:TLabel ForControl="GroupBackupSelection" Text="<%[ Group most recent backups ]%>" />
+					</div>
+					<div class="w3-clear"></div>
+					<p id="backup_to_restore_info" class="w3-section" style="display: none"><strong><%[ Note: if you select incremental or differential backup, on the next step will be also loaded all directories and files from older backups required to do the job restore. In other words, the selected backup determines time point from which will be loaded the selected backup and other older backups (incremental, differential) backups up till closest full backup. ]%></strong></p>
+					<span id="no_backup_to_restore_msg" class="w3-text-red w3-section" style="display: none"><%[ There is no backup for restore. Please go to previous step and select another client for restore or proceed backups for the client selected in previous step. ]%></span>
+				</div>
+			</div>
+			<div id="backup_to_restore_field" style="display: <%=!$this->OnlySelectedBackupSelection->Checked ? 'none' : 'block'%>">
+				<div id="table_filters_body">
+					<span class="text"><%[ Find job by filename (without path): ]%></span> <input type="text" class="w3-text" id="restore_wizard_find_job_by_filename" /> <i id="restore_wizard_find_job_by_filename_btn" class="fas fa-search" style="cursor: pointer; margin-right: 10px;"></i>
+					<span  title="<%[ With this option are searched files with names equal provided filename, otherwise there are searched files with names containing provided filename like *filename*. ]%>" style="margin-right: 10px"><input type="checkbox" class="w3-check" id="restore_wizard_find_strict" value="1" /> <span class="text"><%[ match exact filename ]%></span></span>
+					<span title="<%[ With the given path, the results narrow down to the files in the path only. ]%>"><span class="text"><%[ Path (optional): ]%></span><input type="text" class="w3-text" id="restore_wizard_find_using_path" /> &nbsp;<i id="restore_wizard_find_job_by_filename_loader" class="fas fa-sync fa-spin" style="visibility: hidden;"></i>
+				</div>
+				<table id="job_to_restore_list" style="width: 100%">
+					<thead>
+						<tr>
+							<th></th>
+							<th>JobId</th>
+							<th><%[ Job name ]%></th>
+							<th><%[ File ]%></th>
+							<th><%[ Type ]%></th>
+							<th><%[ Level ]%></th>
+							<th><%[ Job status ]%></th>
+							<th><%[ Size ]%></th>
+							<th><%[ Files ]%></th>
+							<th><%[ Start time ]%></th>
+							<th><%[ End time ]%></th>
+							<th><%[ Select ]%></th>
+						</tr>
+					</thead>
+					<tbody id="job_to_restore_list_body"></tbody>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>JobId</th>
+							<th><%[ Job name ]%></th>
+							<th><%[ File ]%></th>
+							<th><%[ Type ]%></th>
+							<th><%[ Level ]%></th>
+							<th><%[ Job status ]%></th>
+							<th><%[ Size ]%></th>
+							<th><%[ Files ]%></th>
+							<th><%[ Start time ]%></th>
+							<th><%[ End time ]%></th>
+							<th><%[ Select ]%></th>
+						</tr>
+					</tfoot>
+				</table>
+<com:TCallback
+	ID="JobListCb"
+	OnCallback="loadJobList"
+>
+	<prop:ClientSide.OnLoading>
+		oJobsToRestoreList.show_find_job_by_filename_loader(true);
+	</prop:ClientSide.OnLoading>
+	<prop:ClientSide.OnComplete>
+		oJobsToRestoreList.show_find_job_by_filename_loader(false);
+		<%=$this->Session->contains('restore_job') ? 'oJobsToRestoreList.set_jobid(' . $this->Session['restore_job']['jobid'] . ');' : ''%>
+	</prop:ClientSide.OnComplete>
+</com:TCallback>
+<script type="text/javascript">
+var oJobsToRestoreList = {
+	ids: {
+		job_list: 'job_to_restore_list',
+		job_list_body: 'job_to_restore_list_body',
+		filters: 'table_filters',
+		filters_body: 'table_filters_body',
+		find_job_by_filename: 'restore_wizard_find_job_by_filename',
+		find_job_by_filename_btn: 'restore_wizard_find_job_by_filename_btn',
+		find_job_by_filename_loader: 'restore_wizard_find_job_by_filename_loader',
+		find_strict: 'restore_wizard_find_strict',
+		find_path: 'restore_wizard_find_using_path',
+		no_backup_msg: 'no_backup_to_restore_msg'
+	},
+	data: [],
+	opts: {},
+	table: null,
+	initialize: true,
+	init: function(opts) {
+		this.opts = opts;
+		if (this.table) {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.initialize = false;
+			this.table.page(page).draw(false);
+		} else {
+			this.set_table();
+			this.set_filters();
+			this.set_events();
+			this.set_msgs();
+		}
+		this.set_btns();
+		this.set_column_visibility();
+	},
+	set_events: function() {
+		document.getElementById(this.ids.find_job_by_filename).addEventListener('keyup', function(e) {
+			if (e.keyCode == 13) {
+				e.preventDefault();
+				this.load_jobs();
+			}
+		}.bind(this));
+		document.getElementById(this.ids.find_job_by_filename_btn).addEventListener('click', function(e) {
+			this.load_jobs();
+		}.bind(this));
+		document.getElementById(this.ids.find_path).addEventListener('keyup', function(e) {
+			if (e.keyCode == 13) {
+				e.preventDefault();
+				this.load_jobs();
+			}
+		}.bind(this));
+	},
+	load_jobs: function() {
+		var cb = <%=$this->JobListCb->ActiveControl->Javascript%>;
+		var fjbf = document.getElementById(this.ids.find_job_by_filename).value.trim();
+		var fs = document.getElementById(this.ids.find_strict).checked;
+		var fp = document.getElementById(this.ids.find_path).value.trim();
+		if (fp.length > 0 && fp.slice(-1) !== '/') {
+			fp += '/';
+		}
+		cb.setCallbackParameter({
+			filename: fjbf,
+			strict: fs,
+			path: fp
+		});
+		cb.dispatch();
+	},
+	show_find_job_by_filename_loader: function(show) {
+		var loader = document.getElementById(this.ids.find_job_by_filename_loader);
+		loader.style.visibility = (show) ? 'visible' : 'hidden';
+	},
+	update_table: function(data, list_type) {
+		oJobsToRestoreList.data = data;
+		oJobsToRestoreList.init({
+			list_type: list_type
+		});
+	},
+	set_column_visibility: function() {
+		if (!this.opts.hasOwnProperty('list_type')) {
+			return;
+		}
+		if (this.opts.list_type == <%=RestoreWizard::JOB_LIST_BY_CLIENT%>) {
+			this.table.columns([4, 10]).visible(true);
+			this.table.column(3).visible(false);
+			this.table.columns.adjust();
+		} else if (this.opts.list_type == <%=RestoreWizard::JOB_LIST_BY_FILENAME%>) {
+			this.table.columns([4, 10]).visible(false);
+			this.table.column(3).visible(true);
+			this.table.columns.adjust();
+		}
+	},
+	set_msgs: function() {
+		if (this.initialize) {
+			var group_backup = document.getElementById('<%=$this->GroupBackupToRestore->ClientID%>');
+			if (this.data.length == 0 && group_backup.options.length == 0) {
+				document.getElementById(this.ids.no_backup_msg).style.display = '';
+			}
+		}
+	},
+	set_btns: function() {
+		var active_step_idx = '<%=$this->RestoreWizard->ActiveStepIndex%>';
+		var next_step = document.getElementById('<%=$this->RestoreWizard->getStepNavigation()->NextStepBtn->ClientID%>');
+		if (active_step_idx != 1 || this.data.length > 0) {
+			next_step.style.display = '';
+		} else {
+			next_step.style.display = 'none';
+		}
+	},
+	set_jobid: function(jobid) {
+		if (!this.table) {
+			return;
+		}
+		var data_len = this.table.data().length;
+		var page_len = this.table.page.info().length; // data length on the page
+		if (data_len > page_len) {
+			//var sel_node = this.table.row({jobid: jobid}).node();
+			//var node_pos = this.table.rows({order: 'current'}).nodes().indexOf(sel_node);
+			var node_pos = -1;
+			this.table.rows({
+				order: 'applied',
+				filter: 'applied'
+			}).data().filter(function(value, index) {
+				if (value.jobid == jobid) {
+					node_pos = index;
+					return true;
+				}
+				return false;
+			});
+			if (node_pos != -1) {
+				var page_number = Math.floor(node_pos / page_len);
+				this.table.page(page_number).draw(false);
+			}
+		}
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.job_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"#' + this.ids.filters + '">frtip',
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			stateSave: true,
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'jobid',
+					responsivePriority: 1,
+					render: function(data, type, row) {
+						var i = document.createElement('I');
+						i.className = 'fa fa-external-link-alt fa-xs';
+						var a = document.createElement('A');
+						a.href = '/web/job/history/' + data + '/';
+						a.appendChild(i);
+						a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', data);
+						return (data + ' ' + a.outerHTML);
+					}
+				},
+				{
+					data: 'name',
+					responsivePriority: 3,
+					render: function(data, type, row) {
+						var ret;
+						if (type == 'display') {
+							var i = document.createElement('I');
+							i.className = 'fa fa-external-link-alt fa-xs';
+							var a = document.createElement('A');
+							a.href = '/web/job/' + encodeURIComponent(data) + '/';
+							a.appendChild(i);
+							a.title = '<%[ Go to job %job ]%>'.replace('%job', data);
+							ret = (data + ' ' + a.outerHTML);
+						} else {
+							ret = data;
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'file',
+					responsivePriority: 11,
+					visible: false,
+					width: '50%',
+					render: function(data, type, row) {
+						var ret = data;
+						if (type === 'display') {
+							var span = document.createElement('SPAN');
+							span.title = data;
+							if (data.length > 111) {
+								span.textContent = data.substr(0, 52) + ' (...) ' + data.substr(-52);
+							} else {
+								span.textContent = data;
+							}
+							ret = span.outerHTML;
+						}
+						return ret;
+					},
+				},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					},
+					responsivePriority: 4
+				},
+				{
+					data: 'level',
+					render: function(data, type, row) {
+						return JobLevel.get_level(data);
+					},
+					responsivePriority: 5
+				},
+				{
+					data: 'jobstatus',
+					render: render_jobstatus,
+					aresponsivePriority: 6
+				},
+				{
+					data: 'jobbytes',
+					render: render_bytes,
+					responsivePriority: 7
+				},
+				{
+					data: 'jobfiles',
+					responsivePriority: 8
+				},
+				{
+					data: 'starttime',
+					render: render_date,
+					responsivePriority: 9
+				},
+				{
+					data: 'endtime',
+					render: render_date,
+					responsivePriority: 10
+				},
+				{
+					data: 'jobid',
+					render: function (data, type, row) {
+						var ret;
+						if (type == 'display') {
+							var radio = document.createElement('INPUT');
+							radio.type = 'radio';
+							radio.name = 'backup_to_restore';
+							radio.value = [data, row.name, row.type, row.endtime, row.jobstatus].join('|');
+							radio.className = 'w3-radio';
+							if ('<%=$this->Session->contains('restore_job') ? $this->Session['restore_job']['jobid'] : ''%>' == data) {
+								radio.setAttribute('checked', 'checked');
+							}
+							ret = radio.outerHTML;
+						} else {
+							ret = data;
+						}
+						return ret;
+					},
+					responsivePriority: 2
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 4, 5, 6, 8, 9, 10, 11 ]
+			},
+			{
+				className: "dt-body-right",
+				targets: [ 7 ]
+			}],
+			order: [1, 'desc'],
+			initComplete: function () {
+				this.api().columns([2, 4, 5, 6]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = $.fn.dataTable.util.escapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] === 2 || column[0][0] == 6) {
+						column.data().unique().sort().each(function (d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');	
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');	
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	set_filters: function() {
+		var filters = document.getElementById(this.ids.filters);
+		var filters_body = document.getElementById(this.ids.filters_body);
+		filters.appendChild(filters_body);
+	}
+};
+$(function() {
+	oJobsToRestoreList.load_jobs();
+});
+</script>
+			</div>
+			<div id="group_backup_to_restore_field" style="display: <%=!$this->GroupBackupSelection->Checked ? 'none' : 'block'%>">
+			<div class="w3-container w3-margin-bottom">
+				<div class="w3-threequarter" style="float: none; margin: auto">
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="GroupBackupToRestore" Text="<%[ Backup to restore: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TDropDownList
+								ID="GroupBackupToRestore"
+								CssClass="w3-select w3-border"
+								CausesValidation="false"
+							/>
+						</div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="GroupBackupFileSet" Text="<%[ FileSet resource: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TDropDownList
+								ID="GroupBackupFileSet"
+								CssClass="w3-select w3-border"
+								CausesValidation="false"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - select files to restore ]%>" StepType="Auto">
+			<com:TPanel ID="NoFileFound" Style="height: 38px" Display="None">
+					<%[ No file found for selected backup. It can mean file records for this backup are pruned. Restoring selected files is not available but if you continue, there will be performed full restore all backup files. ]%>
+			</com:TPanel>
+			<com:TCallback
+				ID="LoadPath"
+				OnCallback="loadPath"
+			>
+				<prop:ClientSide.OnLoading>
+					document.getElementById('restore-browser-files-loading').style.display = 'block';
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.OnComplete>
+					document.getElementById('restore-browser-files-loading').style.display = 'none';
+					make_draggable('restore-browser-files-content');
+				</prop:ClientSide.OnComplete>
+			</com:TCallback>
+			<div class="w3-row">
+				<div class="w3-col" style="width: 15%; text-align: right; padding: 10px;"><%[ Path: ]%></div>
+				<div class="w3-col" style="width: 85%;">
+					<com:TActiveTextBox
+						ID="PathField"
+						CssClass="w3-input w3-twothird w3-border"
+						Style="display: inline"
+						Attributes.onkeydown="var keycode = (event.keyCode ? event.keyCode : event.which); if (keycode === 13) {oRestoreBrowserFiles.load_browser_content(); return false; } return true;"
+						/>
+					<button type="button" id="load_path_btn" class="w3-button w3-green" onclick="oRestoreBrowserFiles.load_browser_content();">
+						<i class="fa fa-check"></i> &nbsp;<%[ OK ]%>
+					</button>
+				</div>
+			</div>
+			<div class="w3-row w3-hide-small w3-small">
+				<span><%[ # Directories: ]%></span>
+				<com:TActiveLabel
+					ID="RestoreBrowserDirCount"
+					CssClass="w3-show-inline-block"
+					Style="min-width: 20px;"
+					Text="0"
+				/>
+				<span><%[ # Files: ]%></span>
+				<com:TActiveLabel
+					ID="RestoreBrowserFileCount"
+					CssClass="w3-show-inline-block"
+					Style="min-width: 20px;"
+					Text="0"
+				/>
+				<div class="w3-right w3-half w3-hide-small" style="text-align: right; margin-top: 5px">
+					<span><%[ Backup client ]%>:</span>
+					<com:TActiveLabel
+						ID="RestoreBrowserClient"
+						CssClass="w3-show-inline-block w3-margin-right"
+						Style="font-weight: bold"
+					/>
+					<span><%[ Job type ]%>:</span>
+					<com:TActiveLabel
+						ID="RestoreBrowserType"
+						CssClass="w3-show-inline-block w3-margin-right"
+						Style="font-weight: bold"
+					/>
+					<span><%[ Job name ]%>:</span>
+					<com:TActiveLabel
+						ID="RestoreBrowserName"
+						CssClass="w3-show-inline-block w3-margin-right"
+						Style="font-weight: bold"
+					/>
+					<span><%[ Status ]%>: </span>
+					<com:TActiveLabel
+						ID="RestoreBrowserStatus"
+						CssClass="w3-show-inline-block w3-margin-right"
+						Style="vertical-align: top"
+					/>
+					<span><%[ Restore time point ]%>:</span>
+					<com:TActiveLabel
+						ID="RestoreBrowserTimePoint"
+						CssClass="w3-show-inline-block"
+						Style="font-weight: bold"
+					/>
+				</div>
+			</div>
+			<table id="restore-browser">
+				<tr>
+					<td rowspan="2" style="height: 100%">
+						<div id="restore-browser-files-loading" style="display: none"></div>
+						<div id="restore-browser-files" class="w3-border">
+							<div id="restore-browser-files-content"></div>
+						</div>
+						<div id="restore-browser-nav" class="w3-hide-small" style="height: 57px; padding: 8px 0;">
+							<button type="button" class="w3-button w3-dark-grey w3-right" onclick="oRestoreBrowserFiles.next_page();" title="<%[ Next ]%>"><i class="fa fa-arrow-right"></i></button>
+							<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-right" onclick="oRestoreBrowserFiles.prev_page();" title="<%[ Previous ]%>"><i class="fa fa-arrow-left"></i></button>
+							<com:TActiveTextBox
+								ID="RestoreBrowserLimit"
+								CssClass="w3-input w3-border w3-right w3-show-inline-block w3-margin-right"
+								Width="70px"
+								Text="2000"
+								Attributes.title="<%[ Limit: ]%>"
+							/>
+							<span class="w3-right offset_limit" style="padding: 8px 2px 8px 8px"><%[ Limit: ]%></span>
+							<com:TActiveTextBox
+								ID="RestoreBrowserOffset"
+								CssClass="w3-input w3-border w3-right w3-show-inline-block"
+								Width="70px"
+								Text="0"
+								Style="margin-right: 2px"
+								Attributes.title="<%[ Offset: ]%>"
+							/>
+							<span class="w3-right offset_limit" style="padding: 8px 2px"><%[ Offset: ]%></span>
+							<input type="text" id="restore-browser-search" class="w3-input w3-border w3-show-inline-block" style="width: 170px" placeholder="&#128269; <%[ Search... ]%>" />
+							<input type="checkbox" class="w3-check w3-margin-left" id="restore-browser-search-insensitive" />
+							<label for="restore-browser-search-insensitive" style="padding: 8px 2px"><%[ case sensitive ]%></label>
+						</div>
+<script>
+var oRestoreBrowserFiles = {
+	ids: {
+		content: 'restore-browser-files-content',
+		search: 'restore-browser-search',
+		case_sensitive: 'restore-browser-search-insensitive',
+		offset: '<%=$this->RestoreBrowserOffset->ClientID%>',
+		limit: '<%=$this->RestoreBrowserLimit->ClientID%>',
+		type: '<%=$this->RestoreBrowserType->ClientID%>',
+		status: '<%=$this->RestoreBrowserStatus->ClientID%>',
+		time_point: '<%=$this->RestoreBrowserTimePoint->ClientID%>'
+	},
+	cls: {
+		draggable: 'draggable',
+		watermark: 'file-browser-watermark',
+		folder: 'fas fa-folder',
+		file: 'fas fa-file-alt',
+		item_icon: 'item_icon',
+		green: 'w3-text-green',
+		gray: 'w3-text-gray',
+		item: 'file-browser-element',
+		item_right: 'restore-browser-element-right',
+		link: 'link',
+		size: 'size'
+	},
+	txts: {
+		no_files: '<%[ It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired) ]%>',
+		add: '<%[ Add ]%>'
+	},
+	types: {
+		directory: 'dir',
+		file: 'file',
+	},
+	excluded_items: ['.', '..'],
+	init: function(items) {
+		this.set_events();
+		this.load_items();
+		this.set_browser_headers();
+	},
+	load_browser_content: function() {
+		var cb = <%=$this->LoadPath->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_items: function() {
+		var cb = <%=$this->SetBrowserFiles->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	populate: function(items) {
+		oRestoreBrowserFiles.clear_browser();
+		if (!Array.isArray(items) || items.length === 0) {
+			oRestoreBrowserFiles.add_empty_item();
+		} else {
+			for (var i = 0; i < items.length; i++) {
+				oRestoreBrowserFiles.add_item(items[i]);
+			}
+		}
+		make_draggable();
+	},
+	add_empty_item: function() {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = this.cls.watermark;
+		div.textContent = this.txts.no_files;
+		container.appendChild(div);
+	},
+	add_item: function(item) {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = [
+			this.cls.item,
+			this.cls.draggable
+		].join(' ');
+		div.setAttribute('data-source', 'file_browser');
+		div.setAttribute('data-uniqid', item.uniqid);
+		div.addEventListener('click', function(e) {
+			var el = event.target || event.srcElement;
+			if (el.className == this.cls.link) {
+				// 'Add' link doesn't cause sending request
+				return;
+			}
+			var vposition = el.style.left;
+			if(vposition == null || vposition == '0px'){
+				event.stop();
+			} else {
+				if (item.type === this.types.directory) {
+					var offset = document.getElementById(this.ids.offset);
+					offset.value = 0;
+					var search = document.getElementById(this.ids.search);
+					search.value = '';
+				}
+				var cbp = [item.name, item.pathid, item.filenameid, item.jobid].join('|');
+				var request = <%=$this->getPage()->GetVersions->ActiveControl->Javascript%>;
+				request.setCallbackParameter(cbp);
+				var ocf = request.options.onComplete;
+				request.options.onComplete = function() {
+					ocf();
+					Formatters.set_formatters();
+					make_draggable();
+				};
+				request.dispatch();
+			}
+		}.bind(this));
+		var i = document.createElement('I');
+		if (item.type === this.types.directory) {
+			i.className = [
+				this.cls.folder,
+				this.cls.green,
+				this.cls.item_icon
+			].join(' ');
+		} else if (item.type === this.types.file) {
+			i.className = [
+				this.cls.file,
+				this.cls.gray,
+				this.cls.item_icon
+			].join(' ');
+		}
+		var txt = item.name;
+		if (txt != '/') {
+			txt = txt.replace(/\/$/, '');
+		}
+		txt = document.createTextNode(' ' + txt);
+		var right = document.createElement('DIV');
+		right.className = this.cls.item_right;
+		if (this.excluded_items.indexOf(item.name) === -1) {
+			var link = document.createElement('A');
+			link.href = 'javascript:void(0)';
+			link.className = 'link';
+			var link_label = document.createTextNode(this.txts.add);
+			link.appendChild(link_label);
+			link.style.float = 'right';
+			right.appendChild(link);
+			link.addEventListener('click', function(e) {
+				var cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+				var param = ['file_browser', item.uniqid].join('|');
+				cb.setCallbackParameter(param);
+				cb.dispatch();
+			});
+		}
+		var size = document.createElement('SPAN');
+		size.className = this.cls.size;
+		var lss = item.lstat ? item.lstat.size : 0;
+		size.textContent = lss;
+		right.appendChild(size);
+		div.appendChild(i);
+		div.appendChild(txt);
+		div.appendChild(right);
+		container.appendChild(div);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.offset).addEventListener('keypress', function(e) {
+			var kc = event.which || event.keyCode;
+			if (kc === 13) {
+				this.load_browser_content();
+			}
+		}.bind(this));
+		document.getElementById(this.ids.limit).addEventListener('keypress', function(e) {
+			var kc = event.which || event.keyCode;
+			if (kc === 13) {
+				this.load_browser_content();
+			}
+		}.bind(this));
+		var search = document.getElementById(this.ids.search);
+		var case_sensitive = document.getElementById(this.ids.case_sensitive);
+		var search_func = function(e) {
+			var els = document.querySelectorAll('#' + this.ids.content + ' div.' + this.cls.item);
+			var cs = case_sensitive.checked;
+			var txt, regex, regex_opts;
+			for (var i = 0; i < els.length; i++) {
+				txt = els[i].childNodes[1].textContent;
+				if (cs) {
+					regex = new RegExp(search.value);
+				} else {
+					regex = new RegExp(search.value, 'i');
+				}
+				if (regex.test(txt)) {
+					if (els[i].style.display == 'none') {
+						els[i].style.removeProperty('display');
+					}
+				} else {
+					els[i].style.display = 'none';
+				}
+			}
+		}.bind(this);
+		search.addEventListener('keyup', search_func);
+		case_sensitive.addEventListener('click', search_func);
+	},
+	prev_page: function() {
+		var offset = document.getElementById(this.ids.offset);
+		var limit = document.getElementById(this.ids.limit);
+		var new_offset = parseInt(offset.value, 10) - parseInt(limit.value, 10);
+		if (new_offset < 0) {
+			new_offset = 0;
+		}
+		offset.value = new_offset;
+		this.load_browser_content();
+	},
+	next_page: function() {
+		var offset = document.getElementById(this.ids.offset);
+		var limit = document.getElementById(this.ids.limit);
+		var new_offset = parseInt(offset.value, 10) + parseInt(limit.value, 10);
+		offset.value = new_offset;
+		this.load_browser_content();
+	},
+	clear_browser: function() {
+		var container = document.getElementById(this.ids.content);
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	},
+	set_browser_headers: function() {
+		var type = document.getElementById(this.ids.type);
+		type.textContent = JobType.get_type(type.textContent);
+		var status = document.getElementById(this.ids.status);
+		status.innerHTML = JobStatus.get_icon(status.textContent).outerHTML;
+		var time_point = document.getElementById(this.ids.time_point);
+		var d = date_time_to_ts(time_point.textContent);
+		time_point.textContent = Units.format_date(d);
+	}
+};
+$(function() {
+	oRestoreBrowserFiles.init();
+});
+</script>
+						<com:TCallback ID="SetBrowserFiles" OnCallback="Page.loadBrowserFiles" />
+						<com:TCallback ID="AddFileToRestore" OnCallback="Page.addFileToRestore">
+							<prop:ClientSide.OnComplete>
+								Formatters.set_formatters();
+							</prop:ClientSide.OnComplete>
+						</com:TCallback>
+						<com:TCallback ID="GetVersions" OnCallback="Page.getVersions">
+							<prop:ClientSide.OnLoading>
+								document.getElementById('restore-browser-files-loading').style.display = 'block';
+							</prop:ClientSide.OnLoading>
+							<prop:ClientSide.OnComplete>
+								document.getElementById('restore-browser-files-loading').style.display = 'none';
+							</prop:ClientSide.OnComplete>
+						</com:TCallback>
+					</td>
+					<td style="height: 50%">
+						<div id="restore-browser-versions" class="w3-border" style="position: relative">
+							<div id="restore-browser-versions-content" class="file-browser-detail"></div>
+						</div>
+<script>
+var oRestoreBrowserVersions = {
+	ids: {
+		content: 'restore-browser-versions-content'
+	},
+	cls: {
+		draggable: 'draggable',
+		watermark: 'file-browser-watermark',
+		file: 'fas fa-file-alt',
+		item_icon: 'item_icon',
+		gray: 'w3-text-gray',
+		third: 'w3-third',
+		item: 'file-browser-element',
+		item_right: 'restore-browser-element-right',
+		size: 'size',
+		link: 'link'
+	},
+	txts: {
+		no_files: '<%[ To see file versions please click a file on the left files browser. ]%>',
+		add: '<%[ Add ]%>',
+		jobid: '<%[ JobId: ]%>',
+		volume: '<%[ Volume: ]%>',
+		inchanger: '<%[ InChanger: ]%>',
+		sum: '<%[ Sum: ]%>',
+		yes: '<%[ Yes ]%>',
+		no: '<%[ No ]%>'
+	},
+	types: {
+		file: 'file'
+	},
+	init: function() {
+		this.load_items();
+	},
+	load_items: function() {
+		var cb = <%=$this->SetFileVersions->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	populate: function(items) {
+		oRestoreBrowserVersions.clear_browser();
+		if (!Array.isArray(items) || items.length === 0) {
+			oRestoreBrowserVersions.add_empty_item();
+		} else {
+			for (var i = 0; i < items.length; i++) {
+				oRestoreBrowserVersions.add_item(items[i]);
+			}
+		}
+		make_draggable();
+	},
+	add_empty_item: function() {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = this.cls.watermark;
+		div.textContent = this.txts.no_files;
+		container.appendChild(div);
+	},
+	add_item: function(item) {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = [
+			this.cls.item,
+			this.cls.draggable
+		].join(' ');
+		div.style.height = '32px';
+		div.setAttribute('data-source', 'version_browser');
+		div.setAttribute('data-uniqid', item.uniqid);
+
+		// file name
+		var span_name = document.createElement('SPAN');
+		span_name.className = this.cls.third;
+		span_name.style.wordBreak = 'break-all';
+		var i = document.createElement('I');
+		if (item.type === this.types.file) {
+			i.className = [
+				this.cls.file,
+				this.cls.gray,
+				this.cls.item_icon
+			].join(' ');
+		}
+		var name = (item.name.length > 60) ? item.name.substr(0, 57) + '...' : item.name;
+		span_name.setAttribute('title', item.name);
+		name = document.createTextNode(' ' + name);
+		span_name.appendChild(i);
+		span_name.appendChild(name);
+
+		// file mtime
+		var span_mtime = document.createElement('SPAN');
+		span_mtime.className = this.cls.third;
+		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime) : 0);
+		mtime = document.createTextNode(mtime);
+		span_mtime.appendChild(mtime);
+
+		// file size and add button
+		var span_size = document.createElement('SPAN');
+		span_size.className = this.cls.third;
+		var span_size_cont = document.createElement('SPAN');
+		span_size_cont.className = this.cls.size;
+		var size_label = document.createTextNode('<%[ Size: ]%> ');
+		var lsize = item.lstat ? item.lstat.size : 0;
+		var size = document.createTextNode(lsize);
+		span_size_cont.appendChild(size);
+		span_size.appendChild(size_label);
+		span_size.appendChild(span_size_cont);
+
+		var link = document.createElement('A');
+		link.href = 'javascript:void(0)';
+		link.className = this.cls.link;
+		link.style.float = 'right';
+		var link_label = document.createTextNode(this.txts.add);
+		link.appendChild(link_label);
+		span_size.appendChild(link);
+		link.addEventListener('click', function(e) {
+			var cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+			var param = ['version_browser', item.uniqid].join('|');
+			cb.setCallbackParameter(param);
+			cb.dispatch();
+		});
+
+		div.addEventListener('mouseover', function() {
+			var tip_fields = [
+				this.txts.jobid + ' ' + item.jobid,
+				this.txts.volume + ' ' + item.volname,
+				this.txts.inchanger + ' ' + (item.inchanger === '1' ? this.txts.yes : this.txts.no),
+				this.txts.sum + ' ' + item.md5
+			];
+			showTip(div, item.name, tip_fields.join('<br />'));
+		}.bind(this));
+
+		div.appendChild(span_name);
+		div.appendChild(span_mtime);
+		div.appendChild(span_size);
+		container.appendChild(div);
+	},
+	clear_browser: function() {
+		var container = document.getElementById(this.ids.content);
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	}
+};
+$(function() {
+	oRestoreBrowserVersions.init();
+});
+</script>
+						<com:TCallback ID="SetFileVersions" OnCallback="Page.loadFileVersions" />
+					</td>
+				</tr>
+				<tr>
+					<td style="height: 50%; vertical-align: bottom;">
+						<div id="restore-browser-selected" class="w3-border">
+							<com:TCallback
+								ID="RemoveSelectedItem"
+								OnCallback="removeSelectedFile"
+								ClientSide.OnComplete="set_formatters();"
+							/>
+							<div id="restore-browser-selected-files" class="file-browser-detail" style="width: 100%; height: 100%; position: relative;"></div>
+<script>
+var oRestoreBrowserSelectedFiles = {
+	ids: {
+		content: 'restore-browser-selected-files'
+	},
+	cls: {
+		watermark: 'file-browser-watermark',
+		folder: 'fas fa-folder',
+		file: 'fas fa-file-alt',
+		trash: 'fa fa-trash-alt',
+		gray: 'w3-text-gray',
+		green: 'w3-text-green',
+		third: 'w3-third',
+		right: 'w3-right',
+		item: 'file-browser-element',
+		item_icon: 'item_icon',
+		size: 'size',
+		link: 'link',
+		rm_sel_item: 'remove_selected_item',
+		item_sel_btn: 'item_selected_del_btn'
+	},
+	txts: {
+		no_files: "<%[ To add a file to restore please click 'Add' link or please drag here the file from the top frame or from the frame on the left. ]%>"
+	},
+	types: {
+		directory: 'dir',
+		file: 'file'
+	},
+	init: function() {
+		this.load_items();
+		this.init_browser();
+	},
+	init_browser: function() {
+		$('#' + this.ids.content).droppable({
+			accept: '.draggable',
+			drop: function(e, ui) {
+				var source = ui.draggable.attr('data-source');
+				var uniqid = ui.draggable.attr('data-uniqid');
+				var param = [source, uniqid].join('|');
+				var selected_versions_cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+				selected_versions_cb.setCallbackParameter(param);
+				selected_versions_cb.dispatch();
+			}
+		});
+	},
+	load_items: function() {
+		var cb = <%=$this->SetBrowserSelectedFiles->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	add_empty_item: function() {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = this.cls.watermark;
+		div.textContent = this.txts.no_files;
+		container.appendChild(div);
+	},
+	populate: function(items) {
+		oRestoreBrowserSelectedFiles.clear_browser();
+		if (!Array.isArray(items) || items.length === 0) {
+			oRestoreBrowserSelectedFiles.add_empty_item();
+		} else {
+			for (var i = 0; i < items.length; i++) {
+				oRestoreBrowserSelectedFiles.add_item(items[i]);
+			}
+		}
+	},
+	add_item: function(item) {
+		var container = document.getElementById(this.ids.content);
+		var div = document.createElement('DIV');
+		div.className = this.cls.item;
+		div.style.height = '32px';
+		div.setAttribute('data-uniqid', item.uniqid);
+
+		// file name
+		var span_name = document.createElement('SPAN');
+		span_name.className = this.cls.third;
+		span_name.style.wordBreak = 'break-all';
+		var i = document.createElement('I');
+		if (item.type === this.types.file) {
+			i.className = [
+				this.cls.file,
+				this.cls.gray,
+				this.cls.item_icon
+			].join(' ');
+		} else if (item.type === this.types.directory) {
+			i.className = [
+				this.cls.folder,
+				this.cls.green,
+				this.cls.item_icon
+			].join(' ');
+		}
+		var txt = item.name;
+		if (txt != '/') {
+			txt = txt.replace(/\/$/, '');
+		}
+		var name = (txt.length > 60) ? txt.substr(0, 57) + '...' : txt;
+		span_name.setAttribute('title', txt);
+		name = document.createTextNode(' ' + name);
+		span_name.appendChild(i);
+		span_name.appendChild(name);
+
+		// file mtime
+		var span_mtime = document.createElement('SPAN');
+		span_mtime.className = this.cls.third;
+		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime) : 0);
+		mtime = document.createTextNode(mtime);
+		span_mtime.appendChild(mtime);
+
+		// file size and add button
+		var span_size = document.createElement('SPAN');
+		span_size.className = this.cls.third;
+		var span_size_cont = document.createElement('SPAN');
+		span_size_cont.className = this.cls.size;
+		var size_label = document.createTextNode('<%[ Size: ]%> ');
+		var lsize = item.lstat ? item.lstat.size : 0;
+		var size = document.createTextNode(lsize);
+		span_size_cont.appendChild(size);
+		span_size.appendChild(size_label);
+		span_size.appendChild(span_size_cont);
+
+		var link = document.createElement('A');
+		link.href = 'javascript:void(0)';
+		link.className = [
+			this.cls.link,
+			this.cls.right
+		].join(' ');
+		i  = document.createElement('I');
+		i.className = [
+			this.cls.trash,
+			this.cls.item_sel_btn
+		].join(' ');
+		link.appendChild(i);
+		span_size.appendChild(link);
+		link.addEventListener('click', function(e) {
+			var cb = <%=$this->RemoveSelectedItem->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(item.uniqid);
+			cb.dispatch();
+		});
+
+		div.appendChild(span_name);
+		div.appendChild(span_mtime);
+		div.appendChild(span_size);
+		container.appendChild(div);
+	},
+	clear_browser: function() {
+		var container = document.getElementById(this.ids.content);
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	}
+};
+$(function() {
+	oRestoreBrowserSelectedFiles.init();
+});
+</script>
+						<com:TCallback ID="SetBrowserSelectedFiles" OnCallback="Page.loadSelectedFiles" />
+						</div>
+					</td>
+				</tr>
+			</table>
+			<script type="text/javascript">
+				function set_browser_sizes() {
+					var win_height = $(window).height();
+					// 70 - bottom bar, 234 - top bar, 40 - path field
+					var h = win_height - 70 - 234 - 40;
+					if (h < 220) {
+						h = 220; // minimal fs browser height
+					}
+					var comp_rb_height = h.toString() + 'px';
+					var rb = document.getElementById('restore-browser');
+					rb.style.height = comp_rb_height;
+
+					// workaround for setting proper browser height on Firefox
+					$(rb).find('tbody')[0].style.height = comp_rb_height;
+
+					var rb_files = document.getElementById('restore-browser-files');
+					var rb_load = document.getElementById('restore-browser-files-loading');
+					rb_load.style.width = rb_files.offsetWidth + 'px';
+					rb_load.style.height = rb_files.offsetHeight + 'px';
+				}
+				function make_draggable() {
+					$('.draggable').draggable({
+						'helper':"clone",
+						'scroll':false,
+						'appendTo':"body",
+						'containment':"window"
+					});
+				}
+				$(window).resize(function() {
+					set_browser_sizes();
+				});
+				set_browser_sizes();
+				make_draggable('restore-browser-files-content');
+				Formatters.set_formatters();
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - select destination for restore ]%>" StepType="Auto">
+			<div class="w3-half" style="margin: auto; float: none">
+				<div class="w3-section w3-row">
+					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreClient" Text="<%[ Restore to client: ]%>" /></div>
+					<div class="w3-col w3-third">
+						<com:TDropDownList ID="RestoreClient" CssClass="w3-select w3-border" CausesValidation="false" />
+					</div>
+				</div>
+				<div class="w3-section w3-row">
+					<div class="w3-col w3-third"><com:TLabel ForControl="RestorePath" Text="<%[ Restore to directory: ]%>" /></div>
+					<div class="w3-col w3-third"><com:TTextBox ID="RestorePath" CssClass="w3-input w3-border" Text="/tmp/restore" /></div>
+				</div>
+				<hr style="w3-margin" />
+				<p><%[ During restore there will be used following volumes: ]%></p>
+				<com:TRepeater ID="RestoreVolumes">
+					<prop:HeaderTemplate>
+						<table class="w3-table w3-striped w3-border w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+							<thead>
+								<tr>
+									<th><%[ In Changer ]%></th>
+									<th><%[ Volume ]%></th>
+								</tr>
+							</thead>
+					</prop:HeaderTemplate>
+					<prop:ItemTemplate>
+							<tr>
+								<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
+								<td> <i class="fa fa-hdd w3-text-black"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
+							</tr>
+					</prop:ItemTemplate>
+					<prop:FooterTemplate>
+						</table>
+					</prop:FooterTemplate>
+				</com:TRepeater>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - options for restore ]%>" StepType="Auto">
+			<div class="w3-half" style="margin: auto; float: none">
+				<div class="w3-section w3-row">
+					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreJob" Text="<%[ Restore job: ]%>" /></div>
+					<div class="w3-col w3-third">
+						<com:TDropDownList ID="RestoreJob" CssClass="w3-select w3-border" CausesValidation="false" />
+					</div>
+				</div>
+				<div class="w3-section w3-row">
+					<div class="w3-col w3-third"><com:TLabel ForControl="ReplaceFiles" Text="<%[ Replace files: ]%>" /></div>
+					<div class="w3-col w3-third">
+						<com:TDropDownList ID="ReplaceFiles" CssClass="w3-select w3-border" CausesValidation="false">
+							<com:TListItem Value="never" Text="<%[ do not replace files ]%>" />
+							<com:TListItem Value="ifolder" Text="<%[ if files from restore are older]%>" />
+							<com:TListItem Value="ifnewer" Text="<%[ if files from restore are newer]%>" />
+							<com:TListItem Value="always" Text="<%[ always replace files ]%>" />
+						</com:TDropDownList>
+					</div>
+				</div>
+				<div class="w3-section w3-row w3-margin-bottom">
+					<div class="w3-col w3-third"><%[ File relocation option:  ]%></div>
+					<div class="w3-col w3-third">
+						<input type="radio" name="file_relocation" id="file_relocation_1" value="1" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_1"><%[ Do not relocate files ]%></label><br />
+						<input type="radio" name="file_relocation" id="file_relocation_2" value="2" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_2"><%[ Relocate files with prefix and/or suffix ]%></label><br />
+						<input type="radio" name="file_relocation" id="file_relocation_3" value="3" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_3"><%[ Relocate files with regular expression ]%></label>
+					</div>
+				</div>
+				<div id="file_relocation_prefix_suffix" style="display: none">
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreStripPrefix" Text="<%[ Strip prefix: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TTextBox ID="RestoreStripPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+						</div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddPrefix" Text="<%[ Add prefix: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TTextBox ID="RestoreAddPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+						</div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddSuffix" Text="<%[ Add suffix: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TTextBox ID="RestoreAddSuffix" CssClass="w3-input w3-border" CausesValidation="false" />
+						</div>
+					</div>
+				</div>
+				<div id="file_relocation_regex_where" style="display: none">
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreRegexWhere" Text="<%[ RegexWhere: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TTextBox ID="RestoreRegexWhere" CssClass="w3-input w3-border" CausesValidation="false" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				function switch_file_relocation_mode(opt) {
+					var prefix_suffix_opts = document.getElementById('file_relocation_prefix_suffix');
+					var regex_where_opts = document.getElementById('file_relocation_regex_where');
+					var radio = document.getElementById('file_relocation_' + opt);
+					if (opt == 1) { // don't use file relocation
+						prefix_suffix_opts.style.display = 'none';
+						regex_where_opts.style.display = 'none';
+						radio.checked = true;
+					} else if (opt == 2) { // use prefix/suffix relocation
+						prefix_suffix_opts.style.display = '';
+						regex_where_opts.style.display = 'none';
+						radio.checked = true;
+					} else if (opt == 3) { // use regex_where relocation
+						prefix_suffix_opts.style.display = 'none';
+						regex_where_opts.style.display = '';
+						radio.checked = true;
+					}
+				}
+				var relocation_opt = '<%=$this->file_relocation_opt%>';
+				if (relocation_opt) {
+					switch_file_relocation_mode(relocation_opt);
+				} else {
+					switch_file_relocation_mode(1); // default setting
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step6" Title="<%[ Step 6 - Finish ]%>" StepType="Finish">
+			<div class="w3-half" style="margin: auto; float: none">
+				<fieldset>
+					<legend><%[ Source parameters ]%></legend>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Backup data from client: ]%></div>
+						<div class="w3-col w3-third bold"><%=$this->BackupClient->SelectedItem->Text%></div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Backup selection method: ]%></div>
+						<div class="w3-col w3-third bold">
+							<com:TLabel Text="<%[ Selected backup ]%>" Visible="<%=$this->OnlySelectedBackupSelection->Checked%>" />
+							<com:TLabel Text="<%[ Group most recent backups ]%>" Visible="<%=$this->GroupBackupSelection->Checked%>" />
+						</div>
+					</div>
+					<com:TPanel Visible="<%=$this->GroupBackupSelection->Checked%>">
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ Backup to restore: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->GroupBackupToRestore->SelectedValue%></div>
+						</div>
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ FileSet to restore: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->GroupBackupFileSet->SelectedItem->Text%></div>
+						</div>
+					</com:TPanel>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Files for restore ]%></legend>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Selected directories count: ]%></div>
+						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements(true)->dirid) ? count($this->getRestoreElements(true)->dirid) : '0'%></div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Selected files count: ]%></div>
+						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements(true)->fileid) ? count($this->getRestoreElements(true)->fileid) : '0'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Destination parameters ]%></legend>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Restore to client: ]%></div>
+						<div class="w3-col w3-third bold"><%=$this->RestoreClient->SelectedItem->Text%></div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Restore to path: ]%></div>
+						<div class="w3-col w3-third bold"><%=$this->RestorePath->Text%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Restore job options ]%></legend>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Restore job: ]%></div>
+						<div class="w3-col w3-third bold"><%=$this->RestoreJob->Text%></div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ Replace files: ]%></div>
+						<div class="w3-col w3-third bold">
+							<com:TLabel Visible="<%=$this->ReplaceFiles->SelectedValue == 'never'%>" Text="<%[ do not replace files ]%>"/>
+							<com:TLabel Visible="<%=$this->ReplaceFiles->SelectedValue == 'ifolder'%>" Text="<%[ if files from restore are older]%>"/>
+							<com:TLabel Visible="<%=$this->ReplaceFiles->SelectedValue == 'ifnewer'%>" Text="<%[ if files from restore are newer]%>"/>
+							<com:TLabel Visible="<%=$this->ReplaceFiles->SelectedValue == 'always'%>" Text="<%[ always replace files ]%>"/>
+						</div>
+					</div>
+					<div class="w3-section w3-row">
+						<div class="w3-col w3-third"><%[ File relocation option: ]%></div>
+						<div class="w3-col w3-third bold">
+							<com:TLabel Visible="<%=$this->file_relocation_opt == 1%>" Text="<%[ Do not relocate files ]%>"/>
+							<com:TLabel Visible="<%=$this->file_relocation_opt == 2%>" Text="<%[ Relocate files with prefix and/or suffix ]%>"/>
+							<com:TLabel Visible="<%=$this->file_relocation_opt == 3%>" Text="<%[ Relocate files with regular expression ]%>"/>
+						</div>
+					</div>
+					<div style="display: <%=$this->file_relocation_opt == 2 ? 'block' : 'none'%>">
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ Strip prefix: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->RestoreStripPrefix->Text%></div>
+						</div>
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ Add prefix: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->RestoreAddPrefix->Text%></div>
+						</div>
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ Add suffix: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->RestoreAddSuffix->Text%></div>
+						</div>
+					</div>
+					<div style="display: <%=$this->file_relocation_opt == 3 ? 'block' : 'none'%>">
+						<div class="w3-section w3-row">
+							<div class="w3-col w3-third"><%[ RegexWhere: ]%></div>
+							<div class="w3-col w3-third bold"><%=$this->RestoreRegexWhere->Text%></div>
+						</div>
+					</div>
+				</fieldset>
+				<div id="restore_error" class="w3-modal" style="display: <%=$this->getPage()->show_error ? 'block' : 'none'%>">
+					<div class="w3-modal-content w3-card-4 w3-animate-zoom w3-padding" style="max-width: 600px">
+						<h2>Error</h2>
+						<div><br />
+							<span onclick="document.getElementById('restore_error').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
+							<com:TLabel ID="RestoreError" CssClass="w3-text-red" />
+						</div>
+						<div class="w3-center">
+							<a class="w3-button w3-red w3-section" type="button" href="<%=$this->Service->constructUrl('Dashboard');%>"><i class="fa fa-times"></i> &nbsp;<%[ Exit wizard ]%></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>

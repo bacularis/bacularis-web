@@ -1,0 +1,45 @@
+<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa fa-laptop-code"></i> <%[ Console details ]%></b>
+		</h5>
+	</header>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-gray" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config');"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+			<%[ Configure console ]%>
+		</a>
+	</div>
+	<p class="info"<%=!empty($_SESSION['bcons']) ? ' style="display: none"': ''%>><%[ To use the console page please configure bbconsjson binary file path on the API side. ]%></p>
+	<div class="w3-container tab_item" id="console_config"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+		<com:TCallback ID="LoadConsoleResourcesConfig" OnCallback="loadConsoleResourcesConfig" />
+		<script>
+function load_cons_res_config(resource) {
+	var cb = <%=$this->LoadConsoleResourcesConfig->ActiveControl->Javascript%>;
+	cb.setCallbackParameter(resource);
+	cb.dispatch();
+}
+		</script>
+		<div class="w3-row w3-margin-bottom">
+			<a href="javascript:void(0)" onclick="load_cons_res_config('Director'); W3SubTabs.open('console_director_config_btn', 'console_resources_config_form', 'console_config');">
+				<div id="console_director_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Director</div>
+			</a>
+			<a href="javascript:void(0)" onclick="load_cons_res_config('Console'); W3SubTabs.open('console_console_config_btn', 'console_resources_config_form', 'console_config');">
+				<div id="console_console_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Console</div>
+			</a>
+		</div>
+		<div id="console_resources_config_form" class="subtab_item"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+			<com:Application.Web.Portlets.BaculaConfigResourceList
+				ID="ConsoleResourcesConfig"
+				ComponentType="bcons"
+				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
+			/>
+		</div>
+	</div>
+<script>
+$(function() {
+	<%=!empty($_SESSION['bcons']) ? 'load_cons_res_config("Director");': ''%>
+});
+</script>
+</com:TContent>
