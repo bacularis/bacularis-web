@@ -4,30 +4,30 @@
 	</paths>
 	<modules>
 		<!-- config modules -->
-		<module id="web_config" class="Application.Web.Class.WebConfig" />
-		<module id="host_config" class="Application.Web.Class.HostConfig" />
-		<module id="user_config" class="Application.Web.Class.WebUserConfig" />
-		<module id="role_config" class="Application.Web.Class.WebRoleConfig" />
+		<module id="web_config" class="Bacularis\Web\Modules\WebConfig" />
+		<module id="host_config" class="Bacularis\Web\Modules\HostConfig" />
+		<module id="user_config" class="Bacularis\Web\Modules\WebUserConfig" />
+		<module id="role_config" class="Bacularis\Web\Modules\WebRoleConfig" />
 		<!-- data modules -->
-		<module id="api" class="Application.Web.Class.BaculumAPIClient" />
-		<module id="data_desc" class="Application.Web.Class.DataDescription" />
-		<module id="data_deps" class="Application.Web.Class.DataDependencies" />
-		<module id="doc_dir" class="Application.Web.Class.DirectiveDoc" />
+		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
+		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
+		<module id="data_deps" class="Bacularis\Web\Modules\DataDependencies" />
+		<module id="doc_dir" class="Bacularis\Web\Modules\DirectiveDoc" />
 		<module id="globalization" class="TGlobalization">
 			<translation type="gettext" source="Application.Web.Lang" marker="@@" autosave="false" cache="false" DefaultCulture="en" />
 		</module>
 		<module id="log" class="System.Util.TLogRouter">
 			<route class="TFileLogRoute"  Categories="Execute, External, Application, General, Security" LogPath="Application.Web.Logs" LogFile="baculum-web.log" MaxFileSize="1000" MaxLogFiles="5" />
 		</module>
-		<module id="log_parser" class="Application.Web.Class.LogParser" />
+		<module id="log_parser" class="Bacularis\Web\Modules\LogParser" />
 		<!-- auth modules -->
-		<module id="basic_webuser" class="Application.Web.Class.BasicWebUserConfig" />
-		<module id="page_category" class="Application.Web.Class.PageCategory" />
-		<module id="user_role" class="Application.Web.Class.WebUserRoles" />
-		<module id="auth" class="System.Security.TAuthManager" UserManager="users" LoginPage="LoginPage" />
-		<module id="users" class="Application.Web.Class.WebUserManager" UserClass="Application.Web.Class.WebUser" />
+		<module id="basic_webuser" class="Bacularis\Web\Modules\BasicWebUserConfig" />
+		<module id="page_category" class="Bacularis\Web\Modules\PageCategory" />
+		<module id="user_role" class="Bacularis\Web\Modules\WebUserRoles" />
+		<module id="auth" class="Prado\Security\TAuthManager" UserManager="users" LoginPage="LoginPage" />
+		<module id="users" class="Bacularis\Web\Modules\WebUserManager" UserClass="Bacularis\Web\Modules\WebUser" />
 		<!-- data modules -->
-		<module id="job_info" class="Application.Web.Class.JobInfo" />
-		<module id="messages_log" class="Application.Web.Class.MessagesLog" />
+		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
+		<module id="messages_log" class="Bacularis\Web\Modules\MessagesLog" />
 	</modules>
 </configuration>

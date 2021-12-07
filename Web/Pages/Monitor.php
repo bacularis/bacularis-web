@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -19,9 +26,9 @@
  *
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
-Prado::using('Application.Common.Class.Errors');
-Prado::using('Application.Web.Class.BaculumWebPage');
-Prado::using('Application.Web.Class.WebUserRoles');
+use Bacularis\Common\Modules\Errors\GenericError;
+use Bacularis\Common\Modules\BaculumPage;
+use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Monitor class.

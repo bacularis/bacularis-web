@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
 	<com:TWizard ID="NewJobWizard"
 		CssClass="wizard"
@@ -139,7 +139,7 @@
 					<p><%[ This wizard enables you to create in easy way a new backup job. ]%></p>
 					<!--p><%[ To start please select job type that you wish to create. ]%></p-->
 				</div>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Name"
 					DirectiveName="Name"
 					Label="Job Name"
@@ -149,7 +149,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Description"
 					DirectiveName="Description"
 					Label="Description"
@@ -159,7 +159,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="JobDefs"
 					DirectiveName="JobDefs"
 					Label="JobDefs"
@@ -176,7 +176,7 @@
 					<p><%[ Please select Client from which you want to backup data and please select FileSet with files/directories definition to backup. ]%></p>
 					<p><%[ If your FileSet for this backup does not exist yet, you can create it. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Client"
 					DirectiveName="Client"
 					Label="Client"
@@ -186,7 +186,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Fileset"
 					DirectiveName="Fileset"
 					Label="FileSet"
@@ -203,7 +203,7 @@
 				</div>
 				<div id="job_wizard_new_fileset" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ New FileSet ]%></h3>
-					<com:Application.Web.Portlets.BaculaConfigDirectives
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 						ID="FilesetConfig"
 						ComponentType="dir"
 						ResourceType="Fileset"
@@ -229,7 +229,7 @@
 					<h2><%[ Storage and Pool ]%></h2>
 					<p><%[ Please select Storage where you want to backup data and please select Pool with volumes which Storage will use to store backup data. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Storage"
 					DirectiveName="Storage"
 					Label="Storage"
@@ -242,7 +242,7 @@
 				<span><a href="javascript:void(0)" onclick="$('#job_wizard_storage_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Storage directives for Job ]%></a></span>
 				<div id="job_wizard_storage_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ Spool setting ]%></h3>
-					<com:Application.Web.Portlets.DirectiveCheckBox
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
 						ID="SpoolData"
 						DirectiveName="SpoolData"
 						Label="Spool Data"
@@ -250,7 +250,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						 />
-					<com:Application.Web.Portlets.DirectiveCheckBox
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
 						ID="SpoolAttributes"
 						DirectiveName="SpoolAttributes"
 						Label="Spool Attributes"
@@ -258,7 +258,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						 />
-					<com:Application.Web.Portlets.DirectiveSize
+					<com:Bacularis.Web.Portlets.DirectiveSize
 						ID="SpoolSize"
 						DirectiveName="SpoolSize"
 						Label="Spool Size"
@@ -267,7 +267,7 @@
 						ShowRemoveButton="false"
 						/>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Pool"
 					DirectiveName="Pool"
 					Label="Pool"
@@ -285,7 +285,7 @@
 				</div>
 				<div id="job_wizard_new_pool" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ New Pool ]%></h3>
-					<com:Application.Web.Portlets.BaculaConfigDirectives
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 						ID="PoolConfig"
 						ComponentType="dir"
 						ResourceType="Pool"
@@ -295,7 +295,7 @@
 				</div>
 				<div id="job_wizard_pool_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ Pool setting ]%></h3>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="FullBackupPool"
 						DirectiveName="FullBackupPool"
 						Label="Full Backup Pool"
@@ -303,7 +303,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="IncrementalBackupPool"
 						DirectiveName="IncrementalBackupPool"
 						Label="Incremental Backup Pool"
@@ -311,7 +311,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="DifferentialBackupPool"
 						DirectiveName="DifferentialBackupPool"
 						Label="Differential Backup Pool"
@@ -337,7 +337,7 @@
 				<div class="w3-container">
 					<h2><%[ Job directives ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Level"
 					DirectiveName="Level"
 					Label="Level"
@@ -345,7 +345,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveCheckBox
+				<com:Bacularis.Web.Portlets.DirectiveCheckBox
 					ID="Accurate"
 					DirectiveName="Accurate"
 					DefaultValue="0"
@@ -354,7 +354,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					 />
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="MaximumConcurrentJobs"
 					DirectiveName="MaximumConcurrentJobs"
 					DefaultValue="1"
@@ -363,7 +363,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					 />
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Priority"
 					DirectiveName="Priority"
 					DefaultValue="10"
@@ -372,7 +372,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					 />
-				<com:Application.Web.Portlets.DirectiveCheckBox
+				<com:Bacularis.Web.Portlets.DirectiveCheckBox
 					ID="ReRunFailedLevels"
 					DirectiveName="ReRunFailedLevels"
 					DefaultValue="0"
@@ -384,7 +384,7 @@
 				<div class="w3-container">
 					<h2><%[ Other directives ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Messages"
 					DirectiveName="Messages"
 					Label="Messages"
@@ -401,7 +401,7 @@
 				<div class="w3-container">
 					<h2><%[ Schedule ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Schedule"
 					DirectiveName="Schedule"
 					Label="Schedule"
@@ -417,7 +417,7 @@
 				</div>
 				<div id="job_wizard_new_schedule" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ New Schedule ]%></h3>
-					<com:Application.Web.Portlets.BaculaConfigDirectives
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 						ID="ScheduleConfig"
 						ComponentType="dir"
 						ResourceType="Schedule"
@@ -427,7 +427,7 @@
 				</div>
 				<div id="job_wizard_reschedule_directives" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
 					<h3><%[ Reschedule setting ]%></h3>
-					<com:Application.Web.Portlets.DirectiveCheckBox
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
 						ID="RescheduleOnError"
 						DirectiveName="RescheduleOnError"
 						DefaultValue="0"
@@ -436,7 +436,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						 />
-					<com:Application.Web.Portlets.DirectiveCheckBox
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
 						ID="RescheduleIncompleteJobs"
 						DirectiveName="RescheduleIncompleteJobs"
 						DefaultValue="0"
@@ -445,7 +445,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						 />
-					<com:Application.Web.Portlets.DirectiveTimePeriod
+					<com:Bacularis.Web.Portlets.DirectiveTimePeriod
 						ID="RescheduleInterval"
 						DirectiveName="RescheduleInterval"
 						DefaultValue="1800"
@@ -454,7 +454,7 @@
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						 />
-					<com:Application.Web.Portlets.DirectiveInteger
+					<com:Bacularis.Web.Portlets.DirectiveInteger
 						ID="RescheduleTimes"
 						DirectiveName="RescheduleTimes"
 						Label="Reschedule Times"

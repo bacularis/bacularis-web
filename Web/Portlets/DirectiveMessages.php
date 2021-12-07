@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveTextBox;
 
 /**
  * Messages directive.
@@ -33,7 +43,7 @@ Prado::using('Application.Web.Portlets.DirectiveTextBox');
 class DirectiveMessages extends DirectiveListTemplate {
 
 	private $directive_types = array(
-		'DirectiveTextBox'
+		'Bacularis\Web\Portlets\DirectiveTextBox'
 	);
 
 	public $destination_simple = array(
@@ -136,7 +146,7 @@ class DirectiveMessages extends DirectiveListTemplate {
 		$controls = $this->RepeaterMessages->getControls();
 		for ($i = 0; $i < $controls->count(); $i++) {
 			$directive_values = array();
-			$where_control = $controls->itemAt($i)->findControlsByType('DirectiveTextBox');
+			$where_control = $controls->itemAt($i)->findControlsByType('Bacularis\Web\Portlets\DirectiveTextBox');
 			if (count($where_control) === 1 && $where_control[0]->getShow() === true) {
 				$directive_values = array($where_control[0]->getDirectiveValue());
 			}
@@ -164,7 +174,7 @@ class DirectiveMessages extends DirectiveListTemplate {
 		$controls = $this->RepeaterMessages->getItems();
 		foreach ($controls as $control) {
 			$directive_values = array();
-			$where_control = $control->findControlsByType('DirectiveTextBox');
+			$where_control = $control->findControlsByType('Bacularis\Web\Portlets\DirectiveTextBox');
 			if (count($where_control) === 1 && $where_control[0]->getShow() === true) {
 				$where_control[0]->setValue();
 				$directive_values['Where'] = array($where_control[0]->getDirectiveValue());
@@ -218,7 +228,7 @@ class DirectiveMessages extends DirectiveListTemplate {
 	}
 
 	public function removeMessages($sender, $param) {
-		if ($param instanceof Prado\Web\UI\TCommandEventParameter) {
+		if ($param instanceof TCommandEventParameter) {
 			$idx = $param->getCommandName();
 			$data = $this->getDirectiveData();
 			array_splice($data, $idx, 1);

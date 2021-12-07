@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
 	<com:TWizard ID="NewJobWizard"
 		CssClass="wizard"
@@ -137,7 +137,7 @@
 					<h2><%[ New migrate job wizard ]%></h2>
 					<p><%[ Migrate jobs run moving backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. The file catalog records associated with the original backup jobs are purged. All process runs without using file daemon. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Name"
 					DirectiveName="Name"
 					Label="Job Name"
@@ -147,7 +147,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Description"
 					DirectiveName="Description"
 					Label="Description"
@@ -157,7 +157,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="JobDefs"
 					DirectiveName="JobDefs"
 					Label="JobDefs"
@@ -174,7 +174,7 @@
 					<p><%[ Please select a pool from which you want to migrate data. ]%></p>
 					<p><%[ The source pool will be examined for finding backup jobs to migrate. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Pool"
 					DirectiveName="Pool"
 					Label="Source Pool"
@@ -190,7 +190,7 @@
 					<h2><%[ Source Storage ]%></h2>
 					<p><%[ Please select a storage using which you want to read migrate data. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="SourceStorage"
 					DirectiveName="Storage"
 					Label="Source Storage"
@@ -687,7 +687,7 @@ var oVolumeList = {
 					<h2><%[ Backup jobs selection criteria ]%></h2>
 					<p><%[ Please select the criteria that will be used for selecting backup jobs to migrate. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="SelectionType"
 					DirectiveName="SelectionType"
 					Label="Selection Type"
@@ -700,7 +700,7 @@ var oVolumeList = {
 					/>
 			</div>
 			<div id="selection_type_job" class="w3-half" style="float: none; display: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="SelectionPatternJob"
 					DirectiveName="SelectionPattern"
 					Label="Selection Pattern Job"
@@ -713,7 +713,7 @@ var oVolumeList = {
 				<a id="selection_type_jobs_btn" href="javascript:void(0)" onclick="oJobList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See backup jobs ]%></a>
 			</div>
 			<div id="selection_type_client" class="w3-half" style="float: none; display: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="SelectionPatternClient"
 					DirectiveName="SelectionPattern"
 					Label="Selection Pattern Client"
@@ -726,7 +726,7 @@ var oVolumeList = {
 				<a id="selection_type_clients_btn" href="javascript:void(0)" onclick="oClientList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See clients ]%></a>
 			</div>
 			<div id="selection_type_volume" class="w3-half" style="float: none; display: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="SelectionPatternVolume"
 					DirectiveName="SelectionPattern"
 					Label="Selection Pattern Volume"
@@ -743,7 +743,7 @@ var oVolumeList = {
 			<div id="selection_type_oldest_volume" style="display: none">
 			</div>
 			<div id="selection_type_sql_query" class="w3-half" style="float: none; display: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="SelectionPatternSQLQuery"
 					DirectiveName="SelectionPattern"
 					Label="Selection Pattern SQL Query"
@@ -1515,7 +1515,7 @@ var oVolumeList = {
 </script>
 			</div>
 			<div id="selection_type_pool_occupancy" class="w3-half" style="display: none; float: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveSize
+				<com:Bacularis.Web.Portlets.DirectiveSize
 					ID="MigrationHighBytes"
 					DirectiveName="MigrationHighBytes"
 					Label="Migration High Bytes"
@@ -1525,7 +1525,7 @@ var oVolumeList = {
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveSize
+				<com:Bacularis.Web.Portlets.DirectiveSize
 					ID="MigrationLowBytes"
 					DirectiveName="MigrationLowBytes"
 					Label="Migration Low Bytes"
@@ -1537,7 +1537,7 @@ var oVolumeList = {
 					/>
 			</div>
 			<div id="selection_type_pool_time" class="w3-half" style="display: none; float: none; margin: auto;">
-				<com:Application.Web.Portlets.DirectiveTimePeriod
+				<com:Bacularis.Web.Portlets.DirectiveTimePeriod
 					ID="MigrationTime"
 					DirectiveName="MigrationTime"
 					Label="Migration Time"
@@ -1677,7 +1677,7 @@ $(function() {
 					<h2><%[ Destination Pool ]%></h2>
 					<p><%[ Please select destination pool to which will be stored data. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="NextPool"
 					DirectiveName="NextPool"
 					Label="Destination Pool (NextPool)"
@@ -1776,7 +1776,7 @@ function show_storage_warning(storage, pool, jobs) {
 					<h2><%[ Destination Storage ]%></h2>
 					<p><%[ Please select a storage using which you want to write migrated data. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="DestinationStorage"
 					DirectiveName="Storage"
 					Label="Destination Storage"
@@ -1794,7 +1794,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<div>
 					<h2><%[ Purge jobs ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveCheckBox
+				<com:Bacularis.Web.Portlets.DirectiveCheckBox
 					ID="PurgeMigrationJob"
 					DirectiveName="PurgeMigrationJob"
 					DefaultValue="0"
@@ -1804,7 +1804,7 @@ function show_storage_warning(storage, pool, jobs) {
 					ShowRemoveButton="false"
 					/>
 				<h2><%[ Limits ]%></h2>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="MaximumSpawnedJobs"
 					DirectiveName="MaximumSpawnedJobs"
 					DefaultValue="600"
@@ -1814,7 +1814,7 @@ function show_storage_warning(storage, pool, jobs) {
 					ShowRemoveButton="false"
 					/>
 				<h2><%[ Schedule ]%></h2>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Schedule"
 					DirectiveName="Schedule"
 					Label="Schedule"
@@ -1825,7 +1825,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<div>
 					<h2><%[ Messages ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Messages"
 					DirectiveName="Messages"
 					Label="Messages"
@@ -1838,7 +1838,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<a href="javascript:void(0)" onclick="$('#migrate_job_wizard_other_options').slideToggle();"><%[ Other options ]%></a>
 				<div id="migrate_job_wizard_other_options" style="float: none; margin: auto; display: none;">
 					<p><%[ Level, Client and FileSet are not used during migrate jobs running but they are required to define in migrate job resource as the standard Job directives. ]%></p>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="Level"
 						DirectiveName="Level"
 						Label="Level"
@@ -1848,7 +1848,7 @@ function show_storage_warning(storage, pool, jobs) {
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="Client"
 						DirectiveName="Client"
 						Label="Client"
@@ -1858,7 +1858,7 @@ function show_storage_warning(storage, pool, jobs) {
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="FileSet"
 						DirectiveName="Fileset"
 						Label="FileSet"

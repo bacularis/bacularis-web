@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -42,7 +42,7 @@
 		>
 			<i class="fa fa-file-medical-alt"></i> &nbsp;<%[ Status client ]%>
 		</com:TActiveLinkButton>
-		<com:Application.Web.Portlets.ComponentActionsMenu
+		<com:Bacularis.Web.Portlets.ComponentActionsMenu
 			ID="CompActions"
 			BigButtons="true"
 		/>
@@ -132,7 +132,7 @@
 							</tr>
 							<tr>
 								<td><%[ Bandwidth limit: ]%></td>
-								<td><span id="status_client_bwlimit"></span><com:Application.Web.Portlets.ClientBandwidthLimit ID="BWLimit" OnCallback="status" /></td>
+								<td><span id="status_client_bwlimit"></span><com:Bacularis.Web.Portlets.ClientBandwidthLimit ID="BWLimit" OnCallback="status" /></td>
 							</tr>
 							<tr>
 								<td><%[ Debug: ]%></td>
@@ -143,7 +143,7 @@
 						<h5 id="status_client_no_jobs_running" style="display: none"><%[ No jobs running ]%></h5>
 						<div id="status_client_running_jobs"></div>
 					</div>
-<com:Application.Web.Portlets.JobBandwidthLimit
+<com:Bacularis.Web.Portlets.JobBandwidthLimit
 	ID="JobBandwidth"
 	OnCallback="status"
 />
@@ -894,7 +894,7 @@ $(function() {
 });
 </script>
 	<div class="w3-container tab_item" id="client_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="DIRClientConfig"
 			ComponentType="dir"
 			ResourceType="Client"
@@ -944,7 +944,7 @@ function load_fd_res_config(resource) {
 				CssClass="w3-text-red"
 				Display="None"
 			/>
-			<com:Application.Web.Portlets.BaculaConfigDirectives
+			<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 				ID="FDFileDaemonConfig"
 				ComponentType="fd"
 				ResourceType="FileDaemon"
@@ -952,7 +952,7 @@ function load_fd_res_config(resource) {
 			/>
 		</div>
 		<div id="filedaemon_resources_config_form" class="subtab_item" style="display: none">
-			<com:Application.Web.Portlets.BaculaConfigResourceList
+			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="FileDaemonResourcesConfig"
 				ComponentType="fd"
 				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"

@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -91,7 +91,7 @@
 						<p style="margin: 3px 0"><%[ Perform restore ]%> &nbsp;<i class="fa fa-reply w3-small"></i></p>
 					</div>
 				</a>
-				<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+				<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 			</div>
 			<div class="w3-threequarter">
 				<table id="last_jobs_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">

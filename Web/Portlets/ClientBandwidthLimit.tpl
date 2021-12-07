@@ -9,7 +9,7 @@
 			<p><%[ Here you can set bandwidth limit on client. This change is applied on running client. There is no need to restart it. ]%></p>
 			<p><%[ Setting 0 (zero) value disables bandwidth limitation. ]%></p>
 			<div class="w3-row w3-section w3-medium">
-				<com:Application.Web.Portlets.DirectiveSpeed
+				<com:Bacularis.Web.Portlets.DirectiveSpeed
 					ID="BandwidthLimit"
 					DirectiveName="BandwidthLimit"
 					DefaultValue="0"

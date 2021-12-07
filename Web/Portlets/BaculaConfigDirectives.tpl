@@ -34,11 +34,11 @@
 <com:TActivePanel ID="ConfigDirectives" Style="margin-bottom: 48px">
 	<com:TActiveRepeater
 		ID="RepeaterDirectives"
-		ItemRenderer="Application.Web.Portlets.DirectiveRenderer"
+		ItemRenderer="Bacularis.Web.Portlets.DirectiveRenderer"
 		>
 	</com:TActiveRepeater>
 	<div class="w3-row w3-center<%=$this->ShowBottomButtons ? ' w3-border bottom_buttons' : ''%> page_main_el"<%=$this->ShowBottomButtons ? ' style="margin-left: 250px"' : ''%>>
-		<com:Application.Web.Portlets.DirectiveSetting
+		<com:Bacularis.Web.Portlets.DirectiveSetting
 			ID="DirectiveSetting"
 			Resource="<%=$this->getResource()%>"
 			OnLoadDirectives="loadDirectives"

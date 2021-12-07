@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -80,7 +80,7 @@
 					<h3><%[ Warning ]%></h3>
 					<p id="status_running_job_warning_msg"></p>
 					<div id="status_running_job_warning_label_btn" class="w3-section" style="display: none">
-						<com:Application.Web.Portlets.LabelVolume ID="LabelMedia" />
+						<com:Bacularis.Web.Portlets.LabelVolume ID="LabelMedia" />
 					</div>
 				</div>
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
@@ -106,7 +106,7 @@
 						<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_running_job_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="5" style="width: 50px"/>
 					</div>
 					<div id="status_running_job"><table></table></div>
-					<com:Application.Web.Portlets.JobBandwidthLimit
+					<com:Bacularis.Web.Portlets.JobBandwidthLimit
 						ID="JobBandwidth"
 						OnCallback="runningJobStatus"
 						JobId="<%=$this->SourceTemplateControl->getJobId()%>"
@@ -487,7 +487,7 @@ $(function() {
 				</div>
 			</div>
 			<div id="jobfiles_list" class="subtab_item" style="display: none">
-				<com:Application.Web.Portlets.JobListFiles
+				<com:Bacularis.Web.Portlets.JobListFiles
 					ID="FileList"
 				/>
 			</div>
@@ -532,10 +532,10 @@ $(function() {
 				}
 			}, 3000);
 		</script>
-		<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	</div>
 	<div class="w3-container tab_item" id="job_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="JobConfig"
 			ComponentType="dir"
 			ResourceType="Job"
@@ -545,7 +545,7 @@ $(function() {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="fileset_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="FileSetConfig"
 			ComponentType="dir"
 			ResourceType="Fileset"
@@ -555,7 +555,7 @@ $(function() {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="schedule_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="ScheduleConfig"
 			ComponentType="dir"
 			ResourceType="Schedule"

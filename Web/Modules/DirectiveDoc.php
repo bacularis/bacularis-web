@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,7 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Class.WebModule');
+namespace Bacularis\Web\Modules;
+
+use Prado\Prado;
+use Bacularis\Web\Modules\WebModule;
 
 /**
  * Directive documentation module.
@@ -34,7 +44,7 @@ class DirectiveDoc extends WebModule {
 	/**
 	 * Directive documentation file path.
 	 */
-	const DOC_PATH = 'Application.Web.Data.dir_docs';
+	const DOC_PATH = 'Bacularis.Web.Data.dir_docs';
 
 	/**
 	 * Documentation file extension.
@@ -66,11 +76,11 @@ class DirectiveDoc extends WebModule {
 		$doc = '';
 		$doc_file = Prado::getPathOfNamespace(self::DOC_PATH, self::DOC_EXT);
 		if (is_null(self::$dom) && file_exists($doc_file)) {
-			$dom = new DOMDocument();
+			$dom = new \DOMDocument();
 			$dom->loadHTMLFile($doc_file);
 			self::$dom = $dom;
 		}
-		if (self::$dom instanceof DOMDocument) {
+		if (self::$dom instanceof \DOMDocument) {
 			$id = "{$component}_{$resource_type}_{$directive_name}";
 			$element = self::$dom->getElementById($id);
 			if ($element) {

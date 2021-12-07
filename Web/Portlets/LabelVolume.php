@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,12 +27,16 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveCheckBox');
-Prado::using('System.Web.UI.ActiveControls.TActiveDropDownList');
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActivePanel');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
-Prado::using('Application.Web.Portlets.Portlets');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\TPropertyValue;
+use Prado\Web\UI\ActiveControls\TActiveCheckBox;
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActivePanel;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Label volume control.

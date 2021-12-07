@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -8,8 +8,8 @@
 	</header>
 	<div class="w3-container tab_item">
 		<div class="w3-section">
-			<com:Application.Web.Portlets.LabelVolume />
-			<com:Application.Web.Portlets.UpdateSlots />
+			<com:Bacularis.Web.Portlets.LabelVolume />
+			<com:Bacularis.Web.Portlets.UpdateSlots />
 		</div>
 		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
 			<thead>
@@ -573,7 +573,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		oVolumeList.reset_filters();
 	</prop:ClientSide.OnComplete>
 </com:TCallback>
-<com:Application.Web.Portlets.BulkActionsModal
+<com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"
 	RefreshPageBtn="false"
 	/>

@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -39,7 +39,7 @@
 		>
 			<prop:Text><i class="fa fa-wrench"></i>&nbsp; <%=Prado::localize('Update all vols in pool')%></prop:Text>
 		</com:TActiveLinkButton>
-		<com:Application.Web.Portlets.AssignVolumesToPool
+		<com:Bacularis.Web.Portlets.AssignVolumesToPool
 			PoolId="<%=$this->getPoolId()%>"
 		/>
 		<i id="status_pool_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super;"></i>
@@ -250,7 +250,7 @@
 			<h3><%[ Warning ]%></h3>
 			<p><%[ The pool has not been renamed but it has been copied with the new name. Please note that if the original pool contained volumes, they have not been moved and they are still assigned to the original pool in the catalog database. To re-assign volumes from the original pool to this one please go to the MAIN MENU &#10148; Pools &#10148; [NEW POOL] &#10148; Tab: Actions and please use the 'Assign volumes' button. After re-assgning volumes you can delete the original pool. ]%></p>
 		</div>
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="PoolConfig"
 			ComponentType="dir"
 			ResourceType="Pool"

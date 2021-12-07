@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,7 +27,9 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.ConfigFileModule');
+namespace Bacularis\Web\Modules;
+
+use Bacularis\Common\Modules\ConfigFileModule;
 
 /**
  * Manage hosts configuration.
@@ -35,7 +44,7 @@ class HostConfig extends ConfigFileModule {
 	/**
 	 * Host config file path
 	 */
-	const CONFIG_FILE_PATH = 'Application.Web.Config.hosts';
+	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.hosts';
 
 	/**
 	 * Host config file format

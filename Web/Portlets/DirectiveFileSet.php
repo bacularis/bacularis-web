@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,15 +27,17 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveRepeater');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
-Prado::using('Application.Web.Portlets.DirectiveComboBox');
-Prado::using('Application.Web.Portlets.DirectiveInteger');
-Prado::using('Application.Web.Portlets.FileSetOptionRenderer');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveTextBox;
+use Bacularis\Web\Portlets\DirectiveComboBox;
+use Bacularis\Web\Portlets\DirectiveInteger;
+use Bacularis\Web\Portlets\FileSetOptionRenderer;
 
 /**
  * FileSet directive template.
@@ -40,19 +49,19 @@ Prado::using('Application.Web.Portlets.FileSetOptionRenderer');
 class DirectiveFileSet extends DirectiveListTemplate {
 
 	private $directive_types = array(
-		'DirectiveCheckBox',
-		'DirectiveTextBox',
-		'DirectiveComboBox',
-		'DirectiveListBox',
-		'DirectiveInteger'
+		'Bacularis\Web\Portlets\DirectiveCheckBox',
+		'Bacularis\Web\Portlets\DirectiveTextBox',
+		'Bacularis\Web\Portlets\DirectiveComboBox',
+		'Bacularis\Web\Portlets\DirectiveListBox',
+		'Bacularis\Web\Portlets\DirectiveInteger'
 	);
 
 	private $directive_list_types = array(
-		'DirectiveMultiTextBox'
+		'Bacularis\Web\Portlets\DirectiveMultiTextBox'
 	);
 
 	private $directive_inc_exc_types = array(
-		'DirectiveTextBox'
+		'Bacularis\Web\Portlets\DirectiveTextBox'
 	);
 
 	public function loadConfig() {
@@ -296,7 +305,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						// option not set or removed
 						continue;
 					}
-					if ($this->directive_types[$i] === 'DirectiveCheckBox') {
+					if ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
 						settype($default_value, 'bool');
 					}
 					if ($directive_value === $default_value) {

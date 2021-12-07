@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -47,7 +47,7 @@
 		>
 			<i class="fa fa-undo"></i> &nbsp;<%[ Run job ]%>
 		</com:TActiveLinkButton>
-		<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 		<div id="job_graph_container">
 			<div>
 				<div id="jobs_summary_graph"></div>
@@ -358,7 +358,7 @@ var oJobGraphs = {
 		</script>
 	</div>
 	<div class="w3-container tab_item" id="job_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="JobConfig"
 			ComponentType="dir"
 			ResourceType="Job"
@@ -368,7 +368,7 @@ var oJobGraphs = {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="fileset_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="FileSetConfig"
 			ComponentType="dir"
 			ResourceType="Fileset"
@@ -378,7 +378,7 @@ var oJobGraphs = {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="schedule_config" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="ScheduleConfig"
 			ComponentType="dir"
 			ResourceType="Schedule"
@@ -700,7 +700,7 @@ $(function() {
 </script>
 	</div>
 	<div class="w3-container tab_item" id="job_schedules" style="display: none">
-		<com:Application.Web.Portlets.StatusSchedule
+		<com:Bacularis.Web.Portlets.StatusSchedule
 			ID="Schedules"
 		/>
 	</div>

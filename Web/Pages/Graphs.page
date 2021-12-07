@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -7,5 +7,5 @@
 		</h5>
 	</header>
 	<div style="clear: both"></div>
-	<com:Application.Web.Portlets.JobGraphs ID="Graphs" />
+	<com:Bacularis.Web.Portlets.JobGraphs ID="Graphs" />
 </com:TContent>

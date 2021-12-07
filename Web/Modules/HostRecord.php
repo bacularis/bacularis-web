@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.Interfaces');
-Prado::using('Application.Common.Class.SessionRecord');
+namespace Bacularis\Web\Modules;
+
+use Prado\Prado;
+use Bacularis\Common\Modules\ISessionItem;
+use Bacularis\Common\Modules\SessionRecord;
 
 /**
  * Host session record class.
@@ -30,7 +40,7 @@ Prado::using('Application.Common.Class.SessionRecord');
  * @category Database
  * @package Baculum Web
  */
-class HostRecord extends SessionRecord implements SessionItem {
+class HostRecord extends SessionRecord implements ISessionItem {
 
 	public $host;
 	public $protocol;
@@ -61,7 +71,7 @@ class HostRecord extends SessionRecord implements SessionItem {
 	}
 
 	public static function getSessionFile() {
-		return Prado::getPathOfNamespace('Application.Web.Config.session', '.dump');
+		return Prado::getPathOfNamespace('Bacularis.Web.Config.session', '.dump');
 	}
 
 	/**

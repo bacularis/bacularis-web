@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,22 +27,21 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.TUrlMapping');
+namespace Bacularis\Web\Modules;
+
+use Prado\TModule;
 
 /**
- * Web URL mapper class.
+ * Abstract Web module.
+ * Every Web module should inherit this abstraction.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
- * @category URL
+ * @category Module
  * @package Baculum Web
  */
-class WebUrlMapping extends TUrlMappingPattern {
+abstract class WebModule extends TModule {
 
-	const SERVICE_ID = 'web';
-
-	public function __construct(BaculumUrlMapping $manager) {
-		parent::__construct($manager);
-		$this->setServiceID(self::SERVICE_ID);
+	protected function getModule($id) {
+		return $this->getApplication()->getModule($id);
 	}
 }
-?>

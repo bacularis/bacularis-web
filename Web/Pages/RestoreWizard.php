@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,17 +27,17 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Class.BaculumWebPage'); 
-Prado::using('System.Exceptions.TException');
-Prado::using('System.Web.UI.WebControls.TWizard');
-Prado::using('System.Web.UI.WebControls.TDataGrid');
-Prado::using('System.Web.UI.JuiControls.TJuiDroppable');
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('System.Web.UI.ActiveControls.TActiveDataGrid');
-Prado::using('System.Web.UI.ActiveControls.TActiveRepeater');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
+use Bacularis\Web\Modules\BaculumWebPage; 
+use Prado\Exceptions\TException;
+use Prado\Web\UI\WebControls\TWizard;
+use Prado\Web\UI\WebControls\TDataGrid;
+use Prado\Web\UI\JuiControls\TJuiDroppable;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Prado\Web\UI\ActiveControls\TActiveDataGrid;
+use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
 
 /**
  * Restore wizard page.

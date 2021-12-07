@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,11 +27,14 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Pages.Requirements');
-Prado::using('Application.Common.Class.BaculumPage');
-Prado::using('Application.Web.Init');
-Prado::using('Application.Web.Class.WebConfig');
-Prado::using('Application.Web.Class.PageCategory');
+namespace Bacularis\Web\Modules;
+
+use Bacularis\Web\Pages\Requirements;
+use Bacularis\Common\Modules\BaculumPage;
+use Bacularis\Common\Modules\Logging;
+use Bacularis\Web\Init;
+use Bacularis\Web\Modules\WebConfig;
+use Bacularis\Web\Modules\PageCategory;
 
 /**
  * Baculum Web page module.
@@ -46,7 +56,7 @@ class BaculumWebPage extends BaculumPage {
 	public function onPreInit($param) {
 		parent::onPreInit($param);
 		$this->web_config = $this->getModule('web_config')->getConfig();
-		if (count($this->web_config) === 0) {
+		if (count($this->web_config) === 0 && $this->User->getIsGuest() === false) {
 			if ($this->Service->getRequestedPagePath() != 'WebConfigWizard') {
 				$this->goToPage('WebConfigWizard');
 			}
@@ -172,22 +182,6 @@ class BaculumWebPage extends BaculumPage {
 	 * @return none
 	 */
 	private function postInitActions() {
-		/**
-		 * If users config file doesn't exist, create it and populate
-		 * using basic users file.
-		 * Basic auth method is the main Baculum Web auth method. Before introducing
-		 * users.conf file, it was the only one supported method.
-		 */
-		$result = $this->getModule('user_config')->importUsers();
-		if ($result) {
-			/**
-			 * User must be logged out because after upgrade to first version
-			 * which supports new users management and first page load
-			 * roles are not saved in config yet. Hence they are not set for the user.
-			 */
-			$this->getModule('auth')->logout();
-			$this->goToDefaultPage();
-		}
 	}
 }
 ?>

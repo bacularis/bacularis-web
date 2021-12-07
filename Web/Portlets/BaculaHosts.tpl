@@ -1,5 +1,5 @@
 <button type="button" class="w3-button w3-green w3-margin-left" onclick="$('#new_host').slideToggle()"><i class="fa fa-plus"></i> &nbsp;<%[ Add API host]%></button>
-<com:Application.Common.Portlets.NewHost ID="AddNewHost" APIRequired="config" ClientMode="true" OnCallback="loadConfig" />
+<com:Bacularis.Common.Portlets.NewHost ID="AddNewHost" APIRequired="config" ClientMode="true" OnCallback="loadConfig" />
 <div class="w3-margin-left config_hosts">
 	<com:TActiveRepeater ID="RepeaterHosts" OnItemCreated="createHostListElement">
 		<prop:ItemTemplate>
@@ -35,7 +35,7 @@
 
 					</tr>
 				</table>
-				<com:Application.Web.Portlets.BaculaConfigComponents />
+				<com:Bacularis.Web.Portlets.BaculaConfigComponents />
 			</com:TPanel>
 		</prop:ItemTemplate>
 	</com:TActiveRepeater>

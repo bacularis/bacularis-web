@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.ConfigFileModule');
-Prado::using('Application.Common.Class.Crypto');
+namespace Bacularis\Web\Modules;
+
+use Bacularis\Common\Modules\ConfigFileModule;
+use Bacularis\Common\Modules\Crypto;
 
 /**
  * Manage webGUI configuration.
@@ -36,7 +45,7 @@ class WebConfig extends ConfigFileModule {
 	/**
 	 * Web config file path
 	 */
-	const CONFIG_FILE_PATH = 'Application.Web.Config.settings';
+	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.settings';
 
 	/**
 	 * Web config file format
@@ -207,7 +216,7 @@ class WebConfig extends ConfigFileModule {
 
 		// security options
 		$security = [
-			'auth_method' => self::AUTH_METHOD_BASIC,
+			'auth_method' => self::AUTH_METHOD_LOCAL,
 			'def_access' => self::DEF_ACCESS_DEFAULT_SETTINGS,
 			'def_role' => WebUserRoles::NORMAL,
 			'def_api_host' => HostConfig::MAIN_CATALOG_HOST
@@ -245,7 +254,7 @@ class WebConfig extends ConfigFileModule {
 	public function getAuthMethod() {
 		$config = $this->getConfig();
 
-		$auth_method = self::AUTH_METHOD_BASIC; // Basic is default method
+		$auth_method = self::AUTH_METHOD_LOCAL; // Basic is default method
 		if (isset($config['security']['auth_method'])) {
 			$auth_method = $config['security']['auth_method'];
 		}

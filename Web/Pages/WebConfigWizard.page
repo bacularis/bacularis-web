@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
 	<com:TWizard ID="InstallWizard"
 		CssClass="wizard"
@@ -141,7 +141,7 @@
 		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - add API instances ]%>" StepType="Auto">
 			<div class="w3-half" style="float: none; margin: auto">
 				<p><%[ Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance. ]%></p>
-				<com:Application.Common.Portlets.NewHost
+				<com:Bacularis.Common.Portlets.NewHost
 					ID="AddNewHost"
 					ForceHostName="Main"
 					ShowButtons="false"

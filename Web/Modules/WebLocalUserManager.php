@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,21 +27,19 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Class.WebModule');
+namespace Bacularis\Web\Modules;
+
+use Bacularis\Common\Modules\IUserManager;
+use Bacularis\Web\Modules\WebModule;
 
 /**
- * Web LDAP user manager module.
+ * Web local user manager module.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
  * @package Baculum Web
  */
-class WebLdapUserManager extends WebModule implements UserManager {
-
-	/**
-	 * LDAP module object.
-	 */
-	private $ldap = null;
+class WebLocalUserManager extends WebModule implements IUserManager {
 
 	/**
 	 * Module initialization.
@@ -42,12 +47,6 @@ class WebLdapUserManager extends WebModule implements UserManager {
 	 * @param TXmlElement $config module configuration
 	 */
 	public function init($config) {
-		parent::init($config);
-		$web_config = $this->getModule('web_config')->getConfig();
-		if (key_exists('auth_ldap', $web_config)) {
-			$this->ldap = $this->getModule('ldap');
-			$this->ldap->setParams($web_config['auth_ldap']);
-		}
 	}
 
 	/**
@@ -59,7 +58,17 @@ class WebLdapUserManager extends WebModule implements UserManager {
 	 * @return boolean true if user and password valid, otherwise false
 	 */
 	public function validateUser($username, $password) {
-		return $this->ldap->login($username, $password);
+		$valid = false;
+		$user = $this->getModule('basic_webuser')->getUserCfg($username);
+		if (count($user) == 2) {
+			if (!empty($user['pwd_hash'])) {
+				$mod = $this->getModule('crypto')->getModuleByHash($user['pwd_hash']);
+				if (is_object($mod)) {
+					$valid = $mod->verify($password, $user['pwd_hash']);
+				}
+			}
+		}
+		return $valid;
 	}
 }
 ?>

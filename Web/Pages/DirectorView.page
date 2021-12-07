@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -25,7 +25,7 @@
 		>
 			<i class="fa fa-file-medical-alt"></i> <%[ Status director ]%>
 		</com:TActiveLinkButton>
-		<com:Application.Web.Portlets.ComponentActionsMenu
+		<com:Bacularis.Web.Portlets.ComponentActionsMenu
 			ID="CompActions"
 			BigButtons="true"
 			ComponentType="dir"
@@ -983,7 +983,7 @@ function load_dir_res_config(resource) {
 			</a>
 		</div>
 		<div id="director_director_config_form" class="subtab_item">
-			<com:Application.Web.Portlets.BaculaConfigDirectives
+			<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 				ID="DirDirectorConfig"
 				ComponentType="dir"
 				ResourceType="Director"
@@ -995,7 +995,7 @@ function load_dir_res_config(resource) {
 			<p><%[ The pool has not been renamed but it has been copied with the new name. Please note that if the original pool contained volumes, they have not been moved and they are still assigned to the original pool in the catalog database. To re-assign volumes from the original pool to this one please go to the MAIN MENU &#10148; Pools &#10148; [NEW POOL] &#10148; Tab: Actions and please use the 'Assign volumes' button. After re-assgning volumes you can delete the original pool. ]%></p>
 		</div>
 		<div id="director_resources_config_form" class="subtab_item" style="display: none">
-			<com:Application.Web.Portlets.BaculaConfigResourceList
+			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="DirectorResourcesConfig"
 				ComponentType="dir"
 				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"

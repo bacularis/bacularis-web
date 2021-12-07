@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,7 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.BasicUserConfig');
+namespace Bacularis\Web\Modules;
+
+use Prado\Prado;
+use Bacularis\Common\Modules\BasicUserConfig;
 
 /**
  * Manage HTTP Basic auth method users.
@@ -34,7 +44,7 @@ class BasicWebUserConfig extends BasicUserConfig {
 	/**
 	 * Users login and password file for HTTP Basic auth.
 	 */
-	const USERS_FILE_NAME = 'Application.Web.Config.baculum';
+	const USERS_FILE_NAME = 'Bacularis.Web.Config.baculum';
 	const USERS_FILE_EXTENSION = '.users';
 
 	public function getConfigPath() {

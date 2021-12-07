@@ -1,0 +1,69 @@
+{
+	"name": "bacularis/bacularis-web",
+	"type": "library",
+	"description": "Bacularis web files",
+	"keywords": ["bacula", "backup", "restore", "bacularis", "bacularis-web"],
+	"homepage": "https://bacularis.app",
+	"license": "AGPL-3.0-only",
+	"authors": [
+		{
+			"name": "Marcin Haba",
+			"email": "marcin.haba@bacula.pl",
+			"homepage": "https://bacula.pl",
+			"role": "Developer"
+		},
+		{
+			"name": "Wanderlei Hüttel",
+			"email": "wanderlei.huttel@gmail.com",
+			"homepage": "https://www.huttel.com.br",
+			"role": "Translator"
+		},
+		{
+			"name": "Sergey Zhidkov",
+			"email": "zhsv@bk.ru",
+			"role": "Translator"
+		},
+		{
+			"name": "Ken Sawada",
+			"email": "ksawa0126@gmail.com",
+			"role": "Translator"
+		}
+	],
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
+	"require": {
+		"php": ">=7.1.0",
+		"ext-curl": "*",
+		"ext-dom": "*",
+		"ext-json": "*",
+		"ext-ldap": "*",
+		"bower-asset/datatables.net": "*",
+		"bower-asset/datatables.net-buttons": "*",
+		"bower-asset/datatables.net-buttons-dt": "*",
+		"bower-asset/datatables.net-dt": "*",
+		"bower-asset/datatables.net-responsive": "*",
+		"bower-asset/datatables.net-responsive-dt": "*",
+		"bower-asset/datatables.net-select": "*",
+		"bower-asset/flotr2": "dev-master",
+		"bower-asset/fontawesome": "*",
+		"bower-asset/gaugejs": "*",
+		"bower-asset/jquery": "*",
+		"bower-asset/jquery-ui": "*",
+		"bower-asset/opentip": "*",
+		"pradosoft/prado": "~4.1",
+		"bacularis/bacularis-common": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Bacularis\\Web\\": "Web/"
+		}
+	},
+	"config": {
+		"vendor-dir": "protected/vendor",
+		"secure-http": false
+	}
+}

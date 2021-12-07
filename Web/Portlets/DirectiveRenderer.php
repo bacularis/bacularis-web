@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,27 +27,30 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('System.Web.UI.ActiveControls.TActivePanel');
-Prado::using('System.Web.UI.ActiveControls.TActiveRepeater');
-Prado::using('System.Web.UI.WebControls.TItemDataRenderer');
-Prado::using('System.Web.UI.WebControls.THeader3');
-Prado::using('System.Web.UI.WebControls.TLiteral');
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
-Prado::using('Application.Web.Portlets.DirectiveComboBox');
-Prado::using('Application.Web.Portlets.DirectiveInteger');
-Prado::using('Application.Web.Portlets.DirectiveListBox');
-Prado::using('Application.Web.Portlets.DirectivePassword');
-Prado::using('Application.Web.Portlets.DirectiveSize');
-Prado::using('Application.Web.Portlets.DirectiveSpeed');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
-Prado::using('Application.Web.Portlets.DirectiveMultiComboBox');
-Prado::using('Application.Web.Portlets.DirectiveMultiTextBox');
-Prado::using('Application.Web.Portlets.DirectiveTimePeriod');
-Prado::using('Application.Web.Portlets.DirectiveRunscript');
-Prado::using('Application.Web.Portlets.DirectiveMessages');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Prado\Web\UI\ActiveControls\TActivePanel;
+use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Prado\Web\UI\WebControls\TItemDataRenderer;
+use Prado\Web\UI\WebControls\THeader3;
+use Prado\Web\UI\WebControls\TLiteral;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveComboBox;
+use Bacularis\Web\Portlets\DirectiveInteger;
+use Bacularis\Web\Portlets\DirectiveListBox;
+use Bacularis\Web\Portlets\DirectivePassword;
+use Bacularis\Web\Portlets\DirectiveSize;
+use Bacularis\Web\Portlets\DirectiveSpeed;
+use Bacularis\Web\Portlets\DirectiveTextBox;
+use Bacularis\Web\Portlets\DirectiveMultiComboBox;
+use Bacularis\Web\Portlets\DirectiveMultiTextBox;
+use Bacularis\Web\Portlets\DirectiveTimePeriod;
+use Bacularis\Web\Portlets\DirectiveRunscript;
+use Bacularis\Web\Portlets\DirectiveMessages;
 
 /**
  * Directive renderer control.
@@ -175,7 +185,7 @@ class DirectiveRenderer extends TItemDataRenderer {
 	}
 
 	private function getField($field_type) {
-		return 'Application.Web.Portlets.Directive' . $field_type;
+		return 'Bacularis\Web\Portlets\Directive' . $field_type;
 	}
 }
 ?>

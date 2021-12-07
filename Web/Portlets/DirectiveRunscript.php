@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,10 +27,13 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
-Prado::using('Application.Web.Portlets.DirectiveComboBox');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveTextBox;
+use Bacularis\Web\Portlets\DirectiveComboBox;
 
 /**
  * Runscript directive control.
@@ -35,9 +45,9 @@ Prado::using('Application.Web.Portlets.DirectiveComboBox');
 class DirectiveRunscript extends DirectiveListTemplate {
 
 	private $directive_types = array(
-		'DirectiveCheckBox',
-		'DirectiveComboBox',
-		'DirectiveTextBox'
+		'Bacularis\Web\Portlets\DirectiveCheckBox',
+		'Bacularis\Web\Portlets\DirectiveComboBox',
+		'Bacularis\Web\Portlets\DirectiveTextBox'
 	);
 
 	public function loadConfig() {
@@ -147,7 +157,7 @@ class DirectiveRunscript extends DirectiveListTemplate {
 					// skip not changed values that don't exist in config
 					continue;
 				}
-				if ($this->directive_types[$i] === 'DirectiveCheckBox') {
+				if ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
 					settype($default_value, 'bool');
 				}
 				if ($directive_value === $default_value) {
@@ -159,7 +169,7 @@ class DirectiveRunscript extends DirectiveListTemplate {
 					$directive_values = array('Runscript' => array());
 				}
 				if (!isset($directive_values['Runscript'][$index])) {
-					$directive_values['Runscript'][$index] = new stdClass;
+					$directive_values['Runscript'][$index] = new \StdClass;
 				}
 
 				$directive_values['Runscript'][$index]->{$directive_name} = $directive_value;
@@ -169,7 +179,7 @@ class DirectiveRunscript extends DirectiveListTemplate {
 	}
 
 	public function removeRunscript($sender, $param) {
-		if ($param instanceof Prado\Web\UI\TCommandEventParameter) {
+		if ($param instanceof TCommandEventParameter) {
 			$idx = $param->getCommandName();
 			$data = $this->getDirectiveValue();
 			if (is_array($data)) {
@@ -183,9 +193,9 @@ class DirectiveRunscript extends DirectiveListTemplate {
 	public function newRunscriptDirective() {
 		$data = $this->getDirectiveValue();
 		if (is_array($data) && key_exists('Runscript', $data) && is_array($data['Runscript'])) {
-			$data['Runscript'][] = new stdClass;
+			$data['Runscript'][] = new \StdClass;
 		} else {
-			$data = array('Runscript' => array(new stdClass));
+			$data = array('Runscript' => array(new \StdClass));
 		}
 		$this->setData($data);
 		$this->SourceTemplateControl->setShowAllDirectives(true);

@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.ConfigFileModule');
-Prado::using('Application.Web.Class.WebUserRoles');
+namespace Bacularis\Web\Modules;
+
+use Bacularis\Common\Modules\ConfigFileModule;
+use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Manage web user configuration.
@@ -50,7 +59,7 @@ class WebUserConfig extends ConfigFileModule {
 	/**
 	 * Web user config file path
 	 */
-	const CONFIG_FILE_PATH = 'Application.Web.Config.users';
+	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.users';
 
 	/**
 	 * Web user config file format

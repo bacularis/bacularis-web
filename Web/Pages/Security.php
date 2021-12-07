@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,29 +27,37 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveCheckBox');
-Prado::using('System.Web.UI.ActiveControls.TActiveCustomValidator');
-Prado::using('System.Web.UI.ActiveControls.TActiveDropDownList');
-Prado::using('System.Web.UI.ActiveControls.TActiveHiddenField');
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('System.Web.UI.ActiveControls.TActiveListBox');
-Prado::using('System.Web.UI.ActiveControls.TActiveRadioButton');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('System.Web.UI.WebControls.TCheckBox');
-Prado::using('System.Web.UI.WebControls.TLabel');
-Prado::using('System.Web.UI.WebControls.TListItem');
-Prado::using('System.Web.UI.WebControls.TRadioButton');
-Prado::using('System.Web.UI.WebControls.TRegularExpressionValidator');
-Prado::using('System.Web.UI.WebControls.TRequiredFieldValidator');
-Prado::using('System.Web.UI.WebControls.TValidationSummary');
-Prado::using('Application.Common.Class.Crypto');
-Prado::using('Application.Common.Class.Ldap');
-Prado::using('Application.Common.Class.OAuth2');
-Prado::using('Application.Common.Class.BasicUserConfig');
-Prado::using('Application.Web.Class.BaculumWebPage');
-Prado::using('Application.Web.Portlets.BaculaConfigResources');
+use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TActiveCheckBox;
+use Prado\Web\UI\ActiveControls\TActiveCustomValidator;
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
+use Prado\Web\UI\ActiveControls\TActiveHiddenField;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Prado\Web\UI\ActiveControls\TActiveListBox;
+use Prado\Web\UI\ActiveControls\TActiveRadioButton;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
+use Prado\Web\UI\TCommandEventParameter;
+use Prado\Web\UI\WebControls\TCheckBox;
+use Prado\Web\UI\WebControls\TLabel;
+use Prado\Web\UI\WebControls\TListItem;
+use Prado\Web\UI\WebControls\TRadioButton;
+use Prado\Web\UI\WebControls\TRegularExpressionValidator;
+use Prado\Web\UI\WebControls\TRequiredFieldValidator;
+use Prado\Web\UI\WebControls\TValidationSummary;
+use Bacularis\Common\Modules\BasicUserConfig;
+use Bacularis\Common\Modules\Crypto;
+use Bacularis\Common\Modules\Ldap;
+use Bacularis\Common\Modules\OAuth2;
+use Bacularis\Common\Modules\Logging;
+use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\HostConfig;
+use Bacularis\Web\Modules\OAuth2Record;
+use Bacularis\Web\Modules\WebConfig;
+use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Portlets\BaculaConfigResources;
 
 /**
  * Security page (auth methods, users, roles...).
@@ -615,7 +630,7 @@ class Security extends BaculumWebPage {
 	 * @return none
 	 */
 	public function getBasicUsers($sender, $param) {
-		if ($param instanceof Prado\Web\UI\TCommandEventParameter && $param->getCommandParameter() === 'load') {
+		if ($param instanceof TCommandEventParameter && $param->getCommandParameter() === 'load') {
 			// reset criteria filters when modal is open
 			$this->GetUsersImportOptions->SelectedValue = self::IMPORT_OPT_ALL_USERS;
 			$this->GetUsersCriteria->SelectedValue = self::IMPORT_CRIT_USERNAME;
@@ -734,7 +749,7 @@ class Security extends BaculumWebPage {
 				break;
 			}
 			case self::IMPORT_OPT_SELECTED_USERS: {
-				if ($param instanceof Prado\Web\UI\ActiveControls\TCallbackEventParameter) {
+				if ($param instanceof TCallbackEventParameter) {
 					$cb_param = $param->getCallbackParameter();
 					if (is_array($cb_param)) {
 						for ($i = 0; $i < count($cb_param); $i++) {
@@ -801,7 +816,7 @@ class Security extends BaculumWebPage {
 	 * @return none
 	 */
 	public function getLdapUsers($sender, $param) {
-		if ($param instanceof Prado\Web\UI\TCommandEventParameter && $param->getCommandParameter() === 'load') {
+		if ($param instanceof TCommandEventParameter && $param->getCommandParameter() === 'load') {
 			// reset criteria filters when modal is open
 			$this->GetUsersImportOptions->SelectedValue = self::IMPORT_OPT_ALL_USERS;
 			$this->GetUsersCriteria->SelectedValue = self::IMPORT_CRIT_USERNAME;

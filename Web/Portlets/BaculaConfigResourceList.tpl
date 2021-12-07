@@ -9,11 +9,11 @@
 		<thead>
 			<tr>
 				<th></th>
-				<com:Application.Common.Portlets.BSimpleRepeater ID="ResourceListHeaderRepeater">
+				<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListHeaderRepeater">
 					<prop:ItemTemplate>
 						<th class="center"><%=$this->Data['label']%></th>
 					</prop:ItemTemplate>
-				</com:Application.Common.Portlets.BSimpleRepeater>
+				</com:Bacularis.Common.Portlets.BSimpleRepeater>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</thead>
@@ -21,11 +21,11 @@
 		<tfoot>
 			<tr>
 				<th></th>
-				<com:Application.Common.Portlets.BSimpleRepeater ID="ResourceListFooterRepeater">
+				<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListFooterRepeater">
 					<prop:ItemTemplate>
 						<th class="center"><%=$this->Data['label']%></th>
 					</prop:ItemTemplate>
-				</com:Application.Common.Portlets.BSimpleRepeater>
+				</com:Bacularis.Common.Portlets.BSimpleRepeater>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</tfoot>
@@ -66,11 +66,11 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 							data: null,
 							defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 						}
-						<com:Application.Common.Portlets.BSimpleRepeater ID="ResourceListColumnsRepeater">
+						<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListColumnsRepeater">
 							<prop:ItemTemplate>
 								,{data: '<%=$this->Data['name']%>'}
 							</prop:ItemTemplate>
-						</com:Application.Common.Portlets.BSimpleRepeater>
+						</com:Bacularis.Common.Portlets.BSimpleRepeater>
 						,{
 							data: 'Name',
 							render: function (data, type, row) {
@@ -145,7 +145,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			</div>
 		</div>
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
-			<com:Application.Web.Portlets.BaculaConfigDirectives
+			<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 				ID="ResourceConfig"
 				ShowRemoveButton="false"
 				ShowCancelButton="false"

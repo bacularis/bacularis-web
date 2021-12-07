@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,9 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.Ui.ActiveControls.TActiveRepeater');
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Web\Ui\ActiveControls\TActiveRepeater;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
 
 /**
  * Message types control.
@@ -39,7 +48,7 @@ class MessageTypes extends DirectiveListTemplate {
 	}
 
 	public function getDirectiveValues() {
-		$type_controls = $this->RepeaterMessageTypes->findControlsByType('DirectiveCheckBox');
+		$type_controls = $this->RepeaterMessageTypes->findControlsByType('Bacularis\Web\Portlets\DirectiveCheckBox');
 		$is_all = false;
 		$types = array();
 		for ($i = 0; $i < count($type_controls); $i++) {
@@ -63,7 +72,7 @@ class MessageTypes extends DirectiveListTemplate {
 			// skip parent repeater items
 			return;
 		}
-		$control = $this->getChildControl($param->Item, 'DirectiveCheckBox');
+		$control = $this->getChildControl($param->Item, 'Bacularis\Web\Portlets\DirectiveCheckBox');
 		if (is_object($control)) {
 			$control->setHost($param->Item->Data['host']);
 			$control->setComponentType($param->Item->Data['component_type']);

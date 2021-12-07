@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,19 +27,22 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveHiddenField');
-Prado::using('System.Web.UI.ActiveControls.TActiveRadioButton');
-Prado::using('Application.Common.Class.Params');
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
-Prado::using('Application.Web.Portlets.DirectiveComboBox');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
-Prado::using('Application.Web.Portlets.DirectiveTimePeriod');
-Prado::using('Application.Web.Portlets.DirectiveTime');
-Prado::using('Application.Web.Portlets.DirectiveDaysOfWeek');
-Prado::using('Application.Web.Portlets.DirectiveDaysOfMonth');
-Prado::using('Application.Web.Portlets.DirectiveWeeksOfMonth');
-Prado::using('Application.Web.Portlets.DirectiveWeeksOfYear');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Web\UI\TCommandEventParameter;
+use Prado\Web\UI\ActiveControls\TActiveHiddenField;
+use Prado\Web\UI\ActiveControls\TActiveRadioButton;
+use Bacularis\Common\Modules\Params;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveComboBox;
+use Bacularis\Web\Portlets\DirectiveTextBox;
+use Bacularis\Web\Portlets\DirectiveTimePeriod;
+use Bacularis\Web\Portlets\DirectiveTime;
+use Bacularis\Web\Portlets\DirectiveDaysOfWeek;
+use Bacularis\Web\Portlets\DirectiveDaysOfMonth;
+use Bacularis\Web\Portlets\DirectiveWeeksOfMonth;
+use Bacularis\Web\Portlets\DirectiveWeeksOfYear;
 
 /**
  * Schedule directive control.
@@ -359,7 +369,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 	}
 
 	public function removeSchedule($sender, $param) {
-		if ($param instanceof Prado\Web\UI\TCommandEventParameter) {
+		if ($param instanceof TCommandEventParameter) {
 			$idx = (integer)$param->getCommandName();
 			$data = $this->getDirectiveValue(true);
 			array_splice($data, $idx, 1);
@@ -443,7 +453,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 
 		$ctrls = $this->RepeaterScheduleRuns->getItems();
 		foreach ($ctrls as $value) {
-			$obj = new StdClass;
+			$obj = new \StdClass;
 			for ($i = 0; $i < count($subdirectives); $i++) {
 				$control = $value->{$subdirectives[$i]};
 				$control->setValue();
@@ -453,10 +463,10 @@ class DirectiveSchedule extends DirectiveListTemplate {
 				if (is_null($subdirective_value)) {
 					continue;
 				}
-				if (get_class($control) === 'DirectiveCheckBox') {
+				if (get_class($control) === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
 					settype($default_value, 'bool');
 				}
-				if (get_class($control) === 'DirectiveTextBox') {
+				if (get_class($control) === 'Bacularis\Web\Portlets\DirectiveTextBox') {
 					settype($default_value, 'string');
 				}
 
@@ -465,7 +475,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 					continue;
 				}
 				$obj->{$subdirective_name} = $subdirective_value;
-				if (get_class($control) === 'DirectiveCheckBox') {
+				if (get_class($control) === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
 					$subdirective_value = Params::getBoolValue($subdirective_value);
 				}
 				$directive_values[] = "{$subdirective_name}=\"{$subdirective_value}\"";
@@ -568,7 +578,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 
 	public function newScheduleDirective() {
 		$data = $this->getDirectiveValue(true);
-		$obj = new StdClass;
+		$obj = new \StdClass;
 		$obj->Hour = [0];
 		$obj->Minute = 0;
 		$obj->Day = range(0, 30);

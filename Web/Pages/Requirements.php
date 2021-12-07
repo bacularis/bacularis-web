@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,7 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.GeneralRequirements');
+use Bacularis\Common\Modules\GeneralRequirements;
 
 /**
  * Web part requirements class.
@@ -49,10 +56,10 @@ class Requirements extends GeneralRequirements {
 		]
 	];
 
-	public function __construct($app_dir, $base_dir) {
-		parent::__construct($app_dir, $base_dir);
+	public function __construct($app_dir, $prot_dir, $base_dir) {
+		parent::__construct($app_dir, $prot_dir, $base_dir);
 		$this->validateEnvironment();
-		parent::showResult('Baculum Web');
+		parent::showResult('Bacularis Web');
 	}
 
 	/**
@@ -67,5 +74,5 @@ class Requirements extends GeneralRequirements {
 
 // Check requirements and if are some needed then show requirements page
 $service_dir = dirname(__DIR__);
-new Requirements(APPLICATION_DIRECTORY, $service_dir);
+new Requirements(APPLICATION_WEBROOT, APPLICATION_PROTECTED, $service_dir);
 ?>

@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -1890,7 +1890,7 @@ $(function() {
 var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->BulkActionsOutput->ClientID%>';
 </script>
 	<com:TCallback ID="RemoveRolesAction" OnCallback="TemplateControl.removeRoles" />
-	<com:Application.Web.Portlets.BulkActionsModal ID="BulkActions" />
+	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 	<div class="w3-container tab_item" id="console_list" style="display: none">
 		<p class="w3-hide-small"><%[ The console ACLs enable to define available resources for users. The consoles are used in the Bacula configuration on the API host side. There is possible to assign the consoles to the API basic users or to the OAuth2 clients. The assign relation for the basic users is: Console ACL -&gt; API basic user -&gt; API host -&gt; User account. For OAuth2 clients the assign relation is: Console ACL -&gt; OAuth2 client -&gt; API host -&gt; User account. ]%></p>
 		<div class="w3-panel">
@@ -2182,7 +2182,7 @@ $(function() {
 				>
 					<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Baculum Web ]%>
 				</com:TActiveLinkButton>
-				<com:Application.Web.Portlets.BaculaConfigDirectives
+				<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 					ID="ConsoleConfig"
 					ComponentType="dir"
 					ResourceType="Console"

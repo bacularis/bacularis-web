@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,25 +27,29 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.TCommandEventParameter');
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('System.Web.UI.ActiveControls.TActivePanel');
-Prado::using('System.Web.UI.ActiveControls.TActiveRepeater');
-Prado::using('Application.Web.Portlets.DirectiveListTemplate');
-Prado::using('Application.Web.Portlets.DirectiveCheckBox');
-Prado::using('Application.Web.Portlets.DirectiveComboBox');
-Prado::using('Application.Web.Portlets.DirectiveInteger');
-Prado::using('Application.Web.Portlets.DirectiveListBox');
-Prado::using('Application.Web.Portlets.DirectivePassword');
-Prado::using('Application.Web.Portlets.DirectiveSize');
-Prado::using('Application.Web.Portlets.DirectiveSpeed');
-Prado::using('Application.Web.Portlets.DirectiveTextBox');
-Prado::using('Application.Web.Portlets.DirectiveMultiComboBox');
-Prado::using('Application.Web.Portlets.DirectiveMultiTextBox');
-Prado::using('Application.Web.Portlets.DirectiveTimePeriod');
-Prado::using('Application.Web.Portlets.DirectiveRunscript');
-Prado::using('Application.Web.Portlets.DirectiveMessages');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\TPropertyValue;
+use Prado\Web\UI\TCommandEventParameter;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Prado\Web\UI\ActiveControls\TActivePanel;
+use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Bacularis\Web\Portlets\DirectiveListTemplate;
+use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveComboBox;
+use Bacularis\Web\Portlets\DirectiveInteger;
+use Bacularis\Web\Portlets\DirectiveListBox;
+use Bacularis\Web\Portlets\DirectivePassword;
+use Bacularis\Web\Portlets\DirectiveSize;
+use Bacularis\Web\Portlets\DirectiveSpeed;
+use Bacularis\Web\Portlets\DirectiveTextBox;
+use Bacularis\Web\Portlets\DirectiveMultiComboBox;
+use Bacularis\Web\Portlets\DirectiveMultiTextBox;
+use Bacularis\Web\Portlets\DirectiveTimePeriod;
+use Bacularis\Web\Portlets\DirectiveRunscript;
+use Bacularis\Web\Portlets\DirectiveMessages;
 
 /**
  * Bacula config directives control.
@@ -61,28 +72,28 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	public $resource_names = array();
 
 	private $directive_types = array(
-		'DirectiveCheckBox',
-		'DirectiveComboBox',
-		'DirectiveInteger',
-		'DirectiveListBox',
-		'DirectivePassword',
-		'DirectiveTextBox',
-		'DirectiveSize',
-		'DirectiveSpeed',
-		'DirectiveTimePeriod'
+		'Bacularis\Web\Portlets\DirectiveCheckBox',
+		'Bacularis\Web\Portlets\DirectiveComboBox',
+		'Bacularis\Web\Portlets\DirectiveInteger',
+		'Bacularis\Web\Portlets\DirectiveListBox',
+		'Bacularis\Web\Portlets\DirectivePassword',
+		'Bacularis\Web\Portlets\DirectiveTextBox',
+		'Bacularis\Web\Portlets\DirectiveSize',
+		'Bacularis\Web\Portlets\DirectiveSpeed',
+		'Bacularis\Web\Portlets\DirectiveTimePeriod'
 	);
 
 	private $directive_list_types = array(
-		'DirectiveFileSet',
-		'DirectiveSchedule',
-		'DirectiveMessages',
-		'DirectiveRunscript',
-		'DirectiveMultiComboBox',
-		'DirectiveMultiTextBox'
+		'Bacularis\Web\Portlets\DirectiveFileSet',
+		'Bacularis\Web\Portlets\DirectiveSchedule',
+		'Bacularis\Web\Portlets\DirectiveMessages',
+		'Bacularis\Web\Portlets\DirectiveRunscript',
+		'Bacularis\Web\Portlets\DirectiveMultiComboBox',
+		'Bacularis\Web\Portlets\DirectiveMultiTextBox'
 	);
 
 	private $field_multple_values = array(
-		'ListBox'
+		'Bacularis\Web\Portlets\ListBox'
 	);
 
 	public $display_directives;
@@ -122,8 +133,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 		$directives = array();
-		$parent_directives = new StdClass;
-		$config = new stdClass;
+		$parent_directives = new \StdClass;
+		$config = new \StdClass;
 		$predefined = false;
 		if ($load_values === true) {
 			$config = $this->getConfigData($host, array(
@@ -307,9 +318,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 					// skip not changed values that don't exist in config
 					continue;
 				}
-				if ($this->directive_types[$i] === 'DirectiveCheckBox') {
+				if ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
 					settype($default_value, 'bool');
-				} elseif ($this->directive_types[$i] === 'DirectiveInteger') {
+				} elseif ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveInteger') {
 					settype($directive_value, 'int');
 				}
 				if ($directive_value === $default_value && $in_config === false) {
@@ -338,21 +349,21 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 					$directives[$directive_name] = array();
 				}
 				if (is_array($directive_value)) {
-					if ($this->directive_list_types[$i] === 'DirectiveMessages') {
+					if ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMessages') {
 						$directives = array_merge($directives, $directive_value);
-					} elseif ($this->directive_list_types[$i] === 'DirectiveRunscript') {
+					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveRunscript') {
 						if (!isset($directives[$directive_name])) {
 							$directives[$directive_name] = array();
 						}
 						$directives[$directive_name] = array_merge($directives[$directive_name], $directive_value[$directive_name]);
-					} elseif ($this->directive_list_types[$i] === 'DirectiveFileSet') {
+					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveFileSet') {
 						if (key_exists('Exclude', $directive_value) && count($directive_value['Exclude']) > 0) {
 							$directives['Exclude'] = array($directive_value['Exclude']);
 						}
 						$directives[$directive_name] = $directive_value[$directive_name];
-					} elseif ($this->directive_list_types[$i] === 'DirectiveSchedule') {
+					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveSchedule') {
 						$directives[$directive_name] = $directive_value[$directive_name];
-					} elseif ($this->directive_list_types[$i] === 'DirectiveMultiTextBox' || $this->directive_list_types[$i] === 'DirectiveMultiComboBox') {
+					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMultiTextBox' || $this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMultiComboBox') {
 						if (key_exists($directive_name, $directives)) {
 							$directive_value = array_merge($directives[$directive_name], $directive_value);
 						}

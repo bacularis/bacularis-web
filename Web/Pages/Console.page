@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -6,5 +6,5 @@
 			<b><i class="fa fa-terminal"></i> <%[ Console ]%></b>
 		</h5>
 	</header>
-	<com:Application.Web.Portlets.Bconsole ID="Bconsole" />
+	<com:Bacularis.Web.Portlets.Bconsole ID="Bconsole" />
 </com:TContent>

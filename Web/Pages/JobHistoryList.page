@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -95,7 +95,7 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
-	<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<com:TCallback ID="RunJobCb" OnCallback="runJobAgain">
 		<prop:ClientSide.OnLoading>
 			show_btn_loader(sender.options.CallbackParameter);
@@ -688,5 +688,5 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		oMonitor();
 	</prop:ClientSide.OnComplete>
 </com:TCallback>
-<com:Application.Web.Portlets.BulkActionsModal ID="BulkActions" />
+<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 </com:TContent>

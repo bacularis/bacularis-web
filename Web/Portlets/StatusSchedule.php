@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,9 +27,13 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.JuiControls.TJuiDatePicker');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('Application.Web.Portlets.Portlets');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\TPropertyValue;
+use Prado\Web\UI\JuiControls\TJuiDatePicker;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Schedule status control.

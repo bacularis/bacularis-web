@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,13 +27,16 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
-Prado::using('System.Web.UI.ActiveControls.TActiveDropDownList');
-Prado::using('System.Web.UI.ActiveControls.TActiveRepeater');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('System.Web.UI.WebControls.TListItem');
-Prado::using('Application.Web.Portlets.Portlets');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
+use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\WebControls\TListItem;
+use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Job list files control.

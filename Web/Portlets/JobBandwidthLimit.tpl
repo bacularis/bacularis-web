@@ -9,7 +9,7 @@
 			<p><%[ Here you can set bandwidth limit for job. This change is applied on running job. ]%></p>
 			<p><%[ Setting 0 (zero) value disables bandwidth limitation. ]%></p>
 			<div class="w3-row w3-section w3-medium">
-				<com:Application.Web.Portlets.DirectiveSpeed
+				<com:Bacularis.Web.Portlets.DirectiveSpeed
 					ID="BandwidthLimit"
 					DirectiveName="BandwidthLimit"
 					DefaultValue="0"

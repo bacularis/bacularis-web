@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -30,7 +30,7 @@ function load_cons_res_config(resource) {
 			</a>
 		</div>
 		<div id="console_resources_config_form" class="subtab_item"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
-			<com:Application.Web.Portlets.BaculaConfigResourceList
+			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="ConsoleResourcesConfig"
 				ComponentType="bcons"
 				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"

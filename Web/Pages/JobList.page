@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -48,7 +48,7 @@
 			</tfoot>
 		</table>
 	</div>
-	<com:Application.Web.Portlets.RunJob ID="RunJobModal" />
+	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 <script type="text/javascript">
 var oJobList = {
 	ids: {

@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,15 +27,18 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TActiveDropDownList');
-Prado::using('System.Web.UI.ActiveControls.TActivePanel');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
-Prado::using('System.Web.UI.ActiveControls.TActiveCustomValidator');
-Prado::using('System.Web.UI.ActiveControls.TActiveCheckBox');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('System.Web.UI.ActiveControls.TActiveLabel');
-Prado::using('System.Web.UI.ActiveControls.TActiveLinkButton');
-Prado::using('Application.Web.Portlets.Portlets');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
+use Prado\Web\UI\ActiveControls\TActivePanel;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Prado\Web\UI\ActiveControls\TActiveCustomValidator;
+use Prado\Web\UI\ActiveControls\TActiveCheckBox;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Run job control.
@@ -87,7 +97,7 @@ class RunJob extends Portlets {
 			$jobdata->storage = $storage ?: $autochanger;
 			$this->getPage()->getCallbackClient()->show('run_job_storage_from_config_info');
 		} elseif (!empty($jobname)) {
-			$jobdata = new stdClass;
+			$jobdata = new \StdClass;
 			$levels = $this->getModule('misc')->getJobLevels();
 			$levels_flip = array_flip($levels);
 

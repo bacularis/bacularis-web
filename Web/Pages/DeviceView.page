@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -76,7 +76,7 @@
 		
 	</div>
 	<div class="w3-container tab_item" id="configure_device" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="DeviceConfig"
 			ComponentType="sd"
 			ResourceType="Device"

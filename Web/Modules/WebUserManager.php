@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,12 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Class.WebUser');
-Prado::using('Application.Web.Class.WebModule');
+namespace Bacularis\Web\Modules;
+
+use Prado\Prado;
+use Prado\Security\IUserManager;
+use Prado\Security\TAuthorizationRule;
+use Bacularis\Common\Modules\Logging;
 
 /**
  * Web user manager module.
@@ -203,16 +214,16 @@ class WebUserManager extends WebModule implements IUserManager {
 
 		switch ($auth_method) {
 			case WebConfig::AUTH_METHOD_LOCAL:
-				$cls = 'Application.Web.Class.WebLocalUserManager';
+				$cls = 'Bacularis.Web.Modules.WebLocalUserManager';
 				break;
 			case WebConfig::AUTH_METHOD_BASIC:
-				$cls = 'Application.Web.Class.WebBasicUserManager';
+				$cls = 'Bacularis.Web.Modules.WebBasicUserManager';
 				break;
 			case WebConfig::AUTH_METHOD_LDAP:
-				$cls = 'Application.Web.Class.WebLdapUserManager';
+				$cls = 'Bacularis.Web.Modules.WebLdapUserManager';
 				break;
 			default:
-				$cls = 'Application.Web.Class.WebBasicUserManager';
+				$cls = 'Bacularis.Web.Modules.WebLocalUserManager';
 		}
 		return $cls;
 	}

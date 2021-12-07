@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,10 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Web.Class.BaculumWebPage'); 
-Prado::using('Application.Web.Class.HostConfig');
-Prado::using('Application.Web.Class.BasicWebUserConfig'); 
-Prado::using('System.Web.UI.ActiveControls.TActiveDropDownList');
+use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\HostConfig;
+use Bacularis\Web\Modules\BasicWebUserConfig; 
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
 
 /**
  * Web config wizard page.
@@ -136,7 +143,7 @@ class WebConfigWizard extends BaculumWebPage
 			]);
 
 			$basic_webuser = $this->getModule('basic_webuser');
-			if ($this->first_run && $ret && $web_config->isAuthMethodBasic()) {
+			if ($this->first_run && $ret && $web_config->isAuthMethodLocal()) {
 				// set new user on first wizard run
 				$previous_user = parent::DEFAULT_AUTH_USER;
 				$ret = $basic_webuser->setUsersConfig(

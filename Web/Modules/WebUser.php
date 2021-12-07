@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,6 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+namespace Bacularis\Web\Modules;
+
+use Prado\Prado;
+use Prado\Security\TUser;
+use Prado\TPropertyValue;
 
 /**
  * Web user module.

@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Main" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
@@ -87,7 +87,7 @@
 		>
 			<prop:Text><i class="fa fa-caret-up"></i> &nbsp;<%=Prado::localize('Umount')%></prop:Text>
 		</com:TActiveLinkButton>
-		<com:Application.Web.Portlets.ComponentActionsMenu
+		<com:Bacularis.Web.Portlets.ComponentActionsMenu
 			ID="CompActions"
 			BigButtons="true"
 		/>
@@ -1640,7 +1640,7 @@ MonitorParams = {
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="configure_storage" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="DIRStorageConfig"
 			ComponentType="dir"
 			ResourceType="Storage"
@@ -1693,7 +1693,7 @@ function load_sd_res_config(resource) {
 				CssClass="w3-text-red"
 				Display="None"
 			/>
-			<com:Application.Web.Portlets.BaculaConfigDirectives
+			<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 				ID="SDStorageDaemonConfig"
 				ComponentType="sd"
 				ResourceType="Storage"
@@ -1701,7 +1701,7 @@ function load_sd_res_config(resource) {
 			/>
 		</div>
 		<div id="sd_resources_config_form" class="subtab_item" style="display: none">
-			<com:Application.Web.Portlets.BaculaConfigResourceList
+			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="StorageDaemonResourcesConfig"
 				ComponentType="sd"
 				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
@@ -1709,7 +1709,7 @@ function load_sd_res_config(resource) {
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="configure_autochanger" style="display: none">
-		<com:Application.Web.Portlets.BaculaConfigDirectives
+		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="AutochangerConfig"
 			ComponentType="sd"
 			ResourceType="Autochanger"
@@ -1920,7 +1920,7 @@ var oDrives = {
 		<com:TCallback ID="MovingFromImportExportSlot" OnCallback="movingFromIE" />
 		<com:TCallback ID="ReleaseImportExportSlot" OnCallback="releaseIE" />
 		<com:TCallback ID="ReleasingImportExportSlot" OnCallback="releasingIE" />
-		<com:Application.Web.Portlets.LabelVolume
+		<com:Bacularis.Web.Portlets.LabelVolume
 			ID="LabelBarcodes"
 			ShowButton="false"
 			BarcodeLabel="true"
@@ -1930,7 +1930,7 @@ var oDrives = {
 			OnLabelSuccess="hideChangerLoading"
 			OnLabelFail="hideChangerLoading"
 		/>
-		<com:Application.Web.Portlets.UpdateSlots
+		<com:Bacularis.Web.Portlets.UpdateSlots
 			ID="UpdateSlots"
 			ShowButton="false"
 			Storage="<%=$this->StorageName%>"
@@ -2631,5 +2631,5 @@ var oSlots = {
 			</div>
 		</div>
 	</div>
-	<com:Application.Web.Portlets.BulkActionsModal ID="BulkActions" />
+	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 </com:TContent>

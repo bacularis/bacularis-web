@@ -62,7 +62,7 @@
 					</tr>
 				</table>
 				<div class="config_directives w3-khaki" style="display: none">
-				<com:Application.Web.Portlets.BaculaConfigDirectives
+				<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 					Resource="<%#$this->Data['resource_name']%>"
 					LoadValues="<%=true%>"
 					ShowRemoveButton="false"

@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,9 +27,9 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.TCommandEventParameter');
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('Application.Web.Class.BaculumWebPage');
+use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Common\Modules\Params;
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Director view page.
@@ -94,7 +101,7 @@ class DirectorView extends BaculumWebPage {
 				'status'
 			]
 		)->output;
-		$this->DirectorLog->Text = implode(PHP_EOL, $raw_status);
+		$this->DirectorLog->Text = implode(\PHP_EOL, $raw_status);
 
 		$query_str = '?output=json';
 		$graph_status = $this->getModule('api')->get(

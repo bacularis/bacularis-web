@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,32 +27,25 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('Application.Common.Class.Interfaces');
-Prado::using('Application.Common.Class.SessionRecord');
+namespace Bacularis\Web\Modules;
+
+use Prado\Web\TUrlMappingPattern;
+use Bacularis\Common\Modules\BaculumUrlMapping;
 
 /**
- * OAuth2 session record module.
+ * Web URL mapper class.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
- * @category Module
+ * @category URL
  * @package Baculum Web
  */
-class OAuth2Record extends SessionRecord implements SessionItem {
+class WebUrlMapping extends TUrlMappingPattern {
 
-	public $host;
-	public $state;
-	public $tokens;
-	public $refresh_time;
+	const SERVICE_ID = 'web';
 
-	public static function getRecordId() {
-		return 'oauth2_cli_params';
-	}
-
-	public static function getPrimaryKey() {
-		return 'host';
-	}
-
-	public static function getSessionFile() {
-		return Prado::getPathOfNamespace('Application.Web.Config.session', '.dump');
+	public function __construct(BaculumUrlMapping $manager) {
+		parent::__construct($manager);
+		$this->setServiceID(self::SERVICE_ID);
 	}
 }
+?>

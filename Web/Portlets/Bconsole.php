@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,10 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
  
-Prado::using('System.Web.UI.ActiveControls.TActivePanel');
-Prado::using('System.Web.UI.ActiveControls.TActiveButton');
-Prado::using('System.Web.UI.ActiveControls.TActiveTextBox');
-Prado::using('Application.Web.Portlets.Portlets');
+use Prado\Web\UI\ActiveControls\TActivePanel;
+use Prado\Web\UI\ActiveControls\TActiveButton;
+use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Bconsole control.

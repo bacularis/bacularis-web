@@ -1,4 +1,4 @@
-<%@ MasterClass="Application.Web.Layouts.Wizard" Theme="Baculum-v2"%>
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
 	<com:TWizard ID="NewJobWizard"
 		CssClass="wizard"
@@ -137,7 +137,7 @@
 					<h2><%[ New copy job wizard ]%></h2>
 					<p><%[ Copy jobs run copying backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. All process runs without using file daemon. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Name"
 					DirectiveName="Name"
 					Label="Job Name"
@@ -147,7 +147,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="Description"
 					DirectiveName="Description"
 					Label="Description"
@@ -157,7 +157,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="JobDefs"
 					DirectiveName="JobDefs"
 					Label="JobDefs"
@@ -174,7 +174,7 @@
 					<p><%[ Please select a pool from which you want to copy data. ]%></p>
 					<p><%[ The source pool will be examined for finding backup jobs to copy. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Pool"
 					DirectiveName="Pool"
 					Label="Source Pool"
@@ -190,7 +190,7 @@
 					<h2><%[ Source Storage ]%></h2>
 					<p><%[ Please select a storage using which you want to read copy data. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="SourceStorage"
 					DirectiveName="Storage"
 					Label="Source Storage"
@@ -687,7 +687,7 @@ var oVolumeList = {
 					<h2><%[ Backup jobs selection criteria ]%></h2>
 					<p><%[ Please select the criteria that will be used for selecting backup jobs to copy. ]%></p>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="SelectionType"
 					DirectiveName="SelectionType"
 					Label="Selection Type"
@@ -699,7 +699,7 @@ var oVolumeList = {
 					Attributes.onchange="oSelectionType.show_opts(this.value);"
 					/>
 				<div id="selection_type_job" style="float: none; display: none; margin: auto;">
-					<com:Application.Web.Portlets.DirectiveTextBox
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
 						ID="SelectionPatternJob"
 						DirectiveName="SelectionPattern"
 						Label="Selection Pattern Job"
@@ -712,7 +712,7 @@ var oVolumeList = {
 					<a id="selection_type_jobs_btn" href="javascript:void(0)" onclick="oJobList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See backup jobs ]%></a>
 				</div>
 				<div id="selection_type_client" style="float: none; display: none; margin: auto;">
-					<com:Application.Web.Portlets.DirectiveTextBox
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
 						ID="SelectionPatternClient"
 						DirectiveName="SelectionPattern"
 						Label="Selection Pattern Client"
@@ -725,7 +725,7 @@ var oVolumeList = {
 					<a id="selection_type_clients_btn" href="javascript:void(0)" onclick="oClientList.load_data();" style="display: block; width: 300px; margin: 0 auto;"><%[ See clients ]%></a>
 				</div>
 				<div id="selection_type_volume" style="float: none; display: none; margin: auto;">
-					<com:Application.Web.Portlets.DirectiveTextBox
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
 						ID="SelectionPatternVolume"
 						DirectiveName="SelectionPattern"
 						Label="Selection Pattern Volume"
@@ -742,7 +742,7 @@ var oVolumeList = {
 				<div id="selection_type_oldest_volume" style="display: none">
 				</div>
 				<div id="selection_type_sql_query" style="float: none; display: none; margin: auto;">
-					<com:Application.Web.Portlets.DirectiveTextBox
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
 						ID="SelectionPatternSQLQuery"
 						DirectiveName="SelectionPattern"
 						Label="Selection Pattern SQL Query"
@@ -1604,7 +1604,7 @@ oSelectionType.init();
 					<p><%[ Please select destination pool to which will be stored data. ]%></p>
 				</div>
 				<div style="float: none; margin: auto">
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="NextPool"
 						DirectiveName="NextPool"
 						Label="Destination Pool (NextPool)"
@@ -1704,7 +1704,7 @@ function show_storage_warning(storage, pool, jobs) {
 					<p><%[ Please select a storage using which you want to write copied data. ]%></p>
 				</div>
 				<div style="float: none; margin: auto">
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="DestinationStorage"
 						DirectiveName="Storage"
 						Label="Destination Storage"
@@ -1723,7 +1723,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<div>
 					<h2><%[ Limits ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveTextBox
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
 					ID="MaximumSpawnedJobs"
 					DirectiveName="MaximumSpawnedJobs"
 					DefaultValue="600"
@@ -1735,7 +1735,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<div>
 					<h2><%[ Schedule ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Schedule"
 					DirectiveName="Schedule"
 					Label="Schedule"
@@ -1746,7 +1746,7 @@ function show_storage_warning(storage, pool, jobs) {
 				<div>
 					<h2><%[ Messages ]%></h2>
 				</div>
-				<com:Application.Web.Portlets.DirectiveComboBox
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
 					ID="Messages"
 					DirectiveName="Messages"
 					Label="Messages"
@@ -1761,7 +1761,7 @@ function show_storage_warning(storage, pool, jobs) {
 				</div>
 				<div id="copy_job_wizard_other_options" style="float: none; margin: auto; display: none;">
 					<p><%[ Level, Client and FileSet are not used during copy jobs running but they are required to define in copy job resource as the standard Job directives. ]%></p>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="Level"
 						DirectiveName="Level"
 						Label="Level"
@@ -1771,7 +1771,7 @@ function show_storage_warning(storage, pool, jobs) {
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="Client"
 						DirectiveName="Client"
 						Label="Client"
@@ -1781,7 +1781,7 @@ function show_storage_warning(storage, pool, jobs) {
 						ShowResetButton="false"
 						ShowRemoveButton="false"
 						/>
-					<com:Application.Web.Portlets.DirectiveComboBox
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
 						ID="FileSet"
 						DirectiveName="Fileset"
 						Label="FileSet"

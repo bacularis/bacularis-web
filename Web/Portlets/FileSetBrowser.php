@@ -1,5 +1,12 @@
 <?php
 /*
+ * Bacularis - Bacula web interface
+ *
+ * Copyright (C) 2021 Marcin Haba
+ *
+ * The main author of Bacularis is Marcin Haba, with contributors, whose
+ * full list can be found in the AUTHORS file.
+ *
  * Bacula(R) - The Network Backup Solution
  * Baculum   - Bacula web interface
  *
@@ -20,8 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-Prado::using('System.Web.UI.ActiveControls.TCallback');
-Prado::using('Application.Web.Portlets.Portlets');
+namespace Bacularis\Web\Portlets;
+
+use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TCallback;
 
 /**
  * FileSet browser control.
@@ -48,7 +57,7 @@ class FileSetBrowser extends Portlets {
 		}
 		arsort($client_list);
 		$client_list['none'] = Prado::localize('Please select Client');
-		uksort($client_list, 'sort_client_list');
+		\uksort($client_list, __NAMESPACE__ . '\sort_client_list');
 		$this->Client->DataSource = $client_list;
 		$this->Client->dataBind();
 	}
