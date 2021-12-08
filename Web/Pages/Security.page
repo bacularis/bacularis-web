@@ -3334,7 +3334,7 @@ $(function() {
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostPort" Text="<%[ Port: ]%>" /></div>
 					<div class="w3-col w3-third">
-						<com:TActiveTextBox ID="APIHostPort" CssClass="w3-input w3-border" CausesValidation="false" Text="9096" Width="70px" Style="display: inline-block" />
+						<com:TActiveTextBox ID="APIHostPort" CssClass="w3-input w3-border" CausesValidation="false" Text="9097" Width="70px" Style="display: inline-block" />
 						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
 						<com:TRequiredFieldValidator ValidationGroup="APIHostGroup" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="APIHostPort" Text="<%[ Please enter API port. ]%>" />
 					</div>

@@ -78,7 +78,7 @@ class WebConfigWizard extends BaculumWebPage
 		} else {
 			$this->AddNewHost->APIProtocol->SelectedValue = 'http';
 			$this->AddNewHost->APIAddress->Text = 'localhost';
-			$this->AddNewHost->APIPort->Text = 9096;
+			$this->AddNewHost->APIPort->Text = 9097;
 			$this->AddNewHost->APIBasicLogin->Text = 'admin';
 		}
 	}
