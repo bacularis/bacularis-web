@@ -63,7 +63,6 @@
 		}
 	},
 	"config": {
-		"vendor-dir": "protected/vendor",
-		"secure-http": false
+		"vendor-dir": "protected/vendor"
 	}
 }
