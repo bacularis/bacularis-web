@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<com:THead Title="Baculum - Bacula Web Interface">
+	<com:THead Title="Bacularis - Bacula Web Interface">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="icon" href="<%=$this->getPage()->getTheme()->getBaseUrl()%>/favicon.ico" type="image/x-icon" />
