@@ -1,7 +1,7 @@
 {
 	"name": "bacularis/bacularis-web",
 	"type": "library",
-	"description": "Bacularis web files",
+	"description": "Web files for Bacularis - The Bacula web interface",
 	"keywords": ["bacula", "backup", "restore", "bacularis", "bacularis-web"],
 	"homepage": "https://bacularis.app",
 	"license": "AGPL-3.0-only",
