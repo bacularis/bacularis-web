@@ -1006,8 +1006,8 @@ msgstr "OAuth2 Client ID:"
 msgid "OAuth2 Client Secret:"
 msgstr "OAuth2 Client Secret:"
 
-msgid "OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect):"
-msgstr "OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect):"
+msgid "OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect):"
+msgstr "OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect):"
 
 msgid "OAuth2 Redirect URI:"
 msgstr "OAuth2 Redirect URI:"

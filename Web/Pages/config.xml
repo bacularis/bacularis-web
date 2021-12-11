@@ -17,7 +17,7 @@
 			<translation type="gettext" source="Application.Web.Lang" marker="@@" autosave="false" cache="false" DefaultCulture="en" />
 		</module>
 		<module id="log" class="System.Util.TLogRouter">
-			<route class="TFileLogRoute"  Categories="Execute, External, Application, General, Security" LogPath="Application.Web.Logs" LogFile="baculum-web.log" MaxFileSize="1000" MaxLogFiles="5" />
+			<route class="TFileLogRoute"  Categories="Execute, External, Application, General, Security" LogPath="Application.Web.Logs" LogFile="bacularis-web.log" MaxFileSize="1000" MaxLogFiles="5" />
 		</module>
 		<module id="log_parser" class="Bacularis\Web\Modules\LogParser" />
 		<!-- auth modules -->

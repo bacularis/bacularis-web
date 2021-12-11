@@ -1320,8 +1320,8 @@ msgstr "Caminho do arquivo de configuração do Bconsole dedicado:"
 msgid "Please enter Redirect URI."
 msgstr "Informe a URI de redirecionamento."
 
-msgid "OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect):"
-msgstr "URI de redirecionamento OAuth2 (exemplo: https://baculumgui:9095/web/redirect):"
+msgid "OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect):"
+msgstr "URI de redirecionamento OAuth2 (exemplo: https://bacularis:9097/web/redirect):"
 
 msgid "OAuth2 scopes (space separated):"
 msgstr "Escopo OAuth2 (separado por espaço):"

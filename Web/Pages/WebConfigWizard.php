@@ -27,10 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Prado\Web\UI\ActiveControls\TActiveDropDownList;
 use Bacularis\Web\Modules\BaculumWebPage; 
 use Bacularis\Web\Modules\HostConfig;
-use Bacularis\Web\Modules\BasicWebUserConfig; 
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
+use Bacularis\Web\Modules\BasicWebUserConfig;
+use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Web config wizard page.

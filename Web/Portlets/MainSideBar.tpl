@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="w3-container w3-black">
-		<h5 class="w3-center" style="margin: 6px 0 2px 0">Baculum Web Menu</h5>
+		<h5 class="w3-center" style="margin: 6px 0 2px 0">Bacularis Web Menu</h5>
 	</div>
 	<div class="w3-bar-block" style="margin-bottom: 45px;">
 		<!--a href="#" class="w3-bar-item w3-button w3-padding-16 w3-black w3-hover-black w3-hide-large" onclick="W3SideBar.close(); return false;" title="close menu">  <%[ Close Menu ]%> <i class="fa fa-window-close fa-fw w3-right w3-xlarge"></i></a-->

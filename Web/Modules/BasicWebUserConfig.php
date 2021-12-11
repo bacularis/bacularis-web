@@ -44,7 +44,7 @@ class BasicWebUserConfig extends BasicUserConfig {
 	/**
 	 * Users login and password file for HTTP Basic auth.
 	 */
-	const USERS_FILE_NAME = 'Bacularis.Web.Config.baculum';
+	const USERS_FILE_NAME = 'Bacularis.Web.Config.bacularis';
 	const USERS_FILE_EXTENSION = '.users';
 
 	public function getConfigPath() {

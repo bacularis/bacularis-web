@@ -1320,8 +1320,8 @@ msgstr "Выделенный путь к файлу конфигурации Bco
 msgid "Please enter Redirect URI."
 msgstr "Пожалуйста, введите редирект URI."
 
-msgid "OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect):"
-msgstr "OAuth2 перенаправление URI (пример: https://baculumgui:9095/web/redirect):"
+msgid "OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect):"
+msgstr "OAuth2 перенаправление URI (пример: https://bacularis:9097/web/redirect):"
 
 msgid "OAuth2 scopes (space separated):"
 msgstr "OAuth2 области (разделенные пробелом):"

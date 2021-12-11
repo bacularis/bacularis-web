@@ -2921,7 +2921,7 @@ $(function() {
 					</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 				</div>
 				<div class="w3-row directive_field">
-					<div class="w3-col w3-third"><com:TLabel ForControl="OAuth2ClientRedirectURI" Text="<%[ OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect): ]%>" /></div>
+					<div class="w3-col w3-third"><com:TLabel ForControl="OAuth2ClientRedirectURI" Text="<%[ OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect): ]%>" /></div>
 					<div class="w3-half">
 						<com:TActiveTextBox
 							ID="OAuth2ClientRedirectURI"
@@ -3508,7 +3508,7 @@ $(function() {
 						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
 					</div>
 					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2RedirectURI" Text="<%[ OAuth2 Redirect URI (example: https://baculumgui:9095/web/redirect): ]%>" /></div>
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2RedirectURI" Text="<%[ OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect): ]%>" /></div>
 						<div class="w3-col w3-half">
 							<com:TActiveTextBox
 								ID="APIHostOAuth2RedirectURI"
