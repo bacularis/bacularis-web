@@ -1,6 +1,5 @@
 <urls>
 	<!-- webGUI endpoints -->
-	<url ServiceParameter="Dashboard" pattern="/" />
 	<url ServiceParameter="Dashboard" pattern="web/" />
 	<url ServiceParameter="LoginPage" pattern="web/login/" />
 	<url ServiceParameter="SelectAPIHost" pattern="web/api-host/" />
