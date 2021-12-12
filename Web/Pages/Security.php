@@ -1032,7 +1032,7 @@ class Security extends BaculumWebPage {
 				break;
 			}
 			case self::IMPORT_OPT_SELECTED_USERS: {
-				if ($param instanceof Prado\Web\UI\ActiveControls\TCallbackEventParameter) {
+				if ($param instanceof TCallbackEventParameter) {
 					$cb_param = $param->getCallbackParameter();
 					if (is_array($cb_param)) {
 						for ($i = 0; $i < count($cb_param); $i++) {
