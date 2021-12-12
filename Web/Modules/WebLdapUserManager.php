@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\IUserManager;
 use Bacularis\Web\Modules\WebModule;
 
 /**
@@ -38,7 +39,7 @@ use Bacularis\Web\Modules\WebModule;
  * @category Module
  * @package Baculum Web
  */
-class WebLdapUserManager extends WebModule implements UserManager {
+class WebLdapUserManager extends WebModule implements IUserManager {
 
 	/**
 	 * LDAP module object.
