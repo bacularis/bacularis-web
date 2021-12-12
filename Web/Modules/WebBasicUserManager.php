@@ -29,8 +29,9 @@
 
 namespace Bacularis\Web\Modules;
 
-use Bacularis\Web\Modules\WebModule;
+use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\IUserManager;
+use Bacularis\Web\Modules\WebModule;
 
 /**
  * Web HTTP Basic user manager module.
@@ -62,7 +63,9 @@ class WebBasicUserManager extends WebModule implements IUserManager {
 		 * Basic auth is realized by web server, so validating
 		 * user/pass is always true here.
 		 */
-		return true;
+		$auth_mod = $this->getModule('basic_webuser');
+		$is_auth = ($this->getModule('auth_basic')->authenticate($auth_mod, AuthBasic::REALM_WEB) === true);
+		return $is_auth;
 	}
 }
 ?>

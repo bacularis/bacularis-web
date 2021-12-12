@@ -238,26 +238,10 @@ class WebUserManager extends WebModule implements IUserManager {
 	 */
 	public function doAuthentication($application) {
 		if ($this->getModule('web_config')->isAuthMethodBasic() && $application->getUser()->IsGuest) {
-			/**
-			 * For basic method the authentication is realized by web server.
-			 * From this reason do log in autmatically.
-			 */
-			// For basic auth take username from web server.
-			if (key_exists('PHP_AUTH_USER' , $_SERVER) && !empty($_SERVER['PHP_AUTH_USER'])) {
-				$username = $_SERVER['PHP_AUTH_USER'];
-				$password = '';
-				$this->getModule('auth')->login($username, $password);
-				$this->Response->redirect('/');
-			} else {
-				$emsg = 'Basic auth is enabled, but PHP_AUTH_USER is not set or is empty.';
-				$this->Application->getModule('logging')->log(
-					__FUNCTION__,
-					$emsg,
-					Logging::CATEGORY_SECURITY,
-					__FILE__,
-					__LINE__
-				);
-			}
+			// If basic user is not logged it, try to log in here
+			$username = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
+			$password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
+			$this->getModule('auth')->login($username, $password);
 		}
 
 		$this->applyAuthorizationRules($application);

@@ -30,6 +30,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Web\Pages\Requirements;
+use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\BaculumPage;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Init;
@@ -56,6 +57,11 @@ class BaculumWebPage extends BaculumPage {
 	public function onPreInit($param) {
 		parent::onPreInit($param);
 		$this->web_config = $this->getModule('web_config')->getConfig();
+
+		if ($this->authenticate() === false) {
+			exit();
+		}
+
 		if (count($this->web_config) === 0 && $this->User->getIsGuest() === false) {
 			if ($this->Service->getRequestedPagePath() != 'WebConfigWizard') {
 				$this->goToPage('WebConfigWizard');
@@ -79,6 +85,22 @@ class BaculumWebPage extends BaculumPage {
 				$this->setSessionUserVars();
 			}
 		}
+	}
+
+	/**
+	 * Generic authentication method.
+	 * Basic users has to be authenticated for each request.
+	 * It is done here.
+	 *
+	 * @return @boolean true if user has been authenticated successfully, otherwise false
+	 */
+	protected function authenticate() {
+		$is_auth = true;
+		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
+			$auth_mod = $this->getModule('basic_webuser');
+			$is_auth = ($this->getModule('auth_basic')->authenticate($auth_mod, AuthBasic::REALM_WEB) === true);
+		}
+		return $is_auth;
 	}
 
 	/**

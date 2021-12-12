@@ -31,6 +31,7 @@ namespace Bacularis\Web\Modules;
 
 use Prado\Prado;
 use Bacularis\Common\Modules\BasicUserConfig;
+use Bacularis\Common\Modules\IUserConfig;
 
 /**
  * Manage HTTP Basic auth method users.
@@ -39,7 +40,7 @@ use Bacularis\Common\Modules\BasicUserConfig;
  * @category Module
  * @package Baculum Web
  */
-class BasicWebUserConfig extends BasicUserConfig {
+class BasicWebUserConfig extends BasicUserConfig implements IUserConfig {
 
 	/**
 	 * Users login and password file for HTTP Basic auth.
@@ -50,6 +51,29 @@ class BasicWebUserConfig extends BasicUserConfig {
 	public function getConfigPath() {
 		// First check if custom config path is set, if not, then use default users file
 		return parent::getConfigPath() ?: Prado::getPathOfNamespace(self::USERS_FILE_NAME, self::USERS_FILE_EXTENSION);
+	}
+
+	/**
+	 * Check if username and password are correct.
+	 *
+	 * @param string $username user name to log in
+	 * @param string $password user password to log in
+	 * @param boolean $check_conf check if user exists in basic user config
+	 * @return boolean true if user/pass valid, otherwise false
+	 */
+	public function validateUsernamePassword($username, $password, $check_conf = true) {
+		$valid = false;
+		if ($username && $password) {
+			$user = $this->getModule('user_config')->getConfig($username);
+			$web_user = $this->getUserCfg($username);
+			if (count($web_user) > 0 && (count($user) > 0 || !$check_conf)) {
+				$mod = $this->getModule('crypto')->getModuleByHash($web_user['pwd_hash']);
+				if (is_object($mod)) {
+					$valid = $mod->verify($password, $web_user['pwd_hash']);
+				}
+			}
+		}
+		return $valid;
 	}
 }
 ?>

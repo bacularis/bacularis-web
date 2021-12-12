@@ -27,7 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Common\Modules\BaculumPage;
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Baculum error page.
@@ -36,10 +36,22 @@ use Bacularis\Common\Modules\BaculumPage;
  * @category Page
  * @package Baculum Web
  */
-class BaculumError extends BaculumPage {
+class BaculumError extends BaculumWebPage {
 
 	public $error;
 	public $output;
+
+	/**
+	 * Pre-initialization with authenticate.
+	 *
+	 * NOTE: This method cannot be removed and cannot call parent::onPreInit()
+	 * because in parent method are called redundant API requests not used here.
+	 */
+	public function onPreInit($param) {
+		if ($this->authenticate() === false) {
+			exit();
+		}
+	}
 
 	public function onInit($param) {
 		parent::onInit($param);

@@ -18,7 +18,7 @@
 
 	<div class="w3-container tab_item" id="user_security">
 		<h4><%[ General settings ]%></h4>
-		<p><%[ Default access setting for logged in users not defined in Baculum Web: ]%></p>
+		<p><%[ Default access setting for logged in users not defined in Bacularis Web: ]%></p>
 		<div class="w3-container w3-row w3-padding opt_row">
 			<div class="w3-col" style="width: 40px">
 				<com:TRadioButton
@@ -85,7 +85,7 @@
 			<label for="<%=$this->LocalAuth->ClientID%>"><%[ Local user authentication ]%></label>
 		</div>
 		<div id="authentication_method_local" class="w3-container" style="display: none">
-			<%[ This type of authentication is fully realized by Baculum Web. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method. ]%>
+			<%[ This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form. ]%>
 		</div>
 		<div class="w3-container w3-row w3-padding opt_row">
 			<div class="w3-col" style="width: 40px">
@@ -99,7 +99,7 @@
 			<label for="<%=$this->BasicAuth->ClientID%>"><%[ HTTP Basic authentication ]%></label>
 		</div>
 		<div id="authentication_method_basic" class="w3-container" style="display: none">
-			<%[ This type of authentication is realized by web server. To use it, the basic authentication has to be enabled in the Baculum Web web server configuration. ]%>
+			<%[ This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication. ]%>
 			<div>
 				<div class="w3-container w3-row opt_row">
 					<div class="w3-col" style="width: 40px">
@@ -108,7 +108,7 @@
 							CssClass="w3-check"
 						/>
 					</div>
-					<label for="<%=$this->BasicAuthAllowManageUsers->ClientID%>"><%[ Allow Baculum Web to manage the Basic authentication users (add/remove users and change their passwords) ]%></label>
+					<label for="<%=$this->BasicAuthAllowManageUsers->ClientID%>"><%[ Allow Bacularis Web to manage the Basic authentication users (add/remove users and change their passwords) ]%></label>
 				</div>
 				<div class="w3-container w3-row w3-block">
 					<div class="w3-col opt_row" style="width: 220px">
@@ -258,7 +258,7 @@
 			<label for="<%=$this->LdapAuth->ClientID%>"><%[ LDAP authentication ]%></label>
 		</div>
 		<div id="authentication_method_ldap" class="w3-container w3-half w3-margin-left" style="display: none">
-			<%[ This type of authentication is realized by an external directory service. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method. ]%>
+			<%[ This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form. ]%>
 			<h5><%[ LDAP server options ]%></h5>
 			<div class="w3-container w3-row directive_field">
 				<div class="w3-third w3-col">
@@ -676,7 +676,7 @@
 								Checked="true"
 								AutoPostBack="false"
 							/>
-							<label for="<%=$this->GetUsersProtectOverwrite->ClientID%>"><%[ Do not overwrite existing Baculum Web users, if they have the same username ]%></label>
+							<label for="<%=$this->GetUsersProtectOverwrite->ClientID%>"><%[ Do not overwrite existing Bacularis Web users, if they have the same username ]%></label>
 						</div>
 						<div class="w3-row w3-section">
 							<div class="w3-col w3-third"><com:TLabel ForControl="GetUsersDefaultRole" Text="<%[ Default role for imported users: ]%>" /></div>

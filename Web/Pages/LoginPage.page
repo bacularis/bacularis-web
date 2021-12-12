@@ -18,7 +18,7 @@
 		</com:TPanel>
 		<com:TPanel ID="AuthorizationError" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px" Display="None">
 			<img src="<%=$this->getPage()->getTheme()->getBaseUrl()%>/logo_xl.png" alt="Baculum - The Bacula web interface" style="width: auto; margin: 0 auto 40px auto;"/>
-			<p class="w3-text-red"><%[ Authorization failed. Please contact the Baculum administrator to grant permissions. ]%></p>
+			<p class="w3-text-red"><%[ Authorization failed. Please contact the Bacularis administrator to grant permissions. ]%></p>
 			<p class="w3-center">
 				<script>var login_form_reload_url = '<%=$this->reload_url%>';</script>
 				<com:TActiveLinkButton

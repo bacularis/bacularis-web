@@ -2799,8 +2799,8 @@ msgstr "Przeładuj"
 msgid "Please select users in table to import."
 msgstr "Proszę wybrać użytkowników w tabeli do zaimportowania."
 
-msgid "Do not overwrite existing Baculum Web users, if they have the same username"
-msgstr "Nie nadpisuj istniejących użytkowników Baculum Web, jeśli mają tą samą nazwę użytkownika"
+msgid "Do not overwrite existing Bacularis Web users, if they have the same username"
+msgstr "Nie nadpisuj istniejących użytkowników Bacularis Web, jeśli mają tą samą nazwę użytkownika"
 
 msgid "Default role for imported users:"
 msgstr "Domyślna rola dla zaimportowanych użytkowników:"
@@ -2838,14 +2838,11 @@ msgstr "Ustaw twój adres IP"
 msgid "Invalid IP address restrictions value. This field can have comma separated IP addresses only or subnet addresses like 192.168.1.*"
 msgstr "Nieprawidłowa wartość restrykcji adresów IP. To pole może mieć tylko oddzielone przecinkami adresy IP lub adresy podsieci, takie jak 192.168.1.*"
 
-msgid "This type of authentication is realized by web server. To use it, the basic authentication has to be enabled in the Baculum Web web server configuration."
-msgstr "Ten typ uwierzytelniania jest realizowany przez serwer WWW. Aby z niego skorzystać, uwierzytelnianie Basic musi być włączone w konfiguracji serwera WWW."
-
 msgid "General settings"
 msgstr "Ustawienia ogólne"
 
-msgid "Default access setting for logged in users not defined in Baculum Web:"
-msgstr "Domyślne ustawienie dostępu dla zalogowanych użytkowników nie zdefiniowanych w Baculum Web:"
+msgid "Default access setting for logged in users not defined in Bacularis Web:"
+msgstr "Domyślne ustawienie dostępu dla zalogowanych użytkowników nie zdefiniowanych w Bacularis Web:"
 
 msgid "No access"
 msgstr "Brak dostępu"
@@ -2880,11 +2877,11 @@ msgstr "Plik użytkowników nie jest możliwy do odczytania przez użytkownika s
 msgid "The user file is readable but not writeable by web server user."
 msgstr "Plik użytkowników jest możliwy do odczytania, ale nie jest możliwy do zapisania przez użytkownika serwera WWW."
 
-msgid "Allow Baculum Web to manage the Basic authentication users (add/remove users and change their passwords)"
-msgstr "Pozwól Baculum Web na zarządzanie użytkownikami uwierzytelniania Basic (dodawanie/usuwanie użytkowników i zmiana ich hasła)"
+msgid "Allow Bacularis Web to manage the Basic authentication users (add/remove users and change their passwords)"
+msgstr "Pozwól Bacularis Web na zarządzanie użytkownikami uwierzytelniania Basic (dodawanie/usuwanie użytkowników i zmiana ich hasła)"
 
-msgid "Authorization failed. Please contact the Baculum administrator to grant permissions."
-msgstr "Błąd autoryzacji. Proszę skontaktować się administratorem Baculum w celu nadania uprawnień."
+msgid "Authorization failed. Please contact the Bacularis administrator to grant permissions."
+msgstr "Błąd autoryzacji. Proszę skontaktować się administratorem Bacularis w celu nadania uprawnień."
 
 msgid "Try again"
 msgstr "Spróbuj ponownie"
@@ -2978,12 +2975,6 @@ msgstr "12-godzinny format czasu 5:22:41 PM"
 
 msgid "Local user authentication"
 msgstr "Uwierzytelnianie lokalnych użytkowników"
-
-msgid "This type of authentication is fully realized by Baculum Web. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method."
-msgstr "Ten typ uwierzytelniania jest w pełni realizowany Baculum Web. Do uwierzytelniania używa formularza logowania Baculum Web. Uwierzytelnianie basic serwera WWW może być wyłączone w tej metodzie."
-
-msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Baculum Web login form. The web server basic authentication can be disabled in this method."
-msgstr "Ten typ uwierzytelniania jest realizowany przez zewnętrzną usługę katalogową. Do uwierzytelniania używa formularza logowania Baculum Web. Uwierzytelnianie basic serwera WWW może być wyłączone w tej metodzie."
 
 msgid "Console ACLs"
 msgstr "Konsole ACLs"
@@ -3959,3 +3950,12 @@ msgstr "From"
 
 msgid "To"
 msgstr "To"
+
+msgid "This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form."
+msgstr "This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form."
+
+msgid "This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication."
+msgstr "This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication."
+
+msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
+msgstr "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
