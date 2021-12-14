@@ -80,7 +80,7 @@ class BaculumWebPage extends BaculumPage {
 		if (!$this->IsPostBack && !$this->IsCallBack) {
 			$this->postInitActions();
 			$this->getModule('api')->initSessionCache(true);
-			if (!key_exists('is_user_vars', $_SESSION) || $_SESSION['is_user_vars'] === false) {
+			if ($this->User->getIsGuest() === false && (!key_exists('is_user_vars', $_SESSION) || $_SESSION['is_user_vars'] === false)) {
 				$this->resetSessionUserVars(); // reset is required for init session vars
 				$this->setSessionUserVars();
 			}
