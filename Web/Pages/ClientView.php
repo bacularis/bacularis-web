@@ -27,10 +27,12 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TActiveDropDownList;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 use Prado\Web\UI\JuiControls\TJuiProgressbar;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Web\Modules\BaculumWebPage; 
@@ -312,7 +314,7 @@ class ClientView extends BaculumWebPage {
 	}
 
 	public function setBandwidthControl($sender, $param) {
-		if ($param instanceof Prado\Web\UI\ActiveControls\TCallbackEventParameter) {
+		if ($param instanceof TCallbackEventParameter) {
 			list($jobid, $job_uname) = explode('|', $param->getCallbackParameter(), 2);
 			$this->JobBandwidth->setJobId($jobid);
 			$this->JobBandwidth->setJobUname($job_uname);
