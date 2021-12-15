@@ -30,7 +30,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 
 /**
  * FileSet browser control.
@@ -78,7 +78,7 @@ class FileSetBrowser extends Portlets {
 	}
 
 	public function getItems($sender, $param) {
-		if ($param instanceof Prado\Web\UI\ActiveControls\TCallbackEventParameter) {
+		if ($param instanceof TCallbackEventParameter) {
 			$path = $param->getCallbackParameter();
 			$this->setPath($path);
 			$this->goToPath();
