@@ -3,9 +3,10 @@
 	<url ServiceParameter="Dashboard" pattern="web/" />
 	<url ServiceParameter="LoginPage" pattern="web/login/" />
 	<url ServiceParameter="SelectAPIHost" pattern="web/api-host/" />
-	<url ServiceParameter="JobHistoryList" pattern="web/job/history/" />
-	<url ServiceParameter="JobHistoryView" pattern="web/job/history/{jobid}/" parameters.jobid="\d+" />
 	<url ServiceParameter="JobList" pattern="web/job/" />
+	<url ServiceParameter="JobList" pattern="web/job/history/" />
+	<url ServiceParameter="JobView" pattern="web/job/history/{jobid}/" parameters.jobid="\d+" />
+	<url ServiceParameter="JobView" pattern="web/job/history/{jobid}/{job}/" parameters.jobid="\d+" parameters.job="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="JobView" pattern="web/job/{job}/" parameters.job="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="DirectorView" pattern="web/director/{director}/" parameters.director="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="StorageList" pattern="web/storage/" />

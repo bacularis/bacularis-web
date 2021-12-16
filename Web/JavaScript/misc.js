@@ -267,12 +267,14 @@ var PieGraph  = {
 		return false;
 	},
 	get_addr_by_type: function(type) {
-		var job_regexp = new RegExp('/job/([^/?]+)/?');
-		var path = decodeURIComponent(window.location.pathname);
-		var result = job_regexp.exec(path);
 		var job = '';
-		if (result) {
-			job = '&job=' + result[1];
+		if (window.location.pathname.startsWith('/web/job/')) {
+			const job_regexp = new RegExp('([^/])+', 'g');
+			const path = decodeURIComponent(window.location.pathname);
+			const result = path.match(job_regexp);
+			if (result) {
+				job = '&job=' + result.pop();
+			}
 		}
 		return '/web/job/history/?type=' + type + job;
 	}
@@ -1252,6 +1254,20 @@ function get_url_param (name) {
 		ret = '';
 	} else {
 		ret = results[2].replace(/\+/g, " ");
+		ret = decodeURIComponent(ret);
+	}
+	return ret;
+}
+
+function get_url_fragment () {
+	var url = window.location.href;
+	var regex = new RegExp('#(.+)$');
+	var results = regex.exec(url);
+	var ret;
+	if (!results) {
+		ret = '';
+	} else if (results[1]) {
+		ret = results[1].replace(/\+/g, " ");
 		ret = decodeURIComponent(ret);
 	}
 	return ret;

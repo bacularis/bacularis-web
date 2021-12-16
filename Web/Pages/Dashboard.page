@@ -132,7 +132,7 @@
 					<tbody id="last_jobs_list_body">
 					</tbody>
 				</table>
-				<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobHistoryList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+				<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
 			</div>
 		</div>
 	</div>

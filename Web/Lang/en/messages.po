@@ -3949,3 +3949,6 @@ msgstr "This type of authentication is realized by Bacularis Web with using cust
 
 msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
 msgstr "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
+
+msgid "Job log"
+msgstr "Job log"

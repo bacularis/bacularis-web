@@ -1085,7 +1085,7 @@ class RestoreWizard extends BaculumWebPage
 		if (is_numeric($jobid)) {
 			$this->resetWizard();
 			$url_params['jobid'] = $jobid;
-			$this->goToPage('JobHistoryView', $url_params);
+			$this->goToPage('JobView', $url_params);
 		} else {
 			$this->RestoreError->Text = implode('<br />', $ret->output);
 			$this->show_error = true;

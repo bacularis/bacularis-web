@@ -45,8 +45,6 @@ class PageCategory extends WebModule {
 	 * Pages allowed for user with native role 'normal'
 	 */
 	const DASHBOARD = 'Dashboard';
-	const JOB_HISTORY_LIST = 'JobHistoryList';
-	const JOB_HISTORY_VIEW = 'JobHistoryView';
 	const JOB_LIST = 'JobList';
 	const JOB_VIEW = 'JobView';
 	const CLIENT_LIST = 'ClientList';

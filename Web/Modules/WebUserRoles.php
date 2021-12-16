@@ -80,8 +80,6 @@ class WebUserRoles extends WebModule {
 		// Normal user resources
 		$res = [
 			PageCategory::DASHBOARD,
-			PageCategory::JOB_HISTORY_LIST,
-			PageCategory::JOB_HISTORY_VIEW,
 			PageCategory::JOB_LIST,
 			PageCategory::JOB_VIEW,
 			PageCategory::CLIENT_LIST,

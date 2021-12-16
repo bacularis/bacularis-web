@@ -19,41 +19,725 @@
 			<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
 		</com:TActiveLinkButton>
 	</div>
-	<div class="w3-container">
-		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
-			<thead>
-				<tr>
-					<th></th>
-					<th><%[ Status ]%></th>
-					<th><%[ Name ]%></th>
-					<th><%[ Type ]%></th>
-					<th><%[ Enabled ]%></th>
-					<th>Max. concur. jobs</th>
-					<th><%[ Priority ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</thead>
-			<tbody id="job_history_list_body"></tbody>
-			<tfoot>
-				<tr>
-					<th></th>
-					<th><%[ Status ]%></th>
-					<th><%[ Name ]%></th>
-					<th><%[ Type ]%></th>
-					<th><%[ Enabled ]%></th>
-					<th>Max. concur. jobs</th>
-					<th><%[ Priority ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</tfoot>
-		</table>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a id="btn_job_history" href="javascript:(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); }">
+			<%[ Job history ]%>
+		</a>
+		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); oJobList.table.responsive.recalc();">
+			<%[ Jobs ]%>
+		</a>
 	</div>
-	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
+
+	<!-- Job History List -->
+	<div class="w3-container tab_item" id="job_history">
+		<div class="w3-container">
+			<table id="job_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ JobId ]%></th>
+						<th><%[ Name ]%></th>
+						<th><%[ Type ]%></th>
+						<th class="w3-center"><%[ Level ]%></th>
+						<th class="w3-center">ClientId</th>
+						<th class="w3-center"><%[ Client ]%></th>
+						<th class="w3-center"><%[ Scheduled time ]%></th>
+						<th class="w3-center"><%[ Start time ]%></th>
+						<th class="w3-center"><%[ End time ]%></th>
+						<th class="w3-center"><%[ Real end time ]%></th>
+						<th class="w3-center">JobTDate</th>
+						<th class="w3-center">VolSessionId</th>
+						<th class="w3-center">VolSessionTime</th>
+						<th class="w3-center"><%[ Job status ]%></th>
+						<th class="w3-center"><%[ Size ]%></th>
+						<th class="w3-center"><%[ Read bytes ]%></th>
+						<th class="w3-center"><%[ Files ]%></th>
+						<th class="w3-center"><%[ Job errors ]%></th>
+						<th class="w3-center"><%[ Job missing files ]%></th>
+						<th class="w3-center">PoolId</th>
+						<th class="w3-center"><%[ Pool ]%></th>
+						<th class="w3-center">FileSetId</th>
+						<th class="w3-center"><%[ FileSet ]%></th>
+						<th class="w3-center">PriorJobId</th>
+						<th class="w3-center"><%[ Purged files ]%></th>
+						<th class="w3-center"><%[ Has base ]%></th>
+						<th class="w3-center"><%[ Reviewed ]%></th>
+						<th class="w3-center"><%[ Comment ]%></th>
+						<th class="w3-center"><%[ File table ]%></th>
+						<th class="w3-center"><%[ Action ]%></th>
+					</tr>
+				</thead>
+				<tbody id="job_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ JobId ]%></th>
+						<th><%[ Name ]%></th>
+						<th><%[ Type ]%></th>
+						<th class="w3-center"><%[ Level ]%></th>
+						<th class="w3-center">ClientId</th>
+						<th class="w3-center"><%[ Client ]%></th>
+						<th class="w3-center"><%[ Scheduled time ]%></th>
+						<th class="w3-center"><%[ Start time ]%></th>
+						<th class="w3-center"><%[ End time ]%></th>
+						<th class="w3-center"><%[ Real end time ]%></th>
+						<th class="w3-center">JobTDate</th>
+						<th class="w3-center">VolSessionId</th>
+						<th class="w3-center">VolSessionTime</th>
+						<th class="w3-center"><%[ Job status ]%></th>
+						<th class="w3-center"><%[ Size ]%></th>
+						<th class="w3-center"><%[ Read bytes ]%></th>
+						<th class="w3-center"><%[ Files ]%></th>
+						<th class="w3-center"><%[ Job errors ]%></th>
+						<th class="w3-center"><%[ Job missing files ]%></th>
+						<th class="w3-center">PoolId</th>
+						<th class="w3-center"><%[ Pool ]%></th>
+						<th class="w3-center">FileSetId</th>
+						<th class="w3-center"><%[ FileSet ]%></th>
+						<th class="w3-center">PriorJobId</th>
+						<th class="w3-center"><%[ Purged files ]%></th>
+						<th class="w3-center"><%[ Has base ]%></th>
+						<th class="w3-center"><%[ Reviewed ]%></th>
+						<th class="w3-center"><%[ Comment ]%></th>
+						<th class="w3-center"><%[ File table ]%></th>
+						<th class="w3-center"><%[ Action ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+		</div>
+		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
+		<com:TCallback ID="RunJobCb" OnCallback="runJobAgain">
+			<prop:ClientSide.OnLoading>
+				show_btn_loader(sender.options.CallbackParameter);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				hide_btn_loader(sender.options.CallbackParameter);
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<com:TCallback ID="CancelJobCb" OnCallback="cancelJob">
+			<prop:ClientSide.OnLoading>
+				show_btn_loader(sender.options.CallbackParameter);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				hide_btn_loader(sender.options.CallbackParameter);
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none">
+			<a href="javascript:void(0)" class="w3-show-inline-block w3-left w3-margin-right" onclick="$('#table_adv_filters_fields').slideToggle('fast');"><%[ Advanced filters ]%></a>
+			<div id="table_adv_filters_fields" class="w3-left" style="width: 500px; display: none;">
+				<select id="table_adv_filters_value_type">
+					<option value="7">Scheduled time</option>
+					<option value="8" selected>Start time</option>
+					<option value="9">End time</option>
+					<option value="10">Real end time</option>
+				</select>
+				<com:TDatePicker
+					ID="TableAdvFiltersDateFrom"
+					CssClass="w3-input w3-border w3-show-inline-block"
+					DateFormat="yyyy-MM-dd"
+					Style="width: 100px"
+					Attributes.placeholder="<%[ From ]%>"
+				/>
+				<com:TDatePicker
+					ID="TableAdvFiltersDateTo"
+					CssClass="w3-input w3-border w3-show-inline-block"
+					DateFormat="yyyy-MM-dd"
+					Style="width: 100px"
+					Attributes.placeholder="<%[ To ]%>"
+				/>
+				&nbsp;<i class="fas fa-times" id="table_adv_filters_clear" style="cursor: pointer"></i>
+			</div>
+		</div>
+<script type="text/javascript">
+function get_run_job_callback() {
+	return <%=$this->RunJobCb->ActiveControl->Javascript%>;
+}
+function get_cancel_job_callback() {
+	return <%=$this->CancelJobCb->ActiveControl->Javascript%>;
+}
+function show_btn_loader(jobid) {
+	var btns = document.querySelectorAll('button[data-btn-id="' + jobid + '"]');
+	var loader;
+	for (var i = 0; i < btns.length; i++) {
+		loader = document.createElement('IMG');
+		loader.setAttribute('data-loader-id', jobid);
+		loader.src = '<%=$this->getPage()->getTheme()->getBaseUrl()%>/loader-small.gif';
+		loader.style.display = 'none';
+		loader.className = 'btn_loader';
+		btns[i].parentNode.insertBefore(loader, btns[i]);
+		btns[i].style.display = 'none';
+		loader.style.display = '';
+	}
+}
+
+function hide_btn_loader(jobid) {
+	var btns = document.querySelectorAll('button[data-btn-id="' + jobid + '"]');
+	var loaders = document.querySelectorAll('img[data-loader-id="' + jobid + '"]');
+	var loader_list = Array.prototype.slice.call(loaders);
+
+	// Note, there can be more loaders with the same loader-id in small width view.
+	for (var i = (loader_list.length-1); i >= 0; i--) {
+		loader_list[i].parentNode.removeChild(loader_list[i]);
+	}
+
+	for (var i = 0; i < btns.length; i++) {
+		btns[i].style.display = 'inline-block';
+	}
+}
+
+var oJobHistoryList = {
+	table: null,
+	table_toolbar: null,
+	actions: [
+		{
+			action: 'cancel',
+			label: '<%[ Cancel ]%>',
+			value: 'jobid',
+			callback: <%=$this->CancelJobsAction->ActiveControl->Javascript%>,
+			before: function() {
+				oBulkActionsModal.show_output(true);
+			}
+		},
+		{
+			action: 'delete',
+			label: '<%[ Delete ]%>',
+			value: 'jobid',
+			callback: <%=$this->DeleteJobsAction->ActiveControl->Javascript%>,
+			before: function() {
+				oBulkActionsModal.show_output(true);
+			},
+			validate: function(selected) {
+				var running_jobs = [];
+				selected.each(function(v, k) {
+					if (JobStatus.is_running(v.jobstatus) || JobStatus.is_waiting(v.jobstatus)) {
+						running_jobs.push(' - [' + v.jobid + '] ' + v.name);
+					}
+				});
+				if (running_jobs.length > 0) {
+					var emsg = '<%[ Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again. ]%>';
+					emsg = emsg.replace('%running_jobs', '<hr />' + running_jobs.join('<br />') + '<hr />');
+					oBulkActionsModal.set_error(emsg);
+					return false;
+				}
+				return true;
+			}
+		}
+	],
+	ids: {
+		job_list: 'job_list',
+		job_list_body: 'job_list_body',
+		table_mode: 'table_mode',
+		table_adv_filters: 'table_adv_filters',
+		table_adv_filters_body: 'table_adv_filters_body',
+		table_adv_filters_value_type: 'table_adv_filters_value_type',
+		table_adv_filters_from : '<%=$this->TableAdvFiltersDateFrom->ClientID%>',
+		table_adv_filters_to: '<%=$this->TableAdvFiltersDateTo->ClientID%>',
+		table_adv_filters_clear: 'table_adv_filters_clear',
+		date_picker: 'TDatePicker_default'
+	},
+	data: [],
+	table: null,
+	init: function() {
+		this.data = oData.jobs;
+		if (this.table) {
+			update_job_table(this.table, this.data);
+		} else {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+			this.set_adv_filters(); // adv filter MUST be set before other filters
+			this.set_filters();
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.job_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+		var el = $('#' + this.ids.job_list);
+		el.on('page.dt', function () {
+			el.find('img.btn_loader').each(function(idx, el) {
+				var jobid = el.getAttribute('data-loader-id');
+				hide_btn_loader(jobid);
+			});
+		});
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.job_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar"><"#table_mode"><"#table_adv_filters">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'jobid'},
+				{data: 'name'},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					}
+				},
+				{
+					data: 'level',
+					render: function(data, type, row) {
+						return (['R', 'D'].indexOf(row.type) === -1 ? JobLevel.get_level(data) : '-');
+					}
+				},
+				{
+					data: 'clientid',
+					visible: false
+				},
+				{
+					data: 'client',
+					visible: false
+				},
+				{
+					data: 'schedtime',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'starttime',
+					render: render_date
+				},
+				{
+					data: 'endtime',
+					render: render_date
+				},
+				{
+					data: 'realendtime',
+					render: render_date,
+					visible: false
+				},
+				{
+					data: 'jobtdate',
+					render: render_date_ts,
+					visible: false
+				},
+				{
+					data: 'volsessionid',
+					visible: false
+				},
+				{
+					data: 'volsessiontime',
+					render: render_date_ts,
+					visible: false
+				},
+				{
+					data: 'jobstatus',
+					render: render_jobstatus,
+					className: 'w3-center'
+				},
+				{
+					data: 'jobbytes',
+					render: render_bytes
+				},
+				{
+					data: 'readbytes',
+					render: render_bytes,
+					visible: false
+				},
+				{data: 'jobfiles'},
+				{
+					data: 'joberrors',
+					visible: false
+				},
+				{
+					data: 'jobmissingfiles',
+					visible: false
+				},
+				{
+					data: 'poolid',
+					visible: false
+				},
+				{
+					data: 'pool',
+					visible: false
+				},
+				{
+					data: 'filesetid',
+					visible: false
+				},
+				{
+					data: 'fileset',
+					visible: false
+				},
+				{
+					data: 'priorjobid',
+					visible: false
+				},
+				{
+					data: 'purgedfiles',
+					visible: false
+				},
+				{
+					data: 'hasbase',
+					visible: false
+				},
+				{
+					data: 'reviewed',
+					visible: false
+				},
+				{
+					data: 'comment',
+					visible: false
+				},
+				{
+					data: 'filetable',
+					visible: false
+				},
+				{
+					data: 'jobid',
+					render: function (data, type, row) {
+						var container = document.createElement('DIV');
+						var btn, i;
+						if (['C', 'R'].indexOf(row.jobstatus) === -1) {
+							// rerun job button
+							btn = document.createElement('BUTTON');
+							btn.className = 'w3-button w3-tiny w3-green';
+							btn.type = 'button';
+							i = document.createElement('I');
+							btn.title = '<%[ Run job again ]%>';
+							i.className = 'fa fa-play';
+							btn.appendChild(i);
+							btn.setAttribute('data-btn-id', data);
+							btn.setAttribute('onclick', 'var rjc = get_run_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
+						} else {
+							// cancel job button
+							btn = document.createElement('BUTTON');
+							btn.className = 'w3-button w3-tiny w3-green';
+							btn.type = 'button';
+							i = document.createElement('I');
+							btn.title = '<%[ Cancel job ]%>';
+							i.className = 'fa fa-stop';
+							btn.appendChild(i);
+							btn.setAttribute('data-btn-id', data);
+							btn.setAttribute('onclick', 'var cjc = get_cancel_job_callback(); cjc.setCallbackParameter(' + data + '); cjc.dispatch();');
+						}
+						container.appendChild(btn);
+						var space = document.createTextNode(' ');
+						container.appendChild(space);
+
+						// job details button
+						btn = document.createElement('BUTTON');
+						btn.className = 'w3-button w3-tiny w3-green';
+						btn.type = 'button';
+						i = document.createElement('I');
+						i.className = 'fa fa-list-ul';
+						btn.title = '<%[ Details ]%>';
+						btn.appendChild(i);
+						btn.innerHTML += '&nbsp';
+						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
+						container.appendChild(btn);
+						return container.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 30 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ]
+			},
+			{
+				className: "dt-body-right",
+				targets: [ 15, 16 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'desc'],
+			initComplete: function () {
+				this.api().columns([2, 3, 4, 5, 14]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 14) { // NOTE: this column is used also in filters (@see oJobHistoryList.set_mode())
+						column.data().unique().sort().each(function (d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	},
+	set_mode: function(type) {
+		var types = {
+			ok: '<%[ Jobs terminated normally ]%>',
+			warning: '<%[ Jobs with warning ]%>',
+			error: '<%[ Jobs finished with error ]%>',
+			running: '<%[ Jobs running ]%>',
+			cancel: '<%[ Jobs canceled ]%>'
+		}
+		var container = document.getElementById(this.ids.table_mode);
+		container.className = 'dt-buttons';
+		var mode = document.createTextNode(' <%[ Mode: ]%> ' + types[type] + ' ');
+		container.appendChild(mode);
+		var label = document.createTextNode(' <%[ Reset table mode ]%>');
+		var a = document.createElement('A');
+		a.className = 'w3-button w3-green';
+		a.href = 'javascript:void(0)';
+		a.addEventListener('click', function(e) {
+			$.fn.dataTable.ext.search.pop();
+
+			// reset select filters
+			this.table.columns().every(function() {
+				var select = this.footer().querySelector('SELECT');
+				if (select) {
+					select.value = '';
+					$(select).trigger('change');
+				}
+				let addr = location.href.replace(/[&;?]?(job|type)=[^&;]+/, '');
+				history.replaceState({}, '', addr);
+			})
+
+			this.table.columns().search('').draw();
+			container.style.display = 'none';
+		}.bind(this));
+		var img = document.createElement('I');
+		img.className = 'fas fa-sync-alt';
+		a.appendChild(img);
+		a.appendChild(label);
+		container.appendChild(a);
+	},
+	set_filters: function() {
+		var jss = '';
+		var type = get_url_param('type');
+		var search_func;
+		switch (type) {
+			case 'ok':
+				search_func = function(settings, search_data, index, row_data, counter) {
+					var jobstatus = search_data[14];
+					var joberrors = search_data[18];
+					return (JobStatus.is_ok(jobstatus) && joberrors == 0);
+				};
+			break;
+			case 'error':
+				search_func = function(settings, search_data, index, row_data, counter) {
+					var jobstatus = search_data[14];
+					return JobStatus.is_error(jobstatus);
+				};
+			break;
+			case 'warning':
+				search_func = function(settings, search_data, index, row_data, counter) {
+					var jobstatus = search_data[14];
+					var joberrors = search_data[18];
+					return ((JobStatus.is_ok(jobstatus) && joberrors > 0) || JobStatus.is_warning(jobstatus));
+				};
+			break;
+			case 'cancel':
+				search_func = function(settings, search_data, index, row_data, counter) {
+					var jobstatus = search_data[14];
+					return JobStatus.is_cancel(jobstatus);
+				};
+			break;
+			case 'running':
+				search_func = function(settings, search_data, index, row_data, counter) {
+					var jobstatus = search_data[14];
+					return (JobStatus.is_running(jobstatus) || JobStatus.is_waiting(jobstatus));
+				};
+			break;
+		}
+		var container = document.getElementById(this.ids.table_mode);
+		if (search_func) {
+			$.fn.dataTable.ext.search.push(search_func);
+			this.table.columns().search('').draw();
+			this.set_job_filter();
+			this.set_mode(type);
+			container.style.display = 'inline-block';
+		} else {
+			container.style.display = 'none';
+		}
+	},
+	set_job_filter: function() {
+		var job = get_url_param('job');
+		if (job) {
+			// set job filter
+			var select = this.table.column(2).footer().querySelector('SELECT');
+			select.value = job;
+			$(select).trigger('change');
+		}
+	},
+	set_adv_filters: function() {
+		let container = document.getElementById(this.ids.table_adv_filters);
+		container.className = 'dt-buttons';
+		let body = document.getElementById(this.ids.table_adv_filters_body);
+		let from = document.getElementById(this.ids.table_adv_filters_from);
+		let to = document.getElementById(this.ids.table_adv_filters_to);
+		from.addEventListener('click', function(e) {
+			$('#' + this.ids.table_adv_filters_from).nextAll('.' + this.ids.date_picker).removeClass('w3-input w3-show-inline-block');
+		}.bind(this));
+		to.addEventListener('click', function(e) {
+			$('#' + this.ids.table_adv_filters_to).nextAll('.' + this.ids.date_picker).removeClass('w3-input w3-show-inline-block');
+		}.bind(this));
+		let value_type = document.getElementById(this.ids.table_adv_filters_value_type);
+		let search_func = function(settings, search_data, index, row_data, counter) {
+			let val_idx = parseInt(value_type.value, 10);
+			let date = parseInt(search_data[val_idx], 10);
+			let from_stamp = iso_date_to_timestamp(from.value);
+			let to_stamp = iso_date_to_timestamp(to.value) + 80063000; // added 23h59m59s to filter whole day
+			if (!from.value && !to.value || (!from.value && to_stamp >= date) || (!to.value && from_stamp <= date) || date >= from_stamp && date <= to_stamp) {
+				return true;
+			}
+			return false;
+		}.bind(this);
+		let validate_date = function() {
+			let from_stamp = iso_date_to_timestamp(from.value);
+			let to_stamp = iso_date_to_timestamp(to.value);
+			if (from_stamp > to_stamp) {
+				alert('<%[ Wrong time range. ]%>');
+			}
+		};
+		$.fn.dataTable.ext.search.push(search_func);
+		$(from).on('change', function(e) {
+			validate_date();
+			this.table.columns().search('').draw();
+			this.set_job_filter();
+		}.bind(this));
+		$(to).on('change', function(e) {
+			validate_date();
+			this.table.columns().search('').draw();
+			this.set_job_filter();
+		}.bind(this));
+		value_type.addEventListener('change', function() {
+			this.table.columns().search('').draw();
+			this.set_job_filter();
+		}.bind(this));
+		var clear_btn = document.getElementById(this.ids.table_adv_filters_clear);
+		clear_btn.addEventListener('click', function() {
+			from.value = to.value = '';
+			this.table.columns().search('').draw();
+		}.bind(this));
+		container.appendChild(body);
+		body.style.display = 'block';
+	}
+};
+MonitorParams = {jobs: null};
+$(function() {
+	MonitorCallsInterval.push(function() { oJobHistoryList.init(); });
+});
+
+/**
+ * Defne bulk actions output id here because expression tags (< % = % >) cannot
+ * be defined in the TCallback ClientSide properties.
+ */
+var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->BulkActionsOutput->ClientID%>';
+</script>
+		<com:TCallback ID="CancelJobsAction" OnCallback="cancelJobs">
+			<prop:ClientSide.OnLoading>
+				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.show_loader(true);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oBulkActionsModal.show_loader(false);
+				// job status in the Catalog changes a little moment after finishing cancel command
+				setTimeout('oMonitor()', 5000);
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<com:TCallback ID="DeleteJobsAction" OnCallback="deleteJobs">
+			<prop:ClientSide.OnLoading>
+				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.show_loader(true);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oBulkActionsModal.show_loader(false);
+				oJobHistoryList.table_toolbar.style.display = 'none';
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
+	</div>
+
+	<!-- Job Details List -->
+	<div class="w3-container tab_item" id="job_details" style="display: none">
+		<div class="w3-container">
+			<table id="job_details_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ Status ]%></th>
+						<th><%[ Name ]%></th>
+						<th><%[ Type ]%></th>
+						<th><%[ Enabled ]%></th>
+						<th>Max. concur. jobs</th>
+						<th><%[ Priority ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</thead>
+				<tbody id="job_details_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ Status ]%></th>
+						<th><%[ Name ]%></th>
+						<th><%[ Type ]%></th>
+						<th><%[ Enabled ]%></th>
+						<th>Max. concur. jobs</th>
+						<th><%[ Priority ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 <script type="text/javascript">
 var oJobList = {
 	ids: {
-		job_history_list: 'job_history_list',
-		job_history_list_body: 'job_history_list_body'
+		job_details_list: 'job_details_list',
+		job_details_list_body: 'job_details_list_body'
 	},
 	css: {
 		weather_icon: 'job_weather_icon'
@@ -64,7 +748,7 @@ var oJobList = {
 		this.set_table();
 	},
 	set_table: function() {
-		this.table = $('#' + this.ids.job_history_list).DataTable({
+		this.table = $('#' + this.ids.job_details_list).DataTable({
 			data: <%=json_encode($this->jobs)%>,
 			deferRender: true,
 			dom: 'lBfrtip',
@@ -213,5 +897,10 @@ MonitorParams = {jobs: null};
 $(function() {
 	MonitorCalls.push(oJobList.set_weather.bind(oJobList));
 });
+var url_fragment = get_url_fragment();
+if (url_fragment) {
+	$('#btn_' + url_fragment).click();
+}
 </script>
+	</div>
 </com:TContent>
