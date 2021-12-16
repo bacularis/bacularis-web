@@ -32,6 +32,7 @@ namespace Bacularis\Web\Modules;
 use Prado\Prado;
 use Prado\Security\IUserManager;
 use Prado\Security\TAuthorizationRule;
+use Prado\Web\Services\TPageService;
 use Bacularis\Common\Modules\Logging;
 
 /**
