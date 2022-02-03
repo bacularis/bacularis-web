@@ -265,7 +265,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$this->RepeaterDirectives->dataBind();
 		$this->ConfigDirectives->Display = 'Dynamic';
 		$this->IsDirectiveCreated = true;
-		if ($copy_mode) {
+		if ($copy_mode || $this->getShowAllDirectives()) {
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'oBaculaConfigSection.show_sections',
 				[true]
