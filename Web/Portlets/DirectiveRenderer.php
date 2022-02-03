@@ -95,16 +95,22 @@ class DirectiveRenderer extends TItemDataRenderer {
 	public function createItemInternal() {
 		$data = $this->getData();
 
-		if (key_exists('section', $data)) {
-			$this->addSection($data['section']);
-		}
-
 		$this->createItem($data);
 		$this->setIsDataBound(true);
 	}
 
+	public function render($writer) {
+		$data = $this->getData();
+		if (key_exists('section', $data)) {
+			if ($data['section'] !== self::$current_section) {
+				self::$current_section = $data['section'];
+				$writer->write('<h3 class="directive_section_header w3-border-bottom" data-section="' . $data['section'] . '" style="display:none;">' . $data['section'] . '</h3>');
+			}
+		}
+		parent::render($writer);
+	}
+
 	public function createItem($data) {
-		$load_values = $this->SourceTemplateControl->getLoadValues();
 		$field = $this->getField($data['field_type']);
 		$control = Prado::createComponent($field);
 		$type = 'Directive' . $data['field_type'];
@@ -151,21 +157,6 @@ class DirectiveRenderer extends TItemDataRenderer {
 			}
 		}
 		return $control;
-	}
-
-	public function addSection($section) {
-		if ($section !== self::$current_section) {
-			self::$current_section = $section;
-			$h3 = new THeader3();
-			$h3->setCssClass('directive_section_header w3-border-bottom');
-			$h3->setStyle('display: none');
-			$h3->setAttribute('data-section', $section);
-			$text = new TLiteral();
-			$text->setText(Prado::localize($section));
-			$h3->addParsedObject($text);
-			$this->addParsedObject($h3);
-		}
-
 	}
 
 	public function getData() {
