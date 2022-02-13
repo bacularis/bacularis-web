@@ -1,0 +1,535 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewJobWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-upload w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="What" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-question w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="How" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clipboard-list w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Options" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewVerifyJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewVerifyJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-paper-plane"></i> &nbsp;<%[ Create job ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - basic information about new job ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New verify job wizard ]%></h2>
+					<p><%[ Verify jobs run checking the integrity of the backup jobs data and metadata and also can help improving the computer security. It is done by computing and comparing job metadata between three locations: volumes, catalog database and filesystem. ]%></p>
+				</div>
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
+					ID="Name"
+					DirectiveName="Name"
+					Label="Verify Job Name"
+					ValidationGroup="NewVerifyJobDirective"
+					Required="true"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
+					ID="Description"
+					DirectiveName="Description"
+					Label="Description"
+					ValidationGroup="NewVerifyJobDirective"
+					Required="false"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="JobDefs"
+					DirectiveName="JobDefs"
+					Label="JobDefs"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - what to verify ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ What would you like to verify ]%></h2>
+					<p><com:TRadioButton GroupName="WhatToVerify" ID="WhatJobData" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->WhatJobData->ClientID%>"><%[ Backup job data and metadata ]%></label></p>
+					<p class="w3-container"><label for="<%=$this->WhatJobData->ClientID%>"><%[ This option is for verifying job data and metadata (file attributes and checksums) on the volumes, in the catalog database and on the filesystem. It uses the job levels: VolumeToCatalog, Data or DiskToCatalog. ]%></label></p>
+					<p><com:TRadioButton GroupName="WhatToVerify" ID="WhatFilesystem" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->WhatFilesystem->ClientID%>"><%[ File attributes and checksums on the filesystem ]%></label></p>
+					<p class="w3-container"><label for="<%=$this->WhatFilesystem->ClientID%>"><%[ This option is for improving the computer security by saving the snapshot of the filesystem metadata in the catalog database and periodicaly check if something on the filesystem has changed. It uses the job levels: InitCatalog and Catalog.]%></label></p>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - how to verify ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div style="display: <%=$this->WhatJobData->Checked ? 'block' : 'none'%>">
+					<h2><%[ Choose a way you would like to verify job data ]%></h2>
+					<p><com:TRadioButton GroupName="HowToVerify" ID="HowVolumeToCatalog" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->HowVolumeToCatalog->ClientID%>"><strong>VolumeToCatalog</strong> - <%[ Verify if the job metadata written on the volume match the job metadata written in the catalog database. This way does not validate the data, only the metadata (file attributes and checksums). It is useful to check the integrity of the metadata between the volume and the catalog. ]%></label></p>
+					<p><com:TRadioButton GroupName="HowToVerify" ID="HowData" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->HowData->ClientID%>"><strong>Data</strong> - <%[ Verify the integrity of the job data written on the volume and optionaly compare the file sizes and checksums written on the volume with the file sizes and checksums stored in the catalog database. It is useful to check the data integrity on volumes to know if the job data has not been corrupted or modified. Optionaly there is also possible to compare file sizes and checksums between the volumes and the catalog database. ]%></label></p>
+					<p><com:TRadioButton GroupName="HowToVerify" ID="HowDiskToCatalog" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->HowDiskToCatalog->ClientID%>"><strong>DiskToCatalog</strong> - <%[ Check changes in the file attributes on the filesystem since the last backup. This is useful for seeing what has changed on the filesystem since the last backup. The backup data file attributes from the catalog database are compared to the current file attributes on the filesystem. ]%></label></p>
+
+					<h2><%[ Select a backup job you would like to verify ]%></h2>
+					<p><com:TRadioButton GroupName="WhatJobToVerify" ID="WhatJobToVerifyJobName" CssClass="w3-radio" Attributes.onclick="$('#verify_job_verify_job_name').show();" Checked="true" /> &nbsp;<label for="<%=$this->WhatJobToVerifyJobName->ClientID%>"><%[ Select a backup job to verify by job name. The verify job will always use the most recent backup with that name for verification. ]%></label></p>
+					<div id="verify_job_verify_job_name" style="display: <%=$this->WhatJobToVerifyJobName->Checked ? 'block' : 'none'%>">
+						<com:Bacularis.Web.Portlets.DirectiveComboBox
+							ID="VerifyJob"
+							DirectiveName="Job"
+							Label="Job"
+							Show="true"
+							ValidationGroup="NewVerifyJobDirective"
+							Required="true"
+							ShowResetButton="false"
+							ShowRemoveButton="false"
+						/>
+					</div>
+					<p><com:TRadioButton GroupName="WhatJobToVerify" ID="WhatJobToVerifyLastJob" CssClass="w3-radio" Attributes.onclick="$('#verify_job_verify_job_name').hide();" /> &nbsp;<label for="<%=$this->WhatJobToVerifyLastJob->ClientID%>"><%[ Create a general purpose verify job. The verify job will verify the last job in the catalog so the verify job needs to be run just after finished backup job. If the verify job is started manually, you can select a jobid or a job name to verify in the run job window. ]%></label></p>
+				</div>
+				<div style="display: <%=$this->WhatFilesystem->Checked ? 'block' : 'none'%>">
+					<h2><%[ Select a client on which system you want to check file attributes ]%></h2>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="Client"
+						DirectiveName="Client"
+						Label="Client"
+						Show="true"
+						ValidationGroup="NewVerifyJobDirective"
+						Required="<%=$this->WhatFilesystem->Checked%>"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+					/>
+					<p><%[ Click the button below to specify the paths in the filesystem to check the attributes: ]%></p>
+					<p>
+						<button type="button" class="w3-button w3-green" onclick="load_fileset_browser(); $('#<%=$this->FSBrowser->ClientID%>fileset_browser').show();">
+							<i class="fas fa-plus"></i> &nbsp;<%[ Add paths ]%>
+						</button>
+					</p>
+					<div class="w3-modal" id="<%=$this->FSBrowser->ClientID%>fileset_browser" style="display: none;">
+						<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width: 85%">
+							<span onclick="document.getElementById('<%=$this->FSBrowser->ClientID%>fileset_browser').style.display = 'none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright">×</span>
+							<h2><%[ Define paths to the verify job FileSet ]%></h2>
+							<com:Bacularis.Web.Portlets.FileSetBrowser ID="FSBrowser" />
+							<com:TCallback ID="NewVerifyJobIncExcFile" OnCallback="newVerifyJobIncludeExcludeFile" />
+							<div class="w3-center w3-margin-top">
+								<button type="button" class="w3-button w3-red" onclick="document.getElementById('<%=$this->FSBrowser->ClientID%>fileset_browser').style.display = 'none'"><i class="fa fa-times"></i> &nbsp; <%[ Cancel ]%></button>
+								<a class="w3-button w3-green button_fixed" onclick="set_verify_job_include_exclude(); document.getElementById('<%=$this->FSBrowser->ClientID%>fileset_browser').style.display = 'none'">
+									<i class="fa fa-check"></i> &nbsp;<%[ Apply path selection ]%></a>
+								</a>
+							</div>
+						</div>
+					</div>
+					<com:TCallback ID="LoadFSBrowser" OnCallback="loadFSBrowser" />
+					<div class="w3-section">
+						<h2><%[ Include paths ]%></h2>
+						<com:TActiveTextBox
+							TextMode="MultiLine"
+							ID="NewVerifyJobIncludePaths"
+							CssClass="w3-input w3-show-inline-block"
+							ValidationGroup="NewVerifyJobDirective"
+							Style="width: 90%"
+						/>
+						&nbsp;<i class="fa fa-asterisk w3-text-red directive_required" style="vertical-align: top"></i>
+						<com:TRequiredFieldValidator
+							ControlToValidate="NewVerifyJobIncludePaths"
+							ValidationGroup="NewVerifyJobDirective"
+							OnValidate="checkIncludePathValidator"
+							ErrorMessage="<%[ Field required. ]%>"
+						>
+							<prop:ClientSide.OnValidate>
+								sender.enabled = <%=$this->WhatFilesystem->Checked ? 'true' : 'false'%>;
+							</prop:ClientSide.OnValidate>
+						</com:TRequiredFieldValidator>
+					</div>
+					<div class="w3-section">
+						<h2><%[ Exclude paths ]%></h2>
+						<com:TActiveTextBox
+							TextMode="MultiLine"
+							ID="NewVerifyJobExcludePaths"
+							CssClass="w3-input"
+							Style="width: 90%"
+						/>
+					</div>
+					<script>
+						function set_verify_job_include_exclude() {
+							// set includes
+							let includes = oFileSetBrowser<%=$this->FSBrowser->ClientID%>.get_includes();
+							var inc = $('#<%=$this->NewVerifyJobIncludePaths->ClientID%>');
+							includes = includes.concat(inc.val().split("\n"));
+							inc.val( includes.join("\n"));
+
+							// set excludes
+							let excludes = oFileSetBrowser<%=$this->FSBrowser->ClientID%>.get_excludes();
+							var exc = $('#<%=$this->NewVerifyJobExcludePaths->ClientID%>');
+							excludes = excludes.concat(exc.val().split("\n"));
+							exc.val( excludes.join("\n"));
+
+							// reset browser
+							oFileSetBrowser<%=$this->FSBrowser->ClientID%>.reset();
+						}
+						function load_fileset_browser() {
+							const cb = <%=$this->LoadFSBrowser->ActiveControl->Javascript%>;
+							cb.dispatch();
+						}
+					</script>
+				</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - verify job options ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div id="verify_job_verify_file_attrs" style="display: <%=$this->WhatFilesystem->Checked || ($this->WhatJobToVerifyJobName->Checked && ($this->HowDiskToCatalog->Checked || $this->HowData->Checked)) ? 'block' : 'none'%>">
+					<h2><%[ What file attributes you would like to compare ]%></h2>
+					<div style="display: <%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'none' : 'block'%>">
+						<p><com:TCheckBox
+							ID="CompareInodes"
+							CssClass="w3-check"
+							Value="i"
+							Checked="true"
+						/> &nbsp;<label for="<%=$this->CompareInodes->ClientID%>"><%[ Compare the inodes ]%></label></p>
+						<p><com:TCheckBox
+							ID="ComparePermissionBits"
+							CssClass="w3-check"
+							Value="p"
+							Checked="true"
+						/> &nbsp;<label for="<%=$this->ComparePermissionBits->ClientID%>"><%[ Compare the permission bits ]%></label></p>
+						<p><com:TCheckBox
+							ID="CompareNumberOfLinks"
+							CssClass="w3-check"
+							Value="n"
+							Checked="true"
+						/> &nbsp;<label for="<%=$this->CompareNumberOfLinks->ClientID%>"><%[ Compare the number of links ]%></label></p>
+						<p><com:TCheckBox
+							ID="CompareUserID"
+							CssClass="w3-check"
+							Value="u"
+						/> &nbsp;<label for="<%=$this->CompareUserID->ClientID%>"><%[ Compare the user ID ]%></label></p>
+						<p><com:TCheckBox
+							ID="CompareGroupID"
+							CssClass="w3-check"
+							Value="g"
+						/> &nbsp;<label for="<%=$this->CompareGroupID->ClientID%>"><%[ Compare the group ID ]%></label></p>
+					</div>
+					<p><com:TCheckBox
+						ID="CompareSize"
+						CssClass="w3-check"
+						Value="s"
+						Checked="true"
+					/> &nbsp;<label for="<%=$this->CompareSize->ClientID%>"><%[ Compare the size ]%></label></p>
+					<div style="display: <%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'none' : 'block'%>">
+						<p><com:TCheckBox
+							ID="CompareAtime"
+							CssClass="w3-check"
+							Value="a"
+						/> &nbsp;<label for="<%=$this->CompareAtime->ClientID%>"><%[ Compare the access time ]%></label></p>
+						<p><com:TCheckBox
+							ID="CompareMtime"
+							CssClass="w3-check"
+							Value="m"
+						/> &nbsp;<label for="<%=$this->CompareMtime->ClientID%>"><%[ Compare the modification time ]%></label></p>
+						<p><com:TCheckBox
+							ID="CompareSizeDecreases"
+							CssClass="w3-check"
+							Value="d"
+						/> &nbsp;<label for="<%=$this->CompareSizeDecreases->ClientID%>"><%[ Report file size decreases ]%></label></p>
+					</div>
+					<p><com:TCheckBox
+						ID="CompareMD5Sum"
+						CssClass="w3-check"
+						Value="5"
+						Checked="true"
+					/> &nbsp;<label for="<%=$this->CompareMD5Sum->ClientID%>"><%[ Compare the MD5 signature ]%></label></p>
+					<p><com:TCheckBox
+						ID="CompareSHA1Sum"
+						CssClass="w3-check"
+						Value="1"
+					/> &nbsp;<label for="<%=$this->CompareSHA1Sum->ClientID%>"><%[ Compare the SHA1 signature ]%></label></p>
+				</div>
+				<div>
+					<h2><%[ Verify job directives ]%></h2>
+				</div>
+				<div style="display: <%=$this->WhatFilesystem->Checked ? 'none' : 'block'%>">
+					<p><%[ The client is used in all verify job levels to deal with file attributes and checksums sent from the Storage Daemon (for levels: VolumeToCatalog and Data) or read from the filesystem (for level: DiskToCatalog, InitCatalog and Catalog). ]%></p>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="ClientVerify"
+						DirectiveName="Client"
+						Label="Client"
+						Show="true"
+						ValidationGroup="NewVerifyJobDirective"
+						Required="<%=$this->WhatFilesystem->Checked == false%>"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+					/>
+				</div>
+				<p><%[ The storage is used in the VolumeToCatalog and Data job levels to read the backup data and metadata from volumes and sent it to the File Daemon for verification. ]%></p>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Storage"
+					DirectiveName="Storage"
+					Label="Storage"
+					Show="true"
+					ValidationGroup="NewVerifyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Messages"
+					DirectiveName="Messages"
+					Label="Messages"
+					Show="true"
+					ValidationGroup="NewVerifyJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Schedule"
+					DirectiveName="Schedule"
+					Label="Schedule"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<div style="float: none; margin: auto">
+					<a href="javascript:void(0)" onclick="$('#verify_job_wizard_other_options').slideToggle();"><%[ Other options ]%></a>
+				</div>
+				<div id="verify_job_wizard_other_options" style="float: none; margin: auto; display: none;">
+					<p><%[ The pool is not used in the verify job but it should be defined as a standard Job directive. ]%></p>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="Pool"
+						DirectiveName="Pool"
+						Label="Pool"
+						Show="true"
+						ValidationGroup="NewVerifyJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - summary ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Verify Job Name</div>
+						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Description</div>
+						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">JobDefs</div>
+						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ What ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ What to verify ]%></div>
+						<div class="w3-threequarter bold">
+							<%=$this->WhatJobData->Checked ? Prado::localize('Job data') : Prado::localize('Filesystem data')%>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ How ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ How to verify ]%></div>
+						<div class="w3-threequarter bold">
+							<%=$this->WhatJobData->Checked && $this->HowVolumeToCatalog->Checked ? 'VolumeToCatalog' : ''%>
+							<%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'Data' : ''%>
+							<%=$this->WhatJobData->Checked && $this->HowDiskToCatalog->Checked ? 'DiskToCatalog' : ''%>
+							<%=$this->WhatFilesystem->Checked ? 'Catalog' : ''%><br />
+							<%=$this->WhatFilesystem->Checked ? Prado::localize('Include paths:') . ' ' . $this->NewVerifyJobIncludePaths->Text . '<br />' : ''%>
+							<%=$this->WhatFilesystem->Checked ? Prado::localize('Exclude paths:') . ' ' . ($this->NewVerifyJobExcludePaths->Text ?: '-')  : ''%>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatJobData->Checked && $this->WhatJobToVerifyJobName->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter"><%[ Job to verify ]%></div>
+						<div class="w3-threequarter bold">
+							<%=$this->VerifyJob->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('JobToVerify', $this->VerifyJob->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatJobToVerifyLastJob->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter"><%[ General purpose verify job ]%></div>
+						<div class="w3-threequarter bold">
+							<%[ Yes ]%>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Options ]%></legend>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatFilesystem->Checked || ($this->WhatJobData->Checked && !empty($this->VerifyJob->getDirectiveValue()) && ($this->HowDiskToCatalog->Checked || $this->HowData->Checked)) ? 'block' : 'none'%>">
+						<div class="w3-quarter"><%[ File attributes to compare ]%></div>
+						<div class="w3-threequarter bold">
+							<div style="display: <%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'none' : 'block'%>">
+								<%=$this->CompareInodes->Checked ? Prado::localize('Compare the inodes') . '<br />' : ''%>
+								<%=$this->ComparePermissionBits->Checked ? Prado::localize('Compare the permission bits') . '<br />' : ''%>
+								<%=$this->CompareNumberOfLinks->Checked ? Prado::localize('Compare the number of links') . '<br />' : ''%>
+								<%=$this->CompareUserID->Checked ? Prado::localize('Compare the user ID') . '<br />' : ''%>
+								<%=$this->CompareGroupID->Checked ? Prado::localize('Compare the group ID') . '<br />' : ''%>
+							</div>
+							<%=$this->CompareSize->Checked ? Prado::localize('Compare the size') . '<br />' : ''%>
+							<div style="display: <%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'none' : 'block'%>">
+								<%=$this->CompareAtime->Checked ? Prado::localize('Compare the access time') . '<br />' : ''%>
+								<%=$this->CompareMtime->Checked ? Prado::localize('Compare the modification time') . '<br />' : ''%>
+								<%=$this->CompareSizeDecreases->Checked ? Prado::localize('Report file size decreases') . '<br />' : ''%>
+							</div>
+							<%=$this->CompareMD5Sum->Checked ? Prado::localize('Compare the MD5 signature') . '<br />' : ''%>
+							<%=$this->CompareSHA1Sum->Checked ? Prado::localize('Compare the SHA1 signature') . '<br />' : ''%>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatFilesystem->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Client</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Client->getDirectiveValue()%>
+							<span class="w3-small normal"> <%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatFilesystem->Checked ? 'none' : 'block'%>">
+						<div class="w3-quarter">Client</div>
+						<div class="w3-threequarter bold">
+							<%=$this->ClientVerify->getDirectiveValue()%>
+							<span class="w3-small normal"> <%=$this->isInJobDefs('Client', $this->ClientVerify->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Storage</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Storage->getDirectiveValue()%>
+							<span class="w3-small normal"> <%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Messages</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Schedule</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter">Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Pool->getDirectiveValue()%>
+							<span class="w3-small normal"> <%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>

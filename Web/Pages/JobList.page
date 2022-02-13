@@ -11,6 +11,7 @@
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVerifyJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New verify job ]%></button>
 		<com:TActiveLinkButton
 			CssClass="w3-button w3-margin-bottom w3-green"
 			OnClick="loadRunJobModal"

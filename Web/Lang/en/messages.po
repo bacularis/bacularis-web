@@ -3952,3 +3952,147 @@ msgstr "This type of authentication is realized by an external directory service
 
 msgid "Job log"
 msgstr "Job log"
+
+msgid "New verify job"
+msgstr "New verify job"
+
+msgid "New verify job wizard"
+msgstr "New verify job wizard"
+
+msgid "Verify jobs run checking the integrity of the backup jobs data and metadata and also can help improving the computer security. It is done by computing and comparing job metadata between three locations: volumes, catalog database and filesystem."
+msgstr "Verify jobs run checking the integrity of the backup jobs data and metadata and also can help improving the computer security. It is done by computing and comparing job metadata between three locations: volumes, catalog database and filesystem."
+
+msgid "Step 2 - what to verify"
+msgstr "Step 2 - what to verify"
+
+msgid "What would you like to verify"
+msgstr "What would you like to verify"
+
+msgid "Backup job data and metadata"
+msgstr "Backup job data and metadata"
+
+msgid "File attributes and checksums on the filesystem"
+msgstr "File attributes and checksums on the filesystem"
+
+msgid "This option is for verifying job data and metadata (file attributes and checksums) on the volumes, in the catalog database and on the filesystem. It uses the job levels: VolumeToCatalog, Data or DiskToCatalog."
+msgstr "This option is for verifying job data and metadata (file attributes and checksums) on the volumes, in the catalog database and on the filesystem. It uses the job levels: VolumeToCatalog, Data or DiskToCatalog."
+
+msgid "This option is for improving the computer security by saving the snapshot of the filesystem metadata in the catalog database and periodicaly check if something on the filesystem has changed. It uses the job levels: InitCatalog and Catalog."
+msgstr "This option is for improving the computer security by saving the snapshot of the filesystem metadata in the catalog database and periodicaly check if something on the filesystem has changed. It uses the job levels: InitCatalog and Catalog."
+
+msgid "Choose a way you would like to verify job data"
+msgstr "Choose a way you would like to verify job data"
+
+msgid "Verify if the job metadata written on the volume match the job metadata written in the catalog database. This way does not validate the data, only the metadata (file attributes and checksums). It is useful to check the integrity of the metadata between the volume and the catalog."
+msgstr "Verify if the job metadata written on the volume match the job metadata written in the catalog database. This way does not validate the data, only the metadata (file attributes and checksums). It is useful to check the integrity of the metadata between the volume and the catalog."
+
+msgid "Verify the integrity of the job data written on the volume and optionaly compare the file sizes and checksums written on the volume with the file sizes and checksums stored in the catalog database. It is useful to check the data integrity on volumes to know if the job data has not been corrupted or modified. Optionaly there is also possible to compare file sizes and checksums between the volumes and the catalog database."
+msgstr "Verify the integrity of the job data written on the volume and optionaly compare the file sizes and checksums written on the volume with the file sizes and checksums stored in the catalog database. It is useful to check the data integrity on volumes to know if the job data has not been corrupted or modified. Optionaly there is also possible to compare file sizes and checksums between the volumes and the catalog database."
+
+msgid "Check changes in the file attributes on the filesystem since the last backup. This is useful for seeing what has changed on the filesystem since the last backup. The backup data file attributes from the catalog database are compared to the current file attributes on the filesystem."
+msgstr "Check changes in the file attributes on the filesystem since the last backup. This is useful for seeing what has changed on the filesystem since the last backup. The backup data file attributes from the catalog database are compared to the current file attributes on the filesystem."
+
+msgid "Select a backup job you would like to verify"
+msgstr "Select a backup job you would like to verify"
+
+msgid "Select a backup job to verify by job name. The verify job will always use the most recent backup with that name for verification."
+msgstr "Select a backup job to verify by job name. The verify job will always use the most recent backup with that name for verification."
+
+msgid "Create a general purpose verify job. The verify job will verify the last job in the catalog so the verify job needs to be run just after finished backup job. If the verify job is started manually, you can select a jobid or a job name to verify in the run job window."
+msgstr "Create a general purpose verify job. The verify job will verify the last job in the catalog so the verify job needs to be run just after finished backup job. If the verify job is started manually, you can select a jobid or a job name to verify in the run job window."
+
+msgid "What file attributes you would like to compare"
+msgstr "What file attributes you would like to compare"
+
+msgid "Compare the inodes"
+msgstr "Compare the inodes"
+
+msgid "Compare the permission bits"
+msgstr "Compare the permission bits"
+
+msgid "Compare the number of links"
+msgstr "Compare the number of links"
+
+msgid "Compare the user ID"
+msgstr "Compare the user ID"
+
+msgid "Compare the group ID"
+msgstr "Compare the group ID"
+
+msgid "Compare the size"
+msgstr "Compare the size"
+
+msgid "Compare the access time"
+msgstr "Compare the access time"
+
+msgid "Compare the modification time"
+msgstr "Compare the modification time"
+
+msgid "Report file size decreases"
+msgstr "Report file size decreases"
+
+msgid "Compare the MD5 signature"
+msgstr "Compare the MD5 signature"
+
+msgid "Compare the SHA1 signature"
+msgstr "Compare the SHA1 signature"
+
+msgid "Verify job directives"
+msgstr "Verify job directives"
+
+msgid "The client is used in all verify job levels to deal with file attributes and checksums sent from the Storage Daemon (for levels: VolumeToCatalog and Data) or read from the filesystem (for level: DiskToCatalog, InitCatalog and Catalog)."
+msgstr "The client is used in all verify job levels to deal with file attributes and checksums sent from the Storage Daemon (for levels: VolumeToCatalog and Data) or read from the filesystem (for level: DiskToCatalog, InitCatalog and Catalog)."
+
+msgid "The storage is used in the VolumeToCatalog and Data job levels to read the backup data and metadata from volumes and sent it to the File Daemon for verification."
+msgstr "The storage is used in the VolumeToCatalog and Data job levels to read the backup data and metadata from volumes and sent it to the File Daemon for verification."
+
+msgid "The pool is not used in the verify job but it should be defined as a standard Job directive."
+msgstr "The pool is not used in the verify job but it should be defined as a standard Job directive."
+
+msgid "What to verify"
+msgstr "What to verify"
+
+msgid "Job data"
+msgstr "Job data"
+
+msgid "How to verify"
+msgstr "How to verify"
+
+msgid "Job to verify"
+msgstr "Job to verify"
+
+msgid "File attributes to compare"
+msgstr "File attributes to compare"
+
+msgid "Select a client on which system you want to check file attributes"
+msgstr "Select a client on which system you want to check file attributes"
+
+msgid "Click the button below to specify the paths in the filesystem to check the attributes:"
+msgstr "Click the button below to specify the paths in the filesystem to check the attributes:"
+
+msgid "Add paths"
+msgstr "Add paths"
+
+msgid "Include paths"
+msgstr "Include paths"
+
+msgid "Exclude paths"
+msgstr "Exclude paths"
+
+msgid "Step 3 - how to verify"
+msgstr "Step 3 - how to verify"
+
+msgid "Apply path selection"
+msgstr "Apply path selection"
+
+msgid "Include paths:"
+msgstr "Include paths:"
+
+msgid "Exclude paths:"
+msgstr "Exclude paths:"
+
+msgid "Filesystem data"
+msgstr "Filesystem data"
+
+msgid "General purpose verify job"
+msgstr "General purpose verify job"

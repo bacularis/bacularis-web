@@ -3934,31 +3934,175 @@ msgid "Get existing basic user name:"
 msgstr "Pobierz nazwę istniejącego użytkownika:"
 
 msgid "Generate new password"
-msgstr "Generate new password"
+msgstr "Generuj nowe hasło"
 
 msgid "Show/hide password"
-msgstr "Show/hide password"
+msgstr "Pokaż/ukryj hasło"
 
 msgid "Advanced filters"
-msgstr "Advanced filters"
+msgstr "Filtry zaawansowane"
 
 msgid "Wrong time range."
-msgstr "Wrong time range."
+msgstr "Niepoprawny zakres czasu."
 
 msgid "From"
-msgstr "From"
+msgstr "Z"
 
 msgid "To"
-msgstr "To"
+msgstr "Do"
 
 msgid "This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form."
-msgstr "This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form."
+msgstr "Ten typ uwierzytelniania is całkowicie realizowany przez Bacularis Web. Do uwierzytelniania używany jest formularz logowania Bacularis Web."
 
 msgid "This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication."
-msgstr "This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication."
+msgstr "Ten typ uwierzytelniania jest realizowany przez Bacularis Web z użyciem własnego pliku zawierającego dane logowania. Do uwierzytelniania używana jest autentykacja type Basic."
 
 msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
-msgstr "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
+msgstr "Ten typ uwierzytelniania jest realizowany przez zewnętrzną usługę katalogową. Do uwierzytelniania używany jest formularz logowania Bacularis Web."
 
 msgid "Job log"
-msgstr "Job log"
+msgstr "Dziennik zadania"
+
+msgid "New verify job"
+msgstr "Nowe zadanie weryfikacji"
+
+msgid "New verify job wizard"
+msgstr "Kreator nowego zadania weryfikacji"
+
+msgid "Verify jobs run checking the integrity of the backup jobs data and metadata and also can help improving the computer security. It is done by computing and comparing job metadata between three locations: volumes, catalog database and filesystem."
+msgstr "Zadania weryfikacji uruchamiają sprawdzanie integralności danych i metadanych backupów jak również mogą pomóc w ulepszeniu bezpieczeństwa komputera. Jest to realizowany przez obliczanie i porównywanie metadanych pomiędzy trzema lokalizacjami: wolumenami, bazą danych i systemem plików."
+
+msgid "Step 2 - what to verify"
+msgstr "Krok 2 - co weryfikować"
+
+msgid "What would you like to verify"
+msgstr "Co chciałbyś zweryfikować"
+
+msgid "Backup job data and metadata"
+msgstr "Dane i metadane backupów"
+
+msgid "File attributes and checksums on the filesystem"
+msgstr "Atrybuty plików i sumy kontrolne w systemie plików"
+
+msgid "This option is for verifying job data and metadata (file attributes and checksums) on the volumes, in the catalog database and on the filesystem. It uses the job levels: VolumeToCatalog, Data or DiskToCatalog."
+msgstr "Ta opcja służy do weryfikowania danych i metadanych zadań (atrybutów plików i sum kontrolnych) na wolumenach, w bazie danych i w systemie plików. Opcja ta używa poziomów zadań: VolumeToCatalog, Data i DiskToCatalog."
+
+msgid "This option is for improving the computer security by saving the snapshot of the filesystem metadata in the catalog database and periodicaly check if something on the filesystem has changed. It uses the job levels: InitCatalog and Catalog."
+msgstr "Ta opcja służy do ulepszenia bezpieczeństwa komputera poprzez zapisywanie w bazie danych migawki z metadanych systemu plików i cykliczne sprawdzanie czy coś zmieniło się w systemie plików. Opcja ta używa poziomów zadań: InitCatalog i Catalog."
+
+msgid "Choose a way you would like to verify job data"
+msgstr "Wybierz sposób w jaki chciałbyś weryfikować dane zadań"
+
+msgid "Verify if the job metadata written on the volume match the job metadata written in the catalog database. This way does not validate the data, only the metadata (file attributes and checksums). It is useful to check the integrity of the metadata between the volume and the catalog."
+msgstr "Weryfikuj czy metadane zapisane na wolumenie odpowiadają metadanym zadania w bazie danych. Ta metoda nie sprawdza danych, jedynie metadane (atrybuty plików i sumy kontrolne). Jest to użyteczne do sprawdzania integralności metadanych z wolumenu i bazy danych."
+
+msgid "Verify the integrity of the job data written on the volume and optionaly compare the file sizes and checksums written on the volume with the file sizes and checksums stored in the catalog database. It is useful to check the data integrity on volumes to know if the job data has not been corrupted or modified. Optionaly there is also possible to compare file sizes and checksums between the volumes and the catalog database."
+msgstr "Sprawdź integralność danych zadań zapisanych na wolumenach i opcjonalnie porównać rozmiary plików i sumy kontrolne zapisane na wolumenie z rozmiarami plików i sumami kontrolnymi składowanymi w bazie danych. Jest to użyteczne do sprawdzenia integralności danych na wolumenach, aby wiedzieć czy dane zdań nie zostały uszkodzone lub zmodyfikowane. Opcjolanie jest również możliwość porównywania rozmiarów plików i sum kontrolnych pomiędzy wolumenami i bazą danych."
+
+msgid "Check changes in the file attributes on the filesystem since the last backup. This is useful for seeing what has changed on the filesystem since the last backup. The backup data file attributes from the catalog database are compared to the current file attributes on the filesystem."
+msgstr "Sprawdź zmiany atrybutów plików w systemie plików od czasu ostatniej kopii zapasowej. Jest to użyteczne, aby sprawdzić co zmieniło się w systemie plików od czasu wykonania ostatniej kopii zapasowej. Atrybuty plików kopii zapasowej z bazy danych są porównwywane z bieżącymi atrybutami plików w systemie plików."
+
+msgid "Select a backup job you would like to verify"
+msgstr "Wybierz zadanie backupu, które chciałbyś weryfikować"
+
+msgid "Select a backup job to verify by job name. The verify job will always use the most recent backup with that name for verification."
+msgstr "Wybierz zadanie backupu do weryfikacji według nazwy zadania. Zadanie weryfikacji będzie zawsze używać do weryfikacji najaktualniejszej kopii zapasowej z daną nazwą."
+
+msgid "Create a general purpose verify job. The verify job will verify the last job in the catalog so the verify job needs to be run just after finished backup job. If the verify job is started manually, you can select a jobid or a job name to verify in the run job window."
+msgstr "Stwórz zadanie weryfikacji ogólnego zastosowania. Zadanie weryfikacji będzie weryfikować ostatni backup w bazie danych, tak więc zadanie weryfikacji powinno być uruchomione zaraz po zakończonym zdaniu backup. Jeżeli zdanie weryfikacji jest uruchamiane manualnie, możesz wybrać identyfikator zadania (jobid) lub nazwę zadania do weryfikacji w oknie uruchamiania zadań."
+
+msgid "What file attributes you would like to compare"
+msgstr "Jakie atrybuty plików chciałbyś porównywać"
+
+msgid "Compare the inodes"
+msgstr "Porównaj i-węzły"
+
+msgid "Compare the permission bits"
+msgstr "Porównaj uprawnienia"
+
+msgid "Compare the number of links"
+msgstr "Porównaj ilość dowiązań"
+
+msgid "Compare the user ID"
+msgstr "Porównaj identyfiaktor użytkownika"
+
+msgid "Compare the group ID"
+msgstr "Porównaj identyfikator grupy"
+
+msgid "Compare the size"
+msgstr "Porównaj rozmiar"
+
+msgid "Compare the access time"
+msgstr "Porównaj czas dostępu (ATIME)"
+
+msgid "Compare the modification time"
+msgstr "Porównaj czas modyfikacji (MTIME)"
+
+msgid "Report file size decreases"
+msgstr "Raportuj zmianę rozmiaru pliku"
+
+msgid "Compare the MD5 signature"
+msgstr "Porównaj sumę MD5"
+
+msgid "Compare the SHA1 signature"
+msgstr "Porównaj sumę SHA1"
+
+msgid "Verify job directives"
+msgstr "Dyrektywy zadania weryfikacji"
+
+msgid "The client is used in all verify job levels to deal with file attributes and checksums sent from the Storage Daemon (for levels: VolumeToCatalog and Data) or read from the filesystem (for level: DiskToCatalog, InitCatalog and Catalog)."
+msgstr "Klient jest używany we wszystkich poziomach zadania weryfikacji do pracy z atrybutami plików i sumami kontrolnymi przesyłanymi od usługi magazynu (dla poziomów: VolumeToCatalog i Data) lub odczytywanymi z systemu plików (dla poziomów: DiskToCatalog, InitCatalog i Catalog)."
+
+msgid "The storage is used in the VolumeToCatalog and Data job levels to read the backup data and metadata from volumes and sent it to the File Daemon for verification."
+msgstr "Magazyn jest używany w poziomach zadań: VolumeToCatalog i Data do czytania danych i metadanych kopii zapasowych z wolumenów i przesyłania ich do klienta w celu weryfikacji."
+
+msgid "The pool is not used in the verify job but it should be defined as a standard Job directive."
+msgstr "Pula wolumenów nie jest używana przez zadanie weryfikacji, ale musi zostać zdefiniowana jaka standardowa dyrektywa zadania."
+
+msgid "What to verify"
+msgstr "Co weryfikować"
+
+msgid "Job data"
+msgstr "Dane zadań"
+
+msgid "How to verify"
+msgstr "Jak weryfikować"
+
+msgid "Job to verify"
+msgstr "Zadanie do weryfikacji"
+
+msgid "File attributes to compare"
+msgstr "Atrybuty plików do porównania"
+
+msgid "Select a client on which system you want to check file attributes"
+msgstr "Wybierz klienta, na którego systemie chcesz sprawdzać atrybuty plików"
+
+msgid "Click the button below to specify the paths in the filesystem to check the attributes:"
+msgstr "Kliknij poniższy przycisk aby określić lokalizacje w systemie plików do sprawdzenia atrybutów:"
+
+msgid "Add paths"
+msgstr "Dodaj lokalizacje"
+
+msgid "Include paths"
+msgstr "Lista dołączeń"
+
+msgid "Exclude paths"
+msgstr "Lista wykluczeń"
+
+msgid "Step 3 - how to verify"
+msgstr "Krok 3 - jak weryfikować"
+
+msgid "Apply path selection"
+msgstr "Zastosuj wybór lokalizacji"
+
+msgid "Include paths:"
+msgstr "Lista dołączeń:"
+
+msgid "Exclude paths:"
+msgstr "Lista wykluczeń:"
+
+msgid "Filesystem data"
+msgstr "Dane w systemie plików"
+
+msgid "General purpose verify job"
+msgstr "Zadanie weryfikacji ogólnego zastosowania"
