@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -56,9 +56,11 @@ class RunJob extends Portlets {
 
 	const DEFAULT_JOB_PRIORITY = 10;
 
-	public $job_to_verify = array('C', 'O', 'd', 'A');
+	public $job_to_verify = ['O', 'd', 'A'];
 
-	public $verify_options = array('jobname' => 'Verify by Job Name', 'jobid' => 'Verify by JobId');
+	public $verify_no_accurate = ['O', 'd'];
+
+	public $verify_options = ['jobname' => 'Verify by Job Name', 'jobid' => 'Verify by JobId'];
 
 	public function loadData() {
 		$jobid = $this->getJobId();
@@ -136,12 +138,15 @@ class RunJob extends Portlets {
 		}
 		$this->Level->dataSource = $this->getModule('misc')->getJobLevels();
 		$is_verify_option = false;
+		$is_accurate = true;
 		if (is_object($jobdata) && property_exists($jobdata, 'level')) {
 			$this->Level->SelectedValue = $jobdata->level;
-			$is_verify_option = is_object($jobdata) && in_array($jobdata->level, $this->job_to_verify);
+			$is_verify_option = in_array($jobdata->level, $this->job_to_verify);
+			$is_accurate = !in_array($jobdata->level, $this->verify_no_accurate);
 		}
 		$this->Level->dataBind();
 
+		$this->AccurateLine->Display = ($is_accurate === true) ? 'Dynamic' : 'None';
 		$this->JobToVerifyOptionsLine->Display = ($is_verify_option === true) ? 'Dynamic' : 'None';
 		$this->JobToVerifyJobNameLine->Display = ($is_verify_option === true) ? 'Dynamic' : 'None';
 		$this->JobToVerifyJobIdLine->Display = 'None';
@@ -160,6 +165,9 @@ class RunJob extends Portlets {
 		}
 
 		$this->JobToVerifyJobName->dataSource = array_combine($jobsAllDirs, $jobsAllDirs);
+		if (key_exists('job', $job_info) && key_exists('jobtoverify', $job_info['job'])) {
+			$this->JobToVerifyJobName->SelectedValue = $job_info['job']['jobtoverify'];
+		}
 		$this->JobToVerifyJobName->dataBind();
 
 		$clients = $this->getModule('api')->get(array('clients'), null, true, self::USE_CACHE)->output;

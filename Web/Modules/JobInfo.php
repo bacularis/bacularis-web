@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -39,6 +39,7 @@ namespace Bacularis\Web\Modules;
 class JobInfo extends WebModule {
 
 	const RESOURCE_PATTERN = '/(?P<resource>\S+(?=:))?:?(\s+((?P<directive>\S+)=(?P<value>[\s\S]*?(?=\s\S+=.+|$))))/';
+	const JOB_TO_VERIFY_PATTERN = '/(?P<directive>JobToVerify)\s(?P<value>[\s\S]*\S)\s*(--\>[\s\S]+)$/';
 
 	public function parseResourceDirectives(array $show_out) {
 		$result = [];
@@ -67,6 +68,19 @@ class JobInfo extends WebModule {
 					$directive = strtolower($match['directive'][$j]);
 					$value = $match['value'][$j];
 					$resource[$res][$directive] = $value;
+				}
+				if ($res === 'messages' && preg_match(self::JOB_TO_VERIFY_PATTERN, $show_out[$i], $match) === 1) {
+					/**
+					 * In the show job is displayed wrong show job output for verifyjob directive.
+					 * In versions prior 11 verify job was not displayed at all, and in 11.0.x it is
+					 * displayed but together with messages (missing EOL):
+					 *
+					 *   --> JobToVerify dokumenty  --> Messages: name=Standard
+					 *
+					 * From this reason there is separate pattern for verify job.
+					 */
+					$directive = strtolower($match['directive']);
+					$result['job'][$directive] = $match['value'];
 				}
 			}
 		}
