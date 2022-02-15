@@ -20,6 +20,7 @@
 			<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
 		</com:TActiveLinkButton>
 	</div>
+	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a id="btn_job_history" href="javascript:(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); }">
 			<%[ Job history ]%>
@@ -107,7 +108,6 @@
 			</table>
 			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 		</div>
-		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 		<com:TCallback ID="RunJobCb" OnCallback="runJobAgain">
 			<prop:ClientSide.OnLoading>
 				show_btn_loader(sender.options.CallbackParameter);
