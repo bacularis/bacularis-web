@@ -4106,3 +4106,9 @@ msgstr "Filesystem data"
 
 msgid "General purpose verify job"
 msgstr "General purpose verify job"
+
+msgid "flat browser"
+msgstr "flat browser"
+
+msgid "tree browser"
+msgstr "tree browser"

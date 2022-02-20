@@ -591,7 +591,7 @@ $(function() {
 				</prop:ClientSide.OnLoading>
 				<prop:ClientSide.OnComplete>
 					document.getElementById('restore-browser-files-loading').style.display = 'none';
-					make_draggable('restore-browser-files-content');
+					make_draggable();
 				</prop:ClientSide.OnComplete>
 			</com:TCallback>
 			<div class="w3-row">
@@ -609,20 +609,41 @@ $(function() {
 				</div>
 			</div>
 			<div class="w3-row w3-hide-small w3-small">
-				<span><%[ # Directories: ]%></span>
-				<com:TActiveLabel
-					ID="RestoreBrowserDirCount"
-					CssClass="w3-show-inline-block"
-					Style="min-width: 20px;"
-					Text="0"
-				/>
-				<span><%[ # Files: ]%></span>
-				<com:TActiveLabel
-					ID="RestoreBrowserFileCount"
-					CssClass="w3-show-inline-block"
-					Style="min-width: 20px;"
-					Text="0"
-				/>
+				<span id="file_browser_item_count">
+					<span><%[ # Directories: ]%></span>
+					<com:TActiveLabel
+						ID="RestoreBrowserDirCount"
+						CssClass="w3-show-inline-block"
+						Style="min-width: 20px;"
+						Text="0"
+					/>
+					<span><%[ # Files: ]%></span>
+					<com:TActiveLabel
+						ID="RestoreBrowserFileCount"
+						CssClass="w3-show-inline-block"
+						Style="min-width: 20px;"
+						Text="0"
+					/>
+				</span>
+				<span class="w3-show-inline-block w3-margin-left">
+					<com:TActiveRadioButton
+						ID="FileBrowserTypeFlat"
+						Groupname="FileBrowserType"
+						Value="0"
+						Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
+						Checked="true"
+						Style="vertical-align: text-top"
+					/> &nbsp;<label for="<%=$this->FileBrowserTypeFlat->ClientID%>"><%[ flat browser ]%></label>
+				</span>
+				<span class="w3-show-inline-block" style="margin-left: 7px">
+					<com:TActiveRadioButton
+						ID="FileBrowserTypeTree"
+						Groupname="FileBrowserType"
+						Value="1"
+						Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
+						Style="vertical-align: text-top"
+					/> &nbsp;<label for="<%=$this->FileBrowserTypeTree->ClientID%>"><%[ tree browser ]%></label>
+				</span>
 				<div class="w3-right w3-half w3-hide-small" style="text-align: right; margin-top: 5px">
 					<span><%[ Backup client ]%>:</span>
 					<com:TActiveLabel
@@ -661,11 +682,12 @@ $(function() {
 					<td rowspan="2" style="height: 100%">
 						<div id="restore-browser-files-loading" style="display: none"></div>
 						<div id="restore-browser-files" class="w3-border">
-							<div id="restore-browser-files-content"></div>
+							<div id="restore-browser-files-content-flat"></div>
+							<div id="restore-browser-files-content-tree" style="display: none;"></div>
 						</div>
 						<div id="restore-browser-nav" class="w3-hide-small" style="height: 57px; padding: 8px 0;">
-							<button type="button" class="w3-button w3-dark-grey w3-right" onclick="oRestoreBrowserFiles.next_page();" title="<%[ Next ]%>"><i class="fa fa-arrow-right"></i></button>
-							<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-right" onclick="oRestoreBrowserFiles.prev_page();" title="<%[ Previous ]%>"><i class="fa fa-arrow-left"></i></button>
+							<button type="button" id="restore-browser-next-page" class="w3-button w3-dark-grey w3-right" onclick="oRestoreBrowserFiles.next_page();" title="<%[ Next ]%>"><i class="fa fa-arrow-right"></i></button>
+							<button type="button" id="restore-browser-prev-page" class="w3-button w3-dark-grey w3-right w3-margin-right" onclick="oRestoreBrowserFiles.prev_page();" title="<%[ Previous ]%>"><i class="fa fa-arrow-left"></i></button>
 							<com:TActiveTextBox
 								ID="RestoreBrowserLimit"
 								CssClass="w3-input w3-border w3-right w3-show-inline-block w3-margin-right"
@@ -690,20 +712,30 @@ $(function() {
 <script>
 var oRestoreBrowserFiles = {
 	ids: {
-		content: 'restore-browser-files-content',
+		type_flat: '<%=$this->FileBrowserTypeFlat->ClientID%>',
+		type_tree: '<%=$this->FileBrowserTypeTree->ClientID%>',
+		content_flat: 'restore-browser-files-content-flat',
+		content_tree: 'restore-browser-files-content-tree',
 		search: 'restore-browser-search',
 		case_sensitive: 'restore-browser-search-insensitive',
 		offset: '<%=$this->RestoreBrowserOffset->ClientID%>',
 		limit: '<%=$this->RestoreBrowserLimit->ClientID%>',
 		type: '<%=$this->RestoreBrowserType->ClientID%>',
 		status: '<%=$this->RestoreBrowserStatus->ClientID%>',
-		time_point: '<%=$this->RestoreBrowserTimePoint->ClientID%>'
+		time_point: '<%=$this->RestoreBrowserTimePoint->ClientID%>',
+		path_field: '<%=$this->PathField->ClientID%>',
+		path_btn: 'load_path_btn',
+		item_count: 'file_browser_item_count',
+		prev_page: 'restore-browser-prev-page',
+		next_page: 'restore-browser-next-page'
 	},
 	cls: {
 		draggable: 'draggable',
 		watermark: 'file-browser-watermark',
-		folder: 'fas fa-folder',
-		file: 'fas fa-file-alt',
+		fas: 'fas',
+		folder: 'fa-folder',
+		folder_open: 'fa-folder-open',
+		file: 'fa-file-alt',
 		item_icon: 'item_icon',
 		green: 'w3-text-green',
 		gray: 'w3-text-gray',
@@ -716,18 +748,69 @@ var oRestoreBrowserFiles = {
 		no_files: '<%[ It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired) ]%>',
 		add: '<%[ Add ]%>'
 	},
+	browsers: {
+		flat: <%=RestoreWizard::BROWSER_TYPE_FLAT%>,
+		tree: <%=RestoreWizard::BROWSER_TYPE_TREE%>
+	},
 	types: {
 		directory: 'dir',
 		file: 'file',
 	},
+	items: new Map(),
 	excluded_items: ['.', '..'],
 	init: function(items) {
 		this.set_events();
+		this.show_browser(this.browsers.flat);
 		this.load_items();
 		this.set_browser_headers();
 	},
-	load_browser_content: function() {
+	get_browser_type: function() {
+		const flat = document.getElementById(this.ids.type_flat);
+		const tree = document.getElementById(this.ids.type_tree);
+		let ret;
+		if (flat.checked) {
+			ret = this.browsers.flat;
+		} else if (tree.checked) {
+			ret = this.browsers.tree;
+		}
+		return ret;
+	},
+	show_browser(type) {
+		const flat = document.getElementById(this.ids.content_flat);
+		const tree = document.getElementById(this.ids.content_tree);
+		const path = document.getElementById(this.ids.path_field);
+		const path_btn = document.getElementById(this.ids.path_btn);
+		const item_count = document.getElementById(this.ids.item_count);
+		const offset = document.getElementById(this.ids.offset);
+		const limit = document.getElementById(this.ids.limit);
+		const prev_page = document.getElementById(this.ids.prev_page);
+		const next_page = document.getElementById(this.ids.next_page);
+
+		let type_radio;
+		if (type == this.browsers.flat) {
+			tree.style.display = 'none';
+			flat.style.display = 'block';
+			$([path, path_btn, offset, limit, prev_page, next_page]).removeAttr('disabled');
+			type_radio = document.getElementById(this.ids.type_flat);
+			item_count.style.visibility = 'visible';
+		} else if (type == this.browsers.tree) {
+			let container = document.getElementById(this.ids.content_tree);
+			if (!container.firstChild) {
+				this.load_browser_content(null);
+			}
+			flat.style.display = 'none';
+			tree.style.display = 'block';
+			$([path, path_btn, offset, limit, prev_page, next_page]).attr('disabled', 'disabled');
+			type_radio = document.getElementById(this.ids.type_tree);
+			item_count.style.visibility = 'hidden';
+		}
+		type_radio.checked = true;
+	},
+	load_browser_content: function(path) {
 		var cb = <%=$this->LoadPath->ActiveControl->Javascript%>;
+		if (path) {
+			cb.setCallbackParameter(path);
+		}
 		cb.dispatch();
 	},
 	load_items: function() {
@@ -735,41 +818,65 @@ var oRestoreBrowserFiles = {
 		cb.dispatch();
 	},
 	populate: function(items) {
-		oRestoreBrowserFiles.clear_browser();
-		if (!Array.isArray(items) || items.length === 0) {
-			oRestoreBrowserFiles.add_empty_item();
+		let container;
+		let self = oRestoreBrowserFiles;
+		const browser_type = self.get_browser_type();
+		if (browser_type == self.browsers.flat) {
+			self.clear_browser();
+			container = document.getElementById(self.ids.content_flat);
+		} else if (browser_type == self.browsers.tree) {
+			container = document.getElementById(self.ids.content_tree);
+		}
+		if (browser_type == self.browsers.flat && (!Array.isArray(items) || items.length === 0)) {
+			self.add_empty_item();
 		} else {
+			let item;
 			for (var i = 0; i < items.length; i++) {
-				oRestoreBrowserFiles.add_item(items[i]);
+				self.add_item(container, items[i]);
 			}
 		}
 		make_draggable();
 	},
 	add_empty_item: function() {
-		var container = document.getElementById(this.ids.content);
+		var container = document.getElementById(this.ids.content_flat);
 		var div = document.createElement('DIV');
 		div.className = this.cls.watermark;
 		div.textContent = this.txts.no_files;
 		container.appendChild(div);
 	},
-	add_item: function(item) {
-		var container = document.getElementById(this.ids.content);
-		var div = document.createElement('DIV');
-		div.className = [
-			this.cls.item,
-			this.cls.draggable
-		].join(' ');
-		div.setAttribute('data-source', 'file_browser');
-		div.setAttribute('data-uniqid', item.uniqid);
-		div.addEventListener('click', function(e) {
-			var el = event.target || event.srcElement;
+	add_item: function(container, item) {
+		let el;
+		let browser_type = this.get_browser_type();
+		if (browser_type == this.browsers.flat) {
+			el = this.create_flat_item(container, item);
+		} else if (browser_type == this.browsers.tree) {
+			if (['.', '..'].indexOf(item.name) != -1) {
+				// for the tree browser .. and . elements are not used.
+				return;
+			}
+			el = this.create_tree_item(container, item);
+		}
+		this.items.set(item.uniqid, item);
+		el.addEventListener('click', function(e) {
+			const browser_type = this.get_browser_type();
+			let el = event.target || event.srcElement;
+			if (el.nodeName == 'DIV') {
+				el = el.parentNode;
+			}
 			if (el.className == this.cls.link) {
 				// 'Add' link doesn't cause sending request
 				return;
 			}
-			var vposition = el.style.left;
+
+			const vposition = el.style.left;
+			const ul = el.querySelector('UL');
 			if(vposition == null || vposition == '0px'){
-				event.stop();
+				e.stop();
+			} else if (browser_type == this.browsers.tree && item.type === this.types.directory && el.querySelector('LI')) {
+				// directory already loaded, so open it or close but without any data request.
+				$(ul).slideToggle('fast', () => {
+					this.toggle_directory_icon(el, ul);
+				});
 			} else {
 				if (item.type === this.types.directory) {
 					var offset = document.getElementById(this.ids.offset);
@@ -777,31 +884,31 @@ var oRestoreBrowserFiles = {
 					var search = document.getElementById(this.ids.search);
 					search.value = '';
 				}
-				var cbp = [item.name, item.pathid, item.filenameid, item.jobid].join('|');
+				var cbp = [item.name, item.pathid, item.filenameid, item.jobid];
 				var request = <%=$this->getPage()->GetVersions->ActiveControl->Javascript%>;
 				request.setCallbackParameter(cbp);
 				var ocf = request.options.onComplete;
-				request.options.onComplete = function() {
+				request.options.onComplete = () => {
 					ocf();
 					Formatters.set_formatters();
 					make_draggable();
+					if (browser_type == this.browsers.tree && item.type === this.types.directory) {
+						this.toggle_directory_icon(el, ul);
+					}
 				};
 				request.dispatch();
 			}
+			e.stopPropagation();
 		}.bind(this));
-		var i = document.createElement('I');
+		var icon = document.createElement('I');
+		let ul;
 		if (item.type === this.types.directory) {
-			i.className = [
-				this.cls.folder,
-				this.cls.green,
-				this.cls.item_icon
-			].join(' ');
+			icon.classList.add(this.cls.fas, this.cls.folder, this.cls.green, this.cls.item_icon);
+			if (browser_type == this.browsers.tree) {
+				ul = el.querySelector('UL');
+			}
 		} else if (item.type === this.types.file) {
-			i.className = [
-				this.cls.file,
-				this.cls.gray,
-				this.cls.item_icon
-			].join(' ');
+			icon.classList.add(this.cls.fas, this.cls.file,	this.cls.gray, this.cls.item_icon);
 		}
 		var txt = item.name;
 		if (txt != '/') {
@@ -813,14 +920,15 @@ var oRestoreBrowserFiles = {
 		if (this.excluded_items.indexOf(item.name) === -1) {
 			var link = document.createElement('A');
 			link.href = 'javascript:void(0)';
-			link.className = 'link';
+			link.className = this.cls.link;
 			var link_label = document.createTextNode(this.txts.add);
 			link.appendChild(link_label);
 			link.style.float = 'right';
 			right.appendChild(link);
 			link.addEventListener('click', function(e) {
-				var cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
-				var param = ['file_browser', item.uniqid].join('|');
+				const cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+				const file_prop = oRestoreBrowserFiles.items.get(item.uniqid);
+				const param = [item.uniqid, file_prop];
 				cb.setCallbackParameter(param);
 				cb.dispatch();
 			});
@@ -830,10 +938,49 @@ var oRestoreBrowserFiles = {
 		var lss = item.lstat ? item.lstat.size : 0;
 		size.textContent = lss;
 		right.appendChild(size);
-		div.appendChild(i);
-		div.appendChild(txt);
-		div.appendChild(right);
-		container.appendChild(div);
+		const div = document.createElement('DIV');
+		div.classList.add(this.cls.item, this.cls.draggable)
+		div.setAttribute('data-source', 'file_browser');
+		div.setAttribute('data-uniqid', item.uniqid);
+		if (ul) {
+			div.appendChild(icon, ul);
+			div.appendChild(txt, ul);
+			div.appendChild(right, ul);
+			el.insertBefore(div, ul);
+		} else {
+			div.appendChild(icon);
+			div.appendChild(txt);
+			div.appendChild(right);
+			el.appendChild(div)
+		}
+	},
+	create_flat_item: function(container, item) {
+		let el = document.createElement('DIV');
+		container.appendChild(el);
+		return el;
+	},
+	create_tree_item: function(container, item) {
+		let el = document.createElement('LI');
+		let ul;
+		if (item.type === this.types.directory) {
+			ul = document.createElement('UL');
+			ul.setAttribute('data-ppathid', item.ppathid);
+			ul.setAttribute('data-pathid', item.pathid);
+			el.appendChild(ul);
+		}
+		ul = container.querySelector('ul[data-pathid="' + item.ppathid + '"]');
+		if (!ul) {
+			// path element does not exist, create a root path element
+			ul = document.createElement('UL');
+			container.appendChild(ul);
+		}
+		ul.appendChild(el);
+		return el;
+	},
+	toggle_directory_icon: function(el, item_el) {
+		const icon = el.querySelector('I');
+		icon.classList.toggle(this.cls.folder, item_el.style.display == 'none');
+		icon.classList.toggle(this.cls.folder_open, item_el.style.display != 'none');
 	},
 	set_events: function() {
 		document.getElementById(this.ids.offset).addEventListener('keypress', function(e) {
@@ -851,7 +998,7 @@ var oRestoreBrowserFiles = {
 		var search = document.getElementById(this.ids.search);
 		var case_sensitive = document.getElementById(this.ids.case_sensitive);
 		var search_func = function(e) {
-			var els = document.querySelectorAll('#' + this.ids.content + ' div.' + this.cls.item);
+			var els = document.querySelectorAll('#' + this.ids.content_flat + ' div.' + this.cls.item + ',' + '#' + this.ids.content_tree + ' div.' + this.cls.item);
 			var cs = case_sensitive.checked;
 			var txt, regex, regex_opts;
 			for (var i = 0; i < els.length; i++) {
@@ -891,7 +1038,7 @@ var oRestoreBrowserFiles = {
 		this.load_browser_content();
 	},
 	clear_browser: function() {
-		var container = document.getElementById(this.ids.content);
+		var container = document.getElementById(this.ids.content_flat);
 		while (container.firstChild) {
 			container.removeChild(container.firstChild);
 		}
@@ -959,6 +1106,7 @@ var oRestoreBrowserVersions = {
 	types: {
 		file: 'file'
 	},
+	items: new Map(),
 	init: function() {
 		this.load_items();
 	},
@@ -985,6 +1133,7 @@ var oRestoreBrowserVersions = {
 		container.appendChild(div);
 	},
 	add_item: function(item) {
+		this.items.set(item.uniqid, item);
 		var container = document.getElementById(this.ids.content);
 		var div = document.createElement('DIV');
 		div.className = [
@@ -1040,8 +1189,9 @@ var oRestoreBrowserVersions = {
 		link.appendChild(link_label);
 		span_size.appendChild(link);
 		link.addEventListener('click', function(e) {
-			var cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
-			var param = ['version_browser', item.uniqid].join('|');
+			const cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+			const file_prop = oRestoreBrowserFiles.items.get(item.uniqid);
+			const param = [item.uniqid, file_prop];
 			cb.setCallbackParameter(param);
 			cb.dispatch();
 		});
@@ -1066,6 +1216,7 @@ var oRestoreBrowserVersions = {
 		while (container.firstChild) {
 			container.removeChild(container.firstChild);
 		}
+		this.items.clear();
 	}
 };
 $(function() {
@@ -1120,10 +1271,16 @@ var oRestoreBrowserSelectedFiles = {
 		$('#' + this.ids.content).droppable({
 			accept: '.draggable',
 			drop: function(e, ui) {
-				var source = ui.draggable.attr('data-source');
-				var uniqid = ui.draggable.attr('data-uniqid');
-				var param = [source, uniqid].join('|');
-				var selected_versions_cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
+				const source = ui.draggable.attr('data-source');
+				const uniqid = ui.draggable.attr('data-uniqid');
+				let file_prop;
+				if (source == 'file_browser') {
+					file_prop = oRestoreBrowserFiles.items.get(uniqid);
+				} else if (source == 'version_browser') {
+					file_prop = oRestoreBrowserVersions.items.get(uniqid);
+				}
+				const param = [uniqid, file_prop];
+				const selected_versions_cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
 				selected_versions_cb.setCallbackParameter(param);
 				selected_versions_cb.dispatch();
 			}
@@ -1276,7 +1433,7 @@ $(function() {
 					set_browser_sizes();
 				});
 				set_browser_sizes();
-				make_draggable('restore-browser-files-content');
+				make_draggable();
 				Formatters.set_formatters();
 			</script>
 		</com:TWizardStep>

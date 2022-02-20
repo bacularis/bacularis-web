@@ -4106,3 +4106,9 @@ msgstr "Dane w systemie plików"
 
 msgid "General purpose verify job"
 msgstr "Zadanie weryfikacji ogólnego zastosowania"
+
+msgid "flat browser"
+msgstr "flat browser"
+
+msgid "tree browser"
+msgstr "tree browser"

@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -61,6 +61,12 @@ class RestoreWizard extends BaculumWebPage
 
 	const JOB_LIST_BY_CLIENT = 1;
 	const JOB_LIST_BY_FILENAME = 2;
+
+	/**
+	 * Browser types.
+	 */
+	const BROWSER_TYPE_FLAT = 0;
+	const BROWSER_TYPE_TREE = 1;
 
 	/**
 	 * File browser special directories.
@@ -489,21 +495,21 @@ class RestoreWizard extends BaculumWebPage
 			// generating Bvfs may take a moment
 			$this->generateBvfsCache($jobids);
 
-			$offset = intval($this->RestoreBrowserOffset->Text);
-			$limit = intval($this->RestoreBrowserLimit->Text);
-
 			// get directory and file list
 			$q = [
 				'jobids' => $jobids,
-				'offset' => $offset,
-				'limit' => $limit,
 				'output' => 'json'
 			];
+			if ($this->FileBrowserTypeFlat->Checked) {
+				$offset = intval($this->RestoreBrowserOffset->Text);
+				$limit = intval($this->RestoreBrowserLimit->Text);
+				$q['offset'] = $offset;
+				$q['limit'] = $limit;
+			}
 			if ($this->Session->contains('restore_pathid'))  {
 				$q['pathid'] = $this->Session['restore_pathid'];
-				$this->Session->remove('restore_pathid');
 			} else {
-				$q['path'] = implode($this->Session['restore_path']);
+				$q['path'] = $this->FileBrowserTypeFlat->Checked ?  implode($this->Session['restore_path']) : '';
 			}
 			$query = '?' . http_build_query($q);
 			$bvfs_dirs = $this->getModule('api')->get(
@@ -541,9 +547,13 @@ class RestoreWizard extends BaculumWebPage
 			$this->RestoreBrowserFileCount->Text = count($files);
 
 			$elements = array_merge($dirs, $files);
-			$elements = array_map(['RestoreWizard', 'addUniqid'], $elements);
+			$elements = $this->addExtraPropsToElements($elements);
 			if (count($this->Session['restore_path']) > 0) {
 				array_unshift($elements, $this->browser_root_dir);
+			}
+			if ($this->Session->contains('restore_pathid'))  {
+				// clear pathid in session as it is used only for browser element request time.
+				$this->Session->remove('restore_pathid');
 			}
 		}
 		if (count($elements) > 0) {
@@ -551,8 +561,27 @@ class RestoreWizard extends BaculumWebPage
 		} elseif ($this->Session->contains('restore_job')) {
 			$this->NoFileFound->Display = 'Dynamic';
 		}
-		$this->setBrowserFiles($elements);
-		$this->loadBrowserFiles(null, null);
+		if ($this->FileBrowserTypeFlat->Checked) {
+			$this->setBrowserFiles($elements);
+		}
+		$this->loadBrowserFiles(null, $elements);
+	}
+
+	private function addExtraPropsToElements($elements) {
+		$ppathid = -1;
+		if ($this->Session->contains('restore_pathid'))  {
+			$ppathid  = $this->Session['restore_pathid'];
+		}
+		$add_extra_props_func = function ($el) use ($ppathid) {
+			// add unique identifier
+			$el = self::addUniqid($el);
+
+			// add parent path identifier
+			$el['ppathid'] = $ppathid;
+			return $el;
+		};
+		$elements = array_map($add_extra_props_func, $elements);
+		return $elements;
 	}
 
 	/**
@@ -642,16 +671,23 @@ class RestoreWizard extends BaculumWebPage
 	 * @return none
 	 */
 	public function loadPath($sender, $param) {
-		$path = explode('/', $this->PathField->Text);
-		$path_len = count($path);
-		for ($i = 0; $i < $path_len; $i++) {
-			if ($i == ($path_len - 1) && empty($path[$i])) {
-				// last path dir is slash so not add slash to last element
-				break;
+		$path = null;
+		if ($this->FileBrowserTypeTree->Checked && $param->CallbackParameter === null) {
+			// empty initial path to get root directory tree node
+			$path = '';
+		} else {
+			$spath = $this->PathField->Text;
+			$path = explode('/', $spath);
+			$path_len = count($path);
+			for ($i = 0; $i < $path_len; $i++) {
+				if ($i == ($path_len - 1) && empty($path[$i])) {
+					// last path dir is slash so not add slash to last element
+					break;
+				}
+				$path[$i] .= '/';
 			}
-			$path[$i] .= '/';
+			$path = array_filter($path); // remove empty item if any
 		}
-		$path = array_filter($path); // remove empty item if any
 		$this->goToPath($path, true);
 	}
 
@@ -706,13 +742,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @return none
 	 */
 	public function addFileToRestore($sender, $param) {
-		$file_prop = [];
-		list($source, $uniqid) = explode('|', $param->CallbackParameter, 2);
-		if ($source === 'version_browser') {
-			$file_prop = $this->getFileVersions($uniqid);
-		} elseif ($source === 'file_browser') {
-			$file_prop = $this->getBrowserFile($uniqid);
-		}
+		list($uniqid, $file_prop) = $param->CallbackParameter;
+		$file_prop = (array)$file_prop;
 
 		if ($file_prop['name'] != $this->browser_root_dir['name'] && $file_prop['name'] != $this->browser_up_dir['name']) {
 			$this->markFileToRestore($uniqid, $file_prop);
@@ -742,14 +773,16 @@ class RestoreWizard extends BaculumWebPage
 	 * @return none
 	 */
 	public function getVersions($sender, $param) {
-		list($filename, $pathid, $filenameid, $jobid) = explode('|', $param->CallbackParameter, 4);
+		list($filename, $pathid, $filenameid, $jobid) = $param->CallbackParameter;
 		if ($filenameid == 0) {
 			if ($filename == $this->browser_root_dir['name'] || $filename == $this->browser_up_dir['name']) {
 				$this->goToPath($filename);
 			} else {
-				$rp = $this->Session['restore_path'];
-				array_push($rp, $filename);
-				$this->setRestorePath($rp); // to fill path field in the wizard
+				if ($this->FileBrowserTypeFlat->Checked) {
+					$rp = $this->Session['restore_path'];
+					array_push($rp, $filename);
+					$this->setRestorePath($rp); // to fill path field in the wizard
+				}
 				$this->goToPathByPathId($pathid); // to go by pathid
 			}
 			return;
@@ -783,7 +816,7 @@ class RestoreWizard extends BaculumWebPage
 		)->output;
 		$versions = json_decode(json_encode($versions), true);
 		$file_versions = array_map($add_version_filename_func, $versions);
-		$file_versions = array_map(['RestoreWizard', 'addUniqid'], $file_versions);
+		$file_versions = $this->addExtraPropsToElements($file_versions);
 		$this->setFileVersions($file_versions);
 		$this->loadFileVersions(null, null);
 		$this->loadSelectedFiles(null, null);
@@ -796,7 +829,12 @@ class RestoreWizard extends BaculumWebPage
 	 * @return none
 	 */
 	public function loadBrowserFiles($sender, $param) {
-		$files = $this->Session->contains('files_browser') ? $this->Session['files_browser'] : [];
+		$files = [];
+		if (is_array($param)) {
+			$files = $param;
+		} else {
+			$files = $this->Session->contains('files_browser') ? $this->Session['files_browser'] : [];
+		}
 		$this->getCallbackClient()->callClientFunction('oRestoreBrowserFiles.populate', [$files]);
 	}
 
@@ -826,8 +864,11 @@ class RestoreWizard extends BaculumWebPage
 	 * @return none
 	 */
 	private function loadBrowserPath() {
-		$path = $this->Session->contains('restore_path') ? $this->Session['restore_path'] : [];
-		$this->PathField->Text = implode($path);
+		if ($this->FileBrowserTypeFlat->Checked) {
+			// browser path field is used only for flat browser, not for tree browser
+			$path = $this->Session->contains('restore_path') ? $this->Session['restore_path'] : [];
+			$this->PathField->Text = implode($path);
+		}
 	}
 
 	/**
@@ -854,32 +895,15 @@ class RestoreWizard extends BaculumWebPage
 	}
 
 	/**
-	 * Get file versions for specified uniqid.
-	 *
-	 * @param string $uniqid file identifier
-	 * @return none
-	 */
-	private function getFileVersions($uniqid) {
-		$versions = [];
-		if ($this->Session->contains('files_versions')) {
-			foreach ($this->Session['files_versions'] as $file) {
-				if (key_exists('uniqid', $file) && $file['uniqid'] === $uniqid) {
-					$versions = $file;
-					break;
-				}
-			}
-		}
-		return $versions;
-	}
-
-	/**
 	 * Set browser files.
 	 *
 	 * @param array $files file list
 	 * @return none
 	 */
 	private function setBrowserFiles($files = []) {
-		$this->Session->add('files_browser', $files);
+		if ($this->FileBrowserTypeFlat->Checked) {
+			$this->Session->add('files_browser', $files);
+		}
 	}
 
 	/**
@@ -903,37 +927,18 @@ class RestoreWizard extends BaculumWebPage
 	}
 
 	/**
-	 * Get browser file by uniqid.
-	 *
-	 * @param string $uniqid file identifier
-	 * @return none
-	 */
-	private function getBrowserFile($uniqid) {
-		$element = [];
-		if ($this->Session->contains('files_browser')) {
-			foreach ($this->Session['files_browser'] as $file) {
-				if (key_exists('uniqid', $file) && $file['uniqid'] === $uniqid) {
-					$element = $file;
-					break;
-				}
-			}
-		}
-		return $element;
-	}
-
-	/**
 	 * Mark file to restore.
 	 *
 	 * @param string $uniqid file identifier
-	 * @param array $file file properties to mark
+	 * @param array $file_prop file properties to mark
 	 * @return none
 	 */
-	private function markFileToRestore($uniqid, $file) {
+	private function markFileToRestore($uniqid, $file_prop) {
 		if (is_null($uniqid)) {
 			$this->setFilesToRestore();
-		} elseif ($file['name'] != $this->browser_root_dir['name'] && $file['name'] != $this->browser_up_dir['name']) {
+		} elseif ($file_prop['name'] != $this->browser_root_dir['name'] && $file_prop['name'] != $this->browser_up_dir['name']) {
 			$fr = $this->Session['files_restore'];
-			$fr[$uniqid] = $file;
+			$fr[$uniqid] = $file_prop;
 			$this->Session->add('files_restore', $fr);
 		}
 	}
@@ -986,8 +991,9 @@ class RestoreWizard extends BaculumWebPage
 				$dirids[] = $properties['pathid'];
 			} elseif ($properties['type'] == 'file') {
 				$fileids[] = $properties['fileid'];
-				if ($properties['lstat']['linkfi'] !== 0) {
-					$findexes[] = $properties['jobid'] . ',' . $properties['lstat']['linkfi'];
+				$lstat = (array)$properties['lstat'];
+				if ($lstat['linkfi'] !== 0) {
+					$findexes[] = $properties['jobid'] . ',' . $lstat['linkfi'];
 				}
 			}
 		}
