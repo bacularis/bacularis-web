@@ -29,10 +29,6 @@ var Statistics = {
 		const start_time_ts = start_time.getTime();
 		let job_time_ts;
 		for (var i = 0; i < jobs_count; i++) {
-			job_time_ts = iso_date_to_timestamp(this.jobs[i].starttime);
-			if (opts.job_age > 0 && job_time_ts < start_time_ts) {
-				continue;
-			}
 			if (typeof(clients_occupancy[this.jobs[i].clientid]) === 'undefined') {
 				clients_occupancy[this.jobs[i].clientid] = 1;
 			} else {
@@ -49,6 +45,10 @@ var Statistics = {
 				jobs_occupancy[this.jobs[i].name] = 1;
 			} else {
 				jobs_occupancy[this.jobs[i].name] += 1;
+			}
+			job_time_ts = iso_date_to_timestamp(this.jobs[i].starttime);
+			if (opts.job_age > 0 && job_time_ts < start_time_ts) {
+				continue;
 			}
 			if (opts.job_states.hasOwnProperty(this.jobs[i].jobstatus)) {
 				status_type = opts.job_states[this.jobs[i].jobstatus].type;
