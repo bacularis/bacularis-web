@@ -9,8 +9,8 @@
 		</h5>
 	</header>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Enable debug ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Enable debug ]%></div>
+		<div class="w3-quarter w3-col">
 			<com:TCheckBox
 				ID="Debug"
 				CssClass="w3-check"
@@ -19,8 +19,8 @@
 		</div>
 	</div>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Max. number of jobs visible in tables ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Max. number of jobs visible in tables ]%></div>
+		<div class="w3-quarter w3-col">
 			<com:TTextBox
 				ID="MaxJobs"
 				CssClass="w3-input w3-border w3-show-inline-block"
@@ -46,8 +46,8 @@
 		</div>
 	</div>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Show size values as: ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Show size values as: ]%></div>
+		<div class="w3-quarter w3-col">
 			<p><com:TRadioButton
 				ID="DecimalBytes"
 				CssClass="w3-radio"
@@ -62,8 +62,8 @@
 		</div>
 	</div>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Show time in job log: ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Show time in job log: ]%></div>
+		<div class="w3-quarter w3-col">
 			<com:TCheckBox
 				ID="TimeInJobLog"
 				CssClass="w3-check"
@@ -71,8 +71,8 @@
 		</div>
 	</div>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Date and time format: ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Date and time format: ]%></div>
+		<div class="w3-quarter w3-col">
 			<com:TTextBox
 				ID="DateTimeFormat"
 				CssClass="w3-input w3-border w3-show-inline-block"
@@ -114,8 +114,8 @@
 		</script>
 	</div>
 	<div class="w3-container w3-row w3-padding">
-		<div class="w3-third w3-col"><%[ Enable Bacula messages log window: ]%></div>
-		<div class="w3-third w3-col">
+		<div class="w3-quarter w3-col"><%[ Enable Bacula messages log window: ]%></div>
+		<div class="w3-quarter w3-col">
 			<com:TCheckBox
 				ID="EnableMessagesLog"
 				CssClass="w3-check"
@@ -125,6 +125,19 @@
 				<dd><%[ The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned. ]%></dd>
 			</div>
 		</div>
+	</div>
+	<div class="w3-container w3-row w3-padding">
+		<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+			ID="JobAgeOnJobStatusGraph"
+			DirectiveName="Age"
+			Label="<%[ Job age on the job status graph ]%>"
+			Show="true"
+			Required="false"
+			ShowResetButton="false"
+			ShowRemoveButton="false"
+			TimeFormat="hour"
+			Doc="<%[ Set age for jobs to display the job summary pie graph on the dashboard page. Setting zero means displaying the graph for all jobs without limitation. ]%>"
+		/>
 	</div>
 	<div class="w3-center">
 		<com:TActiveLinkButton

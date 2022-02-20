@@ -39,4 +39,17 @@ use Bacularis\Web\Portlets\Portlets;
  * @package Baculum Web
  */
 class ResourceMonitor extends Portlets {
+
+	public $job_age_on_job_status_graph = 0;
+
+	public function onInit($param) {
+		if (get_class($this->Service->getRequestedPage()) == 'Dashboard') {
+			$web_config = $this->getModule('web_config')->getConfig();
+
+			// set job age for job status summary graph
+			if (isset($web_config['baculum']['job_age_on_job_status_graph'])) {
+				$this->job_age_on_job_status_graph = $web_config['baculum']['job_age_on_job_status_graph'];
+			}
+		}
+	}
 }

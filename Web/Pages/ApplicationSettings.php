@@ -59,6 +59,12 @@ class ApplicationSettings extends BaculumWebPage {
 				$this->DateTimeFormat->Text = WebConfig::DEF_DATE_TIME_FORMAT;
 			}
 			$this->EnableMessagesLog->Checked = $this->getModule('web_config')->isMessagesLogEnabled();
+			if (key_exists('job_age_on_job_status_graph', $this->web_config['baculum'])) {
+				$this->JobAgeOnJobStatusGraph->setDirectiveValue($this->web_config['baculum']['job_age_on_job_status_graph']);
+			} else {
+				$this->JobAgeOnJobStatusGraph->setDirectiveValue(0);
+			}
+			$this->JobAgeOnJobStatusGraph->createDirective();
 		}
 	}
 
@@ -72,6 +78,7 @@ class ApplicationSettings extends BaculumWebPage {
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
 			$this->web_config['baculum']['date_time_format'] = $this->DateTimeFormat->Text;
 			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
+			$this->web_config['baculum']['job_age_on_job_status_graph'] = $this->JobAgeOnJobStatusGraph->getValue();
 			$this->getModule('web_config')->setConfig($this->web_config);
 		}
 	}

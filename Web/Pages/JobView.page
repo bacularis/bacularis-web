@@ -768,7 +768,10 @@ var oJobGraphs = {
 	prepare_job_summary: function() {
 		this.destroy_job_summary();
 
-		Statistics.grab_statistics(oData, JobStatus.get_states());
+		Statistics.grab_statistics(oData, {
+			job_states: JobStatus.get_states(),
+			job_age: 0
+		});
 		this.graphs.job_summary = new GraphPieClass({
 			jobs: Statistics.jobs_summary,
 			container_id: this.ids.jobs_summary_graph,

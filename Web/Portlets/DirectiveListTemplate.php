@@ -59,6 +59,7 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 	const GROUP_NAME = 'GroupName';
 	const IS_DIRECTIVE_CREATED = 'IsDirectiveCreated';
 	const COPY_MODE = 'CopyMode';
+	const DOC = 'Doc';
 
 	public $doc;
 
@@ -88,7 +89,7 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 		if (!$this->getPage()->IsCallBack && !$this->getPage()->IsPostBack) {
 			$this->display_directive = $this->getShow();
 		}
-		$this->setDoc();
+		$this->createDoc();
 	}
 
 	public function onLoad($param) {
@@ -220,15 +221,28 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 		$this->setViewState(self::COPY_MODE, $copy_mode, false);
 	}
 
-	public function setDoc() {
-		$component_type = $this->getComponentType();
-		$resource_type = $this->getResourceType();
-		$directive_name = $this->getDirectiveName();
-		$this->doc = $this->Application->getModule('doc_dir')->getDoc(
-			$component_type,
-			$resource_type,
-			$directive_name
-		);
+	public function createDoc() {
+		$doc = $this->getDoc();
+		if (!empty($doc)) {
+			$this->doc = $doc;
+		} else {
+			$component_type = $this->getComponentType();
+			$resource_type = $this->getResourceType();
+			$directive_name = $this->getDirectiveName();
+			$this->doc = $this->Application->getModule('doc_dir')->getDoc(
+				$component_type,
+				$resource_type,
+				$directive_name
+			);
+		}
+	}
+
+	public function setDoc($doc) {
+		$this->setViewState(self::DOC, $doc);
+	}
+
+	public function getDoc() {
+		return $this->getViewState(self::DOC, '');
 	}
 }
 ?>
