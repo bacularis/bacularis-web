@@ -28,6 +28,9 @@
 		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); oJobList.table.responsive.recalc();">
 			<%[ Jobs ]%>
 		</a>
+		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc();">
+			<%[ Reports ]%>
+		</a>
 	</div>
 
 	<!-- Job History List -->
@@ -876,32 +879,739 @@ var oJobList = {
 		});
 	},
 	set_weather: function() {
-		var jobs = oData.terminated_jobs;
-		var jobs_len = jobs.length;
-		for (var i = 0; i < jobs_len; i++) {
-			if (!this.job_weather.hasOwnProperty(jobs[i].name)) {
-				this.job_weather[jobs[i].name] = {count: 0, error: 0};
-			}
-			if (this.job_weather[jobs[i].name].count >= 5) {
-				continue;
-			}
-			this.job_weather[jobs[i].name].count++;
-			if (JobStatus.is_error(jobs[i].jobstatus)) {
-				this.job_weather[jobs[i].name].error++;
-			}
-		}
+		this.job_weather = Weather.get_job_weather(oData.terminated_jobs, 5);
 		this.table.rows().invalidate('data').draw(false);
 	}
 };
 oJobList.init();
+</script>
+	</div>
+	<div class="w3-container tab_item" id="job_reports" style="display: none">
+		<h4><%[ Job history report ]%></h4>
+		<div class="w3-card w3-padding w3-margin-bottom">
+			<span>
+				<label for="job_history_report_date"><%[ Date: ]%></label>
+				<select id="job_history_report_date" class="w3-select w3-border" style="width: 300px"></select>
+			</span>
+			<span>
+				<button type="button" class="w3-button w3-dark-grey" onclick="oJobHistoryReport.prev_report();"><i class="fa fa-arrow-left"></i></button>
+				<button type="button" class="w3-button w3-dark-grey" onclick="oJobHistoryReport.next_report();"><i class="fa fa-arrow-right"></i></button>
+			</span>
+			<span class="w3-margin-left">
+				<label for="job_history_report_date"><%[ List type: ]%></label>
+				&nbsp;<input type="radio" class="w3-radio" id="job_history_report_list_type_all_jobs" name="job_history_report_list_type" value="1" checked />
+				<label for="job_history_report_list_type_all_jobs"> <%[ All jobs ]%></label>
+				&nbsp;<input type="radio" class="w3-radio" id="job_history_report_list_type_all_issues" name="job_history_report_list_type" value="2" title="<%[ Job report with errors and warnings ]%>" />
+				<label for="job_history_report_list_type_all_issues" title="<%[ Job report with errors and warnings ]%>"> <%[ All issues ]%></label>
+				&nbsp;<input type="radio" class="w3-radio" id="job_history_report_list_type_errors_only" name="job_history_report_list_type" value="3" title="<%[ Job report with errors but not warnings ]%>" />
+				<label for="job_history_report_list_type_errors_only" title="<%[ Job report with errors but not warnings ]%>"> <%[ Only errors ]%></label>
+			</span>
+		</div>
+		<div id="job_history_report" class="w3-container" style="display: none">
+			<table id="job_history_report_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom small_padding" style="width: 100%">
+				<thead id="job_history_report_header"></thead>
+				<tbody id="job_history_report_body"></tbody>
+				<tfoot id="job_history_report_footer"></tfoot>
+			</table>
+			<span class="w3-show-inline-block" style="min-width: 20px"><i class="fa fa-check-square w3-text-green w3-large" title="X job(s) finished successfully."></i><sup class="w3-right w3-tiny"> X</sup></span> - <%[ all X jobs finished successfully (no X means one job) ]%>
+			&nbsp;<span class="w3-show-inline-block" style="min-width: 20px"><i class="fa fa-exclamation-triangle w3-text-orange w3-large" title="X/Y jobs finished with error."></i><sup class="w3-right w3-tiny"> X</sup></span> - <%[ X jobs with at least one job finished successfully ]%>
+			&nbsp;<span class="w3-show-inline-block" style="min-width: 20px"><i class="fa fa-exclamation-circle w3-text-red w3-large" title="X/X jobs finished with error."></i><sup class="w3-right w3-tiny"> X</sup></span> - <%[ all X jobs finished with error or cancelled ]%>
+			<div id="job_history_report_details" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-animate-top" style="width: 900px">
+					<header class="w3-container w3-green">
+						<span onclick="$('#job_history_report_details').hide();" class="w3-button w3-xlarge w3-display-topright">&times;</span>
+						<h2 id="job_history_report_details_title"></h2>
+					</header>
+					<div class="w3-container w3-margin-left w3-margin-right">
+						<h4 id="job_history_report_details_date"></h4>
+						<table id="job_history_report_details_table" class="w3-table w3-striped w3-white w3-margin-bottom" style="width: 100%">
+							<thead>
+								<tr>
+									<th><%[ Job log ]%></th>
+									<th>JobId</th>
+									<th><%[ Name ]%></th>
+									<th class="w3-center"><%[ Type ]%></th>
+									<th class="w3-center"><%[ Level ]%></th>
+									<th class="w3-center"><%[ Start time ]%></th>
+									<th class="w3-center"><%[ Job status ]%></th>
+								</tr>
+							</thead>
+							<tbody id="job_history_report_details_table_body"></tbody>
+							<tfoot>
+								<tr>
+									<th><%[ Job log ]%></th>
+									<th>JobId</th>
+									<th><%[ Name ]%></th>
+									<th class="w3-center"><%[ Type ]%></th>
+									<th class="w3-center"><%[ Level ]%></th>
+									<th class="w3-center"><%[ Start time ]%></th>
+									<th class="w3-center"><%[ Job status ]%></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="w3-center w3-padding">
+						<button type="button" class="w3-button w3-green" onclick="$('#job_history_report_details').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<com:TCallback ID="LoadJobLog" OnCallback="loadJobLog" />
+<script>
+let oJobHistoryReportDetails;
+class JobHistoryReportDetails {
+	constructor(opts) {
+		this.ids = {
+			container: 'job_history_report_details',
+			table: 'job_history_report_details_table',
+			body: 'job_history_report_details_table_body',
+			title: 'job_history_report_details_title',
+			date: 'job_history_report_details_date'
+		};
+		this.css = {
+			shown: 'shown',
+			loaded: 'loaded'
+		};
+		this.opts = opts;
+		this.table = null;
+		this.create();
+		this.add_events();
+		this.show();
+	}
+	create() {
+		this.destroy();
+		this.set_title(this.opts.job);
+		this.set_date(this.opts.day);
+		const table_opts = this.get_table_defs();
+		table_opts.data = this.get_jobs(this.opts.job, this.opts.day);
+		this.table = $('#' + this.ids.table).DataTable(table_opts);
+	}
+	destroy() {
+		if (this.table) {
+			this.table.destroy();
+			delete this;
+		}
+	}
+	show() {
+		const container = document.getElementById(this.ids.container);
+		container.style.display = 'block';
+	}
+	add_events() {
+		const self = this;
+		$('#' + this.ids.body).off('click');
+		$('#' + this.ids.body).on('click', 'td.details-control', function () {
+			const tr = $(this).closest('tr');
+			var row = self.table.row(tr);
+
+			if (row.child.isShown()) {
+				// close extra job log row
+				row.child.hide();
+				tr.removeClass(self.css.shown);
+			} else {
+				// open extra job log row
+				if (!tr.hasClass(self.css.loaded)) {
+					const rd = row.data();
+					const id = 'job_history_report_details_joblog_' + rd.jobid;
+					self.get_job_log(rd.jobid);
+					row.child('<div class="w3-code"><pre class="w3-small" id="' + id + '"><div class="w3-center"><i class="fas fa-sync-alt w3-spin w3-xxlarge"></i></div></pre></div>');
+					tr.addClass(self.css.loaded);
+				}
+				tr.addClass(self.css.shown);
+				row.child.show();
+			}
+		});
+	}
+	set_title(jobname) {
+		const title = document.getElementById(this.ids.title);
+		title.textContent = '<%[ Job %jobname details ]%>'.replace('%jobname', jobname);
+	}
+	set_date(day) {
+		const d = oJobHistoryReport.get_date_day(day);
+		const container = document.getElementById(this.ids.date);
+		const df = new Intl.DateTimeFormat('en-US', {weekday: 'long'}).format(d);
+		container.textContent = d.toLocaleDateString() + ' - ' + df;
+	}
+	get_jobs(jobname, day) {
+		if (!oJobHistoryReport || oJobHistoryReport.data.length === 0) {
+			return;
+		}
+		let ret = [];
+		for (const job of oJobHistoryReport.data) {
+			if (job.job === jobname) {
+				ret = job['day' + day];
+			}
+		}
+		return ret;
+	}
+	get_job_log(jobid) {
+		const cb = <%=$this->LoadJobLog->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(jobid);
+		cb.dispatch();
+	}
+	get_table_defs() {
+		const defs = {
+			dom: 'lBfrtip',
+			buttons: [
+				{
+					extend: 'copy',
+					exportOptions: {orthogonal: 'export'}
+				},
+				{
+					extend: 'csv',
+					exportOptions: {orthogonal: 'export'}
+				}
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'jobid'},
+				{data: 'name'},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					}
+				},
+				{
+					data: 'level',
+					render: function(data, type, row) {
+						return (['R', 'D'].indexOf(row.type) === -1 ? JobLevel.get_level(data) : '-');
+					}
+				},
+				{
+					data: 'starttime',
+					render: render_date
+				},
+				{
+					data: 'jobstatus',
+					render: render_jobstatus,
+					className: 'w3-center'
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},{
+				targets: [0, 1, 3, 4, 5, 6],
+				className: 'dt-center'
+			}],
+			order: [1, 'asc'],
+			initComplete: function () {
+				this.api().columns([4]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		}
+		return $.extend(true, {}, defs);
+	}
+}
+class JobHistoryReport {
+	constructor(opts) {
+		this.ids = {
+			container: 'job_history_report',
+			table: 'job_history_report_table',
+			header: 'job_history_report_header',
+			body: 'job_history_report_body',
+			footer: 'job_history_report_footer',
+			date: 'job_history_report_date',
+			all_jobs: 'job_history_report_list_type_all_jobs',
+			all_issues: 'job_history_report_list_type_all_issues',
+			only_errors: 'job_history_report_list_type_errors_only'
+		};
+		this.css = {
+			'iblock': 'w3-show-inline-block',
+			'fright': 'w3-right',
+			'tiny': 'w3-tiny',
+			'pointer': 'pointer'
+		}
+		this.list_types = {
+			all_jobs: 1,
+			all_issues: 2,
+			only_errors: 3
+		};
+		this.table = null;
+		this.data = [];
+		this.set_opts(opts);
+		this.create_report_list();
+		this.add_events();
+		this.prepare_report();
+	}
+	set_opts(opts) {
+		this.opts = opts || {};
+		if (!this.opts.hasOwnProperty('report_year') || !this.opts.hasOwnProperty('report_month')) {
+			const now = new Date();
+			this.opts.report_year = now.getFullYear();
+			this.opts.report_month = now.getMonth() + 1;
+		}
+	}
+	prepare_report() {
+		this.destroy();
+		this.create();
+	}
+	create() {
+		this.create_header();
+		this.create_footer();
+		this.create_body();
+	}
+	create_header() {
+		this.create_head(this.ids.header);
+	}
+	create_footer() {
+		this.create_head(this.ids.footer);
+	}
+	create_head(id) {
+		const container = document.getElementById(id);
+		const tr = document.createElement('TR');
+		const days = this.get_day_range();
+
+		// first column for arrow button
+		let th = document.createElement('TH');
+		tr.appendChild(th);
+
+		// job column
+		th = document.createElement('TH');
+		th.textContent = '<%[ Job ]%>';
+		th.style.paddingLeft = '16px';
+		tr.appendChild(th);
+
+		// day columns
+		for (let i = 1; i <= days; i++) {
+			th = document.createElement('TH');
+			th.textContent = i;
+			tr.appendChild(th);
+		}
+		container.appendChild(tr);
+	}
+	create_body() {
+		const table_opts = this.get_table_defs();
+		table_opts.data = this.data = this.get_jobs();
+
+		const days = this.get_day_range();
+		for (let i = 1; i <= days; i++) {
+			table_opts.columns.push({
+				data: ('day' + i.toString()),
+				render: (data, type, row) => {
+					let status = '';
+					let icon;
+					let span = document.createElement('SPAN');
+					span.classList.add(this.css.iblock);
+					span.style.minWidth = '20px';
+					if (data.length > 0) {
+						span.classList.add(this.css.pointer);
+						const job_weather = Weather.get_job_weather(data);
+						let weather = {error: 0, cancel: 0, count: data.length};
+						if (job_weather.hasOwnProperty(row.job)) {
+							weather = job_weather[row.job];
+						}
+						status = 'T';
+						if (weather.error > 0) {
+							if ((weather.error + weather.cancel) < weather.count) {
+								status = 'W';
+							} else {
+								status = 'E';
+							}
+						} else if (weather.cancel > 0) {
+							if (weather.cancel == weather.count) {
+								status = 'E';
+							} else {
+								status = 'W';
+							}
+						}
+						icon = JobStatus.get_icon(status);
+
+						let title;
+						if (weather.error > 0 || weather.cancel > 0) {
+							if ((weather.error + weather.cancel) == weather.count) {
+								title = '<%[ All %count jobs finished with error or cancelled. ]%>';
+							} else {
+								title = '<%[ %errors/%count jobs finished with error or cancelled. ]%>';
+							}
+						} else {
+							title = '<%[ %count job(s) finished successfully. ]%>';
+						}
+						icon.title = title.replace('%errors', (weather.error + weather.cancel)).replace('%count', weather.count);
+						span.appendChild(icon);
+
+						if (data.length > 1) {
+							const sup = document.createElement('SUP');
+							sup.classList.add(this.css.fright, this.css.tiny);
+							sup.textContent = ' ' + data.length;
+							span.appendChild(sup);
+						}
+
+						span.setAttribute('onclick', 'oJobHistoryReport.open_details_window({job: "' + row.job + '", day: ' + i + '});');
+					} else {
+						icon = document.createElement('SPAN');
+						icon.textContent = '-';
+						icon.title = '<%[ No job ]%>'
+						span.appendChild(icon);
+					}
+					let ret = '';
+					if (type == 'display' || type == 'filter') {
+						ret = span.outerHTML;
+					} else if (type == 'sort' || type == 'export') {
+						ret = status;
+					}
+					return ret;
+				},
+				orderable: false,
+				className: 'dt-center'
+			});
+		}
+		this.table = $('#' + this.ids.table).DataTable(table_opts);
+		const container = document.getElementById(this.ids.container);
+		container.style.display = 'block';
+		this.table.responsive.recalc();
+	}
+	destroy() {
+		if (this.table) {
+			this.table.destroy();
+			$('#' + this.ids.header + ', #' + this.ids.body + ', #' + this.ids.footer).empty();
+		}
+	}
+	add_events() {
+		const report_list = document.getElementById(this.ids.date);
+		report_list.addEventListener('change', () => {
+			const opts = report_list.value.split(';');
+			this.opts.report_year = parseInt(opts[0], 10);
+			this.opts.report_month = parseInt(opts[1], 10);
+			this.prepare_report();
+		});
+		const all_jobs = document.getElementById(this.ids.all_jobs);
+		const all_issues = document.getElementById(this.ids.all_issues);
+		const only_errors = document.getElementById(this.ids.only_errors);
+		$([all_jobs, all_issues, only_errors]).on('click', () => {
+			this.prepare_report();
+		});
+	}
+	open_details_window(opts) {
+		if (oJobHistoryReportDetails) {
+			oJobHistoryReportDetails.destroy();
+		}
+		oJobHistoryReportDetails = new JobHistoryReportDetails(opts);
+	}
+	get_day_range() {
+		const d = new Date(this.opts.report_year, this.opts.report_month, 0);
+		return d.getDate();
+	}
+	get_date_day(day) {
+		return new Date(this.opts.report_year, this.opts.report_month - 1, day);
+	}
+	go_report(direction) {
+		let month = this.opts.report_month;
+		let year = this.opts.report_year;
+		if (direction === -1) {
+			// go back
+			if (month == 1) {
+				month = 12;
+				year--;
+			} else {
+				month--;
+			}
+		} else if (direction === 1) {
+			// go forward
+			if (month == 12) {
+				month = 1;
+				year++;
+			} else {
+				month++;
+			}
+		}
+		const value = [year, month].join(';');
+		const d = document.getElementById(this.ids.date);
+		if (d.querySelector('option[value="' + value + '"]')) {
+			// report exists, select it
+			d.value = value;
+			this.opts.report_month = month;
+			this.opts.report_year = year;
+			this.prepare_report();
+		}
+	}
+	next_report() {
+		this.go_report(1);
+	}
+	prev_report() {
+		this.go_report(-1);
+	}
+	create_report_list() {
+		const job_len = oData.jobs.length;
+		if (job_len == 0) {
+			return;
+		}
+		const first_job = oData.jobs[job_len - 1];
+		const start_time = new Date(first_job.jobtdate * 1000);
+		const end_time = new Date(); // now
+		const start_month = start_time.getMonth();
+		const start_year = start_time.getFullYear();
+		const end_month = end_time.getMonth();
+		const end_year = end_time.getFullYear();
+		const years = (end_time.getFullYear() - start_year) + 1;
+		let year, month, d;
+		OUTER:
+		for (let i = 0; i < years; i++) {
+			INNER:
+			for (let j = 0; j < 12; j++) {
+				if (i == 0 && j < start_month) {
+					// skip beginning months from first year without jobs
+					continue;
+				}
+				year = start_year + i;
+				month = j;
+				if (year == end_year && j > end_month) {
+					// everything added, finish
+					break OUTER;
+				}
+				this.add_report_item(year, month);
+			}
+		}
+	}
+	add_report_item(year, month) {
+		const months = [
+			'<%[ January ]%>',
+			'<%[ February ]%>',
+			'<%[ March ]%>',
+			'<%[ April ]%>',
+			'<%[ May ]%>',
+			'<%[ June ]%>',
+			'<%[ July ]%>',
+			'<%[ August ]%>',
+			'<%[ September ]%>',
+			'<%[ October ]%>',
+			'<%[ November ]%>',
+			'<%[ December ]%>'
+		];
+		const container = document.getElementById(this.ids.date);
+		const option = document.createElement('OPTION');
+		option.value = [year, (month+1)].join(';');
+		const label_format = '%month %year';
+		let label = label_format.replace('%month', months[month]);;
+		label = label.replace('%year', year);
+		option.textContent = label;
+		if (year == this.opts.report_year && month == (this.opts.report_month - 1)) {
+			option.setAttribute('selected', true);
+		}
+		container.appendChild(option);
+	}
+	get_jobs() {
+		let jobs = {};
+		const days = this.get_day_range();
+		const start_time = new Date(this.opts.report_year, (this.opts.report_month - 1), 1);
+		const start_time_ts = start_time.getTime();
+		const end_time = new Date(this.opts.report_year, (this.opts.report_month - 1), days);
+		const end_time_ts = end_time.getTime();
+
+		let job_start_time;
+		let day;
+		for (const job of oData.jobs) {
+			if (JobStatus.is_running(job.jobstatus) || JobStatus.is_waiting(job.jobstatus)) {
+				continue;
+			}
+			job_start_time = iso_date_to_timestamp(job.starttime);
+			if (job_start_time >= start_time_ts && job_start_time <= end_time_ts) {
+				if (!jobs.hasOwnProperty(job.name)) {
+					jobs[job.name] = []
+				}
+				day = (new Date(job_start_time)).getDate();
+				if (!jobs[job.name][day]) {
+					jobs[job.name][day] = [];
+				}
+				jobs[job.name][day].push(job);
+			}
+		}
+		const list_type = this.get_list_type();
+		const job_days = []
+		const added = []
+		let key, job_day;
+		for (const job in jobs) {
+			job_day = {
+				job: job
+			}
+			for (let i = 1; i <= days; i++) {
+				key = 'day' + i.toString();
+				if (jobs[job][i]) {
+					job_day[key] = jobs[job][i];
+				} else {
+					job_day[key] = [];
+				}
+			}
+			if (list_type == this.list_types.all_issues && this.find_issues(job, job_day) == false) {
+				continue;
+			} else if (list_type == this.list_types.only_errors && this.find_errors(job, job_day) == false) {
+				continue;
+			}
+			job_days.push(job_day);
+		}
+		return job_days;
+	}
+	find_issues(jobname, jobs) {
+		let issues = false;
+		let weather;
+		for (const day in jobs) {
+			if (/^day/.test(day) == false || jobs[day].length == 0) {
+				continue;
+			}
+			weather = Weather.get_job_weather(jobs[day]);
+			if (weather[jobname].error > 0) {
+				issues = true;
+				break;
+			}
+			if (weather[jobname].cancel > 0) {
+				issues = true;
+				break;
+			}
+		}
+		return issues;
+	}
+	find_errors(jobname, jobs) {
+		let errors = false;
+		let weather;
+		for (const day in jobs) {
+			if (/^day/.test(day) == false || jobs[day].length == 0) {
+				continue;
+			}
+			weather = Weather.get_job_weather(jobs[day]);
+			if (weather[jobname].error > 0 && weather[jobname].count == (weather[jobname].error + weather[jobname].cancel)) {
+				errors = true;
+				break;
+			}
+			if (weather[jobname].cancel > 0 && weather[jobname].count == weather[jobname].cancel) {
+				errors = true;
+				break;
+			}
+		}
+		return errors;
+	}
+	get_list_type() {
+		let type;
+		const all_jobs = document.getElementById(this.ids.all_jobs);
+		const all_issues = document.getElementById(this.ids.all_issues);
+		const only_errors = document.getElementById(this.ids.only_errors);
+		if (all_jobs.checked) {
+			type = this.list_types.all_jobs;
+		} else if (all_issues.checked) {
+			type = this.list_types.all_issues;
+		} else if (only_errors.checked) {
+			type = this.list_types.only_errors;
+		}
+		return type;
+	}
+	get_table_defs() {
+		const defs = {
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			autoWidth: true,
+			buttons: [
+				{
+					extend: 'copy',
+					exportOptions: {orthogonal: 'export'}
+				},
+				{
+					extend: 'csv',
+					exportOptions: {orthogonal: 'export'}
+				},
+				'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'job',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display') {
+							const span = document.createElement('DIV');
+							span.className = 'w3-margin-left';
+							span.textContent = data;
+							ret = span.outerHTML;
+						}
+						return ret;
+					},
+					responsivePriority: 1
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			}],
+			order: [1, 'asc'],
+			initComplete: function () {
+				this.api().columns([1]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render().unique().sort().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		}
+		return $.extend(true, {}, defs);
+	}
+}
+</script>
+	</div>
+<script>
 MonitorParams = {jobs: null};
+let oJobHistoryReport;
 $(function() {
 	MonitorCalls.push(oJobList.set_weather.bind(oJobList));
+	MonitorCalls.push(() => {
+		oJobHistoryReport = new JobHistoryReport();
+	});
 });
 var url_fragment = get_url_fragment();
 if (url_fragment) {
 	$('#btn_' + url_fragment).click();
 }
 </script>
-	</div>
 </com:TContent>

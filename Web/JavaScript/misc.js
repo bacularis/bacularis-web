@@ -1188,6 +1188,25 @@ var Weather = {
 	],
 	get_weather_icon(idx) {
 		return this.icons[idx];
+	},
+	get_job_weather: function(jobs, last_jobs) {
+		const job_weather = {};
+		const jobs_len = jobs.length;
+		for (let i = 0; i < jobs_len; i++) {
+			if (!job_weather.hasOwnProperty(jobs[i].name)) {
+				job_weather[jobs[i].name] = {count: 0, cancel: 0, error: 0};
+			}
+			if (typeof(last_jobs) == 'number' && job_weather[jobs[i].name].count >= last_jobs) {
+				continue;
+			}
+			job_weather[jobs[i].name].count++;
+			if (JobStatus.is_error(jobs[i].jobstatus)) {
+				job_weather[jobs[i].name].error++;
+			} else if (JobStatus.is_cancel(jobs[i].jobstatus)) {
+				job_weather[jobs[i].name].cancel++;
+			}
+		}
+		return job_weather;
 	}
 };
 

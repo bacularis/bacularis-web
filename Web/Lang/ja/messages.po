@@ -4198,3 +4198,50 @@ msgstr "Set age for jobs to display the job summary pie graph on the dashboard p
 msgid "last %time %unit"
 msgstr "last %time %unit"
 
+msgid "Job %jobname details"
+msgstr "Job %jobname details"
+
+msgid "Reports"
+msgstr "Reports"
+
+msgid "Job history report"
+msgstr "Job history report"
+
+msgid "Date:"
+msgstr "Date:"
+
+msgid "All jobs"
+msgstr "All jobs"
+
+msgid "All issues"
+msgstr "All issues"
+
+msgid "Only errors"
+msgstr "Only errors"
+
+msgid "%count job(s) finished successfully."
+msgstr "%count job(s) finished successfully."
+
+msgid "Job report with errors and warnings"
+msgstr "Job report with errors and warnings"
+
+msgid "Job report with errors but not warnings"
+msgstr "Job report with errors but not warnings"
+
+msgid "all X jobs finished successfully (no X means one job)"
+msgstr "all X jobs finished successfully (no X means one job)"
+
+msgid "X jobs with at least one job finished successfully"
+msgstr "X jobs with at least one job finished successfully"
+
+msgid "all X jobs finished with error or cancelled"
+msgstr "all X jobs finished with error or cancelled"
+
+msgid "All %count jobs finished with error or cancelled."
+msgstr "All %count jobs finished with error or cancelled."
+
+msgid "%errors/%count jobs finished with error or cancelled."
+msgstr "%errors/%count jobs finished with error or cancelled."
+
+msgid "No job"
+msgstr "No job"

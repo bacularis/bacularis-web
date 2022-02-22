@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -183,5 +183,36 @@ class JobList extends BaculumWebPage {
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
 		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+	}
+
+	/**
+	 * Load job log.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 * @return none
+	 */
+	public function loadJobLog($sender, $param) {
+		$jobid = intval($param->getCallbackParameter());
+		if ($jobid == 0) {
+			return;
+		}
+
+		$params = ['joblog', $jobid];
+
+		// add time to log if defiend in configuration
+		if (key_exists('time_in_job_log', $this->web_config['baculum'])) {
+			$query_params = [
+				'show_time' => $this->web_config['baculum']['time_in_job_log']
+			];
+			$params[] = '?' . http_build_query($query_params);
+		}
+		$result = $this->getModule('api')->get($params);
+
+		$log = '';
+		if ($result->error === 0) {
+			$log = implode(PHP_EOL, $result->output);
+		}
+		$this->getCallbackClient()->update('job_history_report_details_joblog_' . $jobid, $log);
 	}
 }
