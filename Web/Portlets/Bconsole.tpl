@@ -4,7 +4,7 @@
 	</div>
 	<div class="w3-container">
 		<div class="w3-threequarter">
-			<com:TActiveTextBox ID="CommandLine" TextMode="SingleLine" CssClass="w3-input w3-border" Style="float: left" Attributes.autofocus="autofocus" />
+			<com:TActiveTextBox ID="CommandLine" TextMode="SingleLine" CssClass="w3-input w3-border" Style="float: left" Attributes.autofocus="autofocus" Attributes.placeholder="<%[ Type bconsole command ]%>" />
 		</div>
 		<div class="w3-quarter">
 			<com:TActiveLinkButton ID="Enter" OnCommand="sendCommand" CssClass="w3-button w3-green w3-margin-left">

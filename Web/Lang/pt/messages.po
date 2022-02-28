@@ -4176,3 +4176,6 @@ msgstr "Display options"
 
 msgid "Features"
 msgstr "Features"
+
+msgid "Type bconsole command"
+msgstr "Type bconsole command"
