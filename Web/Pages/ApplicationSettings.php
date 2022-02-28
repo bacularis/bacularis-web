@@ -44,6 +44,7 @@ class ApplicationSettings extends BaculumWebPage {
 		parent::onInit($param);
 		$this->DecimalBytes->Checked = true;
 		if(count($this->web_config) > 0) {
+			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
 			$this->Debug->Checked = ($this->web_config['baculum']['debug'] == 1);
 			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? intval($this->web_config['baculum']['max_jobs']) : Monitor::DEFAULT_MAX_JOBS);
 			if (key_exists('size_values_unit', $this->web_config['baculum'])) {
@@ -69,16 +70,31 @@ class ApplicationSettings extends BaculumWebPage {
 	}
 
 
-	public function save() {
+	public function saveGeneral($sender, $param) {
 		if (count($this->web_config) > 0) {
+			$this->web_config['baculum']['lang'] = $this->Language->SelectedValue;
 			$this->web_config['baculum']['debug'] = ($this->Debug->Checked === true) ? 1 : 0;
+			$web_config = $this->getModule('web_config');
+			$web_config->setConfig($this->web_config);
+			$web_config->setLanguage($this->Language->SelectedValue);
+		}
+	}
+
+	public function saveDisplay($sender, $param) {
+		if (count($this->web_config) > 0) {
 			$max_jobs = intval($this->MaxJobs->Text);
 			$this->web_config['baculum']['max_jobs'] = $max_jobs;
 			$this->web_config['baculum']['size_values_unit'] = $this->BinaryBytes->Checked ? 'binary' : 'decimal';
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
 			$this->web_config['baculum']['date_time_format'] = $this->DateTimeFormat->Text;
-			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
 			$this->web_config['baculum']['job_age_on_job_status_graph'] = $this->JobAgeOnJobStatusGraph->getValue();
+			$this->getModule('web_config')->setConfig($this->web_config);
+		}
+	}
+
+	public function saveFeatures($sender, $param) {
+		if (count($this->web_config) > 0) {
+			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
 			$this->getModule('web_config')->setConfig($this->web_config);
 		}
 	}

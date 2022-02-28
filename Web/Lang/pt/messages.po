@@ -4170,3 +4170,9 @@ msgstr "%errors/%count jobs finished with error or cancelled."
 
 msgid "No job"
 msgstr "No job"
+
+msgid "Display options"
+msgstr "Display options"
+
+msgid "Features"
+msgstr "Features"
