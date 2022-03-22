@@ -46,6 +46,11 @@ class MainSideBar extends Portlets {
 	 */
 	public $reload_url = '';
 
+	/**
+	 * Is API configured.
+	 */
+	public $is_api = false;
+
 	public function onInit($param) {
 		parent::onInit($param);
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
@@ -56,6 +61,8 @@ class MainSideBar extends Portlets {
 			// do a login try with different user and password to logout current user
 			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
 		}
+		$api_config = $this->getModule('api_config')->getConfig();
+		$this->is_api = count($api_config) > 0;
 	}
 
 	public function logout($sender, $param) {

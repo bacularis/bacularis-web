@@ -4178,3 +4178,6 @@ msgstr "Features"
 
 msgid "Type bconsole command"
 msgstr "Type bconsole command"
+
+msgid "API Panel"
+msgstr "API Panel"

@@ -3,6 +3,9 @@
 		<using namespace="System.I18N.*" />
 	</paths>
 	<modules>
+		<!-- API config modules -->
+		<module id="api_config" class="Bacularis\API\Modules\APIConfig" />
+
 		<!-- config modules -->
 		<module id="web_config" class="Bacularis\Web\Modules\WebConfig" />
 		<module id="host_config" class="Bacularis\Web\Modules\HostConfig" />

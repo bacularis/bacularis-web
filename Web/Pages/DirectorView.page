@@ -12,6 +12,7 @@
 		<a id="btn_director_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_director_config(); W3Tabs.open(this.id, 'director_config');"<%=empty($_SESSION['dir']) ? ' style="display: none"': ''%>>
 			<%[ Configure director ]%>
 		</a>
+		<button id="btn_director_schedule_status" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'director_schedule_status'); oJobScheduleList.table.responsive.recalc();"><%[ Schedule status ]%></button>
 	</div>
 	<div class="w3-container tab_item" id="director_actions">
 		<com:TActiveLinkButton
@@ -1002,5 +1003,11 @@ function load_dir_res_config(resource) {
 				OnRename="renameResource"
 			/>
 		</div>
+	</div>
+	<div class="w3-container tab_item" id="director_schedule_status" style="display: none">
+		<com:Bacularis.Web.Portlets.StatusSchedule
+			ShowClientFilter="true"
+			ShowScheduleFilter="true"
+		/>
 	</div>
 </com:TContent>
