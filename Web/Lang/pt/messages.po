@@ -4182,3 +4182,6 @@ msgstr "Type bconsole command"
 
 msgid "API Panel"
 msgstr "API Panel"
+
+msgid "Go to resource"
+msgstr "Go to resource"

@@ -5,8 +5,9 @@
 		<h5>
 			<b><i class="fa fa-desktop"></i> <%[ Client details ]%></b>
 		</h5>
-	</header>
-	<h3 class="view_header"><%[ Client: ]%> <%=$this->getClientName()%> &nbsp;<span class="w3-small">[ClientId <%=$this->getClientId()%>]</span></h3>
+	</header><br />
+	<h3 class="view_header w3-show-inline-block"><%[ Client: ]%> <%=$this->getClientName()%> &nbsp;<span class="w3-small">[ClientId <%=$this->getClientId()%>]</span></h3>
+	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Client" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('ClientList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_client_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_actions');"><%[ Actions ]%></button>

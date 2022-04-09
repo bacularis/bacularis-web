@@ -5,8 +5,9 @@
 		<h5>
 			<b><i class="fa fa-tape"></i> <%[ Pool details ]%></b>
 		</h5>
-	</header>
-	<h3 class="view_header"><%[ Pool: ]%> <%=$this->getPoolName()%> &nbsp;<span class="w3-small">[PoolId <%=$this->getPoolId()%>]</span></h3>
+	</header><br />
+	<h3 class="view_header w3-show-inline-block"><%[ Pool: ]%> <%=$this->getPoolName()%> &nbsp;<span class="w3-small">[PoolId <%=$this->getPoolId()%>]</span></h3>
+	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Pool" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('PoolList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_pool_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'pool_actions');"><%[ Actions ]%></button>

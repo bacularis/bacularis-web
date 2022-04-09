@@ -8,12 +8,13 @@
 	</header>
 	<h3 class="view_header"><%[ Job: ]%> <%=$this->getJobName()%> &nbsp;<span class="w3-small<%=$this->getJobId() == 0 ? ' hide' : ''%>">[<%[ JobId ]%> <%=$this->getJobId()%>]</span></h3>
 	<com:TActiveLinkButton
-		CssClass="w3-button w3-green w3-margin-left w3-margin-bottom"
+		CssClass="w3-button w3-green w3-margin-left w3-margin-bottom w3-left"
 		OnClick="loadRunJobModal"
 		Attributes.onclick="document.getElementById('run_job').style.display='block'"
 	>
 		<i class="fa fa-undo"></i> &nbsp;<%[ Run job ]%>
 	</com:TActiveLinkButton>
+	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$_SESSION['director']%>" />
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('JobList')%>#<%=$this->getJobId() > 0 ? 'job_history' : 'job_details'%>"><i class="fa fa-angle-left"></i></a>
