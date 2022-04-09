@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -93,7 +93,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	);
 
 	private $field_multple_values = array(
-		'Bacularis\Web\Portlets\ListBox'
+		'ListBox'
 	);
 
 	public $display_directives;
