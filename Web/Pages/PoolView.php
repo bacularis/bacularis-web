@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -69,12 +69,6 @@ class PoolView extends BaculumWebPage {
 		$this->setPoolId($poolid);
 		$this->setPool();
 		$this->setVolumesinPool();
-		$poolshow = $this->getModule('api')->get(
-			array('pools', $this->getPoolId(), 'show')
-		);
-		if ($poolshow->error === 0) {
-			$this->PoolLog->Text = implode(PHP_EOL, $poolshow->output);
-		}
 	}
 
 	public function onPreRender($param) {
@@ -210,6 +204,7 @@ class PoolView extends BaculumWebPage {
 			array()
 		);
 		$this->PoolLog->Text = implode(PHP_EOL, $result->output);
+		$this->getCallbackClient()->show('pool_log');
 	}
 
 	public function updateAllVolumesInPool($sender, $param) {
@@ -222,6 +217,7 @@ class PoolView extends BaculumWebPage {
 		} else {
 			$this->PoolLog->Text = $result->output;
 		}
+		$this->getCallbackClient()->show('pool_log');
 	}
 
 	public function showAssignVolumesWarning($sender, $param) {
