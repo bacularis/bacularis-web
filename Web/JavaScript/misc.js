@@ -239,7 +239,7 @@ var Strings = {
 	}
 }
 
-var PieGraph  = {
+const PieGraphBase  = {
 	pie_label_formatter: function (total, value) {
 		var percents =  (100 * value / total).toFixed(1);
 		if (percents >= 1) {
@@ -265,7 +265,10 @@ var PieGraph  = {
 		var type = e.hit.series.label.split(' ')[0];
 		window.location.href = this.get_addr_by_type(type);
 		return false;
-	},
+	}
+};
+
+const PieGraphJob = {
 	get_addr_by_type: function(type) {
 		var job = '';
 		if (window.location.pathname.startsWith('/web/job/')) {
@@ -278,7 +281,22 @@ var PieGraph  = {
 		}
 		return '/web/job/history/?type=' + type + job;
 	}
-}
+};
+
+const PieGraphPool = {
+	get_addr_by_type: function(volstatus) {
+		var pool = '';
+		if (window.location.pathname.startsWith('/web/pool/')) {
+			const pool_regexp = new RegExp('([^/])+', 'g');
+			const path = decodeURIComponent(window.location.pathname);
+			const result = path.match(pool_regexp);
+			if (result) {
+				pool = '&pool=' + result.pop();
+			}
+		}
+		return '/web/volume/?volstatus=' + volstatus + pool;
+	}
+};
 
 var Formatters = {
 	formatter: [
@@ -948,10 +966,14 @@ var Dashboard = {
 			this.pie.destroy();
 		}
 		this.pie = new GraphPieClass({
-			jobs: this.stats.jobs_summary,
+			data: this.stats.jobs_summary,
 			container_id: this.ids.pie_summary.container_id,
-			legend_container_id: this.ids.pie_summary.legend_container_id,
-			title: this.txt.js_sum_title
+			graph_options: {
+				legend: {
+					container: $('#' + this.ids.pie_summary.legend_container_id)
+				},
+				title: this.txt.js_sum_title
+			}
 		});
 	}
 };

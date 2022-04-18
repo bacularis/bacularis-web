@@ -11,6 +11,7 @@
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('PoolList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_pool_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'pool_actions');"><%[ Actions ]%></button>
+		<button id="btn_pool_graphs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_graphs'); oPoolVolumeStatus.init();"><%[ Graphs ]%></button>
 		<button id="btn_volumes_in_pool" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'volumes_in_pool');oVolumeList.table.responsive.recalc();"><%[ Volumes in pool ]%></button>
 		<com:TLinkButton
 			CssClass="w3-bar-item w3-button tab_btn"
@@ -19,6 +20,9 @@
 			Visible="<%=!empty($_SESSION['dir'])%>"
 		/>
 	</div>
+	<script>
+const oVolumes = <%=json_encode($this->volumes_in_pool)%>;
+	</script>
 	<div class="w3-container tab_item" id="pool_actions">
 		<com:TActiveLinkButton
 			ID="UpdatePoolBtn"
@@ -118,6 +122,106 @@
 				<pre><com:TActiveLabel ID="PoolLog" /></pre>
 			</div>
 		</div>
+	</div>
+	<div class="w3-container tab_item" id="pool_graphs" style="display: none">
+		<div id="job_graph_container">
+			<div>
+				<div id="pool_volume_status_graph" style="height: 310px; cursor: pointer;"></div>
+				<div id="pool_volume_status_legend"></div>
+			</div>
+		</div>
+		<script>
+const oPoolVolumeStatus = {
+	ids: {
+		pool_volume_status_graph: 'pool_volume_status_graph',
+		pool_volume_status_legend: 'pool_volume_status_legend'
+	},
+	txt: {
+		pool_volume_status: {
+			graph_title: '<%[ Pool volume status summary ]%>'
+		}
+	},
+	graphs: {
+		pool_volume_status: null,
+	},
+	colors: {
+		pool_volume_status: {
+			'Append': '#63c422',
+			'Full': 'purple',
+			'Used': '#2980B9',
+			'Error': '#d70808',
+			'Archive': '#FFFF66',
+			'Recycle': '#17A589',
+			'Purged': 'orange',
+			'Read-Only': 'gray',
+			'Disabled': '#dbdbdb',
+			'Busy': '#1150e1',
+			'Cleaning': 'white',
+			'Scratch': 'pink'
+		}
+	},
+	init: function() {
+		this.prepare_pool_volume_status_graph();
+	},
+	prepare_pool_volume_status_graph: function() {
+		this.destroy_pool_volume_status_graph();
+
+		// Sort volumes to have graph labels always in the same order
+		oVolumes.sort((a, b) => {
+			const volstat_a = a.volstatus.toUpperCase();
+			const volstat_b = b.volstatus.toUpperCase();
+			if (volstat_a < volstat_b) {
+				return -1;
+			}
+			if (volstat_a > volstat_b) {
+				return 1;
+			}
+			return 0;
+		});
+
+		const data = {};
+		for (let i = 0; i < oVolumes.length; i++) {
+			if (!data.hasOwnProperty(oVolumes[i].volstatus)) {
+				data[oVolumes[i].volstatus] = [];
+			}
+			data[oVolumes[i].volstatus].push(oVolumes[i]);
+		}
+
+		this.graphs.pool_volume_status = new GraphPieClass({
+			data: data,
+			container_id: this.ids.pool_volume_status_graph,
+			graph_options: {
+				pie: {
+					labelFormatter: (total, value) => {
+						return PieGraphBase.pie_label_formatter.call(PieGraphPool, total, value);
+					}
+				},
+				mouse: {
+					trackFormatter: (e) => {
+						return PieGraphBase.pie_track_formatter.call(PieGraphPool, e);
+					},
+					mouseHandler: (e) => {
+						return PieGraphBase.pie_mouse_handler.call(PieGraphPool, e);
+					}
+				},
+				legend: {
+					container: $('#' + this.ids.pool_volume_status_legend),
+					labelFormatter: (label) => {
+						return PieGraphBase.pie_legend_formatter.call(PieGraphPool, label);
+					}
+				},
+				title: this.txt.pool_volume_status.graph_title,
+				colors: this.colors.pool_volume_status
+			}
+		});
+	},
+	destroy_pool_volume_status_graph: function() {
+		if (this.graphs.pool_volume_status) {
+			this.graphs.pool_volume_status.destroy();
+		}
+	}
+};
+		</script>
 	</div>
 	<div class="w3-container tab_item" id="volumes_in_pool" style="display: none">
 		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
@@ -259,7 +363,7 @@
 			OnRename="showAssignVolumesWarning"
 		/>
 	</div>
-<script type="text/javascript">
+<script>
 $(function() {
 	Formatters.set_formatters();
 });
@@ -274,7 +378,7 @@ var oVolumeList = {
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.volume_list).DataTable({
-			data: <%=json_encode($this->volumes_in_pool)%>,
+			data: oVolumes,
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
@@ -589,5 +693,6 @@ var oVolumeList = {
 	}
 };
 oVolumeList.init();
+<%=$this->getPoolId() > 0 ? "window.history.pushState({}, '', '/web/pool/" . $this->getPoolId() . "/" . $this->getPoolName() . "/')" : ''%>;
 </script>
 </com:TContent>

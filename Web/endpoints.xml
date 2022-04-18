@@ -16,6 +16,7 @@
 	<url ServiceParameter="PoolList" pattern="web/pool/" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/" parameters.poolid="\d+" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{pool}/" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/{pool}/" parameters.poolid="\d+" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="VolumeList" pattern="web/volume/" />
 	<!-- @TODO: Add support for numerical volume names -->
 	<url ServiceParameter="VolumeView" pattern="web/volume/{mediaid}/" parameters.mediaid="\d+" />

@@ -559,7 +559,6 @@ var oJobHistoryList = {
 		container.appendChild(a);
 	},
 	set_filters: function() {
-		var jss = '';
 		var type = get_url_param('type');
 		var search_func;
 		switch (type) {

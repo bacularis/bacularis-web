@@ -1233,11 +1233,11 @@ var GraphClass = jQuery.klass({
 });
 
 var GraphPieClass = jQuery.klass({
-	jobs: [],
+	data: [],
 	container: null,
 	series: null,
 	pie: null,
-	graph_options: {
+	graph_options_def: {
 		colors: ['#63c422', '#d70808', '#FFFF66', 'orange', '#2980B9'],
 		HtmlText: false,
 		fontColor: '#000000',
@@ -1252,61 +1252,71 @@ var GraphPieClass = jQuery.klass({
 		pie: {
 			show : true,
 			explode : 6,
-			labelFormatter: PieGraph.pie_label_formatter,
+			labelFormatter: (total, value) => { // default job pie formatter
+				return PieGraphBase.pie_label_formatter.call(PieGraphJob, total, value);
+			},
 			shadowSize: 4,
 			sizeRatio: 0.77
 		},
 		mouse: {
 			track : true,
-			trackFormatter: PieGraph.pie_track_formatter,
+			trackFormatter: (e) => { // default job mouse track formatter
+				return PieGraphBase.pie_track_formatter.call(PieGraphJob, e);
+			},
 			relative: false,
-			position : 'sw'
+			position : 'sw',
+			mouseHandler: (e) => { // this is custom non-Flotr2 method
+				return PieGraphBase.pie_mouse_handler.call(PieGraphJob, e);
+			}
 		},
 		legend: {
 			noColumns: 3,
 			position : 'se',
 			backgroundColor : '#D2E8FF',
 			margin: 0,
-			labelFormatter: PieGraph.pie_legend_formatter.bind(PieGraph)
+			labelFormatter: (label) => { // default job legend formatter
+				return PieGraphBase.pie_legend_formatter.call(PieGraphJob, label);
+			}
 		}
 	},
 	initialize: function(prop) {
-		this.jobs = prop.jobs;
-		this.title = prop.hasOwnProperty('title') ? prop.title : null;
+		const self = this;
+		this.data = prop.data;
 		this.container = document.getElementById(prop.container_id);
-		this.legend_container = prop.hasOwnProperty('legend_container_id') ? $('#' + prop.legend_container_id) : null;
+		const opts = prop.hasOwnProperty('graph_options') ? prop.graph_options : {};
+		this.graph_options = $.extend(true, this.graph_options_def, opts);
 		this.series = this.prepare_series();
 		this.draw_grah();
 	},
 	prepare_series: function() {
 		var series = [];
 		var label, serie;
-		var job_types = Object.keys(this.jobs);
-		var jobs_count;
-		for (var i = 0; i < job_types.length; i++) {
-			label = job_types[i];
-			jobs_count = this.jobs[label].length;
+		var types = Object.keys(this.data);
+		var data_count;
+		for (var i = 0; i < types.length; i++) {
+			label = types[i];
+			data_count = this.data[label].length;
 			serie = {
-				data: [[0, jobs_count]],
-				label: label + ' (' + jobs_count.toString() + ')',
+				data: [[0, data_count]],
+				label: label + ' (' + data_count.toString() + ')',
 				pie: {
 					explode: 12
 				}
+			}
+			if (this.graph_options.colors && this.graph_options.colors.hasOwnProperty(label)) {
+				serie.color = this.graph_options.colors[label];
 			}
 			series.push(serie);
 		}
 		return series;
 	},
 	draw_grah: function() {
-		var graph_options = $.extend({}, this.graph_options);
-		if (this.title) {
-			graph_options.title = this.title;
-		}
-		if (this.legend_container) {
-			graph_options.legend.container = this.legend_container;
-		}
-		this.pie = Flotr.draw(this.container, this.series, graph_options);
-		Flotr.EventAdapter.observe(this.container, 'flotr:click', PieGraph.pie_mouse_handler.bind(PieGraph));
+		this.pie = Flotr.draw(this.container, this.series, this.graph_options);
+		Flotr.EventAdapter.observe(this.container, 'flotr:click', (e) => {
+			if (typeof(this.graph_options.mouse.mouseHandler) == 'function') {
+				this.graph_options.mouse.mouseHandler(e);
+			}
+		});
 	},
 	destroy: function() {
 		Flotr.EventAdapter.stopObserving(this.container, 'flotr:click');

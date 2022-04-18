@@ -774,10 +774,14 @@ var oJobGraphs = {
 			job_age: 0
 		});
 		this.graphs.job_summary = new GraphPieClass({
-			jobs: Statistics.jobs_summary,
+			data: Statistics.jobs_summary,
 			container_id: this.ids.jobs_summary_graph,
-			legend_container_id: this.ids.jobs_summary_legend,
-			title: this.txt.job_summary.graph_title
+			graph_options: {
+				legend: {
+					container: $('#' + this.ids.jobs_summary_legend)
+				},
+				title: this.txt.job_summary.graph_title
+			}
 		});
 	},
 	prepare_job_size: function(opts) {

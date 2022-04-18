@@ -4174,3 +4174,9 @@ msgstr "API Panel"
 
 msgid "Go to resource"
 msgstr "Go to resource"
+
+msgid "Pool: %pool, Vol. status: %volstatus"
+msgstr "Pool: %pool, Vol. status: %volstatus"
+
+msgid "Pool volume status summary"
+msgstr "Pool volume status summary"

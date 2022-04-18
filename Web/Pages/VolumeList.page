@@ -173,7 +173,8 @@ var oVolumeList = {
 	],
 	ids: {
 		volume_list: 'volume_list',
-		volume_list_body: 'volume_list_body'
+		volume_list_body: 'volume_list_body',
+		table_mode: 'table_mode'
 	},
 	init: function(data) {
 		if (this.table) {
@@ -185,6 +186,7 @@ var oVolumeList = {
 			this.set_table(data);
 			this.set_bulk_actions();
 			this.set_events();
+			this.set_filters();
 		}
 	},
 	update: function(data) {
@@ -201,7 +203,7 @@ var oVolumeList = {
 		this.table = $('#' + this.ids.volume_list).DataTable({
 			data: data,
 			deferRender: true,
-			dom: 'lB<"table_toolbar">frtip',
+			dom: 'lB<"table_toolbar"><"#table_mode">frtip',
 			stateSave: true,
 			buttons: [
 				'copy', 'csv', 'colvis'
@@ -522,6 +524,73 @@ var oVolumeList = {
 			actions: '<%[ Actions ]%>',
 			ok: '<%[ OK ]%>'
 		});
+	},
+	set_mode: function(pool, volstatus) {
+		let mode_txt = '<%[ Pool: %pool, Vol. status: %volstatus ]%>';
+		mode_txt = mode_txt.replace('%pool', pool);
+		mode_txt = mode_txt.replace('%volstatus', volstatus);
+		var container = document.getElementById(this.ids.table_mode);
+		container.className = 'dt-buttons';
+		var mode = document.createTextNode(' <%[ Mode: ]%> ' + mode_txt + ' ');
+		container.appendChild(mode);
+		var label = document.createTextNode(' <%[ Reset table mode ]%>');
+		var a = document.createElement('A');
+		a.className = 'w3-button w3-green';
+		a.href = 'javascript:void(0)';
+		a.addEventListener('click', function(e) {
+			// pop pool and volstatus filter
+			$.fn.dataTable.ext.search.pop();
+
+			// reset select filters
+			this.table.columns().every(function() {
+				var select = this.footer().querySelector('SELECT');
+				if (select) {
+					select.value = '';
+					$(select).trigger('change');
+				}
+				let addr = location.href.replace(/[&;?]?(pool|volstatus)=[^&;]+/, '');
+				history.replaceState({}, '', addr);
+			})
+
+			this.table.columns().search('').draw();
+			container.style.display = 'none';
+		}.bind(this));
+		var img = document.createElement('I');
+		img.className = 'fas fa-sync-alt';
+		a.appendChild(img);
+		a.appendChild(label);
+		container.appendChild(a);
+	},
+	set_filters: function() {
+		const pool = get_url_param('pool');
+		const volstatus = get_url_param('volstatus');
+		let search_func;
+		if (pool) {
+			search_func = function(settings, search_data, index, row_data, counter) {
+				var filter_pool = search_data[5];
+				return (pool == filter_pool);
+			};
+		}
+		var container = document.getElementById(this.ids.table_mode);
+		if (search_func) {
+			$.fn.dataTable.ext.search.push(search_func);
+			this.table.columns().search('').draw();
+			this.set_volstatus_filter();
+			this.set_mode(pool, volstatus);
+			container.style.display = 'inline-block';
+		} else {
+			this.set_volstatus_filter(true);
+			container.style.display = 'none';
+		}
+	},
+	set_volstatus_filter: function(reset) {
+		const volstatus = get_url_param('volstatus');
+		if (volstatus || reset) {
+			// set volstatus filter
+			const select = this.table.column(10).footer().querySelector('SELECT');
+			select.value = reset ? '' : volstatus;
+			$(select).trigger('change');
+		}
 	},
 	reset_filters: function() {
 		// reset table filters
