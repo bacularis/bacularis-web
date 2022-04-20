@@ -1284,7 +1284,7 @@ function estimate_job(jobs, job, level) {
 	return est;
 };
 
-function get_url_param (name) {
+function get_url_param(name) {
 	var url = window.location.href;
 	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
         var results = regex.exec(url);
@@ -1300,7 +1300,7 @@ function get_url_param (name) {
 	return ret;
 }
 
-function get_url_fragment () {
+function get_url_fragment() {
 	var url = window.location.href;
 	var regex = new RegExp('#(.+)$');
 	var results = regex.exec(url);
@@ -1312,6 +1312,20 @@ function get_url_fragment () {
 		ret = decodeURIComponent(ret);
 	}
 	return ret;
+}
+
+function set_url_fragment(fragment) {
+	let url = window.location.href;
+	let prev_fragment = get_url_fragment();
+	if (prev_fragment) {
+		// remove previous fragment
+		prev_fragment = prev_fragment.replace(/\s/g, '+');
+		prev_fragment = encodeURIComponent(prev_fragment);
+		const regex = new RegExp('#' + prev_fragment + '$');
+		url = url.replace(regex, '');
+	}
+	url = url + '#' + fragment;
+	window.history.pushState({}, '', url);
 }
 
 function openElementOnCursor(e, element, offsetX, offsetY) {
@@ -1532,7 +1546,25 @@ function showTip(el, title, description) {
 		});
 }
 
+function set_tab_by_url_fragment() {
+	const fragment = get_url_fragment();
+	// for HTML elements (buttons, anchors...)
+	let btn_el = $('#btn_' + fragment);
+	if (btn_el.length == 0) {
+		// for PRADO controls (TActiveButton, TActiveLinkButton...)
+		const el = document.getElementById(fragment);
+		if (el) {
+			const btn_id = el.getAttribute('data-btn');
+			btn_el = $('#' + btn_id);
+		}
+	}
+	if (btn_el.length == 1) {
+		btn_el.click();
+	}
+}
+
 $(function() {
 	set_sbbr_compatibility();
 	set_icon_css();
+	set_tab_by_url_fragment();
 });

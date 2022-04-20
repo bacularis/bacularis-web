@@ -10,20 +10,22 @@
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Storage" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('StorageList')%>"><i class="fa fa-angle-left"></i></a>
-		<button id="btn_storage_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'storage_actions');"><%[ Actions ]%></button>
+		<button id="btn_storage_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'storage_actions'); set_url_fragment('storage_actions');"><%[ Actions ]%></button>
 		<com:TActiveLinkButton
+			ID="StorageConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'configure_storage');clear_node('#configure_autochanger  div.directive_value');"
+			Attributes.onclick="W3Tabs.open(this.id, 'storage_config'); set_url_fragment('storage_config');"
 			Text="<%[ Configure storage ]%>"
 			Visible="<%=!empty($_SESSION['sd'])%>"
 			OnClick="setStorage"
 		/>
-		<a id="btn_storagedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'configure_storage_daemon');">
+		<a id="btn_storage_daemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'storage_daemon_config'); set_url_fragment('storage_daemon_config');">
 			<%[ Configure storage daemon ]%>
 		</a>
 		<com:TActiveLinkButton
+			ID="ManageAutochangerBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'manage_autochanger');"
+			Attributes.onclick="W3Tabs.open(this.id, 'manage_autochanger'); set_url_fragment('manage_autochanger');"
 			Text="<%[ Manage autochanger ]%>"
 			Visible="<%=$this->getIsAutochanger()%>"
 			OnCallback="loadAutochanger"
@@ -1640,7 +1642,7 @@ MonitorParams = {
 			</div>
 		</div>
 	</div>
-	<div class="w3-container tab_item" id="configure_storage" style="display: none">
+	<div class="w3-container tab_item" id="storage_config" data-btn="<%=$this->StorageConfigBtn->ClientID%>" style="display: none">
 		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 			ID="DIRStorageConfig"
 			ComponentType="dir"
@@ -1648,7 +1650,7 @@ MonitorParams = {
 			ShowCancelButton="false"
 		/>
 	</div>
-	<div class="w3-container tab_item" id="configure_storage_daemon" style="display: none">
+	<div class="w3-container tab_item" id="storage_daemon_config" style="display: none">
 		<com:TCallback ID="LoadStorageDaemonConfig" OnCallback="loadSDStorageDaemonConfig" />
 		<script>
 function load_sd_storagedaemon_config() {
@@ -1665,25 +1667,25 @@ function load_sd_res_config(resource) {
 }
 		</script>
 		<div class="w3-row w3-margin-bottom">
-			<a href="javascript:void(0)" onclick="load_sd_storagedaemon_config(); W3SubTabs.open('sd_storagedaemon_config_btn', 'sd_storagedaemon_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_storagedaemon_config(); W3SubTabs.open('sd_storagedaemon_config_btn', 'sd_storagedaemon_config_form', 'storage_daemon_config');">
 				<div id="sd_storagedaemon_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Storage</div>
 			 </a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Director'); W3SubTabs.open('storagedaemon_director_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Director'); W3SubTabs.open('storagedaemon_director_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_director_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Director</div>
 			</a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Device'); W3SubTabs.open('storagedaemon_device_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Device'); W3SubTabs.open('storagedaemon_device_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_device_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Device</div>
 			</a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Autochanger'); W3SubTabs.open('storagedaemon_autochanger_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Autochanger'); W3SubTabs.open('storagedaemon_autochanger_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_autochanger_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Autochanger</div>
 			</a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Messages'); W3SubTabs.open('storagedaemon_messages_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Messages'); W3SubTabs.open('storagedaemon_messages_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_messages_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Messages</div>
 			</a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Cloud'); W3SubTabs.open('storagedaemon_cloud_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Cloud'); W3SubTabs.open('storagedaemon_cloud_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_cloud_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Cloud</div>
 			</a>
-			<a href="javascript:void(0)" onclick="load_sd_res_config('Statistics'); W3SubTabs.open('storagedaemon_statistics_config_btn', 'sd_resources_config_form', 'configure_storage_daemon');">
+			<a href="javascript:void(0)" onclick="load_sd_res_config('Statistics'); W3SubTabs.open('storagedaemon_statistics_config_btn', 'sd_resources_config_form', 'storage_daemon_config');">
 				<div id="storagedaemon_statistics_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Statistics</div>
 			</a>
 		</div>
@@ -1709,15 +1711,7 @@ function load_sd_res_config(resource) {
 			/>
 		</div>
 	</div>
-	<div class="w3-container tab_item" id="configure_autochanger" style="display: none">
-		<com:Bacularis.Web.Portlets.BaculaConfigDirectives
-			ID="AutochangerConfig"
-			ComponentType="sd"
-			ResourceType="Autochanger"
-			ShowCancelButton="false"
-		/>
-	</div>
-	<div class="w3-container tab_item" id="manage_autochanger" style="display: none">
+	<div class="w3-container tab_item" id="manage_autochanger" data-btn="<%=$this->ManageAutochangerBtn->ClientID%>" style="display: none">
 		<div id="manage_autochanger_not_available">
 			<strong><%[ Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side. ]%></strong>
 		</div>

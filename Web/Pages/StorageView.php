@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -467,16 +467,6 @@ class StorageView extends BaculumWebPage {
 			$out_id,
 			'oStorageActions.refresh_release'
 		);
-	}
-
-
-	public function setAutochanger($sender, $param) {
-		if ($this->getIsAutochanger()) {
-			$this->AutochangerConfig->setComponentName($_SESSION['sd']);
-			$this->AutochangerConfig->setResourceName($this->getDeviceName());
-			$this->AutochangerConfig->setLoadValues(true);
-			$this->AutochangerConfig->raiseEvent('OnDirectiveListLoad', $this, null);
-		}
 	}
 
 	public function loadAutochanger($sender, $param) {

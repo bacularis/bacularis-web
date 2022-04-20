@@ -10,15 +10,10 @@
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Pool" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('PoolList')%>"><i class="fa fa-angle-left"></i></a>
-		<button id="btn_pool_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'pool_actions');"><%[ Actions ]%></button>
-		<button id="btn_pool_graphs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_graphs'); oPoolVolumeStatus.init();"><%[ Graphs ]%></button>
-		<button id="btn_volumes_in_pool" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'volumes_in_pool');oVolumeList.table.responsive.recalc();"><%[ Volumes in pool ]%></button>
-		<com:TLinkButton
-			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'pool_config'); return false;"
-			Text="<%[ Configure pool ]%>"
-			Visible="<%=!empty($_SESSION['dir'])%>"
-		/>
+		<button id="btn_pool_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'pool_actions'); set_url_fragment('pool_actions');"><%[ Actions ]%></button>
+		<button id="btn_pool_graphs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_graphs'); oPoolVolumeStatus.init(); set_url_fragment('pool_graphs');"><%[ Graphs ]%></button>
+		<button id="btn_volumes_in_pool" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'volumes_in_pool');oVolumeList.table.responsive.recalc(); set_url_fragment('volumes_in_pool');"><%[ Volumes in pool ]%></button>
+		<button id="btn_pool_config" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_config'); set_url_fragment('pool_config'); return false;" style="display: <%=!empty($_SESSION['dir']) ? 'inline-block' : 'none'%>"><%[ Configure pool ]%></button>
 	</div>
 	<script>
 const oVolumes = <%=json_encode($this->volumes_in_pool)%>;
@@ -693,6 +688,8 @@ var oVolumeList = {
 	}
 };
 oVolumeList.init();
-<%=$this->getPoolId() > 0 ? "window.history.pushState({}, '', '/web/pool/" . $this->getPoolId() . "/" . $this->getPoolName() . "/')" : ''%>;
+let fragment = get_url_fragment();
+fragment = fragment ? '#' + fragment : '';
+<%=$this->getPoolId() > 0 ? "window.history.pushState({}, '', '/web/pool/" . $this->getPoolId() . "/" . $this->getPoolName() . "/' + fragment)" : ''%>;
 </script>
 </com:TContent>
