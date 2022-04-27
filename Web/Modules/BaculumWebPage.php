@@ -189,8 +189,8 @@ class BaculumWebPage extends BaculumPage {
 		for ($i = 0; $i < count($roles); $i++) {
 			$rpages = $user_role->getPagesByRole($roles[$i]);
 			for ($j = 0; $j < count($rpages); $j++) {
-				if (!in_array($rpages[$i], $pages) && $manager->isPageAllowed($this->User, $rpages[$i])) {
-					$pages[] = $rpages[$i];
+				if (!in_array($rpages[$j], $pages) && $manager->isPageAllowed($this->User, $rpages[$j])) {
+					$pages[] = $rpages[$j];
 				}
 			}
 		}
