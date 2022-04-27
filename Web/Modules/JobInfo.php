@@ -40,6 +40,30 @@ class JobInfo extends WebModule {
 
 	const RESOURCE_PATTERN = '/(?P<resource>\S+(?=:))?:?(\s+((?P<directive>\S+)=(?P<value>[\s\S]*?(?=\s\S+=.+|$))))/';
 	const JOB_TO_VERIFY_PATTERN = '/(?P<directive>JobToVerify)\s(?P<value>[\s\S]*\S)\s*(--\>[\s\S]+)$/';
+	const COMMAND_ACL_USED_BY_WEB = [
+		'gui',
+		'.api',
+		'.jobs',
+		'.ls',
+		'.client',
+		'.fileset',
+		'.pool',
+		'.status',
+		'.storage',
+		'.bvfs_get_jobids',
+		'.bvfs_update',
+		'.bvfs_lsdirs',
+		'.bvfs_lsfiles',
+		'.bvfs_versions',
+		'.bvfs_restore',
+		'.bvfs_cleanup',
+		'restore',
+		'show',
+		'estimate',
+		'run',
+		'delete',
+		'cancel'
+	];
 
 	public function parseResourceDirectives(array $show_out) {
 		$result = [];

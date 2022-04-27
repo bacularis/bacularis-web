@@ -54,6 +54,7 @@ use Bacularis\Common\Modules\OAuth2;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\HostConfig;
+use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\WebConfig;
 use Bacularis\Web\Modules\WebUserRoles;
@@ -1335,30 +1336,7 @@ class Security extends BaculumWebPage {
 
 	public function setAllCommandAcls($sender, $param) {
 		$config = (object)[
-			"CommandAcl" => [
-				'gui',
-				'.api',
-				'.jobs',
-				'.ls',
-				'.client',
-				'.fileset',
-				'.pool',
-				'.status',
-				'.storage',
-				'.bvfs_get_jobids',
-				'.bvfs_update',
-				'.bvfs_lsdirs',
-				'.bvfs_lsfiles',
-				'.bvfs_versions',
-				'.bvfs_restore',
-				'.bvfs_cleanup',
-				'restore',
-				'show',
-				'estimate',
-				'run',
-				'delete',
-				'cancel'
-			]
+			"CommandAcl" => JobInfo::COMMAND_ACL_USED_BY_WEB
 		];
 		$this->ConsoleConfig->setData($config);
 		$this->ConsoleConfig->IsDirectiveCreated = false;
