@@ -4266,3 +4266,111 @@ msgstr "Pool: %pool, Vol. status: %volstatus"
 
 msgid "Pool volume status summary"
 msgstr "Pool volume status summary"
+
+msgid "New user"
+msgstr "New user"
+
+msgid "Step 1 - basic information about new user"
+msgstr "Step 1 - basic information about new user"
+
+msgid "New user wizard"
+msgstr "New user wizard"
+
+msgid "This wizard enables you to create in easy way a new Bacularis user."
+msgstr "This wizard enables you to create in easy way a new Bacularis user."
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Step 2 - assign roles to user"
+msgstr "Step 2 - assign roles to user"
+
+msgid "Assign roles"
+msgstr "Assign roles"
+
+msgid "Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles."
+msgstr "Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles."
+
+msgid "Invalid role value."
+msgstr "Invalid role value."
+
+msgid "Step 3 - assign API hosts"
+msgstr "Step 3 - assign API hosts"
+
+msgid "Assign API hosts"
+msgstr "Assign API hosts"
+
+msgid "In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user."
+msgstr "In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user."
+
+msgid "Step 4 - access to Bacula resources"
+msgstr "Step 4 - access to Bacula resources"
+
+msgid "Bacula resources access"
+msgstr "Bacula resources access"
+
+msgid "Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.)"
+msgstr "Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.)"
+
+msgid "Should this user have access to all Bacula resources or only to specific resources?"
+msgstr "Should this user have access to all Bacula resources or only to specific resources?"
+
+msgid "Access to all shared API host resources (all jobs, all clients, all storages...etc.)"
+msgstr "Access to all shared API host resources (all jobs, all clients, all storages...etc.)"
+
+msgid "Access to selected resources only"
+msgstr "Access to selected resources only"
+
+msgid "Access"
+msgstr "Access"
+
+msgid "Set access"
+msgstr "Set access"
+
+msgid "Access to resources"
+msgstr "Access to resources"
+
+msgid "Select a way to restrict Bacula resources available for the new user:"
+msgstr "Select a way to restrict Bacula resources available for the new user:"
+
+msgid "Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host."
+msgstr "Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host."
+
+msgid "API host jobs:"
+msgstr "API host jobs:"
+
+msgid "Select already existing Console and assign it to the API host."
+msgstr "Select already existing Console and assign it to the API host."
+
+msgid "API host console:"
+msgstr "API host console:"
+
+msgid "Full access to all resources. The Console access is not used."
+msgstr "Full access to all resources. The Console access is not used."
+
+msgid "Step 5 - summary"
+msgstr "Step 5 - summary"
+
+msgid "Resource access"
+msgstr "Resource access"
+
+msgid "Console:"
+msgstr "Console:"
+
+msgid "Create user"
+msgstr "Create user"
+
+msgid "Restricted"
+msgstr "Restricted"
+
+msgid "Select existing API host account to create the new account:"
+msgstr "Select existing API host account to create the new account:"
+
+msgid "Admin API host:"
+msgstr "Admin API host:"
+
+msgid "New API host name:"
+msgstr "New API host name:"
+
+msgid "Access to all available resources"
+msgstr "Access to all available resources"

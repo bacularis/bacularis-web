@@ -999,6 +999,7 @@ oLdapUserSecurity.init();
 	<div class="w3-container tab_item" id="user_list" style="display: none">
 		<div class="w3-panel">
 			<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new user ]%></button>
+			<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
 		</div>
 		<table id="user_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
 			<thead>

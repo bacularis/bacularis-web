@@ -33,6 +33,7 @@
 	<url ServiceParameter="Console" pattern="web/webconsole/" />
 	<url ServiceParameter="ApplicationSettings" pattern="web/settings/" />
 	<url ServiceParameter="Security" pattern="web/security/" />
+	<url ServiceParameter="NewUserWizard" pattern="web/new/user/" />
 	<url ServiceParameter="ConsoleView" pattern="web/console/" />
 	<url ServiceParameter="NewResource" pattern="web/new/{component_type}/{component_name}/{resource_type}/" parameters.component_type="\w+" parameters.component_name="[a-zA-Z0-9:.\-_ ]+" parameters.resource_type="\w+" />
 	<url ServiceParameter="NewResource" pattern="web/new/{host}/{component_type}/{component_name}/{resource_type}/" parameters.host="[a-zA-Z0-9:.\-_ ]+" parameters.component_type="\w+" parameters.component_name="[a-zA-Z0-9:.\-_ ]+" parameters.resource_type="\w+" />

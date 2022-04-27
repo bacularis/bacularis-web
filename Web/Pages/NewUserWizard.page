@@ -1,0 +1,832 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewJobWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fas fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fas fa-user-tag w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Roles" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fas fa-exchange-alt fa-rotate-90 w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="API hosts" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fas fa-copy w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Resources" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fas fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewUserDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewUserDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-user-plus"></i> &nbsp;<%[ Create user ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - basic information about new user ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New user wizard ]%></h2>
+					<p><%[ This wizard enables you to create in easy way a new Bacularis user. ]%></p>
+					<!--p><%[ To start please select job type that you wish to create. ]%></p-->
+				</div>
+				<com:Bacularis.Web.Portlets.DirectiveTextBox
+					ID="Username"
+					DirectiveName="Username"
+					Label="<%[ Username ]%>"
+					ValidationGroup="NewUserDirective"
+					Required="true"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectivePassword
+					ID="UserPassword"
+					DirectiveName="Password"
+					Label="<%[ Password ]%>"
+					ValidationGroup="NewUserDirective"
+					Required="true"
+					Show="<%=$this->isManageUsersAvail()%>"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - assign roles to user ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Assign roles ]%></h2>
+					<p><%[ Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles. ]%></p>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="UserRoles" Text="<%[ Roles: ]%>"/></div>
+						<div class="w3-col" style="width: 400px">
+							<com:TActiveListBox
+								ID="UserRoles"
+								SelectionMode="Multiple"
+								Rows="10"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewUserDirective"
+								ControlToValidate="UserRoles"
+								ErrorMessage="<%[ At least one role must be selected. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<span><a href="javascript:void(0)" onclick="oRoleWindow.open();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a></span>
+				</div>
+			</div>
+			<div id="role_window" class="w3-modal">
+				<div class="w3-modal-content w3-animate-top w3-card-4">
+					<header class="w3-container w3-teal">
+						<span onclick="document.getElementById('role_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+						<h2><%[ Add role ]%></h2>
+					</header>
+					<div class="w3-container w3-margin-left w3-margin-right">
+						<com:TValidationSummary
+							CssClass="field_invalid-summary"
+							ValidationGroup="RoleGroup"
+							AutoUpdate="true"
+							Display="Dynamic"
+							/>
+						<span id="role_window_role_exists" class="error" style="display: none"><ul><li><%[ Role with the given name already exists. ]%></li></ul></span>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="Role" Text="<%[ Role: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="Role"
+									AutoPostBack="false"
+									MaxLength="100"
+									CssClass="w3-input w3-border"
+								/>
+								<com:TRequiredFieldValidator
+									ValidationGroup="RoleGroup"
+									ControlToValidate="Role"
+									ErrorMessage="<%[ Role field cannot be empty. ]%>"
+									ControlCssClass="field_invalid"
+									Display="None"
+								/>
+								<com:TRegularExpressionValidator
+									ValidationGroup="RoleGroup"
+									RegularExpression="<%=WebRoleConfig::ROLE_PATTERN%>"
+									ControlToValidate="Role"
+									ErrorMessage="<%[ Invalid role value. ]%>"
+									ControlCssClass="field_invalid"
+									Display="None"
+								/>
+							</div> &nbsp;<i id="role_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RoleLongName" Text="<%[ Long name: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="RoleLongName"
+									AutoPostBack="false"
+									MaxLength="100"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RoleDescription" Text="<%[ Description: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="RoleDescription"
+									TextMode="MultiLine"
+									Rows="3"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RoleResources" Text="<%[ Resources: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveListBox
+									ID="RoleResources"
+									SelectionMode="Multiple"
+									Rows="6"
+									CssClass="w3-select w3-border"
+									AutoPostBack="false"
+								/>
+								<com:TRequiredFieldValidator
+									ValidationGroup="RoleGroup"
+									ControlToValidate="RoleResources"
+									ErrorMessage="<%[ At least one resource must be selected. ]%>"
+									ControlCssClass="field_invalid"
+									Display="None"
+								/>
+								<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RoleEnabled" Text="<%[ Enabled: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="RoleEnabled"
+									CssClass="w3-check"
+									AutoPostBack="false"
+									Checked="true"
+								/>
+							</div>
+						</div>
+					</div>
+					<footer class="w3-container w3-center w3-padding">
+						<button type="button" class="w3-button w3-red" onclick="document.getElementById('role_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+						<com:TActiveLinkButton
+							ID="RoleSave"
+							ValidationGroup="RoleGroup"
+							CausesValidation="true"
+							OnCallback="saveRole"
+							CssClass="w3-button w3-section w3-teal"
+						>
+							<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+						</com:TActiveLinkButton>
+					</footer>
+				</div>
+			</div>
+<script>
+var oRoleWindow = {
+	ids: {
+		window: 'role_window',
+		exists_msg: 'role_window_role_exists',
+		field_role: '<%=$this->Role->ClientID%>',
+		field_role_long: '<%=$this->RoleLongName->ClientID%>',
+		field_role_desc: '<%=$this->RoleDescription->ClientID%>',
+		field_role_resources: '<%=$this->RoleResources->ClientID%>',
+		field_role_enabled: '<%=$this->RoleEnabled->ClientID%>'
+	},
+	open: function() {
+		var role_field_name = document.getElementById('<%=$this->Role->ClientID%>');
+		document.getElementById(this.ids.exists_msg).style.display = 'none';
+		role_field_name.focus();
+		this.clear_fields();
+		this.show(true);
+	},
+	show: function(show) {
+		const win = document.getElementById(this.ids.window);
+		win.style.display = show ? 'block' : none;
+	},
+	clear_fields: function() {
+		[
+			this.ids.field_role,
+			this.ids.field_role_long,
+			this.ids.field_role_desc,
+			this.ids.field_role_resources
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+		document.getElementById(this.ids.field_role_enabled).checked = true;
+	}
+};
+var oRoles = {
+	save_role_cb: function() {
+		document.getElementById('role_window').style.display = 'none';
+	}
+}
+</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - assign API hosts ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Assign API hosts ]%></h2>
+					<p><%[ In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user. ]%></p>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHosts" Text="<%[ API host: ]%>"/></div>
+						<div class="w3-col" style="width: 400px">
+							<com:TActiveListBox
+								ID="UserAPIHosts"
+								SelectionMode="Multiple"
+								Rows="10"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewUserDirective"
+								ControlToValidate="UserAPIHosts"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<span><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
+					<div id="new_api_host_window" class="w3-modal">
+						<div class="w3-modal-content w3-animate-top w3-card-4">
+							<header class="w3-container w3-teal">
+								<span onclick="document.getElementById('new_api_host_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+								<h2><%[ Add API host ]%></h2>
+							</header>
+							<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+								<p><%[ Select existing API host account to create the new account: ]%></p>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="AdminAPIHost" Text="<%[ Admin API host: ]%>"/></div>
+									<div class="w3-twothird">
+										<com:TActiveDropDownList
+											ID="AdminAPIHost"
+											CssClass="w3-select w3-border"
+											AutoPostBack="false"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="NewAPIHostName" Text="<%[ New API host name: ]%>"/></div>
+									<div class="w3-twothird">
+										<com:TActiveTextBox
+											ID="NewAPIHostName"
+											CssClass="w3-input w3-border w3-show-inline-block"
+											AutoPostBack="false"
+											Attributes.onkeypress="oAPIHosts.on_new_api_host_send(event);"
+										/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+										<com:TRequiredFieldValidator
+											ControlCssClass="field_invalid"
+											Display="Dynamic"
+											ControlToValidate="NewAPIHostName"
+											ValidationGroup="NewAPIHost"
+											ErrorMessage="<%[ Field required. ]%>"
+										/>
+									</div>
+								</div>
+								<div class="w3-row w3-center w3-section">
+									<com:TActiveLinkButton
+										ID="NewAPIHostAction"
+										CssClass="w3-button w3-green"
+										ValidationGroup="NewAPIHost"
+										OnCallback="createAPIHost"
+									>
+										<i class="fas fa-save"></i> &nbsp;<%[ Create ]%>
+									</com:TActiveLinkButton>
+								</div>
+								<com:TActiveLabel ID="NewAPIHostError" CssClass="w3-text-red" Display="None" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<com:TCallback ID="LoadAddAPIHostWindow" OnCallback="TemplateControl.loadAdminAPIHosts" />
+<script>
+var oAPIHosts = {
+	ids: {
+		new_api_host_window: 'new_api_host_window',
+		new_api_host_name: '<%=$this->NewAPIHostName->ClientID%>',
+		new_api_host_btn: '<%=$this->NewAPIHostAction->ClientID%>'
+	},
+	open_new_api_host_window: function() {
+		const cb = <%=$this->LoadAddAPIHostWindow->ActiveControl->Javascript%>;
+		cb.dispatch();
+		this.clear_new_api_host_window();
+		this.show_new_api_host_window(true);
+		const name = document.getElementById(this.ids.new_api_host_name);
+		name.focus();
+	},
+	show_new_api_host_window: function(show) {
+		const win = document.getElementById('new_api_host_window');
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_new_api_host_window: function() {
+		const name = document.getElementById(this.ids.new_api_host_name);
+		name.value = '';
+	},
+	on_new_api_host_send: function(e) {
+		var x = e.which || e.keyCode;
+		if (x === 13) {
+			$('#' + this.ids.new_api_host_btn).click();
+		}
+	}
+};
+</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - access to Bacula resources ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Bacula resources access ]%></h2>
+					<p><%[ Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.) ]%></p>
+					<p><%[ Should this user have access to all Bacula resources or only to specific resources? ]%></p>
+					<p><com:TActiveRadioButton
+						ID="AllResources"
+						GroupName="ResourceAccess"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#new_user_step4_api_host_table_container').slideUp();"
+						Checked="true"
+						/> <label for="<%=$this->AllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
+					<p><com:TActiveRadioButton
+						ID="SelectedResources"
+						GroupName="ResourceAccess"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#new_user_step4_api_host_table_container').slideDown(); oAPIHostList.table.responsive.recalc();"
+						/> <label for="<%=$this->SelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
+
+					<!-- API host table -->
+					<div id="new_user_step4_api_host_table_container" style="display: <%=$this->SelectedResources->Checked ? 'block' : 'none'%>">
+						<table id="new_user_step4_api_host_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th><%[ API host ]%></th>
+									<th><%[ Console ]%></th>
+									<th><%[ Access ]%></th>
+									<th><%[ Action ]%></th>
+								</tr>
+							</thead>
+							<tbody id="new_user_step4_api_host_table_body"></tbody>
+							<tfoot>
+								<tr>
+									<th></th>
+									<th><%[ API host ]%></th>
+									<th><%[ Console ]%></th>
+									<th><%[ Access ]%></th>
+									<th><%[ Action ]%></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<com:TCallback ID="APIHostList" OnCallback="TemplateControl.setAPIHostList" />
+<script>
+var oAPIHostList = {
+	ids: {
+		api_host_list: 'new_user_step4_api_host_table'
+	},
+	table: null,
+	init: function() {
+		this.load();
+	},
+	load: function() {
+		const cb = <%=$this->APIHostList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	reload: function() {
+		if (!this.table) {
+			this.set_table();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+		}
+	},
+	update: function(data) {
+		oAPIHostList.data = data;
+		oAPIHostList.reload();
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.api_host_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'api_host'},
+				{
+					data: 'console',
+					render: function(data, type, row) {
+						let ret;
+						if (type == 'display') {
+							const icon = document.createElement('I');
+							if (data) {
+								icon.className = 'fas fa-check';
+							} else {
+								icon.className = 'fas fa-minus';
+							}
+							ret = icon.outerHTML;
+						} else {
+							ret = data;
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'console',
+					render: function(data, type, row) {
+						const ret = data ? '<%[ Restricted ]%>' : '<%[ Full ]%>';
+						return ret;
+					}
+				},
+				{
+					data: 'api_host',
+					render: function(data, type, row) {
+						let ret = '-';
+						if (data !== 'Main') {
+							var span = document.createElement('SPAN');
+							var edit_btn = document.createElement('BUTTON');
+							edit_btn.className = 'w3-button w3-green';
+							edit_btn.type = 'button';
+							var i = document.createElement('I');
+							i.className = 'fas fa-edit';
+							var label = document.createTextNode(' <%[ Set access ]%>');
+							edit_btn.appendChild(i);
+							edit_btn.innerHTML += '&nbsp';
+							edit_btn.appendChild(label);
+							edit_btn.setAttribute('onclick', 'oConsoleWindow.open("' + data + '")');
+							span.appendChild(edit_btn);
+							ret = span.outerHTML;
+						}
+						return ret;
+					}.bind(this)
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 4 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc']
+		});
+	},
+};
+$(function() {
+	oAPIHostList.init();
+});
+</script>
+					<div id="set_console_window" class="w3-modal">
+						<div class="w3-modal-content w3-animate-top w3-card-4">
+							<header class="w3-container w3-teal">
+								<span onclick="document.getElementById('set_console_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+								<h2><%[ Access to resources ]%></h2>
+							</header>
+							<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+							<p><%[ Select a way to restrict Bacula resources available for the new user: ]%></p>
+
+							<!-- Select jobs -->
+							<p><com:TActiveRadioButton
+								ID="SelectedJobs"
+								GroupName="ResourceAvailability"
+								CssClass="w3-radio"
+								Attributes.onclick="const el1 = $('#new_user_step4_api_host_jobs'); const el2 = $('#new_user_step4_api_host_console'); el1.show(); el2.hide();"
+								Checked="true"
+								/> <label for="<%=$this->SelectedJobs->ClientID%>"><%[ Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host. ]%></label></p>
+							<div id="new_user_step4_api_host_jobs" class="w3-margin-left" style="display: <%=$this->SelectedJobs->Checked ? 'block' : 'none'%>">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="APIHostJobs" Text="<%[ API host jobs: ]%>"/></div>
+									<div class="w3-twothird">
+										<com:TActiveListBox
+											ID="APIHostJobs"
+											SelectionMode="Multiple"
+											Rows="6"
+											CssClass="w3-select w3-border"
+											ValidationGroup="NewAPIHostConsole"
+											AutoPostBack="false"
+										/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+										<com:TRequiredFieldValidator
+											ControlCssClass="field_invalid"
+											Display="Dynamic"
+											ControlToValidate="APIHostJobs"
+											ValidationGroup="NewAPIHostConsole"
+											ErrorMessage="<%[ Field required. ]%>"
+										>
+											<prop:ClientSide.OnValidate>
+												const radio = document.getElementById('<%=$this->SelectedJobs->ClientID%>');
+												sender.enabled = radio.checked;
+											</prop:ClientSide.OnValidate>
+										</com:TRequiredFieldValidator>
+
+										<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+									</div>
+								</div>
+							</div>
+
+							<!-- Select console -->
+							<p><com:TActiveRadioButton
+								ID="ExistingConsole"
+								GroupName="ResourceAvailability"
+								CssClass="w3-radio"
+								Attributes.onclick="const el1 = $('#new_user_step4_api_host_jobs'); const el2 = $('#new_user_step4_api_host_console'); el1.hide(); el2.show();"
+								/> <label for="<%=$this->ExistingConsole->ClientID%>"><%[ Select already existing Console and assign it to the API host. ]%></label></p>
+							<div id="new_user_step4_api_host_console" class="w3-margin-left" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="APIHostConsoles" Text="<%[ API host console: ]%>"/></div>
+									<div class="w3-twothird">
+										<com:TActiveDropDownList
+											ID="APIHostConsoles"
+											CssClass="w3-select w3-border"
+											AutoPostBack="false"
+										/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+									</div>
+								</div>
+								<span><a href="javascript:void(0)" onclick="$('#new_console_window').show(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new console ]%></a></span>
+							</div>
+
+							<!-- Select full access -->
+							<p><com:TActiveRadioButton
+								ID="FullAccess"
+								GroupName="ResourceAvailability"
+								CssClass="w3-radio"
+								Attributes.onclick="const el1 = $('#new_user_step4_api_host_jobs'); const el2 = $('#new_user_step4_api_host_console'); el1.hide(); el2.hide();"
+								/> <label for="<%=$this->FullAccess->ClientID%>"><%[ Full access to all resources. The Console access is not used. ]%></label></p>
+
+
+							<com:TActiveHiddenField ID="AccessWindowAPIHost" />
+							<div class="w3-row w3-center w3-section">
+								<com:TActiveLinkButton
+									ID="NewAPIHostConsole"
+									CssClass="w3-button w3-green"
+									ValidationGroup="NewAPIHostConsole"
+									OnCallback="setResourceAccess"
+								>
+									<i class="fas fa-save"></i> &nbsp;<%[ Save ]%>
+								</com:TActiveLinkButton>
+							</div>
+							<com:TActiveLabel ID="NewAPIHostConsoleError" CssClass="w3-text-red" Display="None" />
+						</div>
+					</div>
+					<div id="new_console_window" class="w3-modal">
+						<div class="w3-modal-content w3-animate-top w3-card-4">
+							<header class="w3-container w3-teal">
+								<span onclick="document.getElementById('new_console_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+								<h2><%[ Add console ]%></h2>
+							</header>
+							<div id="new_user_step4_console_config" class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+								<com:TActiveLinkButton
+									ID="ConsoleBaculumConfig"
+									CssClass="w3-right"
+									OnCommand="setAllCommandAcls"
+									CommandParameter="save"
+								>
+									<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Baculum Web ]%>
+								</com:TActiveLinkButton>
+								<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+									ID="ConsoleConfig"
+									ComponentType="dir"
+									ResourceType="Console"
+									ShowRemoveButton="false"
+									ShowCancelButton="false"
+									ShowBottomButtons="false"
+									SaveDirectiveActionOk="oConsoles.save_console();"
+								/>
+							</div>
+						</div>
+						<com:TCallback ID="ConsoleWindow" OnCallback="TemplateControl.loadConsoleWindow" />
+						<com:TCallback ID="ConsoleList" OnCallback="TemplateControl.setAPIHostConsoles" />
+<script>
+var oConsoleWindow = {
+	ids: {
+		window: 'set_console_window',
+		jobs_radio: '<%=$this->SelectedJobs->ClientID%>',
+		jobs_container: 'new_user_step4_api_host_jobs',
+		console_radio: '<%=$this->ExistingConsole->ClientID%>',
+		console_container: 'new_user_step4_api_host_console',
+		api_host: '<%=$this->AccessWindowAPIHost->ClientID%>'
+	},
+	api_host: null,
+	open: function(data) {
+		this.set_api_host(data);
+		this.load();
+		this.prepare();
+		this.show(true);
+	},
+	set_api_host(api_host) {
+		this.api_host = api_host;
+		const el = document.getElementById(this.ids.api_host);
+		el.value = api_host;
+	},
+	show: function(show) {
+		const win = document.getElementById(oConsoleWindow.ids.window);
+		win.style.display = show ? 'block' : 'none';
+	},
+	load: function() {
+		const cb = <%=$this->ConsoleWindow->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(this.api_host);
+		cb.dispatch();
+	},
+	prepare: function() {
+		const jobs_radio = document.getElementById(this.ids.jobs_radio);
+		jobs_radio.checked = true;
+		const jobs_container = document.getElementById(this.ids.jobs_container);
+		jobs_container.style.display = 'block';
+		const console_container = document.getElementById(this.ids.console_container);
+		console_container.style.display = 'none';
+	}
+};
+const oConsoles = {
+	ids: {
+		config_control: 'new_user_step4_console_config'
+	},
+	load_console_list: function() {
+		const config_control = document.getElementById(this.ids.config_control);
+		const new_resource = config_control.querySelector('div.directive_value input').value;
+		const cb = <%=$this->ConsoleList->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(new_resource);
+		cb.dispatch();
+	},
+	save_console: function() {
+		this.load_console_list();
+		document.getElementById('new_console_window').style.display = 'none';
+	}
+};
+</script>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - summary ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Username ]%></div>
+						<div class="w3-threequarter bold"><%=$this->Username->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Password ]%></div>
+						<div class="w3-threequarter bold"><%=preg_replace('/./', '*', $this->UserPassword->getDirectiveValue())%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Roles ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Roles ]%></div>
+						<div class="w3-threequarter bold"><%=implode('<br />', $this->getMultiSelectValues($this->UserRoles))%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ API hosts ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ API hosts ]%></div>
+						<div class="w3-threequarter bold"><%=implode('<br />', $this->getMultiSelectValues($this->UserAPIHosts))%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Resources ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Resource access ]%></div>
+						<div class="w3-threequarter bold"><%=$this->AllResources->Checked ? Prado::localize('Access to all available resources') : Prado::localize('Access to selected resources only')%></div>
+					</div>
+					<div class="w3-container w3-padding-small" style="display: <%=$this->SelectedResources->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter"><%[ Resources ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getAPIHostsWithConsolesSummary()%></div>
+					</div>
+				</fieldset>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>
