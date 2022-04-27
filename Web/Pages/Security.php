@@ -1800,6 +1800,7 @@ class Security extends BaculumWebPage {
 		OAuth2Record::deleteByPk($host);
 		$api->setHostParams($host, $host_params);
 		$config = $api->get(array('config'), $host, false);
+		OAuth2Record::deleteByPk($host);
 
 		$is_catalog = (is_object($catalog) && $catalog->error === 0);
 		$is_console = (is_object($console) && $console->error === 0);
