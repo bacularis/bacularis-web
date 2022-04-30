@@ -49,10 +49,17 @@ class JobRunscriptRenderer extends DirectiveRenderer {
 
 	public function onInit($param) {
 		parent::onInit($param);
+		$directive_runscript = $this->getSourceTemplateControl();
+		if (!method_exists($directive_runscript, 'removeRunscript')) {
+			return;
+		}
 		if ($this->ItemIndex % self::DIRECTIVE_COUNT === 0) {
 			$alb = new TActiveLinkButton;
 			$alb->CssClass = 'w3-button w3-red w3-right';
-			$alb->OnCommand = 'SourceTemplateControl.removeRunscript';
+			$alb->attachEventHandler(
+				'OnCommand',
+				[$directive_runscript, 'removeRunscript']
+			);
 			$alb->CommandName = $this->ItemIndex / self::DIRECTIVE_COUNT;
 			$alb->Text = '<i class="fa fa-trash-alt"></i> &nbsp;' . Prado::localize('Remove');
 			$this->addParsedObject($alb);
