@@ -31,7 +31,7 @@
 		</div>
 	</div>
 </div>
-<com:TActivePanel ID="ConfigDirectives" Style="margin-bottom: 48px">
+<com:TActivePanel ID="ConfigDirectives" Style="margin-bottom: 48px;" Attributes.data-on-visible="if ($('#<%=$this->RepeaterDirectives->ClientID%>_Container').children().length == 0) { $(this).hide(); $('#bcd_loader_<%=$this->ClientID%>').show(); } else { $('#bcd_loader_<%=$this->ClientID%>').hide(); }">
 	<com:TActiveRepeater
 		ID="RepeaterDirectives"
 		ItemRenderer="Bacularis.Web.Portlets.DirectiveRenderer"
@@ -98,3 +98,4 @@
 		</div>
 	</div>
 </com:TActivePanel>
+<div id="bcd_loader_<%=$this->ClientID%>" class="config_loader"><i class="fas fa-sync-alt fa-spin fa-9x w3-text-green"></i></div>

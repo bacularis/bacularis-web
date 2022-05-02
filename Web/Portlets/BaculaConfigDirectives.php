@@ -271,6 +271,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 				[true]
 			);
 		}
+		$loader_id = 'bcd_loader_' . $this->ClientID;
+		$this->getPage()->getCallbackClient()->hide($loader_id);
+		$this->getPage()->getCallbackClient()->show($this->ConfigDirectives);
 	}
 
 	public function loadDirectives($sender, $param) {
