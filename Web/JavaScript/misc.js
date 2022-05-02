@@ -1563,7 +1563,63 @@ function set_tab_by_url_fragment() {
 	}
 }
 
+function on_element_show(element, callback) {
+	if (typeof(IntersectionObserver) != 'function') {
+		// old browser, no observer
+		return;
+	}
+	new IntersectionObserver((entries, observer) => {
+		entries.forEach(entry => {
+			if (entry.intersectionRatio > 0) {
+				callback(element);
+			}
+		});
+	}).observe(element);
+}
+
+function on_element_hide(element, callback) {
+	if (typeof(IntersectionObserver) != 'function') {
+		// old browser, no observer
+		return;
+	}
+	new IntersectionObserver((entries, observer) => {
+		entries.forEach(entry => {
+			if (entry.intersectionRatio == 0) {
+				callback(element);
+			}
+		});
+	}).observe(element);
+}
+
+function set_custom_events() {
+	// on visible event
+	const on_visible = document.querySelectorAll('[data-on-visible]');
+	let cb;
+	const get_cb_visible = (el) => {
+		return function() {
+			eval(el.getAttribute('data-on-visible'));
+		}.bind(el);
+	};
+	for (let i = 0; i < on_visible.length; i++) {
+		cb = get_cb_visible(on_visible[i]);
+		on_element_show(on_visible[i], cb);
+	}
+
+	// on invisible event
+	const on_invisible = document.querySelectorAll('[data-on-invisible]');
+	const get_cb_invisible = (el) => {
+		return function() {
+			eval(el.getAttribute('data-on-invisible'));
+		}.bind(el);
+	}
+	for (let i = 0; i < on_invisible.length; i++) {
+		cb = get_cb_invisible(on_invisible[i]);
+		on_element_show(on_invisible[i], cb);
+	}
+}
+
 $(function() {
+	set_custom_events();
 	set_sbbr_compatibility();
 	set_icon_css();
 	set_tab_by_url_fragment();
