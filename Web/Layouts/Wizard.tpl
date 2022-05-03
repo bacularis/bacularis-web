@@ -3,7 +3,7 @@
 	<com:THead Title="Bacularis - Bacula Web Interface">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="icon" href="<%=$this->getPage()->getTheme()->getBaseUrl()%>/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="<%~ ../../../../../Common/Images/favicon.ico %>" type="image/x-icon" />
 	</com:THead>
 	<body  class="w3-light-grey">
 		<script type="text/javascript">
@@ -25,8 +25,8 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-responsive-dt/css/responsive.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/opentip/css/opentip.css %> />
-			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../../htdocs/themes/Baculum-v2/css/w3css/w3.css %> />
-			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../../htdocs/themes/Baculum-v2/css/baculum.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />
 			<!-- Top container -->
 				<com:TContentPlaceHolder ID="Wizard" />

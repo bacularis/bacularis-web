@@ -168,7 +168,7 @@ function show_btn_loader(jobid) {
 	for (var i = 0; i < btns.length; i++) {
 		loader = document.createElement('IMG');
 		loader.setAttribute('data-loader-id', jobid);
-		loader.src = '<%=$this->getPage()->getTheme()->getBaseUrl()%>/loader-small.gif';
+		loader.src = '<%~ ../../../../../Common/Images/loader-small.gif %>';
 		loader.style.display = 'none';
 		loader.className = 'btn_loader';
 		btns[i].parentNode.insertBefore(loader, btns[i]);

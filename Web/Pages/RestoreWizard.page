@@ -1,6 +1,6 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
-	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../../htdocs/themes/Baculum-v2/css/restore-wizard.css %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/restore-wizard.css %> />
 	<com:TWizard ID="RestoreWizard"
 		CssClass="wizard"
 		StepStyle.CssClass="w3-container"
