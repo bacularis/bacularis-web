@@ -1300,34 +1300,6 @@ function get_url_param(name) {
 	return ret;
 }
 
-function get_url_fragment() {
-	var url = window.location.href;
-	var regex = new RegExp('#(.+)$');
-	var results = regex.exec(url);
-	var ret;
-	if (!results) {
-		ret = '';
-	} else if (results[1]) {
-		ret = results[1].replace(/\+/g, " ");
-		ret = decodeURIComponent(ret);
-	}
-	return ret;
-}
-
-function set_url_fragment(fragment) {
-	let url = window.location.href;
-	let prev_fragment = get_url_fragment();
-	if (prev_fragment) {
-		// remove previous fragment
-		prev_fragment = prev_fragment.replace(/\s/g, '+');
-		prev_fragment = encodeURIComponent(prev_fragment);
-		const regex = new RegExp('#' + prev_fragment + '$');
-		url = url.replace(regex, '');
-	}
-	url = url + '#' + fragment;
-	window.history.pushState({}, '', url);
-}
-
 function openElementOnCursor(e, element, offsetX, offsetY) {
 	if (!offsetX) {
 		offsetX = 0;
@@ -1546,23 +1518,6 @@ function showTip(el, title, description) {
 		});
 }
 
-function set_tab_by_url_fragment() {
-	const fragment = get_url_fragment();
-	// for HTML elements (buttons, anchors...)
-	let btn_el = $('#btn_' + fragment);
-	if (btn_el.length == 0) {
-		// for PRADO controls (TActiveButton, TActiveLinkButton...)
-		const el = document.getElementById(fragment);
-		if (el) {
-			const btn_id = el.getAttribute('data-btn');
-			btn_el = $('#' + btn_id);
-		}
-	}
-	if (btn_el.length == 1) {
-		btn_el.click();
-	}
-}
-
 function on_element_show(element, callback) {
 	if (typeof(IntersectionObserver) != 'function') {
 		// old browser, no observer
@@ -1622,5 +1577,4 @@ $(function() {
 	set_custom_events();
 	set_sbbr_compatibility();
 	set_icon_css();
-	set_tab_by_url_fragment();
 });

@@ -18,12 +18,12 @@
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('JobList')%>#<%=$this->getJobId() > 0 ? 'job_history' : 'job_details'%>"><i class="fa fa-angle-left"></i></a>
-		<button id="btn_job_log" type="button" class="w3-bar-item w3-button tab_btn <%=$this->getJobId() > 0 ? 'w3-grey' : 'hide'%>" onclick="W3Tabs.open(this.id, 'job_log'); job_callback_func(); oRunningJobStatus.init_refresh(); set_url_fragment('job_log');"><%[ Job log ]%></button>
-		<button id="btn_job_graphs" type="button" class="w3-bar-item w3-button tab_btn<%=$this->getJobId() == 0 ? ' w3-grey' : ''%>" onclick="W3Tabs.open(this.id, 'job_graphs'); oJobGraphs.update(); set_url_fragment('job_graphs');"><%[ Graphs ]%></button>
+		<button id="btn_job_log" type="button" class="w3-bar-item w3-button tab_btn <%=$this->getJobId() > 0 ? 'w3-grey' : 'hide'%>" onclick="W3Tabs.open(this.id, 'job_log'); job_callback_func(); oRunningJobStatus.init_refresh();"><%[ Job log ]%></button>
+		<button id="btn_job_graphs" type="button" class="w3-bar-item w3-button tab_btn<%=$this->getJobId() == 0 ? ' w3-grey' : ''%>" onclick="W3Tabs.open(this.id, 'job_graphs'); oJobGraphs.update();"><%[ Graphs ]%></button>
 		<com:TActiveLinkButton
 			ID="JobConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'job_config'); set_url_fragment('job_config');"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_config');"
 			Text="<%[ Configure job ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
 			OnClick="loadJobConfig"
@@ -31,7 +31,7 @@
 		<com:TActiveLinkButton
 			ID="FilesetConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config'); set_url_fragment('fileset_config');"
+			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config');"
 			Text="<%[ Configure fileset ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
 			OnClick="loadFileSetConfig"
@@ -39,18 +39,18 @@
 		<com:TActiveLinkButton
 			ID="ScheduleConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config'); set_url_fragment('schedule_config');"
+			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config');"
 			Text="<%[ Configure schedule ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
 			OnClick="loadScheduleConfig"
 		/>
-		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_url_fragment('job_history');"><%[ Job history ]%></button>
+		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc();"><%[ Job history ]%></button>
 		<com:TActiveLinkButton
 			ID="JobSchedulesBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
 			Text="<%[ Job schedules ]%>"
 			OnCallback="loadSchedules"
-			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_url_fragment('job_schedules');"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules');"
 		/>
 	</div>
 

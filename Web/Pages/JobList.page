@@ -1608,9 +1608,5 @@ $(function() {
 		oJobHistoryReport = new JobHistoryReport();
 	});
 });
-var url_fragment = get_url_fragment();
-if (url_fragment) {
-	$('#btn_' + url_fragment).click();
-}
 </script>
 </com:TContent>

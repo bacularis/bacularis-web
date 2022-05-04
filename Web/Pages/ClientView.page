@@ -10,17 +10,17 @@
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Client" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('ClientList')%>"><i class="fa fa-angle-left"></i></a>
-		<button id="btn_client_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_actions'); set_url_fragment('client_actions');"><%[ Actions ]%></button>
-		<button id="btn_client_jobs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_jobs'); oJobForClientList.table.responsive.recalc(); set_url_fragment('client_jobs');"><%[ Jobs for Client ]%></button>
+		<button id="btn_client_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_actions');"><%[ Actions ]%></button>
+		<button id="btn_client_jobs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_jobs'); oJobForClientList.table.responsive.recalc();"><%[ Jobs for Client ]%></button>
 		<com:TActiveLinkButton
 			ID="ClientConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'client_config'); set_url_fragment('client_config');"
+			Attributes.onclick="W3Tabs.open(this.id, 'client_config');"
 			Text="<%[ Configure client ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
 			OnClick="setDIRClientConfig"
 		/>
-		<a id="btn_filedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_fd_filedaemon_config(); W3Tabs.open(this.id, 'filedaemon_config'); set_url_fragment('filedaemon_config');">
+		<a id="btn_filedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_fd_filedaemon_config(); W3Tabs.open(this.id, 'filedaemon_config');">
 			<%[ Configure file daemon ]%>
 		</a>
 		<com:TLabel ID="UserAPIHostsContainter" CssClass="w3-right w3-margin-right">
