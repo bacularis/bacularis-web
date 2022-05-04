@@ -770,7 +770,7 @@ class NewUserWizard extends BaculumWebPage {
 	}
 
 	public function wizardStop($sender, $param) {
-		$this->goToPage('Security');
+		$this->goToPage('Security', null, 'user_list');
 	}
 
 	/**
