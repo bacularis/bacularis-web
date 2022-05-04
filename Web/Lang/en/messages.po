@@ -4288,3 +4288,6 @@ msgstr "New API host name:"
 
 msgid "Access to all available resources"
 msgstr "Access to all available resources"
+
+msgid "Client jobs"
+msgstr "Client jobs"
