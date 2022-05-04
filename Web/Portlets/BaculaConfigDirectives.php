@@ -271,8 +271,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 				[true]
 			);
 		}
-		$loader_id = 'bcd_loader_' . $this->ClientID;
-		$this->getPage()->getCallbackClient()->hide($loader_id);
+		$this->showLoader(false);
 		$this->getPage()->getCallbackClient()->show($this->ConfigDirectives);
 	}
 
@@ -448,6 +447,22 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 
 	public function setSaveDirectiveActionOK($action_ok) {
 		$this->setViewState(self::SAVE_DIRECTIVE_ACTION_OK, $action_ok);
+	}
+
+	/**
+	 * Show or hide loader.
+	 *
+	 * @param bool $show if true, loader is displayed, if false it is hidden
+	 * @return none
+	 */
+	public function showLoader($show) {
+		$cbc = $this->getPage()->getCallbackClient();
+		$lid = 'bcd_loader_' . $this->ClientID;
+		if ($show) {
+			$cbc->show($lid);
+		} else {
+			$cbc->hide($lid);
+		}
 	}
 
 	/**

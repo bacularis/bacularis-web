@@ -530,6 +530,7 @@ class JobView extends BaculumWebPage {
 				$this->FileSetConfig->unloadDirectives();
 			} else {
 				$this->ScheduleConfig->unloadDirectives();
+				$this->ScheduleConfig->showLoader(false);
 			}
 		}
 	}
