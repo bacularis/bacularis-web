@@ -74,7 +74,7 @@
 			<i class="fa fa-reply"></i> &nbsp;<%[ Restore ]%>
 		</com:TActiveLinkButton>
 		<com:TActiveLinkButton ID="DeleteBtn" CssClass="w3-button w3-red w3-margin-bottom w3-right" Attributes.onclick="$('#job_delete_confirm').show(); return false;">
-			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Delete ]%>
+			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Delete job ]%> <%=$this->getJobId()%>
 		</com:TActiveLinkButton>
 		<div class="w3-panel w3-card w3-light-grey" style="clear: right;">
 			<h5><%[ Job: ]%> <%=$this->getJobUname()%> &nbsp;
