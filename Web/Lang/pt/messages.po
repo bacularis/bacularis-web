@@ -3036,11 +3036,11 @@ msgstr "Configuração do director do Bconsole:"
 msgid "The console ACLs enable to define available resources for users. The consoles are used in the Bacula configuration on the API host side. There is possible to assign the consoles to the API basic users or to the OAuth2 clients. The assign relation for the basic users is: Console ACL -&gt; API basic user -&gt; API host -&gt; User account. For OAuth2 clients the assign relation is: Console ACL -&gt; OAuth2 client -&gt; API host -&gt; User account."
 msgstr "As ACLs de console ativam a definição de recursos disponíveis para os usuários. Os consoles são usados na configuração do Bacula no lado do host da API. É possível atribuir os consoles para usuários básicos da API ou para os clientes OAuth2. A relação de atribuição para usuários básicos é: ACL do console -&gt; usuário básico da API -&gt; host da API -&gt; conta de usuário. Para os clientes OAuth2, a relação de atribuição é: ACL do console -&gt; cliente OAuth2 -&gt; host de API -&gt; conta de usuário."
 
-msgid "The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Baculum API."
-msgstr "Os clientes OAuth2 estão configurados nos hosts API. Para criar os clientes OAuth2 a partir desta página, você precisa ter um escopo 'oauth2' na conta OAuth2 relacionada com sua conta de administrador atual. As contas de cliente OAuth2 também são possíveis de criar diretamente no painel da API Baculum."
+msgid "The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Bacularis API."
+msgstr "Os clientes OAuth2 estão configurados nos hosts API. Para criar os clientes OAuth2 a partir desta página, você precisa ter um escopo 'oauth2' na conta OAuth2 relacionada com sua conta de administrador atual. As contas de cliente OAuth2 também são possíveis de criar diretamente no painel da API Bacularis."
 
-msgid "The API hosts define connection parameters to hosts with the Baculum API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Baculum API instance."
-msgstr "O host de API define parâmetros de conexão para hosts com as instâncias da API do Baculum. Você pode criar as conexões de host de API dedicadas a usuários específicos atribuindo hosts de API a eles na guia Usuários. É possível criar muitas conexões de host de API para a mesma instância do Baculum API."
+msgid "The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance."
+msgstr "O host de API define parâmetros de conexão para hosts com as instâncias da API do Bacularis. Você pode criar as conexões de host de API dedicadas a usuários específicos atribuindo hosts de API a eles na guia Usuários. É possível criar muitas conexões de host de API para a mesma instância do Bacularis API."
 
 msgid "Set all CommandAcls used by Baculum Web"
 msgstr "Definir todos os comandos ACL's usados pelo Baculum"
@@ -3897,9 +3897,9 @@ msgstr "Usuários básicos da API"
 msgid "API OAuth2 clients"
 msgstr "Clientes API OAuth2"
 
-msgid "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Baculum Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Baculum API."
+msgid "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API."
 msgstr "Os usuários básicos da API estão configurados nos hosts da API e são usados para acessar os hosts da API. As alterações introduzidas nesta página são feitas diretamente no host API atualmente utilizado. \n"
-"Você pode usar as credenciais básicas do usuário para conectar hosts da API no Baculum Web na aba 'Servidores da API'. As contas de usuário básicas também são possíveis de criar diretamente no painel da API do Baculum."
+"Você pode usar as credenciais básicas do usuário para conectar hosts da API no Bacularis Web na aba 'Servidores da API'. As contas de usuário básicas também são possíveis de criar diretamente no painel da API do Bacularis."
 
 msgid "Add new API basic user"
 msgstr "Adicionar novo usuário básico de API"

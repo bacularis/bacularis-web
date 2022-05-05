@@ -2198,7 +2198,7 @@ $(function() {
 		<com:TActiveHiddenField ID="ConsoleWindowType" />
 	</div>
 	<div class="w3-container tab_item" id="api_basic_user_list" style="display: none;">
-		<p class="w3-hide-small"><%[ The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Baculum Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Baculum API. ]%></p>
+		<p class="w3-hide-small"><%[ The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API. ]%></p>
 		<div id="api_basic_user_btn" class="w3-panel">
 			<button type="button" id="add_api_basic_user_btn" class="w3-button w3-green" onclick="oAPIBasicUsers.load_api_basic_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API basic user ]%></button>
 		</div>
@@ -2608,7 +2608,7 @@ $(function() {
 		<com:TActiveHiddenField ID="APIBasicUserWindowType" />
 	</div>
 	<div class="w3-container tab_item" id="oauth2_client_list" style="display: none">
-		<p class="w3-hide-small"><%[ The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Baculum API. ]%></p>
+		<p class="w3-hide-small"><%[ The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Bacularis API. ]%></p>
 		<div id="oauth2_client_btn" class="w3-panel">
 			<button type="button" id="add_oauth2_client_btn" class="w3-button w3-green" onclick="oOAuth2Clients.load_oauth2_client_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OAuth2 client ]%></button>
 		</div>
@@ -3031,7 +3031,7 @@ $(function() {
 		<com:TActiveHiddenField ID="OAuth2ClientWindowType" />
 	</div>
 	<div class="w3-container tab_item" id="api_host_list" style="display: none">
-		<p class="w3-hide-small"><%[ The API hosts define connection parameters to hosts with the Baculum API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Baculum API instance. ]%></p>
+		<p class="w3-hide-small"><%[ The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance. ]%></p>
 		<div class="w3-panel">
 			<button type="button" id="add_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_api_host_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></button>
 		</div>
