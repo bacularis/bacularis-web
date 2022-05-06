@@ -1224,6 +1224,7 @@ class JobHistoryReport {
 					span.style.minWidth = '20px';
 					if (data.length > 0) {
 						span.classList.add(this.css.pointer);
+						span.style.position = 'relative';
 						const job_weather = Weather.get_job_weather(data);
 						let weather = {error: 0, cancel: 0, count: data.length};
 						if (job_weather.hasOwnProperty(row.job)) {
@@ -1261,6 +1262,8 @@ class JobHistoryReport {
 						if (data.length > 1) {
 							const sup = document.createElement('SUP');
 							sup.classList.add(this.css.fright, this.css.tiny);
+							sup.style.position = 'absolute';
+							sup.style.right = '-0.5em';
 							sup.textContent = ' ' + data.length;
 							span.appendChild(sup);
 						}
