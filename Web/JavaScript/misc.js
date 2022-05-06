@@ -1573,6 +1573,22 @@ function set_custom_events() {
 	}
 }
 
+// Set in the page title a value in parenthesis.
+function set_page_title_value(value) {
+	let title = document.title;
+	const val = parseInt(value, 10);
+
+	// remove previous value (if any)
+	title = title.replace(/^\(\d+\) /, '');
+
+	// set new value
+	if (val > 0) {
+		document.title = '(' + val + ') ' + title;
+	} else {
+		document.title = title;
+	}
+}
+
 $(function() {
 	set_custom_events();
 	set_sbbr_compatibility();

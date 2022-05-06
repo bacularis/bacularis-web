@@ -48,8 +48,8 @@ $(function() {
 					});
 					Dashboard.update_all(Statistics);
 				}
-
-				if (oData.running_jobs.length > 0) {
+				const running_jobs_len = oData.running_jobs.length
+				if (running_jobs_len > 0) {
 					refreshInterval =  callback_time_offset + default_fast_refresh_interval;
 				} else {
 					refreshInterval = default_refresh_interval;
@@ -57,7 +57,8 @@ $(function() {
 				if (typeof(job_callback_func) == 'function') {
 					job_callback_func();
 				}
-				document.getElementById('running_jobs').textContent = oData.running_jobs.length;
+				document.getElementById('running_jobs').textContent = running_jobs_len;
+				set_page_title_value(running_jobs_len);
 				timeout_handler = setTimeout("oMonitor()", refreshInterval);
 
 				var calls_len = MonitorCalls.length;
