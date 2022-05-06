@@ -16,8 +16,8 @@
 			</div>
 		</div>
 		<footer class="w3-container w3-center">
+			<button class="w3-button w3-green w3-section" onclick="MsgEnvelope.close();"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
 			<button class="w3-button w3-red w3-section w3-margin-right" onclick="msg_envelope_truncate();"><i class="fas fa-cut"></i> &nbsp;<%[ Truncate log ]%></button>
-			<button class="w3-button w3-red w3-section" onclick="MsgEnvelope.close();"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
 		</footer>
 	</div>
 </div>
