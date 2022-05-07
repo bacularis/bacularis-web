@@ -65,6 +65,7 @@
 		</com:TForm>
 		<div id="small" class="w3-hide-large"></div>
 <com:Bacularis.Web.Portlets.ErrorMessageBox />
+<com:Bacularis.Web.Portlets.InfoMessageBox />
 <com:Bacularis.Web.Portlets.ResourceMonitor />
 <com:Bacularis.Web.Portlets.MsgEnvelope Visible="<%=($this->Application->getModule('web_config')->isMessagesLogEnabled() && $this->User->isInRole(WebUserRoles::ADMIN))%>" />
 <script>

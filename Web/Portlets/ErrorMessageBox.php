@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -28,8 +28,6 @@
  */
 
 namespace Bacularis\Web\Portlets;
-
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Error message box - displays global errors and problems.

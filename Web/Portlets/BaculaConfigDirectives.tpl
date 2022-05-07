@@ -1,32 +1,18 @@
-<com:TActiveLabel ID="RemoveResourceError" Display="None" CssClass="w3-text-red" />
-<div id="resource_remove_ok" class="w3-modal" style="display: none">
-	<div class="w3-modal-content w3-card-4 w3-green w3-padding-large w3-animate-zoom" style="width:600px">
-		<span onclick="document.getElementById('resource_remove_ok').style.display='none'; window.history.back();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
-		<p><com:TActiveLabel ID="RemoveResourceOk" Display="None" /></p>
-	</div>
-</div>
 <div class="w3-modal resource_remove_confirm" style="display: none">
 	<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
         	<span onclick="$(this).closest('div.resource_remove_confirm').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
 		<h2><%[ Remove resource ]%></h2>
 		<p><%[ Are you sure you want to remove this resource? ]%></p>
 		<div class="w3-center">
-			<button type="button" class="w3-button w3-red" onclick="$(this).closest('div.resource_remove_confirm').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+			<button type="button" class="w3-button w3-green" onclick="$(this).closest('div.resource_remove_confirm').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
 			<com:TActiveLinkButton
 				ID="RemoveResource"
 				OnCommand="SourceTemplateControl.removeResource"
-				CssClass="w3-button w3-green button_fixed"
+				CssClass="w3-button w3-red button_fixed"
 				Visible="<%=$this->ShowRemoveButton && $this->LoadValues%>"
 				Attributes.onclick="$(this).closest('div.resource_remove_confirm').hide();"
 			>
 				<prop:Text><i class="fa fa-trash-alt"></i> &nbsp;<%=Prado::localize('Remove resource')%></prop:Text>
-				<prop:ClientSide.OnComplete>
-					var remove_ok = document.getElementById('<%=$this->RemoveResourceOk->ClientID%>');
-					if (remove_ok.style.display != 'none') {
-						$('#<%=$this->ConfigDirectives->ClientID%>').slideUp();
-						document.getElementById('resource_remove_ok').style.display = 'block';
-					}
-				</prop:ClientSide.OnComplete>
 			</com:TActiveLinkButton>
 		</div>
 	</div>

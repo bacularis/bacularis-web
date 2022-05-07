@@ -4291,3 +4291,6 @@ msgstr "Access to all available resources"
 
 msgid "Client jobs"
 msgstr "Client jobs"
+
+msgid "Information"
+msgstr "Information"

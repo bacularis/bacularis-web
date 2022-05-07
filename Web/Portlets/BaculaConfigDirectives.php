@@ -537,9 +537,13 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			$resource_type,
 			$resource_name
 		);
-		$this->RemoveResourceOk->Text = $msg;
-		$this->getPage()->getCallbackClient()->hide($this->RemoveResourceError);
-		$this->getPage()->getCallbackClient()->show($this->RemoveResourceOk);
+		$cc = $this->getPage()->getCallbackClient();
+		$cc->callClientFunction('show_info', [
+			$msg,
+			null,
+			true
+		]);
+		$cc->slideUp($this->ConfigDirectives);
 	}
 
 	/**
@@ -549,9 +553,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @return none
 	 */
 	private function showRemovedResourceError($error_message) {
-		$this->RemoveResourceError->Text = $error_message;
-		$this->getPage()->getCallbackClient()->hide($this->RemoveResourceOk);
-		$this->getPage()->getCallbackClient()->show($this->RemoveResourceError);
+		$this->getPage()->getCallbackClient()->callClientFunction('show_error', [
+			$error_message
+		]);
 	}
 
 	/**
