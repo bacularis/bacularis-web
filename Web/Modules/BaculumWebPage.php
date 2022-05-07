@@ -52,6 +52,13 @@ class BaculumWebPage extends BaculumPage {
 	 */
 	const DEFAULT_AUTH_USER = 'admin';
 
+	/*
+	 * It is security delay that tells how many seconds user needs to wait
+	 * after log in failed error to be able to do next log in try.
+	 * The value is in seconds.
+	 */
+	const LOGIN_FAILED_DELAY = 5;
+
 	protected $web_config = array();
 
 	public function onPreInit($param) {
@@ -59,6 +66,7 @@ class BaculumWebPage extends BaculumPage {
 		$this->web_config = $this->getModule('web_config')->getConfig();
 
 		if ($this->authenticate() === false) {
+			sleep(self::LOGIN_FAILED_DELAY);
 			exit();
 		}
 

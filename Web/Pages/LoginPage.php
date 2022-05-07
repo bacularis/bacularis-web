@@ -106,6 +106,7 @@ class LoginPage extends BaculumWebPage {
 		if ($success === true) {
 			$this->goToDefaultPage();
 		} else {
+			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 			$this->Msg->Display = 'Fixed';
 		}
 	}
