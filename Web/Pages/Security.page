@@ -601,7 +601,7 @@
 					<span onclick="oUserSecurity.show_user_modal(false);" class="w3-button w3-display-topright">×</span>
 					<h2 id="get_users_table_title"></h2>
 				</header>
-				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; overflow-x: auto; margin: 10px auto;">
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
 					<table id="get_users_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%;">
 						<thead>
 							<tr>
