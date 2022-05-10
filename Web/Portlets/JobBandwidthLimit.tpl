@@ -1,6 +1,6 @@
 <div id="job_bandwidth_limit_popup" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal">
+		<header class="w3-container w3-green">
 			<span onclick="oJobBandwidthLimit.close_popup();" class="w3-button w3-display-topright">&times;</span>
 			<h2><%[ Set job bandwidth limit ]%> - <%[ JobId: ]%> <com:TActiveLabel ID="JobIdLabel" /></h2>
 		</header>

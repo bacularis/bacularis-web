@@ -179,7 +179,7 @@
 			</div>
 			<div id="role_window" class="w3-modal">
 				<div class="w3-modal-content w3-animate-top w3-card-4">
-					<header class="w3-container w3-teal">
+					<header class="w3-container w3-green">
 						<span onclick="document.getElementById('role_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 						<h2><%[ Add role ]%></h2>
 					</header>
@@ -281,7 +281,7 @@
 							ValidationGroup="RoleGroup"
 							CausesValidation="true"
 							OnCallback="saveRole"
-							CssClass="w3-button w3-section w3-teal"
+							CssClass="w3-button w3-section w3-green"
 						>
 							<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 						</com:TActiveLinkButton>
@@ -357,7 +357,7 @@ var oRoles = {
 					<span><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
 					<div id="new_api_host_window" class="w3-modal">
 						<div class="w3-modal-content w3-animate-top w3-card-4">
-							<header class="w3-container w3-teal">
+							<header class="w3-container w3-green">
 								<span onclick="document.getElementById('new_api_host_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 								<h2><%[ Add API host ]%></h2>
 							</header>
@@ -610,7 +610,7 @@ $(function() {
 </script>
 					<div id="set_console_window" class="w3-modal">
 						<div class="w3-modal-content w3-animate-top w3-card-4">
-							<header class="w3-container w3-teal">
+							<header class="w3-container w3-green">
 								<span onclick="document.getElementById('set_console_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 								<h2><%[ Access to resources ]%></h2>
 							</header>
@@ -701,11 +701,11 @@ $(function() {
 					</div>
 					<div id="new_console_window" class="w3-modal">
 						<div class="w3-modal-content w3-animate-top w3-card-4">
-							<header class="w3-container w3-teal">
+							<header class="w3-container w3-green">
 								<span onclick="document.getElementById('new_console_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 								<h2><%[ Add console ]%></h2>
 							</header>
-							<div id="new_user_step4_console_config" class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+							<div id="new_user_step4_console_config" class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 								<com:TActiveLinkButton
 									ID="ConsoleBaculumConfig"
 									CssClass="w3-right"

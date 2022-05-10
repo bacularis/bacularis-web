@@ -2524,11 +2524,11 @@ var oSlots = {
 		<com:TCallback ID="LoadedDriveWithMount" OnCallback="loadedDriveWithMount" />
 		<div id="load_drive_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-teal">
+				<header class="w3-container w3-green">
 					<span onclick="oSlots.show_load_drive_window(false);" class="w3-button w3-display-topright">&times;</span>
 					<h2><%[ Load drive ]%></h2>
 				</header>
-				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 					<div class="w3-row directive_field w3-margin-bottom">
 						<div class="w3-col w3-third">
 							<%[ Slot ]%>:
@@ -2563,11 +2563,11 @@ var oSlots = {
 		</div>
 		<div id="move_to_ie_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-teal">
+				<header class="w3-container w3-green">
 					<span onclick="oSlots.show_move_to_ie_window(false);" class="w3-button w3-display-topright">&times;</span>
 					<h2><%[ Move to import/export slot ]%></h2>
 				</header>
-				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 					<div class="w3-row w3-section">
 						<div class="w3-col w3-third">
 							<%[ Slots ]%>:
@@ -2591,11 +2591,11 @@ var oSlots = {
 		</div>
 		<div id="release_ie_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-teal">
+				<header class="w3-container w3-green">
 					<span onclick="oSlots.show_release_ie_window(false);" class="w3-button w3-display-topright">&times;</span>
 					<h2><%[ Release import/export slot ]%></h2>
 				</header>
-				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 					<div class="w3-row w3-section">
 						<div class="w3-col w3-third">
 							<%[ Import/export slot ]%>:

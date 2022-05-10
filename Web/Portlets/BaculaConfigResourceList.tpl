@@ -128,7 +128,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 <com:TCallback ID="RemoveResource" OnCallback="removeResource" />
 <div id="resource_window<%=$this->ClientID%>" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal">
+		<header class="w3-container w3-green">
 			<span onclick="oBaculaConfigResourceWindow<%=$this->ClientID%>.close_resource_window();" class="w3-button w3-display-topright">&times;</span>
 			<h2 id="resource_window_title_add<%=$this->ClientID%>" style="display: none"><%[ Add ]%> <com:TActiveLabel ID="ResourceTypeAddWindowTitle" /></h2>
 			<h2 id="resource_window_title_edit<%=$this->ClientID%>" style="display: none"><%[ Edit ]%> <com:TActiveLabel ID="ResourceTypeEditWindowTitle" /></h2>

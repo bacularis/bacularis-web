@@ -9,7 +9,7 @@
 </com:TActiveLinkButton>
 <div id="assign_volumes_modal" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal">
+		<header class="w3-container w3-green">
 			<span onclick="oAssignVolumesToPool.show_window(false);" class="w3-button w3-display-topright">&times;</span>
 			<h2><%[ Assign volumes from selected pool ]%></h2>
 		</header>

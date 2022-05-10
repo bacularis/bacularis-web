@@ -10,7 +10,7 @@
 </com:TActiveLinkButton>
 <div id="label_volume" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal"> 
+		<header class="w3-container w3-green"> 
 			<span onclick="show_label_volume_window(false);" class="w3-button w3-display-topright">&times;</span>
 			<h2><%[ Label volume(s) ]%> <%=$this->Storage ? Prado::localize('Storage:') . ' ' . $this->Storage : ''%></h2>
 		</header>

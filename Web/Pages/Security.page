@@ -1281,12 +1281,12 @@ $(function() {
 </script>
 		<div id="user_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-teal">
+				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('user_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 					<h2 id="user_window_title_add" style="display: none"><%[ Add user ]%></h2>
 					<h2 id="user_window_title_edit" style="display: none"><%[ Edit user ]%></h2>
 				</header>
-				<div class="w3-container w3-margin-left w3-margin-right w3-text-teal">
+				<div class="w3-container w3-margin-left w3-margin-right">
 					<com:TValidationSummary
 						CssClass="field_invalid-summary"
 						ValidationGroup="UserGroup"
@@ -1452,7 +1452,7 @@ $(function() {
 						ValidationGroup="UserGroup"
 						CausesValidation="true"
 						OnCallback="saveUser"
-						CssClass="w3-button w3-section w3-teal w3-padding"
+						CssClass="w3-button w3-section w3-green w3-padding"
 					>
 						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 					</com:TActiveLinkButton>
@@ -1765,12 +1765,12 @@ $(function() {
 </script>
 		<div id="role_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
-				<header class="w3-container w3-teal">
+				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('role_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 					<h2 id="role_window_title_add" style="display: none"><%[ Add role ]%></h2>
 					<h2 id="role_window_title_edit" style="display: none"><%[ Edit role ]%></h2>
 				</header>
-				<div class="w3-container w3-margin-left w3-margin-right w3-text-teal">
+				<div class="w3-container w3-margin-left w3-margin-right">
 					<com:TValidationSummary
 						CssClass="field_invalid-summary"
 						ValidationGroup="RoleGroup"
@@ -1874,7 +1874,7 @@ $(function() {
 						ValidationGroup="RoleGroup"
 						CausesValidation="true"
 						OnCallback="saveRole"
-						CssClass="w3-button w3-section w3-teal"
+						CssClass="w3-button w3-section w3-green"
 					>
 						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 					</com:TActiveLinkButton>
@@ -2169,12 +2169,12 @@ $(function() {
 	</div>
 	<div id="console_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
-			<header class="w3-container w3-teal">
+			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('console_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 				<h2 id="console_window_title_add" style="display: none"><%[ Add console ]%></h2>
 				<h2 id="console_window_title_edit" style="display: none"><%[ Edit console ]%></h2>
 			</header>
-			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 				<com:TActiveLinkButton
 					ID="ConsoleBaculumConfig"
 					CssClass="w3-right"
@@ -2437,12 +2437,12 @@ $(function() {
 	</div>
 	<div id="api_basic_user_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
-			<header class="w3-container w3-teal">
+			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('api_basic_user_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 				<h2 id="api_basic_user_window_title_add" style="display: none"><%[ Add API basic user account ]%></h2>
 				<h2 id="api_basic_user_window_title_edit" style="display: none"><%[ Edit API basic user account ]%></h2>
 			</header>
-			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="APIBasicUserUsername" Text="<%[ API basic username: ]%>" /></div>
 					<div class="w3-half">
@@ -2598,7 +2598,7 @@ $(function() {
 					ValidationGroup="APIBasicUserGroup"
 					CausesValidation="true"
 					OnCallback="saveAPIBasicUser"
-					CssClass="w3-button w3-section w3-teal w3-padding"
+					CssClass="w3-button w3-section w3-green w3-padding"
 				>
 					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>
@@ -2859,12 +2859,12 @@ $(function() {
 	</div>
 	<div id="oauth2_client_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
-			<header class="w3-container w3-teal">
+			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('oauth2_client_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 				<h2 id="oauth2_client_window_title_add" style="display: none"><%[ Add OAuth2 client account ]%></h2>
 				<h2 id="oauth2_client_window_title_edit" style="display: none"><%[ Edit OAuth2 client account ]%></h2>
 			</header>
-			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="OAuth2ClientClientId" Text="<%[ OAuth2 Client ID: ]%>" /></div>
 					<div class="w3-half">
@@ -3021,7 +3021,7 @@ $(function() {
 					ValidationGroup="OAuth2ClientGroup"
 					CausesValidation="true"
 					OnCallback="saveOAuth2Client"
-					CssClass="w3-button w3-section w3-teal w3-padding"
+					CssClass="w3-button w3-section w3-green w3-padding"
 				>
 					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>
@@ -3289,12 +3289,12 @@ $(function() {
 	</div>
 	<div id="api_host_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
-			<header class="w3-container w3-teal">
+			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('api_host_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
 				<h2 id="api_host_window_title_add" style="display: none"><%[ Add API host ]%></h2>
 				<h2 id="api_host_window_title_edit" style="display: none"><%[ Edit API host ]%></h2>
 			</header>
-			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top w3-text-teal">
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 				<div id="api_host_settings">
 					<div class="w3-row directive_field">
 						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostSettings" Text="<%[ Get existing API host settings: ]%>" /></div>
@@ -3620,7 +3620,7 @@ $(function() {
 					ValidationGroup="APIHostGroup"
 					CausesValidation="true"
 					OnCallback="saveAPIHost"
-					CssClass="w3-button w3-section w3-teal w3-padding"
+					CssClass="w3-button w3-section w3-green w3-padding"
 					Attributes.onclick="return fields_validation()"
 				>
 					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>

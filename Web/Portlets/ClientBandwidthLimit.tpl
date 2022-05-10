@@ -1,7 +1,7 @@
  &nbsp;<a class="w3-hover-opacity" href="javascript:void(0)" onclick="oClientBandwidthLimit.open_popup();" title="<%[ Set client bandwidth limit ]%>"><i class="fas fa-tachometer-alt w3-large"></i></a>
 <div id="client_bandwidth_limit_popup" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal">
+		<header class="w3-container w3-green">
 			<span onclick="oClientBandwidthLimit.close_popup();" class="w3-button w3-display-topright">&times;</span>
 			<h2><%[ Set client bandwidth limit ]%> - <%[ Client: ]%> <%=$this->getClientName()%></h2>
 		</header>

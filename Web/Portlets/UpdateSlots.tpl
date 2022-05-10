@@ -11,7 +11,7 @@
 </button>
 <div id="update_slots" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
-		<header class="w3-container w3-teal"> 
+		<header class="w3-container w3-green"> 
 			<span onclick="document.getElementById('update_slots').style.display='none'" class="w3-button w3-display-topright">&times;</span>
 			<h2><%[ Update slots ]%></h2>
 		</header>
