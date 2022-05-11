@@ -126,6 +126,7 @@ class RunJob extends Portlets {
 				// Note for doubles for different dirs with different databases
 				$jobs = array_merge($jobs, $job);
 			}
+			natcasesort($jobs);
 			$this->JobToRun->DataSource = array_combine($jobs, $jobs);
 			$this->JobToRun->dataBind();
 			$this->JobToRunLine->Display = 'Dynamic';
