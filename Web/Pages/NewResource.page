@@ -34,8 +34,8 @@
 			</div>
 		</div>
 		<div id="new_resource" class="w3-modal">
-			<div class="w3-modal-content w3-animate-top w3-card-4 w3-padding">
-				<header class="w3-container"> 
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('new_resource').style.display='none'" class="w3-button w3-display-topright">&times;</span>
 					<h2><%[ Add new resource ]%></h2>
 				</header>
@@ -92,9 +92,9 @@
 					<i id="resource_loader" class="fa fa-sync w3-spin w3-margin-left w3-margin-top" style="display: none"></i>
 				</div>
 				<com:TActiveLabel ID="NewResourceLog" Display="None" CssClass="w3-panel w3-margin w3-text-red" />
-				<div class="w3-row w3-margin w3-center">
+				<footer class="w3-row w3-container w3-center">
 					<com:TLinkButton
-						CssClass="w3-button w3-green w3-margin-left"
+						CssClass="w3-button w3-green w3-section"
 						OnClick="createResource"
 						CausesValidation="true"
 						ValidationGroup="NewResource"
@@ -103,7 +103,7 @@
 							<i class="fa fa-plus"></i> &nbsp;<%=Prado::localize('Create')%>
 						</prop:Text>
 					</com:TLinkButton>
-				</div>
+				</footer>
 			</div>
 		</div>
 		<div id="resource_config" class="w3-container">
