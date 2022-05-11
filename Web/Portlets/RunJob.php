@@ -409,7 +409,12 @@ class RunJob extends Portlets {
 		if ($result->error === 0) {
 			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
 			if (is_numeric($started_jobid)) {
-				$this->getPage()->getCallbackClient()->callClientFunction('run_job_go_to_running_job', $started_jobid);
+				if ($this->GoToJobAfterStart->Checked) {
+					$this->getPage()->getCallbackClient()->callClientFunction('run_job_go_to_running_job', $started_jobid);
+				} else {
+					$this->getPage()->getCallbackClient()->callClientFunction('oMonitor');
+					$this->getPage()->getCallbackClient()->hide('run_job');
+				}
 			} else {
 				$this->RunJobLog->Text = implode('', $result->output);
 				$this->getPage()->getCallbackClient()->callClientFunction('show_job_log', true);

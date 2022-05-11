@@ -178,6 +178,12 @@
 				<pre><com:TActiveLabel ID="RunJobLog" /></pre>
 			</div>
 		</div>
+		<div class="w3-row-padding w3-section">
+			<div class="w3-col">
+				<com:TActiveCheckBox ID="GoToJobAfterStart" AutoPostBack="false" CssClass="w3-check" Checked="true" />
+				&nbsp;<com:TLabel ForControl="GoToJobAfterStart" Text="<%[ After starting the job, go to the running job status ]%>" />
+			</div>
+		</div>
 		<footer class="w3-container w3-center">
 			<com:TActiveLinkButton
 				ID="Estimate"

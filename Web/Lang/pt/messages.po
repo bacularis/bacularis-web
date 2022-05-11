@@ -4305,3 +4305,6 @@ msgstr "Client jobs"
 
 msgid "Information"
 msgstr "Information"
+
+msgid "After starting the job, go to the running job status"
+msgstr "After starting the job, go to the running job status"
