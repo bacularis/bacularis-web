@@ -30,9 +30,7 @@
 			<!-- Top container -->
 			<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
 				<button type="button" class="w3-bar-item w3-button w3-hover-none w3-hover-text-light-grey" onclick="W3SideBar.open();"><i class="fa fa-bars"></i>  Menu</button>
-				<span class="w3-bar-item w3-right">
-					<img src="<%~ ../../../../../Common/Images/logo.png %>" alt="" />
-				</span>
+				<img class="w3-bar-item w3-right" src="<%~ ../../../../../Common/Images/logo.png %>" alt="" style="margin-top: 3px" />
 			</div>
 			<com:Bacularis.Web.Portlets.MainSideBar />
 			<!-- !PAGE CONTENT! -->
