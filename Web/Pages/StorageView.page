@@ -1648,6 +1648,7 @@ MonitorParams = {
 			ComponentType="dir"
 			ResourceType="Storage"
 			ShowCancelButton="false"
+			ShowSectionTabs="true"
 		/>
 	</div>
 	<div class="w3-container tab_item" id="storage_daemon_config" style="display: none">

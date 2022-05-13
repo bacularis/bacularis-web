@@ -901,6 +901,7 @@ $(function() {
 			ComponentType="dir"
 			ResourceType="Client"
 			ShowCancelButton="false"
+			ShowSectionTabs="true"
 		/>
 	</div>
 	<div class="w3-container tab_item" id="filedaemon_config" style="display: none">

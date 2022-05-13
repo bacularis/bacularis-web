@@ -33,7 +33,7 @@
 				</footer>
 			</div>
 		</div>
-		<div id="new_resource" class="w3-modal">
+		<div id="new_resource" class="w3-modal" style="z-index: 6;">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
 				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('new_resource').style.display='none'" class="w3-button w3-display-topright">&times;</span>
@@ -112,6 +112,7 @@
 				SaveDirectiveActionOk="save_directive_action_ok();"
 				ShowRemoveButton="false"
 				ShowCancelButton="false"
+				ShowSectionTabs="true"
 			/>
 		</div>
 		<script>
@@ -125,7 +126,7 @@
 					document.location.href = origin_url;
 				}
 			}
-			oBaculaConfigSection.show_sections(true);
+			oBaculaConfigSection.show_sections(true, '<%=$this->NewResource->ClientID%>_directives');
 		</script>
 	</div>
 </com:TContent>

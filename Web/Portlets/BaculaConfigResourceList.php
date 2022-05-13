@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -117,6 +117,10 @@ class BaculaConfigResourceList extends Portlets {
 		list($cmd, $name) = $param->getCallbackParameter();
 		$copy_el_id = 'resource_window_copy_resource' . $this->ClientID;
 		if (!empty($name)) {
+			$this->getPage()->getCallbackClient()->callClientFunction(
+				'oBaculaConfigSection.show_sections',
+				[false, $this->ResourceConfig->ClientID . '_directives']
+			);
 			// edit existing resource
 			$this->ResourceConfig->setResourceName($name);
 			$this->ResourceConfig->setLoadValues(true);
@@ -127,7 +131,7 @@ class BaculaConfigResourceList extends Portlets {
 			$this->ResourceConfig->setLoadValues(false);
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'oBaculaConfigSection.show_sections',
-				[true]
+				[true, $this->ResourceConfig->ClientID . '_directives']
 			);
 			$this->loadResourcesToCopy();
 			$this->getPage()->getCallbackClient()->show($copy_el_id);

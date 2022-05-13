@@ -892,6 +892,7 @@ var oJobGraphs = {
 			ComponentType="dir"
 			ResourceType="Job"
 			ShowCancelButton="false"
+			ShowSectionTabs="true"
 			OnSave="reloadJobInfo"
 			DisableRename="true"
 		/>

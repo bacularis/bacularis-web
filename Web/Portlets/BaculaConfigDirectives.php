@@ -64,6 +64,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	const SHOW_CANCEL_BUTTON = 'ShowCancelButton';
 	const SHOW_ALL_DIRECTIVES = 'ShowAllDirectives';
 	const SHOW_BOTTOM_BUTTONS = 'ShowBottomButtons';
+	const SHOW_SECTION_TABS = 'ShowSectionTabs';
 	const SAVE_DIRECTIVE_ACTION_OK = 'SaveDirectiveActionOk';
 	const DISABLE_RENAME = 'DisableRename';
 
@@ -268,11 +269,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		if ($copy_mode || $this->getShowAllDirectives()) {
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'oBaculaConfigSection.show_sections',
-				[true]
+				[true, $this->ClientID . '_directives']
 			);
 		}
 		$this->showLoader(false);
 		$this->getPage()->getCallbackClient()->show($this->ConfigDirectives);
+
+		// set buttons
+		$this->DirectiveSetting->showOptions($load_values);
 	}
 
 	public function loadDirectives($sender, $param) {
@@ -281,7 +285,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$this->loadConfig();
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'oBaculaConfigSection.show_sections',
-			array($show_all_directives)
+			[$show_all_directives, $this->ClientID . '_directives']
 		);
 	}
 
@@ -754,6 +758,25 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 */
 	public function getShowBottomButtons() {
 		return $this->getViewState(self::SHOW_BOTTOM_BUTTONS, true);
+	}
+
+	/**
+	 * Set if config section tabs should be used.
+	 *
+	 * @return none
+	 */
+	public function setShowSectionTabs($show) {
+		$show = TPropertyValue::ensureBoolean($show);
+		$this->setViewState(self::SHOW_SECTION_TABS, $show);
+	}
+
+	/**
+	 * Get if config section tabs should be used.
+	 *
+	 * @return bool true if tabs are used,otherwise false
+	 */
+	public function getShowSectionTabs() {
+		return $this->getViewState(self::SHOW_SECTION_TABS, false);
 	}
 
 	/**

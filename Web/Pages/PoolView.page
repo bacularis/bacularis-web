@@ -355,6 +355,7 @@ const oPoolVolumeStatus = {
 			ComponentType="dir"
 			ResourceType="Pool"
 			ShowCancelButton="false"
+			ShowSectionTabs="true"
 			OnRename="showAssignVolumesWarning"
 		/>
 	</div>

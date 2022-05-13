@@ -29,14 +29,15 @@ var BaculaConfigClass = jQuery.klass({
 		oBaculaConfigSection.show_sections(true);
 		this.scroll_to_element(container);
 	},
-	scroll_to_element: function(selector, additional_offset) {
+	scroll_to_element: function(selector, additional_offset, oncomplete) {
 		var offset = $(selector).offset().top;
 		if (additional_offset) {
 			offset += additional_offset;
 		}
-		$('html,body,.w3-modal').animate({
+		const options = {
 			scrollTop: offset
-		}, 'slow');
+		};
+		$('html,body,.w3-modal').animate(options, 'slow', 'swing', oncomplete);
 	},
 	get_child_container: function(sender) {
 		var child_container = $('#' + sender).closest('table').next('div');
@@ -117,6 +118,9 @@ var BaculaConfigOptionsClass = jQuery.klass({
 		for (var i = 0; i < opts.length; i++) {
 			opts[i].addEventListener('click', function(e) {
 				var el = e.srcElement || e.target;
+				if (el.nodeName != 'BUTTON') {
+					el = el.closest('button');
+				}
 				var action = el.getAttribute('rel');
 				this.do_action(action);
 			}.bind(this));
@@ -132,45 +136,172 @@ var BaculaConfigOptionsClass = jQuery.klass({
 
 var oBaculaConfigSection = {
 	sections: [],
+	min_tab_sections: 2, // minimum number of sections to display tabs
+	intersection_lock: false,
 	css: {
+		section_tabs: 'div[rel="section_tabs"]',
 		section: 'h3.directive_section_header',
-		directive_field: 'directive_field'
+		directive_field: 'directive_field',
+		subtab: 'subtab_btn',
+		col: 'w3-col',
+		small: 'w3-tiny',
+		bottombar: 'w3-bottombar',
+		border_red: 'w3-border-red',
+		center: 'w3-center',
+		white: 'w3-white',
+		lgray: 'w3-light-gray',
+		top: 'w3-top',
+		modal: 'w3-modal'
 	},
-	init: function() {
-		this.sections = document.querySelectorAll(this.css.section);
+	attrs: {
+		data_section: 'data-section',
+		data_section_subtab: 'data-section-subtab'
 	},
-	get_section_names: function() {
-		var sects = [];
-		for (var i = 0; i < this.sections.length; i++) {
-			sects.push(sections[i].getAttribute('data-section'));
+	get_sections: function(root_el) {
+		if (!root_el) {
+			console.error('Missing section tab container.');
+			return;
+		}
+		const sections = root_el.querySelectorAll(this.css.section);
+		const sects = [];
+		let dsect;
+		for (let i = 0; i < sections.length; i++) {
+			dsect = sections[i].getAttribute(this.attrs.data_section);
+			sects.push(dsect);
 		}
 		return sects;
 	},
-	get_directives: function(section) {
-		var section, el;
-		var directives = [];
-		for (var i = 0; i < this.sections.length; i++) {
-			sect = this.sections[i].getAttribute('data-section');
-			if (sect !== section) {
-				continue;
-			}
-			el = this.sections[i].nextElementSibling;
-			while (el) {
-				if (!el.classList.contains(this.css.directive_field)) {
-					break;
-				}
-				directives.push(el);
-				el = el.nextElementSibling;
+	remove_subtab_selection: function() {
+		// unmark previous selection
+		$('div[' + this.attrs.data_section_subtab + ']').removeClass(this.css.border_red);
+	},
+	create_section_tabs: function(root_id) {
+		this.clear_section_tabs(root_id);
+		this.intersection_lock = true;
+		const root_el = document.getElementById(root_id);
+		const sections = this.get_sections(root_el);
+		const sect_el = root_el.querySelector(this.css.section_tabs);
+		if (sections.length < this.min_tab_sections) {
+			sect_el.style.display = 'none';
+			return;
+		}
+		sect_el.style.display = 'block';
+		sect_el.style.top = 0;
+
+		// Determine top position basing on the top bar and if config form is in modal or not.
+		const top = document.querySelector('.' + this.css.top);
+		if (top) {
+			sect_el.style.top = top.offsetHeight;
+			if ($(sect_el).closest('.' + this.css.modal).length == 1) {
+				// in modal
+				sect_el.style.top = '-' + (top.offsetHeight + 14) + 'px';
+				sect_el.classList.add(this.css.white); // modals have white background
+			} else {
+				// in non-modal
+				sect_el.style.top = top.offsetHeight + 'px';
+				sect_el.classList.add(this.css.lgray); // non-modals have light gray background
 			}
 		}
-		return directives;
+		const width = (99 / sections.length).toFixed(2);
+		const self = this;
+
+		// callback called after clicking section subtab
+		const go_to_section = function(e) {
+			self.remove_subtab_selection();
+
+			// mark new selection
+			this.classList.add(self.css.border_red);
+
+			// prepare params (target, offset...) to scroll to selected section
+			const section = e.target.getAttribute(self.attrs.data_section_subtab);
+			const selector = '#' + root_id + ' h3[' + self.attrs.data_section  + '="' + section + '"]';
+			const target = root_el.querySelector(selector);
+			let offset = -50 - window.scrollY;
+			const scroll_el = getClosestScrollEl(sect_el);
+			if (scroll_el) {
+				offset += scroll_el.scrollTop;
+			}
+			if (sect_el.style.position != 'fixed') {
+				offset -= sect_el.clientHeight;
+			}
+			self.intersection_lock = true;
+			const oncomplete = function() {
+				this.intersection_lock = false;
+			}.bind(self);
+			BaculaConfig.scroll_to_element(target, offset, oncomplete);
+		};
+
+		// create section tabs
+		let div, sect;
+		for (let i = 0; i < sections.length; i++) {
+			div = document.createElement('DIV');
+			div.classList.add(
+				this.css.subtab,
+				this.css.col,
+				this.css.small,
+				this.css.bottombar,
+				this.css.center
+			);
+			if (i == 0) {
+				div.classList.add(this.css.border_red);
+			}
+			div.style.width = width + '%';
+			div.style.padding = '5px 0 8px 0';
+			div.style.cursor = 'pointer';
+			div.style.whiteSpace = 'nowrap';
+			sect = sections[i];
+			if (sect.length > 19) {
+				sect = sect.substr(0, 18) + '...';
+			}
+			div.title = sections[i];
+			div.setAttribute(this.attrs.data_section_subtab, sections[i]);
+			div.textContent = sect;
+			div.addEventListener('click', go_to_section);
+			sect_el.appendChild(div);
+		}
+		this.add_section_observer(sect_el);
+		setTimeout(() => {
+			this.intersection_lock = false;
+		}, 500);
 	},
-	show_sections: function(show) {
+	add_section_observer: function(el) {
+		const io = new IntersectionObserver(entries => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting && !this.intersection_lock) {
+					const section = entry.target.getAttribute(this.attrs.data_section);
+					const selector = 'div[' + this.attrs.data_section_subtab + '="' + section + '"]';
+					const section_btn = el.querySelector(selector);
+					this.remove_subtab_selection();
+					section_btn.classList.add(this.css.border_red);
+				}
+			})
+		})
+
+		const sections = document.querySelectorAll(this.css.section);
+		sections.forEach((el) => {
+			io.observe(el);
+		});
+	},
+	clear_section_tabs: function(root_id) {
+		const root_el = document.getElementById(root_id);
+		const sect_el = root_el.querySelector(this.css.section_tabs);
+		while (sect_el.firstChild) {
+			sect_el.removeChild(sect_el.firstChild);
+		}
+		sect_el.style.display = 'none';
+	},
+	show_sections: function(show, root_id) {
 		// this method has to be static
 		$(function() {
 			if (show) {
+				if (root_id) {
+					oBaculaConfigSection.create_section_tabs(root_id);
+				}
 				$(oBaculaConfigSection.css.section).show();
 			} else {
+				if (root_id) {
+					oBaculaConfigSection.clear_section_tabs(root_id);
+				}
 				$(oBaculaConfigSection.css.section).hide();
 			}
 		});
