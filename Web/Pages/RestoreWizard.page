@@ -1099,7 +1099,8 @@ var oRestoreBrowserVersions = {
 		jobid: '<%[ JobId: ]%>',
 		volume: '<%[ Volume: ]%>',
 		inchanger: '<%[ InChanger: ]%>',
-		sum: '<%[ Sum: ]%>',
+		sumhex: '<%[ Sum: ]%> (hex)',
+		sumbase64: '<%[ Sum: ]%> (base64)',
 		yes: '<%[ Yes ]%>',
 		no: '<%[ No ]%>'
 	},
@@ -1201,7 +1202,8 @@ var oRestoreBrowserVersions = {
 				this.txts.jobid + ' ' + item.jobid,
 				this.txts.volume + ' ' + item.volname,
 				this.txts.inchanger + ' ' + (item.inchanger === '1' ? this.txts.yes : this.txts.no),
-				this.txts.sum + ' ' + item.md5
+				this.txts.sumhex + ' ' + (base64tohex(item.md5) || '-'),
+				this.txts.sumbase64 + ' ' + (item.md5 != '0' ? item.md5 : '-')
 			];
 			showTip(div, item.name, tip_fields.join('<br />'));
 		}.bind(this));
