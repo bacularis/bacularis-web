@@ -177,7 +177,9 @@
 						'R - <%[ 24-hours format time 17:22:41 ]%>',
 						'r - <%[ 12-hours format time 5:22:41 PM ]%>'
 					];
-					showTip(dt, '<%[ Available formats: ]%>', tip_fields.join('<br />'));
+					showTip(dt, '<%[ Available formats: ]%>', tip_fields.join('<br />'), {
+						offset: [0, 0]
+					});
 				});
 			</script>
 		</div>

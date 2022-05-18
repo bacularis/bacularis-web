@@ -1508,14 +1508,25 @@ function get_table_toolbar(table, actions, txt) {
 	return table_toolbar;
 }
 
-function showTip(el, title, description) {
-	var tip = new Opentip(el, description, title, {
-			stem: true, 
-			fixed: true, 
-			tipJoint: 'left middle',
-			target: true,
-			showOn: 'creation'
-		});
+function showTip(el, title, description, opts) {
+	const main_opts = {
+		stem: true,
+		fixed: true,
+		tipJoint: 'left middle',
+		target: true,
+		showOn: 'creation',
+		showEffect: null,
+		hideDelay: 0.05,
+		shadow: false,
+		offset: [-70, 0]
+	};
+	if (typeof(opts) == 'object') {
+		// merge additional options with main options
+		for (const opt in opts) {
+			main_opts[opt] = opts[opt];
+		}
+	}
+	return new Opentip(el, description, title, main_opts);
 }
 
 function on_element_show(element, callback) {
