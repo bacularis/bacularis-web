@@ -1190,7 +1190,7 @@ var oRestoreBrowserVersions = {
 		span_size.appendChild(link);
 		link.addEventListener('click', function(e) {
 			const cb = <%=$this->AddFileToRestore->ActiveControl->Javascript%>;
-			const file_prop = oRestoreBrowserFiles.items.get(item.uniqid);
+			const file_prop = oRestoreBrowserVersions.items.get(item.uniqid);
 			const param = [item.uniqid, file_prop];
 			cb.setCallbackParameter(param);
 			cb.dispatch();
