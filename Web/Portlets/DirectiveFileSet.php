@@ -404,6 +404,10 @@ class DirectiveFileSet extends DirectiveListTemplate {
 			if (!is_array($directive_values['Include'][$i]) || !key_exists('Options', $directive_values['Include'][$i])) {
 				continue;
 			}
+
+			// First sort options by key to keep original order
+			ksort($directive_values['Include'][$i]['Options']);
+
 			/**
 			 * Options $index can start from value greater than 0, so here reset indexes
 			 * to avoid undefined offset error.
