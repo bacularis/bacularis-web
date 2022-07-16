@@ -41,7 +41,7 @@ use Bacularis\Web\Portlets\Portlets;
  */
 class Bconsole extends Portlets {
 
-	const MAX_CONSOLE_OUTPUT_BATCH = -1000;
+	const MAX_CONSOLE_OUTPUT_BATCH = -10000;
 
 	public function sendCommand($sender, $param) {
 		$cmd = trim($this->CommandLine->Text);
