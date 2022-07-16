@@ -3,16 +3,25 @@
 	<!-- Header -->
 	<header class="w3-container">
 		<h5>
-			<b><i class="fa fa-laptop-code"></i> <%[ Console details ]%></b>
+			<b><i class="fa fa-terminal"></i> <%[ Console details ]%></b>
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-gray" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config');"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+		<a id="btn_console_web" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'console_web');"<%=!$this->getModule('users')->isPageAllowed($this->User, 'Console') ? ' style="display: none"': ''%>>
+			<%[ Console ]%>
+		</a>
+		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config');"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
 			<%[ Configure console ]%>
 		</a>
 	</div>
+	<div class="w3-container tab_item" id="console_web"<%=!$this->getModule('users')->isPageAllowed($this->User, 'Console') ? ' style="display: none"': ''%>>
+		<com:Bacularis.Web.Portlets.Bconsole
+			ID="Bconsole"
+			Visible="<%=$this->getModule('users')->isPageAllowed($this->User, 'Console')%>"
+		/>
+	</div>
 	<p class="info"<%=!empty($_SESSION['bcons']) ? ' style="display: none"': ''%>><%[ To use the console page please configure bbconsjson binary file path on the API side. ]%></p>
-	<div class="w3-container tab_item" id="console_config"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+	<div class="w3-container tab_item" id="console_config" style="display: none">
 		<com:TCallback ID="LoadConsoleResourcesConfig" OnCallback="loadConsoleResourcesConfig" />
 		<script>
 function load_cons_res_config(resource) {
