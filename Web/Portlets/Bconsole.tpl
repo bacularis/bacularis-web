@@ -1,6 +1,6 @@
 <com:TActivePanel ID="ConsoleContainer" DefaultButton="Enter" Style="text-align: left;">
 	<div class="w3-container w3-padding-16">
-		<com:TActiveTextBox ID="OutputListing" TextMode="MultiLine" CssClass="w3-input w3-border monospace" style="height: 350px" />
+		<com:TActiveTextBox ID="OutputListing" TextMode="MultiLine" CssClass="w3-input w3-border monospace" style="height: 450px" />
 	</div>
 	<div class="w3-container">
 		<div class="w3-threequarter">
