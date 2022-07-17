@@ -4307,3 +4307,54 @@ msgstr "Information"
 
 msgid "After starting the job, go to the running job status"
 msgstr "After starting the job, go to the running job status"
+
+msgid "Account settings"
+msgstr "Account settings"
+
+msgid "Enable 2FA"
+msgstr "Enable 2FA"
+
+msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+msgstr "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+
+msgid "2FA settings"
+msgstr "2FA settings"
+
+msgid "TOTP two-factor authentication"
+msgstr "TOTP two-factor authentication"
+
+msgid "TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps."
+msgstr "TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps."
+
+msgid "Step 1"
+msgstr "Step 1"
+
+msgid "Scan in the authenticator app the QR code"
+msgstr "Scan in the authenticator app the QR code"
+
+msgid "or alternatively type the code below manually to the authenticator app:"
+msgstr "or alternatively type the code below manually to the authenticator app:"
+
+msgid "show"
+msgstr "show"
+
+msgid "hide"
+msgstr "hide"
+
+msgid "Step 2"
+msgstr "Step 2"
+
+msgid "In the field below please type currently displayed 6 digit code from the authenticator app"
+msgstr "In the field below please type currently displayed 6 digit code from the authenticator app"
+
+msgid "Authenticator code:"
+msgstr "Authenticator code:"
+
+msgid "Invalid authentication code. Please try again."
+msgstr "Invalid authentication code. Please try again."
+
+msgid "For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication)."
+msgstr "For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication)."
+
+msgid "Two-factor authentication"
+msgstr "Two-factor authentication"

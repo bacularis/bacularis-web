@@ -32,5 +32,8 @@
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
 		<module id="messages_log" class="Bacularis\Web\Modules\MessagesLog" />
+		<!-- Common modules available for web (temporary here due to no way to update composer project) -->
+		<module id="base32" class="Bacularis\Common\Modules\Base32" />
+		<module id="totp" class="Bacularis\Common\Modules\Totp" />
 	</modules>
 </configuration>

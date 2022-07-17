@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Prado\Prado;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -42,6 +43,8 @@ class LoginPage extends BaculumWebPage {
 	 * Reload URL is used to refresh page after logout with Basic auth.
 	 */
 	public $reload_url = '';
+
+	public $mfa = false;
 
 	public function onInit($param) {
 		parent::onInit($param);
@@ -102,12 +105,77 @@ class LoginPage extends BaculumWebPage {
 			$username = $_SERVER['PHP_AUTH_USER'];
 		}
 
-		$success = $this->getModule('auth')->login($username, $password);
-		if ($success === true) {
-			$this->goToDefaultPage();
+		$valid = $this->getModule('users')->validateUser($username, $password);
+		if ($valid === true) {
+			// Pre-login successful
+			$user = $this->getModule('user_config')->getUserConfig($username);
+			if (count($user) > 0 && key_exists('mfa', $user) && $user['mfa'] === 'totp') {
+				// The user uses 2FA, go to second step/factor
+				$this->mfa = true;
+			} else {
+				// Login try
+				$success = $this->getModule('auth')->login($username, $password);
+				if ($success === true) {
+					// Log in successful
+					$this->goToDefaultPage();
+				} else {
+					// Log in error
+					sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+					$this->Msg->Display = 'Fixed';
+				}
+			}
 		} else {
+			// Log in error
 			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 			$this->Msg->Display = 'Fixed';
+		}
+	}
+
+	/**
+	 * Log in with 2FA.
+	 * This action happens after successful user/password login.
+	 *
+	 * @return none
+	 */
+	public function login2FA() {
+		$username = $this->Username->Text;
+		$password = $this->Password->Text;
+
+		if ($this->getModule('web_config')->isAuthMethodBasic() && !empty($_SERVER['PHP_AUTH_USER'])) {
+			// For basic auth take username from web server.
+			$username = $_SERVER['PHP_AUTH_USER'];
+		}
+
+		$user = $this->getModule('user_config')->getUserConfig($username);
+		if (count($user) === 0 || !key_exists('mfa', $user) || !key_exists('totp_secret', $user)) {
+			return false;
+		}
+		$this->mfa = true;
+		$secret = $this->getModule('base32')->decode($user['totp_secret']);
+		$token = $this->Auth2FAToken->Text;
+		if ($this->getModule('totp')->validateToken($secret, $token) === true) {
+			// 2FA successful, do login to app
+			$success = $this->getModule('auth')->login($username, $password);
+			if ($success === true) {
+				// Log in successful
+				$def_page = $this->getDefaultPage();
+				$url = $this->Service->constructUrl($def_page);
+				$this->getCallbackClient()->callClientFunction(
+					'direct_to_def_page',
+					$url
+				);
+			} else {
+				// Log in error after successful 2FA
+				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+				$emsg = Prado::localize('Invalid username or password');
+				$this->getCallbackClient()->update('login_2fa_error', $emsg);
+				$this->getCallbackClient()->show('login_2fa_error');
+			}
+		} else {
+			// Invalid token
+			$emsg = Prado::localize('Invalid authentication code. Please try again.');
+			$this->getCallbackClient()->update('login_2fa_error', $emsg);
+			$this->getCallbackClient()->show('login_2fa_error');
 		}
 	}
 

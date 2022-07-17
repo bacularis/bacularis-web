@@ -8,7 +8,7 @@
 				<label for="<%=$this->Username->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Username: ]%></label> <com:TTextBox ID="Username" CssClass="w3-input w3-border w3-show-inline-block" Style="width: 335px" />
 			</div>
 			<div class="w3-section">
-				<label for="<%=$this->Password->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Password: ]%></label> <com:TTextBox ID="Password" CssClass="w3-input w3-border w3-show-inline-block" TextMode="Password" Style="width: 335px" />
+				<label for="<%=$this->Password->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Password: ]%></label> <com:TTextBox ID="Password" CssClass="w3-input w3-border w3-show-inline-block" TextMode="Password" PersistPassword="true" Style="width: 335px" />
 			</div>
 			<div class="w3-section w3-center">
 				<com:TLinkButton ID="LoginBtn" OnClick="login" CssClass="w3-button w3-green">
@@ -38,7 +38,55 @@
 			</p>
 		</com:TPanel>
 	</div>
+	<div id="login_2fa_modal" class="w3-modal" style="display: <%=$this->mfa ? 'block' : 'none'%>">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 800px">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('login_2fa_modal').style.display = 'none';" class="w3-button w3-display-topright">×</span>
+				<h2><%[ Two-factor authentication ]%></h2>
+			</header>
+			<div class="w3-margin-left w3-margin-right" style="max-height: 245px; margin: 10px auto;">
+				<p><%[ In the field below please type currently displayed 6 digit code from the authenticator app ]%></p>
+				<div class="w3-row w3-section">
+					<div class="w3-col w3-third"><%[ Authenticator code: ]%></div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="Auth2FAToken"
+							CssClass="w3-input w3-border"
+							Width="100px"
+							MaxLength="6"
+							Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->Auth2FA->ClientID%>').click(); }"
+						/>
+					</div>
+				</div>
+				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('login_2fa_modal').style.display = 'none';"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					<com:TActiveLinkButton
+						ID="Auth2FA"
+						CssClass="w3-button w3-green"
+						CausesValidation="false"
+						OnCallback="login2FA"
+					>
+						<prop:ClientSide.OnLoading>
+							document.getElementById('login_2fa_loader').style.visibility = 'visible';
+						</prop:ClientSide.OnLoading>
+						<prop:ClientSide.OnComplete>
+							document.getElementById('login_2fa_loader').style.visibility = 'hidden';
+						</prop:ClientSide.OnComplete>
+						<i class="fa-solid fa-user-shield"></i> &nbsp;<%[ Log in ]%>
+					</com:TActiveLinkButton>
+					<i id="login_2fa_loader" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden"></i>
+				</div>
+				<p id="login_2fa_error" class="w3-center w3-text-red" style="display: none; padding: 8px 14px; margin: 0;"></p>
+			</div>
+		</div>
+	</div>
 <script>
 	document.getElementById('<%=$this->Username->ClientID%>').focus();
+	if (<%=$this->mfa ? 'true' : 'false'%> === true) {
+		document.getElementById('<%=$this->Auth2FAToken->ClientID%>').focus();
+	}
+	var direct_to_def_page = (url) => {
+		document.location.href = url;
+	};
 </script>
 </com:TContent>

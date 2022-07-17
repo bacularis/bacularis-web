@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -85,7 +85,8 @@ class WebUserRoles extends WebModule {
 			PageCategory::CLIENT_LIST,
 			PageCategory::CLIENT_VIEW,
 			PageCategory::RESTORE_WIZARD,
-			PageCategory::GRAPHS
+			PageCategory::GRAPHS,
+			PageCategory::ACCOUNT_SETTINGS
 		];
 		$roles[self::NORMAL] = array_combine($this->role_prop, [
 			self::NORMAL,

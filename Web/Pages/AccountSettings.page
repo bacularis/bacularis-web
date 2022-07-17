@@ -1,0 +1,293 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/qrcodejs/qrcode.min.js %> />
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa-solid fa-user-gear"></i> <%[ Account settings ]%></b>
+		</h5>
+	</header>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a id="btn_account_settings_general" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'account_settings_general');">
+			<%[ General ]%>
+		</a>
+		<a id="btn_account_settings_auth" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'account_settings_auth');">
+			<%[ Security ]%>
+		</a>
+	</div>
+	<!-- General options -->
+	<div class="w3-container tab_item" id="account_settings_general">
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Username: ]%></div>
+			<div class="w3-quarter w3-col"><com:TActiveLabel ID="Username" /></div>
+		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><com:TLabel ForControl="UserLongName" Text="<%[ Long name: ]%>"/></div>
+			<div class="w3-quarter">
+				<com:TActiveTextBox
+					ID="UserLongName"
+					AutoPostBack="false"
+					MaxLength="100"
+					CssClass="w3-input w3-border"
+					AutoTrim="true"
+				/>
+			</div>
+		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><com:TLabel ForControl="UserDescription" Text="<%[ Description: ]%>"/></div>
+			<div class="w3-quarter">
+				<com:TActiveTextBox
+					ID="UserDescription"
+					TextMode="MultiLine"
+					Rows="3"
+					AutoPostBack="false"
+					MaxLength="500"
+					AutoTrim="true"
+					CssClass="w3-input w3-border"
+				/>
+			</div>
+		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><com:TLabel ForControl="UserEmail" Text="<%[ E-mail: ]%>"/></div>
+			<div class="w3-quarter">
+				<com:TActiveTextBox
+					ID="UserEmail"
+					AutoPostBack="false"
+					MaxLength="500"
+					CssClass="w3-input w3-border"
+					AutoTrim="true"
+				/>
+				<com:TRegularExpressionValidator
+					ValidationGroup="AccSettingsGroup"
+					RegularExpression="<%=WebUserConfig::EMAIL_ADDRESS_PATTERN%>"
+					ControlToValidate="UserEmail"
+					ErrorMessage="<%[ Invalid e-mail address value. ]%>"
+					ControlCssClass="field_invalid"
+				/>
+			</div>
+		</div>
+		<com:TPanel ID="UserPasswordBox">
+			<div id="user_window_password" class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><com:TLabel ForControl="UserPassword" Text="<%[ Password: ]%>"/></div>
+				<div class="w3-quarter">
+					<com:TActiveTextBox
+						ID="UserPassword"
+						TextMode="Password"
+						AutoPostBack="false"
+						MaxLength="1000"
+						CssClass="w3-input w3-border"
+					/>
+				</div>
+				&nbsp; <a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->UserPassword->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>"><i class="fa fa-eye opt_req" style="display: inline-block"></i></a>
+				&nbsp;<a href="javascript:void(0)" onclick="document.getElementById('<%=$this->UserPassword->ClientID%>').value = document.getElementById('<%=$this->RetypeUserPassword->ClientID%>').value = get_random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_~!@#$%^&*()_+}{|?[]\\/.,', 10); return false;" title="<%[ Generate new password ]%>"><i class="fas fa-random"></i></a>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><com:TLabel ForControl="RetypeUserPassword" Text="<%[ Retype password: ]%>" /></div>
+				<div class="w3-quarter">
+					<com:TActiveTextBox
+						ID="RetypeUserPassword"
+						CssClass="w3-input w3-border"
+						TextMode="Password"
+						MaxLength="60"
+						PersistPassword="true"
+					/>
+					<com:TRequiredFieldValidator
+						ID="RequirePasswordValidator"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+						ControlToValidate="RetypeUserPassword"
+						ValidationGroup="AccSettingsGroup"
+						ErrorMessage="<%[ Please retype password. ]%>"
+					/>
+					<com:TRegularExpressionValidator
+						ID="RegexPasswordValidator"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+						ControlToValidate="RetypeUserPassword"
+						RegularExpression="<%=BasicUserConfig::PASSWORD_PATTERN%>"
+						ValidationGroup="AccSettingsGroup"
+						ErrorMessage="<%[ Password must be longer than 4 chars and not longer than 60 chars. ]%>"
+					/>
+					<com:TCompareValidator
+						ID="ComparePasswordValidator"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+						ControlToValidate="RetypeUserPassword"
+						ControlToCompare="UserPassword"
+						ValidationGroup="AccSettingsGroup"
+						Text="<%[ Passwords must be the same. ]%>"
+					/>
+				</div> &nbsp; <a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->RetypeUserPassword->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>"><i class="fa fa-eye opt_req" style="display: inline-block"></i></a>
+			</div>
+		</com:TPanel>
+		<div class="w3-center w3-margin-top">
+			<com:TActiveLinkButton
+				CssClass="w3-button w3-green"
+				CausesValidation="true"
+				ValidationGroup="AccSettingsGroup"
+				OnClick="saveGeneral"
+			>
+				<prop:ClientSide.OnLoading>
+					document.getElementById('account_settings_save_loader').style.display = '';
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.OnComplete>
+					setTimeout(function() {
+						document.getElementById('account_settings_save_loader').style.display = 'none';
+					}, 300);
+				</prop:ClientSide.OnComplete>
+				<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+			</com:TActiveLinkButton>
+			<i id="account_settings_save_loader" class="fa fa-sync w3-spin" style="display: none"></i>
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="account_settings_auth" style="display: none">
+		<div class="w3-container w3-row w3-padding">
+			<com:TPanel ID="Auth2FADisabledMsg" CssClass="w3-panel w3-pale-yellow w3-border" Display="None">
+				<h3><%[ Warning ]%></h3>
+				<p><%[ For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication). ]%></p>
+			</com:TPanel>
+			<div class="w3-quarter w3-col"><label for="<%=$this->Auth2FAEnable->ClientID%>"><%[ Enable 2FA ]%></label></div>
+			<div class="w3-quarter w3-col">
+				<com:TActiveCheckBox
+					ID="Auth2FAEnable"
+					CssClass="w3-check"
+					Attributes.onclick="if (this.checked) { oAccountSettings2FA.show(true); this.checked = false; }"
+					OnCallback="disable2FA"
+				/>
+				<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+				<div class="directive_help" style="display: none">
+					<dd><%[ The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication. ]%></dd>
+				</div>
+			</div>
+		</div>
+		<div id="account_settings_2fa_modal" class="w3-modal" style="display: none">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 800px">
+				<header class="w3-container w3-green">
+					<span onclick="oAccountSettings2FA.show(false);" class="w3-button w3-display-topright">×</span>
+					<h2><%[ 2FA settings ]%></h2>
+				</header>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
+					<h4><%[ TOTP two-factor authentication ]%></h4>
+					<p><%[ TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps. ]%></p>
+					<h5><%[ Step 1 ]%></h5>
+					<p><%[ Scan in the authenticator app the QR code ]%></p>
+					<div id="account_settings_2fa_totp_qrcode" style="width: 260px; margin: auto;"></div>
+					<p><%[ or alternatively type the code below manually to the authenticator app: ]%> <span id="account_settings_2fa_totp_code"></span> <a href="javascript:void(0)" id="account_settings_2fa_totp_show"><%[ show ]%></a></p>
+					<com:TActiveHiddenField ID="Auth2FASecret" />
+					<h5><%[ Step 2 ]%></h5>
+					<p><%[ In the field below please type currently displayed 6 digit code from the authenticator app ]%></p>
+					<div class="w3-row w3-section">
+						<div class="w3-col w3-third"><%[ Authenticator code: ]%></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="Auth2FAToken"
+								CssClass="w3-input w3-border"
+								Width="100px"
+								MaxLength="6"
+								Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->Enable2FA->ClientID%>').click(); }"
+							/>
+						</div>
+					</div>
+				</div>
+				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
+					<button type="button" class="w3-button w3-red" onclick="oAccountSettings2FA.show(false);"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					<com:TActiveLinkButton
+						ID="Enable2FA"
+						CssClass="w3-button w3-green"
+						CausesValidation="false"
+						OnCallback="enable2FA"
+					>
+						<prop:ClientSide.OnLoading>
+							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'visible';
+						</prop:ClientSide.OnLoading>
+						<prop:ClientSide.OnComplete>
+							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'hidden';
+						</prop:ClientSide.OnComplete>
+						<i class="fa-solid fa-user-shield"></i> &nbsp;<%[ Enable 2FA ]%>
+					</com:TActiveLinkButton>
+					<i id="account_settings_add_2fa_loader" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden"></i>
+				</div>
+				<p id="account_settings_add_2fa_error" class="w3-center w3-text-red" style="display: none; padding: 8px 14px; margin: 0;"></p>
+			</div>
+		</div>
+		<com:TCallback ID="Auth2FALoad" OnCallback="show2FAWindow" />
+		<script>
+var oAccountSettings2FA = {
+	ids: {
+		modal: 'account_settings_2fa_modal',
+		totp_qrcode: 'account_settings_2fa_totp_qrcode',
+		totp_code: 'account_settings_2fa_totp_code',
+		totp_show: 'account_settings_2fa_totp_show'
+	},
+	qrcode: null,
+	init: function() {
+		this.add_events();
+	},
+	add_events: function() {
+		const link = document.getElementById(this.ids.totp_show);
+		link.addEventListener('click', () => {
+			const code = document.getElementById(this.ids.totp_code);
+			if (code.getAttribute('data-state') == 'shown') {
+				this.show_code(false);
+			} else {
+				this.show_code(true);
+			}
+		});
+	},
+	show: function(show) {
+		const modal = document.getElementById(oAccountSettings2FA.ids.modal);
+		modal.style.display = show ? 'block' : 'none';
+		if (show) {
+			oAccountSettings2FA.load();
+			const token = document.getElementById('<%=$this->Auth2FAToken->ClientID%>');
+			token.value = '';
+			token.focus();
+		}
+	},
+	load: function() {
+		const cb = <%=$this->Auth2FALoad->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	generate_qrcode: function(url) {
+		oAccountSettings2FA.clear_qrcode();
+		const container = document.getElementById(oAccountSettings2FA.ids.totp_qrcode);
+		oAccountSettings2FA.qrcode = new QRCode(
+			container,
+			url
+		);
+	},
+	clear_qrcode: function() {
+		if (this.qrcode) {
+			this.qrcode.clear();
+			this.qrcode = null;
+			const qrcode = document.getElementById(oAccountSettings2FA.ids.totp_qrcode);
+			while (qrcode.firstChild) {
+				qrcode.removeChild(qrcode.firstChild);
+			}
+		}
+	},
+	set_code(code) {
+		const container = document.getElementById(oAccountSettings2FA.ids.totp_code);
+		container.setAttribute('data-code', code);
+		container.textContent = code.replace(/./g, '*');
+		oAccountSettings2FA.show_code(false);
+	},
+	show_code(show) {
+		const link = document.getElementById(this.ids.totp_show);
+		const code = document.getElementById(this.ids.totp_code);
+		const c = code.getAttribute('data-code');
+		if (show) {
+			code.textContent = c;
+			code.setAttribute('data-state', 'shown');
+			link.textContent = '<%[ hide ]%>';
+		} else {
+			code.textContent = c.replace(/./g, '*');
+			code.setAttribute('data-state', 'hidden');
+			link.textContent = '<%[ show ]%>';
+		}
+	}
+};
+oAccountSettings2FA.init();
+		</script>
+	</div>
+</com:TContent>

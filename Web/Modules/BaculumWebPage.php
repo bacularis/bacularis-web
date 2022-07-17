@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -157,6 +157,24 @@ class BaculumWebPage extends BaculumPage {
 	}
 
 	/**
+	 * Get default page for currently logged in user.
+	 *
+	 * @return string page name
+	 */
+	public function getDefaultPage() {
+		$def_page = $this->Service->DefaultPage;
+		$manager = $this->getModule('users');
+		if (!$manager->isPageAllowed($this->User, $this->Service->DefaultPage)) {
+			// User hasn't access to default service page. Get first allowed page.
+			$def_page = $this->findDefaultPageForUser();
+		}
+		if (!is_string($def_page)) {
+			$def_page = $this->getModule('auth')->getLoginPage();
+		}
+		return $def_page;
+	}
+
+	/**
 	 * Redirection to default page defined in application config.
 	 *
 	 * @access public
@@ -164,20 +182,13 @@ class BaculumWebPage extends BaculumPage {
 	 * @return none
 	 */
 	public function goToDefaultPage($params = null) {
-		$def_page = $this->Service->DefaultPage;
-		$manager = $this->getModule('users');
-		if (!$manager->isPageAllowed($this->User, $this->Service->DefaultPage)) {
-			// User hasn't access to default service page. Get first allowed page.
-			$def_page = $this->findDefaultPageForUser();
-
+		$def_page = $this->getDefaultPage();
+		if ($def_page !== $this->Service->DefaultPage) {
 			/**
 			 * If page different than default for service, reset params because
 			 * they will not work with different page.
 			 */
 			$params = null;
-		}
-		if (!is_string($def_page)) {
-			$def_page = $this->getModule('auth')->getLoginPage();
 		}
 		$this->goToPage($def_page, $params);
 	}

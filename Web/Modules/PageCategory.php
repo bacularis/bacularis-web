@@ -2,7 +2,7 @@
 /*
  * Bacularis - Bacula web interface
  *
- * Copyright (C) 2021 Marcin Haba
+ * Copyright (C) 2021-2022 Marcin Haba
  *
  * The main author of Bacularis is Marcin Haba, with contributors, whose
  * full list can be found in the AUTHORS file.
@@ -51,6 +51,7 @@ class PageCategory extends WebModule {
 	const CLIENT_VIEW = 'ClientView';
 	const RESTORE_WIZARD = 'RestoreWizard';
 	const GRAPHS = 'Graphs';
+	const ACCOUNT_SETTINGS = 'AccountSettings';
 
 	/**
 	 * System pages - always allowed for authenticated users
