@@ -173,9 +173,32 @@
 				<i id="command_status_finish" class="fa fa-check" style="display: none" title="<%[ Finished ]%>"></i>
 			</div>
 		</div>
-		<div id="run_job_log" class="w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
-			<div class="w3-code notranslate">
-				<pre><com:TActiveLabel ID="RunJobLog" /></pre>
+		<div id="run_job_log" class="w3-container" style="display: none;">
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('estimate_job_subtab_result', 'estimate_job_result', 'run_job_log');">
+				<div id="estimate_job_subtab_result" class="subtab_btn w3-half w3-bottombar w3-padding w3-border-red"><%[ Result ]%></div>
+			</a>
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('estimate_job_subtab_raw_output', 'estimate_job_raw_output', 'run_job_log');">
+				<div id="estimate_job_subtab_raw_output" class="subtab_btn w3-half w3-bottombar w3-padding"><%[ Raw output ]%></div>
+			</a>
+			<div id="estimate_job_result" class="subtab_item w3-clear">
+				<div class="w3-row-padding w3-section">
+					<div class="w3-col w3-third"><%[ Estimated job files ]%>:</div>
+					<div class="w3-col w3-half" id="estimate_job_files">-</div>
+				</div>
+				<div class="w3-row-padding w3-section">
+					<div class="w3-col w3-third"><%[ Estimated job bytes ]%>:</div>
+					<div class="w3-col w3-half" id="estimate_job_bytes">-</div>
+				</div>
+			</div>
+			<div id="estimate_job_raw_output" class="subtab_item w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+				<div class="w3-code">
+					<pre><com:TActiveLabel ID="RunJobLog" /></pre>
+				</div>
+			</div>
+		</div>
+		<div id="run_job_raw_output_container" class="w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+			<div class="w3-code">
+				<pre><span id="run_job_raw_output"></span></pre>
 			</div>
 		</div>
 		<div class="w3-row-padding w3-section">
@@ -277,14 +300,17 @@ function set_loading_status(status) {
 		start.style.display = 'none';
 		loading.style.display = 'none';
 		finish.style.display = '';
+		check_estimated_results();
 	} else if (status === 'loading') {
 		start.style.display = 'none';
 		loading.style.display = '';
 		finish.style.display = 'none';
+		set_estimation();
 	} else if (status === 'start') {
 		start.style.display = '';
 		loading.style.display = 'none';
 		finish.style.display = 'none';
+		set_estimation();
 	}
 }
 function estimate_output_refresh(out_id) {
@@ -296,5 +322,35 @@ function set_estimate_output(out_id) {
 	var cb = <%=$this->EstimateOutputRefresh->ActiveControl->Javascript%>;
 	cb.setCallbackParameter(out_id);
 	cb.dispatch();
+}
+function check_estimated_results() {
+	const joblog = document.getElementById('<%=$this->RunJobLog->ClientID%>');
+	const log = joblog.textContent.split("\n");
+	const pattern = /\sestimate files=([\d,]+)\sbytes=([\d,]+)$/;
+	let ret;
+	for (const l of log) {
+		ret = l.match(pattern);
+		if (ret) {
+			set_estimation(ret[2], ret[1]);
+			break;
+		}
+	}
+}
+function set_estimation(bytes, files) {
+	let bytes_f;
+	if (bytes) {
+		bytes_f = bytes.replace(/,/g, '');
+		bytes_f = Units.get_formatted_size(bytes_f);
+	}
+	const bytes_el = document.getElementById('estimate_job_bytes');
+	bytes_el.textContent = bytes_f ? bytes_f : '-';
+	const files_el = document.getElementById('estimate_job_files');
+	files_el.textContent = files ? files : '-';
+}
+function set_run_job_output(output) {
+	const container = document.getElementById('run_job_raw_output_container');
+	const log = document.getElementById('run_job_raw_output');
+	log.textContent = output;
+	container.style.display = '';
 }
 </script>

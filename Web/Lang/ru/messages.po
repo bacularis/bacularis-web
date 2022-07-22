@@ -4358,3 +4358,15 @@ msgstr "For used the HTTP Basic authentication the 2FA is not available. To use 
 
 msgid "Two-factor authentication"
 msgstr "Two-factor authentication"
+
+msgid "Result"
+msgstr "Result"
+
+msgid "Raw output"
+msgstr "Raw output"
+
+msgid "Estimated job files"
+msgstr "Estimated job files"
+
+msgid "Estimated job bytes"
+msgstr "Estimated job bytes"

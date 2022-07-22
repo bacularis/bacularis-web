@@ -407,22 +407,31 @@ class RunJob extends Portlets {
 			}
 		}
 		$result = $this->getModule('api')->create(array('jobs', 'run'), $params);
+		$cc = $this->getPage()->getCallbackClient();
 		if ($result->error === 0) {
 			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
 			if (is_numeric($started_jobid)) {
 				if ($this->GoToJobAfterStart->Checked) {
-					$this->getPage()->getCallbackClient()->callClientFunction('run_job_go_to_running_job', $started_jobid);
+					$cc->callClientFunction(
+						'run_job_go_to_running_job',
+						$started_jobid
+					);
 				} else {
-					$this->getPage()->getCallbackClient()->callClientFunction('oMonitor');
-					$this->getPage()->getCallbackClient()->hide('run_job');
+					$cc->callClientFunction('oMonitor');
+					$cc->hide('run_job');
 				}
 			} else {
-				$this->RunJobLog->Text = implode('', $result->output);
-				$this->getPage()->getCallbackClient()->callClientFunction('show_job_log', true);
+				$output = implode('', $result->output);
+				$cc->callClientFunction(
+					'set_run_job_output',
+					[$output]
+				);
 			}
 		} else {
-			$this->RunJobLog->Text = $result->output;
-			$this->getPage()->getCallbackClient()->callClientFunction('show_job_log', true);
+			$cc->callClientFunction(
+				'set_run_job_output',
+				[$result->output]
+			);
 		}
 	}
 }
