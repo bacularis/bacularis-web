@@ -225,6 +225,7 @@ class Security extends BaculumWebPage {
 		foreach ($roles as $role_name => $role) {
 			$role_items[$role_name] = $role['long_name'] ?: $role_name;
 		}
+		uasort($role_items, 'strnatcasecmp');
 		$control->DataSource = $role_items;
 		if ($def_val) {
 			$control->SelectedValue = $def_val;
@@ -245,6 +246,7 @@ class Security extends BaculumWebPage {
 		if ($add_blank_item) {
 			array_unshift($api_hosts, '');
 		}
+		natcasesort($api_hosts);
 		$control->DataSource = array_combine($api_hosts, $api_hosts);
 		if ($def_val) {
 			$control->SelectedValue = $def_val;
@@ -449,6 +451,7 @@ class Security extends BaculumWebPage {
 	public function initRoleWindow() {
 		// set role resources
 		$resources = $this->getModule('page_category')->getCategories(false);
+		natcasesort($resources);
 		$this->RoleResources->DataSource = array_combine($resources, $resources);
 		$this->RoleResources->dataBind();
 	}
@@ -1363,6 +1366,7 @@ class Security extends BaculumWebPage {
 			for ($i = 0; $i < count($basic_users->output); $i++) {
 				$usernames[$basic_users->output[$i]->username] = $basic_users->output[$i]->username;
 			}
+			uasort($usernames, 'strnatcasecmp');
 			$this->APIHostBasicUserSettings->DataSource = $usernames;
 			$this->APIHostBasicUserSettings->dataBind();
 		}
@@ -1650,6 +1654,7 @@ class Security extends BaculumWebPage {
 				$oauth2_client_list[$oauth2_clients->output[$i]->client_id] = $name;
 			}
 		}
+		uasort($oauth2_client_list, 'strnatcasecmp');
 		$this->APIHostOAuth2ClientSettings->DataSource = $oauth2_client_list;
 		$this->APIHostOAuth2ClientSettings->dataBind();
 	}
@@ -1710,6 +1715,7 @@ class Security extends BaculumWebPage {
 		}
 
 		$shortnames = array_keys($api_hosts);
+		natcasesort($shortnames);
 
 		$api_host_names = array_combine($shortnames, $shortnames);
 		$this->APIHostSettings->DataSource = array_merge(['' => ''], $api_host_names);
