@@ -99,19 +99,19 @@
 						<com:Bacularis.Web.Portlets.LabelVolume ID="LabelMedia" />
 					</div>
 				</div>
-				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output', 'job_log');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
 					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
 						<%[ Running job status ]%>
 						<i id="status_running_job_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
 				</a>
-				<a href="javascript:void(0)" onclick="W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');">
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');">
 					<div id="joblog_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding">
 						<%[ Raw job log ]%>
 						<i id="joblog_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
 				</a>
-				<a href="javascript:void(0)" onclick="W3SubTabs.open('jobfiles_subtab_text', 'jobfiles_list'); load_job_list_files();"<%=!$this->allow_list_files_mode ? ' style="display: none"' : ''%>>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('jobfiles_subtab_text', 'jobfiles_list', 'job_log'); load_job_list_files();"<%=!$this->allow_list_files_mode ? ' style="display: none"' : ''%>>
 					<div id="jobfiles_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding"><%[ Job files ]%></div>
 				</a>
 			</div>
@@ -223,7 +223,7 @@ var oRunningJobStatus = {
 			var graphical_container = document.getElementById(this.ids.graphical_container);
 			graphical_container.style.display = 'none';
 			if (document.getElementById('jobfiles_list').style.display == 'none') {
-				W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+				W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
 			}
 		}
 	},
@@ -412,7 +412,7 @@ var oRunningJobStatus = {
 		} else if (not_supported.style.display == 'none') {
 			not_supported.style.display = '';
 			graphical_container.style.display = 'none';
-			W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+			W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
 		}
 		return supported;
 	},
@@ -459,7 +459,7 @@ function init_graphical_running_job_status(data, tab_data) {
 		document.getElementById(tabs[i]).parentNode.style.display = (tab_data[tabs[i]] ? '' : 'none');
 	}
 	if (document.getElementById('status_running_job_subtab_graphical').classList.contains(W3SubTabs.css.tab_item_hover)) {
-		W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output');
+		W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output', 'job_log');
 	}
 }
 
@@ -481,7 +481,7 @@ $(function() {
 				<prop:FalseTemplate>
 					<script>
 						$(function() {
-							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
 						});
 					</script>
 				</prop:FalseTemplate>
@@ -513,7 +513,7 @@ $(function() {
 				<prop:TrueTemplate>
 					<script>
 						$(function() {
-							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output');
+							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
 						});
 					</script>
 				</prop:TrueTemplate>
