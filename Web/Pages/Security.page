@@ -2181,7 +2181,7 @@ $(function() {
 					OnCommand="setAllCommandAcls"
 					CommandParameter="save"
 				>
-					<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Baculum Web ]%>
+					<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Bacularis Web ]%>
 				</com:TActiveLinkButton>
 				<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 					ID="ConsoleConfig"

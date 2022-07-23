@@ -671,8 +671,8 @@ msgstr "Desmarcar todos e fechar"
 msgid "This action will clear bvfs cache that was created during preparing restore files. There is not recommended use this action during restore job working. Are you sure?"
 msgstr "Esta ação vai limpar o bvfs cache que é criado durante a preparação da restauração dos arquivos.\\n\\nNão é recomendado executar esta ação durante a restauração de um backup.\\n\\nVocê tem certeza que deseja continuar?"
 
-msgid "Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
-msgstr "Habilitar a depuração possibilita registrar a maioria das ações executadas no Baculum WebGUI. A depuração deve ser habilitada se estiver acontecendo algo de estranho com o Baculum ou ocorrer algum erro que pode ser algum bug. Os logs são usados para detectar possíveis problemas na execução do Baculum. Após confirmar esta mensagem, os arquivos de depuração serão salvos de forma contínua no diretório /protected/Web/Logs/. Você tem certeza que deseja habilitar a depuração?"
+msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
+msgstr "Habilitar a depuração possibilita registrar a maioria das ações executadas no Bacularis WebGUI. A depuração deve ser habilitada se estiver acontecendo algo de estranho com o Bacularis ou ocorrer algum erro que pode ser algum bug. Os logs são usados para detectar possíveis problemas na execução do Bacularis. Após confirmar esta mensagem, os arquivos de depuração serão salvos de forma contínua no diretório /protected/Web/Logs/. Você tem certeza que deseja habilitar a depuração?"
 
 msgid "10 elements"
 msgstr "10 registros"
@@ -3042,8 +3042,8 @@ msgstr "Os clientes OAuth2 estão configurados nos hosts API. Para criar os clie
 msgid "The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance."
 msgstr "O host de API define parâmetros de conexão para hosts com as instâncias da API do Bacularis. Você pode criar as conexões de host de API dedicadas a usuários específicos atribuindo hosts de API a eles na guia Usuários. É possível criar muitas conexões de host de API para a mesma instância do Bacularis API."
 
-msgid "Set all CommandAcls used by Baculum Web"
-msgstr "Definir todos os comandos ACL's usados pelo Baculum"
+msgid "Set all CommandAcls used by Bacularis Web"
+msgstr "Definir todos os comandos ACL's usados pelo Bacularis"
 
 msgid "Find job by filename (without path):"
 msgstr "Procurar job pelo nome do arquivo (sem o caminho):"

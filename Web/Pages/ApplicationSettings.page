@@ -77,7 +77,7 @@
 			<div class="w3-modal-content w3-card-4 w3-animate-zoom w3-padding" style="max-width: 600px">
 				<span onclick="document.getElementById('debug_confirm').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
 				<h4><%[ Enable debug ]%></h4>
-				<p class="justify"><%[ Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure? ]%></p>
+				<p class="justify"><%[ Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure? ]%></p>
 				<div class="w3-center">
 					<button class="w3-button w3-red" type="button" onclick="document.getElementById('<%=$this->Debug->ClientID%>').checked = false; document.getElementById('debug_confirm').style.display='none'"><i class="fa fa-times"></i> &nbsp;<%[ No ]%></button>
 					<button class="w3-button w3-green" type="button" onclick="document.getElementById('debug_confirm').style.display='none'"><i class="fa fa-check"></i> &nbsp;<%[ Yes ]%></button>

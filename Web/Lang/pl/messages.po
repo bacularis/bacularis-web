@@ -671,8 +671,8 @@ msgstr "Odznacz elementy i zamknij"
 msgid "This action will clear bvfs cache that was created during preparing restore files. There is not recommended use this action during restore job working. Are you sure?"
 msgstr "Ta akcja wyczyści bvfs cache który był stworzony podczas przygotowania każdej akcji przywracania danych.\\n\\nNie jest zalecane używanie tej akcji podczas gdy jest uruchomione zadanie przywracania danych.\\n\\nCzy chcesz kontynuować?"
 
-msgid "Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
-msgstr "Pliki rozszerzonych dzienników programu (tzw. debug programu) umożliwiają zapisywanie akcji wykonywanych na interfejsie Baculum. Funkcjonalność dzienników programu powinna być załączana jeśli wydarzy się coś złego z interfejsem Baculum lub coś co wygląda jak błąd. Rozszerzone dzienniki programu mogą być użyteczne przy wykrywaniu problemów w działaniu Baculum. Po potwierdzeniu tej wiadomości debug Baculum będą zapisywany w lokalizacji /protected/Web/Logs/. Czy chcesz kontynuować?"
+msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
+msgstr "Pliki rozszerzonych dzienników programu (tzw. debug programu) umożliwiają zapisywanie akcji wykonywanych na interfejsie Bacularis. Funkcjonalność dzienników programu powinna być załączana jeśli wydarzy się coś złego z interfejsem Bacularis lub coś co wygląda jak błąd. Rozszerzone dzienniki programu mogą być użyteczne przy wykrywaniu problemów w działaniu Bacularis. Po potwierdzeniu tej wiadomości debug Bacularis będą zapisywany w lokalizacji /protected/Web/Logs/. Czy chcesz kontynuować?"
 
 msgid "10 elements"
 msgstr "10 elementów"
@@ -3042,8 +3042,8 @@ msgstr "Klienci OAuth2 są konfigurowani na hostach API. Aby stworzyć klienta O
 msgid "The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance."
 msgstr "Hosty API definiują parametry połączenia do hostów z instancjami Bacularis API. Możesz stworzyć połączenia do hostów API dedykowane dla określonych użytkowników poprzez przypisanie hostów API do nich na zakładce Użytkownicy. Jest możliwe utworzenie wielu połączeń do hostów API dla tej samej instancji Bacularis API."
 
-msgid "Set all CommandAcls used by Baculum Web"
-msgstr "Ustaw wszystkie wartości CommandAcl używane przez Baculum Web"
+msgid "Set all CommandAcls used by Bacularis Web"
+msgstr "Ustaw wszystkie wartości CommandAcl używane przez Bacularis Web"
 
 msgid "Find job by filename (without path):"
 msgstr "Znajdź zadanie według nazwy pliku (bez ścieżki):"

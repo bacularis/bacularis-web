@@ -671,8 +671,8 @@ msgstr "снять все и закрыть"
 msgid "This action will clear bvfs cache that was created during preparing restore files. There is not recommended use this action during restore job working. Are you sure?"
 msgstr "Это действие очистит кэш bvfs, созданный при подготовке файлов восстановления. Не рекомендуется использовать это действие во время восстановления задания. Вы уверены?"
 
-msgid "Debug files enable possibility to save most of actions executed on Baculum WebGUI. Debug functionality should be enabled if is happening shomething wrong with Baculum or something that looks like a bug. Logs can be useful for detecting a problems in Baculum working. After confirmation this message Baculum debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
-msgstr "Отладочные файлы позволяют сохранять большинство действий, выполняемых на Baculum WebGUI. Функциональность отладки должна быть включена, если происходит неправильная работа Baculum или что-то похожее на баг. Логи могут быть полезны для выявления проблем в работе Baculum. После подтверждения этого сообщения отладочные файлы будут постоянно сохраняться в каталоге /protected/Web/Logs/ . Вы уверены?"
+msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
+msgstr "Отладочные файлы позволяют сохранять большинство действий, выполняемых на Bacularis WebGUI. Функциональность отладки должна быть включена, если происходит неправильная работа Bacularis или что-то похожее на баг. Логи могут быть полезны для выявления проблем в работе Bacularis. После подтверждения этого сообщения отладочные файлы будут постоянно сохраняться в каталоге /protected/Web/Logs/ . Вы уверены?"
 
 msgid "10 elements"
 msgstr "10 элементов"
@@ -3042,8 +3042,8 @@ msgstr "Клиенты OAuth2 настроены на хост-серверах 
 msgid "The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance."
 msgstr "Хосты API определяют параметры соединения с хостами с экземплярами Bacularis API. Вы можете создать API хост-соединения, предназначенные для конкретных пользователей, назначая им хосты на вкладке Пользователи. Существует возможность создания многих соединений API хостов к тому же экземпляру Bacularis API."
 
-msgid "Set all CommandAcls used by Baculum Web"
-msgstr "Установить все команды Acl, используемые Baculum Web"
+msgid "Set all CommandAcls used by Bacularis Web"
+msgstr "Установить все команды Acl, используемые Bacularis Web"
 
 msgid "Find job by filename (without path):"
 msgstr "Найти задание по имени файла (без пути):"
