@@ -12,8 +12,8 @@
 			>
 				<strong><%[ Run job ]%></strong> &nbsp;<i class="fa fa-cogs w3-small"></i>
 			</com:TActiveLinkButton>
-			<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 		</h5>
+		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	</header>
 	<div class="w3-row-padding w3-margin-bottom">
 		<div class="w3-quarter">
