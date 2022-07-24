@@ -4113,11 +4113,11 @@ msgstr "flat browser"
 msgid "tree browser"
 msgstr "tree browser"
 
-msgid "Job age on the job status graph"
-msgstr "Job age on the job status graph"
+msgid "Job age on the dashboard job graphs"
+msgstr "Job age on the dashboard job graphs"
 
-msgid "Set age for jobs to display the job summary pie graph on the dashboard page. Setting zero means displaying the graph for all jobs without limitation."
-msgstr "Set age for jobs to display the job summary pie graph on the dashboard page. Setting zero means displaying the graph for all jobs without limitation."
+msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
+msgstr "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
 
 msgid "last %time %unit"
 msgstr "last %time %unit"
@@ -4370,3 +4370,6 @@ msgstr "Estimated job files"
 
 msgid "Estimated job bytes"
 msgstr "Estimated job bytes"
+
+msgid "Job size and files per day"
+msgstr "Job size and files per day"

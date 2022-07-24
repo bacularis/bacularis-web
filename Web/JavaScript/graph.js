@@ -1286,7 +1286,7 @@ var GraphPieClass = jQuery.klass({
 		const opts = prop.hasOwnProperty('graph_options') ? prop.graph_options : {};
 		this.graph_options = $.extend(true, this.graph_options_def, opts);
 		this.series = this.prepare_series();
-		this.draw_grah();
+		this.draw_graph();
 	},
 	prepare_series: function() {
 		var series = [];
@@ -1310,7 +1310,7 @@ var GraphPieClass = jQuery.klass({
 		}
 		return series;
 	},
-	draw_grah: function() {
+	draw_graph: function() {
 		this.pie = Flotr.draw(this.container, this.series, this.graph_options);
 		Flotr.EventAdapter.observe(this.container, 'flotr:click', (e) => {
 			if (typeof(this.graph_options.mouse.mouseHandler) == 'function') {
@@ -1321,6 +1321,92 @@ var GraphPieClass = jQuery.klass({
 	destroy: function() {
 		Flotr.EventAdapter.stopObserving(this.container, 'flotr:click');
 		this.pie.destroy();
+	}
+});
+
+var GraphLinesClass = jQuery.klass({
+	data: [],
+	container: null,
+	series: null,
+	graph: null,
+	graph_options_def: {
+		HtmlText: false,
+		fontColor: '#000000',
+		grid : {
+			verticalLines : false,
+			backgroundColor : null
+		},
+		selection: {
+			mode: 'x'
+		},
+		legend: {
+			noColumns: 2,
+			position : 'se',
+			margin: 0
+		}
+	},
+	initialize: function(prop) {
+		this.data = prop.data;
+		this.container = document.getElementById(prop.container_id);
+		const opts = prop.hasOwnProperty('graph_options') ? prop.graph_options : {};
+		this.graph_options = $.extend(true, this.graph_options_def, opts);
+		this.series = this.prepare_series();
+		this.draw_graph();
+		this.add_events();
+	},
+	prepare_series: function() {
+		const series = [];
+		let serie;
+		for (let i = 0; i < this.data.length; i++) {
+			serie = {data: this.data[i].serie};
+			if (this.data[i].opts) {
+				serie = jQuery.extend(true, serie, this.data[i].opts);
+			}
+			series.push(serie);
+		}
+		return series;
+	},
+	add_events: function() {
+		const select_callback = (area) => {
+			const graph_options = $.extend({}, this.graph_options);
+			const options = $.extend(true, graph_options, {
+				xaxis : {
+					min : area.x1,
+					max : area.x2
+					},
+				yaxis : {
+					min : area.y1,
+					max : area.y2
+				}
+			});
+			this.draw_graph(options);
+		};
+
+		// set Flotr-specific select area event
+		Flotr.EventAdapter.observe(this.container, 'flotr:select', select_callback);
+
+		// set Flotr-specific click area event (zoom reset)
+		Flotr.EventAdapter.observe(this.container, 'flotr:click', () => {
+			const opts = {
+				xaxis: {
+					min: this.graph_options.xaxis.def_min,
+					max: this.graph_options.xaxis.def_max
+				},
+				yaxis: {
+					min: null,
+					max: null
+				}
+			}
+			this.draw_graph(opts);
+		});
+	},
+	draw_graph: function(opts) {
+		const options = $.extend(true, this.graph_options, opts || {});
+		this.graph = Flotr.draw(this.container, this.series, options);
+	},
+	destroy: function() {
+		Flotr.EventAdapter.stopObserving(this.container, 'flotr:click');
+		this.graph.destroy();
 	}
 });
 

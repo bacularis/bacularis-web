@@ -836,6 +836,7 @@ var Dashboard = {
 	stats: null,
 	txt: null,
 	pie: null,
+	bytes_files_graph: null,
 	txt: null,
 	noval: '-',
 	ids: {
@@ -865,6 +866,10 @@ var Dashboard = {
 		pie_summary: {
 			container_id: 'jobs_summary_graph',
 			legend_container_id: 'jobs_summary_legend'
+		},
+		bytes_files_graph: {
+			container_id: 'jobs_bytes_files_graph',
+			legend_container_id: 'jobs_bytes_files_legend'
 		}
 	},
 	last_jobs_table: null,
@@ -885,6 +890,7 @@ var Dashboard = {
 		this.update_pools();
 		this.update_jobtotals();
 		this.update_database();
+		this.update_bytes_files_graph();
 	},
 	update_clients: function() {
 		var clients = this.stats.clients_occupancy;
@@ -973,6 +979,47 @@ var Dashboard = {
 					container: $('#' + this.ids.pie_summary.legend_container_id)
 				},
 				title: this.txt.js_sum_title
+			}
+		});
+	},
+	update_bytes_files_graph: function() {
+		if (this.bytes_files_graph != null) {
+			this.bytes_files_graph.destroy();
+		}
+		const t = new Date().getTime() / 1000;
+		const now = parseInt(t / 86400, 10) * 86400;
+		const def_min = this.stats.opts.job_age ? now - this.stats.opts.job_age + 86400 : null;
+		const def_max = now;
+		this.bytes_files_graph = new GraphLinesClass({
+			data: this.stats.jobs_total_bytes_files,
+			container_id: this.ids.bytes_files_graph.container_id,
+			graph_options: {
+				xaxis: {
+					min: def_min,
+					max: def_max,
+					def_min: def_min,
+					def_max: def_max,
+					mode: 'time',
+					timeMode: 'local',
+					timeUnit: 'second',
+					labelsAngle: 45,
+					color: '#000000',
+					tickFormatter: (tick) => {
+						const t = new Date(tick * 1000);
+						return (t.getDate() + ' ' + t.toLocaleString('default', { month: 'long' }));
+					}
+				},
+				yaxis: {
+					color: '#000000',
+					tickFormatter: Units.get_formatted_size.bind(Units)
+				},
+				y2axis: {
+					color: '#000000'
+				},
+				legend: {
+					container: $('#' + this.ids.bytes_files_graph.legend_container_id)
+				},
+				title: this.txt.bytes_files_title
 			}
 		});
 	}

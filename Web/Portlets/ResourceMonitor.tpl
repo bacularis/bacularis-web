@@ -33,7 +33,11 @@ $(function() {
 					const job_age_on_job_status_graph = <%=$this->job_age_on_job_status_graph%>;
 					Statistics.grab_statistics(oData, {
 						job_states: JobStatus.get_states(),
-						job_age: job_age_on_job_status_graph
+						job_age: job_age_on_job_status_graph,
+						txts: {
+							jobfiles: '<%[ Job files ]%>',
+							jobbytes: '<%[ Job size ]%>'
+						}
 					});
 					let age_label = '';
 					if (job_age_on_job_status_graph > 0) {
@@ -44,7 +48,8 @@ $(function() {
 						age_label = age_label.replace('%unit', job_age_unit);
 					}
 					Dashboard.set_text({
-						js_sum_title: '<%[ Job status summary ]%>' + age_label
+						js_sum_title: '<%[ Job status summary ]%>' + age_label,
+						bytes_files_title: '<%[ Job size and files per day ]%>' + age_label
 					});
 					Dashboard.update_all(Statistics);
 				}

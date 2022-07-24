@@ -4,6 +4,15 @@
 	<header class="w3-container">
 		<h5>
 			<b><i class="fa fa-tachometer-alt"></i> <%[ Dashboard ]%></b>
+			<com:TActiveLinkButton
+				OnClick="loadRunJobModal"
+				Attributes.onclick="document.getElementById('run_job').style.display='block'"
+				CssClass="w3-button w3-green w3-margin-left"
+				Style="font-size: 10px"
+			>
+				<strong><%[ Run job ]%></strong> &nbsp;<i class="fa fa-cogs w3-small"></i>
+			</com:TActiveLinkButton>
+			<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 		</h5>
 	</header>
 	<div class="w3-row-padding w3-margin-bottom">
@@ -55,7 +64,8 @@
 				</div>
 				<h5><%[ Total bytes ]%></h5>
 				<div class="w3-text">
-					<p><%[ Total files: ]%><strong><span id="jobs_total_files"></span></strong></p>
+					<p class="w3-small"><%[ Total files: ]%><strong><span id="jobs_total_files"></span></strong></p>
+					<p class="w3-small"><%[ Database type: ]%> <strong><span id="database_type"></span></strong>&nbsp;<%[ Database size: ]%> <strong><span id="database_size"></span></strong></p>
 				</div>
 			</div>
 		</div>
@@ -63,35 +73,14 @@
 	<div class="w3-panel">
 		<div class="w3-row-padding" style="margin:0 -16px">
 			<div class="w3-quarter">
-				<div class="dashboard_graph">
+				<div>
 					<div id="jobs_summary_graph"></div>
 					<div id="jobs_summary_legend"></div>
 				</div>
-				<div class="w3-card-4 w3-padding-16 w3-margin-top w3-margin-bottom">
-					<header class="w3-container w3-light-grey w3-half w3-left">
-						<h4 class="w3-center"><i class="fa fa-database w3-xxlarge"></i> <span style="vertical-align: super"><%[ Database ]%></span></h4>
-					</header>
-					<div class="w3-container w3-half w3-left">
-						<div class="w3-padding-small"><%[ Database type: ]%> <span id="database_type"></span></div>
-						<div class="w3-padding-small"><%[ Database size: ]%> &nbsp;<span id="database_size"></span></div>
-					</div>
-					<div class="w3-clear"></div>
+				<div class="w3-margin-top">
+					<div id="jobs_bytes_files_graph"></div>
+					<div id="jobs_bytes_files_legend"></div>
 				</div>
-				<com:TActiveLinkButton
-					OnClick="loadRunJobModal"
-					Attributes.onclick="document.getElementById('run_job').style.display='block'"
-					Style="text-decoration: none"
-				>
-					<div class="w3-container w3-blue w3-block w3-center w3-padding-small w3-margin-right w3-margin-bottom">
-						<p style="margin: 3px 0"><%[ Run job ]%> &nbsp;<i class="fa fa-cogs w3-small"></i></p>
-					</div>
-				</com:TActiveLinkButton>
-				<a href="<%=$this->Service->constructUrl('RestoreWizard')%>" style="text-decoration: none">
-					<div class="w3-container w3-blue w3-block w3-center w3-padding-small w3-margin-bottom">
-						<p style="margin: 3px 0"><%[ Perform restore ]%> &nbsp;<i class="fa fa-reply w3-small"></i></p>
-					</div>
-				</a>
-				<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 			</div>
 			<div class="w3-threequarter">
 				<table id="last_jobs_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
