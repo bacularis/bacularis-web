@@ -12,7 +12,7 @@
 		OnClick="loadRunJobModal"
 		Attributes.onclick="document.getElementById('run_job').style.display='block'"
 	>
-		<i class="fa fa-undo"></i> &nbsp;<%[ Run job ]%>
+		<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
 	</com:TActiveLinkButton>
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$_SESSION['director']%>" />
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
