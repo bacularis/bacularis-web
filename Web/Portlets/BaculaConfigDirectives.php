@@ -56,23 +56,22 @@ use Bacularis\Web\Portlets\DirectiveMessages;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BaculaConfigDirectives extends DirectiveListTemplate {
-
-	const SHOW_REMOVE_BUTTON = 'ShowRemoveButton';
-	const SHOW_CANCEL_BUTTON = 'ShowCancelButton';
-	const SHOW_ALL_DIRECTIVES = 'ShowAllDirectives';
-	const SHOW_BOTTOM_BUTTONS = 'ShowBottomButtons';
-	const SHOW_SECTION_TABS = 'ShowSectionTabs';
-	const SAVE_DIRECTIVE_ACTION_OK = 'SaveDirectiveActionOk';
-	const DISABLE_RENAME = 'DisableRename';
+class BaculaConfigDirectives extends DirectiveListTemplate
+{
+	public const SHOW_REMOVE_BUTTON = 'ShowRemoveButton';
+	public const SHOW_CANCEL_BUTTON = 'ShowCancelButton';
+	public const SHOW_ALL_DIRECTIVES = 'ShowAllDirectives';
+	public const SHOW_BOTTOM_BUTTONS = 'ShowBottomButtons';
+	public const SHOW_SECTION_TABS = 'ShowSectionTabs';
+	public const SAVE_DIRECTIVE_ACTION_OK = 'SaveDirectiveActionOk';
+	public const DISABLE_RENAME = 'DisableRename';
 
 	private $show_all_directives = false;
 
-	public $resource_names = array();
+	public $resource_names = [];
 
-	private $directive_types = array(
+	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveCheckBox',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveInteger',
@@ -82,42 +81,45 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		'Bacularis\Web\Portlets\DirectiveSize',
 		'Bacularis\Web\Portlets\DirectiveSpeed',
 		'Bacularis\Web\Portlets\DirectiveTimePeriod'
-	);
+	];
 
-	private $directive_list_types = array(
+	private $directive_list_types = [
 		'Bacularis\Web\Portlets\DirectiveFileSet',
 		'Bacularis\Web\Portlets\DirectiveSchedule',
 		'Bacularis\Web\Portlets\DirectiveMessages',
 		'Bacularis\Web\Portlets\DirectiveRunscript',
 		'Bacularis\Web\Portlets\DirectiveMultiComboBox',
 		'Bacularis\Web\Portlets\DirectiveMultiTextBox'
-	);
+	];
 
-	private $field_multple_values = array(
+	private $field_multple_values = [
 		'ListBox'
-	);
+	];
 
 	public $display_directives;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if (!$this->getPage()->isPostBack && !$this->getPage()->IsCallBack) {
 			$this->Cancel->Visible = $this->getShowCancelButton();
 		}
 	}
 
-	private function getConfigData($host, array $parameters) {
-		$default_params = array('config');
+	private function getConfigData($host, array $parameters)
+	{
+		$default_params = ['config'];
 		$params = array_merge($default_params, $parameters);
 		$result = $this->Application->getModule('api')->get($params, $host, false);
-		$config = array();
+		$config = [];
 		if (is_object($result) && $result->error === 0 && (is_object($result->output) || is_array($result->output))) {
 			$config = $result->output;
 		}
 		return $config;
 	}
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$load_values = $this->getLoadValues();
 		if (!$load_values && $this->IsDirectiveCreated) {
 			// This control is loaded only once, otherwise fields loose assigned values.
@@ -133,26 +135,26 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$component_name = $this->getComponentName();
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
-		$directives = array();
-		$parent_directives = new \StdClass;
-		$config = new \StdClass;
+		$directives = [];
+		$parent_directives = new \StdClass();
+		$config = new \StdClass();
 		$predefined = false;
 		if ($load_values === true) {
-			$config = $this->getConfigData($host, array(
+			$config = $this->getConfigData($host, [
 				$component_type,
 				$resource_type,
 				$resource_name
-			));
+			]);
 			if (empty($component_name) || empty($resource_type) || empty($resource_name)) {
 				$this->ConfigDirectives->Display = 'None';
 				return;
 			}
 			if ($resource_type === 'Job' && property_exists($config, 'JobDefs')) {
-				$parent_directives = $this->getConfigData($host, array(
+				$parent_directives = $this->getConfigData($host, [
 					$component_type,
 					'JobDefs',
 					$config->JobDefs
-				));
+				]);
 			}
 		} else {
 			// Pre-defined config for new resource can be provided in Data property.
@@ -204,24 +206,24 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			}
 
 			if ((!is_array($directive_value) && !is_object($directive_value)) || in_array($field_type, $this->field_multple_values)) {
-				$directive_value = array($directive_value);
+				$directive_value = [$directive_value];
 			}
 			if (is_object($directive_value)) {
-				$directive_value = (array)$directive_value;
+				$directive_value = (array) $directive_value;
 			}
 
 			if ($directive_name === 'Include' || $directive_name === 'Exclude' || $directive_name === 'Runscript' || $directive_name === 'Destinations') {
 				// provide all include blocks at once
-				$directive_value = array(array(
+				$directive_value = [[
 					$directive_name => $directive_value,
-				));
+				]];
 				if (property_exists($config, 'Exclude')) {
-					$directive_value[0]['Exclude'] = (array)$config->{'Exclude'};
+					$directive_value[0]['Exclude'] = (array) $config->{'Exclude'};
 				}
 			}
 
 			if ($resource_type === 'Schedule' && in_array($directive_name, ['Run', 'Connect'])) {
-				$directive_value = array($directive_value);
+				$directive_value = [$directive_value];
 			}
 
 			if ($directive_name === 'Exclude') {
@@ -229,7 +231,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			}
 
 			foreach ($directive_value as $key => $value) {
-				$directive = array(
+				$directive = [
 					'host' => $host,
 					'component_type' => $component_type,
 					'component_name' => $component_name,
@@ -248,16 +250,16 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 					'group_name' => null,
 					'section' => $directive_desc->Section,
 					'show' => (($in_config || !$load_values) || $this->getShowAllDirectives())
-				);
+				];
 				array_push($directives, $directive);
 			}
 		}
-		$config = $this->getConfigData($host, array($component_type));
+		$config = $this->getConfigData($host, [$component_type]);
 		for ($i = 0; $i < count($config); $i++) {
 			$resource_type = $this->getConfigResourceType($config[$i]);
 			$resource_name = property_exists($config[$i]->{$resource_type}, 'Name') ? $config[$i]->{$resource_type}->Name : '';
 			if (!array_key_exists($resource_type, $this->resource_names)) {
-				$this->resource_names[$resource_type] = array();
+				$this->resource_names[$resource_type] = [];
 			}
 			array_push($this->resource_names[$resource_type], $resource_name);
 		}
@@ -279,7 +281,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$this->DirectiveSetting->showOptions($load_values);
 	}
 
-	public function loadDirectives($sender, $param) {
+	public function loadDirectives($sender, $param)
+	{
 		$show_all_directives = !$this->getShowAllDirectives();
 		$this->setShowAllDirectives($show_all_directives);
 		$this->loadConfig();
@@ -289,13 +292,15 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		);
 	}
 
-	public function unloadDirectives() {
-		$this->RepeaterDirectives->DataSource = array();
+	public function unloadDirectives()
+	{
+		$this->RepeaterDirectives->DataSource = [];
 		$this->RepeaterDirectives->dataBind();
 	}
 
-	public function saveResource($sender, $param) {
-		$directives = array();
+	public function saveResource($sender, $param)
+	{
+		$directives = [];
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
@@ -352,19 +357,19 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 					continue;
 				}
 				if (!array_key_exists($directive_name, $directives)) {
-					$directives[$directive_name] = array();
+					$directives[$directive_name] = [];
 				}
 				if (is_array($directive_value)) {
 					if ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMessages') {
 						$directives = array_merge($directives, $directive_value);
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveRunscript') {
 						if (!isset($directives[$directive_name])) {
-							$directives[$directive_name] = array();
+							$directives[$directive_name] = [];
 						}
 						$directives[$directive_name] = array_merge($directives[$directive_name], $directive_value[$directive_name]);
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveFileSet') {
 						if (key_exists('Exclude', $directive_value) && count($directive_value['Exclude']) > 0) {
-							$directives['Exclude'] = array($directive_value['Exclude']);
+							$directives['Exclude'] = [$directive_value['Exclude']];
 						}
 						$directives[$directive_name] = $directive_value[$directive_name];
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveSchedule') {
@@ -409,15 +414,15 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			$resource_name = $res_name_dir;
 		}
 
-		$params = array(
+		$params = [
 			'config',
 			$component_type,
 			$resource_type,
 			$resource_name
-		);
+		];
 		$result = $this->getModule('api')->set(
 			$params,
-			array('config' => json_encode($directives)),
+			['config' => json_encode($directives)],
 			$host,
 			false
 		);
@@ -426,7 +431,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			$this->SaveDirectiveError->Display = 'None';
 			$this->SaveDirectiveErrMsg->Text = '';
 			if ($this->getComponentType() == 'dir') {
-				$this->getModule('api')->set(array('console'), array('reload'));
+				$this->getModule('api')->set(['console'], ['reload']);
 			}
 		} else {
 			$this->SaveDirectiveOk->Display = 'None';
@@ -437,19 +442,23 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$this->onSave(null);
 	}
 
-	public function setShowAllDirectives($show_all_directives) {
+	public function setShowAllDirectives($show_all_directives)
+	{
 		$this->setViewState(self::SHOW_ALL_DIRECTIVES, $show_all_directives);
 	}
 
-	public function getShowAllDirectives() {
+	public function getShowAllDirectives()
+	{
 		return $this->getViewState(self::SHOW_ALL_DIRECTIVES, false);
 	}
 
-	public function getSaveDirectiveActionOK() {
+	public function getSaveDirectiveActionOK()
+	{
 		return $this->getViewState(self::SAVE_DIRECTIVE_ACTION_OK, '');
 	}
 
-	public function setSaveDirectiveActionOK($action_ok) {
+	public function setSaveDirectiveActionOK($action_ok)
+	{
 		$this->setViewState(self::SAVE_DIRECTIVE_ACTION_OK, $action_ok);
 	}
 
@@ -459,7 +468,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param bool $show if true, loader is displayed, if false it is hidden
 	 * @return none
 	 */
-	public function showLoader($show) {
+	public function showLoader($show)
+	{
 		$cbc = $this->getPage()->getCallbackClient();
 		$lid = 'bcd_loader_' . $this->ClientID;
 		if ($show) {
@@ -472,11 +482,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	/**
 	 * Remove resource callback method.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return object $sender sender instance
 	 * @return mixed $param additional parameters
 	 * @return none
 	 */
-	public function removeResource($sender, $param) {
+	public function removeResource($sender, $param)
+	{
 		if (!$this->getPage()->IsCallback) {
 			// removing resource available only by callback
 			return;
@@ -488,7 +501,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		$host = null;
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
-		$config = $this->getConfigData($host, array($component_type));
+		$config = $this->getConfigData($host, [$component_type]);
 		$deps = $this->getModule('data_deps')->checkDependencies(
 			$component_type,
 			$resource_type,
@@ -503,13 +516,13 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 				$resource_name
 			);
 			$result = $this->getModule('api')->set(
-				array('config',	$component_type),
-				array('config' => json_encode($config)),
+				['config',	$component_type],
+				['config' => json_encode($config)],
 				$host,
 				false
 			);
 			if ($result->error === 0) {
-				$this->getModule('api')->set(array('console'), array('reload'));
+				$this->getModule('api')->set(['console'], ['reload']);
 				$this->showRemovedResourceInfo(
 					$resource_type,
 					$resource_name
@@ -534,7 +547,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param string $resource_name removed resource name
 	 * @return none
 	 */
-	private function showRemovedResourceInfo($resource_type, $resource_name) {
+	private function showRemovedResourceInfo($resource_type, $resource_name)
+	{
 		$msg = Prado::localize('Resource %s "%s" removed successfully.');
 		$msg = sprintf(
 			$msg,
@@ -556,7 +570,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param string $error_message error message
 	 * @return none
 	 */
-	private function showRemovedResourceError($error_message) {
+	private function showRemovedResourceError($error_message)
+	{
 		$this->getPage()->getCallbackClient()->callClientFunction('show_error', [
 			$error_message
 		]);
@@ -570,11 +585,12 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param string $resource_name resource name of the removing resource
 	 * @return none
 	 */
-	private function showDependenciesError($deps, $resource_type, $resource_name) {
+	private function showDependenciesError($deps, $resource_type, $resource_name)
+	{
 		$emsg = Prado::localize('Resource %s "%s" is used in the following resources:');
 		$emsg = sprintf($emsg, $resource_type, $resource_name);
 		$emsg_deps = Prado::localize('Component: %s, Resource: %s "%s", Directive: %s');
-		$dependencies = array();
+		$dependencies = [];
 		for ($i = 0; $i < count($deps); $i++) {
 			$dependencies[] = sprintf(
 				$emsg_deps,
@@ -586,7 +602,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 		}
 		$emsg_sum = Prado::localize('Please unassign resource %s "%s" from these resources and try again.');
 		$emsg_sum = sprintf($emsg_sum, $resource_type, $resource_name);
-		$error = array($emsg, implode('<br />', $dependencies),  $emsg_sum);
+		$error = [$emsg, implode('<br />', $dependencies),  $emsg_sum];
 		$error_message = implode('<br /><br />', $error);
 		$this->showRemovedResourceError($error_message);
 	}
@@ -600,7 +616,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param string $resource_name resource name to remove
 	 * @return none
 	 */
-	private function removeResourceFromConfig(&$config, $resource_type, $resource_name) {
+	private function removeResourceFromConfig(&$config, $resource_type, $resource_name)
+	{
 		for ($i = 0; $i < count($config); $i++) {
 			foreach ($config[$i] as $rtype => $resource) {
 				if (!property_exists($resource, 'Name')) {
@@ -621,9 +638,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * and updates them as well.
 	 *
 	 * @param string $new_resource_name new resource name to set
-	 * @return boolean true on success, false on failure
+	 * @param mixed $resource_name_new
+	 * @return bool true on success, false on failure
 	 */
-	public function renameResource($resource_name_new) {
+	public function renameResource($resource_name_new)
+	{
 		$success = true;
 		$component_type = $this->getComponentType();
 		if (empty($_SESSION[$component_type])) {
@@ -642,7 +661,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			return true;
 		}
 
-		$config = $this->getConfigData($host, array($component_type));
+		$config = $this->getConfigData($host, [$component_type]);
 		$deps = $this->getModule('data_deps')->checkDependencies(
 			$component_type,
 			$resource_type,
@@ -657,8 +676,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 			$resource_name_new
 		);
 		$result = $this->getModule('api')->set(
-			array('config',	$component_type),
-			array('config' => json_encode($config)),
+			['config',	$component_type],
+			['config' => json_encode($config)],
 			$host,
 			false
 		);
@@ -684,9 +703,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 * @param string $resource_type resource type to rename
 	 * @param string $resource_name resource name to rename
 	 * @param string $resource_name_new new resource name to set
+	 * @param mixed $deps
 	 * @return none
 	 */
-	private function renameResourceInConfig(&$config, $deps, $resource_type, $resource_name, $resource_name_new) {
+	private function renameResourceInConfig(&$config, $deps, $resource_type, $resource_name, $resource_name_new)
+	{
 		for ($i = 0; $i < count($config); $i++) {
 			foreach ($config[$i] as $rtype => $resource) {
 				for ($j = 0; $j < count($deps); $j++) {
@@ -706,9 +727,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	/**
 	 * Set if remove button should be available.
 	 *
+	 * @param mixed $show
 	 * @return none;
 	 */
-	public function setShowRemoveButton($show) {
+	public function setShowRemoveButton($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_REMOVE_BUTTON, $show);
 	}
@@ -718,16 +741,19 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 *
 	 * @return bool true if available, otherwise false
 	 */
-	public function getShowRemoveButton() {
+	public function getShowRemoveButton()
+	{
 		return $this->getViewState(self::SHOW_REMOVE_BUTTON, true);
 	}
 
 	/**
 	 * Set if cancel button should be available.
 	 *
+	 * @param mixed $show
 	 * @return none;
 	 */
-	public function setShowCancelButton($show) {
+	public function setShowCancelButton($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_CANCEL_BUTTON, $show);
 	}
@@ -737,16 +763,19 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 *
 	 * @return bool true if available, otherwise false
 	 */
-	public function getShowCancelButton() {
+	public function getShowCancelButton()
+	{
 		return $this->getViewState(self::SHOW_CANCEL_BUTTON, true);
 	}
 
 	/**
 	 * Set if buttons should be flexible and available at the bottom of the page.
 	 *
+	 * @param mixed $show
 	 * @return none
 	 */
-	public function setShowBottomButtons($show) {
+	public function setShowBottomButtons($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_BOTTOM_BUTTONS, $show);
 	}
@@ -756,16 +785,19 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 *
 	 * @return bool true if buttons are available at the bottom of the page, otherwise false
 	 */
-	public function getShowBottomButtons() {
+	public function getShowBottomButtons()
+	{
 		return $this->getViewState(self::SHOW_BOTTOM_BUTTONS, true);
 	}
 
 	/**
 	 * Set if config section tabs should be used.
 	 *
+	 * @param mixed $show
 	 * @return none
 	 */
-	public function setShowSectionTabs($show) {
+	public function setShowSectionTabs($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_SECTION_TABS, $show);
 	}
@@ -775,25 +807,30 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 *
 	 * @return bool true if tabs are used,otherwise false
 	 */
-	public function getShowSectionTabs() {
+	public function getShowSectionTabs()
+	{
 		return $this->getViewState(self::SHOW_SECTION_TABS, false);
 	}
 
 	/**
 	 * On save event fired when resource is saved.
 	 *
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function onSave($param) {
+	public function onSave($param)
+	{
 		$this->raiseEvent('OnSave', $this, $param);
 	}
 
 	/**
 	 * On rename event fired when resource is renamed.
 	 *
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function onRename($param) {
+	public function onRename($param)
+	{
 		$this->raiseEvent('OnRename', $this, $param);
 	}
 
@@ -801,9 +838,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	/**
 	 * Set if name field should be disabled.
 	 *
+	 * @param mixed $rename
 	 * @return none;
 	 */
-	public function setDisableRename($rename) {
+	public function setDisableRename($rename)
+	{
 		$rename = TPropertyValue::ensureBoolean($rename);
 		$this->setViewState(self::DISABLE_RENAME, $rename);
 	}
@@ -813,8 +852,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate {
 	 *
 	 * @return bool true if field is disabled, otherwise false
 	 */
-	public function getDisableRename() {
+	public function getDisableRename()
+	{
 		return $this->getViewState(self::DISABLE_RENAME, false);
 	}
 }
-?>

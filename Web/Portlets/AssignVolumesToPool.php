@@ -37,18 +37,19 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class AssignVolumesToPool extends Portlets {
-
-	const POOL_ID = 'PoolId';
+class AssignVolumesToPool extends Portlets
+{
+	public const POOL_ID = 'PoolId';
 
 	/**
 	 * Set pool identifier.
 	 *
+	 * @param mixed $pool
 	 * @return none;
 	 */
-	public function setPoolId($pool) {
+	public function setPoolId($pool)
+	{
 		settype($pool, 'integer');
 		$this->setViewState(self::POOL_ID, $pool);
 	}
@@ -56,18 +57,20 @@ class AssignVolumesToPool extends Portlets {
 	/**
 	 * Get pool identifier.
 	 *
-	 * @return integer pool identifier
+	 * @return int pool identifier
 	 */
-	public function getPoolId() {
+	public function getPoolId()
+	{
 		return $this->getViewState(self::POOL_ID, 0);
 	}
 
-	public function loadValues() {
+	public function loadValues()
+	{
 		$pools = $this->Application->getModule('api')->get(['pools']);
 		$pool_list = [];
 		if ($pools->error === 0) {
 			$curr_poolid = $this->getPoolId();
-			foreach($pools->output as $pool) {
+			foreach ($pools->output as $pool) {
 				if ($pool->poolid == $curr_poolid) {
 					continue;
 				}
@@ -78,7 +81,8 @@ class AssignVolumesToPool extends Portlets {
 		$this->Pool->dataBind();
 	}
 
-	public function loadVolumeList($sender, $param) {
+	public function loadVolumeList($sender, $param)
+	{
 		$poolid = $this->Pool->SelectedValue;
 		$volumes = $this->getModule('api')->get(
 			['pools', $poolid, 'volumes']
@@ -100,12 +104,13 @@ class AssignVolumesToPool extends Portlets {
 		}
 	}
 
-	public function assignVolume($sender, $param) {
+	public function assignVolume($sender, $param)
+	{
 		$mediaid = $param->getCallbackParameter();
 		if (!is_numeric($mediaid) || $mediaid <= 0) {
 			return;
 		}
-		$mediaid = intval($mediaid);
+		$mediaid = (int) $mediaid;
 		if ($mediaid === 0) {
 			return;
 		}
@@ -123,4 +128,3 @@ class AssignVolumesToPool extends Portlets {
 		}
 	}
 }
-?>

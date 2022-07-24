@@ -37,25 +37,26 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class DataDescription extends WebModule {
-
+class DataDescription extends WebModule
+{
 	/**
 	 * Data description file
 	 */
-	const DATA_DESC_FILE = 'Bacularis.Web.Data.data_desc';
+	public const DATA_DESC_FILE = 'Bacularis.Web.Data.data_desc';
 
-	private static $data_desc = null;
+	private static $data_desc;
 
-	private function getDataDesc() {
+	private function getDataDesc()
+	{
 		if (is_null(self::$data_desc)) {
 			self::$data_desc = $this->loadDataDescription();
 		}
 		return self::$data_desc;
 	}
 
-	private function loadDataDescription() {
+	private function loadDataDescription()
+	{
 		$data_desc = null;
 		$desc_file = Prado::getPathOfNamespace(self::DATA_DESC_FILE, '.json');
 		if (file_exists($desc_file) && is_readable($desc_file)) {
@@ -65,7 +66,8 @@ class DataDescription extends WebModule {
 		return $data_desc;
 	}
 
-	public function getDescription($component_type, $resource_type, $directive_name = null) {
+	public function getDescription($component_type, $resource_type, $directive_name = null)
+	{
 		$desc = null;
 		$data_desc = $this->getDataDesc();
 		if (!is_null($directive_name) && isset($data_desc->{$component_type}->{$resource_type}->{$directive_name})) {
@@ -76,21 +78,22 @@ class DataDescription extends WebModule {
 		return $desc;
 	}
 
-	public function prepareDirectivesBySection($desc) {
-		$desc_by_sect = array();
-		$desc_sects = array('General' => array());
+	public function prepareDirectivesBySection($desc)
+	{
+		$desc_by_sect = [];
+		$desc_sects = ['General' => []];
 		foreach ($desc as $directive_name => $directive_desc) {
 			if (property_exists($directive_desc, 'Section')) {
 				if (!key_exists($directive_desc->Section, $desc_sects)) {
-					$desc_sects[$directive_desc->Section] = array();
+					$desc_sects[$directive_desc->Section] = [];
 				}
 			} else {
 				$directive_desc->Section = 'General';
 			}
-			$desc_sects[$directive_desc->Section][] = array(
+			$desc_sects[$directive_desc->Section][] = [
 				'name' => $directive_name,
 				'desc' => $directive_desc
-			);
+			];
 		}
 		foreach ($desc_sects as $sect => $directives) {
 			for ($i = 0; $i < count($directives); $i++) {
@@ -100,4 +103,3 @@ class DataDescription extends WebModule {
 		return $desc_by_sect;
 	}
 }
-?>

@@ -15,16 +15,16 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Bacularis Web
  */
-class NewVerifyJobWizard extends BaculumWebPage {
+class NewVerifyJobWizard extends BaculumWebPage
+{
+	public const PREV_STEP = 'PrevStep';
+	public const JOBDEFS = 'JobDefs';
+	public const CLIENT = 'Client';
+	public const STORAGE = 'Storage';
 
-	const PREV_STEP = 'PrevStep';
-	const JOBDEFS = 'JobDefs';
-	const CLIENT = 'Client';
-	const STORAGE = 'Storage';
-
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 		$step_index = $this->NewJobWizard->getActiveStepIndex();
 		if ($step_index === 0) {
@@ -33,7 +33,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 		}
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->IsCallBack) {
 			return;
@@ -78,7 +79,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadJobDefs() {
+	public function loadJobDefs()
+	{
 		$jobdefs_list = [];
 		$jobdefs = $this->getModule('api')->get([
 			'config',
@@ -100,7 +102,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setupJobDefs() {
+	public function setupJobDefs()
+	{
 		$directive_value = $this->JobDefs->getDirectiveValue();
 		$jd = $this->getJobDefs();
 		if (empty($directive_value)) {
@@ -125,7 +128,7 @@ class NewVerifyJobWizard extends BaculumWebPage {
 			$jobdefs
 		]);
 		if ($result->error === 0) {
-			$value = (array)$result->output;
+			$value = (array) $result->output;
 			$this->setJobDefs($value);
 		}
 	}
@@ -135,9 +138,10 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @param string $directive_name directive name
 	 * @param string $directive_value directive value
-	 * @return boolean true if directive exists in JobDefs, otherwise false
+	 * @return bool true if directive exists in JobDefs, otherwise false
 	 */
-	public function isInJobDefs($directive_name, $directive_value) {
+	public function isInJobDefs($directive_name, $directive_value)
+	{
 		$jobdefs = $this->getJobDefs();
 		$ret = false;
 		if ($directive_name === 'Storage') {
@@ -154,7 +158,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	private function resetDirectives() {
+	private function resetDirectives()
+	{
 		$this->Client->setDirectiveValue(null);
 		$this->Client->createDirective();
 		$this->ClientVerify->setDirectiveValue(null);
@@ -174,7 +179,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadClients() {
+	public function loadClients()
+	{
 		$clients = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -209,7 +215,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadClientsVerify() {
+	public function loadClientsVerify()
+	{
 		$clients = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -244,7 +251,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadStorages() {
+	public function loadStorages()
+	{
 		$storage_list = [];
 		$storages = $this->getModule('api')->get(['config', 'dir', 'storage'])->output;
 		for ($i = 0; $i < count($storages); $i++) {
@@ -273,7 +281,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadJobs() {
+	public function loadJobs()
+	{
 		$jobs = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -305,7 +314,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setJobDirectives() {
+	public function setJobDirectives()
+	{
 		$job = $this->VerifyJob->getDirectiveValue();
 		$result = $this->getModule('api')->get([
 			'config',
@@ -403,7 +413,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadMessages() {
+	public function loadMessages()
+	{
 		$message_list = [];
 		$messages = $this->getModule('api')->get([
 			'config',
@@ -437,7 +448,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadSchedules() {
+	public function loadSchedules()
+	{
 		$schedule_list = [];
 		$schedules = $this->getModule('api')->get([
 			'config',
@@ -465,7 +477,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadPools() {
+	public function loadPools()
+	{
 		$pool_list = [];
 		$pools = $this->getModule('api')->get(['config', 'dir', 'pool'])->output;
 		for ($i = 0; $i < count($pools); $i++) {
@@ -484,7 +497,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 		$this->Pool->createDirective();
 	}
 
-	public function wizardCompleted($sender, $param) {
+	public function wizardCompleted($sender, $param)
+	{
 		$job = [
 			'Name' => $this->Name->getDirectiveValue(),
 			'Type' => 'Verify'
@@ -540,7 +554,7 @@ class NewVerifyJobWizard extends BaculumWebPage {
 			);
 
 			if ($result->error === 0) {
-				$verifyjob = (array)$result->output;
+				$verifyjob = (array) $result->output;
 				if (key_exists('Fileset', $verifyjob)) {
 					$fileset = $verifyjob['Fileset'];
 					$params = [
@@ -558,7 +572,7 @@ class NewVerifyJobWizard extends BaculumWebPage {
 						 * Add file attributes to options block from fileset assigned to selected job.
 						 * Note, if fileset is defined if JobDefs (a rare case), file attributes are not added.
 						 */
-						$fileset_cfg = (array)$result->output;
+						$fileset_cfg = (array) $result->output;
 						if (key_exists('Include', $fileset_cfg)) {
 							$fattrs = $this->getFileAttributes();
 							if (!empty($fattrs) && $this->HowData->Checked) {
@@ -677,7 +691,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return string value with all selected attributes
 	 */
-	private function getFileAttributes() {
+	private function getFileAttributes()
+	{
 		$attrs = '';
 		if (!$this->WhatJobData->Checked || $this->HowDiskToCatalog->Checked) {
 			if ($this->CompareInodes->Checked) {
@@ -722,9 +737,12 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	/**
 	 * Cancel wizard.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->goToPage('JobList');
 	}
 
@@ -734,7 +752,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 * @param $jobdefs selected JobDefs values
 	 * @return none
 	 */
-	public function setJobDefs($jobdefs) {
+	public function setJobDefs($jobdefs)
+	{
 		$this->setViewState(self::JOBDEFS, $jobdefs);
 	}
 
@@ -743,27 +762,30 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return array selected JobDefs values
 	 */
-	public function getJobDefs() {
+	public function getJobDefs()
+	{
 		return $this->getViewState(self::JOBDEFS, []);
 	}
 
 	/**
 	 * Set previous wizard step.
 	 *
-	 * @param integer $step previous step number
+	 * @param int $step previous step number
 	 * @return none
 	 */
-	public function setPrevStep($step) {
-		$step = intval($step);
+	public function setPrevStep($step)
+	{
+		$step = (int) $step;
 		$this->setViewState(self::PREV_STEP, $step);
 	}
 
 	/**
 	 * Get previous wizard step.
 	 *
-	 * @return integer previous wizard step
+	 * @return int previous wizard step
 	 */
-	public function getPrevStep() {
+	public function getPrevStep()
+	{
 		return $this->getViewState(self::PREV_STEP);
 	}
 
@@ -775,7 +797,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function loadFSBrowser($sender, $param) {
+	public function loadFSBrowser($sender, $param)
+	{
 		$client = $this->Client->getDirectiveValue();
 		$this->FSBrowser->loadClients($sender, $param);
 		$clients = $this->FSBrowser->Client->getItems();
@@ -796,9 +819,12 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 * Special treating include paths validator that needs to be
 	 * enabled/disabled depending on selected verify job level.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function checkIncludePathValidator($sender, $param) {
+	public function checkIncludePathValidator($sender, $param)
+	{
 		$sender->enabled = $this->WhatFilesystem->Checked;
 	}
 
@@ -808,7 +834,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 * @param string $client client name
 	 * @return none
 	 */
-	public function setClient($client) {
+	public function setClient($client)
+	{
 		$this->setViewState(self::CLIENT, $client);
 	}
 
@@ -817,7 +844,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return string client name or empty string if client not set
 	 */
-	public function getClient() {
+	public function getClient()
+	{
 		return $this->getViewState(self::CLIENT, '');
 	}
 
@@ -827,7 +855,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 * @param string $storage storage name
 	 * @return none
 	 */
-	public function setStorage($storage) {
+	public function setStorage($storage)
+	{
 		$this->setViewState(self::STORAGE, $storage);
 	}
 
@@ -836,7 +865,8 @@ class NewVerifyJobWizard extends BaculumWebPage {
 	 *
 	 * @return string storage name or empty string if storage not set
 	 */
-	public function getStorage() {
+	public function getStorage()
+	{
 		return $this->getViewState(self::STORAGE, '');
 	}
 }

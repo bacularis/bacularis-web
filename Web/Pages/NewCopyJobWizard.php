@@ -36,12 +36,11 @@ use Prado\Web\UI\WebControls\TWizard;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class NewCopyJobWizard extends BaculumWebPage {
-
-	const PREV_STEP = 'PrevStep';
-	const JOBDEFS = 'JobDefs';
+class NewCopyJobWizard extends BaculumWebPage
+{
+	public const PREV_STEP = 'PrevStep';
+	public const JOBDEFS = 'JobDefs';
 
 	/**
 	 * Stores available selection types.
@@ -50,7 +49,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 */
 	public $sel_types = [];
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$this->sel_types = [
 			'Job' => Prado::localize('Copy by job'),
@@ -63,7 +63,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 		];
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->IsCallBack) {
 			return;
@@ -112,7 +113,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardPrev($sender, $param) {
+	public function wizardPrev($sender, $param)
+	{
 	}
 
 	/**
@@ -122,7 +124,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardNext($sender, $param) {
+	public function wizardNext($sender, $param)
+	{
 	}
 
 	/**
@@ -130,9 +133,11 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadJobDefs() {
+	public function loadJobDefs()
+	{
 		$jobdefs_list = [];
-		$jobdefs = $this->getModule('api')->get([
+		$jobdefs = $this->getModule('api')->get(
+			[
 			'config',
 			'dir',
 			'jobdefs']
@@ -152,7 +157,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setupJobDefs() {
+	public function setupJobDefs()
+	{
 		$directive_value = $this->JobDefs->getDirectiveValue();
 		if (is_null($directive_value)) {
 			return;
@@ -165,7 +171,7 @@ class NewCopyJobWizard extends BaculumWebPage {
 			$jobdefs
 		]);
 		if ($result->error === 0) {
-			$value = (array)$result->output;
+			$value = (array) $result->output;
 			$this->setJobDefs($value);
 		}
 	}
@@ -175,9 +181,10 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @param string $directive_name directive name
 	 * @param string $directive_value directive value
-	 * @return boolean true if directive exists in JobDefs, otherwise false
+	 * @return bool true if directive exists in JobDefs, otherwise false
 	 */
-	public function isInJobDefs($directive_name, $directive_value) {
+	public function isInJobDefs($directive_name, $directive_value)
+	{
 		$jobdefs = $this->getJobDefs();
 		$ret = false;
 		if ($directive_name === 'Storage') {
@@ -195,7 +202,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param object $control different type of controls (usually DirectiveComboBox)
 	 * @return none
 	 */
-	public function setPools($name, $control) {
+	public function setPools($name, $control)
+	{
 		$pool_list = [];
 		$pools = $this->getModule('api')->get(['config', 'dir', 'pool'])->output;
 		for ($i = 0; $i < count($pools); $i++) {
@@ -215,7 +223,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadPools() {
+	public function loadPools()
+	{
 		$this->setPools('Pool', $this->Pool);
 	}
 
@@ -226,7 +235,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadVolumes($sender, $param) {
+	public function loadVolumes($sender, $param)
+	{
 		$pool = $param->getCallbackParameter();
 		$volumes = $this->getVolumes($pool);
 		$this->getCallbackClient()->callClientFunction(
@@ -241,7 +251,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param string $pool pool name
 	 * @return array volume list or empty array on error
 	 */
-	public function getVolumes($pool) {
+	public function getVolumes($pool)
+	{
 		$poolid = null;
 		$result = $this->getModule('api')->get(['pools']);
 		if ($result->error === 0) {
@@ -269,7 +280,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadSourceStorages() {
+	public function loadSourceStorages()
+	{
 		$this->setStorages($this->SourceStorage);
 	}
 
@@ -280,7 +292,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setSourceStorageByPool($sender, $param) {
+	public function setSourceStorageByPool($sender, $param)
+	{
 		$pool = $this->Pool->getDirectiveValue();
 		if (empty($pool)) {
 			return;
@@ -293,7 +306,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadSelectionTypes() {
+	public function loadSelectionTypes()
+	{
 		$this->SelectionType->setData($this->sel_types);
 		$this->SelectionType->createDirective();
 	}
@@ -305,7 +319,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadJobList($sender, $param) {
+	public function loadJobList($sender, $param)
+	{
 		$result = $this->getModule('api')->get([
 			'jobs',
 			'show',
@@ -339,7 +354,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadClientList($sender, $param) {
+	public function loadClientList($sender, $param)
+	{
 		$result = $this->getModule('api')->get(
 			['clients']
 		);
@@ -358,11 +374,13 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadNextPools() {
+	public function loadNextPools()
+	{
 		$this->setPools('NextPool', $this->NextPool);
 	}
 
-	public function setStorages($control) {
+	public function setStorages($control)
+	{
 		$storage_list = [];
 		$storages = $this->getModule('api')->get([
 			'config',
@@ -388,7 +406,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadDestinationStorages() {
+	public function loadDestinationStorages()
+	{
 		$this->setStorages($this->DestinationStorage);
 	}
 
@@ -397,9 +416,12 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
+	 * @param mixed $pool
+	 * @param mixed $cb
 	 * @return none
 	 */
-	public function setStorageByPool($pool, $cb) {
+	public function setStorageByPool($pool, $cb)
+	{
 		$pool = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -422,7 +444,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setDestinationStorageByPool($sender, $param) {
+	public function setDestinationStorageByPool($sender, $param)
+	{
 		$nextpool = $this->NextPool->getDirectiveValue();
 		if (empty($nextpool)) {
 			return;
@@ -437,7 +460,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function getJobsUsingPool($sender, $param) {
+	public function getJobsUsingPool($sender, $param)
+	{
 		$values = $param->getCallbackParameter();
 		$job_list = [];
 		$jobs = $this->getModule('api')->get([
@@ -468,7 +492,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadMessages() {
+	public function loadMessages()
+	{
 		$message_list = [];
 		$messages = $this->getModule('api')->get([
 			'config',
@@ -494,7 +519,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadSchedules() {
+	public function loadSchedules()
+	{
 		$schedule_list = [];
 		$schedules = $this->getModule('api')->get([
 			'config',
@@ -520,7 +546,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadLevels() {
+	public function loadLevels()
+	{
 		// so far backup job levels only
 		$levels = $this->getModule('misc')->getJobLevels();
 		$level_list = array_values($levels);
@@ -540,7 +567,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadClients() {
+	public function loadClients()
+	{
 		$clients = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -567,7 +595,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadFileSets() {
+	public function loadFileSets()
+	{
 		$filesets = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -594,7 +623,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return DirectiveTextBox selection pattern control.
 	 */
-	public function getSelectionPatternControl() {
+	public function getSelectionPatternControl()
+	{
 		$control = null;
 		$sel_type = $this->SelectionType->getDirectiveValue();
 		switch ($sel_type) {
@@ -611,7 +641,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return string selection pattern value
 	 */
-	public function getSelectionPatternValue() {
+	public function getSelectionPatternValue()
+	{
 		$sel_pattern = '';
 		$sp_control = $this->getSelectionPatternControl();
 		if (is_object($sp_control)) {
@@ -620,7 +651,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 		return $sel_pattern;
 	}
 
-	public function wizardCompleted($sender, $param) {
+	public function wizardCompleted($sender, $param)
+	{
 		$jobdefs = $this->getJobDefs();
 		$job = [
 			'Name' => $this->Name->getDirectiveValue(),
@@ -672,7 +704,7 @@ class NewCopyJobWizard extends BaculumWebPage {
 
 		$pool_modified = false;
 		if ($result->error === 0) {
-			$pool = (array)$result->output;
+			$pool = (array) $result->output;
 			$pool['Storage'] = $this->DestinationStorage->getDirectiveValue();
 			$result = $this->getModule('api')->set(
 				$params,
@@ -699,7 +731,7 @@ class NewCopyJobWizard extends BaculumWebPage {
 				['config' => json_encode($job)]
 			);
 			if ($result->error === 0) {
-				$this->getModule('api')->set(array('console'), array('reload'));
+				$this->getModule('api')->set(['console'], ['reload']);
 				$this->goToPage('JobList');
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
@@ -711,9 +743,12 @@ class NewCopyJobWizard extends BaculumWebPage {
 	/**
 	 * Cancel wizard.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->goToDefaultPage();
 	}
 
@@ -723,7 +758,8 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 * @param $jobdefs selected JobDefs values
 	 * @return none
 	 */
-	public function setJobDefs($jobdefs) {
+	public function setJobDefs($jobdefs)
+	{
 		$this->setViewState(self::JOBDEFS, $jobdefs);
 	}
 
@@ -732,28 +768,30 @@ class NewCopyJobWizard extends BaculumWebPage {
 	 *
 	 * @return array selected JobDefs values
 	 */
-	public function getJobDefs() {
-		return $this->getViewState(self::JOBDEFS, array());
+	public function getJobDefs()
+	{
+		return $this->getViewState(self::JOBDEFS, []);
 	}
 
 	/**
 	 * Set previous wizard step.
 	 *
-	 * @param integer $step previous step number
+	 * @param int $step previous step number
 	 * @return none
 	 */
-	public function setPrevStep($step) {
-		$step = intval($step);
+	public function setPrevStep($step)
+	{
+		$step = (int) $step;
 		$this->setViewState(self::PREV_STEP, $step);
 	}
 
 	/**
 	 * Get previous wizard step.
 	 *
-	 * @return integer previous wizard step
+	 * @return int previous wizard step
 	 */
-	public function getPrevStep() {
+	public function getPrevStep()
+	{
 		return $this->getViewState(self::PREV_STEP);
 	}
 }
-?>

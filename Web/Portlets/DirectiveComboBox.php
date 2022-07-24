@@ -38,11 +38,11 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveComboBox extends DirectiveTemplate {
-
-	public function getValue() {
+class DirectiveComboBox extends DirectiveTemplate
+{
+	public function getValue()
+	{
 		$value = $this->Directive->getSelectedValue();
 		if (!is_string($value) || empty($value)) {
 			$value = null;
@@ -50,14 +50,15 @@ class DirectiveComboBox extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$data = $this->getData();
 		$resource_names = $this->getResourceNames();
 		$directive_name = $this->getDirectiveName();
 		$resource = $this->getResource();
 		$in_config = $this->getInConfig();
-		$items = array();
+		$items = [];
 		if (is_array($data)) {
 			$items = $data;
 		} elseif (is_array($resource_names)) {
@@ -74,7 +75,7 @@ class DirectiveComboBox extends DirectiveTemplate {
 			$items = array_combine($items, $items);
 		} elseif (is_string(key($items))) {
 			// associative array as data source
-			$items = array_merge(array('' => ''), $items);
+			$items = array_merge(['' => ''], $items);
 		}
 		$this->Directive->DataSource = $items;
 
@@ -100,4 +101,3 @@ class DirectiveComboBox extends DirectiveTemplate {
 		}
 	}
 }
-?>

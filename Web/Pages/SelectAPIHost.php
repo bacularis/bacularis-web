@@ -34,11 +34,11 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class SelectAPIHost extends BaculumWebPage {
-
-	public function onInit($param) {
+class SelectAPIHost extends BaculumWebPage
+{
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -49,7 +49,8 @@ class SelectAPIHost extends BaculumWebPage {
 		$this->UserAPIHosts->dataBind();
 	}
 
-	public function setAPIHost($sender, $param) {
+	public function setAPIHost($sender, $param)
+	{
 		$api_host = $this->UserAPIHosts->SelectedValue;
 		if (!empty($api_host)) {
 			$this->User->setDefaultAPIHost($api_host);
@@ -58,4 +59,3 @@ class SelectAPIHost extends BaculumWebPage {
 		}
 	}
 }
-?>

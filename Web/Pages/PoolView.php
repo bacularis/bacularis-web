@@ -29,25 +29,25 @@
 
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Pool view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class PoolView extends BaculumWebPage {
+class PoolView extends BaculumWebPage
+{
+	public const USE_CACHE = true;
 
-	const USE_CACHE = true;
-
-	const POOLID = 'PoolId';
-	const POOL_NAME = 'PoolName';
+	public const POOLID = 'PoolId';
+	public const POOL_NAME = 'PoolName';
 
 	public $volumes_in_pool;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -56,7 +56,7 @@ class PoolView extends BaculumWebPage {
 		if ($this->Request->contains('poolid')) {
 			$poolid = $this->Request['poolid'];
 		} elseif ($this->Request->contains('pool')) {
-			$result = $this->getModule('api')->get(array('pools'));
+			$result = $this->getModule('api')->get(['pools']);
 			if ($result->error === 0) {
 				for ($i = 0; $i < count($result->output); $i++) {
 					if ($this->Request['pool'] === $result->output[$i]->name) {
@@ -71,7 +71,8 @@ class PoolView extends BaculumWebPage {
 		$this->setVolumesinPool();
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -87,28 +88,33 @@ class PoolView extends BaculumWebPage {
 	/**
 	 * Set pool poolid.
 	 *
+	 * @param mixed $poolid
 	 * @return none;
 	 */
-	public function setPoolId($poolid) {
-		$poolid = intval($poolid);
+	public function setPoolId($poolid)
+	{
+		$poolid = (int) $poolid;
 		$this->setViewState(self::POOLID, $poolid, 0);
 	}
 
 	/**
 	 * Get pool poolid.
 	 *
-	 * @return integer poolid
+	 * @return int poolid
 	 */
-	public function getPoolId() {
+	public function getPoolId()
+	{
 		return $this->getViewState(self::POOLID, 0);
 	}
 
 	/**
 	 * Set pool name.
 	 *
+	 * @param mixed $pool_name
 	 * @return none;
 	 */
-	public function setPoolName($pool_name) {
+	public function setPoolName($pool_name)
+	{
 		$this->setViewState(self::POOL_NAME, $pool_name);
 	}
 
@@ -117,13 +123,15 @@ class PoolView extends BaculumWebPage {
 	 *
 	 * @return string pool name
 	 */
-	public function getPoolName() {
+	public function getPoolName()
+	{
 		return $this->getViewState(self::POOL_NAME);
 	}
 
-	public function setPool() {
+	public function setPool()
+	{
 		$pool = $this->Application->getModule('api')->get(
-			array('pools', $this->getPoolId()),
+			['pools', $this->getPoolId()],
 			null,
 			true,
 			self::USE_CACHE
@@ -132,7 +140,7 @@ class PoolView extends BaculumWebPage {
 		$scratchpool = '-';
 		if ($pool->scratchpoolid > 0) {
 			$result = $this->getModule('api')->get(
-				array('pools', $pool->scratchpoolid),
+				['pools', $pool->scratchpoolid],
 				null,
 				true,
 				self::USE_CACHE
@@ -147,7 +155,7 @@ class PoolView extends BaculumWebPage {
 			$recyclepool = $scratchpool;
 		} elseif ($pool->recyclepoolid > 0) {
 			$result = $this->getModule('api')->get(
-				array('pools', $pool->recyclepoolid),
+				['pools', $pool->recyclepoolid],
 				null,
 				true,
 				self::USE_CACHE
@@ -163,7 +171,7 @@ class PoolView extends BaculumWebPage {
 			$nextpool = $recyclepool;
 		} elseif ($pool->nextpoolid > 0) {
 			$result = $this->getModule('api')->get(
-				array('pools', $pool->nextpoolid),
+				['pools', $pool->nextpoolid],
 				null,
 				true,
 				self::USE_CACHE
@@ -189,28 +197,31 @@ class PoolView extends BaculumWebPage {
 		$this->NextPool->Text = $nextpool;
 	}
 
-	public function setVolumesinPool() {
+	public function setVolumesinPool()
+	{
 		$this->volumes_in_pool = $this->getModule('api')->get(
-			array('pools', $this->getPoolId(), 'volumes'),
+			['pools', $this->getPoolId(), 'volumes'],
 			null,
 			true,
 			self::USE_CACHE
 		)->output;
 	}
 
-	public function updatePool($sender, $param) {
+	public function updatePool($sender, $param)
+	{
 		$result = $this->getModule('api')->set(
-			array('pools', $this->getPoolId(), 'update'),
-			array()
+			['pools', $this->getPoolId(), 'update'],
+			[]
 		);
 		$this->PoolLog->Text = implode(PHP_EOL, $result->output);
 		$this->getCallbackClient()->show('pool_log');
 	}
 
-	public function updateAllVolumesInPool($sender, $param) {
+	public function updateAllVolumesInPool($sender, $param)
+	{
 		$result = $this->getModule('api')->set(
-			array('pools', $this->getPoolId(), 'update', 'volumes'),
-			array()
+			['pools', $this->getPoolId(), 'update', 'volumes'],
+			[]
 		);
 		if ($result->error == 0) {
 			$this->PoolLog->Text = implode(PHP_EOL, $result->output);
@@ -220,8 +231,8 @@ class PoolView extends BaculumWebPage {
 		$this->getCallbackClient()->show('pool_log');
 	}
 
-	public function showAssignVolumesWarning($sender, $param) {
+	public function showAssignVolumesWarning($sender, $param)
+	{
 		$this->getCallbackClient()->show('pool_view_rename_resource');
 	}
 }
-?>

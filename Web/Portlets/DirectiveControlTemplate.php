@@ -36,11 +36,11 @@ use Prado\Web\UI\TTemplateControl;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-abstract class DirectiveControlTemplate extends TTemplateControl {
-
-	public function getCmdParam() {
+abstract class DirectiveControlTemplate extends TTemplateControl
+{
+	public function getCmdParam()
+	{
 		$command_param = null;
 		if ($this->getPage()->IsCallBack) {
 			$cbet = $this->getPage()->CallBackEventTarget;
@@ -60,6 +60,4 @@ abstract class DirectiveControlTemplate extends TTemplateControl {
 		}
 		return $command_param;
 	}
-
 }
-?>

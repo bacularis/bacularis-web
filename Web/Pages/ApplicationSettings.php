@@ -28,7 +28,7 @@
  */
 
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Pages\Monitor;
 
 /**
@@ -36,17 +36,17 @@ use Bacularis\Web\Pages\Monitor;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class ApplicationSettings extends BaculumWebPage {
-
-	public function onInit($param) {
+class ApplicationSettings extends BaculumWebPage
+{
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$this->DecimalBytes->Checked = true;
-		if(count($this->web_config) > 0) {
+		if (count($this->web_config) > 0) {
 			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
 			$this->Debug->Checked = ($this->web_config['baculum']['debug'] == 1);
-			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? intval($this->web_config['baculum']['max_jobs']) : Monitor::DEFAULT_MAX_JOBS);
+			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_jobs']) : Monitor::DEFAULT_MAX_JOBS);
 			if (key_exists('size_values_unit', $this->web_config['baculum'])) {
 				$this->DecimalBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'decimal');
 				$this->BinaryBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'binary');
@@ -70,7 +70,8 @@ class ApplicationSettings extends BaculumWebPage {
 	}
 
 
-	public function saveGeneral($sender, $param) {
+	public function saveGeneral($sender, $param)
+	{
 		if (count($this->web_config) > 0) {
 			$this->web_config['baculum']['lang'] = $this->Language->SelectedValue;
 			$this->web_config['baculum']['debug'] = ($this->Debug->Checked === true) ? 1 : 0;
@@ -80,9 +81,10 @@ class ApplicationSettings extends BaculumWebPage {
 		}
 	}
 
-	public function saveDisplay($sender, $param) {
+	public function saveDisplay($sender, $param)
+	{
 		if (count($this->web_config) > 0) {
-			$max_jobs = intval($this->MaxJobs->Text);
+			$max_jobs = (int) ($this->MaxJobs->Text);
 			$this->web_config['baculum']['max_jobs'] = $max_jobs;
 			$this->web_config['baculum']['size_values_unit'] = $this->BinaryBytes->Checked ? 'binary' : 'decimal';
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
@@ -92,11 +94,11 @@ class ApplicationSettings extends BaculumWebPage {
 		}
 	}
 
-	public function saveFeatures($sender, $param) {
+	public function saveFeatures($sender, $param)
+	{
 		if (count($this->web_config) > 0) {
 			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
 			$this->getModule('web_config')->setConfig($this->web_config);
 		}
 	}
 }
-?>

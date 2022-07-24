@@ -34,7 +34,7 @@ namespace Bacularis\Web\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ErrorMessageBox extends Portlets {
+class ErrorMessageBox extends Portlets
+{
 }

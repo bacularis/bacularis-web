@@ -37,21 +37,21 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebLdapUserManager extends WebModule implements IUserManager {
-
+class WebLdapUserManager extends WebModule implements IUserManager
+{
 	/**
 	 * LDAP module object.
 	 */
-	private $ldap = null;
+	private $ldap;
 
 	/**
 	 * Module initialization.
 	 *
 	 * @param TXmlElement $config module configuration
 	 */
-	public function init($config) {
+	public function init($config)
+	{
 		parent::init($config);
 		$web_config = $this->getModule('web_config')->getConfig();
 		if (key_exists('auth_ldap', $web_config)) {
@@ -66,10 +66,10 @@ class WebLdapUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param string $username username
 	 * @param string $password password
-	 * @return boolean true if user and password valid, otherwise false
+	 * @return bool true if user and password valid, otherwise false
 	 */
-	public function validateUser($username, $password) {
+	public function validateUser($username, $password)
+	{
 		return $this->ldap->login($username, $password);
 	}
 }
-?>

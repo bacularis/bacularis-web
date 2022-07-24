@@ -37,24 +37,23 @@ use Bacularis\Common\Modules\ConfigFileModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebRoleConfig extends ConfigFileModule {
-
-        /**
-         * Web role name allowed characters pattern
-         */
-	const ROLE_PATTERN = '[\w\@\-\.]+';
+class WebRoleConfig extends ConfigFileModule
+{
+	/**
+	 * Web role name allowed characters pattern
+	 */
+	public const ROLE_PATTERN = '[\w\@\-\.]+';
 
 	/**
 	 * Web role config file path
 	 */
-	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.roles';
+	public const CONFIG_FILE_PATH = 'Bacularis.Web.Config.roles';
 
 	/**
 	 * Web role config file format
 	 */
-	const CONFIG_FILE_FORMAT = 'ini';
+	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
 	 * These options are obligatory for web config.
@@ -69,21 +68,23 @@ class WebRoleConfig extends ConfigFileModule {
 	/**
 	 * Stores web roles config content.
 	 */
-	private $config = null;
+	private $config;
 
 	/**
 	 * Get (read) web role config.
 	 *
 	 * @return array config
 	 */
-	public function getConfig() {
+	public function getConfig()
+	{
 		if (is_null($this->config)) {
 			$this->config = $this->getConfigInternal();
 		}
 		return $this->config;
 	}
 
-	private function getConfigInternal() {
+	private function getConfigInternal()
+	{
 		$roles_config = [];
 		$config = $this->readConfig(self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
 		// Web role config validation per single role
@@ -110,14 +111,16 @@ class WebRoleConfig extends ConfigFileModule {
 	 * @see setRoleConfig()
 	 *
 	 * @param array $config config
-	 * @return boolean true if config saved successfully, otherwise false
+	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setConfig(array $config) {
+	public function setConfig(array $config)
+	{
 		$result = false;
 		if ($this->isRoleConfigValid($config) === true) {
 			$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
 			if ($result === true) {
-				$this->config = null;;
+				$this->config = null;
+				;
 			}
 		}
 		return $result;
@@ -129,7 +132,8 @@ class WebRoleConfig extends ConfigFileModule {
 	 * @param $role role name
 	 * @return array role config
 	 */
-	public function getRoleConfig($role) {
+	public function getRoleConfig($role)
+	{
 		$role_config = [];
 		$config = $this->getConfig();
 		if (key_exists($role, $config)) {
@@ -144,9 +148,11 @@ class WebRoleConfig extends ConfigFileModule {
 	 *
 	 * @param string $role role name
 	 * @param array $role config
-	 * @return boolean true if config saved successfully, otherwise false
+	 * @param array $role_config
+	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setRoleConfig($role, array $role_config) {
+	public function setRoleConfig($role, array $role_config)
+	{
 		$config = $this->getConfig();
 		$config[$role] = $role_config;
 		return $this->setConfig($config);
@@ -156,9 +162,10 @@ class WebRoleConfig extends ConfigFileModule {
 	 * Validate role single role section in config.
 	 *
 	 * @param array $config role config section
-	 * @return boolean true if config valid, otherwise false
+	 * @return bool true if config valid, otherwise false
 	 */
-	private function isRoleConfigValid(array $config) {
+	private function isRoleConfigValid(array $config)
+	{
 		$invalid = ['required' => []];
 		foreach ($config as $role => $role_config) {
 			for ($i = 0; $i < count($this->role_required_options); $i++) {
@@ -192,4 +199,3 @@ class WebRoleConfig extends ConfigFileModule {
 		return $valid;
 	}
 }
-?>

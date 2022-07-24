@@ -37,46 +37,47 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class PageCategory extends WebModule {
-
+class PageCategory extends WebModule
+{
 	/**
 	 * Pages allowed for user with native role 'normal'
 	 */
-	const DASHBOARD = 'Dashboard';
-	const JOB_LIST = 'JobList';
-	const JOB_VIEW = 'JobView';
-	const CLIENT_LIST = 'ClientList';
-	const CLIENT_VIEW = 'ClientView';
-	const RESTORE_WIZARD = 'RestoreWizard';
-	const GRAPHS = 'Graphs';
-	const ACCOUNT_SETTINGS = 'AccountSettings';
+	public const DASHBOARD = 'Dashboard';
+	public const JOB_LIST = 'JobList';
+	public const JOB_VIEW = 'JobView';
+	public const CLIENT_LIST = 'ClientList';
+	public const CLIENT_VIEW = 'ClientView';
+	public const RESTORE_WIZARD = 'RestoreWizard';
+	public const GRAPHS = 'Graphs';
+	public const ACCOUNT_SETTINGS = 'AccountSettings';
 
 	/**
 	 * System pages - always allowed for authenticated users
 	 */
-	const MONITOR = 'Monitor';
-	const BACULUM_ERROR = 'BaculumError';
-	const SELECT_API_HOST = 'SelectAPIHost';
+	public const MONITOR = 'Monitor';
+	public const BACULUM_ERROR = 'BaculumError';
+	public const SELECT_API_HOST = 'SelectAPIHost';
 
 	/**
 	 * Public pages - always allowed
 	 */
-	const LOGIN_PAGE = 'LoginPage';
-	const OAUTH2_REDIRECT = 'OAuth2Redirect';
+	public const LOGIN_PAGE = 'LoginPage';
+	public const OAUTH2_REDIRECT = 'OAuth2Redirect';
 
 	/**
 	 * Pages available under conditions.
 	 */
-	const WEB_CONFIG_WIZARD = 'WebConfigWizard';
+	public const WEB_CONFIG_WIZARD = 'WebConfigWizard';
 
 	/**
 	 * Get page categories.
 	 *
+	 * @param mixed $with_sys_pub_pages
 	 * @return array page categories
 	 */
-	public function getCategories($with_sys_pub_pages = true) {
+	public function getCategories($with_sys_pub_pages = true)
+	{
 		$pages = $this->getModule('url_manager')->getPages();
 		//some pages are double because they are defined for access by name or id, so do unique()
 		$pages = array_unique($pages);
@@ -88,12 +89,14 @@ class PageCategory extends WebModule {
 		return $pages;
 	}
 
-	public function isCategorySystem($category) {
+	public function isCategorySystem($category)
+	{
 		$system_cats = $this->getSystemCategories();
 		return in_array($category, $system_cats);
 	}
 
-	private function getSystemCategories() {
+	private function getSystemCategories()
+	{
 		return [
 			self::MONITOR,
 			self::BACULUM_ERROR,
@@ -101,24 +104,28 @@ class PageCategory extends WebModule {
 		];
 	}
 
-	public function isCategoryPublic($category) {
+	public function isCategoryPublic($category)
+	{
 		$public_cats = $this->getPublicCategories();
 		return in_array($category, $public_cats);
 	}
 
-	private function getPublicCategories() {
+	private function getPublicCategories()
+	{
 		return [
 			self::OAUTH2_REDIRECT,
 			self::LOGIN_PAGE
 		];
 	}
 
-	public function isCategoryConditional($category) {
+	public function isCategoryConditional($category)
+	{
 		$cond_cats = $this->getConditionalCategories();
 		return in_array($category, $cond_cats);
 	}
 
-	private function getConditionalCategories() {
+	private function getConditionalCategories()
+	{
 		$cond_cats = [];
 		$host_config = $this->getModule('host_config')->getConfig();
 		$first_run = (count($host_config) == 0 || !key_exists(HostConfig::MAIN_CATALOG_HOST, $host_config));
@@ -128,4 +135,3 @@ class PageCategory extends WebModule {
 		return $cond_cats;
 	}
 }
-?>

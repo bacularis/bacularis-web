@@ -39,16 +39,17 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveMultiTextBox extends DirectiveListTemplate {
-
-	public function dataBind() {
+class DirectiveMultiTextBox extends DirectiveListTemplate
+{
+	public function dataBind()
+	{
 		$this->loadConfig();
 	}
 
-	public function getDirectiveValue() {
-		$values = array();
+	public function getDirectiveValue()
+	{
+		$values = [];
 		$controls = $this->MultiTextBoxRepeater->getItems();
 		foreach ($controls as $control) {
 			$val = $control->Directive->getText();
@@ -61,7 +62,8 @@ class DirectiveMultiTextBox extends DirectiveListTemplate {
 		return $values;
 	}
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 		$directive_name = $this->getDirectiveName();
@@ -74,28 +76,29 @@ class DirectiveMultiTextBox extends DirectiveListTemplate {
 				$data = [];
 			}
 		}
-		$values = array();
+		$values = [];
 		for ($i = 0; $i < count($data); $i++) {
-			$values[] = array(
+			$values[] = [
 				'directive_value' => $data[$i],
 				'label' => $this->getDirectiveName(),
 				'show' => $this->getShow()
-			);
+			];
 		}
 		$this->MultiTextBoxRepeater->DataSource = $values;
 		$this->MultiTextBoxRepeater->dataBind();
 	}
 
-	public function createMultiTextBoxElement($sender, $param) {
+	public function createMultiTextBoxElement($sender, $param)
+	{
 		$param->Item->Label->Text = $param->Item->Data['label'];
 		$param->Item->Directive->Text = $param->Item->Data['directive_value'];
 	}
 
-	public function addField($sender, $param) {
+	public function addField($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$data[] = '';
 		$this->setData($data);
 		$this->loadConfig();
 	}
 }
-?>

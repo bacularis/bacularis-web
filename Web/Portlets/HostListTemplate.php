@@ -37,37 +37,41 @@ use Bacularis\Web\Portlets\ConfigListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class HostListTemplate extends ConfigListTemplate implements IActiveControl, ICallbackEventHandler {
+class HostListTemplate extends ConfigListTemplate implements IActiveControl, ICallbackEventHandler
+{
+	public const HOST = 'Host';
 
-	const HOST = 'Host';
-
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->setAdapter(new TActiveControlAdapter($this));
-		$this->onHostListLoad(array($this, 'loadConfig'));
+		$this->onHostListLoad([$this, 'loadConfig']);
 	}
 
-	public function getActiveControl() {
+	public function getActiveControl()
+	{
 		return $this->getAdapter()->getBaseActiveControl();
 	}
 
-	public function raiseCallbackEvent($param) {
+	public function raiseCallbackEvent($param)
+	{
 		$this->raisePostBackEvent($param);
 		$this->onCallback($param);
 	}
 
-	public function onHostListLoad($handler) {
+	public function onHostListLoad($handler)
+	{
 		$this->attachEventHandler('OnHostListLoad', $handler);
 	}
 
-	public function getHost() {
+	public function getHost()
+	{
 		return $this->getViewState(self::HOST);
 	}
 
-	public function setHost($host) {
+	public function setHost($host)
+	{
 		$this->setViewState(self::HOST, $host);
 	}
 }
-?>

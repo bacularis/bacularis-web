@@ -34,10 +34,9 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class BaculumError extends BaculumWebPage {
-
+class BaculumError extends BaculumWebPage
+{
 	public $error;
 	public $output;
 
@@ -46,17 +45,19 @@ class BaculumError extends BaculumWebPage {
 	 *
 	 * NOTE: This method cannot be removed and cannot call parent::onPreInit()
 	 * because in parent method are called redundant API requests not used here.
+	 * @param mixed $param
 	 */
-	public function onPreInit($param) {
+	public function onPreInit($param)
+	{
 		if ($this->authenticate() === false) {
 			exit();
 		}
 	}
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
-		$this->error = intval($this->Request['error']);
+		$this->error = (int) ($this->Request['error']);
 		$this->output = urldecode($this->Request['output']);
 	}
 }
-?>

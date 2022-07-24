@@ -35,10 +35,9 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class LoginPage extends BaculumWebPage {
-
+class LoginPage extends BaculumWebPage
+{
 	/**
 	 * Reload URL is used to refresh page after logout with Basic auth.
 	 */
@@ -46,19 +45,21 @@ class LoginPage extends BaculumWebPage {
 
 	public $mfa = false;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			$fake_pwd = $this->getModule('crypto')->getRandomString();
 			// must be different than currently logged in Basic user
-			$user = (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '') . '1';
+			$user = ($_SERVER['PHP_AUTH_USER'] ?? '') . '1';
 
 			// do a login try with different user and password to logout current user
 			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
 		}
 	}
 
-	public function onPreLoad($param) {
+	public function onPreLoad($param)
+	{
 		parent::onPreLoad($param);
 		$users = $this->getModule('users');
 
@@ -82,7 +83,7 @@ class LoginPage extends BaculumWebPage {
 					$this->LoginForm->Display = 'None';
 					$this->AuthorizationError->Display = 'Dynamic';
 				}
-			} else if (($web_config->isAuthMethodLdap() || $web_config->isAuthMethodLocal()) && !$authorized) {
+			} elseif (($web_config->isAuthMethodLdap() || $web_config->isAuthMethodLocal()) && !$authorized) {
 				// Ldap and Local - user authenticated but not authorized
 				$this->LoginForm->Display = 'None';
 				$this->AuthorizationError->Display = 'Dynamic';
@@ -96,7 +97,8 @@ class LoginPage extends BaculumWebPage {
 	 * @param TLinkButton $sender sender object
 	 * @param mixed $param event parameter (in this case null)
 	 */
-	public function login($sender, $param) {
+	public function login($sender, $param)
+	{
 		$username = $this->Username->Text;
 		$password = $this->Password->Text;
 
@@ -137,7 +139,8 @@ class LoginPage extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function login2FA() {
+	public function login2FA()
+	{
 		$username = $this->Username->Text;
 		$password = $this->Password->Text;
 
@@ -186,7 +189,8 @@ class LoginPage extends BaculumWebPage {
 	 * @param TLinkButton $sender sender object
 	 * @param mixed $param event parameter (in this case null)
 	 */
-	public function logout($sender, $param) {
+	public function logout($sender, $param)
+	{
 		$this->getModule('auth')->logout();
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			/**
@@ -199,4 +203,3 @@ class LoginPage extends BaculumWebPage {
 		}
 	}
 }
-?>

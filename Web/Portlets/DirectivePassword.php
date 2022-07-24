@@ -38,11 +38,11 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectivePassword extends DirectiveTemplate {
-
-	public function getValue() {
+class DirectivePassword extends DirectiveTemplate
+{
+	public function getValue()
+	{
 		$value = $this->Directive->getText();
 		if (empty($value)) {
 			$value = null;
@@ -50,7 +50,8 @@ class DirectivePassword extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -66,4 +67,3 @@ class DirectivePassword extends DirectiveTemplate {
 		$this->DirectiveValidator->setVisible($validate);
 	}
 }
-?>

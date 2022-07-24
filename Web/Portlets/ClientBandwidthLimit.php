@@ -27,7 +27,6 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-
 namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\ActiveControls\TActiveLabel;
@@ -40,12 +39,11 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ClientBandwidthLimit extends Portlets {
-
-	const CLIENTID = 'ClientId';
-	const CLIENT_NAME = 'ClientName';
+class ClientBandwidthLimit extends Portlets
+{
+	public const CLIENTID = 'ClientId';
+	public const CLIENT_NAME = 'ClientName';
 
 	/**
 	 * Set up bandwidth limit value.
@@ -54,12 +52,13 @@ class ClientBandwidthLimit extends Portlets {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setupBandwidthLimit($sender, $param) {
+	public function setupBandwidthLimit($sender, $param)
+	{
 		$clientid = $this->getClientId();
 
 		$result = $this->getModule('api')->set(
-			array('clients', $clientid, 'bandwidth'),
-			array('limit' => $this->BandwidthLimit->getValue())
+			['clients', $clientid, 'bandwidth'],
+			['limit' => $this->BandwidthLimit->getValue()]
 		);
 
 		// this setting to empty string is required to not cache outputs for the same values
@@ -72,7 +71,7 @@ class ClientBandwidthLimit extends Portlets {
 
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'show_element',
-			array('#client_bandwidth_limit_log', true)
+			['#client_bandwidth_limit_log', true]
 		);
 
 		$this->onCallback(null);
@@ -84,35 +83,41 @@ class ClientBandwidthLimit extends Portlets {
 	 * @param mixed $param callback parameter or null
 	 * @return none
 	 */
-	public function onCallback($param) {
+	public function onCallback($param)
+	{
 		$this->raiseEvent('OnCallback', $this, $param);
 	}
 
 	/**
 	 * Set client clientid.
 	 *
+	 * @param mixed $clientid
 	 * @return none;
 	 */
-	public function setClientId($clientid) {
-		$clientid = intval($clientid);
+	public function setClientId($clientid)
+	{
+		$clientid = (int) $clientid;
 		$this->setViewState(self::CLIENTID, $clientid, 0);
 	}
 
 	/**
 	 * Get client clientid.
 	 *
-	 * @return integer clientid
+	 * @return int clientid
 	 */
-	public function getClientId() {
+	public function getClientId()
+	{
 		return $this->getViewState(self::CLIENTID, 0);
 	}
 
 	/**
 	 * Set client name.
 	 *
+	 * @param mixed $client_name
 	 * @return none;
 	 */
-	public function setClientName($client_name) {
+	public function setClientName($client_name)
+	{
 		$this->setViewState(self::CLIENT_NAME, $client_name);
 	}
 
@@ -121,7 +126,8 @@ class ClientBandwidthLimit extends Portlets {
 	 *
 	 * @return string client name
 	 */
-	public function getClientName() {
+	public function getClientName()
+	{
 		return $this->getViewState(self::CLIENT_NAME);
 	}
 
@@ -130,18 +136,19 @@ class ClientBandwidthLimit extends Portlets {
 	 *
 	 * @return mixed bandwidth limit integer value or null if bandwidth not set
 	 */
-	public function getBandwidthLimit() {
+	public function getBandwidthLimit()
+	{
 		return $this->BandwidthLimit->getValue();
 	}
 
 	/**
 	 * Set bandwidth limit value in field.
 	 *
-	 * @param integer $bwlimit bandiwdth limit in bytes
+	 * @param int $bwlimit bandiwdth limit in bytes
 	 * @return none
 	 */
-	public function setBandwidthLimit($bwlimit) {
+	public function setBandwidthLimit($bwlimit)
+	{
 		$this->BandwidthLimit->setDirectiveValue($bwlimit);
 	}
 }
-?>

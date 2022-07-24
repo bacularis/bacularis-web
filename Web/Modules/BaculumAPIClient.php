@@ -38,10 +38,9 @@ use Bacularis\Common\Modules\Miscellaneous;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class BaculumAPIClient extends WebModule {
-
+class BaculumAPIClient extends WebModule
+{
 	/**
 	 * API client version (used in HTTP header)
 	 *
@@ -49,18 +48,18 @@ class BaculumAPIClient extends WebModule {
 	 * 0.3 - sending config as JSON instead of serialized array
 	 * 0.4 - sending POST and PUT requests body parameters as JSON instead of POST form params
 	 */
-	const API_CLIENT_VERSION = 0.4;
+	public const API_CLIENT_VERSION = 0.4;
 
 	/**
 	 * API version used by Web
 	 */
-	const API_VERSION = 'v2';
+	public const API_VERSION = 'v2';
 
 	/**
 	 * OAuth2 authorization endpoints
 	 */
-	const OAUTH2_AUTH_URL = 'oauth/authorize/';
-	const OAUTH2_TOKEN_URL = 'oauth/token/';
+	public const OAUTH2_AUTH_URL = 'oauth/authorize/';
+	public const OAUTH2_TOKEN_URL = 'oauth/token/';
 
 	/**
 	 * API server version for current request.
@@ -70,26 +69,26 @@ class BaculumAPIClient extends WebModule {
 	/**
 	 * Single request response headers.
 	 */
-	public $response_headers = array();
+	public $response_headers = [];
 
 	/**
 	 * Session params to put in URLs.
 	 *
 	 * @access private
 	 */
-	private $session_params = array('director');
+	private $session_params = ['director'];
 
 	/**
 	 * Host params to do API requests.
 	 *
 	 * @access private
 	 */
-	private $host_params = array();
+	private $host_params = [];
 
 	/**
 	 * Params used to authentication.
 	 */
-	private $auth_params = array();
+	private $auth_params = [];
 
 	/**
 	 * Get connection request handler.
@@ -99,7 +98,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param array $host_cfg host config parameters
 	 * @return resource connection handler on success, false on errors
 	 */
-	public function getConnection(array $host_cfg) {
+	public function getConnection(array $host_cfg)
+	{
 		$ch = curl_init();
 		if (count($host_cfg) > 0 && $host_cfg['auth_type'] === 'basic') {
 			$userpwd = sprintf('%s:%s', $host_cfg['login'], $host_cfg['password']);
@@ -119,13 +119,16 @@ class BaculumAPIClient extends WebModule {
 	 * Get API specific headers used in HTTP requests.
 	 *
 	 * @access private
+	 * @param null|mixed $host
+	 * @param mixed $host_cfg
 	 * @return API specific headers
 	 */
-	private function getAPIHeaders($host = null, $host_cfg = array()) {
-		$headers = array(
-			'X-Baculum-API: ' . strval(self::API_CLIENT_VERSION),
+	private function getAPIHeaders($host = null, $host_cfg = [])
+	{
+		$headers = [
+			'X-Baculum-API: ' . (string) (self::API_CLIENT_VERSION),
 			'Accept: application/json'
-		);
+		];
 		if (count($host_cfg) > 0 && !is_null($host) && $host_cfg['auth_type'] === 'oauth2') {
 			$now = time();
 			$auth = OAuth2Record::findByPk($host);
@@ -149,7 +152,8 @@ class BaculumAPIClient extends WebModule {
 	 * @access public
 	 * @param TXmlElement $config API module configuration
 	 */
-	public function init($config) {
+	public function init($config)
+	{
 		$this->initSessionCache();
 	}
 
@@ -161,7 +165,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param array $params GET params to send in request
 	 * @return string URI to internal API server
 	 */
-	private function getURIResource($host, array $params) {
+	private function getURIResource($host, array $params)
+	{
 		$uri = null;
 		$host_cfg = $this->getHostParams($host);
 		if (count($host_cfg) > 0) {
@@ -190,7 +195,8 @@ class BaculumAPIClient extends WebModule {
 		return $uri;
 	}
 
-	private function getURIAuth($host, array $params, $endpoint) {
+	private function getURIAuth($host, array $params, $endpoint)
+	{
 		$uri = null;
 		$host_cfg = $this->getHostParams($host);
 		if (count($host_cfg) > 0) {
@@ -200,7 +206,7 @@ class BaculumAPIClient extends WebModule {
 			foreach ($params as $key => $value) {
 				// add params separator
 				$uri .= (preg_match('/\?/', $uri) === 1 ? '&' : '?');
-				$params = array($key, $value);
+				$params = [$key, $value];
 				// add auth param
 				$uri .= $this->prepareUrlParams($params, '=');
 			}
@@ -208,8 +214,10 @@ class BaculumAPIClient extends WebModule {
 		return $uri;
 	}
 
-	private function getBaseURI($host_cfg) {
-		$uri = sprintf('%s://%s:%d%s/',
+	private function getBaseURI($host_cfg)
+	{
+		$uri = sprintf(
+			'%s://%s:%d%s/',
 			$host_cfg['protocol'],
 			$host_cfg['address'],
 			$host_cfg['port'],
@@ -225,7 +233,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param string $host host name
 	 * @return array host parameters
 	 */
-	protected function getHostParams($host) {
+	protected function getHostParams($host)
+	{
 		$host_params = HostRecord::findByPk($host);
 		if (is_null($host_params)) {
 			$host_params = $this->getModule('host_config')->getHostConfig($host);
@@ -241,7 +250,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param array $params host parameters
 	 * @return none
 	 */
-	public function setHostParams($host, $params) {
+	public function setHostParams($host, $params)
+	{
 		new HostRecord($host, $params);
 	}
 
@@ -252,8 +262,9 @@ class BaculumAPIClient extends WebModule {
 	 * @param string $separator char used as glue to join params
 	 * @return string parameters ready to put in URI
 	 */
-	private function prepareUrlParams(array $params, $separator = '/') {
-		$callback = function($p) {
+	private function prepareUrlParams(array $params, $separator = '/')
+	{
+		$callback = function ($p) {
 			if (strpos($p, '?') === 0) {
 				// query string should be encoded manually
 				return $p;
@@ -271,13 +282,14 @@ class BaculumAPIClient extends WebModule {
 	 * @access private
 	 * @param string &$uri reference to URI string variable
 	 */
-	private function addSpecialParams(&$uri) {
+	private function addSpecialParams(&$uri)
+	{
 		// add special session params
 		for ($i = 0; $i < count($this->session_params); $i++) {
 			if (array_key_exists($this->session_params[$i], $_SESSION)) {
 				// add params separator
 				$uri .= (preg_match('/\?/', $uri) === 1 ? '&' : '?');
-				$params = array($this->session_params[$i], $_SESSION[$this->session_params[$i]]);
+				$params = [$this->session_params[$i], $_SESSION[$this->session_params[$i]]];
 				// add session param
 				$uri .= $this->prepareUrlParams($params, '=');
 			}
@@ -294,7 +306,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param bool $use_cache if true then try to use session cache, if false then always use fresh data
 	 * @return object stdClass with request result as two properties: 'output' and 'error'
 	 */
-	public function get(array $params, $host = null, $show_error = true, $use_cache = false) {
+	public function get(array $params, $host = null, $show_error = true, $use_cache = false)
+	{
 		$cached = null;
 		$ret = null;
 		if (is_null($host)) {
@@ -337,7 +350,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param bool $show_error if true then it shows error as HTML error page
 	 * @return object stdClass with request result as two properties: 'output' and 'error'
 	 */
-	public function set(array $params, array $options = array(), $host = null, $show_error = true) {
+	public function set(array $params, array $options = [], $host = null, $show_error = true)
+	{
 		if (is_null($host)) {
 			$host = $this->User->getDefaultAPIHost();
 		}
@@ -349,7 +363,7 @@ class BaculumAPIClient extends WebModule {
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge(
 			$this->getAPIHeaders($host, $host_cfg),
-			array('X-HTTP-Method-Override: PUT', 'Content-Length: ' . strlen($data), 'Expect:')
+			['X-HTTP-Method-Override: PUT', 'Content-Length: ' . strlen($data), 'Expect:']
 		));
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -374,7 +388,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param bool $show_error if true then it shows error as HTML error page
 	 * @return object stdClass with request result as two properties: 'output' and 'error'
 	 */
-	public function create(array $params, array $options, $host = null, $show_error = true) {
+	public function create(array $params, array $options, $host = null, $show_error = true)
+	{
 		if (is_null($host)) {
 			$host = $this->User->getDefaultAPIHost();
 		}
@@ -383,7 +398,7 @@ class BaculumAPIClient extends WebModule {
 		$ch = $this->getConnection($host_cfg);
 		$data = json_encode($options);
 		curl_setopt($ch, CURLOPT_URL, $uri);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders($host, $host_cfg), array('Expect:')));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders($host, $host_cfg), ['Expect:']));
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		$result = curl_exec($ch);
@@ -406,7 +421,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param bool $show_error if true then it shows error as HTML error page
 	 * @return object stdClass with request result as two properties: 'output' and 'error'
 	 */
-	public function remove(array $params, $host = null, $show_error = true) {
+	public function remove(array $params, $host = null, $show_error = true)
+	{
 		if (is_null($host)) {
 			$host = $this->User->getDefaultAPIHost();
 		}
@@ -415,7 +431,7 @@ class BaculumAPIClient extends WebModule {
 		$ch = $this->getConnection($host_cfg);
 		curl_setopt($ch, CURLOPT_URL, $uri);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders($host, $host_cfg), array('X-HTTP-Method-Override: DELETE')));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders($host, $host_cfg), ['X-HTTP-Method-Override: DELETE']));
 		$result = curl_exec($ch);
 		$error = curl_error($ch);
 		$errno = curl_errno($ch);
@@ -434,11 +450,12 @@ class BaculumAPIClient extends WebModule {
 	 * @access private
 	 * @param string $result response output as JSON string (not object yet)
 	 * @param string $error error message from remote host
-	 * @param integer $errno error number from remote host
+	 * @param int $errno error number from remote host
 	 * @param bool $show_error if true then it shows error as HTML error page
 	 * @return object stdClass parsed response with two top level properties 'output' and 'error'
 	 */
-	private function preParseOutput($result, $error, $errno, $show_error = true) {
+	private function preParseOutput($result, $error, $errno, $show_error = true)
+	{
 		// first write log with that what comes
 		$this->Application->getModule('logging')->log(
 			__FUNCTION__,
@@ -451,17 +468,17 @@ class BaculumAPIClient extends WebModule {
 		// decode JSON to object
 		$resource = json_decode($result);
 		if (is_null($resource)) {
-			$resource = (object) array(
+			$resource = (object) [
 				'error' => ConnectionError::ERROR_CONNECTION_TO_HOST_PROBLEM,
 				'output' => ConnectionError::MSG_ERROR_CONNECTION_TO_HOST_PROBLEM . " cURL error $errno: $error. $result"
-			);
+			];
 		}
 
 		if ($show_error === true && $resource->error != 0) {
 			$headers = $this->Request->getHeaders(CASE_UPPER);
 			if (!isset($headers['X-REQUESTED-WITH']) || $headers['X-REQUESTED-WITH'] !== 'XMLHttpRequest') {
 				// it is non-ajax request - redirect it to error page
-				$url = $this->Service->constructUrl('BaculumError', (array)$resource, false);
+				$url = $this->Service->constructUrl('BaculumError', (array) $resource, false);
 				header("Location: $url");
 				// write all logs before exiting, otherwise they will be lost
 				$this->getModule('log')->collectLogs(null);
@@ -484,10 +501,12 @@ class BaculumAPIClient extends WebModule {
 	 * Parse and set response headers.
 	 * Note, header names are lower case.
 	 *
+	 * @param mixed $header
 	 * @return none
 	 */
-	public function parseHeader($header) {
-		$headers = array();
+	public function parseHeader($header)
+	{
+		$headers = [];
 		$heads = explode("\r\n", $header);
 		for ($i = 0; $i < count($heads); $i++) {
 			if (preg_match('/^(?P<name>[^:]+):(?P<value>[\S\s]+)$/', $heads[$i], $match) === 1) {
@@ -504,9 +523,10 @@ class BaculumAPIClient extends WebModule {
 	 * @param bool $force if true then cache is force initialized
 	 * @return none
 	 */
-	public function initSessionCache($force = false) {
+	public function initSessionCache($force = false)
+	{
 		if (!isset($_SESSION) || !array_key_exists('cache', $_SESSION) || !is_array($_SESSION['cache']) || $force === true) {
-			$_SESSION['cache'] = array();
+			$_SESSION['cache'] = [];
 		}
 	}
 
@@ -518,7 +538,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param array $params command parameters as numeric array
 	 * @return mixed if cache exists then returned is cached data, otherwise null
 	 */
-	private function getSessionCache($host, array $params) {
+	private function getSessionCache($host, array $params)
+	{
 		$cached = null;
 		$key = $this->getSessionKey($host, $params);
 		if ($this->isSessionValue($key)) {
@@ -536,7 +557,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param mixed $value value to save in cache
 	 * @return none
 	 */
-	private function setSessionCache($host, array $params, $value) {
+	private function setSessionCache($host, array $params, $value)
+	{
 		$key = $this->getSessionKey($host, $params);
 		$_SESSION['cache'][$key] = $value;
 	}
@@ -549,7 +571,8 @@ class BaculumAPIClient extends WebModule {
 	 * @param array $params command parameters as numeric array
 	 * @return string session key for given command
 	 */
-	private function getSessionKey($host, array $params) {
+	private function getSessionKey($host, array $params)
+	{
 		array_unshift($params, $host);
 		$key = implode(';', $params);
 		$key = base64_encode($key);
@@ -563,21 +586,23 @@ class BaculumAPIClient extends WebModule {
 	 * @param string $key session key
 	 * @return bool true if session key exists, otherwise false
 	 */
-	private function isSessionValue($key) {
+	private function isSessionValue($key)
+	{
 		$is_value = array_key_exists($key, $_SESSION['cache']);
 		return $is_value;
 	}
 
-	private function authToHost($host, $host_cfg) {
+	private function authToHost($host, $host_cfg)
+	{
 		if (count($host_cfg) > 0 && $host_cfg['auth_type'] === 'oauth2') {
 			$state = $this->getModule('crypto')->getRandomString(16);
-			$params = array(
+			$params = [
 				'response_type' => 'code',
 				'client_id' => $host_cfg['client_id'],
 				'redirect_uri' => $host_cfg['redirect_uri'],
 				'scope' => $host_cfg['scope'],
 				'state' => $state
-			);
+			];
 			$auth = new OAuth2Record();
 			$auth->host = $host;
 			$auth->state = $state;
@@ -594,21 +619,22 @@ class BaculumAPIClient extends WebModule {
 		}
 	}
 
-	public function getTokens($auth_id, $state) {
+	public function getTokens($auth_id, $state)
+	{
 		$st = OAuth2Record::findBy('state', $state);
 		if (is_array($st)) {
 			$host_cfg = $this->getHostParams($st['host']);
-			$uri = $this->getURIAuth($st['host'], array(), self::OAUTH2_TOKEN_URL);
+			$uri = $this->getURIAuth($st['host'], [], self::OAUTH2_TOKEN_URL);
 			$ch = $this->getConnection($host_cfg);
-			$data = array(
+			$data = [
 				'grant_type' => 'authorization_code',
 				'code' => $auth_id,
 				'redirect_uri' => $host_cfg['redirect_uri'],
 				'client_id' => $host_cfg['client_id'],
 				'client_secret' => $host_cfg['client_secret']
-			);
+			];
 			curl_setopt($ch, CURLOPT_URL, $uri);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders(), array('Expect:')));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array_merge($this->getAPIHeaders(), ['Expect:']));
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 			$result = curl_exec($ch);
@@ -621,7 +647,7 @@ class BaculumAPIClient extends WebModule {
 			if (is_object($tokens) && isset($tokens->access_token) && isset($tokens->refresh_token)) {
 				$auth = new OAuth2Record();
 				$auth->host = $st['host'];
-				$auth->tokens = (array)$tokens;
+				$auth->tokens = (array) $tokens;
 				// refresh token 5 seconds before average expires time
 				$auth->refresh_time = time() + $tokens->expires_in - 5;
 				$auth->save();
@@ -637,12 +663,12 @@ class BaculumAPIClient extends WebModule {
 	 *
 	 * @return float server version
 	 */
-	public function getServerVersion() {
+	public function getServerVersion()
+	{
 		$version = 0;
 		if (array_key_exists('baculum-api-version', $this->response_headers)) {
-			$version = floatval($this->response_headers['baculum-api-version']);
+			$version = (float) ($this->response_headers['baculum-api-version']);
 		}
 		return $version;
 	}
 }
-?>

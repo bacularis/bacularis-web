@@ -27,7 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\WebControls\TWizard;
 
@@ -36,14 +36,14 @@ use Prado\Web\UI\WebControls\TWizard;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class NewBackupJobWizard extends BaculumWebPage {
+class NewBackupJobWizard extends BaculumWebPage
+{
+	public const PREV_STEP = 'PrevStep';
+	public const JOBDEFS = 'JobDefs';
 
-	const PREV_STEP = 'PrevStep';
-	const JOBDEFS = 'JobDefs';
-
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->IsCallBack) {
 			return;
@@ -94,7 +94,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardPrev($sender, $param) {
+	public function wizardPrev($sender, $param)
+	{
 	}
 
 	/**
@@ -104,7 +105,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardNext($sender, $param) {
+	public function wizardNext($sender, $param)
+	{
 	}
 
 
@@ -113,8 +115,9 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadJobDefs() {
-		$jobdefs_list = array();
+	public function loadJobDefs()
+	{
+		$jobdefs_list = [];
 		$jobdefs = $this->getModule('api')->get([
 			'config', 'dir', 'jobdefs'
 		])->output;
@@ -131,7 +134,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setupJobDefs() {
+	public function setupJobDefs()
+	{
 		$directive_value = $this->JobDefs->getDirectiveValue();
 		if (is_null($directive_value)) {
 			return;
@@ -141,12 +145,13 @@ class NewBackupJobWizard extends BaculumWebPage {
 			'config', 'dir', 'jobdefs', $jobdefs
 		]);
 		if ($result->error === 0) {
-			$value = (array)$result->output;
+			$value = (array) $result->output;
 			$this->setJobDefs($value);
 		}
 	}
 
-	public function isInJobDefs($directive_name, $directive_value) {
+	public function isInJobDefs($directive_name, $directive_value)
+	{
 		$jobdefs = $this->getJobDefs();
 		$ret = false;
 		if ($directive_name === 'Storage') {
@@ -162,9 +167,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadClients() {
-		$client_list = array();
-		$clients = $this->getModule('api')->get(array('clients'))->output;
+	public function loadClients()
+	{
+		$client_list = [];
+		$clients = $this->getModule('api')->get(['clients'])->output;
 		for ($i = 0; $i < count($clients); $i++) {
 			$client_list[$clients[$i]->name] = $clients[$i]->name;
 		}
@@ -182,7 +188,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadFilesets() {
+	public function loadFilesets()
+	{
 		$this->loadFilesetList(null, null);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Fileset', $jobdefs) && is_null($this->Fileset->getDirectiveValue())) {
@@ -190,9 +197,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 		}
 	}
 
-	public function loadFilesetList($sender, $param) {
-		$fileset_list = array();
-		$filesets = $this->getModule('api')->get(array('config', 'dir', 'fileset'))->output;
+	public function loadFilesetList($sender, $param)
+	{
+		$fileset_list = [];
+		$filesets = $this->getModule('api')->get(['config', 'dir', 'fileset'])->output;
 		for ($i = 0; $i < count($filesets); $i++) {
 			$fileset_list[] = $filesets[$i]->Fileset->Name;
 		}
@@ -206,7 +214,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadNewFilesetForm() {
+	public function loadNewFilesetForm()
+	{
 		if ($this->IsCallBack) {
 			return;
 		}
@@ -222,7 +231,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadNewPoolForm() {
+	public function loadNewPoolForm()
+	{
 		if ($this->IsCallBack) {
 			return;
 		}
@@ -238,7 +248,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadNewScheduleForm() {
+	public function loadNewScheduleForm()
+	{
 		if ($this->IsCallBack) {
 			return;
 		}
@@ -254,9 +265,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadStorages() {
-		$storage_list = array();
-		$storages = $this->getModule('api')->get(array('config', 'dir', 'storage'))->output;
+	public function loadStorages()
+	{
+		$storage_list = [];
+		$storages = $this->getModule('api')->get(['config', 'dir', 'storage'])->output;
 		for ($i = 0; $i < count($storages); $i++) {
 			$storage_list[] = $storages[$i]->Storage->Name;
 		}
@@ -286,7 +298,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadPools() {
+	public function loadPools()
+	{
 		$pool_list = $this->loadPoolList(null, null);
 		$jobdefs = $this->getJobDefs();
 		$this->FullBackupPool->setData($pool_list);
@@ -310,9 +323,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 		$this->Pool->createDirective();
 	}
 
-	public function loadPoolList($sender, $param) {
-		$pool_list = array();
-		$pools = $this->getModule('api')->get(array('config', 'dir', 'pool'))->output;
+	public function loadPoolList($sender, $param)
+	{
+		$pool_list = [];
+		$pools = $this->getModule('api')->get(['config', 'dir', 'pool'])->output;
 		for ($i = 0; $i < count($pools); $i++) {
 			$pool_list[] = $pools[$i]->Pool->Name;
 		}
@@ -322,7 +336,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 		return $pool_list;
 	}
 
-	public function loadBackupJobDirectives() {
+	public function loadBackupJobDirectives()
+	{
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Accurate', $jobdefs) && is_null($this->Accurate->getDirectiveValue())) {
 			$this->Accurate->setDirectiveValue($jobdefs['Accurate']);
@@ -342,7 +357,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 		}
 	}
 
-	public function loadRescheduleDirectives() {
+	public function loadRescheduleDirectives()
+	{
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('RescheduleOnError', $jobdefs) && is_null($this->RescheduleOnError->getDirectiveValue())) {
 			$this->RescheduleOnError->setDirectiveValue($jobdefs['RescheduleOnError']);
@@ -368,11 +384,12 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadLevels() {
+	public function loadLevels()
+	{
 		// so far backup job levels only
-		$level_list = array(
+		$level_list = [
 			'Full', 'Incremental', 'Differential', 'VirtualFull'
-		);
+		];
 		$this->Level->setData($level_list);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Level', $jobdefs)) {
@@ -385,9 +402,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadMessages() {
-		$message_list = array();
-		$messages = $this->getModule('api')->get(array('config', 'dir', 'messages'))->output;
+	public function loadMessages()
+	{
+		$message_list = [];
+		$messages = $this->getModule('api')->get(['config', 'dir', 'messages'])->output;
 		for ($i = 0; $i < count($messages); $i++) {
 			$message_list[] = $messages[$i]->Messages->Name;
 		}
@@ -405,7 +423,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function loadSchedules() {
+	public function loadSchedules()
+	{
 		$this->loadScheduleList(null, null);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Schedule', $jobdefs)) {
@@ -414,9 +433,10 @@ class NewBackupJobWizard extends BaculumWebPage {
 		$this->Schedule->createDirective();
 	}
 
-	public function loadScheduleList($sender, $param) {
-		$schedule_list = array();
-		$schedules = $this->getModule('api')->get(array('config', 'dir', 'schedule'))->output;
+	public function loadScheduleList($sender, $param)
+	{
+		$schedule_list = [];
+		$schedules = $this->getModule('api')->get(['config', 'dir', 'schedule'])->output;
 		for ($i = 0; $i < count($schedules); $i++) {
 			$schedule_list[] = $schedules[$i]->Schedule->Name;
 		}
@@ -425,19 +445,20 @@ class NewBackupJobWizard extends BaculumWebPage {
 		$this->Schedule->createDirective();
 	}
 
-	public function wizardCompleted($sender, $param) {
+	public function wizardCompleted($sender, $param)
+	{
 		$jobdefs = $this->getJobDefs();
-		$job = array(
+		$job = [
 			'Name' => $this->Name->getDirectiveValue(),
 			'Type' => 'Backup',
-		);
+		];
 		$jd = $this->JobDefs->getDirectiveValue();
-		$directives = array('Description', 'Client', 'Fileset', 'Storage', 'SpoolData', 'SpoolAttributes',
+		$directives = ['Description', 'Client', 'Fileset', 'Storage', 'SpoolData', 'SpoolAttributes',
 			'SpoolSize', 'Pool', 'FullBackupPool', 'IncrementalBackupPool', 'DifferentialBackupPool',
 			'Level', 'Accurate', 'MaximumConcurrentJobs', 'Priority', 'ReRunFailedLevels', 'Schedule',
 			'RescheduleOnError', 'RescheduleIncompleteJobs', 'RescheduleInterval', 'RescheduleTimes',
 			'Messages'
-		);
+		];
 		if (is_string($jd)) {
 			$job['JobDefs'] = $jd;
 		}
@@ -450,18 +471,18 @@ class NewBackupJobWizard extends BaculumWebPage {
 				$job[$directives[$i]] = $val;
 			}
 		}
-		$params = array(
+		$params = [
 			'config',
 			'dir',
 			'Job',
 			$job['Name']
-		);
+		];
 		$result = $this->getModule('api')->set(
 			$params,
-			array('config' => json_encode($job))
+			['config' => json_encode($job)]
 		);
 		if ($result->error === 0) {
-			$this->getModule('api')->set(array('console'), array('reload'));
+			$this->getModule('api')->set(['console'], ['reload']);
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'None';
@@ -472,9 +493,12 @@ class NewBackupJobWizard extends BaculumWebPage {
 	/**
 	 * Cancel wizard.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->goToDefaultPage();
 	}
 
@@ -484,7 +508,8 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 * @param $jobdefs selected JobDefs values
 	 * @return none
 	 */
-	public function setJobDefs($jobdefs) {
+	public function setJobDefs($jobdefs)
+	{
 		$this->setViewState(self::JOBDEFS, $jobdefs);
 	}
 
@@ -493,28 +518,30 @@ class NewBackupJobWizard extends BaculumWebPage {
 	 *
 	 * @return array selected JobDefs values
 	 */
-	public function getJobDefs() {
-		return $this->getViewState(self::JOBDEFS, array());
+	public function getJobDefs()
+	{
+		return $this->getViewState(self::JOBDEFS, []);
 	}
 
 	/**
 	 * Set previous wizard step.
 	 *
-	 * @param integer $step previous step number
+	 * @param int $step previous step number
 	 * @return none
 	 */
-	public function setPrevStep($step) {
-		$step = intval($step);
+	public function setPrevStep($step)
+	{
+		$step = (int) $step;
 		$this->setViewState(self::PREV_STEP, $step);
 	}
 
 	/**
 	 * Get previous wizard step.
 	 *
-	 * @return integer previous wizard step
+	 * @return int previous wizard step
 	 */
-	public function getPrevStep() {
+	public function getPrevStep()
+	{
 		return $this->getViewState(self::PREV_STEP);
 	}
 }
-?>

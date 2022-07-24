@@ -39,26 +39,26 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveSize extends DirectiveTemplate {
+class DirectiveSize extends DirectiveTemplate
+{
+	public const SIZE_FORMAT = 'SizeFormat';
+	public const DEFAULT_SIZE_FORMAT = '';
 
-	const SIZE_FORMAT = 'SizeFormat';
-	const DEFAULT_SIZE_FORMAT = '';
+	private $size_formats = [
+		['format' => '', 'value' => 1, 'label' => 'B'],
+		['format' => 'kb', 'value' => 1000, 'label' => 'kB'],
+		['format' => 'k', 'value' => 1024, 'label' => 'KiB'],
+		['format' => 'mb', 'value' => 1000000, 'label' => 'MB'],
+		['format' => 'm', 'value' => 1048576, 'label' => 'MiB'],
+		['format' => 'gb', 'value' => 1000000000, 'label' => 'GB'],
+		['format' => 'g', 'value' => 1073741824, 'label' => 'GiB'],
+		['format' => 'tb', 'value' => 1000000000000, 'label' => 'TB'],
+		['format' => 't', 'value' => 1099511627776, 'label' => 'TiB']
+	];
 
-	private $size_formats = array(
-		array('format' => '', 'value' => 1, 'label' => 'B'),
-		array('format' => 'kb', 'value' => 1000, 'label' => 'kB'),
-		array('format' => 'k', 'value' => 1024, 'label' => 'KiB'),
-		array('format' => 'mb', 'value' => 1000000, 'label' => 'MB'),
-		array('format' => 'm', 'value' => 1048576, 'label' => 'MiB'),
-		array('format' => 'gb', 'value' => 1000000000, 'label' => 'GB'),
-		array('format' => 'g', 'value' => 1073741824, 'label' => 'GiB'),
-		array('format' => 'tb', 'value' => 1000000000000, 'label' => 'TB'),
-		array('format' => 't', 'value' => 1099511627776, 'label' => 'TiB')
-	);
-
-	public function getValue() {
+	public function getValue()
+	{
 		$value = $this->Directive->Text;
 		if (is_numeric($value)) {
 			settype($value, 'integer');
@@ -70,23 +70,27 @@ class DirectiveSize extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function getSizeFormat() {
+	public function getSizeFormat()
+	{
 		return $this->getViewState(self::SIZE_FORMAT, self::DEFAULT_SIZE_FORMAT);
 	}
 
-	public function setSizeFormat($format) {
+	public function setSizeFormat($format)
+	{
 		$this->setViewState(self::SIZE_FORMAT, $format);
 	}
 
-	public function getSizeFormats() {
-		$size_formats = array();
+	public function getSizeFormats()
+	{
+		$size_formats = [];
 		for ($i = 0; $i < count($this->size_formats); $i++) {
 			$size_formats[$this->size_formats[$i]['format']] = $this->size_formats[$i]['label'];
 		}
 		return $size_formats;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$size_format = $this->getSizeFormat();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -117,8 +121,11 @@ class DirectiveSize extends DirectiveTemplate {
 	 *  given format: b
 	 *  returned value: 121
 	 *  returned format: kb
+	 * @param mixed $size_bytes
+	 * @param mixed $format
 	 */
-	private function formatSize($size_bytes, $format) {
+	private function formatSize($size_bytes, $format)
+	{
 		$value = $size_bytes;
 		if ($value > 0) {
 			for ($i = (count($this->size_formats) - 1); $i >= 0; $i--) {
@@ -132,10 +139,11 @@ class DirectiveSize extends DirectiveTemplate {
 				}
 			}
 		}
-		return array('value' => $value, 'format' => $format);
+		return ['value' => $value, 'format' => $format];
 	}
 
-	private function getValueBytes($value, $size_format) {
+	private function getValueBytes($value, $size_format)
+	{
 		for ($i = 0; $i < count($this->size_formats); $i++) {
 			if ($this->size_formats[$i]['format'] === $size_format) {
 				$value *= $this->size_formats[$i]['value'];
@@ -145,4 +153,3 @@ class DirectiveSize extends DirectiveTemplate {
 		return $value;
 	}
 }
-?>

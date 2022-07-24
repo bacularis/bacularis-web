@@ -37,11 +37,11 @@ use Prado\TModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-abstract class WebModule extends TModule {
-
-	protected function getModule($id) {
+abstract class WebModule extends TModule
+{
+	protected function getModule($id)
+	{
 		return $this->getApplication()->getModule($id);
 	}
 }

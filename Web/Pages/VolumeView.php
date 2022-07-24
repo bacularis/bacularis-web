@@ -32,29 +32,29 @@ use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TActiveTextBox;
 use Prado\Web\UI\ActiveControls\TActiveCheckBox;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Volume view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class VolumeView extends BaculumWebPage {
+class VolumeView extends BaculumWebPage
+{
+	public const USE_CACHE = false;
 
-	const USE_CACHE = false;
-
-	const MEDIAID = 'MediaId';
-	const VOLUME_NAME = 'VolumeName';
+	public const MEDIAID = 'MediaId';
+	public const VOLUME_NAME = 'VolumeName';
 
 	public $jobs_on_volume;
 
-	private $volstatus_by_dir = array('Recycle', 'Purged', 'Error', 'Busy');
+	private $volstatus_by_dir = ['Recycle', 'Purged', 'Error', 'Busy'];
 
-	private $volstatus_by_user = array('Append', 'Archive', 'Disabled', 'Full', 'Used', 'Cleaning', 'Read-Only');
-	
-	public function onInit($param) {
+	private $volstatus_by_user = ['Append', 'Archive', 'Disabled', 'Full', 'Used', 'Cleaning', 'Read-Only'];
+
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -62,9 +62,9 @@ class VolumeView extends BaculumWebPage {
 
 		$mediaid = 0;
 		if ($this->Request->contains('mediaid')) {
-			$mediaid = intval($this->Request['mediaid']);
+			$mediaid = (int) ($this->Request['mediaid']);
 		} elseif ($this->Request->contains('media')) {
-			$result = $this->getModule('api')->get(array('volumes'));
+			$result = $this->getModule('api')->get(['volumes']);
 			if ($result->error === 0) {
 				for ($i = 0; $i < count($result->output); $i++) {
 					if ($this->Request['media'] === $result->output[$i]->volumename) {
@@ -81,28 +81,33 @@ class VolumeView extends BaculumWebPage {
 	/**
 	 * Set volume mediaid.
 	 *
+	 * @param mixed $mediaid
 	 * @return none;
 	 */
-	public function setMediaId($mediaid) {
-		$mediaid = intval($mediaid);
+	public function setMediaId($mediaid)
+	{
+		$mediaid = (int) $mediaid;
 		$this->setViewState(self::MEDIAID, $mediaid, 0);
 	}
 
 	/**
 	 * Get volume mediaid.
 	 *
-	 * @return integer mediaid
+	 * @return int mediaid
 	 */
-	public function getMediaId() {
+	public function getMediaId()
+	{
 		return $this->getViewState(self::MEDIAID, 0);
 	}
 
 	/**
 	 * Set volume name.
 	 *
+	 * @param mixed $volume_name
 	 * @return none;
 	 */
-	public function setVolumeName($volume_name) {
+	public function setVolumeName($volume_name)
+	{
 		$this->setViewState(self::VOLUME_NAME, $volume_name);
 	}
 
@@ -111,13 +116,15 @@ class VolumeView extends BaculumWebPage {
 	 *
 	 * @return string volume name
 	 */
-	public function getVolumeName() {
+	public function getVolumeName()
+	{
 		return $this->getViewState(self::VOLUME_NAME);
 	}
 
-	public function setVolume() {
+	public function setVolume()
+	{
 		$volume = $this->getModule('api')->get(
-			array('volumes', $this->getMediaId()),
+			['volumes', $this->getMediaId()],
 			null,
 			true,
 			self::USE_CACHE
@@ -126,7 +133,7 @@ class VolumeView extends BaculumWebPage {
 		$scratchpool = '-';
 		if ($volume->scratchpoolid > 0) {
 			$result = $this->getModule('api')->get(
-				array('pools', $volume->scratchpoolid),
+				['pools', $volume->scratchpoolid],
 				null,
 				true,
 				self::USE_CACHE
@@ -139,7 +146,7 @@ class VolumeView extends BaculumWebPage {
 			$recyclepool = $scratchpool;
 		} else {
 			$result = $this->getModule('api')->get(
-				array('pools', $volume->recyclepoolid),
+				['pools', $volume->recyclepoolid],
 				null,
 				true,
 				self::USE_CACHE
@@ -176,8 +183,8 @@ class VolumeView extends BaculumWebPage {
 		$this->VolumeStatus->DataSource = array_combine($volstatus, $volstatus);
 		$this->VolumeStatus->SelectedValue = $volume->volstatus;
 		$this->VolumeStatus->dataBind();
-		$this->RetentionPeriod->Text = intval($volume->volretention / 3600); // conversion to hours
-		$this->UseDuration->Text = intval($volume->voluseduration / 3600);  // conversion to hours
+		$this->RetentionPeriod->Text = (int) ($volume->volretention / 3600); // conversion to hours
+		$this->UseDuration->Text = (int) ($volume->voluseduration / 3600);  // conversion to hours
 		$this->MaxVolJobs->Text = $volume->maxvoljobs;
 		$this->MaxVolFiles->Text = $volume->maxvolfiles;
 		$this->MaxVolBytes->Text = $volume->maxvolbytes;
@@ -185,20 +192,21 @@ class VolumeView extends BaculumWebPage {
 		$this->Recycle->Checked = ($volume->recycle === 1);
 		$this->Enabled->Checked = ($volume->enabled === 1);
 		$this->InChanger->Checked = ($volume->inchanger === 1);
-		$pools = $this->Application->getModule('api')->get(array('pools'))->output;
-		$pool_list = array();
-		foreach($pools as $pool) {
+		$pools = $this->Application->getModule('api')->get(['pools'])->output;
+		$pool_list = [];
+		foreach ($pools as $pool) {
 			$pool_list[$pool->poolid] = $pool->name;
 		}
 		$this->Pool->dataSource = $pool_list;
 		$this->Pool->SelectedValue = $volume->poolid;
 		$this->Pool->dataBind();
 
-		$this->jobs_on_volume = $this->getModule('api')->get(array('volumes', $volume->mediaid, 'jobs'))->output;
+		$this->jobs_on_volume = $this->getModule('api')->get(['volumes', $volume->mediaid, 'jobs'])->output;
 	}
 
-	public function updateVolume($sender, $param) {
-		$volume = array();
+	public function updateVolume($sender, $param)
+	{
+		$volume = [];
 		$volume['mediaid'] = $this->getMediaId();
 		$volume['volstatus'] = $this->VolumeStatus->SelectedValue;
 		$volume['poolid'] = $this->Pool->SelectedValue;
@@ -208,11 +216,11 @@ class VolumeView extends BaculumWebPage {
 		$volume['maxvolfiles'] = $this->MaxVolFiles->Text;
 		$volume['maxvolbytes'] = $this->MaxVolBytes->Text;
 		$volume['slot'] = $this->Slot->Text;
-		$volume['recycle'] = (integer)$this->Recycle->Checked;
-		$volume['enabled'] = (integer)$this->Enabled->Checked;
-		$volume['inchanger'] = (integer)$this->InChanger->Checked;
+		$volume['recycle'] = (int) $this->Recycle->Checked;
+		$volume['enabled'] = (int) $this->Enabled->Checked;
+		$volume['inchanger'] = (int) $this->InChanger->Checked;
 		$result = $this->getModule('api')->set(
-			array('volumes', $volume['mediaid']),
+			['volumes', $volume['mediaid']],
 			$volume
 		);
 		if ($result->error === 0) {
@@ -223,10 +231,11 @@ class VolumeView extends BaculumWebPage {
 		$this->setVolume();
 	}
 
-	public function prune($sender, $param) {
+	public function prune($sender, $param)
+	{
 		$result = $this->getModule('api')->set(
-			array('volumes', $this->getMediaId(), 'prune'),
-			array()
+			['volumes', $this->getMediaId(), 'prune'],
+			[]
 		);
 		if ($result->error === 0) {
 			$this->VolumeActionLog->Text = implode(PHP_EOL, $result->output);
@@ -235,10 +244,11 @@ class VolumeView extends BaculumWebPage {
 		}
 	}
 
-	public function purge($sender, $param) {
+	public function purge($sender, $param)
+	{
 		$result = $this->getModule('api')->set(
-			array('volumes', $this->getMediaId(), 'purge'),
-			array()
+			['volumes', $this->getMediaId(), 'purge'],
+			[]
 		);
 		if ($result->error === 0) {
 			$this->VolumeActionLog->Text = implode(PHP_EOL, $result->output);
@@ -247,4 +257,3 @@ class VolumeView extends BaculumWebPage {
 		}
 	}
 }
-?>

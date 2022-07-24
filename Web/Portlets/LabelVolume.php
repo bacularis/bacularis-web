@@ -43,20 +43,20 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class LabelVolume extends Portlets {
+class LabelVolume extends Portlets
+{
+	public const SHOW_BUTTON = 'ShowButton';
+	public const BARCODE_LABEL = 'BarcodeLabel';
+	public const STORAGE = 'Storage';
+	public const POOL = 'Pool';
 
-	const SHOW_BUTTON = 'ShowButton';
-	const BARCODE_LABEL = 'BarcodeLabel';
-	const STORAGE = 'Storage';
-	const POOL = 'Pool';
-
-	public function loadValues() {
-		$storages = $this->getModule('api')->get(array('storages'));
-		$storage_list = array();
+	public function loadValues()
+	{
+		$storages = $this->getModule('api')->get(['storages']);
+		$storage_list = [];
 		if ($storages->error === 0) {
-			foreach($storages->output as $storage) {
+			foreach ($storages->output as $storage) {
 				$storage_list[$storage->storageid] = $storage->name;
 			}
 		}
@@ -69,10 +69,10 @@ class LabelVolume extends Portlets {
 		}
 		$this->StorageLabel->dataBind();
 
-		$pools = $this->Application->getModule('api')->get(array('pools'));
-		$pool_list = array();
+		$pools = $this->Application->getModule('api')->get(['pools']);
+		$pool_list = [];
 		if ($pools->error === 0) {
-			foreach($pools->output as $pool) {
+			foreach ($pools->output as $pool) {
 				$pool_list[$pool->poolid] = $pool->name;
 			}
 		}
@@ -86,42 +86,43 @@ class LabelVolume extends Portlets {
 		$this->PoolLabel->dataBind();
 	}
 
-	public function labelVolumes($sender, $param) {
+	public function labelVolumes($sender, $param)
+	{
 		$result = null;
 		if ($this->Barcodes->Checked || $this->BarcodeLabel) {
-			$params = array(
+			$params = [
 				'slots' => $this->SlotsLabel->Text,
 				'drive' => $this->DriveLabel->Text,
 				'storageid' => $this->StorageLabel->SelectedValue,
 				'poolid' => $this->PoolLabel->SelectedValue
-			);
-			$result = $this->getModule('api')->create(array('volumes', 'label', 'barcodes'), $params);
+			];
+			$result = $this->getModule('api')->create(['volumes', 'label', 'barcodes'], $params);
 			if ($result->error === 0 && count($result->output) === 1) {
 				$out = json_decode($result->output[0]);
 				if (is_object($out) && property_exists($out, 'out_id')) {
 					$result = $this->getLabelBarcodesOutput($out->out_id);
-					$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', array($out->out_id));
+					$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', [$out->out_id]);
 				}
 			}
 		} else {
-			$params = array(
+			$params = [
 				'slot' => $this->SlotLabel->Text,
 				'volume' => $this->LabelName->Text,
 				'drive' => $this->DriveLabel->Text,
 				'storageid' => $this->StorageLabel->SelectedValue,
 				'poolid' => $this->PoolLabel->SelectedValue
-			);
-			$result = $this->getModule('api')->create(array('volumes', 'label'), $params);
+			];
+			$result = $this->getModule('api')->create(['volumes', 'label'], $params);
 			if ($result->error === 0 && count($result->output) === 1) {
 				$out = json_decode($result->output[0]);
 				if (is_object($out) && property_exists($out, 'out_id')) {
 					$result = $this->getLabelOutput($out->out_id);
-					$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', array($out->out_id));
+					$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', [$out->out_id]);
 				}
 			}
 		}
 		if ($result->error === 0) {
-			$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', array('loading'));
+			$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', ['loading']);
 			$this->LabelVolumeLog->Text = implode('', $result->output);
 			$this->onLabelStart($param);
 		} else {
@@ -130,21 +131,24 @@ class LabelVolume extends Portlets {
 		}
 	}
 
-	private function getLabelOutput($out_id) {
+	private function getLabelOutput($out_id)
+	{
 		$result = $this->getModule('api')->get(
-			array('volumes', 'label', '?out_id=' . rawurlencode($out_id))
+			['volumes', 'label', '?out_id=' . rawurlencode($out_id)]
 		);
 		return $result;
 	}
 
-	private function getLabelBarcodesOutput($out_id) {
+	private function getLabelBarcodesOutput($out_id)
+	{
 		$result = $this->getModule('api')->get(
-			array('volumes', 'label', 'barcodes', '?out_id=' . rawurlencode($out_id))
+			['volumes', 'label', 'barcodes', '?out_id=' . rawurlencode($out_id)]
 		);
 		return $result;
 	}
 
-	public function refreshOutput($sender, $param) {
+	public function refreshOutput($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$result = null;
 		if ($this->Barcodes->Checked == true) {
@@ -156,9 +160,9 @@ class LabelVolume extends Portlets {
 		if ($result->error === 0) {
 			if (count($result->output) > 0) {
 				$this->LabelVolumeLog->Text = implode('', $result->output);
-				$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', array($out_id));
+				$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', [$out_id]);
 			} else {
-				$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', array('finish'));
+				$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', ['finish']);
 				$this->onLabelSuccess($param);
 				$this->onLabelComplete($param);
 			}
@@ -169,58 +173,70 @@ class LabelVolume extends Portlets {
 		}
 	}
 
-	public function onLabelStart($param) {
+	public function onLabelStart($param)
+	{
 		$this->raiseEvent('OnLabelStart', $this, $param);
 	}
 
-	public function onLabelComplete($param) {
+	public function onLabelComplete($param)
+	{
 		$this->raiseEvent('OnLabelComplete', $this, $param);
 	}
 
-	public function onLabelSuccess($param) {
+	public function onLabelSuccess($param)
+	{
 		$this->raiseEvent('OnLabelSuccess', $this, $param);
 	}
 
-	public function onLabelFail($param) {
+	public function onLabelFail($param)
+	{
 		$this->raiseEvent('OnLabelFail', $this, $param);
 	}
 
-	public function setSlots(array $slots) {
+	public function setSlots(array $slots)
+	{
 		$this->SlotsLabel->Text = implode(',', $slots);
 	}
 
-	public function setShowButton($show) {
+	public function setShowButton($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_BUTTON, $show);
 	}
 
-	public function getShowButton() {
+	public function getShowButton()
+	{
 		return $this->getViewState(self::SHOW_BUTTON, true);
 	}
 
-	public function setBarcodeLabel($barcode_label) {
+	public function setBarcodeLabel($barcode_label)
+	{
 		$barcode_label = TPropertyValue::ensureBoolean($barcode_label);
 		$this->setViewState(self::BARCODE_LABEL, $barcode_label);
 	}
 
-	public function getBarcodeLabel() {
+	public function getBarcodeLabel()
+	{
 		return $this->getViewState(self::BARCODE_LABEL);
 	}
 
-	public function setStorage($storage) {
+	public function setStorage($storage)
+	{
 		$this->setViewState(self::STORAGE, $storage);
 	}
 
-	public function getStorage() {
+	public function getStorage()
+	{
 		return $this->getViewState(self::STORAGE);
 	}
 
-	public function setPool($pool) {
+	public function setPool($pool)
+	{
 		$this->setViewState(self::POOL, $pool);
 	}
 
-	public function getPool() {
+	public function getPool()
+	{
 		return $this->getViewState(self::POOL);
 	}
 }
-?>

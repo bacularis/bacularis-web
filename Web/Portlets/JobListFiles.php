@@ -43,15 +43,15 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class JobListFiles extends Portlets {
+class JobListFiles extends Portlets
+{
+	public const JOBID = 'JobId';
 
-	const JOBID = 'JobId';
+	public const DEFAULT_PAGE_SIZE = 100;
 
-	const DEFAULT_PAGE_SIZE = 100;
-
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallBack) {
 			return;
@@ -60,11 +60,12 @@ class JobListFiles extends Portlets {
 		$this->FileListLimit->Text = self::DEFAULT_PAGE_SIZE;
 	}
 
-	public function loadFileList($sender, $param) {
-		$params = array(
-			'offset' => intval($this->FileListOffset->Text),
-			'limit' => intval($this->FileListLimit->Text)
-		);
+	public function loadFileList($sender, $param)
+	{
+		$params = [
+			'offset' => (int) ($this->FileListOffset->Text),
+			'limit' => (int) ($this->FileListLimit->Text)
+		];
 		if (!empty($this->FileListType->SelectedValue)) {
 			$params['type'] = $this->FileListType->SelectedValue;
 		}
@@ -74,7 +75,7 @@ class JobListFiles extends Portlets {
 		$params['details'] = '1';
 		$query = '?' . http_build_query($params);
 		$result = $this->getModule('api')->get(
-			array('jobs', $this->getJobId(), 'files', $query)
+			['jobs', $this->getJobId(), 'files', $query]
 		);
 		if ($result->error === 0) {
 			$file_list = $result->output;
@@ -85,13 +86,14 @@ class JobListFiles extends Portlets {
 			$this->FileList->dataBind();
 			$this->FileListCount->Text = count($file_list);
 		} else {
-			$this->FileList->DataSource = array();
+			$this->FileList->DataSource = [];
 			$this->FileList->dataBind();
 			$this->FileListCount->Text = 0;
 		}
 	}
 
-	private function findFileListItems(&$file_list, $keyword) {
+	private function findFileListItems(&$file_list, $keyword)
+	{
 		for ($i = 0; $i < count($file_list); $i++) {
 			$pos = stripos($file_list[$i]->file, $keyword);
 			$str1 = substr($file_list[$i]->file, 0, $pos);
@@ -105,20 +107,22 @@ class JobListFiles extends Portlets {
 	/**
 	 * Set job identifier to show files.
 	 *
+	 * @param mixed $jobid
 	 * @return none
 	 */
-	public function setJobId($jobid) {
-		$jobid = intval($jobid);
+	public function setJobId($jobid)
+	{
+		$jobid = (int) $jobid;
 		$this->setViewState(self::JOBID, $jobid, 0);
 	}
 
 	/**
 	 * Get job identifier to show files.
 	 *
-	 * @return integer job identifier
+	 * @return int job identifier
 	 */
-	public function getJobId() {
+	public function getJobId()
+	{
 		return $this->getViewState(self::JOBID, 0);
 	}
 }
-?>

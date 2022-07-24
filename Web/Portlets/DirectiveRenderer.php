@@ -57,14 +57,13 @@ use Bacularis\Web\Portlets\DirectiveMessages;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveRenderer extends TItemDataRenderer {
+class DirectiveRenderer extends TItemDataRenderer
+{
+	public const DATA = 'Data';
+	public const IS_DATA_BOUND = 'IsDataBound';
 
-	const DATA = 'Data';
-	const IS_DATA_BOUND = 'IsDataBound';
-
-	private $directive_types = array(
+	private $directive_types = [
 		'DirectiveCheckBox',
 		'DirectiveComboBox',
 		'DirectiveInteger',
@@ -74,32 +73,35 @@ class DirectiveRenderer extends TItemDataRenderer {
 		'DirectiveSize',
 		'DirectiveSpeed',
 		'DirectiveTimePeriod'
-	);
+	];
 
-	private $directive_list_types = array(
+	private $directive_list_types = [
 		'DirectiveFileSet',
 		'DirectiveSchedule',
 		'DirectiveMessages',
 		'DirectiveRunscript',
 		'DirectiveMultiComboBox',
 		'DirectiveMultiTextBox'
-	);
+	];
 
 	private static $current_section = '';
 
-	public function loadState() {
+	public function loadState()
+	{
 		parent::loadState();
 		$this->createItemInternal();
 	}
 
-	public function createItemInternal() {
+	public function createItemInternal()
+	{
 		$data = $this->getData();
 
 		$this->createItem($data);
 		$this->setIsDataBound(true);
 	}
 
-	public function render($writer) {
+	public function render($writer)
+	{
 		$data = $this->getData();
 		if (key_exists('section', $data)) {
 			if ($data['section'] !== self::$current_section) {
@@ -110,7 +112,8 @@ class DirectiveRenderer extends TItemDataRenderer {
 		parent::render($writer);
 	}
 
-	public function createItem($data) {
+	public function createItem($data)
+	{
 		$field = $this->getField($data['field_type']);
 		$control = Prado::createComponent($field);
 		$type = 'Directive' . $data['field_type'];
@@ -159,24 +162,28 @@ class DirectiveRenderer extends TItemDataRenderer {
 		return $control;
 	}
 
-	public function getData() {
+	public function getData()
+	{
 		return $this->getViewState(self::DATA);
 	}
 
-	public function setData($data) {
+	public function setData($data)
+	{
 		$this->setViewState(self::DATA, $data);
 	}
 
-	public function getIsDataBound() {
+	public function getIsDataBound()
+	{
 		return $this->getViewState(self::IS_DATA_BOUND);
 	}
 
-	public function setIsDataBound($is_data_bound) {
+	public function setIsDataBound($is_data_bound)
+	{
 		$this->setViewState(self::IS_DATA_BOUND, $is_data_bound);
 	}
 
-	private function getField($field_type) {
+	private function getField($field_type)
+	{
 		return 'Bacularis\Web\Portlets\Directive' . $field_type;
 	}
 }
-?>

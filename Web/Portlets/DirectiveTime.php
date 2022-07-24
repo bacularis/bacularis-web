@@ -39,37 +39,39 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveTime extends DirectiveTemplate {
+class DirectiveTime extends DirectiveTemplate
+{
+	public const SHOW_HOUR = 'ShowHour';
+	public const SHOW_MINUTE = 'ShowMinute';
 
-	const SHOW_HOUR = 'ShowHour';
-	const SHOW_MINUTE = 'ShowMinute';
-
-	public function getValue() {
-		$hour = (integer)$this->Hour->getSelectedValue();
+	public function getValue()
+	{
+		$hour = (int) $this->Hour->getSelectedValue();
 		if (!$this->ShowHour) {
 			$hour = null;
 		}
-		$minute = (integer)$this->Minute->getSelectedValue();
+		$minute = (int) $this->Minute->getSelectedValue();
 		if (!$this->ShowMinute) {
 			$minute = null;
 		}
 		return $this->getTimeValue($hour, $minute);
 	}
 
-	private function getTimeValue($hour = null, $minute = null) {
+	private function getTimeValue($hour = null, $minute = null)
+	{
 		return ['hour' => $hour, 'minute' => $minute];
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
 		if (!is_array($directive_value)) {
 			$directive_value = $this->getTimeValue();
 		}
-		if ($this->getInConfig() === false &&  is_null($directive_value['hour']) && is_null($directive_value['minute'])) {
+		if ($this->getInConfig() === false && is_null($directive_value['hour']) && is_null($directive_value['minute'])) {
 			if (is_array($default_value) && !is_null($default_value['hour']) && !is_null($default_value['minute'])) {
 				$directive_value = $default_value;
 			} else {
@@ -77,14 +79,14 @@ class DirectiveTime extends DirectiveTemplate {
 			}
 		}
 		$hours = range(0, 23);
-		$this->Hour->DataSource = array_map(function($h) {
+		$this->Hour->DataSource = array_map(function ($h) {
 			return sprintf('%02d', $h);
 		}, $hours);
 		$this->Hour->setSelectedValue($directive_value['hour']);
 		$this->Hour->dataBind();
 
 		$minutes = range(0, 59);
-		$this->Minute->DataSource = array_map(function($m) {
+		$this->Minute->DataSource = array_map(function ($m) {
 			return sprintf('%02d', $m);
 		}, $minutes);
 		$this->Minute->setSelectedValue($directive_value['minute']);
@@ -104,20 +106,24 @@ class DirectiveTime extends DirectiveTemplate {
 		}
 	}
 
-	public function getShowHour() {
+	public function getShowHour()
+	{
 		return $this->getViewState(self::SHOW_HOUR, true);
 	}
 
-	public function setShowHour($show) {
+	public function setShowHour($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_HOUR, $show);
 	}
 
-	public function getShowMinute() {
+	public function getShowMinute()
+	{
 		return $this->getViewState(self::SHOW_MINUTE, true);
 	}
 
-	public function setShowMinute($show) {
+	public function setShowMinute($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_MINUTE, $show);
 	}

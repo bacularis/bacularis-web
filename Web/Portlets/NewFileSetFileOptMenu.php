@@ -34,27 +34,29 @@ namespace Bacularis\Web\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class NewFileSetFileOptMenu extends DirectiveListTemplate {
+class NewFileSetFileOptMenu extends DirectiveListTemplate
+{
+	public const ITEM_INDEX = 'ItemIndex';
+	public const FS_BROWSER_ID = 'FsBrowserId';
 
-	const ITEM_INDEX = 'ItemIndex';
-	const FS_BROWSER_ID = 'FsBrowserId';
-
-	public function setItemIndex($index) {
+	public function setItemIndex($index)
+	{
 		$this->setViewState(self::ITEM_INDEX, $index);
 	}
 
-	public function getItemIndex() {
+	public function getItemIndex()
+	{
 		return $this->getViewState(self::ITEM_INDEX);
 	}
 
-	public function setFileSetBrowserId($id) {
+	public function setFileSetBrowserId($id)
+	{
 		$this->setViewState(self::FS_BROWSER_ID, $id);
 	}
 
-	public function getFileSetBrowserId() {
+	public function getFileSetBrowserId()
+	{
 		return $this->getViewState(self::FS_BROWSER_ID);
 	}
 }
-?>

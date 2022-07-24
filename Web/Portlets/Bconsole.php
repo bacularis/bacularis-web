@@ -26,7 +26,7 @@
  *
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
- 
+
 use Prado\Web\UI\ActiveControls\TActivePanel;
 use Prado\Web\UI\ActiveControls\TActiveButton;
 use Prado\Web\UI\ActiveControls\TActiveTextBox;
@@ -37,20 +37,20 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class Bconsole extends Portlets {
+class Bconsole extends Portlets
+{
+	public const MAX_CONSOLE_OUTPUT_BATCH = -10000;
 
-	const MAX_CONSOLE_OUTPUT_BATCH = -10000;
-
-	public function sendCommand($sender, $param) {
+	public function sendCommand($sender, $param)
+	{
 		$cmd = trim($this->CommandLine->Text);
 
-		if(!empty($cmd)) {
+		if (!empty($cmd)) {
 			$command = explode(' ', $cmd);
 
-			$out = $this->Application->getModule('api')->set(array('console'), $command)->output;
-			if(is_array($out)) {
+			$out = $this->Application->getModule('api')->set(['console'], $command)->output;
+			if (is_array($out)) {
 				$out = array_slice($out, self::MAX_CONSOLE_OUTPUT_BATCH);
 				$output = $this->OutputListing->Text . PHP_EOL . implode(PHP_EOL, $out);
 			} else {
@@ -62,5 +62,3 @@ class Bconsole extends Portlets {
 		}
 	}
 }
-
-?>

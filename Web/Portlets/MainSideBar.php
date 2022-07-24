@@ -37,10 +37,9 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class MainSideBar extends Portlets {
-
+class MainSideBar extends Portlets
+{
 	/**
 	 * Reload URL is used to refresh page after logout with Basic auth.
 	 */
@@ -51,12 +50,13 @@ class MainSideBar extends Portlets {
 	 */
 	public $is_api = false;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			$fake_pwd = $this->getModule('crypto')->getRandomString();
 			// must be different than currently logged in Basic user
-			$user = (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '') . '1';
+			$user = ($_SERVER['PHP_AUTH_USER'] ?? '') . '1';
 
 			// do a login try with different user and password to logout current user
 			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
@@ -65,7 +65,8 @@ class MainSideBar extends Portlets {
 		$this->is_api = count($api_config) > 0;
 	}
 
-	public function logout($sender, $param) {
+	public function logout($sender, $param)
+	{
 		$this->getModule('auth')->logout();
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			/**
@@ -78,4 +79,3 @@ class MainSideBar extends Portlets {
 		}
 	}
 }
-?>

@@ -37,21 +37,23 @@ use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class FileSetBrowser extends Portlets {
-
-	const BCLIENT_ID = 'BClientId';
-	const PATH = 'Path';
+class FileSetBrowser extends Portlets
+{
+	public const BCLIENT_ID = 'BClientId';
+	public const PATH = 'Path';
 
 	/**
 	 * Load client list.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function loadClients($sender, $param) {
-		$client_list = array();
-		$clients = $this->getModule('api')->get(array('clients'))->output;
+	public function loadClients($sender, $param)
+	{
+		$client_list = [];
+		$clients = $this->getModule('api')->get(['clients'])->output;
 		for ($i = 0; $i < count($clients); $i++) {
 			$client_list[$clients[$i]->clientid] = $clients[$i]->name;
 		}
@@ -69,7 +71,8 @@ class FileSetBrowser extends Portlets {
 	 * @param TCommandParameter $param parameters object
 	 * @return none
 	 */
-	public function selectClient($sender, $param) {
+	public function selectClient($sender, $param)
+	{
 		$client_id = $this->Client->getSelectedValue();
 		if ($client_id !== 'none') {
 			$this->setBClientId($client_id);
@@ -77,7 +80,8 @@ class FileSetBrowser extends Portlets {
 		}
 	}
 
-	public function getItems($sender, $param) {
+	public function getItems($sender, $param)
+	{
 		if ($param instanceof TCallbackEventParameter) {
 			$path = $param->getCallbackParameter();
 			$this->setPath($path);
@@ -85,15 +89,16 @@ class FileSetBrowser extends Portlets {
 		}
 	}
 
-	public function goToPath() {
+	public function goToPath()
+	{
 		$client_id = $this->getBClientId();
 		$query = '?path=' . rawurlencode($this->getPath());
-		$params = array(
+		$params = [
 			'clients',
 			$client_id,
 			'ls',
 			$query
-		);
+		];
 		$result = $this->getModule('api')->get($params);
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'FileSetBrowser_set_content' . $this->ClientID,
@@ -101,28 +106,32 @@ class FileSetBrowser extends Portlets {
 		);
 	}
 
-	public function setBClientId($bclient_id) {
+	public function setBClientId($bclient_id)
+	{
 		$this->setViewState(self::BCLIENT_ID, $bclient_id);
 	}
 
-	public function getBClientId() {
+	public function getBClientId()
+	{
 		return $this->getViewState(self::BCLIENT_ID);
 	}
 
-	public function setPath($path) {
+	public function setPath($path)
+	{
 		$this->setViewState(self::PATH, $path);
 	}
 
-	public function getPath() {
+	public function getPath()
+	{
 		return $this->getViewState(self::PATH, '/');
 	}
 }
 
-function sort_client_list($a, $b) {
+function sort_client_list($a, $b)
+{
 	if ($a === 'none') {
 		return -1;
 	} else {
 		return 1;
 	}
 }
-?>

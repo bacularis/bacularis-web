@@ -40,17 +40,17 @@ use Bacularis\Web\Portlets\DirectiveComboBox;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveRunscript extends DirectiveListTemplate {
-
-	private $directive_types = array(
+class DirectiveRunscript extends DirectiveListTemplate
+{
+	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveCheckBox',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveTextBox'
-	);
+	];
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$load_values = $this->getLoadValues();
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
@@ -59,7 +59,7 @@ class DirectiveRunscript extends DirectiveListTemplate {
 		$resource_name = $this->getResourceName();
 
 		$directives = $this->getData();
-		$options = array();
+		$options = [];
 		if (!is_array($directives)) {
 			return;
 		}
@@ -104,10 +104,10 @@ class DirectiveRunscript extends DirectiveListTemplate {
 						}
 					}
 					if (!is_array($directive_value)) {
-						$directive_value = array($directive_value);
+						$directive_value = [$directive_value];
 					}
 					for ($j = 0; $j < count($directive_value); $j++) {
-						$options[] = array(
+						$options[] = [
 							'host' => $host,
 							'component_type' => $component_type,
 							'component_name' => $component_name,
@@ -125,7 +125,7 @@ class DirectiveRunscript extends DirectiveListTemplate {
 							'show' => ($in_config || !$load_values || $this->SourceTemplateControl->getShowAllDirectives()),
 							'parent_name' => __CLASS__,
 							'group_name' => $i
-						);
+						];
 					}
 				}
 			}
@@ -134,7 +134,8 @@ class DirectiveRunscript extends DirectiveListTemplate {
 		$this->RepeaterRunscriptOptions->dataBind();
 	}
 
-	public function getDirectiveValue() {
+	public function getDirectiveValue()
+	{
 		$directive_values = null;
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
@@ -166,10 +167,10 @@ class DirectiveRunscript extends DirectiveListTemplate {
 				}
 
 				if (!isset($directive_values['Runscript'])) {
-					$directive_values = array('Runscript' => array());
+					$directive_values = ['Runscript' => []];
 				}
 				if (!isset($directive_values['Runscript'][$index])) {
-					$directive_values['Runscript'][$index] = new \StdClass;
+					$directive_values['Runscript'][$index] = new \StdClass();
 				}
 
 				$directive_values['Runscript'][$index]->{$directive_name} = $directive_value;
@@ -178,7 +179,8 @@ class DirectiveRunscript extends DirectiveListTemplate {
 		return $directive_values;
 	}
 
-	public function removeRunscript($sender, $param) {
+	public function removeRunscript($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
 			$idx = $param->getCommandName();
 			$data = $this->getDirectiveValue();
@@ -190,12 +192,13 @@ class DirectiveRunscript extends DirectiveListTemplate {
 		}
 	}
 
-	public function newRunscriptDirective() {
+	public function newRunscriptDirective()
+	{
 		$data = $this->getDirectiveValue();
 		if (is_array($data) && key_exists('Runscript', $data) && is_array($data['Runscript'])) {
-			$data['Runscript'][] = new \StdClass;
+			$data['Runscript'][] = new \StdClass();
 		} else {
-			$data = array('Runscript' => array(new \StdClass));
+			$data = ['Runscript' => [new \StdClass()]];
 		}
 		$this->setData($data);
 		$this->SourceTemplateControl->setShowAllDirectives(true);

@@ -35,7 +35,7 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  * New messages menu control.
  *
  * @category Control
- * @package Baculum Web
  */
-class NewMessagesMenu extends DirectiveListTemplate {
+class NewMessagesMenu extends DirectiveListTemplate
+{
 }

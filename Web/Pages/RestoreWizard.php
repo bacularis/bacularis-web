@@ -27,7 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Exceptions\TException;
 use Prado\Web\UI\WebControls\TWizard;
 use Prado\Web\UI\WebControls\TDataGrid;
@@ -44,14 +44,12 @@ use Prado\Web\UI\ActiveControls\TActiveTextBox;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
 class RestoreWizard extends BaculumWebPage
 {
 	/**
 	 * Job levels allowed to restore.
 	 */
-
 	private $joblevel = ['F', 'I', 'D'];
 
 	/**
@@ -59,14 +57,14 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	private $jobstatus = ['T', 'W', 'A', 'E', 'e', 'f'];
 
-	const JOB_LIST_BY_CLIENT = 1;
-	const JOB_LIST_BY_FILENAME = 2;
+	public const JOB_LIST_BY_CLIENT = 1;
+	public const JOB_LIST_BY_FILENAME = 2;
 
 	/**
 	 * Browser types.
 	 */
-	const BROWSER_TYPE_FLAT = 0;
-	const BROWSER_TYPE_TREE = 1;
+	public const BROWSER_TYPE_FLAT = 0;
+	public const BROWSER_TYPE_TREE = 1;
 
 	/**
 	 * File browser special directories.
@@ -110,7 +108,7 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Prefix for Bvfs path.
 	 */
-	const BVFS_PATH_PREFIX = 'b2';
+	public const BVFS_PATH_PREFIX = 'b2';
 
 	/**
 	 * Initialize restore page.
@@ -118,7 +116,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TXmlElement $param page config
 	 * @return none
 	 */
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -136,7 +135,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TXmlElement $param page config
 	 * @return none
 	 */
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		$this->setNavigationButtons();
 	}
@@ -145,13 +145,15 @@ class RestoreWizard extends BaculumWebPage
 	 * Set jobid to restore.
 	 * Used to restore specific job by jobid.
 	 *
+	 * @param mixed $jobid
 	 * @return none
 	 */
-	public function setJobIdToRestore($jobid) {
-		$jobid = intval($jobid);
+	public function setJobIdToRestore($jobid)
+	{
+		$jobid = (int) $jobid;
 		$this->setRestoreByJobId($jobid);
 		$this->RestoreWizard->setActiveStep($this->Step3);
-		$param = new stdClass;
+		$param = new stdClass();
 		$param->CurrentStepIndex = 1;
 		$this->RestoreWizard->raiseEvent('OnNextButtonClick', null, $param);
 	}
@@ -159,9 +161,11 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Set/prepare restore wizard to restore specific jobid.
 	 *
+	 * @param mixed $jobid
 	 * @return none
 	 */
-	public function setRestoreByJobId($jobid) {
+	public function setRestoreByJobId($jobid)
+	{
 		$job = $this->getModule('api')->get(
 			['jobs', $jobid]
 		)->output;
@@ -171,13 +175,14 @@ class RestoreWizard extends BaculumWebPage
 			$this->BackupClient->SelectedValue = $job->clientid;
 			$this->RestoreClient->SelectedValue = $job->clientid;
 			$this->loadBackupsForClient();
-			$step_index = new stdClass;
+			$step_index = new stdClass();
 			$step_index->CurrentStepIndex = 3;
 			$this->wizardNext(null, $step_index);
 		}
 	}
 
-	private function setRestoreJob($jobid, $name, $type, $endtime, $jobstatus) {
+	private function setRestoreJob($jobid, $name, $type, $endtime, $jobstatus)
+	{
 		$this->Session->add(
 			'restore_job',
 			[
@@ -196,7 +201,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function setNavigationButtons() {
+	public function setNavigationButtons()
+	{
 		$prev_btn = $this->RestoreWizard->getStepNavigation()->PreviousStepBtn;
 		if ($this->Request->contains('jobid') && $this->RestoreWizard->getActiveStepIndex() === 2) {
 			$prev_btn->Visible = false;
@@ -212,7 +218,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardNext($sender, $param) {
+	public function wizardNext($sender, $param)
+	{
 		if ($param->CurrentStepIndex === 0) {
 			$this->loadBackupsForClient();
 			$this->loadGroupBackupToRestore();
@@ -224,7 +231,7 @@ class RestoreWizard extends BaculumWebPage
 			}
 		} elseif ($param->CurrentStepIndex === 1) {
 			if ($this->Request->contains('backup_to_restore')) {
-				list($jobid, $name, $type, $endtime, $jobstatus) = explode('|', $this->Request['backup_to_restore'], 5);
+				[$jobid, $name, $type, $endtime, $jobstatus] = explode('|', $this->Request['backup_to_restore'], 5);
 				$this->setRestoreJob($jobid, $name, $type, $endtime, $jobstatus);
 			}
 			$this->setRestorePath();
@@ -257,7 +264,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TWizardNavigationEventParameter $param sender parameters
 	 * @return none
 	 */
-	public function wizardPrev($sender, $param) {
+	public function wizardPrev($sender, $param)
+	{
 		if ($param->CurrentStepIndex === 1) {
 		} elseif ($param->CurrentStepIndex === 2) {
 			$this->loadBackupsForClient();
@@ -273,9 +281,12 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Cancel wizard.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->resetWizard();
 		$this->goToDefaultPage();
 	}
@@ -287,7 +298,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TCommandParameter $param parameters object
 	 * @return none
 	 */
-	public function loadBackupClients() {
+	public function loadBackupClients()
+	{
 		$client_list = [];
 		$clients = $this->getModule('api')->get(
 			['clients']
@@ -307,7 +319,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function loadRestoreClients() {
+	public function loadRestoreClients()
+	{
 		$client_list = [];
 		$clients = $this->getModule('api')->get(
 			['clients']
@@ -328,13 +341,15 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function loadBackupsForClient() {
+	public function loadBackupsForClient()
+	{
 		$clientid = $this->BackupClient->SelectedValue;
 		$jobs_for_client = $this->getModule('api')->get(
 			['clients', $clientid, 'jobs']
 		)->output;
 		$jobs = $this->getModule('misc')->objectToArray($jobs_for_client);
-		function add_file($item) {
+		function add_file($item)
+		{
 			$item['file'] = '';
 			return $item;
 		}
@@ -346,11 +361,12 @@ class RestoreWizard extends BaculumWebPage
 	 * Load backups for selected client by filename (Step 2).
 	 *
 	 * @param string $filename filename to find a backup
-	 * @param boolean $strict strict mode with exact matching name == filename
+	 * @param bool $strict strict mode with exact matching name == filename
 	 * @param string $path path to narrow down results to given path
 	 * @return array job list with files
 	 */
-	private function loadBackupsByFilename($filename, $strict, $path) {
+	private function loadBackupsByFilename($filename, $strict, $path)
+	{
 		$clientid = $this->BackupClient->SelectedValue;
 		$query = [
 			'clientid' => $clientid,
@@ -382,7 +398,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TCallbackEventParameter $param param object
 	 * @return none
 	 */
-	public function loadJobList($sender, $param) {
+	public function loadJobList($sender, $param)
+	{
 		$prop = $param->getCallbackParameter();
 		$jobs = [];
 		$list_type = self::JOB_LIST_BY_CLIENT;
@@ -405,7 +422,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $job job properties
 	 * @return true if job should be listed to restore, otherwise false
 	 */
-	private function isJobToRestore($job) {
+	private function isJobToRestore($job)
+	{
 		$jobtype = ['B'];
 		if ($this->EnableCopyJobRestore->Checked) {
 			$jobtype[] = 'C';
@@ -417,7 +435,8 @@ class RestoreWizard extends BaculumWebPage
 		);
 	}
 
-	public function loadBackupSelection($sender, $param) {
+	public function loadBackupSelection($sender, $param)
+	{
 		$this->GroupBackupToRestoreField->Display = ($sender->ID == $this->GroupBackupSelection->ID) ? 'Dynamic' : 'None';
 		$this->BackupToRestoreField->Display = ($sender->ID == $this->OnlySelectedBackupSelection->ID) ? 'Dynamic' : 'None';
 		$this->setBrowserFiles();
@@ -430,10 +449,11 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Set selected backup client.
 	 *
-	 * @param integer $clientid client identifier
+	 * @param int $clientid client identifier
 	 * @return none
 	 */
-	public function getBackupClient($clientid) {
+	public function getBackupClient($clientid)
+	{
 		$client = null;
 		$clients = $this->getModule('api')->get(['clients'])->output;
 		for ($i = 0; $i < count($clients); $i++) {
@@ -450,10 +470,11 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function loadGroupBackupToRestore() {
+	public function loadGroupBackupToRestore()
+	{
 		$jobs = $this->getModule('api')->get(['jobs'])->output;
 		$jobs = $this->getModule('misc')->objectToArray($jobs);
-		$clientid = intval($this->BackupClient->SelectedValue);
+		$clientid = (int) ($this->BackupClient->SelectedValue);
 		$job_group = [];
 		for ($i = 0; $i < count($jobs); $i++) {
 			if ($this->isJobToRestore($jobs[$i]) && $jobs[$i]['clientid'] === $clientid) {
@@ -471,7 +492,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function loadGroupFileSetToRestore() {
+	public function loadGroupFileSetToRestore()
+	{
 		$filesets = $this->getModule('api')->get(['filesets'])->output;
 		$fileset_group = [];
 		for ($i = 0; $i < count($filesets); $i++) {
@@ -488,7 +510,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	private function prepareBrowserContent() {
+	private function prepareBrowserContent()
+	{
 		$jobids = $this->getElementaryBackup();
 		$elements = [];
 		if (!empty($jobids)) {
@@ -501,15 +524,15 @@ class RestoreWizard extends BaculumWebPage
 				'output' => 'json'
 			];
 			if ($this->FileBrowserTypeFlat->Checked) {
-				$offset = intval($this->RestoreBrowserOffset->Text);
-				$limit = intval($this->RestoreBrowserLimit->Text);
+				$offset = (int) ($this->RestoreBrowserOffset->Text);
+				$limit = (int) ($this->RestoreBrowserLimit->Text);
 				$q['offset'] = $offset;
 				$q['limit'] = $limit;
 			}
-			if ($this->Session->contains('restore_pathid'))  {
+			if ($this->Session->contains('restore_pathid')) {
 				$q['pathid'] = $this->Session['restore_pathid'];
 			} else {
-				$q['path'] = $this->FileBrowserTypeFlat->Checked ?  implode($this->Session['restore_path']) : '';
+				$q['path'] = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
 			}
 			$query = '?' . http_build_query($q);
 			$bvfs_dirs = $this->getModule('api')->get(
@@ -551,7 +574,7 @@ class RestoreWizard extends BaculumWebPage
 			if (count($this->Session['restore_path']) > 0) {
 				array_unshift($elements, $this->browser_root_dir);
 			}
-			if ($this->Session->contains('restore_pathid'))  {
+			if ($this->Session->contains('restore_pathid')) {
 				// clear pathid in session as it is used only for browser element request time.
 				$this->Session->remove('restore_pathid');
 			}
@@ -567,10 +590,11 @@ class RestoreWizard extends BaculumWebPage
 		$this->loadBrowserFiles(null, $elements);
 	}
 
-	private function addExtraPropsToElements($elements) {
+	private function addExtraPropsToElements($elements)
+	{
 		$ppathid = -1;
-		if ($this->Session->contains('restore_pathid'))  {
-			$ppathid  = $this->Session['restore_pathid'];
+		if ($this->Session->contains('restore_pathid')) {
+			$ppathid = $this->Session['restore_pathid'];
 		}
 		$add_extra_props_func = function ($el) use ($ppathid) {
 			// add unique identifier
@@ -592,7 +616,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $el parsed Bvfs list item
 	 * @return array Bvfs list item with uniqid
 	 */
-	public static function addUniqid($el) {
+	public static function addUniqid($el)
+	{
 		$el['uniqid'] = sprintf(
 			'%d:%d:%d',
 			$el['jobid'],
@@ -607,7 +632,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return string comma separated job identifiers
 	 */
-	private function getElementaryBackup() {
+	private function getElementaryBackup()
+	{
 		$jobids = '';
 		if ($this->OnlySelectedBackupSelection->Checked && $this->Session->contains('restore_job')) {
 			$params = [
@@ -670,7 +696,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TEventParameter $param events parameter
 	 * @return none
 	 */
-	public function loadPath($sender, $param) {
+	public function loadPath($sender, $param)
+	{
 		$path = null;
 		if ($this->FileBrowserTypeTree->Checked && $param->CallbackParameter === null) {
 			// empty initial path to get root directory tree node
@@ -696,11 +723,12 @@ class RestoreWizard extends BaculumWebPage
 	 * There is possible to pass both single directory 'somedir'
 	 * or whole path '/etc/somedir'.
 	 *
-	 * @param string|array $path path to go
+	 * @param array|string $path path to go
 	 * @param bool $full_path determines if $path param is full path or relative path (singel directory)
 	 * @return none
 	 */
-	private function goToPath($path = '', $full_path = false) {
+	private function goToPath($path = '', $full_path = false)
+	{
 		if (!empty($path) && !$full_path && $this->Session->contains('restore_path')) {
 			if ($path == $this->browser_up_dir['name']) {
 				$rp = $this->Session['restore_path'];
@@ -727,7 +755,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param string $pathid path to go
 	 * @return none
 	 */
-	private function goToPathByPathId($pathid) {
+	private function goToPathByPathId($pathid)
+	{
 		$this->setRestorePathId($pathid);
 		$this->loadBrowserPath();
 		$this->prepareBrowserContent();
@@ -741,9 +770,10 @@ class RestoreWizard extends BaculumWebPage
 	 * @param object $param param object
 	 * @return none
 	 */
-	public function addFileToRestore($sender, $param) {
-		list($uniqid, $file_prop) = $param->CallbackParameter;
-		$file_prop = (array)$file_prop;
+	public function addFileToRestore($sender, $param)
+	{
+		[$uniqid, $file_prop] = $param->CallbackParameter;
+		$file_prop = (array) $file_prop;
 
 		if ($file_prop['name'] != $this->browser_root_dir['name'] && $file_prop['name'] != $this->browser_up_dir['name']) {
 			$this->markFileToRestore($uniqid, $file_prop);
@@ -758,7 +788,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param TEventParameter $param param object
 	 * @return none
 	 */
-	public function removeSelectedFile($sender, $param) {
+	public function removeSelectedFile($sender, $param)
+	{
 		$uniqid = $param->CallbackParameter;
 		$this->unmarkFileToRestore($uniqid);
 		$this->loadSelectedFiles(null, null);
@@ -772,8 +803,9 @@ class RestoreWizard extends BaculumWebPage
 	 * @param object $param param object
 	 * @return none
 	 */
-	public function getVersions($sender, $param) {
-		list($filename, $pathid, $filenameid, $jobid) = $param->CallbackParameter;
+	public function getVersions($sender, $param)
+	{
+		[$filename, $pathid, $filenameid, $jobid] = $param->CallbackParameter;
 		if ($filenameid == 0) {
 			if ($filename == $this->browser_root_dir['name'] || $filename == $this->browser_up_dir['name']) {
 				$this->goToPath($filename);
@@ -828,7 +860,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $files files to list.
 	 * @return none
 	 */
-	public function loadBrowserFiles($sender, $param) {
+	public function loadBrowserFiles($sender, $param)
+	{
 		$files = [];
 		if (is_array($param)) {
 			$files = $param;
@@ -841,9 +874,12 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load file versions area.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none;
 	 */
-	public function loadFileVersions($sender, $param) {
+	public function loadFileVersions($sender, $param)
+	{
 		$versions = $this->Session->contains('files_versions') ? $this->Session['files_versions'] : [];
 		$this->getCallbackClient()->callClientFunction('oRestoreBrowserVersions.populate', [array_values($versions)]);
 	}
@@ -851,9 +887,12 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load selected files in drop area.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function loadSelectedFiles($sender, $param) {
+	public function loadSelectedFiles($sender, $param)
+	{
 		$files = $this->Session->contains('files_restore') ? $this->Session['files_restore'] : [];
 		$this->getCallbackClient()->callClientFunction('oRestoreBrowserSelectedFiles.populate', [array_values($files)]);
 	}
@@ -863,7 +902,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	private function loadBrowserPath() {
+	private function loadBrowserPath()
+	{
 		if ($this->FileBrowserTypeFlat->Checked) {
 			// browser path field is used only for flat browser, not for tree browser
 			$path = $this->Session->contains('restore_path') ? $this->Session['restore_path'] : [];
@@ -877,7 +917,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param string $jobids comma separated job identifiers
 	 * @return none
 	 */
-	private function generateBvfsCache($jobids) {
+	private function generateBvfsCache($jobids)
+	{
 		$this->getModule('api')->set(
 			['bvfs', 'update'],
 			['jobids' => $jobids]
@@ -890,7 +931,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $versions file versions data
 	 * @return none
 	 */
-	private function setFileVersions($versions = []) {
+	private function setFileVersions($versions = [])
+	{
 		$this->Session->add('files_versions', $versions);
 	}
 
@@ -900,7 +942,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $files file list
 	 * @return none
 	 */
-	private function setBrowserFiles($files = []) {
+	private function setBrowserFiles($files = [])
+	{
 		if ($this->FileBrowserTypeFlat->Checked) {
 			$this->Session->add('files_browser', $files);
 		}
@@ -912,17 +955,19 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $path path
 	 * @return none
 	 */
-	private function setRestorePath($path = []) {
+	private function setRestorePath($path = [])
+	{
 		$this->Session->add('restore_path', $path);
 	}
 
 	/**
 	 * Set restore browser pathid.
 	 *
-	 * @param integer $pathid pathid
+	 * @param int $pathid pathid
 	 * @return none
 	 */
-	private function setRestorePathId($pathid) {
+	private function setRestorePathId($pathid)
+	{
 		$this->Session->add('restore_pathid', $pathid);
 	}
 
@@ -933,7 +978,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $file_prop file properties to mark
 	 * @return none
 	 */
-	private function markFileToRestore($uniqid, $file_prop) {
+	private function markFileToRestore($uniqid, $file_prop)
+	{
 		if (is_null($uniqid)) {
 			$this->setFilesToRestore();
 		} elseif ($file_prop['name'] != $this->browser_root_dir['name'] && $file_prop['name'] != $this->browser_up_dir['name']) {
@@ -949,7 +995,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param string $uniqid file identifier
 	 * @return none
 	 */
-	private function unmarkFileToRestore($uniqid) {
+	private function unmarkFileToRestore($uniqid)
+	{
 		if (key_exists($uniqid, $this->Session['files_restore'])) {
 			$fr = $this->Session['files_restore'];
 			unset($fr[$uniqid]);
@@ -962,7 +1009,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return array list with files to restore
 	 */
-	public function getFilesToRestore() {
+	public function getFilesToRestore()
+	{
 		return ($this->Session->contains('files_restore') ? $this->Session['files_restore'] : []);
 	}
 
@@ -972,7 +1020,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param array $files files to restore
 	 * @return none
 	 */
-	public function setFilesToRestore($files = []) {
+	public function setFilesToRestore($files = [])
+	{
 		$this->Session->add('files_restore', $files);
 	}
 
@@ -982,7 +1031,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param bool $as_object return result as object
 	 * @return array list fileids and dirids
 	 */
-	public function getRestoreElements($as_object = false) {
+	public function getRestoreElements($as_object = false)
+	{
 		$fileids = [];
 		$dirids = [];
 		$findexes = [];
@@ -991,7 +1041,7 @@ class RestoreWizard extends BaculumWebPage
 				$dirids[] = $properties['pathid'];
 			} elseif ($properties['type'] == 'file') {
 				$fileids[] = $properties['fileid'];
-				$lstat = (array)$properties['lstat'];
+				$lstat = (array) $properties['lstat'];
 				if ($lstat['linkfi'] !== 0) {
 					$findexes[] = $properties['jobid'] . ',' . $lstat['linkfi'];
 				}
@@ -1003,7 +1053,7 @@ class RestoreWizard extends BaculumWebPage
 			'findex' => $findexes
 		];
 		if ($as_object === true) {
-			$ret = (object)$ret;
+			$ret = (object) $ret;
 		}
 		return $ret;
 	}
@@ -1013,7 +1063,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	public function wizardCompleted() {
+	public function wizardCompleted()
+	{
 		$jobids = $this->getElementaryBackup();
 		$path = self::BVFS_PATH_PREFIX . getmypid();
 		$restore_elements = $this->getRestoreElements();
@@ -1033,7 +1084,7 @@ class RestoreWizard extends BaculumWebPage
 		}
 
 		$jobid = null;
-		$ret = new stdClass;
+		$ret = new stdClass();
 		$restore_props = [];
 		$restore_props['client'] = $this->RestoreClient->SelectedItem->Text;
 		if ($_SESSION['file_relocation'] == 2) {
@@ -1052,7 +1103,7 @@ class RestoreWizard extends BaculumWebPage
 			}
 		}
 		if (!key_exists('add_prefix', $restore_props)) {
-			$restore_props['where'] =  $this->RestorePath->Text;
+			$restore_props['where'] = $this->RestorePath->Text;
 		}
 		$restore_props['replace'] = $this->ReplaceFiles->SelectedValue;
 		$restore_props['restorejob'] = $this->RestoreJob->SelectedValue;
@@ -1103,7 +1154,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	private function loadRestoreJobs() {
+	private function loadRestoreJobs()
+	{
 		$restore_job_tasks = $this->getModule('api')->get(
 			['jobs', 'resnames', '?type=R']
 		)->output;
@@ -1115,10 +1167,11 @@ class RestoreWizard extends BaculumWebPage
 		$this->RestoreJob->dataBind();
 	}
 
-	private function loadRequiredVolumes() {
+	private function loadRequiredVolumes()
+	{
 		$volumes = [];
 		foreach ($this->getFilesToRestore() as $uniqid => $props) {
-			list($jobid, $pathid, $fileid) = explode(':', $uniqid, 3);
+			[$jobid, $pathid, $fileid] = explode(':', $uniqid, 3);
 			if ($jobid === '0') {
 				/**
 				 * No way to determine proper jobid for elements.
@@ -1150,7 +1203,8 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return none
 	 */
-	private function resetWizard() {
+	private function resetWizard()
+	{
 		$this->setBrowserFiles();
 		$this->setFileVersions();
 		$this->setFilesToRestore();
@@ -1164,4 +1218,3 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->remove('file_relocation');
 	}
 }
-?>

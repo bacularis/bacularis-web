@@ -38,13 +38,13 @@ use Bacularis\Web\Modules\WebUserRoles;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Layout
- * @package Baculum Web
  */
-class Main extends TTemplateControl {
-
+class Main extends TTemplateControl
+{
 	public $web_config;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallBack) {
 			return;
@@ -59,12 +59,14 @@ class Main extends TTemplateControl {
 	}
 
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		$this->web_config = $this->Application->getModule('web_config')->getConfig();
 	}
 
-	public function setAPIHost($sender, $param) {
+	public function setAPIHost($sender, $param)
+	{
 		$api_host = $this->UserAPIHosts->SelectedValue;
 		if (!empty($api_host)) {
 			$this->User->setDefaultAPIHost($api_host);
@@ -73,4 +75,3 @@ class Main extends TTemplateControl {
 		}
 	}
 }
-?>

@@ -37,47 +37,53 @@ use Bacularis\Web\Portlets\ConfigListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ComponentListTemplate extends ConfigListTemplate implements IActiveControl, ICallbackEventHandler {
+class ComponentListTemplate extends ConfigListTemplate implements IActiveControl, ICallbackEventHandler
+{
+	public const HOST = 'Host';
+	public const COMPONENT_TYPE = 'ComponentType';
+	public const COMPONENT_NAME = 'ComponentName';
 
-	const HOST = 'Host';
-	const COMPONENT_TYPE = 'ComponentType';
-	const COMPONENT_NAME = 'ComponentName';
-
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->setAdapter(new TActiveControlAdapter($this));
-		$this->onComponentListLoad(array($this, 'loadConfig'));
+		$this->onComponentListLoad([$this, 'loadConfig']);
 	}
 
-	public function getActiveControl() {
+	public function getActiveControl()
+	{
 		return $this->getAdapter()->getBaseActiveControl();
 	}
 
-	public function raiseCallbackEvent($param) {
+	public function raiseCallbackEvent($param)
+	{
 		$this->raisePostBackEvent($param);
 		$this->onCallback($param);
 	}
 
-	public function onComponentListLoad($handler) {
+	public function onComponentListLoad($handler)
+	{
 		$this->attachEventHandler('OnComponentListLoad', $handler);
 	}
 
-	public function getHost() {
+	public function getHost()
+	{
 		return $this->getViewState(self::HOST);
 	}
 
-	public function setHost($host) {
+	public function setHost($host)
+	{
 		$this->setViewState(self::HOST, $host);
 	}
 
-	public function getComponentType() {
+	public function getComponentType()
+	{
 		return $this->getViewState(self::COMPONENT_TYPE);
 	}
 
-	public function setComponentType($type) {
+	public function setComponentType($type)
+	{
 		$this->setViewState(self::COMPONENT_TYPE, $type);
 	}
 }
-?>

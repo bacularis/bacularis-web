@@ -39,16 +39,17 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveMultiComboBox extends DirectiveListTemplate {
-
-	public function dataBind() {
+class DirectiveMultiComboBox extends DirectiveListTemplate
+{
+	public function dataBind()
+	{
 		$this->loadConfig();
 	}
 
-	public function getDirectiveValue() {
-		$values = array();
+	public function getDirectiveValue()
+	{
+		$values = [];
 		$controls = $this->MultiComboBoxRepeater->getItems();
 		foreach ($controls as $control) {
 			$val = $control->Directive->getSelectedValue();
@@ -59,14 +60,15 @@ class DirectiveMultiComboBox extends DirectiveListTemplate {
 		return $values;
 	}
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 		$directive_name = $this->getDirectiveName();
 		$resource = $this->getResource();
 		$resource_names = $this->getResourceNames();
 		$data = $this->getData();
-		$items = array();
+		$items = [];
 
 		if (!is_array($data)) {
 			if ($this->getShow()) {
@@ -92,31 +94,32 @@ class DirectiveMultiComboBox extends DirectiveListTemplate {
 		}
 
 		array_unshift($items, '');
-		$values = array();
+		$values = [];
 		for ($i = 0; $i < count($data); $i++) {
-			$values[] = array(
+			$values[] = [
 				'items' => $items,
 				'directive_value' => $data[$i],
 				'label' => $this->getDirectiveName(),
 				'show' => $this->getShow()
-			);
+			];
 		}
 		$this->MultiComboBoxRepeater->DataSource = $values;
 		$this->MultiComboBoxRepeater->dataBind();
 	}
 
-	public function createMultiComboBoxElement($sender, $param) {
+	public function createMultiComboBoxElement($sender, $param)
+	{
 		$param->Item->Label->Text = $param->Item->Data['label'];
 		$param->Item->Directive->DataSource = array_combine($param->Item->Data['items'], $param->Item->Data['items']);
 		$param->Item->Directive->setSelectedValue($param->Item->Data['directive_value']);
 		$param->Item->Directive->dataBind();
 	}
 
-	public function addField($sender, $param) {
+	public function addField($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$data[] = '';
 		$this->setData($data);
 		$this->loadConfig();
 	}
 }
-?>

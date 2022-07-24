@@ -40,21 +40,21 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveTimePeriod extends DirectiveTemplate {
+class DirectiveTimePeriod extends DirectiveTemplate
+{
+	public const TIME_FORMAT = 'TimeFormat';
+	public const DEFAULT_TIME_FORMAT = 'day';
 
-	const TIME_FORMAT = 'TimeFormat';
-	const DEFAULT_TIME_FORMAT = 'day';
+	private $time_formats = [
+		['format' => 'second', 'value' => 1, 'label' => 'Seconds'],
+		['format' => 'minute', 'value' => 60, 'label' => 'Minutes'],
+		['format' => 'hour', 'value' => 60, 'label' => 'Hours'],
+		['format' => 'day', 'value' => 24, 'label' => 'Days']
+	];
 
-	private $time_formats = array(
-		array('format' => 'second', 'value' => 1, 'label' => 'Seconds'),
-		array('format' => 'minute', 'value' => 60, 'label' => 'Minutes'),
-		array('format' => 'hour', 'value' => 60, 'label' => 'Hours'),
-		array('format' => 'day', 'value' => 24, 'label' => 'Days')
-	);
-
-	public function getValue() {
+	public function getValue()
+	{
 		$value = $this->Directive->Text;
 		if (is_numeric($value)) {
 			settype($value, 'integer');
@@ -66,27 +66,31 @@ class DirectiveTimePeriod extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function getTimeFormat() {
+	public function getTimeFormat()
+	{
 		return $this->getViewState(self::TIME_FORMAT, self::DEFAULT_TIME_FORMAT);
 	}
 
-	public function setTimeFormat($format) {
+	public function setTimeFormat($format)
+	{
 		$this->setViewState(self::TIME_FORMAT, $format);
 	}
 
-	public function getTimeFormats() {
-		$time_formats = array();
+	public function getTimeFormats()
+	{
+		$time_formats = [];
 		for ($i = 0; $i < count($this->time_formats); $i++) {
-			$format = array(
+			$format = [
 				'label' => Prado::localize($this->time_formats[$i]['label']),
 				'format' => $this->time_formats[$i]['format']
-			);
+			];
 			array_push($time_formats, $format);
 		}
 		return $time_formats;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$time_format = $this->getTimeFormat();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -117,8 +121,11 @@ class DirectiveTimePeriod extends DirectiveTemplate {
 	 *  given format: day
 	 *  returned value: 86401
 	 *  returned format: minute
+	 * @param mixed $time_seconds
+	 * @param mixed $format
 	 */
-	private function formatTimePeriod($time_seconds, $format) {
+	private function formatTimePeriod($time_seconds, $format)
+	{
 		$value = $time_seconds;
 		for ($i = 0; $i < count($this->time_formats); $i++) {
 			if ($this->time_formats[$i]['format'] != $format) {
@@ -132,11 +139,12 @@ class DirectiveTimePeriod extends DirectiveTemplate {
 			}
 			break;
 		}
-		$result = array('value' => $value, 'format' => $format);
+		$result = ['value' => $value, 'format' => $format];
 		return $result;
 	}
 
-	private function getValueSeconds($value, $time_format) {
+	private function getValueSeconds($value, $time_format)
+	{
 		for ($i = 0; $i < count($this->time_formats); $i++) {
 			$value *= $this->time_formats[$i]['value'];
 			if ($this->time_formats[$i]['format'] === $time_format) {
@@ -146,4 +154,3 @@ class DirectiveTimePeriod extends DirectiveTemplate {
 		return $value;
 	}
 }
-?>

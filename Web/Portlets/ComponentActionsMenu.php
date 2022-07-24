@@ -39,16 +39,15 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ComponentActionsMenu extends DirectiveListTemplate {
-
-	const BIG_BUTTONS = 'BigButtons';
+class ComponentActionsMenu extends DirectiveListTemplate
+{
+	public const BIG_BUTTONS = 'BigButtons';
 
 	/**
 	 * Allowed actions to do with components.
 	 */
-	private $allowed_actions = array('start', 'stop', 'restart');
+	private $allowed_actions = ['start', 'stop', 'restart'];
 
 	/**
 	 * Do action on component.
@@ -57,29 +56,32 @@ class ComponentActionsMenu extends DirectiveListTemplate {
 	 * @param TCommandEventParameter $param command parameter
 	 * @return none
 	 */
-	public function componentAction($sender, $param) {
+	public function componentAction($sender, $param)
+	{
 		$action = $param->getCommandParameter();
 		if (in_array($action, $this->allowed_actions)) {
 			$host = $this->getHost();
 			$component_type = $this->getComponentType();
 			$component = $this->getModule('misc')->getComponentUrlName($component_type);
 			$result = $this->getModule('api')->get(
-				array('actions', $component, $action),
+				['actions', $component, $action],
 				$host
 			);
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				$this->ClientID . '_component_action_set_result',
-				array($action, $result)
+				[$action, $result]
 			);
 		}
 	}
 
-	public function setBigButtons($big_buttons) {
+	public function setBigButtons($big_buttons)
+	{
 		$big_buttons = TPropertyValue::ensureBoolean($big_buttons);
 		$this->setViewState(self::BIG_BUTTONS, $big_buttons);
 	}
 
-	public function getBigButtons() {
+	public function getBigButtons()
+	{
 		return $this->getViewState(self::BIG_BUTTONS, false);
 	}
 }

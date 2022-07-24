@@ -38,24 +38,26 @@ use Bacularis\Common\Modules\SessionRecord;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class OAuth2Record extends SessionRecord implements ISessionItem {
-
+class OAuth2Record extends SessionRecord implements ISessionItem
+{
 	public $host;
 	public $state;
 	public $tokens;
 	public $refresh_time;
 
-	public static function getRecordId() {
+	public static function getRecordId()
+	{
 		return 'oauth2_cli_params';
 	}
 
-	public static function getPrimaryKey() {
+	public static function getPrimaryKey()
+	{
 		return 'host';
 	}
 
-	public static function getSessionFile() {
+	public static function getSessionFile()
+	{
 		return Prado::getPathOfNamespace('Bacularis.Web.Config.session', '.dump');
 	}
 }

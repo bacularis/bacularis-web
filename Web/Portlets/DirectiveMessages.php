@@ -38,23 +38,22 @@ use Bacularis\Web\Portlets\DirectiveTextBox;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveMessages extends DirectiveListTemplate {
-
-	private $directive_types = array(
+class DirectiveMessages extends DirectiveListTemplate
+{
+	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveTextBox'
-	);
+	];
 
-	public $destination_simple = array(
+	public $destination_simple = [
 		'Console',
 		'Stdout',
 		'Stderr',
 		'Syslog',
 		'Catalog'
-	);
+	];
 
-	public $destination_address = array(
+	public $destination_address = [
 		'Director',
 		'File',
 		'Append',
@@ -62,9 +61,9 @@ class DirectiveMessages extends DirectiveListTemplate {
 		'MailOnError',
 		'MailOnSuccess',
 		'Operator'
-	);
+	];
 
-	private $messages_types = array(
+	private $messages_types = [
 		'All',
 		'Debug',
 		'Info',
@@ -79,24 +78,25 @@ class DirectiveMessages extends DirectiveListTemplate {
 		'Security',
 		'Alert',
 		'Volmgmt'
-	);
+	];
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$load_values = $this->getLoadValues();
 		$dests = $this->getData();
 		if (key_exists('Destinations', $dests)) {
 			$dests = array_filter($dests['Destinations']);
 		}
-		$directives = array();
+		$directives = [];
 		for ($i = 0; $i < count($dests); $i++) {
-			$dest = (array)$dests[$i];
+			$dest = (array) $dests[$i];
 			$is_address_type = in_array($dest['Type'], $this->destination_address);
 			$directive_value = null;
 			if ($is_address_type && key_exists('Where', $dest)) {
 				$directive_value = implode(',', $dest['Where']);
 			}
 			$this->setDirectiveName($dest['Type']);
-			$directives[$i] = array(
+			$directives[$i] = [
 				'host' => $this->getHost(),
 				'component_type' => $this->getComponentType(),
 				'component_name' => $this->getComponentName(),
@@ -112,13 +112,13 @@ class DirectiveMessages extends DirectiveListTemplate {
 				'show' => true,
 				'parent_name' => __CLASS__,
 				'is_address_type' => $is_address_type,
-				'messages_types' => array()
-			);
+				'messages_types' => []
+			];
 			$value_all = $value_not = null;
 			for ($j = 0; $j < count($this->messages_types); $j++) {
 				$value_all = in_array('!' . $this->messages_types[$j], $dest['MsgTypes']);
 				$value_not = in_array($this->messages_types[$j], $dest['MsgTypes']);
-				$directives[$i]['messages_types'][] = array(
+				$directives[$i]['messages_types'][] = [
 					'host' => $this->getHost(),
 					'component_type' => $this->getComponentType(),
 					'component_name' => $this->getComponentName(),
@@ -134,21 +134,22 @@ class DirectiveMessages extends DirectiveListTemplate {
 					'in_config' => true,
 					'show' => true,
 					'parent_name' => __CLASS__
-				);
+				];
 			}
 		}
 		$this->RepeaterMessages->dataSource = $directives;
 		$this->RepeaterMessages->dataBind();
 	}
 
-	public function getDirectiveValue() {
-		$values = array();
+	public function getDirectiveValue()
+	{
+		$values = [];
 		$controls = $this->RepeaterMessages->getControls();
 		for ($i = 0; $i < $controls->count(); $i++) {
-			$directive_values = array();
+			$directive_values = [];
 			$where_control = $controls->itemAt($i)->findControlsByType('Bacularis\Web\Portlets\DirectiveTextBox');
 			if (count($where_control) === 1 && $where_control[0]->getShow() === true) {
-				$directive_values = array($where_control[0]->getDirectiveValue());
+				$directive_values = [$where_control[0]->getDirectiveValue()];
 			}
 			$types_control = $controls->itemAt($i)->Types;
 			$types = $types_control->getDirectiveValues();
@@ -162,22 +163,23 @@ class DirectiveMessages extends DirectiveListTemplate {
 				continue;
 			}
 			if (!key_exists($directive_name, $values)) {
-				$values[$directive_name] = array();
+				$values[$directive_name] = [];
 			}
 			$values[$directive_name][] = implode(' ', $directive_values);
 		}
 		return $values;
 	}
 
-	public function getDirectiveData() {
-		$values = array();
+	public function getDirectiveData()
+	{
+		$values = [];
 		$controls = $this->RepeaterMessages->getItems();
 		foreach ($controls as $control) {
-			$directive_values = array();
+			$directive_values = [];
 			$where_control = $control->findControlsByType('Bacularis\Web\Portlets\DirectiveTextBox');
 			if (count($where_control) === 1 && $where_control[0]->getShow() === true) {
 				$where_control[0]->setValue();
-				$directive_values['Where'] = array($where_control[0]->getDirectiveValue());
+				$directive_values['Where'] = [$where_control[0]->getDirectiveValue()];
 			}
 			$types_control = $control->Types;
 			$directive_values['MsgTypes'] = $types_control->getDirectiveValues();
@@ -187,7 +189,8 @@ class DirectiveMessages extends DirectiveListTemplate {
 		return $values;
 	}
 
-	public function createDirectiveListElement($sender, $param) {
+	public function createDirectiveListElement($sender, $param)
+	{
 		if (!is_array($param->Item->Data)) {
 			// skip parent repeater items
 			return;
@@ -215,19 +218,22 @@ class DirectiveMessages extends DirectiveListTemplate {
 		$param->Item->Types->setDirectiveName($param->Item->Data['directive_name']);
 	}
 
-	public function loadMessageTypes($sender, $param) {
+	public function loadMessageTypes($sender, $param)
+	{
 		$param->Item->Types->loadConfig();
 	}
 
-	public function newMessagesDirective($sender, $param) {
+	public function newMessagesDirective($sender, $param)
+	{
 		$data = $this->getDirectiveData();
 		$msg_type = $sender->getID();
-		array_push($data, array('Type' => $msg_type, 'MsgTypes' => array()));
+		array_push($data, ['Type' => $msg_type, 'MsgTypes' => []]);
 		$this->setData($data);
 		$this->loadConfig();
 	}
 
-	public function removeMessages($sender, $param) {
+	public function removeMessages($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
 			$idx = $param->getCommandName();
 			$data = $this->getDirectiveData();
@@ -236,5 +242,4 @@ class DirectiveMessages extends DirectiveListTemplate {
 			$this->loadConfig();
 		}
 	}
-
 }

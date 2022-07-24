@@ -18,12 +18,11 @@ use Prado\Prado;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Bacularis Web
  */
-class GoToResource extends Portlets {
-
-	const RESOURCE_TYPE = 'ResourceType';
-	const DIRECTOR = 'Director';
+class GoToResource extends Portlets
+{
+	public const RESOURCE_TYPE = 'ResourceType';
+	public const DIRECTOR = 'Director';
 
 	/**
 	 * Supported resource types.
@@ -35,7 +34,8 @@ class GoToResource extends Portlets {
 		'pool' => ['page' => 'PoolView', 'param' => 'poolid']
 	];
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallback) {
 			return;
 		}
@@ -43,7 +43,8 @@ class GoToResource extends Portlets {
 		$this->loadResourceNames();
 	}
 
-	private function loadResourceNames() {
+	private function loadResourceNames()
+	{
 		$resource_type = strtolower($this->getResourceType());
 
 		if (!key_exists($resource_type, $this->supported_resources)) {
@@ -67,7 +68,7 @@ class GoToResource extends Portlets {
 			case 'client': {
 				$ret = $api->get(['clients']);
 				if ($ret->error == 0) {
-					usort($ret->output, function($a, $b) {
+					usort($ret->output, function ($a, $b) {
 						return strnatcasecmp($a->name, $b->name);
 					});
 					for ($i = 0; $i < count($ret->output); $i++) {
@@ -79,7 +80,7 @@ class GoToResource extends Portlets {
 			case 'storage': {
 				$ret = $api->get(['storages']);
 				if ($ret->error == 0) {
-					usort($ret->output, function($a, $b) {
+					usort($ret->output, function ($a, $b) {
 						return strnatcasecmp($a->name, $b->name);
 					});
 					for ($i = 0; $i < count($ret->output); $i++) {
@@ -91,7 +92,7 @@ class GoToResource extends Portlets {
 			case 'pool': {
 				$ret = $api->get(['pools']);
 				if ($ret->error == 0) {
-					usort($ret->output, function($a, $b) {
+					usort($ret->output, function ($a, $b) {
 						return strnatcasecmp($a->name, $b->name);
 					});
 					for ($i = 0; $i < count($ret->output); $i++) {
@@ -113,19 +114,23 @@ class GoToResource extends Portlets {
 		$this->ResourceNames->dataBind();
 	}
 
-	public function getResourceType() {
+	public function getResourceType()
+	{
 		return $this->getViewState(self::RESOURCE_TYPE, '');
 	}
 
-	public function setResourceType($type) {
+	public function setResourceType($type)
+	{
 		$this->setViewState(self::RESOURCE_TYPE, $type);
 	}
 
-	public function getDirector() {
+	public function getDirector()
+	{
 		return $this->getViewState(self::DIRECTOR, '');
 	}
 
-	public function setDirector($director) {
+	public function setDirector($director)
+	{
 		$this->setViewState(self::DIRECTOR, $director);
 	}
 }

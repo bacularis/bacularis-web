@@ -36,12 +36,11 @@ use Prado\Web\UI\TTemplateControl;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class Portlets extends TTemplateControl {
-
-	protected function getModule($id) {
+class Portlets extends TTemplateControl
+{
+	protected function getModule($id)
+	{
 		return $this->getApplication()->getModule($id);
 	}
 }
-?>

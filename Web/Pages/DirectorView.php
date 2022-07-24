@@ -36,13 +36,13 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class DirectorView extends BaculumWebPage {
+class DirectorView extends BaculumWebPage
+{
+	public const DIRECTOR_NAME = 'DirectorName';
 
-	const DIRECTOR_NAME = 'DirectorName';
-
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -51,7 +51,8 @@ class DirectorView extends BaculumWebPage {
 		$this->setDirectorName($director);
 	}
 
-	public function loadDirectorConfig($sender, $param) {
+	public function loadDirectorConfig($sender, $param)
+	{
 		$component_name = $this->getDirectorName();
 		if (!is_null($component_name)) {
 			$this->DirDirectorConfig->setComponentName($component_name);
@@ -62,7 +63,8 @@ class DirectorView extends BaculumWebPage {
 		}
 	}
 
-	public function loadDirectorResourcesConfig($sender, $param) {
+	public function loadDirectorResourcesConfig($sender, $param)
+	{
 		$resource_type = $param->getCallbackParameter();
 		$this->DirDirectorConfig->unloadDirectives();
 		$component_name = $this->getDirectorName();
@@ -78,9 +80,11 @@ class DirectorView extends BaculumWebPage {
 	/**
 	 * Set director name.
 	 *
+	 * @param mixed $client_name
 	 * @return none;
 	 */
-	public function setDirectorName($client_name) {
+	public function setDirectorName($client_name)
+	{
 		$this->setViewState(self::DIRECTOR_NAME, $client_name);
 	}
 
@@ -89,11 +93,13 @@ class DirectorView extends BaculumWebPage {
 	 *
 	 * @return string director name
 	 */
-	public function getDirectorName() {
+	public function getDirectorName()
+	{
 		return $this->getViewState(self::DIRECTOR_NAME);
 	}
 
-	public function status($sender, $param) {
+	public function status($sender, $param)
+	{
 		$raw_status = $this->getModule('api')->get(
 			[
 				'directors',
@@ -140,7 +146,8 @@ class DirectorView extends BaculumWebPage {
 		$this->getCallbackClient()->callClientFunction('init_graphical_director_status', [$client_status]);
 	}
 
-	public function renameResource($sender, $param) {
+	public function renameResource($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
 			$res = $param->getCommandParameter();
 			if ($res['resource_type'] == 'Pool') {
@@ -149,4 +156,3 @@ class DirectorView extends BaculumWebPage {
 		}
 	}
 }
-?>

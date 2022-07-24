@@ -39,17 +39,17 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BaculaConfigResourceList extends Portlets {
+class BaculaConfigResourceList extends Portlets
+{
+	public const HOST = 'Host';
+	public const COMPONENT_TYPE = 'ComponentType';
+	public const COMPONENT_NAME = 'ComponentName';
+	public const RESOURCE_TYPE = 'ResourceType';
+	public const RESOURCE_LIST = 'ResourceList';
 
-	const HOST = 'Host';
-	const COMPONENT_TYPE = 'ComponentType';
-	const COMPONENT_NAME = 'ComponentName';
-	const RESOURCE_TYPE = 'ResourceType';
-	const RESOURCE_LIST = 'ResourceList';
-
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->getPage()->IsCallBack || $this->getPage()->IsPostBack) {
 			return;
@@ -57,7 +57,8 @@ class BaculaConfigResourceList extends Portlets {
 		$this->prepareTable();
 	}
 
-	private function prepareTable() {
+	private function prepareTable()
+	{
 		$res_list = $this->getResourceList();
 		$this->ResourceListHeaderRepeater->DataSource = $res_list;
 		$this->ResourceListHeaderRepeater->dataBind();
@@ -67,7 +68,8 @@ class BaculaConfigResourceList extends Portlets {
 		$this->ResourceListColumnsRepeater->dataBind();
 	}
 
-	public function showError($show) {
+	public function showError($show)
+	{
 		$cbc = $this->getPage()->getCallbackClient();
 		if ($show) {
 			$cbc->hide($this->ClientID . '_container');
@@ -78,7 +80,8 @@ class BaculaConfigResourceList extends Portlets {
 		}
 	}
 
-	public function loadResourceListTable() {
+	public function loadResourceListTable()
+	{
 		$this->showError(false);
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
@@ -113,8 +116,9 @@ class BaculaConfigResourceList extends Portlets {
 		$this->ResourceConfig->unloadDirectives();
 	}
 
-	public function loadResourceWindow($sender, $param) {
-		list($cmd, $name) = $param->getCallbackParameter();
+	public function loadResourceWindow($sender, $param)
+	{
+		[$cmd, $name] = $param->getCallbackParameter();
 		$copy_el_id = 'resource_window_copy_resource' . $this->ClientID;
 		if (!empty($name)) {
 			$this->getPage()->getCallbackClient()->callClientFunction(
@@ -148,11 +152,13 @@ class BaculaConfigResourceList extends Portlets {
 		$this->ResourceConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 	}
 
-	public function unloadResourceWindow($sender, $param) {
+	public function unloadResourceWindow($sender, $param)
+	{
 		$this->ResourceConfig->unloadDirectives();
 	}
 
-	private function loadResourcesToCopy() {
+	private function loadResourcesToCopy()
+	{
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$resources = ['' => ''];
@@ -172,7 +178,8 @@ class BaculaConfigResourceList extends Portlets {
 		$this->ResourcesToCopy->dataBind();
 	}
 
-	public function copyConfig($sender, $param) {
+	public function copyConfig($sender, $param)
+	{
 		$resource_name = $this->ResourcesToCopy->SelectedValue;
 		if (!empty($resource_name)) {
 			$this->ResourceConfig->setResourceName($resource_name);
@@ -183,7 +190,8 @@ class BaculaConfigResourceList extends Portlets {
 	}
 
 
-	public function removeResource($sender, $param) {
+	public function removeResource($sender, $param)
+	{
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
@@ -234,58 +242,70 @@ class BaculaConfigResourceList extends Portlets {
 		}
 	}
 
-	private function showRemovedResourceError($error_message) {
+	private function showRemovedResourceError($error_message)
+	{
 		$this->RemoveResourceError->Text = $error_message;
 		$err_win_id = 'resource_error_window' . $this->ClientID;
 		$this->getPage()->getCallbackClient()->show($err_win_id);
 	}
 
-	public function renameResource($sender, $param) {
+	public function renameResource($sender, $param)
+	{
 		$this->onRename($param);
 	}
 
-	public function onRename($param) {
+	public function onRename($param)
+	{
 		$this->raiseEvent('OnRename', $this, $param);
 	}
 
-	public function getHost() {
+	public function getHost()
+	{
 		return $this->getViewState(self::HOST);
 	}
 
-	public function setHost($host) {
+	public function setHost($host)
+	{
 		$this->setViewState(self::HOST, $host);
 	}
 
-	public function getComponentType() {
+	public function getComponentType()
+	{
 		return $this->getViewState(self::COMPONENT_TYPE);
 	}
 
-	public function setComponentType($type) {
+	public function setComponentType($type)
+	{
 		$this->setViewState(self::COMPONENT_TYPE, $type);
 	}
 
-	public function getComponentName() {
+	public function getComponentName()
+	{
 		return $this->getViewState(self::COMPONENT_NAME);
 	}
 
-	public function setComponentName($name) {
+	public function setComponentName($name)
+	{
 		$this->setViewState(self::COMPONENT_NAME, $name);
 	}
 
-	public function getResourceType() {
+	public function getResourceType()
+	{
 		return $this->getViewState(self::RESOURCE_TYPE);
 	}
 
-	public function setResourceType($type) {
+	public function setResourceType($type)
+	{
 		$this->setViewState(self::RESOURCE_TYPE, $type);
 	}
 
-	public function getResourceList() {
+	public function getResourceList()
+	{
 		return $this->getViewState(self::RESOURCE_LIST, []);
 	}
 
-	public function setResourceList($list) {
+	public function setResourceList($list)
+	{
 		$this->setViewState(self::RESOURCE_LIST, $list);
 	}
 }
-?>

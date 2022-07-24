@@ -42,26 +42,26 @@ use Bacularis\Web\Modules\PageCategory;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class BaculumWebPage extends BaculumPage {
-
+class BaculumWebPage extends BaculumPage
+{
 	/**
 	 * It is first application user pre-defined for first login.
 	 * It is removed just after setup application.
 	 */
-	const DEFAULT_AUTH_USER = 'admin';
+	public const DEFAULT_AUTH_USER = 'admin';
 
 	/*
 	 * It is security delay that tells how many seconds user needs to wait
 	 * after log in failed error to be able to do next log in try.
 	 * The value is in seconds.
 	 */
-	const LOGIN_FAILED_DELAY = 5;
+	public const LOGIN_FAILED_DELAY = 5;
 
-	protected $web_config = array();
+	protected $web_config = [];
 
-	public function onPreInit($param) {
+	public function onPreInit($param)
+	{
 		parent::onPreInit($param);
 		$this->web_config = $this->getModule('web_config')->getConfig();
 
@@ -102,7 +102,8 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return @boolean true if user has been authenticated successfully, otherwise false
 	 */
-	protected function authenticate() {
+	protected function authenticate()
+	{
 		$is_auth = true;
 		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
 			$auth_mod = $this->getModule('basic_webuser');
@@ -117,7 +118,8 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return none
 	 */
-	private function isDefaultAPIHost() {
+	private function isDefaultAPIHost()
+	{
 		$def_api_host = $this->User->getDefaultAPIHost();
 		$auth = $this->getModule('auth');
 		$page = $this->Service->getRequestedPagePath();
@@ -130,28 +132,29 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return none
 	 */
-	private function setSessionUserVars() {
+	private function setSessionUserVars()
+	{
 		// Set director
-		$directors = $this->getModule('api')->get(array('directors'), null, false);
+		$directors = $this->getModule('api')->get(['directors'], null, false);
 		if ($directors->error === 0 && count($directors->output) > 0 &&
-		       (!key_exists('director', $_SESSION) || $directors->output[0] != $_SESSION['director'])) {
+			   (!key_exists('director', $_SESSION) || $directors->output[0] != $_SESSION['director'])) {
 			$_SESSION['director'] = $directors->output[0];
 		}
 		// Set config main component names
-		$config = $this->getModule('api')->get(array('config'), null, false);
+		$config = $this->getModule('api')->get(['config'], null, false);
 		if ($config->error === 0) {
 			for ($i = 0; $i < count($config->output); $i++) {
-				$component = (array)$config->output[$i];
+				$component = (array) $config->output[$i];
 				if (key_exists('component_type', $component) && key_exists('component_name', $component)) {
 					$_SESSION[$component['component_type']] = $component['component_name'];
 				}
 			}
 		}
 		$_SESSION['is_user_vars'] = true;
-
 	}
 
-	public function resetSessionUserVars() {
+	public function resetSessionUserVars()
+	{
 		$_SESSION['is_user_vars'] = false;
 		$_SESSION['director'] = $_SESSION['dir'] = $_SESSION['sd'] = $_SESSION['fd'] = $_SESSION['bcons'] = '';
 	}
@@ -161,7 +164,8 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return string page name
 	 */
-	public function getDefaultPage() {
+	public function getDefaultPage()
+	{
 		$def_page = $this->Service->DefaultPage;
 		$manager = $this->getModule('users');
 		if (!$manager->isPageAllowed($this->User, $this->Service->DefaultPage)) {
@@ -181,7 +185,8 @@ class BaculumWebPage extends BaculumPage {
 	 * @param array $params HTTP GET method parameters in associative array
 	 * @return none
 	 */
-	public function goToDefaultPage($params = null) {
+	public function goToDefaultPage($params = null)
+	{
 		$def_page = $this->getDefaultPage();
 		if ($def_page !== $this->Service->DefaultPage) {
 			/**
@@ -200,7 +205,8 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return mixed page path or null if no page for user found
 	 */
-	private function findDefaultPageForUser() {
+	private function findDefaultPageForUser()
+	{
 		$manager = $this->getModule('users');
 		$user_role = $this->getModule('user_role');
 		$roles = $this->User->getRoles();
@@ -222,7 +228,7 @@ class BaculumWebPage extends BaculumPage {
 	 *
 	 * @return none
 	 */
-	private function postInitActions() {
+	private function postInitActions()
+	{
 	}
 }
-?>

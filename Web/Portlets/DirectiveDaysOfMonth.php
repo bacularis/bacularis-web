@@ -40,14 +40,14 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveDaysOfMonth extends DirectiveTemplate {
+class DirectiveDaysOfMonth extends DirectiveTemplate
+{
+	public const SHOW_OPTIONS = 'ShowOptions';
+	public const DAY_CONTROL_PREFIX = 'day';
 
-	const SHOW_OPTIONS = 'ShowOptions';
-	const DAY_CONTROL_PREFIX = 'day';
-
-	public function getValue() {
+	public function getValue()
+	{
 		$value = [];
 		$days = range(1, 31);
 		for ($i = 0; $i < count($days); $i++) {
@@ -64,7 +64,8 @@ class DirectiveDaysOfMonth extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -113,12 +114,14 @@ class DirectiveDaysOfMonth extends DirectiveTemplate {
 		}
 	}
 
-	public function setShowOptions($show) {
+	public function setShowOptions($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_OPTIONS, $show);
 	}
 
-	public function getShowOptions() {
+	public function getShowOptions()
+	{
 		return $this->getViewState(self::SHOW_OPTIONS, false);
 	}
 }

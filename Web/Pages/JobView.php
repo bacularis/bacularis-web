@@ -30,48 +30,51 @@
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TCallback;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Job view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class JobView extends BaculumWebPage {
+class JobView extends BaculumWebPage
+{
+	public const IS_RUNNING = 'IsRunning';
+	public const JOBID = 'JobId';
+	public const JOB_NAME = 'JobName';
+	public const JOB_UNAME = 'JobUname';
+	public const JOB_LEVEL = 'JobLevel';
+	public const JOB_TYPE = 'JobType';
+	public const CLIENTID = 'ClientId';
+	public const JOB_INFO = 'JobInfo';
+	public const STORAGE_INFO = 'StorageInfo';
 
-	const IS_RUNNING = 'IsRunning';
-	const JOBID = 'JobId';
-	const JOB_NAME = 'JobName';
-	const JOB_UNAME = 'JobUname';
-	const JOB_LEVEL = 'JobLevel';
-	const JOB_TYPE = 'JobType';
-	const CLIENTID = 'ClientId';
-	const JOB_INFO = 'JobInfo';
-	const STORAGE_INFO = 'StorageInfo';
+	public const USE_CACHE = true;
 
-	const USE_CACHE = true;
-
-	const SORT_ASC = 0;
-	const SORT_DESC = 1;
+	public const SORT_ASC = 0;
+	public const SORT_DESC = 1;
 
 	public $is_running = false;
 	public $allow_graph_mode = false;
 	public $allow_list_files_mode = false;
-	private $no_graph_mode_types = array('M', 'D', 'C', 'c', 'g');
-	private $no_graph_mode_verify_levels = array('O');
-	private $list_files_types = array('B', 'C', 'V');
-	private $list_files_mode_verify_levels = array('V');
-	private $show_restore_types = array('B', 'C');
+	private $no_graph_mode_types = ['M', 'D', 'C', 'c', 'g'];
+	private $no_graph_mode_verify_levels = ['O'];
+	private $list_files_types = ['B', 'C', 'V'];
+	private $list_files_mode_verify_levels = ['V'];
+	private $show_restore_types = ['B', 'C'];
 
-	public function onPreInit($param) {
+	public function onPreInit($param)
+	{
 		parent::onPreInit($param);
 		$job_name = '';
 		if ($this->Request->contains('jobid')) {
-			$jobid = intval($this->Request['jobid']);
+			$jobid = (int) ($this->Request['jobid']);
 			$jobdata = $this->getModule('api')->get(
-				array('jobs', $jobid), null, true, self::USE_CACHE
+				['jobs', $jobid],
+				null,
+				true,
+				self::USE_CACHE
 			);
 			$jobdata = $jobdata->error === 0 ? $jobdata->output : null;
 			$this->setJobId($jobdata->jobid);
@@ -99,7 +102,8 @@ class JobView extends BaculumWebPage {
 		$this->setJobName($job_name);
 	}
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -115,7 +119,8 @@ class JobView extends BaculumWebPage {
 		$this->setJobInfo($job_name);
 	}
 
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -123,31 +128,34 @@ class JobView extends BaculumWebPage {
 		$this->refreshJobLog(null, null);
 	}
 
-	public function loadSchedules($sender, $param) {
+	public function loadSchedules($sender, $param)
+	{
 		$this->Schedules->loadSchedules();
 	}
 
-	public function runningJobStatus($sender, $param) {
+	public function runningJobStatus($sender, $param)
+	{
 		$running_job_status = $this->getRunningJobStatus($this->getClientId());
-		$tabs = array(
+		$tabs = [
 			'joblog_subtab_text' => true,
 			'status_running_job_subtab_graphical' => false,
 			'jobfiles_subtab_text' => false
-		);
+		];
 		if ($this->allow_graph_mode) {
 			$tabs['status_running_job_subtab_graphical'] = true;
 		} elseif ($this->allow_list_files_mode) {
 			$tabs['jobfiles_subtab_text'] = true;
 		}
-		$this->getCallbackClient()->callClientFunction('init_graphical_running_job_status', array($running_job_status, $tabs));
+		$this->getCallbackClient()->callClientFunction('init_graphical_running_job_status', [$running_job_status, $tabs]);
 	}
 
-	public function getRunningJobStatus($clientid) {
-		$running_job_status = array(
-			'header' => array(),
-			'job' => array(),
+	public function getRunningJobStatus($clientid)
+	{
+		$running_job_status = [
+			'header' => [],
+			'job' => [],
 			'is_running' => $this->is_running
-		);
+		];
 		if ($this->is_running) {
 			$query_str = '?output=json&type=header';
 			$graph_status = $this->getModule('api')->get(
@@ -167,7 +175,7 @@ class JobView extends BaculumWebPage {
 				for ($i = 0; $i < count($graph_status->output); $i++) {
 					foreach ($graph_status->output[$i] as $key => $val) {
 						$prop = strtolower($key);
-						if ($prop === 'jobid' && intval($val) == $jobid) {
+						if ($prop === 'jobid' && (int) $val == $jobid) {
 							$running_job_status['job'] = $graph_status->output[$i];
 							break 2;
 						}
@@ -181,47 +189,55 @@ class JobView extends BaculumWebPage {
 	/**
 	 * Set jobid to run job again.
 	 *
+	 * @param mixed $jobid
 	 * @return none
 	 */
-	public function setJobId($jobid) {
-		$jobid = intval($jobid);
+	public function setJobId($jobid)
+	{
+		$jobid = (int) $jobid;
 		$this->setViewState(self::JOBID, $jobid, 0);
 	}
 
 	/**
 	 * Get jobid to run job again.
 	 *
-	 * @return integer jobid
+	 * @return int jobid
 	 */
-	public function getJobId() {
+	public function getJobId()
+	{
 		return $this->getViewState(self::JOBID, 0);
 	}
 
 	/**
 	 * Set job clientid
 	 *
+	 * @param mixed $clientid
 	 * @return none
 	 */
-	public function setClientId($clientid) {
-		$clientid = intval($clientid);
+	public function setClientId($clientid)
+	{
+		$clientid = (int) $clientid;
 		$this->setViewState(self::CLIENTID, $clientid, 0);
 	}
 
 	/**
 	 * Get client jobid.
 	 *
-	 * @return integer clientid
+	 * @return int clientid
 	 */
-	public function getClientId() {
+	public function getClientId()
+	{
 		return $this->getViewState(self::CLIENTID, 0);
 	}
 
 	/**
 	 * Set job name to run job again.
 	 *
+	 * @param mixed $job_name
 	 * @return none;
 	 */
-	public function setJobName($job_name) {
+	public function setJobName($job_name)
+	{
 		$this->setViewState(self::JOB_NAME, $job_name);
 	}
 
@@ -230,16 +246,19 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return string job name
 	 */
-	public function getJobName() {
+	public function getJobName()
+	{
 		return $this->getViewState(self::JOB_NAME);
 	}
 
 	/**
 	 * Set job uname.
 	 *
+	 * @param mixed $job_uname
 	 * @return none;
 	 */
-	public function setJobUname($job_uname) {
+	public function setJobUname($job_uname)
+	{
 		$this->setViewState(self::JOB_UNAME, $job_uname);
 	}
 
@@ -248,16 +267,19 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return string job uname
 	 */
-	public function getJobUname() {
+	public function getJobUname()
+	{
 		return $this->getViewState(self::JOB_UNAME);
 	}
 
 	/**
 	 * Set job type.
 	 *
+	 * @param mixed $job_type
 	 * @return none;
 	 */
-	public function setJobType($job_type) {
+	public function setJobType($job_type)
+	{
 		$this->setViewState(self::JOB_TYPE, $job_type);
 	}
 
@@ -266,16 +288,19 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return string job type
 	 */
-	public function getJobType() {
+	public function getJobType()
+	{
 		return $this->getViewState(self::JOB_TYPE);
 	}
 
 	/**
 	 * Set job level.
 	 *
+	 * @param mixed $job_level
 	 * @return none;
 	 */
-	public function setJobLevel($job_level) {
+	public function setJobLevel($job_level)
+	{
 		$this->setViewState(self::JOB_LEVEL, $job_level);
 	}
 
@@ -284,18 +309,21 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return string job level
 	 */
-	public function getJobLevel() {
+	public function getJobLevel()
+	{
 		return $this->getViewState(self::JOB_LEVEL);
 	}
 
 	/**
 	 * Set job information from show job output.
 	 *
+	 * @param mixed $job_name
 	 * @return none
 	 */
-	public function setJobInfo($job_name) {
+	public function setJobInfo($job_name)
+	{
 		$job_show = $this->getModule('api')->get(
-			array('jobs', 'show', '?name='. rawurlencode($job_name)),
+			['jobs', 'show', '?name=' . rawurlencode($job_name)],
 			null,
 			true,
 			false
@@ -311,7 +339,8 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return array job information
 	 */
-	public function getJobInfo() {
+	public function getJobInfo()
+	{
 		return $this->getViewState(self::JOB_INFO, []);
 	}
 
@@ -320,7 +349,8 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setStorageInfo() {
+	public function setStorageInfo()
+	{
 		$storages_show = $this->getModule('api')->get(
 			['storages', 'show', '?output=json'],
 			null,
@@ -337,7 +367,8 @@ class JobView extends BaculumWebPage {
 	 *
 	 * @return array storage information
 	 */
-	public function getStorageInfo() {
+	public function getStorageInfo()
+	{
 		return $this->getViewState(self::STORAGE_INFO, []);
 	}
 
@@ -348,7 +379,8 @@ class JobView extends BaculumWebPage {
 	 * @param mixed $param save event parameter
 	 * @return none
 	 */
-	public function reloadJobInfo($sender, $param) {
+	public function reloadJobInfo($sender, $param)
+	{
 		$job_name = $this->getJobName();
 		$this->setJobInfo($job_name);
 	}
@@ -359,7 +391,8 @@ class JobView extends BaculumWebPage {
 	 * @param $sender TActiveLabel sender object
 	 * @param $param TCallbackParameter parameter object
 	 */
-	public function refreshJobLog($sender, $param) {
+	public function refreshJobLog($sender, $param)
+	{
 		if ($this->getJobId() == 0) {
 			return;
 		}
@@ -378,7 +411,6 @@ class JobView extends BaculumWebPage {
 		if (!is_array($log->output) || count($log->output) == 0) {
 			$msg = Prado::localize("Output for selected job is not available yet or you do not have enabled logging job logs to the catalog database.\n\nTo watch job log you need to add to the job Messages resource the following directive:\n\nCatalog = all, !debug, !skipped, !saved");
 			$joblog = [$msg];
-
 		} else {
 			$joblog = $log->output;
 
@@ -403,7 +435,7 @@ class JobView extends BaculumWebPage {
 			$this->RunningIcon->Display = 'None';
 			$this->CancelBtn->Display = 'None';
 			$this->DeleteBtn->Display = 'Dynamic';
-			$this->RestoreBtn->Display =  $this->isShowRestoreBtn() ? 'Dynamic' : 'None';
+			$this->RestoreBtn->Display = $this->isShowRestoreBtn() ? 'Dynamic' : 'None';
 		}
 		if ($this->getJobLogOrder() === self::SORT_DESC) {
 			$joblog = array_reverse($joblog);
@@ -413,7 +445,8 @@ class JobView extends BaculumWebPage {
 		$this->JobLog->Text = implode(PHP_EOL, $joblog);
 	}
 
-	private function findLogMediaRequest($joblog) {
+	private function findLogMediaRequest($joblog)
+	{
 		$waiting = false;
 		$needed = [
 			'storage' => '',
@@ -484,16 +517,19 @@ class JobView extends BaculumWebPage {
 		);
 	}
 
-	private function isShowRestoreBtn() {
+	private function isShowRestoreBtn()
+	{
 		$type = $this->getJobType();
 		return in_array($type, $this->show_restore_types);
 	}
 
-	public function loadRunJobModal($sender, $param) {
+	public function loadRunJobModal($sender, $param)
+	{
 		$this->RunJobModal->loadData();
 	}
 
-	public function loadJobConfig($sender, $param) {
+	public function loadJobConfig($sender, $param)
+	{
 		if (!empty($_SESSION['dir'])) {
 			$this->JobConfig->setComponentName($_SESSION['dir']);
 			$this->JobConfig->setResourceName($this->getJobName());
@@ -504,7 +540,8 @@ class JobView extends BaculumWebPage {
 		}
 	}
 
-	public function loadFileSetConfig($sender, $param) {
+	public function loadFileSetConfig($sender, $param)
+	{
 		if (!empty($_SESSION['dir'])) {
 			$job_info = $this->getJobInfo();
 			if (key_exists('fileset', $job_info)) {
@@ -518,7 +555,8 @@ class JobView extends BaculumWebPage {
 		}
 	}
 
-	public function loadScheduleConfig($sender, $param) {
+	public function loadScheduleConfig($sender, $param)
+	{
 		if (!empty($_SESSION['dir'])) {
 			$job_info = $this->getJobInfo();
 			if (key_exists('schedule', $job_info)) {
@@ -535,26 +573,31 @@ class JobView extends BaculumWebPage {
 		}
 	}
 
-	public function cancel($sender, $param) {
-		$this->getModule('api')->set(array('jobs', $this->getJobId(), 'cancel'), array('a' => 'b'));
+	public function cancel($sender, $param)
+	{
+		$this->getModule('api')->set(['jobs', $this->getJobId(), 'cancel'], ['a' => 'b']);
 		$this->refreshJobLog(null, null);
 	}
 
-	public function delete($sender, $param) {
-		$this->getModule('api')->remove(array('jobs', $this->getJobId()));
+	public function delete($sender, $param)
+	{
+		$this->getModule('api')->remove(['jobs', $this->getJobId()]);
 	}
 
-	public function setJobLogOrder($order) {
+	public function setJobLogOrder($order)
+	{
 		$order = TPropertyValue::ensureInteger($order);
-		setcookie('log_order', $order, time()+60*60*24*365, '/'); // set cookie for one year
+		setcookie('log_order', $order, time() + 60 * 60 * 24 * 365, '/'); // set cookie for one year
 		$_COOKIE['log_order'] = $order;
 	}
 
-	public function getJobLogOrder() {
-		return (key_exists('log_order', $_COOKIE) ? intval($_COOKIE['log_order']) : self::SORT_DESC);
+	public function getJobLogOrder()
+	{
+		return (key_exists('log_order', $_COOKIE) ? (int) ($_COOKIE['log_order']) : self::SORT_DESC);
 	}
 
-	public function changeJobLogOrder($sender, $param) {
+	public function changeJobLogOrder($sender, $param)
+	{
 		$order = $this->getJobLogOrder();
 		if ($order === self::SORT_DESC) {
 			$this->setJobLogOrder(self::SORT_ASC);
@@ -564,4 +607,3 @@ class JobView extends BaculumWebPage {
 		$this->refreshJobLog(null, null);
 	}
 }
-?>

@@ -27,22 +27,22 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Volume list page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class VolumeList extends BaculumWebPage {
-
-	const USE_CACHE = false;
+class VolumeList extends BaculumWebPage
+{
+	public const USE_CACHE = false;
 
 	public $volumes;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -50,9 +50,10 @@ class VolumeList extends BaculumWebPage {
 		$this->volumes = $this->getVolumes();
 	}
 
-	public function getVolumes() {
+	public function getVolumes()
+	{
 		return $this->getModule('api')->get(
-			array('volumes'),
+			['volumes'],
 			null,
 			true,
 			self::USE_CACHE
@@ -67,12 +68,13 @@ class VolumeList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function pruneVolumes($sender, $param) {
+	public function pruneVolumes($sender, $param)
+	{
 		$result = [];
 		$mediaids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($mediaids); $i++) {
 			$ret = $this->getModule('api')->set(
-				['volumes', intval($mediaids[$i]), 'prune']
+				['volumes', (int) ($mediaids[$i]), 'prune']
 			);
 			if ($ret->error !== 0) {
 				$result[] = $ret->output;
@@ -92,12 +94,13 @@ class VolumeList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function purgeVolumes($sender, $param) {
+	public function purgeVolumes($sender, $param)
+	{
 		$result = [];
 		$mediaids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($mediaids); $i++) {
 			$ret = $this->getModule('api')->set(
-				['volumes', intval($mediaids[$i]), 'purge']
+				['volumes', (int) ($mediaids[$i]), 'purge']
 			);
 			if ($ret->error !== 0) {
 				$result[] = $ret->output;
@@ -117,12 +120,13 @@ class VolumeList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function deleteVolumes($sender, $param) {
+	public function deleteVolumes($sender, $param)
+	{
 		$result = [];
 		$mediaids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($mediaids); $i++) {
 			$ret = $this->getModule('api')->remove(
-				['volumes', intval($mediaids[$i])]
+				['volumes', (int) ($mediaids[$i])]
 			);
 			if ($ret->error !== 0) {
 				$result[] = $ret->output;
@@ -142,9 +146,9 @@ class VolumeList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function updateVolumes($sender, $param) {
+	public function updateVolumes($sender, $param)
+	{
 		$volumes = $this->getVolumes();
 		$this->getCallbackClient()->callClientFunction('oVolumeList.update', [$volumes]);
 	}
 }
-?>

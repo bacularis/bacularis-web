@@ -27,14 +27,13 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Graphs page.
  *
  * @category Page
- * @package Baculum Web
  */
-class Graphs extends BaculumWebPage {
+class Graphs extends BaculumWebPage
+{
 }
-?>

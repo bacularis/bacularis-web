@@ -33,8 +33,7 @@ use Bacularis\Web\Modules\BaculumWebPage;
  * Schedule status list.
  *
  * @category Page
- * @package Baculum Web
  */
-class ScheduleStatusList extends BaculumWebPage {
+class ScheduleStatusList extends BaculumWebPage
+{
 }
-?>

@@ -37,18 +37,18 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class DataDependencies extends WebModule {
-
+class DataDependencies extends WebModule
+{
 	/**
 	 * Data dependencies file
 	 */
-	const DATA_DEPS_FILE = 'Bacularis.Web.Data.data_deps';
+	public const DATA_DEPS_FILE = 'Bacularis.Web.Data.data_deps';
 
-	private static $data_deps = null;
+	private static $data_deps;
 
-	private function getDataDeps() {
+	private function getDataDeps()
+	{
 		if (is_null(self::$data_deps)) {
 			self::$data_deps = $this->loadDataDependencies();
 		}
@@ -60,7 +60,8 @@ class DataDependencies extends WebModule {
 	 *
 	 * @return mixed object with data dependencies or null if problem with reading data dependencies file
 	 */
-	private function loadDataDependencies() {
+	private function loadDataDependencies()
+	{
 		$data_deps = null;
 		$deps_file = Prado::getPathOfNamespace(self::DATA_DEPS_FILE, '.json');
 		if (file_exists($deps_file) && is_readable($deps_file)) {
@@ -86,11 +87,12 @@ class DataDependencies extends WebModule {
 	 * @param string $resource_type resource type: Job, Client, Pool...etc.
 	 * @return mixed resource dependencies object or null if resource dependencies don't exist
 	 */
-	private function getDependencies($component_type, $resource_type) {
+	private function getDependencies($component_type, $resource_type)
+	{
 		$deps = null;
 		$data_deps = $this->getDataDeps();
 		if (isset($data_deps->{$component_type}->{$resource_type})) {
-			$deps = (array)$data_deps->{$component_type}->{$resource_type};
+			$deps = (array) $data_deps->{$component_type}->{$resource_type};
 		}
 		return $deps;
 	}
@@ -105,7 +107,8 @@ class DataDependencies extends WebModule {
 	 * @param string $deps_directive dependent directive name in this resource (from data_deps.json)
 	 * @return bool true if resource is used in other resources, othwerise false
 	 */
-	private function isResourceDependent($resource, $resource_type, $resource_name, $deps_directive) {
+	private function isResourceDependent($resource, $resource_type, $resource_name, $deps_directive)
+	{
 		$dependent = false;
 		if ($resource_type === 'Schedule' && property_exists($resource, 'Run')) {
 			for ($i = 0; $i < count($resource->Run); $i++) {
@@ -122,7 +125,6 @@ class DataDependencies extends WebModule {
 							$dependent = true;
 							break;
 						}
-
 					}
 				} elseif ($resource->{$deps_directive} === $resource_name) {
 					$dependent = true;
@@ -142,8 +144,9 @@ class DataDependencies extends WebModule {
 	 * @param array $config all component configuration to check
 	 * @return array array with all resources in which current resource is used or empty array if resource doesn't depend from other resources
 	 */
-	public function checkDependencies($component_type, $resource_type, $resource_name, $config) {
-		$result = array();
+	public function checkDependencies($component_type, $resource_type, $resource_name, $config)
+	{
+		$result = [];
 		$deps = $this->getDependencies($component_type, $resource_type);
 		if (is_array($deps)) {
 			foreach ($deps as $rdtype => $directives) {
@@ -156,12 +159,12 @@ class DataDependencies extends WebModule {
 							if (!$this->isResourceDependent($resource, $rdtype, $resource_name, $directives[$j])) {
 								continue;
 							}
-							$result[] = array(
+							$result[] = [
 								'component_type' => $component_type,
 								'resource_type' => $rctype,
 								'resource_name' => $resource->Name,
 								'directive_name' => $directives[$j]
-							);
+							];
 						}
 					}
 				}
@@ -170,4 +173,3 @@ class DataDependencies extends WebModule {
 		return $result;
 	}
 }
-?>

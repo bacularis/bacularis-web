@@ -34,13 +34,12 @@ namespace Bacularis\Web\Modules;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class JobInfo extends WebModule {
-
-	const RESOURCE_PATTERN = '/(?P<resource>\S+(?=:))?:?(\s+((?P<directive>\S+)=(?P<value>[\s\S]*?(?=\s\S+=.+|$))))/';
-	const JOB_TO_VERIFY_PATTERN = '/(?P<directive>JobToVerify)\s(?P<value>[\s\S]*\S)\s*(--\>[\s\S]+)$/';
-	const COMMAND_ACL_USED_BY_WEB = [
+class JobInfo extends WebModule
+{
+	public const RESOURCE_PATTERN = '/(?P<resource>\S+(?=:))?:?(\s+((?P<directive>\S+)=(?P<value>[\s\S]*?(?=\s\S+=.+|$))))/';
+	public const JOB_TO_VERIFY_PATTERN = '/(?P<directive>JobToVerify)\s(?P<value>[\s\S]*\S)\s*(--\>[\s\S]+)$/';
+	public const COMMAND_ACL_USED_BY_WEB = [
 		'gui',
 		'.api',
 		'.jobs',
@@ -65,20 +64,21 @@ class JobInfo extends WebModule {
 		'cancel'
 	];
 
-	public function parseResourceDirectives(array $show_out) {
+	public function parseResourceDirectives(array $show_out)
+	{
 		$result = [];
 		$resource = [];
 		$res = null;
 		for ($i = 1; $i < count($show_out); $i++) {
 			if (preg_match_all(self::RESOURCE_PATTERN, $show_out[$i], $match) > 0) {
 				if (!empty($match['resource'][0])) {
-					if (count($resource) == 1)  {
+					if (count($resource) == 1) {
 						/**
 						 * Check key to not overwrite already existing resource
 						 * because in some cases there can be for example two
 						 * Autochanger resources: one from Pool and second from NextPool.
 						 */
-						if (!key_exists($res, $result))  {
+						if (!key_exists($res, $result)) {
 							$result = array_merge($result, $resource);
 						}
 						$resource = [];
@@ -114,4 +114,3 @@ class JobInfo extends WebModule {
 		return $result;
 	}
 }
-?>

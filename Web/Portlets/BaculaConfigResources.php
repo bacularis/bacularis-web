@@ -39,43 +39,44 @@ use Bacularis\Web\Portlets\ResourceListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BaculaConfigResources extends ResourceListTemplate {
+class BaculaConfigResources extends ResourceListTemplate
+{
+	public const CHILD_CONTROL = 'BaculaConfigDirectives';
 
-	const CHILD_CONTROL = 'BaculaConfigDirectives';
+	public $resource_names = [];
 
-	public $resource_names = array();
-
-	public function getConfigData($host, $component_type) {
-		$params = array('config', $component_type);
+	public function getConfigData($host, $component_type)
+	{
+		$params = ['config', $component_type];
 		$result = $this->Application->getModule('api')->get($params, $host, false);
-		$config = array();
+		$config = [];
 		if (is_object($result) && $result->error === 0 && is_array($result->output)) {
 			$config = $result->output;
 		}
 		return $config;
 	}
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$component_name = $this->getComponentName();
-		$resources = array();
+		$resources = [];
 		$config = $this->getConfigData($host, $component_type);
 		for ($i = 0; $i < count($config); $i++) {
 			$resource_type = $this->getConfigResourceType($config[$i]);
 			$resource_name = property_exists($config[$i]->{$resource_type}, 'Name') ? $config[$i]->{$resource_type}->Name : '';
-			$resource = array(
+			$resource = [
 				'host' => $host,
 				'component_type' => $component_type,
 				'component_name' => $component_name,
 				'resource_type' => $resource_type,
 				'resource_name' => $resource_name
-			);
+			];
 			array_push($resources, $resource);
 			if (!array_key_exists($resource_type, $this->resource_names)) {
-				$this->resource_names[$resource_type] = array();
+				$this->resource_names[$resource_type] = [];
 			}
 			array_push($this->resource_names[$resource_type], $resource_name);
 		}
@@ -84,7 +85,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 		$this->RepeaterResources->dataBind();
 	}
 
-	public function createResourceListElement($sender, $param) {
+	public function createResourceListElement($sender, $param)
+	{
 		if (!is_array($param->Item->Data)) {
 			// skip parent repeater items
 			return;
@@ -101,7 +103,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 		$param->Item->RemoveResource->setCommandParameter($param->Item->Data);
 	}
 
-	public function getDirectives($sender, $param) {
+	public function getDirectives($sender, $param)
+	{
 		$control = $this->getChildControl($sender->getParent(), self::CHILD_CONTROL);
 		if (is_object($control)) {
 			$control->raiseEvent('OnDirectiveListLoad', $this, null);
@@ -111,11 +114,14 @@ class BaculaConfigResources extends ResourceListTemplate {
 	/**
 	 * Remove resource callback method.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return object $sender sender instance
 	 * @return mixed $param additional parameters
 	 * @return none
 	 */
-	public function removeResource($sender, $param) {
+	public function removeResource($sender, $param)
+	{
 		if (!$this->getPage()->IsCallback) {
 			// removing resource available only by callback
 			return;
@@ -140,8 +146,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 				$host_params['resource_name']
 			);
 			$result = $this->getModule('api')->set(
-				array('config',	$host_params['component_type']),
-				array('config' => json_encode($config)),
+				['config',	$host_params['component_type']],
+				['config' => json_encode($config)],
 				$host,
 				false
 			);
@@ -171,7 +177,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 	 * @param string $resource_name removed resource name
 	 * @return none
 	 */
-	private function showRemovedResourceInfo($resource_type, $resource_name) {
+	private function showRemovedResourceInfo($resource_type, $resource_name)
+	{
 		$msg = Prado::localize('Resource %s "%s" removed successfully.');
 		$msg = sprintf(
 			$msg,
@@ -189,7 +196,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 	 * @param string $error_message error message
 	 * @return none
 	 */
-	private function showRemovedResourceError($error_message) {
+	private function showRemovedResourceError($error_message)
+	{
 		$this->RemoveResourceError->Text = $error_message;
 		$this->getPage()->getCallbackClient()->hide($this->RemoveResourceOk);
 		$this->getPage()->getCallbackClient()->show($this->RemoveResourceError);
@@ -204,11 +212,12 @@ class BaculaConfigResources extends ResourceListTemplate {
 	 * @param string $resource_name resource name of the removing resource
 	 * @return string error message
 	 */
-	public static function prepareDependenciesError($deps, $resource_type, $resource_name) {
+	public static function prepareDependenciesError($deps, $resource_type, $resource_name)
+	{
 		$emsg = Prado::localize('Resource %s "%s" is used in the following resources:');
 		$emsg = sprintf($emsg, $resource_type, $resource_name);
 		$emsg_deps = Prado::localize('Component: %s, Resource: %s "%s", Directive: %s');
-		$dependencies = array();
+		$dependencies = [];
 		for ($i = 0; $i < count($deps); $i++) {
 			$dependencies[] = sprintf(
 				$emsg_deps,
@@ -220,7 +229,7 @@ class BaculaConfigResources extends ResourceListTemplate {
 		}
 		$emsg_sum = Prado::localize('Please unassign resource %s "%s" from these resources and try again.');
 		$emsg_sum = sprintf($emsg_sum, $resource_type, $resource_name);
-		$error = array($emsg, implode('<br />', $dependencies),  $emsg_sum);
+		$error = [$emsg, implode('<br />', $dependencies),  $emsg_sum];
 		return implode('<br /><br />', $error);
 	}
 
@@ -234,7 +243,8 @@ class BaculaConfigResources extends ResourceListTemplate {
 	 * @param string $resource_name resource name to remove
 	 * @return none
 	 */
-	public static function removeResourceFromConfig(&$config, $resource_type, $resource_name) {
+	public static function removeResourceFromConfig(&$config, $resource_type, $resource_name)
+	{
 		for ($i = 0; $i < count($config); $i++) {
 			foreach ($config[$i] as $rtype => $resource) {
 				if (!property_exists($resource, 'Name')) {
@@ -249,4 +259,3 @@ class BaculaConfigResources extends ResourceListTemplate {
 		}
 	}
 }
-?>

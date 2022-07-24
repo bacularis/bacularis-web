@@ -36,18 +36,18 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class NewFileSetExcMenu extends DirectiveListTemplate {
+class NewFileSetExcMenu extends DirectiveListTemplate
+{
+	public const ITEM_INDEX = 'ItemIndex';
 
-	const ITEM_INDEX = 'ItemIndex';
-
-	public function setItemIndex($index) {
+	public function setItemIndex($index)
+	{
 		$this->setViewState(self::ITEM_INDEX, $index);
 	}
 
-	public function getItemIndex() {
+	public function getItemIndex()
+	{
 		return $this->getViewState(self::ITEM_INDEX);
 	}
 }
-?>

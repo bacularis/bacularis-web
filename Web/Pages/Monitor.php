@@ -35,28 +35,30 @@ use Bacularis\Web\Modules\WebUserRoles;
  *
  * NOTE: It must inherit from BaculumPage, not from BaculumWebPage,
  * because this way it has not any redundant API request from BaculumWebPage.
- * 
+ *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class Monitor extends BaculumWebPage {
-
-	const DEFAULT_MAX_JOBS = 10000;
+class Monitor extends BaculumWebPage
+{
+	public const DEFAULT_MAX_JOBS = 10000;
 
 	/**
 	 * Pre-initialization with authenticate.
 	 *
 	 * NOTE: This method cannot be removed and cannot call parent::onPreInit()
 	 * because in parent method are called redundant API requests not used by Monitor.
+	 * @param mixed $param
 	 */
-	public function onPreInit($param) {
+	public function onPreInit($param)
+	{
 		if ($this->authenticate() === false) {
 			exit();
 		}
 	}
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$monitor_data = [
 			'jobs' => [],
@@ -82,7 +84,7 @@ class Monitor extends BaculumWebPage {
 		$error = null;
 		$params = $this->Request->contains('params') ? $this->Request['params'] : [];
 		if (!is_array($params)) {
-			$error = (object)[
+			$error = (object) [
 				'output' => 'Wrong monitor parameter.',
 				'error' => GenericError::ERROR_INTERNAL_ERROR
 			];
@@ -196,5 +198,3 @@ class Monitor extends BaculumWebPage {
 		exit();
 	}
 }
-
-?>

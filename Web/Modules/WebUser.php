@@ -38,21 +38,20 @@ use Prado\TPropertyValue;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebUser extends TUser {
-
+class WebUser extends TUser
+{
 	/**
 	 * Saved in current state user properties.
 	 */
-	const LONG_NAME = 'LongName';
-	const EMAIL = 'Email';
-	const DESCRIPTION = 'Description';
-	const API_HOSTS = 'ApiHosts';
-	const DEFAULT_API_HOST = 'DefaultApiHost';
-	const IPS = 'Ips';
-	const ENABLED = 'Enabled';
-	const IN_CONFIG = 'InConfig';
+	public const LONG_NAME = 'LongName';
+	public const EMAIL = 'Email';
+	public const DESCRIPTION = 'Description';
+	public const API_HOSTS = 'ApiHosts';
+	public const DEFAULT_API_HOST = 'DefaultApiHost';
+	public const IPS = 'Ips';
+	public const ENABLED = 'Enabled';
+	public const IN_CONFIG = 'InConfig';
 
 	/**
 	 * Stores non-session information about user.
@@ -65,10 +64,12 @@ class WebUser extends TUser {
 	 * If user doesn't exist in configuration then default access values can be taken into accout.
 	 *
 	 * @param string username user name
-	 * @param boolean $new_obj create new user object
+	 * @param bool $new_obj create new user object
+	 * @param mixed $username
 	 * @return WebUser user instance
 	 */
-	public function createUser($username, $new_obj = true) {
+	public function createUser($username, $new_obj = true)
+	{
 		$user = $this;
 		if ($new_obj === true) {
 			$user = Prado::createComponent(__CLASS__, $this->getManager());
@@ -113,7 +114,8 @@ class WebUser extends TUser {
 	 * @param string $username user name
 	 * @return none
 	 */
-	public function setUsername($username) {
+	public function setUsername($username)
+	{
 		$this->setName($username);
 	}
 
@@ -122,7 +124,8 @@ class WebUser extends TUser {
 	 *
 	 * @return string user name
 	 */
-	public function getUsername() {
+	public function getUsername()
+	{
 		return $this->getName();
 	}
 
@@ -132,7 +135,8 @@ class WebUser extends TUser {
 	 * @param string $long_name long name
 	 * @return none
 	 */
-	public function setLongName($long_name) {
+	public function setLongName($long_name)
+	{
 		$this->setCurrentState(self::LONG_NAME, $long_name);
 	}
 
@@ -141,7 +145,8 @@ class WebUser extends TUser {
 	 *
 	 * @return string long name (default empty string)
 	 */
-	public function getLongName() {
+	public function getLongName()
+	{
 		return $this->getCurrentState(self::LONG_NAME, '');
 	}
 
@@ -151,7 +156,8 @@ class WebUser extends TUser {
 	 * @param string $email e-mail address
 	 * @return none
 	 */
-	public function setEmail($email) {
+	public function setEmail($email)
+	{
 		$this->setCurrentState(self::EMAIL, $email);
 	}
 
@@ -160,7 +166,8 @@ class WebUser extends TUser {
 	 *
 	 * @return string e-mail address
 	 */
-	public function getEmail() {
+	public function getEmail()
+	{
 		return $this->getCurrentState(self::EMAIL, '');
 	}
 
@@ -170,7 +177,8 @@ class WebUser extends TUser {
 	 * @param string $desc description
 	 * @return none
 	 */
-	public function setDescription($desc) {
+	public function setDescription($desc)
+	{
 		$this->setCurrentState(self::DESCRIPTION, $desc);
 	}
 
@@ -179,7 +187,8 @@ class WebUser extends TUser {
 	 *
 	 * @return string description
 	 */
-	public function getDescription() {
+	public function getDescription()
+	{
 		return $this->getCurrentState(self::DESCRIPTION, '');
 	}
 
@@ -188,7 +197,8 @@ class WebUser extends TUser {
 	 *
 	 * @return array role list assigned to user
 	 */
-	public function getRoles() {
+	public function getRoles()
+	{
 		return $this->getCurrentState('Roles', []);
 	}
 
@@ -198,7 +208,8 @@ class WebUser extends TUser {
 	 * @param mixed $value roles assigned to user
 	 * @return none
 	 */
-	public function setRoles($value) {
+	public function setRoles($value)
+	{
 		if (is_array($value)) {
 			$this->setCurrentState('Roles', $value, []);
 		} else {
@@ -218,7 +229,8 @@ class WebUser extends TUser {
 	 * @param array $api_hosts user API hosts
 	 * @return none
 	 */
-	public function setAPIHosts($api_hosts) {
+	public function setAPIHosts($api_hosts)
+	{
 		$this->setCurrentState(self::API_HOSTS, $api_hosts);
 	}
 
@@ -227,7 +239,8 @@ class WebUser extends TUser {
 	 *
 	 * @return array user API hosts
 	 */
-	public function getAPIHosts() {
+	public function getAPIHosts()
+	{
 		$api_hosts = [];
 		$hosts = $this->getCurrentState(self::API_HOSTS);
 		/**
@@ -262,7 +275,8 @@ class WebUser extends TUser {
 	 * @param string $api_host default API host
 	 * @return none
 	 */
-	public function setDefaultAPIHost($api_host) {
+	public function setDefaultAPIHost($api_host)
+	{
 		$this->setState(self::DEFAULT_API_HOST, $api_host);
 		$application = $this->getManager()->getApplication();
 		$application->getModule('auth')->updateSessionUser($this);
@@ -273,9 +287,10 @@ class WebUser extends TUser {
 	 * If default API host is not set, there happens a try to determine
 	 * this host if user has only one API host assigned.
 	 *
-	 * @return string|null default API host or null if no default host set
+	 * @return null|string default API host or null if no default host set
 	 */
-	public function getDefaultAPIHost() {
+	public function getDefaultAPIHost()
+	{
 		$def_host = $this->getState(self::DEFAULT_API_HOST);
 		$api_hosts = $this->getAPIHosts();
 		if ($def_host && !in_array($def_host, $api_hosts)) {
@@ -297,9 +312,10 @@ class WebUser extends TUser {
 	 * Check if given API host belongs to user API hosts.
 	 *
 	 * @param string $api_host API host to check
-	 * @return boolean true if API host belongs to user API hosts, otherwise false
+	 * @return bool true if API host belongs to user API hosts, otherwise false
 	 */
-	public function isUserAPIHost($api_host) {
+	public function isUserAPIHost($api_host)
+	{
 		$api_hosts = $this->getAPIHosts();
 		return in_array($api_host, $api_hosts);
 	}
@@ -310,7 +326,8 @@ class WebUser extends TUser {
 	 * @param string $ips comma separated IP addresses
 	 * @return none
 	 */
-	public function setIps($ips) {
+	public function setIps($ips)
+	{
 		$this->setCurrentState(self::IPS, $ips);
 	}
 
@@ -319,17 +336,19 @@ class WebUser extends TUser {
 	 *
 	 * @return string comma separated IP address list (default empty string)
 	 */
-	public function getIps() {
+	public function getIps()
+	{
 		return $this->getCurrentState(self::IPS, '');
 	}
 
 	/**
 	 * Enabled setter
 	 *
-	 * @param boolean $enabled enabled flag state
+	 * @param bool $enabled enabled flag state
 	 * @return none
 	 */
-	public function setEnabled($enabled) {
+	public function setEnabled($enabled)
+	{
 		$enabled = TPropertyValue::ensureBoolean($enabled);
 		$this->setCurrentState(self::ENABLED, $enabled);
 	}
@@ -339,17 +358,19 @@ class WebUser extends TUser {
 	 *
 	 * @return string enabled flag state (default false)
 	 */
-	public function getEnabled() {
+	public function getEnabled()
+	{
 		return $this->getCurrentState(self::ENABLED, false);
 	}
 
 	/**
 	 * Set if user exists in configuration file.
 	 *
-	 * @param boolean $in_config in config state value
+	 * @param bool $in_config in config state value
 	 * @return none
 	 */
-	public function setInConfig($in_config) {
+	public function setInConfig($in_config)
+	{
 		$in_config = TPropertyValue::ensureBoolean($in_config);
 		$this->setCurrentState(self::IN_CONFIG, $in_config);
 	}
@@ -359,7 +380,8 @@ class WebUser extends TUser {
 	 *
 	 * @return string in config state value (default false)
 	 */
-	public function getInConfig() {
+	public function getInConfig()
+	{
 		return $this->getCurrentState(self::IN_CONFIG, false);
 	}
 
@@ -372,7 +394,8 @@ class WebUser extends TUser {
 	 * @param mixed $value value to set
 	 * @return none
 	 */
-	private function setCurrentState($key, $value) {
+	private function setCurrentState($key, $value)
+	{
 		$this->current_state[$key] = $value;
 	}
 
@@ -383,7 +406,8 @@ class WebUser extends TUser {
 	 * @param mixed $default_value default value
 	 * @return mixed state value or default value if state value does not exist
 	 */
-	private function getCurrentState($key, $default_value = null) {
+	private function getCurrentState($key, $default_value = null)
+	{
 		return key_exists($key, $this->current_state) ? $this->current_state[$key] : $default_value;
 	}
 
@@ -394,7 +418,8 @@ class WebUser extends TUser {
 	 * @param string $data user data
 	 * @return IUser user object
 	 */
-	public function loadFromString($data) {
+	public function loadFromString($data)
+	{
 		parent::loadFromString($data);
 		if ($this->getIsGuest() === false) {
 			$username = $this->getName();
@@ -405,4 +430,3 @@ class WebUser extends TUser {
 		return $this;
 	}
 }
-?>

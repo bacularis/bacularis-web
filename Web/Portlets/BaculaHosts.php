@@ -40,22 +40,23 @@ use Bacularis\Web\Portlets\HostListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BaculaHosts extends HostListTemplate {
-
-	const CHILD_CONTROL = 'BaculaConfigComponents';
+class BaculaHosts extends HostListTemplate
+{
+	public const CHILD_CONTROL = 'BaculaConfigComponents';
 
 	public $config;
 
-	public function loadConfig($sender, $param) {
+	public function loadConfig($sender, $param)
+	{
 		$this->config = $this->getModule('host_config')->getConfig();
 		$hosts = array_keys($this->config);
 		$this->RepeaterHosts->DataSource = $hosts;
 		$this->RepeaterHosts->dataBind();
 	}
 
-	public function createHostListElement($sender, $param) {
+	public function createHostListElement($sender, $param)
+	{
 		$control = $this->getChildControl($param->Item, self::CHILD_CONTROL);
 		if (is_object($control)) {
 			$control->setHost($param->Item->Data);
@@ -63,14 +64,16 @@ class BaculaHosts extends HostListTemplate {
 		$param->Item->RemoveHost->setCommandParameter($param->Item->Data);
 	}
 
-	public function getComponents($sender, $param) {
+	public function getComponents($sender, $param)
+	{
 		$control = $this->getChildControl($sender->getParent(), self::CHILD_CONTROL);
 		if (is_object($control)) {
 			$control->raiseEvent('OnComponentListLoad', $this, null);
 		}
 	}
 
-	public function bubbleEvent($sender, $param) {
+	public function bubbleEvent($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
 			$this->loadConfig(null, null);
 			return true;
@@ -79,7 +82,8 @@ class BaculaHosts extends HostListTemplate {
 		}
 	}
 
-	public function removeHost($sender, $param) {
+	public function removeHost($sender, $param)
+	{
 		$host = $param->getCommandParameter();
 		if (!empty($host)) {
 			$host_config = $this->getModule('host_config');
@@ -88,10 +92,9 @@ class BaculaHosts extends HostListTemplate {
 			$host_config->setConfig($config);
 			$this->loadConfig(null, null);
 			if ($host === HostConfig::MAIN_CATALOG_HOST) {
-				$url = $this->Service->constructUrl('WebConfigWizard', array(), false);
+				$url = $this->Service->constructUrl('WebConfigWizard', [], false);
 				$this->getResponse()->redirect($url);
 			}
 		}
 	}
 }
-?>

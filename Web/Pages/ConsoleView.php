@@ -35,11 +35,11 @@ use Bacularis\Web\Modules\BaculumWebPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class ConsoleView extends BaculumWebPage {
-
-	public function onInit($param) {
+class ConsoleView extends BaculumWebPage
+{
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -51,7 +51,8 @@ class ConsoleView extends BaculumWebPage {
 		$this->ConsoleResourcesConfig->setComponentName($_SESSION['director']);
 	}
 
-	public function loadConsoleResourcesConfig($sender, $param) {
+	public function loadConsoleResourcesConfig($sender, $param)
+	{
 		$resource_type = $param->getCallbackParameter();
 		if (!empty($resource_type)) {
 			$this->ConsoleResourcesConfig->setResourceType($resource_type);
@@ -61,4 +62,3 @@ class ConsoleView extends BaculumWebPage {
 		}
 	}
 }
-?>

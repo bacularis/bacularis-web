@@ -34,21 +34,22 @@ namespace Bacularis\Web\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class FileSetOptionRenderer extends DirectiveRenderer {
-
+class FileSetOptionRenderer extends DirectiveRenderer
+{
 	private static $index = 0;
 	private $item_count;
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		$this->item_count = $this->getParent()->getItems()->getCount();
 	}
 
-	public function render($writer) {
+	public function render($writer)
+	{
 		if (self::$index % 30 === 0) {
-			$writer->write('<h3 class="options">Options #' . ((self::$index/30) + 1) . '</h3><hr style="margin: 7px 0;"/>');
+			$writer->write('<h3 class="options">Options #' . ((self::$index / 30) + 1) . '</h3><hr style="margin: 7px 0;"/>');
 		}
 		self::$index++;
 
@@ -58,8 +59,8 @@ class FileSetOptionRenderer extends DirectiveRenderer {
 		parent::render($writer);
 	}
 
-	public static function resetIndex() {
+	public static function resetIndex()
+	{
 		self::$index = 0;
 	}
 }
-?>

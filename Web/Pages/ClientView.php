@@ -35,22 +35,22 @@ use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 use Prado\Web\UI\JuiControls\TJuiProgressbar;
 use Bacularis\Common\Modules\Params;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Client view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class ClientView extends BaculumWebPage {
+class ClientView extends BaculumWebPage
+{
+	public const CLIENTID = 'ClientId';
+	public const CLIENT_NAME = 'ClientName';
+	public const CLIENT_ADDRESS = 'ClientAddress';
 
-	const CLIENTID = 'ClientId';
-	const CLIENT_NAME = 'ClientName';
-	const CLIENT_ADDRESS = 'ClientAddress';
-
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -59,7 +59,7 @@ class ClientView extends BaculumWebPage {
 		if ($this->Request->contains('clientid')) {
 			$clientid = $this->Request['clientid'];
 		} elseif ($this->Request->contains('client')) {
-			$result = $this->getModule('api')->get(array('clients'));
+			$result = $this->getModule('api')->get(['clients']);
 			if ($result->error === 0) {
 				for ($i = 0; $i < count($result->output); $i++) {
 					if ($this->Request['client'] === $result->output[$i]->name) {
@@ -105,7 +105,7 @@ class ClientView extends BaculumWebPage {
 		} else {
 			// set name from catalog data request
 			$client = $this->getModule('api')->get(
-				array('clients', $clientid)
+				['clients', $clientid]
 			);
 			if ($client->error === 0) {
 				$this->setClientName($client->output->name);
@@ -121,7 +121,8 @@ class ClientView extends BaculumWebPage {
 		}
 	}
 
-	public function setDIRClientConfig($sender, $param) {
+	public function setDIRClientConfig($sender, $param)
+	{
 		$this->FDFileDaemonConfig->unloadDirectives();
 		if (!empty($_SESSION['dir'])) {
 			$this->DIRClientConfig->setComponentName($_SESSION['dir']);
@@ -131,7 +132,8 @@ class ClientView extends BaculumWebPage {
 		}
 	}
 
-	private function setAPIHosts() {
+	private function setAPIHosts()
+	{
 		$def_host = null;
 		$api_hosts = $this->getModule('host_config')->getConfig();
 		$user_api_hosts = $this->User->getAPIHosts();
@@ -154,7 +156,8 @@ class ClientView extends BaculumWebPage {
 		}
 	}
 
-	private function getFDAPIHost() {
+	private function getFDAPIHost()
+	{
 		if (!$this->User->isUserAPIHost($this->UserAPIHosts->SelectedValue)) {
 			// Validation error. Somebody manually modified select values
 			return false;
@@ -163,7 +166,8 @@ class ClientView extends BaculumWebPage {
 	}
 
 
-	private function getFDName() {
+	private function getFDName()
+	{
 		$fdname = null;
 		if (!$this->User->isUserAPIHost($this->UserAPIHosts->SelectedValue)) {
 			// Validation error. Somebody manually modified select values
@@ -175,13 +179,13 @@ class ClientView extends BaculumWebPage {
 				if ($result->output[$i]->component_type === 'fd' && $result->output[$i]->state) {
 					$fdname = $result->output[$i]->component_name;
 				}
-
 			}
 		}
 		return $fdname;
 	}
 
-	public function loadFDFileDaemonConfig($sender, $param) {
+	public function loadFDFileDaemonConfig($sender, $param)
+	{
 		$this->DIRClientConfig->unloadDirectives();
 		$component_name = $this->getFDName();
 		if (!is_null($component_name)) {
@@ -196,7 +200,8 @@ class ClientView extends BaculumWebPage {
 		}
 	}
 
-	public function loadFDResourcesConfig($sender, $param) {
+	public function loadFDResourcesConfig($sender, $param)
+	{
 		$resource_type = $param->getCallbackParameter();
 		$this->DIRClientConfig->unloadDirectives();
 		$this->FDFileDaemonConfig->unloadDirectives();
@@ -214,10 +219,12 @@ class ClientView extends BaculumWebPage {
 	/**
 	 * Set client clientid.
 	 *
+	 * @param mixed $clientid
 	 * @return none;
 	 */
-	public function setClientId($clientid) {
-		$clientid = intval($clientid);
+	public function setClientId($clientid)
+	{
+		$clientid = (int) $clientid;
 		$this->BWLimit->setClientId($clientid);
 		$this->setViewState(self::CLIENTID, $clientid, 0);
 	}
@@ -225,18 +232,21 @@ class ClientView extends BaculumWebPage {
 	/**
 	 * Get client clientid.
 	 *
-	 * @return integer clientid
+	 * @return int clientid
 	 */
-	public function getClientId() {
+	public function getClientId()
+	{
 		return $this->getViewState(self::CLIENTID, 0);
 	}
 
 	/**
 	 * Set client name.
 	 *
+	 * @param mixed $client_name
 	 * @return none;
 	 */
-	public function setClientName($client_name) {
+	public function setClientName($client_name)
+	{
 		$this->BWLimit->setClientName($client_name);
 		$this->setViewState(self::CLIENT_NAME, $client_name);
 	}
@@ -246,16 +256,19 @@ class ClientView extends BaculumWebPage {
 	 *
 	 * @return string client name
 	 */
-	public function getClientName() {
+	public function getClientName()
+	{
 		return $this->getViewState(self::CLIENT_NAME);
 	}
 
 	/**
 	 * Set client address.
 	 *
+	 * @param mixed $address
 	 * @return none;
 	 */
-	public function setClientAddress($address) {
+	public function setClientAddress($address)
+	{
 		$this->setViewState(self::CLIENT_ADDRESS, $address);
 	}
 
@@ -264,11 +277,13 @@ class ClientView extends BaculumWebPage {
 	 *
 	 * @return string address
 	 */
-	public function getClientAddress() {
+	public function getClientAddress()
+	{
 		return $this->getViewState(self::CLIENT_ADDRESS);
 	}
 
-	public function status($sender, $param) {
+	public function status($sender, $param)
+	{
 		$raw_status = $this->getModule('api')->get(
 			['clients', $this->getClientId(), 'status']
 		)->output;
@@ -278,18 +293,18 @@ class ClientView extends BaculumWebPage {
 		$graph_status = $this->getModule('api')->get(
 			['clients', $this->getClientId(), 'status', $query_str]
 		);
-		$client_status = array(
-			'header' => array(),
-			'running' => array(),
+		$client_status = [
+			'header' => [],
+			'running' => [],
 			'version' => Params::getComponentVersion($raw_status)
-		);
+		];
 		if ($graph_status->error === 0) {
 			$client_status['header'] = $graph_status->output;
 			if (!$this->BWLimit->BandwidthLimit->getDirectiveValue() && is_object($client_status['header'])) {
 				$this->BWLimit->setBandwidthLimit($client_status['header']->bwlimit);
 				$this->getCallbackClient()->callClientFunction(
 					'oClientBandwidthLimit.set_value',
-					array($client_status['header']->bwlimit)
+					[$client_status['header']->bwlimit]
 				);
 			}
 		}
@@ -304,21 +319,21 @@ class ClientView extends BaculumWebPage {
 
 		$query_str = '?output=json';
 		$show = $this->getModule('api')->get(
-			array('clients', $this->getClientId(), 'show', $query_str)
+			['clients', $this->getClientId(), 'show', $query_str]
 		);
 		if ($show->error === 0) {
 			$client_status['show'] = $show->output;
 		}
 
-		$this->getCallbackClient()->callClientFunction('init_graphical_client_status', array($client_status));
+		$this->getCallbackClient()->callClientFunction('init_graphical_client_status', [$client_status]);
 	}
 
-	public function setBandwidthControl($sender, $param) {
+	public function setBandwidthControl($sender, $param)
+	{
 		if ($param instanceof TCallbackEventParameter) {
-			list($jobid, $job_uname) = explode('|', $param->getCallbackParameter(), 2);
+			[$jobid, $job_uname] = explode('|', $param->getCallbackParameter(), 2);
 			$this->JobBandwidth->setJobId($jobid);
 			$this->JobBandwidth->setJobUname($job_uname);
 		}
 	}
 }
-?>

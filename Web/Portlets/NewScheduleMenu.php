@@ -37,8 +37,7 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  * New schedule menu.
  *
  * @category Control
- * @package Baculum Web
  */
-class NewScheduleMenu extends DirectiveListTemplate {
+class NewScheduleMenu extends DirectiveListTemplate
+{
 }
-?>

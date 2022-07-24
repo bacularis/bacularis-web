@@ -37,29 +37,28 @@ use Bacularis\Common\Modules\ConfigFileModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class HostConfig extends ConfigFileModule {
-
+class HostConfig extends ConfigFileModule
+{
 	/**
 	 * Host config file path
 	 */
-	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.hosts';
+	public const CONFIG_FILE_PATH = 'Bacularis.Web.Config.hosts';
 
 	/**
 	 * Host config file format
 	 */
-	const CONFIG_FILE_FORMAT = 'ini';
+	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
 	 * Main host that provides Catalog
 	 */
-	const MAIN_CATALOG_HOST = 'Main';
+	public const MAIN_CATALOG_HOST = 'Main';
 
 	/**
 	 * These host options are obligatory for each host config.
 	 */
-	private $host_required_options = array(
+	private $host_required_options = [
 		'protocol',
 		'address',
 		'port',
@@ -70,7 +69,7 @@ class HostConfig extends ConfigFileModule {
 		'client_secret',
 		'redirect_uri',
 		'scope'
-	);
+	];
 
 	/**
 	 * Get (read) host config.
@@ -78,12 +77,13 @@ class HostConfig extends ConfigFileModule {
 	 * @access public
 	 * @return array config
 	 */
-	public function getConfig() {
-		$hosts_config = array();
+	public function getConfig()
+	{
+		$hosts_config = [];
 		$config = $this->readConfig(self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
 		// Hosts config validation per single host
 		foreach ($config as $host => $host_config) {
-			if ($this->isHostConfigValid(array($host => $host_config)) === false) {
+			if ($this->isHostConfigValid([$host => $host_config]) === false) {
 				/**
 				 * If host config for one host is invalid, don't add this host config
 				 * but continue checking next host config sections.
@@ -106,9 +106,10 @@ class HostConfig extends ConfigFileModule {
 	 *
 	 * @access public
 	 * @param array $config config
-	 * @return boolean true if config saved successfully, otherwise false
+	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setConfig(array $config) {
+	public function setConfig(array $config)
+	{
 		$result = false;
 		if ($this->isHostConfigValid($config) === true) {
 			$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
@@ -123,8 +124,9 @@ class HostConfig extends ConfigFileModule {
 	 * @param $host host name
 	 * @return array host config
 	 */
-	public function getHostConfig($host) {
-		$host_config = array();
+	public function getHostConfig($host)
+	{
+		$host_config = [];
 		$config = $this->getConfig();
 		if (array_key_exists($host, $config)) {
 			$host_config = $config[$host];
@@ -138,9 +140,11 @@ class HostConfig extends ConfigFileModule {
 	 * @access public
 	 * @param string $host host name
 	 * @param array $host config
-	 * @return boolean true if host config saved successfully, otherwise false
+	 * @param array $host_config
+	 * @return bool true if host config saved successfully, otherwise false
 	 */
-	public function setHostConfig($host, array $host_config) {
+	public function setHostConfig($host, array $host_config)
+	{
 		$config = $this->getConfig();
 		$config[$host] = $host_config;
 		$result = $this->setConfig($config);
@@ -152,20 +156,21 @@ class HostConfig extends ConfigFileModule {
 	 *
 	 * @access private
 	 * @param array $config hosts config
-	 * @return boolean true if config valid, otherwise false
+	 * @return bool true if config valid, otherwise false
 	 */
-	private function isHostConfigValid(array $config) {
+	private function isHostConfigValid(array $config)
+	{
 		$valid = true;
-		$invalid = array('required' => null);
+		$invalid = ['required' => null];
 
 		foreach ($config as $host => $host_config) {
 			for ($i = 0; $i < count($this->host_required_options); $i++) {
 				if (!array_key_exists($this->host_required_options[$i], $host_config)) {
-					$invalid['required'] = array(
+					$invalid['required'] = [
 						'host' => $host,
 						'value' => $this->host_required_options[$i],
 						'type' => 'option'
-					);
+					];
 					$valid = false;
 					break;
 				}
@@ -191,4 +196,3 @@ class HostConfig extends ConfigFileModule {
 		return $valid;
 	}
 }
-?>

@@ -36,25 +36,25 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class LogParser extends WebModule {
+class LogParser extends WebModule
+{
+	public const CLIENT_PATTERN = '/^\s+Client\:\s+"?(?P<client>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const RESTORE_CLIENT_PATTERN = '/^\s+Restore Client\:\s+"?(?P<restore_client>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const POOL_PATTERN = '/^\s+Pool\:\s+"?(?P<pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const READ_POOL_PATTERN = '/^\s+Read Pool\:\s+"?(?P<read_pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const WRITE_POOL_PATTERN = '/^\s+Write Pool\:\s+"?(?P<write_pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const STORAGE_PATTERN = '/^\s{0,2}Storage\:\s+"?(?P<storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const READ_STORAGE_PATTERN = '/^\s+Read Storage\:\s+"?(?P<read_storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const WRITE_STORAGE_PATTERN = '/^\s+Write Storage\:\s+"?(?P<write_storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const FILESET_PATTERN = '/^\s+FileSet\:\s+"?(?P<fileset>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const VERIFY_JOB_PATTERN = '/^\s+Verify Job\:\s+"?(?P<verify_job>[a-zA-Z0-9:.\-_ ]+)"?/i';
+	public const JOB_PATTERN = '/^\s+Job\:\s+"?(?P<job>[a-zA-Z0-9:.\-_ ]+)"?\.\d{4}-\d{2}-\d{2}_\d{2}\.\d{2}\.\d{2}_\d{2}/i';
+	public const VOLUME_PATTERN = '/^\s+Volume name\(s\)\:\s+"?(?P<volumes>[^\s]+[a-zA-Z0-9:.\-\|_ ]+[^\s]+)"?/i';
 
-	const CLIENT_PATTERN = '/^\s+Client\:\s+"?(?P<client>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const RESTORE_CLIENT_PATTERN = '/^\s+Restore Client\:\s+"?(?P<restore_client>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const POOL_PATTERN = '/^\s+Pool\:\s+"?(?P<pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const READ_POOL_PATTERN = '/^\s+Read Pool\:\s+"?(?P<read_pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const WRITE_POOL_PATTERN = '/^\s+Write Pool\:\s+"?(?P<write_pool>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const STORAGE_PATTERN = '/^\s{0,2}Storage\:\s+"?(?P<storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const READ_STORAGE_PATTERN = '/^\s+Read Storage\:\s+"?(?P<read_storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const WRITE_STORAGE_PATTERN = '/^\s+Write Storage\:\s+"?(?P<write_storage>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const FILESET_PATTERN = '/^\s+FileSet\:\s+"?(?P<fileset>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const VERIFY_JOB_PATTERN = '/^\s+Verify Job\:\s+"?(?P<verify_job>[a-zA-Z0-9:.\-_ ]+)"?/i';
-	const JOB_PATTERN = '/^\s+Job\:\s+"?(?P<job>[a-zA-Z0-9:.\-_ ]+)"?\.\d{4}-\d{2}-\d{2}_\d{2}\.\d{2}\.\d{2}_\d{2}/i';
-	const VOLUME_PATTERN = '/^\s+Volume name\(s\)\:\s+"?(?P<volumes>[^\s]+[a-zA-Z0-9:.\-\|_ ]+[^\s]+)"?/i';
-
-	public function parse(array $logs) {
-		$out = array();
+	public function parse(array $logs)
+	{
+		$out = [];
 		for ($i = 0; $i < count($logs); $i++) {
 			$lines = explode("\n", $logs[$i]);
 			for ($j = 0; $j < count($lines); $j++) {
@@ -64,7 +64,8 @@ class LogParser extends WebModule {
 		return $out;
 	}
 
-	private function parseLine($log_line) {
+	private function parseLine($log_line)
+	{
 		if (preg_match(self::CLIENT_PATTERN, $log_line, $match) === 1) {
 			$link = $this->getLink('client', $match['client']);
 			$log_line = str_replace($match['client'], $link, $log_line);
@@ -112,7 +113,8 @@ class LogParser extends WebModule {
 		return $log_line;
 	}
 
-	private function getLink($type, $name) {
+	private function getLink($type, $name)
+	{
 		return sprintf(
 			'<a href="/web/%s/%s">%s</a>',
 			$type,
@@ -121,4 +123,3 @@ class LogParser extends WebModule {
 		);
 	}
 }
-?>

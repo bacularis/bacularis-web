@@ -36,15 +36,14 @@ use Prado\Web\UI\TTemplateControl;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Layout
- * @package Baculum Web
  */
-class Wizard extends TTemplateControl {
-
+class Wizard extends TTemplateControl
+{
 	public $web_config;
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		$this->web_config = $this->Application->getModule('web_config')->getConfig();
 	}
 }
-?>

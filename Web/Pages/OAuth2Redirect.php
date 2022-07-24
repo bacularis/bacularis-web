@@ -34,39 +34,42 @@ use Bacularis\Common\Modules\BaculumPage;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class OAuth2Redirect extends BaculumPage {
-
+class OAuth2Redirect extends BaculumPage
+{
 	/**
 	 * Authorization ID (known also as 'authorization_code') regular expression pattern
 	 * allow to set hexadecimal value of the authorization ID with length equal 40 chars.
-	 * 
+	 *
 	 * @see http://tools.ietf.org/html/rfc6749#section-1.3.1
 	 */
-	const AUTHORIZATION_ID_PATTERN = '^[a-fA-F0-9]{40}$';
+	public const AUTHORIZATION_ID_PATTERN = '^[a-fA-F0-9]{40}$';
 
-	const STATE_PATTERN = '^[a-zA-Z0-9]{16}$';
+	public const STATE_PATTERN = '^[a-zA-Z0-9]{16}$';
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$this->Response->appendHeader('Access-Control-Allow-Origin: *');
 		$this->Response->appendHeader('Access-Control-Allow-Methods: GET, OPTIONS');
 		$this->Response->appendHeader('Access-Control-Allow-Headers: Origin, Content-Type, Location, X-Requested-With');
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if (array_key_exists('code', $_GET) && $this->validateAuthId($_GET['code']) === true && array_key_exists('state', $_GET) && $this->validateState($_GET['state']) === true) {
 			$this->getModule('api')->getTokens($_GET['code'], $_GET['state']);
 		}
 	}
 
-	private function validateAuthId($auth_id) {
+	private function validateAuthId($auth_id)
+	{
 		return (preg_match('/' . self::AUTHORIZATION_ID_PATTERN . '/', $auth_id) === 1);
 	}
 
-	private function validateState($state) {
+	private function validateState($state)
+	{
 		return (preg_match('/' . self::STATE_PATTERN . '/', $state) === 1);
 	}
 }

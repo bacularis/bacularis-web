@@ -27,30 +27,29 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Storage list page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class StorageList extends BaculumWebPage {
-
-	const USE_CACHE = true;
+class StorageList extends BaculumWebPage
+{
+	public const USE_CACHE = true;
 
 	public $storages;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
-		$result = $this->getModule('api')->get(array('storages'), null, true, self::USE_CACHE);
+		$result = $this->getModule('api')->get(['storages'], null, true, self::USE_CACHE);
 		if ($result->error === 0) {
 			$this->storages = $result->output;
 		}
 	}
 }
-?>

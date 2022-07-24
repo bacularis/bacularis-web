@@ -38,11 +38,11 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveCheckBox extends DirectiveTemplate {
-
-	public function getValue() {
+class DirectiveCheckBox extends DirectiveTemplate
+{
+	public function getValue()
+	{
 		// @TODO: Define boolean directive values (yes/no/0/1...etc.)
 		$value = $this->Directive->getChecked();
 
@@ -52,7 +52,8 @@ class DirectiveCheckBox extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
 		settype($default_value, 'bool');
@@ -63,4 +64,3 @@ class DirectiveCheckBox extends DirectiveTemplate {
 		$this->Directive->setChecked($directive_value);
 	}
 }
-?>

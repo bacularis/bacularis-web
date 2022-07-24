@@ -37,21 +37,20 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class DirectiveDoc extends WebModule {
-
+class DirectiveDoc extends WebModule
+{
 	/**
 	 * Directive documentation file path.
 	 */
-	const DOC_PATH = 'Bacularis.Web.Data.dir_docs';
+	public const DOC_PATH = 'Bacularis.Web.Data.dir_docs';
 
 	/**
 	 * Documentation file extension.
 	 */
-	const DOC_EXT = '.html';
+	public const DOC_EXT = '.html';
 
-	private static $dom = null;
+	private static $dom;
 
 	/**
 	 * Get directive documentation.
@@ -61,7 +60,8 @@ class DirectiveDoc extends WebModule {
 	 * @param string $directive_name directive name
 	 * @return string directive HTML documentation or empty string if doc is not available
 	 */
-	public function getDoc($component_type, $resource_type, $directive_name) {
+	public function getDoc($component_type, $resource_type, $directive_name)
+	{
 		$component = '';
 		$misc = $this->Application->getModule('misc');
 		if ($component_type != 'bcons') {
@@ -90,4 +90,3 @@ class DirectiveDoc extends WebModule {
 		return $doc;
 	}
 }
-?>

@@ -34,35 +34,35 @@ use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Common\Modules\Errors\DeviceError;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Storage view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class StorageView extends BaculumWebPage {
+class StorageView extends BaculumWebPage
+{
+	public const STORAGEID = 'StorageId';
+	public const STORAGE_NAME = 'StorageName';
+	public const STORAGE_ADDRESS = 'StorageAddress';
+	public const IS_AUTOCHANGER = 'IsAutochanger';
+	public const DEVICE_NAME = 'DeviceName';
 
-	const STORAGEID = 'StorageId';
-	const STORAGE_NAME = 'StorageName';
-	const STORAGE_ADDRESS = 'StorageAddress';
-	const IS_AUTOCHANGER = 'IsAutochanger';
-	const DEVICE_NAME = 'DeviceName';
+	public const USE_CACHE = true;
 
-	const USE_CACHE = true;
-
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
 		$storageid = 0;
 		if ($this->Request->contains('storageid')) {
-			$storageid = intval($this->Request['storageid']);
+			$storageid = (int) ($this->Request['storageid']);
 		} elseif ($this->Request->contains('storage')) {
-			$result = $this->getModule('api')->get(array('storages'));
+			$result = $this->getModule('api')->get(['storages']);
 			if ($result->error === 0) {
 				for ($i = 0; $i < count($result->output); $i++) {
 					if ($this->Request['storage'] === $result->output[$i]->name) {
@@ -102,7 +102,7 @@ class StorageView extends BaculumWebPage {
 				$is_autochanger = ($storageshow->output->autochanger == 1);
 				$this->setIsAutochanger($is_autochanger);
 				$this->OAutoChanger->Text = $is_autochanger ? Prado::localize('Yes') : Prado::localize('No');
-				$this->Autochanger->Display = $is_autochanger ? 'Dynamic': 'None';
+				$this->Autochanger->Display = $is_autochanger ? 'Dynamic' : 'None';
 			}
 		}
 		$this->setAPIHosts();
@@ -115,7 +115,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function setAPIHosts() {
+	private function setAPIHosts()
+	{
 		$def_host = null;
 		$api_hosts = $this->getModule('host_config')->getConfig();
 		$user_api_hosts = $this->User->getAPIHosts();
@@ -138,7 +139,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function status($sender, $param) {
+	public function status($sender, $param)
+	{
 		$raw_status = $this->getModule('api')->get(
 			['storages', $this->getStorageId(), 'status']
 		)->output;
@@ -189,7 +191,7 @@ class StorageView extends BaculumWebPage {
 		// show
 		$query_str = '?output=json';
 		$show = $this->getModule('api')->get(
-			array('storages', 'show', $query_str)
+			['storages', 'show', $query_str]
 		);
 		if ($show->error === 0) {
 			$storage_status['show'] = $show->output;
@@ -198,7 +200,8 @@ class StorageView extends BaculumWebPage {
 		$this->getCallbackClient()->callClientFunction('init_graphical_storage_status', [$storage_status]);
 	}
 
-	private function getSDAPIHost() {
+	private function getSDAPIHost()
+	{
 		if (!$this->User->isUserAPIHost($this->UserAPIHosts->SelectedValue)) {
 			// Validation error. Somebody manually modified select values
 			return false;
@@ -206,7 +209,8 @@ class StorageView extends BaculumWebPage {
 		return $this->UserAPIHosts->SelectedValue;
 	}
 
-	private function getSDName() {
+	private function getSDName()
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -217,13 +221,13 @@ class StorageView extends BaculumWebPage {
 				if ($result->output[$i]->component_type === 'sd' && $result->output[$i]->state) {
 					$sdname = $result->output[$i]->component_name;
 				}
-
 			}
 		}
 		return $sdname;
 	}
 
-	public function setStorage($sender, $param) {
+	public function setStorage($sender, $param)
+	{
 		$this->SDStorageDaemonConfig->unloadDirectives();
 		if (!empty($_SESSION['dir'])) {
 			$this->DIRStorageConfig->setComponentName($_SESSION['dir']);
@@ -233,7 +237,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function loadSDStorageDaemonConfig($sender, $param) {
+	public function loadSDStorageDaemonConfig($sender, $param)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -251,7 +256,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function loadSDResourcesConfig($sender, $param) {
+	public function loadSDResourcesConfig($sender, $param)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -269,11 +275,12 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function actionLoading($result, $out_id, $refresh_func) {
+	private function actionLoading($result, $out_id, $refresh_func)
+	{
 		$messages_log = $this->getModule('messages_log');
 		if ($result->error === 0) {
 			$rlen = count($result->output);
-			$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+			$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 			if ($last === 'quit') {
 				array_pop($result->output);
 			}
@@ -306,7 +313,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function logActionError($result) {
+	private function logActionError($result)
+	{
 		$emsg = sprintf('Error %s: %s', $result->error, $result->output);
 		$messages_log->append($result->output);
 		$this->getCallbackClient()->callClientFunction(
@@ -315,9 +323,10 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function mount($sender, $param) {
-		$drive = $this->getIsAutochanger() ? intval($this->Drive->Text) : 0;
-		$slot = $this->getIsAutochanger() ? intval($this->Slot->Text) : 0;
+	public function mount($sender, $param)
+	{
+		$drive = $this->getIsAutochanger() ? (int) ($this->Drive->Text) : 0;
+		$slot = $this->getIsAutochanger() ? (int) ($this->Slot->Text) : 0;
 		$result = $this->mountAction($drive, $slot);
 		if ($result->error === 0 && count($result->output) == 1) {
 			$out = json_decode($result->output[0]);
@@ -331,7 +340,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function mountAction($drive, $slot) {
+	private function mountAction($drive, $slot)
+	{
 		$params = [
 			'drive' => $drive,
 			'slot' => $slot
@@ -348,7 +358,8 @@ class StorageView extends BaculumWebPage {
 		return $result;
 	}
 
-	public function mountLoading($sender, $param) {
+	public function mountLoading($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$parameters = [
 			'out_id' => $out_id
@@ -367,8 +378,9 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function umount($sender, $param) {
-		$drive = $this->getIsAutochanger() ? intval($this->Drive->Text) : 0;
+	public function umount($sender, $param)
+	{
+		$drive = $this->getIsAutochanger() ? (int) ($this->Drive->Text) : 0;
 		$result = $this->umountAction($drive);
 		if ($result->error === 0) {
 			if (count($result->output) == 1) {
@@ -385,7 +397,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function umountAction($drive) {
+	private function umountAction($drive)
+	{
 		$params = [
 			'drive' => $drive
 		];
@@ -399,7 +412,8 @@ class StorageView extends BaculumWebPage {
 		return $result;
 	}
 
-	public function umountLoading($sender, $param) {
+	public function umountLoading($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$parameters = [
 			'out_id' => $out_id
@@ -418,8 +432,9 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function release($sender, $param) {
-		$drive = $this->getIsAutochanger() ? intval($this->Drive->Text) : 0;
+	public function release($sender, $param)
+	{
+		$drive = $this->getIsAutochanger() ? (int) ($this->Drive->Text) : 0;
 		$result = $this->releaseAction($drive);
 		if ($result->error === 0) {
 			if (count($result->output) == 1) {
@@ -436,7 +451,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	private function releaseAction($drive) {
+	private function releaseAction($drive)
+	{
 		$params = [
 			'drive' => $drive
 		];
@@ -450,7 +466,8 @@ class StorageView extends BaculumWebPage {
 		return $result;
 	}
 
-	public function releaseLoading($sender, $param) {
+	public function releaseLoading($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$parameters = [
 			'out_id' => $out_id
@@ -469,7 +486,8 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function loadAutochanger($sender, $param) {
+	public function loadAutochanger($sender, $param)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -505,7 +523,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function loadDrive($sender, $param) {
+	public function loadDrive($sender, $param)
+	{
 		$data = $param->getCallbackParameter();
 		if (!is_object($data)) {
 			return;
@@ -541,7 +560,7 @@ class StorageView extends BaculumWebPage {
 					$host
 				);
 			} else {
-				$result = new StdClass;
+				$result = new StdClass();
 				$result->error = DeviceError::ERROR_DEVICE_AUTOCHANGER_DRIVE_DOES_NOT_EXIST;
 				$result->output = Prado::localize('There was a problem with loading the resource configuration. Please check if selected API host is working and if it provides access to the resource configuration.');
 			}
@@ -579,7 +598,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function loadedDriveWithMount($sender, $param) {
+	public function loadedDriveWithMount($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$parameters = [
 			'out_id' => $out_id
@@ -598,7 +618,8 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function loadedDriveWithoutMount($sender, $param) {
+	public function loadedDriveWithoutMount($sender, $param)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -623,11 +644,12 @@ class StorageView extends BaculumWebPage {
 		);
 	}
 
-	public function loadedDrive($refresh_func, $out_id, $result) {
+	public function loadedDrive($refresh_func, $out_id, $result)
+	{
 		$messages_log = $this->getModule('messages_log');
 		if ($result->error === 0) {
 			$rlen = count($result->output);
-			$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+			$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 			if ($last === 'quit') {
 				array_pop($result->output);
 			}
@@ -661,7 +683,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function unloadDrive($sender, $param) {
+	public function unloadDrive($sender, $param)
+	{
 		$data = $param->getCallbackParameter();
 		if (!is_object($data)) {
 			return;
@@ -699,7 +722,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function unloadedDrive($sender, $param) {
+	public function unloadedDrive($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$parameters = [
 			'out_id' => $out_id
@@ -714,7 +738,7 @@ class StorageView extends BaculumWebPage {
 		$messages_log = $this->getModule('messages_log');
 		if ($result->error === 0) {
 			$rlen = count($result->output);
-			$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+			$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 			if ($last === 'quit') {
 				array_pop($result->output);
 			}
@@ -743,13 +767,15 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function labelBarcodes($sender, $param) {
+	public function labelBarcodes($sender, $param)
+	{
 		$slots_ach = explode('|', $param->getCallbackParameter());
 		$this->LabelBarcodes->setSlots($slots_ach);
 		$this->LabelBarcodes->loadValues();
 	}
 
-	public function labelComplete($sender, $param) {
+	public function labelComplete($sender, $param)
+	{
 		$this->getCallbackClient()->callClientFunction(
 			'show_label_volume_window',
 			[false]
@@ -761,7 +787,8 @@ class StorageView extends BaculumWebPage {
 		$this->loadAutochanger(null, null);
 	}
 
-	private function transferSlots($slotsrc, $slotdest) {
+	private function transferSlots($slotsrc, $slotdest)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -783,7 +810,8 @@ class StorageView extends BaculumWebPage {
 		return $result;
 	}
 
-	private function getTransferOutput($out_id) {
+	private function getTransferOutput($out_id)
+	{
 		if (!($host = $this->getSDAPIHost())) {
 			return;
 		}
@@ -803,8 +831,9 @@ class StorageView extends BaculumWebPage {
 		return $result;
 	}
 
-	public function moveToIE($sender, $param) {
-		list($slot_ach, $ie_slot) = explode(',', $param->getCallbackParameter(), 2);
+	public function moveToIE($sender, $param)
+	{
+		[$slot_ach, $ie_slot] = explode(',', $param->getCallbackParameter(), 2);
 		$result = $this->transferSlots($slot_ach, $ie_slot);
 		if ($result->error === 0) {
 			$this->getCallbackClient()->callClientFunction(
@@ -821,7 +850,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function movingToIE($sender, $param) {
+	public function movingToIE($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$result = $this->getTransferOutput($out_id);
 		$messages_log = $this->getModule('messages_log');
@@ -833,7 +863,7 @@ class StorageView extends BaculumWebPage {
 					[$out_id]
 				);
 				$rlen = count($result->output);
-				$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+				$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 				if ($last === 'quit') {
 					array_pop($result->output);
 				}
@@ -864,8 +894,9 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function releaseIE($sender, $param) {
-		list($ie_slot, $slot_ach) = explode(',', $param->getCallbackParameter(), 2);
+	public function releaseIE($sender, $param)
+	{
+		[$ie_slot, $slot_ach] = explode(',', $param->getCallbackParameter(), 2);
 		$result = $this->transferSlots($ie_slot, $slot_ach);
 		if ($result->error === 0) {
 			$this->getCallbackClient()->callClientFunction(
@@ -882,7 +913,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function releasingIE($sender, $param) {
+	public function releasingIE($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$result = $this->getTransferOutput($out_id);
 		$messages_log = $this->getModule('messages_log');
@@ -894,7 +926,7 @@ class StorageView extends BaculumWebPage {
 					[$out_id]
 				);
 				$rlen = count($result->output);
-				$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+				$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 				if ($last === 'quit') {
 					array_pop($result->output);
 				}
@@ -927,22 +959,25 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function updateSlotsBarcodes($sender, $param) {
+	public function updateSlotsBarcodes($sender, $param)
+	{
 		$slots_ach = explode('|', $param->getCallbackParameter());
 		$this->UpdateSlots->BarcodeUpdate = true;
 		$this->UpdateSlots->setSlots($slots_ach);
 		$this->UpdateSlots->loadValues();
 	}
 
-	public function updateSlots($sender, $param) {
+	public function updateSlots($sender, $param)
+	{
 		$slots_ach = explode('|', $param->getCallbackParameter());
 		$this->UpdateSlots->BarcodeUpdate = false;
 		$this->UpdateSlots->setSlots($slots_ach);
 		$this->UpdateSlots->loadValues();
 	}
 
-	public function moveFromIE($sender, $param) {
-		list($ie_slot, $slot_ach) = explode(',', $param->getCallbackParameter(), 2);
+	public function moveFromIE($sender, $param)
+	{
+		[$ie_slot, $slot_ach] = explode(',', $param->getCallbackParameter(), 2);
 		$result = $this->transferSlots($ie_slot, $slot_ach);
 		if ($result->error === 0) {
 			$this->getCallbackClient()->callClientFunction(
@@ -959,7 +994,8 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function movingFromIE($sender, $param) {
+	public function movingFromIE($sender, $param)
+	{
 		$out_id = $param->getCallbackParameter();
 		$result = $this->getTransferOutput($out_id);
 		$messages_log = $this->getModule('messages_log');
@@ -971,7 +1007,7 @@ class StorageView extends BaculumWebPage {
 					[$out_id]
 				);
 				$rlen = count($result->output);
-				$last = $rlen > 0 ? trim($result->output[$rlen-1]) : '';
+				$last = $rlen > 0 ? trim($result->output[$rlen - 1]) : '';
 				if ($last === 'quit') {
 					array_pop($result->output);
 				}
@@ -997,14 +1033,16 @@ class StorageView extends BaculumWebPage {
 		}
 	}
 
-	public function showChangerLoading($sender, $param) {
+	public function showChangerLoading($sender, $param)
+	{
 		$this->getCallbackClient()->callClientFunction(
 			'oSlots.show_changer_loader',
 			[true]
 		);
 	}
 
-	public function hideChangerLoading($sender, $param) {
+	public function hideChangerLoading($sender, $param)
+	{
 		$this->getCallbackClient()->callClientFunction(
 			'oSlots.show_changer_loader',
 			[false]
@@ -1014,28 +1052,33 @@ class StorageView extends BaculumWebPage {
 	/**
 	 * Set storage storageid.
 	 *
+	 * @param mixed $storageid
 	 * @return none;
 	 */
-	public function setStorageId($storageid) {
-		$storageid = intval($storageid);
+	public function setStorageId($storageid)
+	{
+		$storageid = (int) $storageid;
 		$this->setViewState(self::STORAGEID, $storageid, 0);
 	}
 
 	/**
 	 * Get storage storageid.
 	 *
-	 * @return integer storageid
+	 * @return int storageid
 	 */
-	public function getStorageId() {
+	public function getStorageId()
+	{
 		return $this->getViewState(self::STORAGEID, 0);
 	}
 
 	/**
 	 * Set storage name.
 	 *
+	 * @param mixed $storage_name
 	 * @return none;
 	 */
-	public function setStorageName($storage_name) {
+	public function setStorageName($storage_name)
+	{
 		$this->setViewState(self::STORAGE_NAME, $storage_name);
 	}
 
@@ -1044,16 +1087,19 @@ class StorageView extends BaculumWebPage {
 	 *
 	 * @return string storage name
 	 */
-	public function getStorageName() {
+	public function getStorageName()
+	{
 		return $this->getViewState(self::STORAGE_NAME);
 	}
 
 	/**
 	 * Set device name.
 	 *
+	 * @param mixed $device_name
 	 * @return none;
 	 */
-	public function setDeviceName($device_name) {
+	public function setDeviceName($device_name)
+	{
 		$this->setViewState(self::DEVICE_NAME, $device_name);
 	}
 
@@ -1062,7 +1108,8 @@ class StorageView extends BaculumWebPage {
 	 *
 	 * @return string device name
 	 */
-	public function getDeviceName() {
+	public function getDeviceName()
+	{
 		return $this->getViewState(self::DEVICE_NAME);
 	}
 
@@ -1071,16 +1118,19 @@ class StorageView extends BaculumWebPage {
 	 *
 	 * @return bool true if autochanger, otherwise false
 	 */
-	public function getIsAutochanger() {
+	public function getIsAutochanger()
+	{
 		return $this->getViewState(self::IS_AUTOCHANGER, false);
 	}
 
 	/**
 	 * Set autochanger value for storage
 	 *
+	 * @param mixed $is_autochanger
 	 * @return none;
 	 */
-	public function setIsAutochanger($is_autochanger) {
+	public function setIsAutochanger($is_autochanger)
+	{
 		settype($is_autochanger, 'bool');
 		$this->setViewState(self::IS_AUTOCHANGER, $is_autochanger);
 	}
@@ -1088,9 +1138,11 @@ class StorageView extends BaculumWebPage {
 	/**
 	 * Set storage address.
 	 *
+	 * @param mixed $address
 	 * @return none;
 	 */
-	public function setStorageAddress($address) {
+	public function setStorageAddress($address)
+	{
 		$this->setViewState(self::STORAGE_ADDRESS, $address);
 	}
 
@@ -1099,8 +1151,8 @@ class StorageView extends BaculumWebPage {
 	 *
 	 * @return string address
 	 */
-	public function getStorageAddress() {
+	public function getStorageAddress()
+	{
 		return $this->getViewState(self::STORAGE_ADDRESS);
 	}
 }
-?>

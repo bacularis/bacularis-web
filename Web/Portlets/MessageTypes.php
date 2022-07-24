@@ -38,19 +38,20 @@ use Bacularis\Web\Portlets\DirectiveCheckBox;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class MessageTypes extends DirectiveListTemplate {
-
-	public function loadConfig() {
+class MessageTypes extends DirectiveListTemplate
+{
+	public function loadConfig()
+	{
 		$this->RepeaterMessageTypes->dataSource = $this->getData();
 		$this->RepeaterMessageTypes->dataBind();
 	}
 
-	public function getDirectiveValues() {
+	public function getDirectiveValues()
+	{
 		$type_controls = $this->RepeaterMessageTypes->findControlsByType('Bacularis\Web\Portlets\DirectiveCheckBox');
 		$is_all = false;
-		$types = array();
+		$types = [];
 		for ($i = 0; $i < count($type_controls); $i++) {
 			$type_controls[$i]->setValue();
 			$directive_name = $type_controls[$i]->getDirectiveName();
@@ -67,7 +68,8 @@ class MessageTypes extends DirectiveListTemplate {
 		return $types;
 	}
 
-	public function createTypeListElement($sender, $param) {
+	public function createTypeListElement($sender, $param)
+	{
 		if (!is_array($param->Item->Data)) {
 			// skip parent repeater items
 			return;

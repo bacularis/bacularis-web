@@ -39,27 +39,27 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveSpeed extends DirectiveTemplate {
+class DirectiveSpeed extends DirectiveTemplate
+{
+	public const ALLOW_REMOVE = 'AllowRemove';
+	public const SPEED_FORMAT = 'SpeedFormat';
+	public const UNIT_TYPE = 'UnitType';
+	public const DEFAULT_SPEED_FORMAT = '';
 
-	const ALLOW_REMOVE = 'AllowRemove';
-	const SPEED_FORMAT = 'SpeedFormat';
-	const UNIT_TYPE = 'UnitType';
-	const DEFAULT_SPEED_FORMAT = '';
+	public const DECIMAL_UNIT_TYPE = 'decimal';
+	public const BINARY_UNIT_TYPE = 'binary';
 
-	const DECIMAL_UNIT_TYPE = 'decimal';
-	const BINARY_UNIT_TYPE = 'binary';
+	private $units = [
+		['format' => '', 'value' => 1, 'label' => 'B/s'],
+		['format' => 'kb/s', 'value' => 1000, 'label' => 'kB/s'],
+		['format' => 'k/s', 'value' => 1024, 'label' => 'KiB/s'],
+		['format' => 'mb/s', 'value' => 1000000, 'label' => 'MB/s'],
+		['format' => 'm/s', 'value' => 1048576, 'label' => 'MiB/s']
+	];
 
-	private $units = array(
-		array('format' => '', 'value' => 1, 'label' => 'B/s'),
-		array('format' => 'kb/s', 'value' => 1000, 'label' => 'kB/s'),
-		array('format' => 'k/s', 'value' => 1024, 'label' => 'KiB/s'),
-		array('format' => 'mb/s', 'value' => 1000000, 'label' => 'MB/s'),
-		array('format' => 'm/s', 'value' => 1048576, 'label' => 'MiB/s')
-	);
-
-	public function getValue() {
+	public function getValue()
+	{
 		$value = $this->Directive->Text;
 		if (is_numeric($value)) {
 			settype($value, 'integer');
@@ -71,16 +71,19 @@ class DirectiveSpeed extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function getSpeedFormat() {
+	public function getSpeedFormat()
+	{
 		return $this->getViewState(self::SPEED_FORMAT, self::DEFAULT_SPEED_FORMAT);
 	}
 
-	public function setSpeedFormat($format) {
+	public function setSpeedFormat($format)
+	{
 		$this->setViewState(self::SPEED_FORMAT, $format);
 	}
 
-	public function getSpeedFormats() {
-		$speed_formats = array();
+	public function getSpeedFormats()
+	{
+		$speed_formats = [];
 		$units = $this->getUnits();
 		for ($i = 0; $i < count($units); $i++) {
 			$speed_formats[$units[$i]['format']] = $units[$i]['label'];
@@ -95,8 +98,9 @@ class DirectiveSpeed extends DirectiveTemplate {
 	 *
 	 * @return array allowed units to use in control
 	 */
-	public function getUnits() {
-		$units = array();
+	public function getUnits()
+	{
+		$units = [];
 		$unit_type = $this->getUnitType();
 		if (empty($unit_type)) {
 			$units = $this->units;
@@ -115,7 +119,8 @@ class DirectiveSpeed extends DirectiveTemplate {
 		return $units;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$speed_format = $this->getSpeedFormat();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -146,8 +151,11 @@ class DirectiveSpeed extends DirectiveTemplate {
 	 *  given format: ''
 	 *  returned value: 121
 	 *  returned format: 'kb/s'
+	 * @param mixed $speed_bytes
+	 * @param mixed $format
 	 */
-	private function formatSpeed($speed_bytes, $format) {
+	private function formatSpeed($speed_bytes, $format)
+	{
 		$value = $speed_bytes;
 		if ($value > 0) {
 			$units = $this->getUnits();
@@ -162,10 +170,11 @@ class DirectiveSpeed extends DirectiveTemplate {
 				}
 			}
 		}
-		return array('value' => $value, 'format' => $format);
+		return ['value' => $value, 'format' => $format];
 	}
 
-	private function getValueBytes($value, $speed_format) {
+	private function getValueBytes($value, $speed_format)
+	{
 		$units = $this->getUnits();
 		for ($i = 0; $i < count($units); $i++) {
 			if ($units[$i]['format'] === $speed_format) {
@@ -185,7 +194,8 @@ class DirectiveSpeed extends DirectiveTemplate {
 	 * @return none
 	 * @throw Exception if provided invalid unit type value
 	 */
-	public function setUnitType($unit_type) {
+	public function setUnitType($unit_type)
+	{
 		if ($unit_type === self::DECIMAL_UNIT_TYPE || $unit_type === self::BINARY_UNIT_TYPE) {
 			$this->setViewState(self::UNIT_TYPE, $unit_type);
 		} else {
@@ -204,8 +214,8 @@ class DirectiveSpeed extends DirectiveTemplate {
 	 *
 	 * @return none
 	 */
-	public function getUnitType() {
+	public function getUnitType()
+	{
 		return $this->getViewState(self::UNIT_TYPE, '');
 	}
 }
-?>

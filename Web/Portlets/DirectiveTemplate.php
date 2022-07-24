@@ -31,7 +31,9 @@ namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
 use Prado\Web\UI\TCommandEventParameter;
-use Prado\Web\UI\ActiveControls\IActiveControl;;
+use Prado\Web\UI\ActiveControls\IActiveControl;
+
+;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
 use Bacularis\Web\Portlets\DirectiveControlTemplate;
 use Bacularis\Web\Portlets\IDirectiveField;
@@ -41,34 +43,33 @@ use Bacularis\Web\Portlets\IDirectiveField;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveField, IActiveControl {
-
-	const HOST = 'Host';
-	const COMPONENT_TYPE = 'ComponentType';
-	const COMPONENT_NAME = 'ComponentName';
-	const RESOURCE_TYPE = 'ResourceType';
-	const RESOURCE_NAME = 'ResourceName';
-	const DIRECTIVE_NAME = 'DirectiveName';
-	const DIRECTIVE_VALUE = 'DirectiveValue';
-	const DEFAULT_VALUE = 'DefaultValue';
-	const REQUIRED = 'Required';
-	const DATA = 'Data';
-	const RESOURCE = 'Resource';
-	const LABEL = 'Label';
-	const IN_CONFIG = 'InConfig';
-	const SHOW = 'Show';
-	const RESOURCE_NAMES = 'ResourceNames';
-	const PARENT_NAME = 'ParentName';
-	const GROUP_NAME = 'GroupName';
-	const IS_DIRECTIVE_CREATED = 'IsDirectiveCreated';
-	const VALIDATION_GROUP = 'ValidationGroup';
-	const CSSCLASS = 'CssClass';
-	const DISABLED = 'Disabled';
-	const SHOW_RESET_BUTTON = 'ShowResetButton';
-	const SHOW_REMOVE_BUTTON = 'ShowRemoveButton';
-	const DOC = 'Doc';
+class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveField, IActiveControl
+{
+	public const HOST = 'Host';
+	public const COMPONENT_TYPE = 'ComponentType';
+	public const COMPONENT_NAME = 'ComponentName';
+	public const RESOURCE_TYPE = 'ResourceType';
+	public const RESOURCE_NAME = 'ResourceName';
+	public const DIRECTIVE_NAME = 'DirectiveName';
+	public const DIRECTIVE_VALUE = 'DirectiveValue';
+	public const DEFAULT_VALUE = 'DefaultValue';
+	public const REQUIRED = 'Required';
+	public const DATA = 'Data';
+	public const RESOURCE = 'Resource';
+	public const LABEL = 'Label';
+	public const IN_CONFIG = 'InConfig';
+	public const SHOW = 'Show';
+	public const RESOURCE_NAMES = 'ResourceNames';
+	public const PARENT_NAME = 'ParentName';
+	public const GROUP_NAME = 'GroupName';
+	public const IS_DIRECTIVE_CREATED = 'IsDirectiveCreated';
+	public const VALIDATION_GROUP = 'ValidationGroup';
+	public const CSSCLASS = 'CssClass';
+	public const DISABLED = 'Disabled';
+	public const SHOW_RESET_BUTTON = 'ShowResetButton';
+	public const SHOW_REMOVE_BUTTON = 'ShowRemoveButton';
+	public const DOC = 'Doc';
 
 	public $doc;
 
@@ -76,23 +77,27 @@ class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveFi
 
 	private $data_changed = false;
 
-	private $command_params = array('save', 'add');
+	private $command_params = ['save', 'add'];
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->setAdapter(new TActiveControlAdapter($this));
 	}
 
-	public function getActiveControl() {
+	public function getActiveControl()
+	{
 		return $this->getAdapter()->getBaseActiveControl();
 	}
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$this->ensureChildControls();
 	}
 
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 		if ($this->getPage()->IsPostBack && $this->getValue() != $this->getDefaultValue()) {
 			// It has special meaning for directive controls used in wizards
@@ -100,7 +105,8 @@ class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveFi
 		}
 	}
 
-	public function bubbleEvent($sender, $param) {
+	public function bubbleEvent($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
 			$this->raiseBubbleEvent($this, $param);
 			return true;
@@ -109,27 +115,31 @@ class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveFi
 		}
 	}
 
-	public function copyAttributes() {
+	public function copyAttributes()
+	{
 		$control = $this->findControl('Directive');
 		if ($control instanceof \Prado\Web\UI\TControl) {
 			$control->getAttributes()->copyFrom($this->getAttributes());
 		}
 	}
 
-	public function saveValue($sender, $param) {
+	public function saveValue($sender, $param)
+	{
 		if ($this->getCmdParam() === 'save') {
 			$this->setValue();
 		}
 	}
 
-	public function setValue() {
+	public function setValue()
+	{
 		if (method_exists($this, 'getValue')) {
 			$new_value = $this->getValue();
 			$this->setDirectiveValue($new_value);
 		}
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if (!$this->getIsDirectiveCreated()) {
 			$this->createDirective();
@@ -142,205 +152,254 @@ class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveFi
 		$this->display_directive = $this->getShow();
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		// so far nothing to do
 	}
 
-	public function loadValue($value_obj) {
+	public function loadValue($value_obj)
+	{
 		$value_obj->raisePostDataChangedEvent();
 	}
 
-	public function getHost() {
+	public function getHost()
+	{
 		return $this->getViewState(self::HOST);
 	}
 
-	public function setHost($host) {
+	public function setHost($host)
+	{
 		$this->setViewState(self::HOST, $host);
 	}
 
-	public function getComponentType() {
+	public function getComponentType()
+	{
 		return $this->getViewState(self::COMPONENT_TYPE);
 	}
 
-	public function setComponentType($type) {
+	public function setComponentType($type)
+	{
 		$this->setViewState(self::COMPONENT_TYPE, $type);
 	}
 
-	public function getComponentName() {
+	public function getComponentName()
+	{
 		return $this->getViewState(self::COMPONENT_NAME);
 	}
 
-	public function setComponentName($name) {
+	public function setComponentName($name)
+	{
 		$this->setViewState(self::COMPONENT_NAME, $name);
 	}
 
-	public function getResourceType() {
+	public function getResourceType()
+	{
 		return $this->getViewState(self::RESOURCE_TYPE);
 	}
 
-	public function setResourceType($type) {
+	public function setResourceType($type)
+	{
 		$this->setViewState(self::RESOURCE_TYPE, $type);
 	}
 
-	public function getResourceName() {
+	public function getResourceName()
+	{
 		return $this->getViewState(self::RESOURCE_NAME);
 	}
 
-	public function setResourceName($name) {
+	public function setResourceName($name)
+	{
 		$this->setViewState(self::RESOURCE_NAME, $name);
 	}
 
-	public function getDirectiveName() {
+	public function getDirectiveName()
+	{
 		return $this->getViewState(self::DIRECTIVE_NAME);
 	}
 
-	public function setDirectiveName($name) {
+	public function setDirectiveName($name)
+	{
 		$this->setViewState(self::DIRECTIVE_NAME, $name);
 	}
 
-	public function getDirectiveValue() {
+	public function getDirectiveValue()
+	{
 		$this->saveValue(null, null);
 		return $this->getViewState(self::DIRECTIVE_VALUE);
 	}
 
-	public function setDirectiveValue($value) {
+	public function setDirectiveValue($value)
+	{
 		$this->setViewState(self::DIRECTIVE_VALUE, $value);
 	}
 
-	public function getDefaultValue() {
+	public function getDefaultValue()
+	{
 		return $this->getViewState(self::DEFAULT_VALUE);
 	}
 
-	public function setDefaultValue($value) {
+	public function setDefaultValue($value)
+	{
 		$this->setViewState(self::DEFAULT_VALUE, $value);
 	}
 
-	public function getRequired() {
+	public function getRequired()
+	{
 		return $this->getViewState(self::REQUIRED);
 	}
 
-	public function setRequired($value) {
+	public function setRequired($value)
+	{
 		$value = TPropertyValue::ensureBoolean($value);
 		$this->setViewState(self::REQUIRED, $value);
 	}
 
-	public function getLabel() {
+	public function getLabel()
+	{
 		return $this->getViewState(self::LABEL);
 	}
 
-	public function setLabel($label) {
+	public function setLabel($label)
+	{
 		$this->setViewState(self::LABEL, $label);
 	}
 
-	public function getInConfig() {
+	public function getInConfig()
+	{
 		return $this->getViewState(self::IN_CONFIG, false);
 	}
 
-	public function setInConfig($in_config) {
+	public function setInConfig($in_config)
+	{
 		$this->setViewState(self::IN_CONFIG, $in_config);
 	}
 
-	public function getShow() {
+	public function getShow()
+	{
 		return $this->getViewState(self::SHOW);
 	}
 
-	public function setShow($show) {
+	public function setShow($show)
+	{
 		$this->setViewState(self::SHOW, $show);
 	}
 
-	public function getResourceNames() {
+	public function getResourceNames()
+	{
 		return $this->getViewState(self::RESOURCE_NAMES);
 	}
 
-	public function setResourceNames($resource_names) {
+	public function setResourceNames($resource_names)
+	{
 		$this->setViewState(self::RESOURCE_NAMES, $resource_names);
 	}
 
-	public function getData() {
+	public function getData()
+	{
 		return $this->getViewState(self::DATA);
 	}
 
-	public function setData($data) {
+	public function setData($data)
+	{
 		$this->setViewState(self::DATA, $data);
 	}
 
 	// Re-think name of the Resource property and use more general name if possible
-	public function getResource() {
+	public function getResource()
+	{
 		return $this->getViewState(self::RESOURCE);
 	}
 
-	public function setResource($resource) {
+	public function setResource($resource)
+	{
 		$this->setViewState(self::RESOURCE, $resource);
 	}
 
-	public function getParentName() {
+	public function getParentName()
+	{
 		return $this->getViewState(self::PARENT_NAME);
 	}
 
-	public function setParentName($parent_name) {
+	public function setParentName($parent_name)
+	{
 		$this->setViewState(self::PARENT_NAME, $parent_name);
 	}
 
-	public function getGroupName() {
+	public function getGroupName()
+	{
 		return $this->getViewState(self::GROUP_NAME);
 	}
 
-	public function setGroupName($group_name) {
+	public function setGroupName($group_name)
+	{
 		$this->setViewState(self::GROUP_NAME, $group_name);
 	}
 
-	public function getIsDirectiveCreated() {
+	public function getIsDirectiveCreated()
+	{
 		return $this->getViewState(self::IS_DIRECTIVE_CREATED);
 	}
 
-	public function setIsDirectiveCreated($is_created) {
+	public function setIsDirectiveCreated($is_created)
+	{
 		$this->setViewState(self::IS_DIRECTIVE_CREATED, $is_created);
 	}
 
-	public function getValidationGroup() {
+	public function getValidationGroup()
+	{
 		return $this->getViewState(self::VALIDATION_GROUP, 'Directive');
 	}
 
-	public function setValidationGroup($validation_group) {
+	public function setValidationGroup($validation_group)
+	{
 		$this->setViewState(self::VALIDATION_GROUP, $validation_group);
 	}
 
-	public function getCssClass() {
+	public function getCssClass()
+	{
 		return $this->getViewState(self::CSSCLASS);
 	}
 
-	public function setCssClass($cssclass) {
+	public function setCssClass($cssclass)
+	{
 		$this->setViewState(self::CSSCLASS, $cssclass);
 	}
 
-	public function getDisabled() {
+	public function getDisabled()
+	{
 		return $this->getViewState(self::DISABLED);
 	}
 
-	public function setDisabled($disabled) {
+	public function setDisabled($disabled)
+	{
 		$disabled = TPropertyValue::ensureBoolean($disabled);
 		$this->setViewState(self::DISABLED, $disabled);
 	}
 
-	public function getShowResetButton() {
+	public function getShowResetButton()
+	{
 		return $this->getViewState(self::SHOW_RESET_BUTTON, true);
 	}
 
-	public function setShowResetButton($show) {
+	public function setShowResetButton($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_RESET_BUTTON, $show);
 	}
 
-	public function getShowRemoveButton() {
+	public function getShowRemoveButton()
+	{
 		return $this->getViewState(self::SHOW_REMOVE_BUTTON, true);
 	}
 
-	public function setShowRemoveButton($show) {
+	public function setShowRemoveButton($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_REMOVE_BUTTON, $show);
 	}
 
-	public function createDoc() {
+	public function createDoc()
+	{
 		$doc = $this->getDoc();
 		if (!empty($doc)) {
 			$this->doc = $doc;
@@ -356,12 +415,13 @@ class DirectiveTemplate extends DirectiveControlTemplate implements IDirectiveFi
 		}
 	}
 
-	public function setDoc($doc) {
+	public function setDoc($doc)
+	{
 		$this->setViewState(self::DOC, $doc);
 	}
 
-	public function getDoc() {
+	public function getDoc()
+	{
 		return $this->getViewState(self::DOC, '');
 	}
 }
-?>

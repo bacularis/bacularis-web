@@ -33,8 +33,7 @@ namespace Bacularis\Web\Portlets;
  * New FileSet include and exclude menu.
  *
  * @category Control
- * @package Baculum Web
  */
-class NewFileSetIncExcMenu extends DirectiveListTemplate {
+class NewFileSetIncExcMenu extends DirectiveListTemplate
+{
 }
-?>

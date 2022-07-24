@@ -38,12 +38,12 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveListBox extends DirectiveTemplate {
-
-	public function getValue() {
-		$value = array();
+class DirectiveListBox extends DirectiveTemplate
+{
+	public function getValue()
+	{
+		$value = [];
 		$values = $this->Directive->getSelectedIndices();
 		$items = $this->Directive->getItems();
 		for ($i = 0; $i < count($values); $i++) {
@@ -52,14 +52,15 @@ class DirectiveListBox extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$data = $this->getData();
 		$resource_names = $this->getResourceNames();
 		$directive_name = $this->getDirectiveName();
 		$resource = $this->getResource();
 		$in_config = $this->getInConfig();
-		$items = array();
+		$items = [];
 		if (is_array($data)) {
 			$items = $data;
 		} elseif (is_array($resource_names)) {
@@ -77,10 +78,10 @@ class DirectiveListBox extends DirectiveTemplate {
 			if ($default_value !== 0) {
 				$directive_value = $default_value;
 			} else {
-				$directive_value = array();
+				$directive_value = [];
 			}
 		}
-		$selected_indices = array();
+		$selected_indices = [];
 		for ($i = 0; $i < count($items); $i++) {
 			if (in_array($items[$i], $directive_value)) {
 				$selected_indices[] = $i;
@@ -94,4 +95,3 @@ class DirectiveListBox extends DirectiveTemplate {
 		$this->DirectiveValidator->setVisible($validate);
 	}
 }
-?>

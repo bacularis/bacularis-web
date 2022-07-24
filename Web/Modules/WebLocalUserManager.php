@@ -37,16 +37,16 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebLocalUserManager extends WebModule implements IUserManager {
-
+class WebLocalUserManager extends WebModule implements IUserManager
+{
 	/**
 	 * Module initialization.
 	 *
 	 * @param TXmlElement $config module configuration
 	 */
-	public function init($config) {
+	public function init($config)
+	{
 	}
 
 	/**
@@ -55,9 +55,10 @@ class WebLocalUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param string $username username
 	 * @param string $password password
-	 * @return boolean true if user and password valid, otherwise false
+	 * @return bool true if user and password valid, otherwise false
 	 */
-	public function validateUser($username, $password) {
+	public function validateUser($username, $password)
+	{
 		$valid = false;
 		$user = $this->getModule('basic_webuser')->getUserCfg($username);
 		if (count($user) == 2) {
@@ -71,4 +72,3 @@ class WebLocalUserManager extends WebModule implements IUserManager {
 		return $valid;
 	}
 }
-?>

@@ -30,24 +30,24 @@
 use Prado\Web\UI\ActiveControls\TActiveTextBox;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Device view page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class DeviceView extends BaculumWebPage {
+class DeviceView extends BaculumWebPage
+{
+	public const USE_CACHE = true;
 
-	const USE_CACHE = true;
+	public const STORAGEID = 'StorageId';
+	public const STORAGE_NAME = 'StorageName';
+	public const DEVICE_NAME = 'DeviceName';
 
-	const STORAGEID = 'StorageId';
-	const STORAGE_NAME = 'StorageName';
-	const DEVICE_NAME = 'DeviceName';
-
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
@@ -61,7 +61,7 @@ class DeviceView extends BaculumWebPage {
 		$storageid = $this->getStorageId();
 		if ($storageid > 0) {
 			$storage = $this->Application->getModule('api')->get(
-				array('storages', $this->getStorageId()),
+				['storages', $this->getStorageId()],
 				null,
 				true,
 				self::USE_CACHE
@@ -75,28 +75,33 @@ class DeviceView extends BaculumWebPage {
 	/**
 	 * Set storage storageid.
 	 *
+	 * @param mixed $storageid
 	 * @return none;
 	 */
-	public function setStorageId($storageid) {
-		$storageid = intval($storageid);
+	public function setStorageId($storageid)
+	{
+		$storageid = (int) $storageid;
 		$this->setViewState(self::STORAGEID, $storageid, 0);
 	}
 
 	/**
 	 * Get storage storageid.
 	 *
-	 * @return integer storageid
+	 * @return int storageid
 	 */
-	public function getStorageId() {
+	public function getStorageId()
+	{
 		return $this->getViewState(self::STORAGEID, 0);
 	}
 
 	/**
 	 * Set storage name.
 	 *
+	 * @param mixed $storage_name
 	 * @return none;
 	 */
-	public function setStorageName($storage_name) {
+	public function setStorageName($storage_name)
+	{
 		$this->setViewState(self::STORAGE_NAME, $storage_name);
 	}
 
@@ -105,7 +110,8 @@ class DeviceView extends BaculumWebPage {
 	 *
 	 * @return string storage name
 	 */
-	public function getStorageName() {
+	public function getStorageName()
+	{
 		return $this->getViewState(self::STORAGE_NAME);
 	}
 
@@ -113,9 +119,11 @@ class DeviceView extends BaculumWebPage {
 	/**
 	 * Set device name.
 	 *
+	 * @param mixed $device_name
 	 * @return none;
 	 */
-	public function setDeviceName($device_name) {
+	public function setDeviceName($device_name)
+	{
 		$this->setViewState(self::DEVICE_NAME, $device_name);
 	}
 
@@ -124,22 +132,25 @@ class DeviceView extends BaculumWebPage {
 	 *
 	 * @return string device name
 	 */
-	public function getDeviceName() {
+	public function getDeviceName()
+	{
 		return $this->getViewState(self::DEVICE_NAME);
 	}
 
-	public function setDevice($sender, $param) {
+	public function setDevice($sender, $param)
+	{
 		$this->DeviceConfig->setComponentName($_SESSION['sd']);
 		$this->DeviceConfig->setResourceName($this->getDeviceName());
 		$this->DeviceConfig->setLoadValues(true);
 		$this->DeviceConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 	}
 
-	public function mount($sender, $param) {
+	public function mount($sender, $param)
+	{
 		$query = '?device=' . rawurlencode($this->getDeviceName());
-		$query .= '&slot=' . intval($this->Slot->Text);
+		$query .= '&slot=' . (int) ($this->Slot->Text);
 		$mount = $this->getModule('api')->get(
-			array('storages',$this->getStorageId(), 'mount', $query)
+			['storages', $this->getStorageId(), 'mount', $query]
 		);
 		if ($mount->error === 0) {
 			$this->DeviceLog->Text = implode(PHP_EOL, $mount->output);
@@ -148,23 +159,24 @@ class DeviceView extends BaculumWebPage {
 		}
 	}
 
-	public function umount($sender, $param) {
+	public function umount($sender, $param)
+	{
 		$query = '?device=' . rawurlencode($this->getDeviceName());
 		$umount = $this->getModule('api')->get(
-			array('storages', $this->getStorageId(), 'umount', $query)
+			['storages', $this->getStorageId(), 'umount', $query]
 		);
 		if ($umount->error === 0) {
 			$this->DeviceLog->Text = implode(PHP_EOL, $umount->output);
 		} else {
 			$this->DeviceLog->Text = $umount->output;
 		}
-
 	}
 
-	public function release($sender, $param) {
+	public function release($sender, $param)
+	{
 		$query = '?device=' . rawurlencode($this->getDeviceName());
 		$release = $this->getModule('api')->get(
-			array('storages', $this->getStorageId(), 'release', $query)
+			['storages', $this->getStorageId(), 'release', $query]
 		);
 		if ($release->error === 0) {
 			$this->DeviceLog->Text = implode(PHP_EOL, $release->output);
@@ -173,4 +185,3 @@ class DeviceView extends BaculumWebPage {
 		}
 	}
 }
-?>

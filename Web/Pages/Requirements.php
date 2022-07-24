@@ -34,10 +34,9 @@ use Bacularis\Common\Modules\GeneralRequirements;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class Requirements extends GeneralRequirements {
-
+class Requirements extends GeneralRequirements
+{
 	/**
 	 * Required PHP extensions.
 	 *
@@ -56,7 +55,8 @@ class Requirements extends GeneralRequirements {
 		]
 	];
 
-	public function __construct($app_dir, $prot_dir, $base_dir) {
+	public function __construct($app_dir, $prot_dir, $base_dir)
+	{
 		parent::__construct($app_dir, $prot_dir, $base_dir);
 		$this->validateEnvironment();
 		parent::showResult('Bacularis Web');
@@ -67,7 +67,8 @@ class Requirements extends GeneralRequirements {
 	 *
 	 * @return none
 	 */
-	public function validateEnvironment() {
+	public function validateEnvironment()
+	{
 		parent::validateExtensions($this->req_exts);
 	}
 }
@@ -75,4 +76,3 @@ class Requirements extends GeneralRequirements {
 // Check requirements and if are some needed then show requirements page
 $service_dir = dirname(__DIR__);
 new Requirements(APPLICATION_WEBROOT, APPLICATION_PROTECTED, $service_dir);
-?>

@@ -40,27 +40,27 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class StatusSchedule extends Portlets {
-
+class StatusSchedule extends Portlets
+{
 	/**
 	 * Default days limit.
 	 */
-	const DEF_DAYS = 90;
+	public const DEF_DAYS = 90;
 
-	const JOB = 'Job';
-	const CLIENT = 'Client';
-	const SCHEDULE = 'Schedule';
-	const DAYS = 'Days';
-	const LIMIT = 'Limit';
-	const TIME = 'Time';
-	const SHOW_CLIENT_FILTER = 'ShowClientFilter';
-	const SHOW_SCHEDULE_FILTER = 'ShowScheduleFilter';
+	public const JOB = 'Job';
+	public const CLIENT = 'Client';
+	public const SCHEDULE = 'Schedule';
+	public const DAYS = 'Days';
+	public const LIMIT = 'Limit';
+	public const TIME = 'Time';
+	public const SHOW_CLIENT_FILTER = 'ShowClientFilter';
+	public const SHOW_SCHEDULE_FILTER = 'ShowScheduleFilter';
 
-	public $schedules = array();
+	public $schedules = [];
 
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 		if ($this->getPage()->IsCallBack || $this->getPage()->IsPostBack) {
 			return;
@@ -86,8 +86,9 @@ class StatusSchedule extends Portlets {
 		}
 	}
 
-	public function loadSchedules() {
-		$query = array();
+	public function loadSchedules()
+	{
+		$query = [];
 		$job = $this->getJob();
 		if (!empty($job)) {
 			$query[] = 'job=' . rawurlencode($job);
@@ -116,7 +117,7 @@ class StatusSchedule extends Portlets {
 		if (!empty($time)) {
 			$query[] = 'time=' . rawurlencode($time);
 		}
-		$params = array('schedules', 'status');
+		$params = ['schedules', 'status'];
 		if (count($query) > 0) {
 			$params[] = '?' . implode('&', $query);
 		}
@@ -138,9 +139,10 @@ class StatusSchedule extends Portlets {
 		}
 	}
 
-	public function getClients() {
-		$clients = array('');
-		$result = $this->getModule('api')->get(array('clients'));
+	public function getClients()
+	{
+		$clients = [''];
+		$result = $this->getModule('api')->get(['clients']);
 		if ($result->error === 0) {
 			for ($i = 0; $i < count($result->output); $i++) {
 				$clients[] = $result->output[$i]->name;
@@ -149,9 +151,10 @@ class StatusSchedule extends Portlets {
 		return $clients;
 	}
 
-	public function getSchedules() {
-		$schedules = array();
-		$result = $this->getModule('api')->get(array('schedules', 'resnames'));
+	public function getSchedules()
+	{
+		$schedules = [];
+		$result = $this->getModule('api')->get(['schedules', 'resnames']);
 		if ($result->error === 0) {
 			$schedules = $result->output;
 			array_unshift($schedules, '');
@@ -159,11 +162,12 @@ class StatusSchedule extends Portlets {
 		return $schedules;
 	}
 
-	public function applyFilters($sender, $param) {
+	public function applyFilters($sender, $param)
+	{
 		$time = $this->DatePicker->getDate() . ' 00:00:00';
 		$this->setTime($time);
 
-		$days = intval($this->Days->Text);
+		$days = (int) ($this->Days->Text);
 		$this->setDays($days);
 
 		if ($this->getShowClientFilter()) {
@@ -177,71 +181,86 @@ class StatusSchedule extends Portlets {
 		$this->loadSchedules();
 	}
 
-	public function setJob($job) {
+	public function setJob($job)
+	{
 		$this->setViewState(self::JOB, $job);
 	}
 
-	public function getJob() {
+	public function getJob()
+	{
 		return $this->getViewState(self::JOB);
 	}
 
 
-	public function setClient($client) {
+	public function setClient($client)
+	{
 		$this->setViewState(self::CLIENT, $client);
 	}
 
-	public function getClient() {
+	public function getClient()
+	{
 		return $this->getViewState(self::CLIENT);
 	}
 
-	public function setSchedule($schedule) {
+	public function setSchedule($schedule)
+	{
 		$this->setViewState(self::SCHEDULE, $schedule);
 	}
 
-	public function getSchedule() {
+	public function getSchedule()
+	{
 		return $this->getViewState(self::SCHEDULE);
 	}
 
-	public function setDays($days) {
+	public function setDays($days)
+	{
 		$this->setViewState(self::DAYS, $days);
 	}
 
-	public function getDays() {
+	public function getDays()
+	{
 		return $this->getViewState(self::DAYS);
 	}
 
-	public function setLimit($limit) {
+	public function setLimit($limit)
+	{
 		$this->setViewState(self::LIMIT, $limit);
 	}
 
-	public function getLimit() {
+	public function getLimit()
+	{
 		return $this->getViewState(self::LIMIT);
 	}
 
-	public function setTime($time) {
+	public function setTime($time)
+	{
 		$this->setViewState(self::TIME, $time);
 	}
 
-	public function getTime() {
+	public function getTime()
+	{
 		return $this->getViewState(self::TIME);
 	}
 
-	public function setShowClientFilter($show) {
+	public function setShowClientFilter($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_CLIENT_FILTER, $show);
 	}
 
-	public function getShowClientFilter() {
+	public function getShowClientFilter()
+	{
 		return $this->getViewState(self::SHOW_CLIENT_FILTER, false);
 	}
 
-	public function setShowScheduleFilter($show) {
+	public function setShowScheduleFilter($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_SCHEDULE_FILTER, $show);
 	}
 
-	public function getShowScheduleFilter() {
+	public function getShowScheduleFilter()
+	{
 		return $this->getViewState(self::SHOW_SCHEDULE_FILTER, false);
 	}
 }
-?>

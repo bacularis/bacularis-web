@@ -38,17 +38,17 @@ use Bacularis\Common\Modules\IUserConfig;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class BasicWebUserConfig extends BasicUserConfig implements IUserConfig {
-
+class BasicWebUserConfig extends BasicUserConfig implements IUserConfig
+{
 	/**
 	 * Users login and password file for HTTP Basic auth.
 	 */
-	const USERS_FILE_NAME = 'Bacularis.Web.Config.bacularis';
-	const USERS_FILE_EXTENSION = '.users';
+	public const USERS_FILE_NAME = 'Bacularis.Web.Config.bacularis';
+	public const USERS_FILE_EXTENSION = '.users';
 
-	public function getConfigPath() {
+	public function getConfigPath()
+	{
 		// First check if custom config path is set, if not, then use default users file
 		return parent::getConfigPath() ?: Prado::getPathOfNamespace(self::USERS_FILE_NAME, self::USERS_FILE_EXTENSION);
 	}
@@ -58,10 +58,11 @@ class BasicWebUserConfig extends BasicUserConfig implements IUserConfig {
 	 *
 	 * @param string $username user name to log in
 	 * @param string $password user password to log in
-	 * @param boolean $check_conf check if user exists in basic user config
-	 * @return boolean true if user/pass valid, otherwise false
+	 * @param bool $check_conf check if user exists in basic user config
+	 * @return bool true if user/pass valid, otherwise false
 	 */
-	public function validateUsernamePassword($username, $password, $check_conf = true) {
+	public function validateUsernamePassword($username, $password, $check_conf = true)
+	{
 		$valid = false;
 		if ($username && $password) {
 			$user = $this->getModule('user_config')->getConfig($username);
@@ -76,4 +77,3 @@ class BasicWebUserConfig extends BasicUserConfig implements IUserConfig {
 		return $valid;
 	}
 }
-?>

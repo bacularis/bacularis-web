@@ -36,13 +36,13 @@ use Prado\Prado;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class JobGraphs extends Portlets {
+class JobGraphs extends Portlets
+{
+	public const JOB = 'Job';
 
-	const JOB = 'Job';
-
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallBack) {
 			return;
@@ -50,10 +50,11 @@ class JobGraphs extends Portlets {
 		$this->setClients();
 	}
 
-	public function setClients() {
-		$result = $this->getModule('api')->get(array('clients'));
-		$clients = array('@' => Prado::localize('select client'));
-		foreach($result->output as $key => $client) {
+	public function setClients()
+	{
+		$result = $this->getModule('api')->get(['clients']);
+		$clients = ['@' => Prado::localize('select client')];
+		foreach ($result->output as $key => $client) {
 			$clients[$client->clientid] = $client->name;
 		}
 		$this->Clients->dataSource = $clients;
@@ -63,9 +64,11 @@ class JobGraphs extends Portlets {
 	/**
 	 * Set client to show graphs.
 	 *
+	 * @param mixed $client
 	 * @return none
 	 */
-	public function setClient($client) {
+	public function setClient($client)
+	{
 		$this->setViewState(self::CLIENT, $client);
 	}
 
@@ -74,16 +77,19 @@ class JobGraphs extends Portlets {
 	 *
 	 * @return none
 	 */
-	public function getClient() {
+	public function getClient()
+	{
 		return $this->getViewState(self::CLIENT);
 	}
 
 	/**
 	 * Set job to show graphs.
 	 *
+	 * @param mixed $job
 	 * @return none
 	 */
-	public function setJob($job) {
+	public function setJob($job)
+	{
 		$this->setViewState(self::JOB, $job);
 	}
 
@@ -92,8 +98,8 @@ class JobGraphs extends Portlets {
 	 *
 	 * @return none
 	 */
-	public function getJob() {
+	public function getJob()
+	{
 		return $this->getViewState(self::JOB);
 	}
 }
-?>

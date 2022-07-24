@@ -39,12 +39,11 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class JobBandwidthLimit extends Portlets {
-
-	const JOBID = 'JobId';
-	const JOB_UNAME = 'JobUname';
+class JobBandwidthLimit extends Portlets
+{
+	public const JOBID = 'JobId';
+	public const JOB_UNAME = 'JobUname';
 
 	/**
 	 * Set up bandwidth limit value.
@@ -53,12 +52,13 @@ class JobBandwidthLimit extends Portlets {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setupBandwidthLimit($sender, $param) {
+	public function setupBandwidthLimit($sender, $param)
+	{
 		$jobid = $this->getJobId();
 
 		$result = $this->getModule('api')->set(
-			array('jobs', $jobid, 'bandwidth'),
-			array('limit' => $this->BandwidthLimit->getValue())
+			['jobs', $jobid, 'bandwidth'],
+			['limit' => $this->BandwidthLimit->getValue()]
 		);
 
 		// this setting to empty string is required to not cache outputs for the same values
@@ -71,7 +71,7 @@ class JobBandwidthLimit extends Portlets {
 
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'show_element',
-			array('#job_bandwidth_limit_log', true)
+			['#job_bandwidth_limit_log', true]
 		);
 
 		$this->onCallback(null);
@@ -83,17 +83,20 @@ class JobBandwidthLimit extends Portlets {
 	 * @param mixed $param callback parameter or null
 	 * @return none
 	 */
-	public function onCallback($param) {
+	public function onCallback($param)
+	{
 		$this->raiseEvent('OnCallback', $this, $param);
 	}
 
 	/**
 	 * Set job jobid.
 	 *
+	 * @param mixed $jobid
 	 * @return none;
 	 */
-	public function setJobId($jobid) {
-		$jobid = intval($jobid);
+	public function setJobId($jobid)
+	{
+		$jobid = (int) $jobid;
 		$this->setViewState(self::JOBID, $jobid, 0);
 		$this->JobIdLabel->Text = $jobid;
 	}
@@ -101,18 +104,21 @@ class JobBandwidthLimit extends Portlets {
 	/**
 	 * Get job jobid.
 	 *
-	 * @return integer jobid
+	 * @return int jobid
 	 */
-	public function getJobId() {
+	public function getJobId()
+	{
 		return $this->getViewState(self::JOBID, 0);
 	}
 
 	/**
 	 * Set job uname.
 	 *
+	 * @param mixed $job_uname
 	 * @return none;
 	 */
-	public function setJobUname($job_uname) {
+	public function setJobUname($job_uname)
+	{
 		$this->setViewState(self::JOB_UNAME, $job_uname);
 		$this->JobUnameLabel->Text = $job_uname;
 	}
@@ -122,7 +128,8 @@ class JobBandwidthLimit extends Portlets {
 	 *
 	 * @return string job uname
 	 */
-	public function getJobUname() {
+	public function getJobUname()
+	{
 		return $this->getViewState(self::JOB_UNAME);
 	}
 
@@ -131,18 +138,19 @@ class JobBandwidthLimit extends Portlets {
 	 *
 	 * @return mixed bandwidth limit integer value or null if bandwidth not set
 	 */
-	public function getBandwidthLimit() {
+	public function getBandwidthLimit()
+	{
 		return $this->BandwidthLimit->getValue();
 	}
 
 	/**
 	 * Set bandwidth limit value in field.
 	 *
-	 * @param integer $bwlimit bandiwdth limit in bytes
+	 * @param int $bwlimit bandiwdth limit in bytes
 	 * @return none
 	 */
-	public function setBandwidthLimit($bwlimit) {
+	public function setBandwidthLimit($bwlimit)
+	{
 		$this->BandwidthLimit->setDirectiveValue($bwlimit);
 	}
 }
-?>

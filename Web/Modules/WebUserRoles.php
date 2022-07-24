@@ -37,15 +37,14 @@ use Bacularis\Web\Modules\PageCategory;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebUserRoles extends WebModule {
-
+class WebUserRoles extends WebModule
+{
 	/**
 	 * Pre-defined roles.
 	 */
-	const ADMIN = 'admin';
-	const NORMAL = 'normal';
+	public const ADMIN = 'admin';
+	public const NORMAL = 'normal';
 
 	/**
 	 * Single role properties.
@@ -63,7 +62,8 @@ class WebUserRoles extends WebModule {
 	 *
 	 * @return array pre-defined roles
 	 */
-	public function getPreDefinedRoles() {
+	public function getPreDefinedRoles()
+	{
 		$roles = [];
 
 		// Admin user resources
@@ -102,9 +102,10 @@ class WebUserRoles extends WebModule {
 	 * Check if a role is predefined.
 	 *
 	 * @param string $role nazwa roli
-	 * @return boolean true if role is predefined, otherwise false
+	 * @return bool true if role is predefined, otherwise false
 	 */
-	public function isRolePreDefined($role) {
+	public function isRolePreDefined($role)
+	{
 		$roles = $this->getPreDefinedRoles();
 		return key_exists($role, $roles);
 	}
@@ -115,7 +116,8 @@ class WebUserRoles extends WebModule {
 	 *
 	 * @return array all available roles
 	 */
-	public function getRoles() {
+	public function getRoles()
+	{
 		$roles = $this->getModule('role_config')->getConfig();
 		return array_merge($this->getPreDefinedRoles(), $roles);
 	}
@@ -126,7 +128,8 @@ class WebUserRoles extends WebModule {
 	 * @param string $role role name
 	 * @return array role config or empty array if role doesn't exist
 	 */
-	public function getRole($role) {
+	public function getRole($role)
+	{
 		$ret = [];
 		$roles = $this->getRoles();
 		if (key_exists($role, $roles)) {
@@ -141,14 +144,16 @@ class WebUserRoles extends WebModule {
 	 * They are roles that have page defined in allowed resources.
 	 *
 	 * @param string $page_path page path
+	 * @param mixed $with_disabled
 	 * @return array roles defined for a page
 	 */
-	public function getRolesByPagePath($page_path, $with_disabled = true) {
+	public function getRolesByPagePath($page_path, $with_disabled = true)
+	{
 		$roles = [];
 		$all_roles = $this->getRoles();
 		foreach ($all_roles as $role => $prop) {
 			$rs = explode(',', $prop['resources']);
-			$enabled = (boolean)$prop['enabled'];
+			$enabled = (bool) $prop['enabled'];
 			if (($enabled || $with_disabled) && in_array($page_path, $rs)) {
 				$roles[] = $role;
 			}
@@ -158,11 +163,12 @@ class WebUserRoles extends WebModule {
 
 	/**
 	 * Get all pages for specific role.
+	 * @param mixed $role
 	 */
-	public function getPagesByRole($role) {
+	public function getPagesByRole($role)
+	{
 		$pages = [];
 		$role_cfg = $this->getRole($role);
 		return explode(',', $role_cfg['resources']);
 	}
 }
-?>

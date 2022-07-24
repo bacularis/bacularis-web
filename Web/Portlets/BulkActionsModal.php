@@ -38,13 +38,13 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BulkActionsModal extends Portlets {
+class BulkActionsModal extends Portlets
+{
+	public const REFRESH_PAGE_BTN = 'RefreshPageBtn';
 
-	const REFRESH_PAGE_BTN = 'RefreshPageBtn';
-
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 
 		if ($this->getRefreshPageBtn()) {
@@ -52,13 +52,14 @@ class BulkActionsModal extends Portlets {
 		}
 	}
 
-	public function setRefreshPageBtn($refresh_page_btn) {
+	public function setRefreshPageBtn($refresh_page_btn)
+	{
 		$refresh_page_btn = TPropertyValue::ensureBoolean($refresh_page_btn);
 		$this->setViewState(self::REFRESH_PAGE_BTN, $refresh_page_btn);
 	}
 
-	public function getRefreshPageBtn() {
+	public function getRefreshPageBtn()
+	{
 		return $this->getViewState(self::REFRESH_PAGE_BTN);
 	}
 }
-?>

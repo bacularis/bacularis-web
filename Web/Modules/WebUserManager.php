@@ -40,15 +40,14 @@ use Bacularis\Common\Modules\Logging;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebUserManager extends WebModule implements IUserManager {
-
+class WebUserManager extends WebModule implements IUserManager
+{
 	/**
 	 * Authorized flag key.
 	 * This flag is used to set authorization state.
 	 */
-	const SET_AUTHROIZED_FLAG = 'AuthorizedFlag';
+	public const SET_AUTHROIZED_FLAG = 'AuthorizedFlag';
 
 	/**
 	 * User class to represent single user instance
@@ -71,7 +70,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param TXmlElement $config module configuration
 	 * @return none
 	 */
-	public function init($config) {
+	public function init($config)
+	{
 		$this->user_factory = Prado::createComponent($this->user_class, $this);
 		$this->setAuthorizedFlag(null);
 		$this->getModule('auth')->attachEventHandler(
@@ -93,7 +93,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param mixed $username username string or null for guests
 	 */
-	public function getUser($username = null) {
+	public function getUser($username = null)
+	{
 		$user = null;
 		if (is_null($username)) {
 			$user = Prado::createComponent($this->user_class, $this);
@@ -111,9 +112,10 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param string $username username
 	 * @param string $password password
-	 * @return boolean true if user and password are valid, false otherwise
+	 * @return bool true if user and password are valid, false otherwise
 	 */
-	public function validateUser($username, $password) {
+	public function validateUser($username, $password)
+	{
 		$valid = false;
 		$manager_cls = $this->getUserManagerClass();
 		if (!empty($manager_cls)) {
@@ -129,7 +131,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @return string user class name
 	 */
-	public function getUserClass() {
+	public function getUserClass()
+	{
 		return $this->user_class;
 	}
 
@@ -139,7 +142,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param string $cls user class name
 	 * @return none
 	 */
-	public function setUserClass($cls) {
+	public function setUserClass($cls)
+	{
 		$this->user_class = $cls;
 	}
 
@@ -148,7 +152,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @return guest name
 	 */
-	public function getGuestName() {
+	public function getGuestName()
+	{
 		return $this->guest_name;
 	}
 
@@ -156,9 +161,11 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * Guest name setter.
 	 *
 	 * @param string guest name
+	 * @param mixed $name
 	 * @return none
 	 */
-	public function setGuestName($name) {
+	public function setGuestName($name)
+	{
 		$this->guest_name = $name;
 	}
 
@@ -169,7 +176,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param THttpCookie $cookie cookie object
 	 * @return none
 	 */
-	public function getUserFromCookie($cookie) {
+	public function getUserFromCookie($cookie)
+	{
 		// not implemented
 	}
 
@@ -180,7 +188,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param THttpCookie $cookie cookie object
 	 * @return none
 	 */
-	public function saveUserToCookie($cookie) {
+	public function saveUserToCookie($cookie)
+	{
 		// not implemented
 	}
 
@@ -190,7 +199,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param WebUser $user user object
 	 * @param string $page_path page path
 	 */
-	public function isPageAllowed($user, $page_path) {
+	public function isPageAllowed($user, $page_path)
+	{
 		$allowed = false;
 		$page_roles = $this->getModule('user_role')->getRolesByPagePath($page_path);
 		$user_roles = $user->getRoles();
@@ -209,7 +219,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @return string user manager class path
 	 */
-	private function getUserManagerClass() {
+	private function getUserManagerClass()
+	{
 		$cls = null;
 		$auth_method = $this->getModule('web_config')->getAuthMethod();
 
@@ -237,11 +248,12 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * @param TApplication $application application object
 	 * @return none
 	 */
-	public function doAuthentication($application) {
+	public function doAuthentication($application)
+	{
 		if ($this->getModule('web_config')->isAuthMethodBasic() && $application->getUser()->IsGuest) {
 			// If basic user is not logged it, try to log in here
-			$username = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null;
-			$password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
+			$username = $_SERVER['PHP_AUTH_USER'] ?? null;
+			$password = $_SERVER['PHP_AUTH_PW'] ?? null;
 			$this->getModule('auth')->login($username, $password);
 		}
 
@@ -255,7 +267,8 @@ class WebUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param TApplication $application application object
 	 */
-	private function applyAuthorizationRules($application) {
+	private function applyAuthorizationRules($application)
+	{
 		$page_path = $this->getService()->getRequestedPagePath();
 		$page_roles = $this->getModule('user_role')->getRolesByPagePath($page_path, false);
 		$auth_rules = $this->getApplication()->getAuthorizationRules();
@@ -338,19 +351,21 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * NOTE: This flag has only informational character. All authorization work is
 	 * done by the framework.
 	 *
-	 * @param string|null $state flag state
+	 * @param null|string $state flag state
 	 * @return none
 	 */
-	public function setAuthorizedFlag($state) {
+	public function setAuthorizedFlag($state)
+	{
 		$this->Application->getSession()->add(self::SET_AUTHROIZED_FLAG, $state);
 	}
 
 	/**
 	 * Get authorization flag.
 	 *
-	 * @return string|null flag state
+	 * @return null|string flag state
 	 */
-	public function getAuthorizedFlag() {
+	public function getAuthorizedFlag()
+	{
 		return $this->Application->getSession()->itemAt(self::SET_AUTHROIZED_FLAG);
 	}
 
@@ -359,8 +374,10 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * It sets the authorization flag.
 	 *
 	 * @param TApplication $param application object
+	 * @param mixed $application
 	 */
-	public function doAuthorization($application) {
+	public function doAuthorization($application)
+	{
 		$service = $this->Application->getService();
 		$auth = $this->getModule('auth');
 		$page = $service->getRequestedPagePath();
@@ -374,8 +391,10 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * It sets the authorization flag.
 	 *
 	 * @param TApplication $param application object
+	 * @param mixed $application
 	 */
-	public function doAuthorizationComplete($application) {
+	public function doAuthorizationComplete($application)
+	{
 		$service = $this->Application->getService();
 		$auth = $this->getModule('auth');
 		$page = $service->getRequestedPagePath();
@@ -392,9 +411,10 @@ class WebUserManager extends WebModule implements IUserManager {
 	 * NOTE: Use it after onAuthorizationComplete application event,
 	 * not before.
 	 *
-	 * @return boolean true if authorization finished successfully, otherwise false
+	 * @return bool true if authorization finished successfully, otherwise false
 	 */
-	public function isAuthorized() {
+	public function isAuthorized()
+	{
 		$web_config = $this->getModule('web_config');
 		$user = $this->Application->getUser();
 		return ($this->getAuthorizedFlag() === null &&
@@ -403,4 +423,3 @@ class WebUserManager extends WebModule implements IUserManager {
 		);
 	}
 }
-?>

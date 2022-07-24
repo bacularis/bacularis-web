@@ -20,14 +20,15 @@ use Bacularis\Web\Modules\BaculumWebPage;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
  */
-class AccountSettings extends BaculumWebPage {
-
+class AccountSettings extends BaculumWebPage
+{
 	/**
 	 * Stores user account information.
 	 */
 	private static $user;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$username = $this->User->getUsername();
 		self::$user = $this->getModule('user_config')->getUserConfig($username);
@@ -44,7 +45,7 @@ class AccountSettings extends BaculumWebPage {
 		$this->UserDescription->Text = self::$user['description'];
 		$this->UserEmail->Text = self::$user['email'];
 
-		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] ===  WebConfig::AUTH_METHOD_LDAP) {
+		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_LDAP) {
 			$this->UserPasswordBox->Display = 'None';
 			$this->RequirePasswordValidator->Visible = false;
 			$this->RegexPasswordValidator->Visible = false;
@@ -71,9 +72,12 @@ class AccountSettings extends BaculumWebPage {
 	/**
 	 * Save general user information.
 	 *
+	 * @param mixed $sender
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function saveGeneral($sender, $param) {
+	public function saveGeneral($sender, $param)
+	{
 		self::$user['long_name'] = $this->UserLongName->Text;
 		self::$user['description'] = $this->UserDescription->Text;
 		self::$user['email'] = $this->UserEmail->Text;
@@ -139,7 +143,8 @@ class AccountSettings extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param parameters
 	 * @return none
 	 */
-	public function show2FAWindow($sender, $param) {
+	public function show2FAWindow($sender, $param)
+	{
 		$totp_params = $this->getTotpParams();
 		$this->getCallbackClient()->callClientFunction(
 			'oAccountSettings2FA.generate_qrcode',
@@ -159,7 +164,8 @@ class AccountSettings extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param parameters
 	 * @return none
 	 */
-	public function enable2FA($sender, $param) {
+	public function enable2FA($sender, $param)
+	{
 		$secret = $this->getModule('base32')->decode($this->Auth2FASecret->Value);
 		$token = $this->Auth2FAToken->Text;
 		$valid = $this->getModule('totp')->validateToken($secret, $token);
@@ -190,7 +196,8 @@ class AccountSettings extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param parameters
 	 * @return none
 	 */
-	public function disable2FA($sender, $param) {
+	public function disable2FA($sender, $param)
+	{
 		$username = $this->User->getUsername();
 		unset(self::$user['mfa']);
 		unset(self::$user['totp_secret']);
@@ -203,7 +210,8 @@ class AccountSettings extends BaculumWebPage {
 	 *
 	 * @return array URL to generate QR code and TOTP secret
 	 */
-	private function getTotpParams() {
+	private function getTotpParams()
+	{
 		$secret = $this->getModule('base32')->generateRandomString(20);
 		$url = sprintf(
 			'otpauth://totp/%s?secret=%s',
@@ -213,4 +221,3 @@ class AccountSettings extends BaculumWebPage {
 		return ['url' => $url, 'secret' => $secret];
 	}
 }
-?>

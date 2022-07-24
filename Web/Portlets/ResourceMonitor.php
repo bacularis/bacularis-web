@@ -36,13 +36,13 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ResourceMonitor extends Portlets {
-
+class ResourceMonitor extends Portlets
+{
 	public $job_age_on_job_status_graph = 0;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		if (get_class($this->Service->getRequestedPage()) == 'Dashboard') {
 			$web_config = $this->getModule('web_config')->getConfig();
 

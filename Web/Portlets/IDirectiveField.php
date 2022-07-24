@@ -34,10 +34,9 @@ namespace Bacularis\Web\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Interfaces
- * @package Baculum Web
  */
-interface IDirectiveField {
-
+interface IDirectiveField
+{
 	public function setDirectiveName($name);
 
 	public function getDirectiveName();
@@ -56,4 +55,3 @@ interface IDirectiveField {
 
 	public function saveValue($sender, $param);
 }
-?>

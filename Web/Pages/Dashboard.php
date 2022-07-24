@@ -28,18 +28,18 @@
  */
 
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Main dashboard page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class Dashboard extends BaculumWebPage {
-	public function loadRunJobModal($sender, $param) {
+class Dashboard extends BaculumWebPage
+{
+	public function loadRunJobModal($sender, $param)
+	{
 		$this->RunJobModal->loadData();
 	}
 }
-?>

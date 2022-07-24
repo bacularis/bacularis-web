@@ -36,46 +36,52 @@ use Prado\Web\UI\WebControls\TConditional;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BConditional extends TTemplateControl implements IDataRenderer, IActiveControl {
-
-	const BCONDITION = 'BCondition';
-	const TYPE_TPL_FALSE = 0;
-	const TYPE_TPL_TRUE = 1;
+class BConditional extends TTemplateControl implements IDataRenderer, IActiveControl
+{
+	public const BCONDITION = 'BCondition';
+	public const TYPE_TPL_FALSE = 0;
+	public const TYPE_TPL_TRUE = 1;
 
 	private $item_true_template;
 	private $item_false_template;
 	private $data;
 	private $creating_children = false;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 	}
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->setAdapter(new TActiveControlAdapter($this));
 	}
 
-	public function getActiveControl() {
+	public function getActiveControl()
+	{
 		return $this->getAdapter()->getBaseActiveControl();
 	}
 
-	public function getData() {
+	public function getData()
+	{
 		return $this->data;
 	}
 
-	public function setData($data) {
+	public function setData($data)
+	{
 		$this->data = $data;
 	}
 
-	public function setCondition($value) {
+	public function setCondition($value)
+	{
 		settype($value, 'bool');
 		$this->setViewState(self::BCONDITION, $value);
 	}
 
-	public function getCondition() {
+	public function getCondition()
+	{
 		return $this->getViewState(self::BCONDITION);
 	}
 
@@ -104,24 +110,27 @@ class BConditional extends TTemplateControl implements IDataRenderer, IActiveCon
 		}
 	}
 
-	public function getTrueTemplate() {
+	public function getTrueTemplate()
+	{
 		return $this->item_true_template;
 	}
 
-	public function setTrueTemplate($template) {
+	public function setTrueTemplate($template)
+	{
 		if ($template instanceof Prado\Web\UI\ITemplate) {
 			$this->item_true_template = $template;
 		}
 	}
 
-	public function getFalseTemplate() {
+	public function getFalseTemplate()
+	{
 		return $this->item_false_template;
 	}
 
-	public function setFalseTemplate($template) {
+	public function setFalseTemplate($template)
+	{
 		if ($template instanceof Prado\Web\UI\ITemplate) {
 			$this->item_false_template = $template;
 		}
 	}
 }
-?>

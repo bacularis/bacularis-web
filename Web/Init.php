@@ -32,9 +32,7 @@
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Initialization
- * @package Baculum Web
  */
-
 $timezone = 'UTC';
 if (!ini_get('date.timezone')) {
 	date_default_timezone_set($timezone);
@@ -60,6 +58,5 @@ if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW']) && isse
 	$decoded_credentials = base64_decode($encoded_credentials);
 
 	// initialize required auth superglobal $_SERVER array
-	list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', $decoded_credentials);
+	[$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] = explode(':', $decoded_credentials);
 }
-?>

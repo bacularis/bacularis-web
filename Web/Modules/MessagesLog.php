@@ -37,24 +37,23 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class MessagesLog extends WebModule {
-
+class MessagesLog extends WebModule
+{
 	/**
 	 * Messages log file path.
 	 */
-	const LOG_FILE_PATH = 'Bacularis.Web.Logs.messages';
+	public const LOG_FILE_PATH = 'Bacularis.Web.Logs.messages';
 
 	/**
 	 * Messages log file extension.
 	 */
-	const LOG_FILE_EXT = '.log';
+	public const LOG_FILE_EXT = '.log';
 
 	/**
 	 * Maximum number of lines to keep.
 	 */
-	const MAX_LINES = 1000;
+	public const MAX_LINES = 1000;
 
 	/**
 	 * Append messages to messages log.
@@ -63,7 +62,8 @@ class MessagesLog extends WebModule {
 	 * @param array $logs log messages
 	 * @return array logs stored in log file
 	 */
-	public function append(array $logs) {
+	public function append(array $logs)
+	{
 		$logs_all = [];
 		$f = Prado::getPathOfNamespace(self::LOG_FILE_PATH, self::LOG_FILE_EXT);
 		$fp = fopen($f, 'c+');
@@ -102,7 +102,8 @@ class MessagesLog extends WebModule {
 	 *
 	 * @return none
 	 */
-	public function truncate() {
+	public function truncate()
+	{
 		$f = Prado::getPathOfNamespace(self::LOG_FILE_PATH, self::LOG_FILE_EXT);
 		$fp = fopen($f, 'w');
 		if (flock($fp, LOCK_EX)) {
@@ -127,7 +128,8 @@ class MessagesLog extends WebModule {
 	 * @param array $logs log messages
 	 * @return none
 	 */
-	public function save(array $logs) {
+	public function save(array $logs)
+	{
 		$f = Prado::getPathOfNamespace(self::LOG_FILE_PATH, self::LOG_FILE_EXT);
 		$fp = fopen($f, 'a');
 		if (flock($fp, LOCK_EX)) {
@@ -153,7 +155,8 @@ class MessagesLog extends WebModule {
 	 *
 	 * @return array log messages
 	 */
-	public function read() {
+	public function read()
+	{
 		$logs = [];
 		$f = Prado::getPathOfNamespace(self::LOG_FILE_PATH, self::LOG_FILE_EXT);
 		if (!file_exists($f)) {
@@ -179,4 +182,3 @@ class MessagesLog extends WebModule {
 		return $logs;
 	}
 }
-?>

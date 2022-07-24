@@ -38,16 +38,16 @@ use Bacularis\Web\Modules\WebModule;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebBasicUserManager extends WebModule implements IUserManager {
-
+class WebBasicUserManager extends WebModule implements IUserManager
+{
 	/**
 	 * Module initialization.
 	 *
 	 * @param TXmlElement $config module configuration
 	 */
-	public function init($config) {
+	public function init($config)
+	{
 	}
 
 	/**
@@ -56,9 +56,10 @@ class WebBasicUserManager extends WebModule implements IUserManager {
 	 *
 	 * @param string $username username
 	 * @param string $password password
-	 * @return boolean true if user and password valid, otherwise false
+	 * @return bool true if user and password valid, otherwise false
 	 */
-	public function validateUser($username, $password) {
+	public function validateUser($username, $password)
+	{
 		/**
 		 * Basic auth is realized by web server, so validating
 		 * user/pass is always true here.
@@ -68,4 +69,3 @@ class WebBasicUserManager extends WebModule implements IUserManager {
 		return $is_auth;
 	}
 }
-?>

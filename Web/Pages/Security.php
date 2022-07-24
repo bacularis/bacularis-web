@@ -65,30 +65,29 @@ use Bacularis\Web\Portlets\BaculaConfigResources;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class Security extends BaculumWebPage {
-
+class Security extends BaculumWebPage
+{
 	/**
 	 * Modal window types for users and roles.
 	 */
-	const TYPE_ADD_WINDOW = 'add';
-	const TYPE_EDIT_WINDOW = 'edit';
+	public const TYPE_ADD_WINDOW = 'add';
+	public const TYPE_EDIT_WINDOW = 'edit';
 
 	/**
 	 * Options for import users.
 	 */
-	const IMPORT_OPT_ALL_USERS = 0;
-	const IMPORT_OPT_SELECTED_USERS = 1;
-	const IMPORT_OPT_CRITERIA = 2;
+	public const IMPORT_OPT_ALL_USERS = 0;
+	public const IMPORT_OPT_SELECTED_USERS = 1;
+	public const IMPORT_OPT_CRITERIA = 2;
 
 	/**
 	 * Options for import criteria.
 	 */
-	const IMPORT_CRIT_USERNAME = 0;
-	const IMPORT_CRIT_LONG_NAME = 1;
-	const IMPORT_CRIT_DESCRIPTION = 2;
-	const IMPORT_CRIT_EMAIL = 3;
+	public const IMPORT_CRIT_USERNAME = 0;
+	public const IMPORT_CRIT_LONG_NAME = 1;
+	public const IMPORT_CRIT_DESCRIPTION = 2;
+	public const IMPORT_CRIT_EMAIL = 3;
 
 
 	/**
@@ -107,7 +106,8 @@ class Security extends BaculumWebPage {
 	 * @param mixed $param oninit event parameter
 	 * @return none
 	 */
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
@@ -124,7 +124,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function initDefAccessForm() {
+	public function initDefAccessForm()
+	{
 		$this->setRoles(
 			$this->GeneralDefaultAccessRole,
 			WebUserRoles::NORMAL
@@ -156,13 +157,14 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function initAuthForm() {
+	public function initAuthForm()
+	{
 		if (isset($this->web_config['security']['auth_method'])) {
-			if ($this->web_config['security']['auth_method'] ===  WebConfig::AUTH_METHOD_LOCAL) {
+			if ($this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_LOCAL) {
 				$this->LocalAuth->Checked = true;
-			} elseif ($this->web_config['security']['auth_method'] ===  WebConfig::AUTH_METHOD_BASIC) {
+			} elseif ($this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
 				$this->BasicAuth->Checked = true;
-			} elseif ($this->web_config['security']['auth_method'] ===  WebConfig::AUTH_METHOD_LDAP) {
+			} elseif ($this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_LDAP) {
 				$this->LdapAuth->Checked = true;
 			}
 
@@ -203,7 +205,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function initUserWindow() {
+	public function initUserWindow()
+	{
 		// set API hosts
 		$this->setAPIHosts($this->UserAPIHosts, null, false);
 
@@ -218,7 +221,8 @@ class Security extends BaculumWebPage {
 	 * @param mixed $def_val default value or null if no default value to set
 	 * @return none
 	 */
-	private function setRoles($control, $def_val = null) {
+	private function setRoles($control, $def_val = null)
+	{
 		// set roles
 		$roles = $this->getModule('user_role')->getRoles();
 		$role_items = [];
@@ -238,10 +242,12 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param object $control control which contains API host list
 	 * @param mixed $def_val default value or null if no default value to set
-	 * @param boolean determines if add first blank item
+	 * @param bool determines if add first blank item
+	 * @param mixed $add_blank_item
 	 * @return none
 	 */
-	private function setAPIHosts($control, $def_val = null, $add_blank_item = true) {
+	private function setAPIHosts($control, $def_val = null, $add_blank_item = true)
+	{
 		$api_hosts = array_keys($this->getModule('host_config')->getConfig());
 		if ($add_blank_item) {
 			array_unshift($api_hosts, '');
@@ -259,9 +265,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setUserList($sender, $param) {
+	public function setUserList($sender, $param)
+	{
 		$config = $this->getModule('user_config')->getConfig();
 		$this->getCallbackClient()->callClientFunction('oUsers.load_user_list_cb', [
 			array_values($config)
@@ -276,7 +284,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadUserWindow($sender, $param) {
+	public function loadUserWindow($sender, $param)
+	{
 		//$this->getModule('user_config')->importBasicUsers();
 		$username = $param->getCallbackParameter();
 		$config = $this->getModule('user_config')->getUserConfig($username);
@@ -328,7 +337,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveUser($sender, $param) {
+	public function saveUser($sender, $param)
+	{
 		if (!$this->UserIps->IsValid) {
 			// invalid IP restriction value
 			return;
@@ -417,7 +427,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeUsers($sender, $param) {
+	public function removeUsers($sender, $param)
+	{
 		$usernames = explode('|', $param->getCallbackParameter());
 		$config = $this->getModule('user_config')->getConfig();
 		for ($i = 0; $i < count($usernames); $i++) {
@@ -448,7 +459,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function initRoleWindow() {
+	public function initRoleWindow()
+	{
 		// set role resources
 		$resources = $this->getModule('page_category')->getCategories(false);
 		natcasesort($resources);
@@ -461,9 +473,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setRoleList($sender, $param) {
+	public function setRoleList($sender, $param)
+	{
 		$config = $this->getModule('user_role')->getRoles();
 		$this->addUserStatsToRoles($config);
 		$this->getCallbackClient()->callClientFunction('oRoles.load_role_list_cb', [
@@ -478,7 +492,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadRoleWindow($sender, $param) {
+	public function loadRoleWindow($sender, $param)
+	{
 		$role = $param->getCallbackParameter();
 		$config = $this->getModule('user_role')->getRole($role);
 		if (count($config) > 0) {
@@ -518,7 +533,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveRole($sender, $param) {
+	public function saveRole($sender, $param)
+	{
 		$role_win_type = $this->RoleWindowType->Value;
 		$role = $this->Role->Text;
 		$this->getCallbackClient()->hide('role_window_role_exists');
@@ -566,7 +582,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeRoles($sender, $param) {
+	public function removeRoles($sender, $param)
+	{
 		$roles = explode('|', $param->getCallbackParameter());
 		$config = $this->getModule('role_config')->getConfig();
 		$user_role = $this->getModule('user_role');
@@ -592,7 +609,8 @@ class Security extends BaculumWebPage {
 	 * @param array $role_config role config (note, passing by reference)
 	 * @return none
 	 */
-	private function addUserStatsToRoles(&$role_config) {
+	private function addUserStatsToRoles(&$role_config)
+	{
 		$config = [];
 		if (count($this->user_config) > 0) {
 			$config = $this->user_config;
@@ -619,7 +637,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	private function setBasicAuthConfig() {
+	private function setBasicAuthConfig()
+	{
 		$is_basic = $this->getModule('web_config')->isAuthMethodBasic();
 		if ($is_basic && $this->isManageUsersAvail() && isset($this->web_config['auth_basic']['user_file'])) {
 			$this->getModule('basic_webuser')->setConfigPath($this->web_config['auth_basic']['user_file']);
@@ -633,7 +652,8 @@ class Security extends BaculumWebPage {
 	 * @param TCommandEventParameter $param event parameter object
 	 * @return none
 	 */
-	public function getBasicUsers($sender, $param) {
+	public function getBasicUsers($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter && $param->getCommandParameter() === 'load') {
 			// reset criteria filters when modal is open
 			$this->GetUsersImportOptions->SelectedValue = self::IMPORT_OPT_ALL_USERS;
@@ -687,10 +707,11 @@ class Security extends BaculumWebPage {
 	 * There is option to return user list in config file form or data table form.
 	 *
 	 * @param array $users simple user list
-	 * @param boolean $config_form_result if true, sets the list in config file form
+	 * @param bool $config_form_result if true, sets the list in config file form
 	 * @return array user list
 	 */
-	private function convertBasicUsers(array $users, $config_form_result = false) {
+	private function convertBasicUsers(array $users, $config_form_result = false)
+	{
 		$user_list = [];
 		for ($i = 0; $i < count($users); $i++) {
 			$user = [
@@ -713,7 +734,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return array array basic auth parameters
 	 */
-	private function getBasicParams() {
+	private function getBasicParams()
+	{
 		$params = [];
 		$params['allow_manage_users'] = $this->BasicAuthAllowManageUsers->Checked ? 1 : 0;
 		$params['user_file'] = $this->BasicAuthUserFile->Text;
@@ -728,7 +750,8 @@ class Security extends BaculumWebPage {
 	 * @param array $params basic auth parameters (passing by reference)
 	 * @return none
 	 */
-	private function addBasicExtraParams(&$params) {
+	private function addBasicExtraParams(&$params)
+	{
 		if ($this->GetUsersImportOptions->SelectedValue == self::IMPORT_OPT_CRITERIA) {
 			$params['filter_val'] = $this->GetUsersCriteriaFilter->Text;
 		}
@@ -741,9 +764,10 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event parameter object
 	 * @return array web users list to import
 	 */
-	public function prepareBasicUsers($sender, $param) {
+	public function prepareBasicUsers($sender, $param)
+	{
 		$users_web = [];
-		$import_opt = (integer)$this->GetUsersImportOptions->SelectedValue;
+		$import_opt = (int) $this->GetUsersImportOptions->SelectedValue;
 		$basic_webuser = $this->getModule('basic_webuser');
 		switch ($import_opt) {
 			case self::IMPORT_OPT_ALL_USERS: {
@@ -757,7 +781,7 @@ class Security extends BaculumWebPage {
 					$cb_param = $param->getCallbackParameter();
 					if (is_array($cb_param)) {
 						for ($i = 0; $i < count($cb_param); $i++) {
-							$val = (array)$cb_param[$i];
+							$val = (array) $cb_param[$i];
 							$users_web[$val['username']] = $val;
 						}
 					}
@@ -773,7 +797,6 @@ class Security extends BaculumWebPage {
 					$users_web = $basic_webuser->getUsers($pattern);
 					$users_web = array_keys($users_web);
 					$users_web = $this->convertBasicUsers($users_web, true);
-
 				}
 				break;
 			}
@@ -788,17 +811,18 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event parameter object
 	 * @return none
 	 */
-	public function doBasicUserFileTest($sender, $param) {
+	public function doBasicUserFileTest($sender, $param)
+	{
 		$user_file = $this->BasicAuthUserFile->Text;
 		$msg = '';
 		$valid = true;
 		if (!file_exists($user_file)) {
 			$valid = false;
 			$msg = Prado::localize('The user file is not accessible.');
-		} else if (!is_readable($user_file)) {
+		} elseif (!is_readable($user_file)) {
 			$valid = false;
 			$msg = Prado::localize('The user file is not readable by web server user.');
-		} else if (!is_writeable($user_file)) {
+		} elseif (!is_writeable($user_file)) {
 			$valid = false;
 			$msg = Prado::localize('The user file is readable but not writeable by web server user.');
 		}
@@ -819,7 +843,8 @@ class Security extends BaculumWebPage {
 	 * @param TCommandEventParameter $param event parameter object
 	 * @return none
 	 */
-	public function getLdapUsers($sender, $param) {
+	public function getLdapUsers($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter && $param->getCommandParameter() === 'load') {
 			// reset criteria filters when modal is open
 			$this->GetUsersImportOptions->SelectedValue = self::IMPORT_OPT_ALL_USERS;
@@ -875,10 +900,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param array $users simple user list
 	 * @param array $params LDAP specific parameters (@see getLdapParams)
-	 * @param boolean $config_form_result if true, sets the list in config file form
+	 * @param bool $config_form_result if true, sets the list in config file form
 	 * @return array user list
 	 */
-	private function convertLdapUsers(array $users, array $params, $config_form_result = false) {
+	private function convertLdapUsers(array $users, array $params, $config_form_result = false)
+	{
 		$user_list = [];
 		for ($i = 0; $i < $users['count']; $i++) {
 			if (!key_exists($params['user_attr'], $users[$i])) {
@@ -903,7 +929,6 @@ class Security extends BaculumWebPage {
 					__LINE__
 				);
 				continue;
-
 			}
 			$username = $users[$i][$params['user_attr']];
 			if ($params['user_attr'] !== Ldap::DN_ATTR) {
@@ -913,7 +938,7 @@ class Security extends BaculumWebPage {
 			if (key_exists($params['long_name_attr'], $users[$i])) {
 				if ($params['long_name_attr'] === Ldap::DN_ATTR) {
 					$long_name = $users[$i][$params['long_name_attr']];
-				} else if($users[$i][$params['long_name_attr']]['count'] === 1) {
+				} elseif ($users[$i][$params['long_name_attr']]['count'] === 1) {
 					$long_name = $users[$i][$params['long_name_attr']][0];
 				}
 			}
@@ -921,7 +946,7 @@ class Security extends BaculumWebPage {
 			if (key_exists($params['email_attr'], $users[$i])) {
 				if ($params['email_attr'] === Ldap::DN_ATTR) {
 					$email = $users[$i][$params['email_attr']];
-				} else if ($users[$i][$params['email_attr']]['count'] === 1) {
+				} elseif ($users[$i][$params['email_attr']]['count'] === 1) {
 					$email = $users[$i][$params['email_attr']][0];
 				}
 			}
@@ -929,7 +954,7 @@ class Security extends BaculumWebPage {
 			if (key_exists($params['desc_attr'], $users[$i])) {
 				if ($params['desc_attr'] === Ldap::DN_ATTR) {
 					$desc = $users[$i][$params['desc_attr']];
-				} else if ($users[$i][$params['desc_attr']]['count'] === 1) {
+				} elseif ($users[$i][$params['desc_attr']]['count'] === 1) {
 					$desc = $users[$i][$params['desc_attr']][0];
 				}
 			}
@@ -958,11 +983,12 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return array array LDAP auth parameters
 	 */
-	private function getLdapParams() {
+	private function getLdapParams()
+	{
 		$params = [];
 		$params['address'] = $this->LdapAuthServerAddress->Text;
 		$params['port'] = $this->LdapAuthServerPort->Text;
-		$params['ldaps'] = $this->LdapAuthServerLdaps->Checked ?  1 : 0;
+		$params['ldaps'] = $this->LdapAuthServerLdaps->Checked ? 1 : 0;
 		$params['protocol_ver'] = $this->LdapAuthServerProtocolVersion->SelectedValue;
 		$params['base_dn'] = $this->LdapAuthServerBaseDn->Text;
 		if ($this->LdapAuthMethodAnonymous->Checked) {
@@ -986,7 +1012,8 @@ class Security extends BaculumWebPage {
 	 * @param array $params LDAP auth parameters (passing by reference)
 	 * @return none
 	 */
-	private function addLdapExtraParams(&$params) {
+	private function addLdapExtraParams(&$params)
+	{
 		$params['attrs'] = [$params['user_attr']]; // user attribute is obligatory
 		if (key_exists('long_name_attr', $params) && !empty($params['long_name_attr'])) {
 			$params['attrs'][] = $params['long_name_attr'];
@@ -998,7 +1025,7 @@ class Security extends BaculumWebPage {
 			$params['attrs'][] = $params['desc_attr'];
 		}
 		if ($this->GetUsersImportOptions->SelectedValue == self::IMPORT_OPT_CRITERIA) {
-			$crit = intval($this->GetUsersCriteria->SelectedValue);
+			$crit = (int) ($this->GetUsersCriteria->SelectedValue);
 			switch ($crit) {
 				case self::IMPORT_CRIT_USERNAME: $params['filter_attr'] = $params['user_attr']; break;
 				case self::IMPORT_CRIT_LONG_NAME: $params['filter_attr'] = $params['long_name_attr']; break;
@@ -1017,7 +1044,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event parameter object
 	 * @return array web users list to import
 	 */
-	private function prepareLdapUsers($sender, $param) {
+	private function prepareLdapUsers($sender, $param)
+	{
 		$ldap = $this->getModule('ldap');
 		$params = $this->getLdapParams();
 		$ldap->setParams($params);
@@ -1025,7 +1053,7 @@ class Security extends BaculumWebPage {
 		// add additional parameters
 		$this->addLdapExtraParams($params);
 
-		$import_opt = (integer)$this->GetUsersImportOptions->SelectedValue;
+		$import_opt = (int) $this->GetUsersImportOptions->SelectedValue;
 
 		$users_web = [];
 		switch ($import_opt) {
@@ -1040,7 +1068,7 @@ class Security extends BaculumWebPage {
 					$cb_param = $param->getCallbackParameter();
 					if (is_array($cb_param)) {
 						for ($i = 0; $i < count($cb_param); $i++) {
-							$val = (array)$cb_param[$i];
+							$val = (array) $cb_param[$i];
 							$users_web[$val['username']] = $val;
 							unset($users_web[$val['username']]['username']);
 						}
@@ -1056,7 +1084,6 @@ class Security extends BaculumWebPage {
 					);
 					$users_ldap = $ldap->findUserAttr($filter, $params['attrs']);
 					$users_web = $this->convertLdapUsers($users_ldap, $params, true);
-
 				}
 				break;
 			}
@@ -1071,7 +1098,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event object parameter
 	 * @return none
 	 */
-	public function testLdapConnection($sender, $param) {
+	public function testLdapConnection($sender, $param)
+	{
 		$ldap = $this->getModule('ldap');
 		$params = $this->getLdapParams();
 		$ldap->setParams($params);
@@ -1095,7 +1123,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event object parameter
 	 * @return none
 	 */
-	public function importUsers($sender, $param) {
+	public function importUsers($sender, $param)
+	{
 		if (!$this->GetUsersDefaultIps->IsValid) {
 			// invalid IP restriction value
 			return;
@@ -1173,7 +1202,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event object parameter
 	 * @return none
 	 */
-	public function getUsers($sender, $param) {
+	public function getUsers($sender, $param)
+	{
 		if ($this->BasicAuth->Checked) {
 			$this->getBasicUsers($sender, $param);
 		} elseif ($this->LdapAuth->Checked) {
@@ -1188,7 +1218,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event object parameter
 	 * @return none
 	 */
-	public function saveSecurityConfig($sender, $param) {
+	public function saveSecurityConfig($sender, $param)
+	{
 		$config = $this->web_config;
 		if (!key_exists('security', $config)) {
 			$config['security'] = [];
@@ -1205,7 +1236,7 @@ class Security extends BaculumWebPage {
 		} elseif ($this->BasicAuth->Checked) {
 			$config['security']['auth_method'] = WebConfig::AUTH_METHOD_BASIC;
 			$config['auth_basic'] = $this->getBasicParams();
-		} else if ($this->LdapAuth->Checked) {
+		} elseif ($this->LdapAuth->Checked) {
 			$config['security']['auth_method'] = WebConfig::AUTH_METHOD_LDAP;
 			$config['auth_ldap'] = $this->getLdapParams();
 		}
@@ -1223,9 +1254,10 @@ class Security extends BaculumWebPage {
 	 * Determines if user management is enabled.
 	 * This checking bases on selected auth method and permission to manage users.
 	 *
-	 * @return boolean true if managing users is enabled, otherwise false
+	 * @return bool true if managing users is enabled, otherwise false
 	 */
-	private function isManageUsersAvail() {
+	private function isManageUsersAvail()
+	{
 		$is_local = $this->getModule('web_config')->isAuthMethodLocal();
 		$is_basic = $this->getModule('web_config')->isAuthMethodBasic();
 		$allow_manage_users = (isset($this->web_config['auth_basic']['allow_manage_users']) &&
@@ -1238,9 +1270,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setConsoleList($sender, $param) {
+	public function setConsoleList($sender, $param)
+	{
 		$config = $this->getModule('api')->get(['config', 'dir', 'Console']);
 		$console_directives = [
 			'Description' => '',
@@ -1260,7 +1294,8 @@ class Security extends BaculumWebPage {
 			'DirectoryAcl' => ''
 		];
 		$consoles = [];
-		function join_cons($item) {
+		function join_cons($item)
+		{
 			if (is_array($item)) {
 				$item = implode(',', $item);
 			}
@@ -1268,7 +1303,7 @@ class Security extends BaculumWebPage {
 		}
 		if ($config->error == 0) {
 			for ($i = 0; $i < count($config->output); $i++) {
-				$cons = (array)$config->output[$i]->Console;
+				$cons = (array) $config->output[$i]->Console;
 				$cons = array_map('join_cons', $cons);
 				$consoles[] = array_merge($console_directives, $cons);
 			}
@@ -1286,7 +1321,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadConsoleWindow($sender, $param) {
+	public function loadConsoleWindow($sender, $param)
+	{
 		$name = $param->getCallbackParameter();
 		if (!empty($name)) {
 			// edit existing console
@@ -1312,7 +1348,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeConsoles($sender, $param) {
+	public function removeConsoles($sender, $param)
+	{
 		$consoles = explode('|', $param->getCallbackParameter());
 		$res = new BaculaConfigResources();
 		$config = $res->getConfigData($this->User->getDefaultAPIHost(), 'dir');
@@ -1324,8 +1361,8 @@ class Security extends BaculumWebPage {
 			);
 		}
 		$this->getModule('api')->set(
-			array('config', 'dir'),
-			array('config' => json_encode($config)),
+			['config', 'dir'],
+			['config' => json_encode($config)],
 			$this->User->getDefaultAPIHost(),
 			false
 		);
@@ -1337,8 +1374,9 @@ class Security extends BaculumWebPage {
 		$this->loadOAuth2ClientConsole(null, null);
 	}
 
-	public function setAllCommandAcls($sender, $param) {
-		$config = (object)[
+	public function setAllCommandAcls($sender, $param)
+	{
+		$config = (object) [
 			"CommandAcl" => JobInfo::COMMAND_ACL_USED_BY_WEB
 		];
 		$this->ConsoleConfig->setData($config);
@@ -1352,9 +1390,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setAPIBasicUserList($sender, $param) {
+	public function setAPIBasicUserList($sender, $param)
+	{
 		$basic_users = $this->getModule('api')->get(['basic', 'users']);
 		$this->getCallbackClient()->callClientFunction('oAPIBasicUsers.load_api_basic_user_list_cb', [
 			$basic_users->output,
@@ -1379,7 +1419,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadAPIBasicUserWindow($sender, $param) {
+	public function loadAPIBasicUserWindow($sender, $param)
+	{
 		$username = $param->getCallbackParameter();
 		if (!empty($username)) {
 			$basic_user_cfg = $this->getModule('api')->get(['basic', 'users', $username]);
@@ -1402,7 +1443,8 @@ class Security extends BaculumWebPage {
 		$this->APIBasicUserDirector->dataBind();
 	}
 
-	public function loadAPIBasicUserConsole($sender, $param) {
+	public function loadAPIBasicUserConsole($sender, $param)
+	{
 		$cons = $this->getModule('api')->get(['config', 'dir', 'Console']);
 		$console = ['' => ''];
 		if ($cons->error == 0) {
@@ -1423,7 +1465,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveAPIBasicUser($sender, $param) {
+	public function saveAPIBasicUser($sender, $param)
+	{
 		$username = $this->APIBasicUserUsername->Text;
 		$cfg = [];
 		$cfg['username'] = $username;
@@ -1435,7 +1478,7 @@ class Security extends BaculumWebPage {
 		}
 
 		$win_type = $this->APIBasicUserWindowType->Value;
-		$result = (object)['error' => -1];
+		$result = (object) ['error' => -1];
 		if ($win_type === self::TYPE_ADD_WINDOW) {
 			$result = $this->getModule('api')->create(['basic', 'users', $username], $cfg);
 		} elseif ($win_type === self::TYPE_EDIT_WINDOW) {
@@ -1460,7 +1503,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeAPIBasicUsers($sender, $param) {
+	public function removeAPIBasicUsers($sender, $param)
+	{
 		$usernames = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($usernames); $i++) {
 			$result = $this->getModule('api')->remove(['basic', 'users', $usernames[$i]]);
@@ -1480,9 +1524,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TActiveDropDownList $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function loadAPIBasicUserSettings($sender, $param) {
+	public function loadAPIBasicUserSettings($sender, $param)
+	{
 		$username = $this->APIHostBasicUserSettings->SelectedValue;
 		if (!empty($username)) {
 			$host = $this->APIHostSettings->SelectedValue ?: null;
@@ -1498,9 +1544,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setOAuth2ClientList($sender, $param) {
+	public function setOAuth2ClientList($sender, $param)
+	{
 		$oauth2_clients = $this->getModule('api')->get(['oauth2', 'clients']);
 		$this->getCallbackClient()->callClientFunction('oOAuth2Clients.load_oauth2_client_list_cb', [
 			$oauth2_clients->output,
@@ -1508,7 +1556,8 @@ class Security extends BaculumWebPage {
 		]);
 	}
 
-	public function loadOAuth2ClientConsole($sender, $param) {
+	public function loadOAuth2ClientConsole($sender, $param)
+	{
 		$cons = $this->getModule('api')->get(['config', 'dir', 'Console']);
 		$console = ['' => ''];
 		if ($cons->error == 0) {
@@ -1527,7 +1576,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadOAuth2ClientWindow($sender, $param) {
+	public function loadOAuth2ClientWindow($sender, $param)
+	{
 		$client_id = $param->getCallbackParameter();
 		if (!empty($client_id)) {
 			$oauth2_cfg = $this->getModule('api')->get(['oauth2', 'clients', $client_id]);
@@ -1563,7 +1613,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveOAuth2Client($sender, $param) {
+	public function saveOAuth2Client($sender, $param)
+	{
 		$client_id = $this->OAuth2ClientClientId->Text;
 		$cfg = [];
 		$cfg['client_id'] = $client_id;
@@ -1578,7 +1629,7 @@ class Security extends BaculumWebPage {
 		$cfg['name'] = $this->OAuth2ClientName->Text;
 
 		$win_type = $this->OAuth2ClientWindowType->Value;
-		$result = (object)['error' => -1];
+		$result = (object) ['error' => -1];
 		if ($win_type === self::TYPE_ADD_WINDOW) {
 			$result = $this->getModule('api')->create(['oauth2', 'clients', $client_id], $cfg);
 		} elseif ($win_type === self::TYPE_EDIT_WINDOW) {
@@ -1603,7 +1654,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeOAuth2Clients($sender, $param) {
+	public function removeOAuth2Clients($sender, $param)
+	{
 		$client_ids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($client_ids); $i++) {
 			$result = $this->getModule('api')->remove(['oauth2', 'clients', $client_ids[$i]]);
@@ -1623,9 +1675,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TActiveDropDownList $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function loadOAuth2ClientSettings($sender, $param) {
+	public function loadOAuth2ClientSettings($sender, $param)
+	{
 		$client_id = $this->APIHostOAuth2ClientSettings->SelectedValue;
 		if (!empty($client_id)) {
 			$host = $this->APIHostSettings->SelectedValue ?: null;
@@ -1644,7 +1698,8 @@ class Security extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	private function loadOAuth2ClientList() {
+	private function loadOAuth2ClientList()
+	{
 		$host = $this->APIHostSettings->SelectedValue ?: null;
 		$oauth2_clients = $this->getModule('api')->get(['oauth2', 'clients'], $host);
 		$oauth2_client_list = ['' => ''];
@@ -1664,9 +1719,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setAPIHostList($sender, $param) {
+	public function setAPIHostList($sender, $param)
+	{
 		$api_hosts = $this->getModule('host_config')->getConfig();
 		$shortnames = array_keys($api_hosts);
 		$attributes = array_values($api_hosts);
@@ -1686,7 +1743,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadAPIHostWindow($sender, $param) {
+	public function loadAPIHostWindow($sender, $param)
+	{
 		$name = $param->getCallbackParameter();
 
 		// prepare API host combobox
@@ -1730,9 +1788,11 @@ class Security extends BaculumWebPage {
 	 *
 	 * @param TActiveDropDownList $sender sender object
 	 * @param TCallbackEventParameter callback parameter
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function loadAPIHostSettings($sender, $param) {
+	public function loadAPIHostSettings($sender, $param)
+	{
 		$api_host = $this->APIHostSettings->SelectedValue;
 		if (!empty($api_host)) {
 			$config = $this->getModule('host_config')->getConfig();
@@ -1756,17 +1816,18 @@ class Security extends BaculumWebPage {
 		}
 	}
 
-	public function connectionAPITest($sender, $param) {
+	public function connectionAPITest($sender, $param)
+	{
 		$host = $this->APIHostAddress->Text;
 		if (empty($host)) {
 			$host = false;
 		}
-		$host_params = array(
+		$host_params = [
 			'protocol' => $this->APIHostProtocol->SelectedValue,
 			'address' => $this->APIHostAddress->Text,
 			'port' => $this->APIHostPort->Text,
 			'url_prefix' => ''
-		);
+		];
 
 		if ($this->APIHostAuthBasic->Checked) {
 			$host_params['auth_type'] = 'basic';
@@ -1784,7 +1845,7 @@ class Security extends BaculumWebPage {
 		// Catalog test
 		OAuth2Record::deleteByPk($host);
 		$api->setHostParams($host, $host_params);
-		$catalog = $api->get(array('catalog'), $host, false);
+		$catalog = $api->get(['catalog'], $host, false);
 
 		// Console test
 		OAuth2Record::deleteByPk($host);
@@ -1796,7 +1857,7 @@ class Security extends BaculumWebPage {
 			unset($_SESSION['director']);
 		}
 
-		$console = $api->set(array('console'), array('version'), $host, false);
+		$console = $api->set(['console'], ['version'], $host, false);
 		if (!is_null($director)) {
 			// Revert director setting if any
 			$_SESSION['director'] = $director;
@@ -1805,7 +1866,7 @@ class Security extends BaculumWebPage {
 		// Config test
 		OAuth2Record::deleteByPk($host);
 		$api->setHostParams($host, $host_params);
-		$config = $api->get(array('config'), $host, false);
+		$config = $api->get(['config'], $host, false);
 		OAuth2Record::deleteByPk($host);
 
 		$is_catalog = (is_object($catalog) && $catalog->error === 0);
@@ -1837,8 +1898,9 @@ class Security extends BaculumWebPage {
 		$this->APIHostConfigSupportNo->Display = ($is_config === false) ? 'Dynamic' : 'None';
 	}
 
-	public function saveAPIHost($sender, $param) {
-		$cfg_host = array(
+	public function saveAPIHost($sender, $param)
+	{
+		$cfg_host = [
 			'auth_type' => '',
 			'login' => '',
 			'password' => '',
@@ -1846,7 +1908,7 @@ class Security extends BaculumWebPage {
 			'client_secret' => '',
 			'redirect_uri' => '',
 			'scope' => ''
-		);
+		];
 		$cfg_host['protocol'] = $this->APIHostProtocol->Text;
 		$cfg_host['address'] = $this->APIHostAddress->Text;
 		$cfg_host['port'] = $this->APIHostPort->Text;
@@ -1855,7 +1917,7 @@ class Security extends BaculumWebPage {
 			$cfg_host['auth_type'] = 'basic';
 			$cfg_host['login'] = $this->APIHostBasicLogin->Text;
 			$cfg_host['password'] = $this->APIHostBasicPassword->Text;
-		} elseif($this->APIHostAuthOAuth2->Checked == true) {
+		} elseif ($this->APIHostAuthOAuth2->Checked == true) {
 			$cfg_host['auth_type'] = 'oauth2';
 			$cfg_host['client_id'] = $this->APIHostOAuth2ClientId->Text;
 			$cfg_host['client_secret'] = $this->APIHostOAuth2ClientSecret->Text;
@@ -1886,7 +1948,8 @@ class Security extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function removeAPIHosts($sender, $param) {
+	public function removeAPIHosts($sender, $param)
+	{
 		$names = explode('|', $param->getCallbackParameter());
 		$hc = $this->getModule('host_config');
 		$config = $hc->getConfig();
@@ -1908,7 +1971,8 @@ class Security extends BaculumWebPage {
 	 * @param TServerValidateEventParameter $param event object parameter
 	 * @return none
 	 */
-	public function validateIps($sender, $param) {
+	public function validateIps($sender, $param)
+	{
 		$valid = true;
 		$val = trim($param->Value);
 		if (!empty($val)) {
@@ -1930,7 +1994,8 @@ class Security extends BaculumWebPage {
 	 * @param string $ips IP restriction address values
 	 * @return string trimmed addresses
 	 */
-	public function trimIps($ips) {
+	public function trimIps($ips)
+	{
 		$ips = trim($ips);
 		if (!empty($ips)) {
 			$ips = explode(',', $ips);
@@ -1940,4 +2005,3 @@ class Security extends BaculumWebPage {
 		return $ips;
 	}
 }
-?>

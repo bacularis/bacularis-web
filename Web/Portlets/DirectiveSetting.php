@@ -38,16 +38,17 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveSetting extends DirectiveListTemplate {
-
-	public function onLoadDirectives($param) {
+class DirectiveSetting extends DirectiveListTemplate
+{
+	public function onLoadDirectives($param)
+	{
 		$this->raiseEvent('OnLoadDirectives', $this, $param);
 	}
 
-	public function setOption($sender, $param) {
-		switch($param->CallbackParameter) {
+	public function setOption($sender, $param)
+	{
+		switch ($param->CallbackParameter) {
 			case 'show_all_directives': {
 				$this->onLoadDirectives(null);
 				break;
@@ -67,9 +68,9 @@ class DirectiveSetting extends DirectiveListTemplate {
 		}
 	}
 
-	public function showOptions($show) {
+	public function showOptions($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->DirectiveOptions->Display = $show ? 'Dynamic' : 'None';
 	}
 }
-?>

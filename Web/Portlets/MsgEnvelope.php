@@ -27,7 +27,6 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-
 namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\ActiveControls\TCallback;
@@ -39,15 +38,14 @@ use Bacularis\Web\Portlets\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class MsgEnvelope extends Portlets {
-
-	public function truncate() {
+class MsgEnvelope extends Portlets
+{
+	public function truncate()
+	{
 		if (!$this->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) {
 			return;
 		}
 		$this->getModule('messages_log')->truncate();
 	}
 }
-?>

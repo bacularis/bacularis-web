@@ -36,8 +36,7 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  * New runscript menu.
  *
  * @category Control
- * @package Baculum Web
  */
-class NewRunscriptMenu extends DirectiveListTemplate {
+class NewRunscriptMenu extends DirectiveListTemplate
+{
 }
-?>

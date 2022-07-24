@@ -15,7 +15,7 @@ namespace Bacularis\Web\Portlets;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Bacularis Web
  */
-class InfoMessageBox extends Portlets {
+class InfoMessageBox extends Portlets
+{
 }

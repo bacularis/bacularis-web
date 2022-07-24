@@ -35,8 +35,7 @@ use Bacularis\Web\Portlets\DirectiveListTemplate;
  * New resource menu.
  *
  * @category Control
- * @package Baculum Web
  */
-class NewResourceMenu extends DirectiveListTemplate {
+class NewResourceMenu extends DirectiveListTemplate
+{
 }
-?>

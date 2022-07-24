@@ -44,37 +44,37 @@ use Bacularis\Web\Portlets\FileSetOptionRenderer;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveFileSet extends DirectiveListTemplate {
-
-	private $directive_types = array(
+class DirectiveFileSet extends DirectiveListTemplate
+{
+	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveCheckBox',
 		'Bacularis\Web\Portlets\DirectiveTextBox',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveListBox',
 		'Bacularis\Web\Portlets\DirectiveInteger'
-	);
+	];
 
-	private $directive_list_types = array(
+	private $directive_list_types = [
 		'Bacularis\Web\Portlets\DirectiveMultiTextBox'
-	);
+	];
 
-	private $directive_inc_exc_types = array(
+	private $directive_inc_exc_types = [
 		'Bacularis\Web\Portlets\DirectiveTextBox'
-	);
+	];
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$component_type = $this->getComponentType();
 		$component_name = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$directive_name = $this->getDirectiveName();
 		$directives = $this->getData();
-		$includes = array();
-		$file = array();
-		$plugin = array();
-		$exclude = array();
-		$options = array();
+		$includes = [];
+		$file = [];
+		$plugin = [];
+		$exclude = [];
+		$options = [];
 		if (!is_array($directives) || $directive_name === 'Exclude') {
 			return;
 		}
@@ -86,7 +86,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						continue;
 					}
 					foreach ($subres[$i] as $name => $values) {
-						switch($name) {
+						switch ($name) {
 							case 'File': {
 								$this->setFile($file, $name, $values);
 								break;
@@ -101,12 +101,12 @@ class DirectiveFileSet extends DirectiveListTemplate {
 							}
 						}
 					}
-					$includes[] = array(
+					$includes[] = [
 						'file' => $file,
 						'plugin' => $plugin,
 						'options' => $options
-					);
-					$file = $plugin = $options = array();
+					];
+					$file = $plugin = $options = [];
 				}
 			} elseif ($index === 'Exclude') {
 				if (!key_exists('File', $subres)) {
@@ -125,7 +125,8 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$this->FSBrowser->loadClients(null, null);
 	}
 
-	private function setFile(&$files, $name, $config) {
+	private function setFile(&$files, $name, $config)
+	{
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$component_name = $this->getComponentName();
@@ -137,7 +138,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$required = false;
 
 		for ($i = 0; $i < count($config); $i++) {
-			$files[] = array(
+			$files[] = [
 				'host' => $host,
 				'component_type' => $component_type,
 				'component_name' => $component_name,
@@ -156,11 +157,12 @@ class DirectiveFileSet extends DirectiveListTemplate {
 				'show' => true,
 				'parent_name' => $name,
 				'group_name' => $i
-			);
+			];
 		}
 	}
 
-	private function setPlugin(&$plugins, $name, $config) {
+	private function setPlugin(&$plugins, $name, $config)
+	{
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$component_name = $this->getComponentName();
@@ -172,7 +174,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$required = false;
 
 		for ($i = 0; $i < count($config); $i++) {
-			$plugins[] = array(
+			$plugins[] = [
 				'host' => $host,
 				'component_type' => $component_type,
 				'component_name' => $component_name,
@@ -191,11 +193,12 @@ class DirectiveFileSet extends DirectiveListTemplate {
 				'show' => true,
 				'parent_name' => $name,
 				'group_name' => $i
-			);
+			];
 		}
 	}
 
-	private function setOption(&$options, $name, $config) {
+	private function setOption(&$options, $name, $config)
+	{
 		$misc = $this->getModule('misc');
 		$load_values = $this->getLoadValues();
 		$host = $this->getHost();
@@ -213,7 +216,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 					continue;
 				}
 				if (is_object($config[$i])) {
-					$config[$i] = (array)$config[$i];
+					$config[$i] = (array) $config[$i];
 				}
 				$in_config = key_exists($directive_name, $config[$i]);
 				$directive_value = null;
@@ -246,20 +249,20 @@ class DirectiveFileSet extends DirectiveListTemplate {
 					 */
 					if ($misc->isValidBooleanTrue($directive_value)) {
 						$directive_value = true;
-					} else if ($misc->isValidBooleanFalse($directive_value)) {
+					} elseif ($misc->isValidBooleanFalse($directive_value)) {
 						$directive_value = false;
 					}
 				}
 
 				if ($field_type === 'MultiTextBox') {
-					$directive_value = array($directive_value);
+					$directive_value = [$directive_value];
 				}
 
 				if (!is_array($directive_value)) {
-					$directive_value = array($directive_value);
+					$directive_value = [$directive_value];
 				}
 				for ($j = 0; $j < count($directive_value); $j++) {
-					$options[] = array(
+					$options[] = [
 						'host' => $host,
 						'component_type' => $component_type,
 						'component_name' => $component_name,
@@ -277,14 +280,15 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						'show' => ($in_config || !$load_values || $this->SourceTemplateControl->getShowAllDirectives()),
 						'parent_name' => $name,
 						'group_name' => $i
-					);
+					];
 				}
 			}
 		}
 	}
 
-	public function getDirectiveValue() {
-		$directive_values = array('Include' => array(), 'Exclude' => array());
+	public function getDirectiveValue()
+	{
+		$directive_values = ['Include' => [], 'Exclude' => []];
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$resource_desc = $this->Application->getModule('data_desc')->getDescription($component_type, $resource_type);
@@ -313,13 +317,13 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						continue;
 					}
 					if (!key_exists($counter, $directive_values['Include'])) {
-						$directive_values['Include'][$counter] = array();
+						$directive_values['Include'][$counter] = [];
 					}
 					if (!key_exists('Options', $directive_values['Include'][$counter])) {
-						$directive_values['Include'][$counter]['Options'] = array();
+						$directive_values['Include'][$counter]['Options'] = [];
 					}
 					if (!key_exists($index, $directive_values['Include'][$counter]['Options'])) {
-						$directive_values['Include'][$counter]['Options'][$index] = array();
+						$directive_values['Include'][$counter]['Options'][$index] = [];
 					}
 					$directive_values['Include'][$counter]['Options'][$index][$directive_name] = $directive_value;
 				}
@@ -334,10 +338,10 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						continue;
 					}
 					if (!key_exists($counter, $directive_values['Include'])) {
-						$directive_values['Include'][$counter] = array();
+						$directive_values['Include'][$counter] = [];
 					}
 					if (!key_exists($directive_name, $directive_values['Include'][$counter])) {
-						$directive_values['Include'][$counter][$directive_name] = array();
+						$directive_values['Include'][$counter][$directive_name] = [];
 					}
 					$directive_values['Include'][$counter][$directive_name][] = $directive_value;
 				}
@@ -351,10 +355,10 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						continue;
 					}
 					if (!key_exists($counter, $directive_values['Include'])) {
-						$directive_values['Include'][$counter] = array();
+						$directive_values['Include'][$counter] = [];
 					}
 					if (!key_exists($directive_name, $directive_values['Include'][$counter])) {
-						$directive_values['Include'][$counter][$directive_name] = array();
+						$directive_values['Include'][$counter][$directive_name] = [];
 					}
 					$directive_values['Include'][$counter][$directive_name][] = $directive_value;
 				}
@@ -371,13 +375,13 @@ class DirectiveFileSet extends DirectiveListTemplate {
 						continue;
 					}
 					if (!key_exists($counter, $directive_values['Include'])) {
-						$directive_values['Include'][$counter] = array();
+						$directive_values['Include'][$counter] = [];
 					}
 					if (!key_exists('Options', $directive_values['Include'][$counter])) {
-						$directive_values['Include'][$counter]['Options'] = array();
+						$directive_values['Include'][$counter]['Options'] = [];
 					}
 					if (!key_exists($index, $directive_values['Include'][$counter]['Options'])) {
-						$directive_values['Include'][$counter]['Options'][$index] = array();
+						$directive_values['Include'][$counter]['Options'][$index] = [];
 					}
 					$directive_values['Include'][$counter]['Options'][$index][$directive_name] = $directive_value;
 				}
@@ -395,7 +399,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 					continue;
 				}
 				if (!key_exists('File', $directive_values['Exclude'])) {
-					$directive_values['Exclude']['File'] = array();
+					$directive_values['Exclude']['File'] = [];
 				}
 				array_push($directive_values['Exclude']['File'], $directive_value);
 			}
@@ -418,7 +422,8 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		return $directive_values;
 	}
 
-	public function createFileSetIncludes($sender, $param) {
+	public function createFileSetIncludes($sender, $param)
+	{
 		$param->Item->RepeaterFileSetOptions->DataSource = $param->Item->Data['options'];
 		$param->Item->RepeaterFileSetOptions->dataBind();
 		$param->Item->RepeaterFileSetInclude->DataSource = $param->Item->Data['file'];
@@ -428,7 +433,8 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$param->Item->FileSetFileOptMenu->setItemIndex($param->Item->getItemIndex());
 	}
 
-	public function createFileSetIncExcElement($sender, $param) {
+	public function createFileSetIncExcElement($sender, $param)
+	{
 		if (!is_array($param->Item->Data)) {
 			// skip parent repeater items
 			return;
@@ -452,14 +458,16 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		}
 	}
 
-	public function newIncludeBlock($sender, $param) {
+	public function newIncludeBlock($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
-		$data['Include'][] = array();
+		$data['Include'][] = [];
 		$this->setData($data);
 		$this->loadConfig();
 	}
 
-	public function newIncludeFile($sender, $param) {
+	public function newIncludeFile($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$inc_index = $sender->Parent->getItemIndex();
 		$file_index = 0;
@@ -471,7 +479,8 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$this->loadConfig();
 	}
 
-	public function newIncludePlugin($sender, $param) {
+	public function newIncludePlugin($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$inc_index = $sender->Parent->getItemIndex();
 		$plugin_index = 0;
@@ -483,42 +492,45 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$this->loadConfig();
 	}
 
-	public function newExcludeFile($sender, $param) {
+	public function newExcludeFile($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$file_index = 0;
 		if (key_exists('Exclude', $data) && is_array($data['Exclude']) && key_exists('File', $data['Exclude'])) {
 			$file_index = count($data['Exclude']['File']);
 		} else {
-			$data['Exclude'] = array('File' => array());
+			$data['Exclude'] = ['File' => []];
 		}
 		$data['Exclude']['File'][$file_index] = '';
 		$this->setData($data);
 		$this->loadConfig();
 	}
 
-	public function newIncludeOptions($sender, $param) {
+	public function newIncludeOptions($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$inc_index = $sender->Parent->getItemIndex();
 		$opt_index = 0;
 		if (key_exists($inc_index, $data['Include']) && key_exists('Options', $data['Include'][$inc_index])) {
 			$opt_index = count($data['Include'][$inc_index]['Options']);
 		}
-		$data['Include'][$inc_index]['Options'][$opt_index] = array();
+		$data['Include'][$inc_index]['Options'][$opt_index] = [];
 		$this->SourceTemplateControl->setShowAllDirectives(true);
 		$this->setData($data);
 		$this->loadConfig();
 	}
 
-	public function newIncludeExcludeFile($sender, $param) {
+	public function newIncludeExcludeFile($sender, $param)
+	{
 		$data = $this->getDirectiveValue();
 		$inc_index = $this->RepeaterFileSetIncludes->getItems()->getCount() - 1;
 		$inc_exc = $param->getCallbackParameter();
 		if (property_exists($inc_exc, 'Include') && is_array($inc_exc->Include)) {
-			if (!key_exists($inc_index, $data['Include'])){
-				$data['Include'][$inc_index] = array();
+			if (!key_exists($inc_index, $data['Include'])) {
+				$data['Include'][$inc_index] = [];
 			}
 			if (!key_exists('File', $data['Include'][$inc_index])) {
-				$data['Include'][$inc_index]['File'] = array();
+				$data['Include'][$inc_index]['File'] = [];
 			}
 			for ($i = 0; $i < count($inc_exc->Include); $i++) {
 				if (in_array($inc_exc->Include[$i], $data['Include'][$inc_index]['File'])) {
@@ -530,7 +542,7 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		}
 		if (property_exists($inc_exc, 'Exclude') && is_array($inc_exc->Exclude)) {
 			if (!key_exists('File', $data['Exclude'])) {
-				$data['Exclude']['File'] = array();
+				$data['Exclude']['File'] = [];
 			}
 			for ($i = 0; $i < count($inc_exc->Exclude); $i++) {
 				if (in_array($inc_exc->Exclude[$i], $data['Exclude']['File'])) {
@@ -544,4 +556,3 @@ class DirectiveFileSet extends DirectiveListTemplate {
 		$this->loadConfig();
 	}
 }
-?>

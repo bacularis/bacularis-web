@@ -40,20 +40,20 @@ use Bacularis\Web\Modules\Miscellaneous;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class BaculaConfigComponents extends ComponentListTemplate {
+class BaculaConfigComponents extends ComponentListTemplate
+{
+	public const CHILD_CONTROL = 'BaculaConfigResources';
 
-	const CHILD_CONTROL = 'BaculaConfigResources';
+	public const MENU_CONTROL = 'NewResourceMenu';
 
-	const MENU_CONTROL = 'NewResourceMenu';
+	public const ACTIONS_CONTROL = 'ComponentActionsMenu';
 
-	const ACTIONS_CONTROL = 'ComponentActionsMenu';
-
-	private function getConfigData($host) {
-		$params = array('config');
+	private function getConfigData($host)
+	{
+		$params = ['config'];
 		$result = $this->Application->getModule('api')->get($params, $host, false);
-		$config = array();
+		$config = [];
 		$this->ErrorMsg->Display = 'None';
 		if (is_object($result) && $result->error === 0 && is_array($result->output)) {
 			$config = $result->output;
@@ -64,12 +64,13 @@ class BaculaConfigComponents extends ComponentListTemplate {
 		return $config;
 	}
 
-	public function loadConfig() {
-		$components = array();
+	public function loadConfig()
+	{
+		$components = [];
 		$host = $this->getHost();
 		$config = $this->getConfigData($host);
 		for ($i = 0; $i < count($config); $i++) {
-			$component = (array)$config[$i];
+			$component = (array) $config[$i];
 			if (array_key_exists('component_type', $component) && array_key_exists('component_name', $component)) {
 				$component['host'] = $host;
 				$component['label'] = $this->getModule('misc')->getComponentFullName($component['component_type']);
@@ -80,14 +81,15 @@ class BaculaConfigComponents extends ComponentListTemplate {
 		$this->RepeaterComponents->dataBind();
 	}
 
-	public function createComponentListElement($sender, $param) {
+	public function createComponentListElement($sender, $param)
+	{
 		if (!is_array($param->Item->Data)) {
 			// skip parent repeater items
 			return;
 		}
-		$conts = array(self::MENU_CONTROL, self::ACTIONS_CONTROL);
+		$conts = [self::MENU_CONTROL, self::ACTIONS_CONTROL];
 		for ($i = 0; $i < count($conts); $i++) {
-			$controls = array(self::CHILD_CONTROL, $conts[$i]);
+			$controls = [self::CHILD_CONTROL, $conts[$i]];
 			for ($j = 0; $j < count($controls); $j++) {
 				$control = $this->getChildControl($param->Item, $controls[$j]);
 				if (is_object($control)) {
@@ -99,22 +101,22 @@ class BaculaConfigComponents extends ComponentListTemplate {
 		}
 	}
 
-	public function getResources($sender, $param) {
+	public function getResources($sender, $param)
+	{
 		$control = $this->getChildControl($sender->getParent(), self::CHILD_CONTROL);
 		if (is_object($control)) {
 			$control->raiseEvent('OnResourceListLoad', $this, null);
 		}
 	}
 
-	public function newResource($sender, $param) {
-		list($resource_type, $host, $component_type, $component_name) = explode('|', $param->getCommandParameter(), 4);
+	public function newResource($sender, $param)
+	{
+		[$resource_type, $host, $component_type, $component_name] = explode('|', $param->getCommandParameter(), 4);
 		$this->NewResource->setHost($host);
 		$this->NewResource->setComponentType($component_type);
 		$this->NewResource->setComponentName($component_name);
 		$this->NewResource->setResourceType($resource_type);
 		$this->NewResource->setLoadValues(false);
 		$this->NewResource->raiseEvent('OnDirectiveListLoad', $this, null);
-
 	}
 }
-?>

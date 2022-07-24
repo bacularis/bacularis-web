@@ -36,9 +36,7 @@ use Prado\Web\UI\TTemplateControl;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Layout
- * @package Baculum Web
  */
 class MessageBox extends TTemplateControl
 {
 }
-?>

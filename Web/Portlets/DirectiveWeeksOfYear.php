@@ -40,14 +40,14 @@ use Bacularis\Web\Portlets\DirectiveTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveWeeksOfYear extends DirectiveTemplate {
+class DirectiveWeeksOfYear extends DirectiveTemplate
+{
+	public const SHOW_OPTIONS = 'ShowOptions';
+	public const WEEK_CONTROL_PREFIX = 'week';
 
-	const SHOW_OPTIONS = 'ShowOptions';
-	const WEEK_CONTROL_PREFIX = 'week';
-
-	public function getValue() {
+	public function getValue()
+	{
 		$value = [];
 		$weeks = range(0, 53);
 		for ($i = 0; $i < count($weeks); $i++) {
@@ -61,7 +61,8 @@ class DirectiveWeeksOfYear extends DirectiveTemplate {
 		return $value;
 	}
 
-	public function createDirective() {
+	public function createDirective()
+	{
 		$this->Label->Text = $this->getLabel();
 		$directive_value = $this->getDirectiveValue();
 		$default_value = $this->getDefaultValue();
@@ -100,12 +101,14 @@ class DirectiveWeeksOfYear extends DirectiveTemplate {
 		}
 	}
 
-	public function setShowOptions($show) {
+	public function setShowOptions($show)
+	{
 		$show = TPropertyValue::ensureBoolean($show);
 		$this->setViewState(self::SHOW_OPTIONS, $show);
 	}
 
-	public function getShowOptions() {
+	public function getShowOptions()
+	{
 		return $this->getViewState(self::SHOW_OPTIONS, false);
 	}
 }

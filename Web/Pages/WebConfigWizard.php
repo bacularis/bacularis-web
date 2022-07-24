@@ -28,7 +28,7 @@
  */
 
 use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\BasicWebUserConfig;
 use Bacularis\Web\Modules\WebUserRoles;
@@ -38,23 +38,24 @@ use Bacularis\Web\Modules\WebUserRoles;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
 class WebConfigWizard extends BaculumWebPage
 {
 	public $first_run;
 	public $host_config;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$this->host_config = $this->getModule('host_config')->getConfig();
 		$this->first_run = (count($this->host_config) == 0 || !key_exists(HostConfig::MAIN_CATALOG_HOST, $this->host_config));
 		Logging::$debug_enabled = Logging::$debug_enabled ?: $this->first_run;
 	}
 
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
-		if($this->IsPostBack || $this->IsCallBack) {
+		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
 		if ($this->first_run === false) {
@@ -84,30 +85,35 @@ class WebConfigWizard extends BaculumWebPage
 		}
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
-		if($this->IsPostBack || $this->IsCallBack) {
+		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
 		$this->Lang->SelectedValue = $this->getModule('web_config')->getLanguage();
 	}
 
-	public function nextStep($sender, $param) {
+	public function nextStep($sender, $param)
+	{
 		if ($param->CurrentStepIndex === 1 && !$this->first_run) {
 			$this->InstallWizard->ActiveStepIndex = 3;
 		}
 	}
-	
-	public function previousStep($sender, $param) {
+
+	public function previousStep($sender, $param)
+	{
 	}
 
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->goToDefaultPage();
 	}
 
-	public function wizardCompleted() {
+	public function wizardCompleted()
+	{
 		$host = HostConfig::MAIN_CATALOG_HOST;
-		$cfg_host = array(
+		$cfg_host = [
 			'auth_type' => '',
 			'login' => '',
 			'password' => '',
@@ -115,7 +121,7 @@ class WebConfigWizard extends BaculumWebPage
 			'client_secret' => '',
 			'redirect_uri' => '',
 			'scope' => ''
-		);
+		];
 		$cfg_host['protocol'] = $this->AddNewHost->APIProtocol->Text;
 		$cfg_host['address'] = $this->AddNewHost->APIAddress->Text;
 		$cfg_host['port'] = $this->AddNewHost->APIPort->Text;
@@ -124,7 +130,7 @@ class WebConfigWizard extends BaculumWebPage
 			$cfg_host['auth_type'] = 'basic';
 			$cfg_host['login'] = $this->AddNewHost->APIBasicLogin->Text;
 			$cfg_host['password'] = $this->AddNewHost->APIBasicPassword->Text;
-		} elseif($this->AddNewHost->AuthOAuth2->Checked == true) {
+		} elseif ($this->AddNewHost->AuthOAuth2->Checked == true) {
 			$cfg_host['auth_type'] = 'oauth2';
 			$cfg_host['client_id'] = $this->AddNewHost->APIOAuth2ClientId->Text;
 			$cfg_host['client_secret'] = $this->AddNewHost->APIOAuth2ClientSecret->Text;
@@ -134,7 +140,7 @@ class WebConfigWizard extends BaculumWebPage
 		$host_config = $this->getModule('host_config')->getConfig();
 		$host_config[$host] = $cfg_host;
 		$ret = $this->getModule('host_config')->setConfig($host_config);
-		if($ret === true) {
+		if ($ret === true) {
 			// complete new Baculum main settings
 			$web_config = $this->getModule('web_config');
 			$ret = $web_config->setDefConfigOpts([
@@ -202,19 +208,23 @@ class WebConfigWizard extends BaculumWebPage
 		}
 	}
 
-	public function setLogin($db) {
+	public function setLogin($db)
+	{
 		$this->Login->Enabled = ($this->isSQLiteType($db) === false);
 	}
 
-	public function setPassword($db) {
+	public function setPassword($db)
+	{
 		$this->Password->Enabled = ($this->isSQLiteType($db) === false);
 	}
 
-	public function setLang($sender, $param) {
+	public function setLang($sender, $param)
+	{
 		$this->getModule('web_config')->setLanguage($sender->SelectedValue);
 	}
 
-	public function validateAdministratorPassword($sender, $param) {
+	public function validateAdministratorPassword($sender, $param)
+	{
 		if ($this->RetypeWebPasswordRequireValidator->IsValid && $this->RetypeWebPasswordRegexpValidator->IsValid) {
 			$sender->Display = 'Dynamic';
 		} else {
@@ -223,4 +233,3 @@ class WebConfigWizard extends BaculumWebPage
 		$param->IsValid = ($param->Value === $this->WebPassword->Text);
 	}
 }
-?>

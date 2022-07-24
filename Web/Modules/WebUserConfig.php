@@ -38,14 +38,13 @@ use Bacularis\Web\Modules\WebUserRoles;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
- * @package Baculum Web
  */
-class WebUserConfig extends ConfigFileModule {
-
-        /**
-         * Web user name allowed characters pattern
-         */
-	const USER_PATTERN = '[\w\@\-\.]+';
+class WebUserConfig extends ConfigFileModule
+{
+	/**
+	 * Web user name allowed characters pattern
+	 */
+	public const USER_PATTERN = '[\w\@\-\.]+';
 
 	/**
 	 * Regular expression to validate e-mail address.
@@ -54,22 +53,22 @@ class WebUserConfig extends ConfigFileModule {
 	 *
 	 * @see http://www.regular-expressions.info/email.html
 	 */
-	const EMAIL_ADDRESS_PATTERN = '[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.?)+';
+	public const EMAIL_ADDRESS_PATTERN = '[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.?)+';
 
 	/**
 	 * Web user config file path
 	 */
-	const CONFIG_FILE_PATH = 'Bacularis.Web.Config.users';
+	public const CONFIG_FILE_PATH = 'Bacularis.Web.Config.users';
 
 	/**
 	 * Web user config file format
 	 */
-	const CONFIG_FILE_FORMAT = 'ini';
+	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
 	 * Stores web user config content.
 	 */
-	private $config = null;
+	private $config;
 
 	/**
 	 * These properties are obligatory for web config.
@@ -88,7 +87,8 @@ class WebUserConfig extends ConfigFileModule {
 	 *
 	 * @return array config
 	 */
-	public function getConfig() {
+	public function getConfig()
+	{
 		$config = [];
 		if (is_null($this->config)) {
 			$this->config = $this->readConfig(self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
@@ -125,9 +125,10 @@ class WebUserConfig extends ConfigFileModule {
 	 * @see setUserConfig()
 	 *
 	 * @param array $config config
-	 * @return boolean true if config saved successfully, otherwise false
+	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setConfig(array $config) {
+	public function setConfig(array $config)
+	{
 		$result = false;
 		if ($this->isUserConfigValid($config) === true) {
 			$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
@@ -138,7 +139,8 @@ class WebUserConfig extends ConfigFileModule {
 		return $result;
 	}
 
-	public function configExists() {
+	public function configExists()
+	{
 		return parent::isConfig(self::CONFIG_FILE_PATH);
 	}
 
@@ -146,9 +148,11 @@ class WebUserConfig extends ConfigFileModule {
 	 * Get single user config.
 	 *
 	 * @param $user user name
+	 * @param mixed $username
 	 * @return array user config
 	 */
-	public function getUserConfig($username) {
+	public function getUserConfig($username)
+	{
 		$user_config = [];
 		$config = $this->getConfig();
 		if (key_exists($username, $config)) {
@@ -163,9 +167,10 @@ class WebUserConfig extends ConfigFileModule {
 	 *
 	 * @param string $username user name
 	 * @param array $user_config user configuration
-	 * @return boolean true if config saved successfully, otherwise false
+	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setUserConfig($username, array $user_config) {
+	public function setUserConfig($username, array $user_config)
+	{
 		$config = $this->getConfig();
 		$config[$username] = $user_config;
 		if (key_exists('username', $user_config)) {
@@ -181,8 +186,9 @@ class WebUserConfig extends ConfigFileModule {
 	 * @param array $prop custom user properties
 	 * @return array user config properties
 	 */
-	public function getUserConfigProps($prop = []) {
-		$req_prop =  array_fill_keys($this->user_req_prop, '');
+	public function getUserConfigProps($prop = [])
+	{
+		$req_prop = array_fill_keys($this->user_req_prop, '');
 		return array_merge($req_prop, $prop);
 	}
 
@@ -192,10 +198,11 @@ class WebUserConfig extends ConfigFileModule {
 	 * It can be done both if web user config hasn't been created yet
 	 * and if web user config exists already with some users.
 	 *
-	 * @return boolean true if config with imported users saved successfully,
+	 * @return bool true if config with imported users saved successfully,
 	 *                      otherwise false
 	 */
-	public function importUsersToConfig() {
+	public function importUsersToConfig()
+	{
 		$basic_users = $this->getModule('basic_webuser')->getUsers();
 		$web_config = $this->getModule('web_config')->getConfig();
 		$users = array_keys($basic_users);
@@ -236,9 +243,10 @@ class WebUserConfig extends ConfigFileModule {
 	 * Basic auth method is the main Baculum Web auth method. Before introducing
 	 * users.conf file, it was the only one supported method.
 	 *
-	 * @return boolean true on successfull import, otherwise false
+	 * @return bool true on successfull import, otherwise false
 	 */
-	public function importUsers() {
+	public function importUsers()
+	{
 		// import can take place only if user config file doesn't exist
 		if (parent::isConfig(self::CONFIG_FILE_PATH) === true) {
 			return false;
@@ -266,9 +274,10 @@ class WebUserConfig extends ConfigFileModule {
 	 * Validate user single user section in config.
 	 *
 	 * @param array $config user config section
-	 * @return boolean true if config valid, otherwise false
+	 * @return bool true if config valid, otherwise false
 	 */
-	private function isUserConfigValid(array $config) {
+	private function isUserConfigValid(array $config)
+	{
 		$invalid = ['required' => []];
 		foreach ($config as $username => $user_config) {
 			for ($i = 0; $i < count($this->user_req_prop); $i++) {
@@ -302,4 +311,3 @@ class WebUserConfig extends ConfigFileModule {
 		return $valid;
 	}
 }
-?>

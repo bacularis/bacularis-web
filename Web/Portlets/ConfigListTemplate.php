@@ -36,11 +36,11 @@ use Bacularis\Web\Portlets\DirectiveControlTemplate;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class ConfigListTemplate extends DirectiveControlTemplate {
-
-	public function getChildControl($parent, $type) {
+class ConfigListTemplate extends DirectiveControlTemplate
+{
+	public function getChildControl($parent, $type)
+	{
 		$child_control = null;
 		$controls = $parent->findControlsByType($type, true);
 		// Only one config-type child control is expected
@@ -50,14 +50,15 @@ class ConfigListTemplate extends DirectiveControlTemplate {
 		return $child_control;
 	}
 
-	public function getConfigResourceType($obj) {
+	public function getConfigResourceType($obj)
+	{
 		$obj_vars = get_object_vars($obj);
 		$resource_type = key($obj_vars);
 		return $resource_type;
 	}
 
-	protected function getModule($id) {
+	protected function getModule($id)
+	{
 		return $this->getApplication()->getModule($id);
 	}
 }
-?>

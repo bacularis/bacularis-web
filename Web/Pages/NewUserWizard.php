@@ -19,13 +19,13 @@ use Bacularis\Web\Modules\OAuth2Record;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Bacularis Web
  */
-class NewUserWizard extends BaculumWebPage {
+class NewUserWizard extends BaculumWebPage
+{
+	public const PREV_STEP = 'PrevStep';
 
-	const PREV_STEP = 'PrevStep';
-
-	public function onLoad($param) {
+	public function onLoad($param)
+	{
 		parent::onLoad($param);
 
 		if ($this->IsPostBack || $this->IsCallback) {
@@ -33,7 +33,8 @@ class NewUserWizard extends BaculumWebPage {
 		}
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		if ($this->IsCallBack) {
 			return;
@@ -69,9 +70,11 @@ class NewUserWizard extends BaculumWebPage {
 	/**
 	 * Set role list control.
 	 *
+	 * @param null|mixed $selected_value
 	 * @return none
 	 */
-	private function setRoles($selected_value = null) {
+	private function setRoles($selected_value = null)
+	{
 		// Selected values
 		$selected = $this->getMultiSelectValues($this->UserRoles);
 
@@ -110,7 +113,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveRole($sender, $param) {
+	public function saveRole($sender, $param)
+	{
 		$role = $this->Role->Text;
 		$this->getCallbackClient()->hide('role_window_role_exists');
 		$config = $this->getModule('user_role')->getRole($role);
@@ -135,7 +139,8 @@ class NewUserWizard extends BaculumWebPage {
 	 *
 	 * @return none
 	 */
-	public function setRoleWindow() {
+	public function setRoleWindow()
+	{
 		// set role resources
 		$resources = $this->getModule('page_category')->getCategories(false);
 		$this->RoleResources->DataSource = array_combine($resources, $resources);
@@ -146,9 +151,11 @@ class NewUserWizard extends BaculumWebPage {
 	 * Set API host list - generic method.
 	 *
 	 * @param object $control control object
+	 * @param null|mixed $selected_value
 	 * @return none
 	 */
-	private function setAPIHostControl($control, $selected_value = null) {
+	private function setAPIHostControl($control, $selected_value = null)
+	{
 		// get existing selection (if any)
 		$selected = $this->getMultiSelectValues($control);
 
@@ -163,7 +170,6 @@ class NewUserWizard extends BaculumWebPage {
 			if (in_array($api_hosts[$i], $selected) || $api_hosts[$i] === $selected_value) {
 				$selected_indices[] = $i;
 			}
-
 		}
 
 		$control->DataSource = array_combine($api_hosts, $api_hosts);
@@ -174,7 +180,7 @@ class NewUserWizard extends BaculumWebPage {
 				// for single value TDropDownList the SelectedIndices is read-only
 				try {
 					$control->setSelectedValue($selected_value);
-				} catch(Exception $e) {
+				} catch (Exception $e) {
 				}
 			}
 		}
@@ -187,7 +193,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param string $selected_value selected value
 	 * @return none
 	 */
-	private function setAPIHosts($selected_value = null) {
+	private function setAPIHosts($selected_value = null)
+	{
 		$this->setAPIHostControl($this->UserAPIHosts, $selected_value);
 	}
 
@@ -197,7 +204,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param parameter object
 	 */
-	public function loadAdminAPIHosts($sender, $param) {
+	public function loadAdminAPIHosts($sender, $param)
+	{
 		$this->setAPIHostControl($this->AdminAPIHost, 'Main');
 	}
 
@@ -207,7 +215,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param event parameter
 	 */
-	public function createAPIHost($sender, $param) {
+	public function createAPIHost($sender, $param)
+	{
 		$api_hosts = $this->getModule('host_config')->getConfig();
 		$admin_api_host = $this->AdminAPIHost->getSelectedValue();
 		if (!key_exists($admin_api_host, $api_hosts)) {
@@ -242,7 +251,7 @@ class NewUserWizard extends BaculumWebPage {
 			$new_api['username'] = $new_web['login'] = $basic_user;
 			$new_api['password'] = $new_web['password'] = $crypto->getRandomString(40);
 			$new_api['bconsole_cfg_path'] = '';
-		} else if ($api_host['auth_type'] === 'oauth2') {
+		} elseif ($api_host['auth_type'] === 'oauth2') {
 			$new_api['client_id'] = $new_web['client_id'] = $crypto->getRandomString(32);
 			$new_api['client_secret'] = $new_web['client_secret'] = $crypto->getRandomString(50);
 			$new_api['redirect_uri'] = $new_web['redirect_uri'] = $api_host['redirect_uri'];
@@ -250,7 +259,7 @@ class NewUserWizard extends BaculumWebPage {
 		}
 
 
-		$result = new StdClass;
+		$result = new StdClass();
 		$result->error = -1;
 		$result->output = 'Internal error';
 
@@ -261,7 +270,7 @@ class NewUserWizard extends BaculumWebPage {
 				'users',
 				$new_api['username']
 			], $new_api, $admin_api_host);
-		} else if ($api_host['auth_type'] === 'oauth2') {
+		} elseif ($api_host['auth_type'] === 'oauth2') {
 			$result = $this->getModule('api')->create([
 				'oauth2',
 				'clients',
@@ -311,7 +320,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param event parameter object
 	 * @return none
 	 */
-	public function setAPIHostList($sender, $param) {
+	public function setAPIHostList($sender, $param)
+	{
 		$api_hosts = $this->getAPIHostsWithConsoles();
 		$this->getCallbackClient()->callClientFunction(
 			'oAPIHostList.update',
@@ -324,7 +334,8 @@ class NewUserWizard extends BaculumWebPage {
 	 *
 	 * @return array api hosts with consoles
 	 */
-	private function getAPIHostsWithConsoles() {
+	private function getAPIHostsWithConsoles()
+	{
 		$host_config = $this->getModule('host_config')->getConfig();
 		$basic_users_result = $this->getModule('api')->get(['basic', 'users']);
 		if ($basic_users_result->error !== 0) {
@@ -333,7 +344,7 @@ class NewUserWizard extends BaculumWebPage {
 		$basic_users = $basic_users_result->output;
 
 		$oauth2_clients_result = $this->getModule('api')->get(['oauth2', 'clients']);
-		if($oauth2_clients_result->error !== 0) {
+		if ($oauth2_clients_result->error !== 0) {
 			return;
 		}
 		$oauth2_clients = $oauth2_clients_result->output;
@@ -379,10 +390,11 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param string $api_host API host name
 	 * @return none
 	 */
-	private function setAPIHostJobs($api_host) {
+	private function setAPIHostJobs($api_host)
+	{
 		$result = $this->getModule('api')->get(['jobs', 'resnames'], $api_host);
 		if ($result->error === 0) {
-			$res = array_values((array)$result->output);
+			$res = array_values((array) $result->output);
 			$jobs = array_shift($res);
 			$this->APIHostJobs->DataSource = array_combine($jobs, $jobs);
 			$this->APIHostJobs->dataBind();
@@ -392,11 +404,13 @@ class NewUserWizard extends BaculumWebPage {
 	/**
 	 * Set API host console list control.
 	 *
-	 * @param TCallback|null $sender sender object
-	 * @param TCallbackEventParameter|null parameter object
+	 * @param null|TCallback $sender sender object
+	 * @param null|TCallbackEventParameter parameter object
+	 * @param mixed $param
 	 * @return none
 	 */
-	public function setAPIHostConsoles($sender, $param) {
+	public function setAPIHostConsoles($sender, $param)
+	{
 		// get existing selection (if any)
 		$selected = '';
 		if (is_object($param)) {
@@ -424,9 +438,11 @@ class NewUserWizard extends BaculumWebPage {
 	/**
 	 * Set custom console control.
 	 *
+	 * @param mixed $api_host
 	 * @return none
 	 */
-	private function setAPIHostCustomConsole($api_host) {
+	private function setAPIHostCustomConsole($api_host)
+	{
 		$this->ConsoleConfig->setHost($api_host);
 		$this->ConsoleConfig->setComponentName($_SESSION['dir']);
 		$this->ConsoleConfig->setLoadValues(false);
@@ -441,7 +457,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function loadConsoleWindow($sender, $param) {
+	public function loadConsoleWindow($sender, $param)
+	{
 		$api_host = $param->getCallbackParameter();
 		$this->setAPIHostJobs($api_host);
 		$this->setAPIHostConsoles(null, null);
@@ -456,8 +473,9 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setAllCommandAcls($sender, $param) {
-		$config = (object)[
+	public function setAllCommandAcls($sender, $param)
+	{
+		$config = (object) [
 			"CommandAcl" => JobInfo::COMMAND_ACL_USED_BY_WEB
 		];
 		$this->ConsoleConfig->setData($config);
@@ -473,7 +491,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function setResourceAccess($sender, $param) {
+	public function setResourceAccess($sender, $param)
+	{
 		$api_host = $this->AccessWindowAPIHost->Value;
 		if ($this->SelectedJobs->Checked) {
 			$selected = $this->getMultiSelectValues($this->APIHostJobs);
@@ -494,7 +513,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param array $jobs job names
 	 * @return none
 	 */
-	private function setJobResourceAccess($api_host, $jobs) {
+	private function setJobResourceAccess($api_host, $jobs)
+	{
 		$result = $this->getModule('api')->get([
 			'config',
 			'dir',
@@ -580,7 +600,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param string $api_host API host name
 	 * @return none
 	 */
-	private function setFullAccess($api_host) {
+	private function setFullAccess($api_host)
+	{
 		$this->setResourceConsole($api_host);
 	}
 
@@ -590,7 +611,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param string $api_host API host name
 	 * @return none
 	 */
-	private function setExistingConsole($api_host) {
+	private function setExistingConsole($api_host)
+	{
 		$console = $this->APIHostConsoles->getSelectedValue();
 		$this->setResourceConsole($api_host, $console);
 	}
@@ -603,7 +625,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param string $console console name
 	 * @return none
 	 */
-	private function setResourceConsole($api_host, $console = '') {
+	private function setResourceConsole($api_host, $console = '')
+	{
 		$host_config = $this->getModule('host_config')->getConfig();
 		if (!key_exists($api_host, $host_config)) {
 			$this->getCallbackClient()->update(
@@ -611,7 +634,6 @@ class NewUserWizard extends BaculumWebPage {
 				"API host $api_host does not exist"
 			);
 			$this->NewAPIHostConsoleError->Display = 'Dynamic';
-
 		} else {
 			$result = $this->getModule('api')->get(['directors'], $api_host);
 			if ($result->error !== 0) {
@@ -673,7 +695,7 @@ class NewUserWizard extends BaculumWebPage {
 				 * Remove token information because now the API host has new console assigned.
 				 * To apply the new console config, current token has to discarded (removed).
 				 */
-				$oa2 = new OAuth2Record;
+				$oa2 = new OAuth2Record();
 				$oa2::deleteByPk($api_host);
 
 				if ($result->error !== 0) {
@@ -699,7 +721,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @return none
 	 */
-	public function saveUser() {
+	public function saveUser()
+	{
 		$username = $this->Username->Value;
 		$config = $this->getModule('user_config')->getUserConfig($username);
 		if (count($config) > 0) {
@@ -754,9 +777,10 @@ class NewUserWizard extends BaculumWebPage {
 	 * Determines if user management is enabled.
 	 * This checking bases on selected auth method and permission to manage users.
 	 *
-	 * @return boolean true if managing users is enabled, otherwise false
+	 * @return bool true if managing users is enabled, otherwise false
 	 */
-	public function isManageUsersAvail() {
+	public function isManageUsersAvail()
+	{
 		$is_local = $this->getModule('web_config')->isAuthMethodLocal();
 		$is_basic = $this->getModule('web_config')->isAuthMethodBasic();
 		$allow_manage_users = (isset($this->web_config['auth_basic']['allow_manage_users']) &&
@@ -764,32 +788,36 @@ class NewUserWizard extends BaculumWebPage {
 		return (($is_basic && $allow_manage_users) || $is_local);
 	}
 
-	public function wizardCompleted($sender, $param) {
+	public function wizardCompleted($sender, $param)
+	{
 		$this->saveUser();
 		$this->wizardStop(null, null);
 	}
 
-	public function wizardStop($sender, $param) {
+	public function wizardStop($sender, $param)
+	{
 		$this->goToPage('Security', null, 'user_list');
 	}
 
 	/**
 	 * Set previous wizard step.
 	 *
-	 * @param integer $step previous step number
+	 * @param int $step previous step number
 	 * @return none
 	 */
-	public function setPrevStep($step) {
-		$step = intval($step);
+	public function setPrevStep($step)
+	{
+		$step = (int) $step;
 		$this->setViewState(self::PREV_STEP, $step);
 	}
 
 	/**
 	 * Get previous wizard step.
 	 *
-	 * @return integer previous wizard step
+	 * @return int previous wizard step
 	 */
-	public function getPrevStep() {
+	public function getPrevStep()
+	{
 		return $this->getViewState(self::PREV_STEP);
 	}
 
@@ -799,7 +827,8 @@ class NewUserWizard extends BaculumWebPage {
 	 * @param object $control multi-select control
 	 * @return array selected values
 	 */
-	public function getMultiSelectValues($control) {
+	public function getMultiSelectValues($control)
+	{
 		$selected_indices = $control->getSelectedIndices();
 		$selected = [];
 		foreach ($selected_indices as $indice) {
@@ -817,7 +846,8 @@ class NewUserWizard extends BaculumWebPage {
 	 *
 	 * @return string API hosts with consoles summary
 	 */
-	public function getAPIHostsWithConsolesSummary() {
+	public function getAPIHostsWithConsolesSummary()
+	{
 		$result = [];
 		$api_hosts = $this->getAPIHostsWithConsoles();
 		for ($i = 0; $i < count($api_hosts); $i++) {

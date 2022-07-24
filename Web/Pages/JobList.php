@@ -28,30 +28,33 @@
  */
 
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Modules\BaculumWebPage; 
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Job list page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
- * @package Baculum Web
  */
-class JobList extends BaculumWebPage {
+class JobList extends BaculumWebPage
+{
+	public const USE_CACHE = true;
 
-	const USE_CACHE = true;
-
-	const DEFAULT_JOB_PRIORITY = 10;
+	public const DEFAULT_JOB_PRIORITY = 10;
 
 	public $jobs;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
 		$result = $this->getModule('api')->get(
-			['jobs', 'show', '?output=json'], null, true, self::USE_CACHE
+			['jobs', 'show', '?output=json'],
+			null,
+			true,
+			self::USE_CACHE
 		);
 		$jobs = [];
 		if ($result->error === 0) {
@@ -68,20 +71,22 @@ class JobList extends BaculumWebPage {
 		$this->jobs = $jobs;
 	}
 
-	public function loadRunJobModal($sender, $param) {
+	public function loadRunJobModal($sender, $param)
+	{
 		$this->RunJobModal->loadData();
 	}
 
-	public function runJobAgain($sender, $param) {
-		$jobid = intval($param->getCallbackParameter());
+	public function runJobAgain($sender, $param)
+	{
+		$jobid = (int) ($param->getCallbackParameter());
 		if ($jobid > 0) {
 			$jobdata = $this->getModule('api')->get(
-				array('jobs', $jobid),
+				['jobs', $jobid],
 				null,
 				true,
 				self::USE_CACHE
 			)->output;
-			$params = array();
+			$params = [];
 			$params['id'] = $jobid;
 			$level = trim($jobdata->level);
 			$params['level'] = !empty($level) ? $level : 'F'; // Admin job has empty level
@@ -114,26 +119,27 @@ class JobList extends BaculumWebPage {
 			}
 			$params['priority'] = key_exists('job', $job_info) ? $job_info['job']['priority'] : self::DEFAULT_JOB_PRIORITY;
 			$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
-			$params['accurate'] =  ($accurate == 1);
+			$params['accurate'] = ($accurate == 1);
 
-			$result = $this->getModule('api')->create(array('jobs', 'run'), $params);
+			$result = $this->getModule('api')->create(['jobs', 'run'], $params);
 			if ($result->error === 0) {
 				$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
 				if (!is_numeric($started_jobid)) {
 					$errmsg = implode('<br />', $result->output);
-					$this->getPage()->getCallbackClient()->callClientFunction('show_error', array($errmsg, $result->error));
+					$this->getPage()->getCallbackClient()->callClientFunction('show_error', [$errmsg, $result->error]);
 				}
 			} else {
-				$this->getPage()->getCallbackClient()->callClientFunction('show_error', array($result->output, $result->error));
+				$this->getPage()->getCallbackClient()->callClientFunction('show_error', [$result->output, $result->error]);
 			}
 		}
 	}
 
-	public function cancelJob($sender, $param) {
-		$jobid = intval($param->getCallbackParameter());
+	public function cancelJob($sender, $param)
+	{
+		$jobid = (int) ($param->getCallbackParameter());
 		$result = $this->getModule('api')->set(
-			array('jobs', $jobid, 'cancel'),
-			array()
+			['jobs', $jobid, 'cancel'],
+			[]
 		);
 	}
 
@@ -145,12 +151,13 @@ class JobList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function cancelJobs($sender, $param) {
+	public function cancelJobs($sender, $param)
+	{
 		$result = [];
 		$jobids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($jobids); $i++) {
 			$ret = $this->getModule('api')->set(
-				['jobs', intval($jobids[$i]), 'cancel']
+				['jobs', (int) ($jobids[$i]), 'cancel']
 			);
 			if ($ret->error !== 0) {
 				$result[] = $ret->output;
@@ -169,12 +176,13 @@ class JobList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function deleteJobs($sender, $param) {
+	public function deleteJobs($sender, $param)
+	{
 		$result = [];
 		$jobids = explode('|', $param->getCallbackParameter());
 		for ($i = 0; $i < count($jobids); $i++) {
 			$ret = $this->getModule('api')->remove(
-				['jobs', intval($jobids[$i])]
+				['jobs', (int) ($jobids[$i])]
 			);
 			if ($ret->error !== 0) {
 				$result[] = $ret->output;
@@ -192,8 +200,9 @@ class JobList extends BaculumWebPage {
 	 * @param TCallbackEventPrameter $param event parameter
 	 * @return none
 	 */
-	public function loadJobLog($sender, $param) {
-		$jobid = intval($param->getCallbackParameter());
+	public function loadJobLog($sender, $param)
+	{
+		$jobid = (int) ($param->getCallbackParameter());
 		if ($jobid == 0) {
 			return;
 		}

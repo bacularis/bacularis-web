@@ -49,15 +49,14 @@ use Bacularis\Web\Portlets\DirectiveWeeksOfYear;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class DirectiveSchedule extends DirectiveListTemplate {
-
-	const SCHEDULE_MODE_HOURLY = 'hourly';
-	const SCHEDULE_MODE_DAILY = 'daily';
-	const SCHEDULE_MODE_WEEKLY = 'weekly';
-	const SCHEDULE_MODE_MONTHLY = 'monthly';
-	const SCHEDULE_MODE_CUSTOM = 'custom';
+class DirectiveSchedule extends DirectiveListTemplate
+{
+	public const SCHEDULE_MODE_HOURLY = 'hourly';
+	public const SCHEDULE_MODE_DAILY = 'daily';
+	public const SCHEDULE_MODE_WEEKLY = 'weekly';
+	public const SCHEDULE_MODE_MONTHLY = 'monthly';
+	public const SCHEDULE_MODE_CUSTOM = 'custom';
 
 	private $directives_dir = [
 		'Pool',
@@ -100,7 +99,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		'MonthsOfYearCustom'
 	];
 
-	public function loadConfig() {
+	public function loadConfig()
+	{
 		$load_values = $this->getLoadValues();
 		$directives = $this->getData();
 		if ($load_values) {
@@ -147,11 +147,11 @@ class DirectiveSchedule extends DirectiveListTemplate {
 					$in_config = property_exists($directive, $subdirectives[$i]);
 				}
 
-				$directive_value =  null;
+				$directive_value = null;
 				if (is_object($directive) && property_exists($directive, $subdirectives[$i])) {
 					$directive_value = $directive->{$subdirectives[$i]};
 				}
-				$overwrite_directives[$subdirectives[$i]] = array(
+				$overwrite_directives[$subdirectives[$i]] = [
 					'host' => $host,
 					'component_type' => $component_type,
 					'component_name' => $component_name,
@@ -169,7 +169,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 					'resource_names' => $this->getResourceNames(),
 					'parent_name' => __CLASS__,
 					'group_name' => $index
-				);
+				];
 			}
 
 			for ($i = 0; $i < count($this->time_directives); $i++) {
@@ -195,7 +195,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		$this->RepeaterScheduleRuns->dataBind();
 	}
 
-	private function getSubDirectives() {
+	private function getSubDirectives()
+	{
 		$subdirectives = [];
 		$component_type = $this->getComponentType();
 		if ($component_type === 'dir') {
@@ -206,7 +207,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		return $subdirectives;
 	}
 
-	private function getResourceDesc() {
+	private function getResourceDesc()
+	{
 		$desc = [];
 		$component_type = $this->getComponentType();
 		if ($component_type === 'dir') {
@@ -215,7 +217,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		} elseif ($component_type === 'fd') {
 			// TODO: Move it to data_desc.json
 			$desc = [
-				'MaxConnectTime' => (object)[
+				'MaxConnectTime' => (object) [
 					'Required' => false,
 					'ValueType' => 'str',
 					'DefaultValue' => 0,
@@ -227,7 +229,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		return $desc;
 	}
 
-	public function createRunItem($sender, $param) {
+	public function createRunItem($sender, $param)
+	{
 		$load_values = $this->getLoadValues();
 		$subdirectives = $this->getSubDirectives();
 		for ($i = 0; $i < count($subdirectives); $i++) {
@@ -368,9 +371,10 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		}
 	}
 
-	public function removeSchedule($sender, $param) {
+	public function removeSchedule($sender, $param)
+	{
 		if ($param instanceof TCommandEventParameter) {
-			$idx = (integer)$param->getCommandName();
+			$idx = (int) $param->getCommandName();
 			$data = $this->getDirectiveValue(true);
 			array_splice($data, $idx, 1);
 			$this->setData($data);
@@ -378,7 +382,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		}
 	}
 
-	private function setTime($directive, &$obj, &$directive_values) {
+	private function setTime($directive, &$obj, &$directive_values)
+	{
 		$t = $directive->getDirectiveValue();
 		$obj->Hour = [$t['hour']];
 		$obj->Minute = $t['minute'];
@@ -386,7 +391,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		$directive_values[] = "at {$t['hour']}:{$min}";
 	}
 
-	private function setTimeHourly($t, &$obj, &$directive_values) {
+	private function setTimeHourly($t, &$obj, &$directive_values)
+	{
 		$obj->Hour = range(0, 23);
 		$obj->Minute = $t['minute'];
 		if ($t['minute'] > 0) {
@@ -397,7 +403,8 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		}
 	}
 
-	private function setDaysOfWeek($directive, &$obj, &$directive_values) {
+	private function setDaysOfWeek($directive, &$obj, &$directive_values)
+	{
 		$wdays = array_keys(Params::$wdays);
 		$dows = $directive->getDirectiveValue();
 		$dows_len = count($dows);
@@ -409,13 +416,15 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		}
 	}
 
-	private function setWeeksOfYear($directive, &$obj, &$directive_values) {
+	private function setWeeksOfYear($directive, &$obj, &$directive_values)
+	{
 		$woys = $directive->getDirectiveValue();
 		$obj->WeekOfYear = $woys;
 		$directive_values[] = Params::getWeeksOfYearConfig($woys);
 	}
 
-	private function setWeeksOfMonth($directive, &$obj, &$directive_values) {
+	private function setWeeksOfMonth($directive, &$obj, &$directive_values)
+	{
 		$woms = $directive->getDirectiveValue();
 		$woms_len = count($woms);
 		if ($woms_len == 0) {
@@ -428,20 +437,23 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		}
 	}
 
-	private function setMonthsOfYear($directive, &$obj, &$directive_values) {
+	private function setMonthsOfYear($directive, &$obj, &$directive_values)
+	{
 		$moys = $directive->getDirectiveValue();
 		$obj->Month = $moys;
 		$directive_values[] = Params::getMonthsOfYearConfig($moys);
 	}
 
-	private function setDaysOfMonth($directive, &$obj, &$directive_values) {
+	private function setDaysOfMonth($directive, &$obj, &$directive_values)
+	{
 		$doms = $directive->getDirectiveValue();
 		$doms_len = count($doms);
 		$obj->Day = $doms;
 		$directive_values[] = Params::getDaysOfMonthConfig($doms);
 	}
 
-	public function getDirectiveValue($ret_obj = false) {
+	public function getDirectiveValue($ret_obj = false)
+	{
 		$directive_values = [];
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
@@ -453,7 +465,7 @@ class DirectiveSchedule extends DirectiveListTemplate {
 
 		$ctrls = $this->RepeaterScheduleRuns->getItems();
 		foreach ($ctrls as $value) {
-			$obj = new \StdClass;
+			$obj = new \StdClass();
 			for ($i = 0; $i < count($subdirectives); $i++) {
 				$control = $value->{$subdirectives[$i]};
 				$control->setValue();
@@ -576,9 +588,10 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		return (($ret_obj) ? $objs : $values);
 	}
 
-	public function newScheduleDirective() {
+	public function newScheduleDirective()
+	{
 		$data = $this->getDirectiveValue(true);
-		$obj = new \StdClass;
+		$obj = new \StdClass();
 		$obj->Hour = [0];
 		$obj->Minute = 0;
 		$obj->Day = range(0, 30);
@@ -597,4 +610,3 @@ class DirectiveSchedule extends DirectiveListTemplate {
 		$this->loadConfig();
 	}
 }
-?>

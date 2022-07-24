@@ -38,10 +38,9 @@ use Bacularis\Common\Modules\SessionRecord;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Database
- * @package Baculum Web
  */
-class HostRecord extends SessionRecord implements ISessionItem {
-
+class HostRecord extends SessionRecord implements ISessionItem
+{
 	public $host;
 	public $protocol;
 	public $address;
@@ -55,22 +54,26 @@ class HostRecord extends SessionRecord implements ISessionItem {
 	public $redirect_uri;
 	public $scope;
 
-	public function __construct($host = null, $params = array()) {
+	public function __construct($host = null, $params = [])
+	{
 		parent::__construct();
 		if (!is_null($host) && is_array($params)) {
 			$this->setHost($host, $params);
 		}
 	}
 
-	public static function getRecordId() {
+	public static function getRecordId()
+	{
 		return 'host_params';
 	}
 
-	public static function getPrimaryKey() {
+	public static function getPrimaryKey()
+	{
 		return 'host';
 	}
 
-	public static function getSessionFile() {
+	public static function getSessionFile()
+	{
 		return Prado::getPathOfNamespace('Bacularis.Web.Config.session', '.dump');
 	}
 
@@ -82,14 +85,15 @@ class HostRecord extends SessionRecord implements ISessionItem {
 	 * @param array $params host parameters in associative array
 	 * @return none
 	 */
-	public function setHost($host, array $params) {
+	public function setHost($host, array $params)
+	{
 		$this->host = $host;
 		$this->protocol = array_key_exists('protocol', $params) ? $params['protocol'] : 'https';
 		$this->address = array_key_exists('address', $params) ? $params['address'] : '';
 		$this->port = array_key_exists('port', $params) ? $params['port'] : null;
 		$this->url_prefix = array_key_exists('url_prefix', $params) ? $params['url_prefix'] : '';
 		if (array_key_exists('auth_type', $params)) {
-			$this->auth_type =  $params['auth_type'];
+			$this->auth_type = $params['auth_type'];
 			if ($params['auth_type'] === 'basic') {
 				$this->login = array_key_exists('login', $params) ? $params['login'] : '';
 				$this->password = array_key_exists('password', $params) ? $params['password'] : '';

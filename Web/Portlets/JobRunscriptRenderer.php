@@ -38,23 +38,23 @@ use Bacularis\Web\Portlets\DirectiveRenderer;
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
- * @package Baculum Web
  */
-class JobRunscriptRenderer extends DirectiveRenderer {
-
-	const DIRECTIVE_COUNT = 7;
+class JobRunscriptRenderer extends DirectiveRenderer
+{
+	public const DIRECTIVE_COUNT = 7;
 
 	private static $render_index = 0;
 	private $item_count;
 
-	public function onInit($param) {
+	public function onInit($param)
+	{
 		parent::onInit($param);
 		$directive_runscript = $this->getSourceTemplateControl();
 		if (!method_exists($directive_runscript, 'removeRunscript')) {
 			return;
 		}
 		if ($this->ItemIndex % self::DIRECTIVE_COUNT === 0) {
-			$alb = new TActiveLinkButton;
+			$alb = new TActiveLinkButton();
 			$alb->CssClass = 'w3-button w3-red w3-right';
 			$alb->attachEventHandler(
 				'OnCommand',
@@ -66,12 +66,14 @@ class JobRunscriptRenderer extends DirectiveRenderer {
 		}
 	}
 
-	public function onPreRender($param) {
+	public function onPreRender($param)
+	{
 		parent::onPreRender($param);
 		$this->item_count = $this->getParent()->getItems()->getCount();
 	}
 
-	public function render($writer) {
+	public function render($writer)
+	{
 		if (self::$render_index % self::DIRECTIVE_COUNT === 0) {
 			$writer->write('<h3 class="w3-left runscript_options">Runscript #' . ((self::$render_index / self::DIRECTIVE_COUNT) + 1) . '</h3>');
 		}
@@ -83,8 +85,8 @@ class JobRunscriptRenderer extends DirectiveRenderer {
 		parent::render($writer);
 	}
 
-	public static function resetRenderIndex() {
+	public static function resetRenderIndex()
+	{
 		self::$render_index = 0;
 	}
 }
-?>
