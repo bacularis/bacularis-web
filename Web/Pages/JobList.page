@@ -25,7 +25,7 @@
 		<a id="btn_job_history" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); }">
 			<%[ Job history ]%>
 		</a>
-		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); oJobList.table.responsive.recalc();">
+		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); if (oJobList.table) { oJobList.table.responsive.recalc(); }">
 			<%[ Jobs ]%>
 		</a>
 		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc();">
@@ -715,6 +715,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Status ]%></th>
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
+						<th><%[ Last successful job ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. concur. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -728,6 +729,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Status ]%></th>
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
+						<th><%[ Last successful job ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. concur. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -736,8 +738,8 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 				</tfoot>
 			</table>
 		</div>
-<script type="text/javascript">
-var oJobList = {
+<script>
+const oJobList = {
 	ids: {
 		job_details_list: 'job_details_list',
 		job_details_list_body: 'job_details_list_body'
@@ -745,9 +747,19 @@ var oJobList = {
 	css: {
 		weather_icon: 'job_weather_icon'
 	},
+	txts: {
+		time: {
+			second: ['<%[ second ]%>', '<%[ seconds ]%>'],
+			minute: ['<%[ minute ]%>', '<%[ minutes ]%>'],
+			hour: ['<%[ hour ]%>', '<%[ hours ]%>'],
+			day: ['<%[ day ]%>', '<%[ days ]%>']
+		},
+		time_ago: '<%[ %time ago ]%>'
+	},
 	table: null,
 	job_weather: {},
 	init: function() {
+		this.set_weather();
 		this.set_table();
 	},
 	set_table: function() {
@@ -810,6 +822,41 @@ var oJobList = {
 					responsivePriority: 2
 				},
 				{
+					data: 'job',
+					render: (data, type, row) => {
+						let ret = '';
+						let ljob;
+						for (const job of oData.terminated_jobs) {
+							if (job.name == data && JobStatus.is_ok(job.jobstatus)) {
+								ljob = job;
+								break;
+							}
+						}
+						let tdiff;
+						if (ljob) {
+							const ts = date_time_to_ts(ljob.starttime);
+							const now = (new Date()).getTime();
+							tdiff = parseInt((now - ts) / 1000);
+						}
+						if (type == 'display' || type == 'filter') {
+							const val = Units.format_time_period(tdiff, null, true);
+							const t = parseInt(val.value, 10);
+							if (ljob && this.txts.time.hasOwnProperty(val.format)) {
+								const tidx = t > 1 ? 1 : 0;
+								const ttext = this.txts.time[val.format][tidx];
+								ret = t + ' ' + this.txts.time_ago.replace('%time', ttext);
+							} else {
+								ret = '-';
+							}
+						} else if (type == 'sort') {
+							ret = tdiff || '-';
+						}
+						return ret;
+					},
+					responsivePriority: 5,
+					width: '20%'
+				},
+				{
 					data: 'enabled',
 					render: function(data, type, row) {
 						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
@@ -850,11 +897,11 @@ var oJobList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4, 5, 6, 7 ]
+				targets: [ 1, 3, 4, 5, 6, 7, 8 ]
 			}],
 			order: [2, 'asc'],
 			initComplete: function () {
-				this.api().columns([2, 3, 4, 5, 6]).every(function () {
+				this.api().columns([2, 3, 5, 6, 7]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
@@ -879,10 +926,8 @@ var oJobList = {
 	},
 	set_weather: function() {
 		this.job_weather = Weather.get_job_weather(oData.terminated_jobs, 5);
-		this.table.rows().invalidate('data').draw(false);
 	}
 };
-oJobList.init();
 </script>
 	</div>
 	<div class="w3-container tab_item" id="job_reports" style="display: none">
@@ -1606,10 +1651,10 @@ class JobHistoryReport {
 MonitorParams = {jobs: null};
 let oJobHistoryReport;
 $(function() {
-	MonitorCalls.push(oJobList.set_weather.bind(oJobList));
 	MonitorCalls.push(() => {
 		oJobHistoryReport = new JobHistoryReport();
 	});
+	MonitorCalls.push(oJobList.init.bind(oJobList));
 });
 </script>
 </com:TContent>

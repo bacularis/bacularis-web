@@ -4363,3 +4363,21 @@ msgstr "Estimated job bytes"
 
 msgid "Job size and files per day"
 msgstr "Job size and files per day"
+
+msgid "Last successful job"
+msgstr "Last successful job"
+
+msgid "hour"
+msgstr "hour"
+
+msgid "hours"
+msgstr "hours"
+
+msgid "minute"
+msgstr "minute"
+
+msgid "minutes"
+msgstr "minutes"
+
+msgid "%time ago"
+msgstr "%time ago"
