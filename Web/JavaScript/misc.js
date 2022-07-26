@@ -21,10 +21,10 @@ var Units = {
 			{short: 'm/s', long: 'MiB/s', value: 1024}
 		],
 		time: [
-			{long: 'second', value: 1},
-			{long: 'minute', value: 60},
-			{long: 'hour', value: 60},
-			{long: 'day', value: 24}
+			{long: 'second', value: 1, full: 1},
+			{long: 'minute', value: 60, full: 60},
+			{long: 'hour', value: 60, full: 3600},
+			{long: 'day', value: 24, full: 86400}
 		]
 	},
 	get_size: function(size, unit_value) {
@@ -110,6 +110,22 @@ var Units = {
 			}
 		}
 		var ret = {value: time_seconds, format: f};
+		return ret;
+	},
+	format_time_duration: function(time_seconds) {
+		let ret = ''
+		let val = 0;
+		let pval = time_seconds;
+		for (let i = this.units.time.length - 1; i >= 0; i--) {
+			val = pval / this.units.time[i].full;
+			if (val >= 1) {
+				pval = time_seconds % this.units.time[i].full;
+				ret += ' ' + parseInt(val, 10) + this.units.time[i].long[0];
+			}
+		}
+		if (!ret) {
+			ret = '0' + this.units.time[0].long[0];
+		}
 		return ret;
 	},
 	format_date: function(timestamp) {
@@ -414,6 +430,27 @@ function render_time_period(data, type, row) {
 		ret = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');
 	} else {
 		ret = data;
+	}
+	return ret;
+}
+
+function render_job_duration(data, type, row) {
+	let ret;
+	let duration = 0;
+	if (row.starttime && row.endtime) {
+		const st = iso_date_to_timestamp(row.starttime);
+		const et = iso_date_to_timestamp(row.endtime);
+		duration = et - st;
+	}
+	if (type == 'display' || type == 'filter') {
+		if (row.starttime && row.endtime) {
+			const d = parseInt(duration / 1000, 10);
+			ret = Units.format_time_duration(d);
+		} else {
+			ret = '-';
+		}
+	} else {
+		ret = duration;
 	}
 	return ret;
 }
