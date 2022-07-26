@@ -199,6 +199,15 @@ var oJobHistoryList = {
 	table_toolbar: null,
 	actions: [
 		{
+			action: 'rerun',
+			label: '<%[ Rerun ]%>',
+			value: 'jobid',
+			callback: <%=$this->ReRunJobsAction->ActiveControl->Javascript%>,
+			before: function() {
+				oBulkActionsModal.show_output(true);
+			}
+		},
+		{
 			action: 'cancel',
 			label: '<%[ Cancel ]%>',
 			value: 'jobid',
@@ -687,6 +696,16 @@ $(function() {
  */
 var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->BulkActionsOutput->ClientID%>';
 </script>
+		<com:TCallback ID="ReRunJobsAction" OnCallback="rerunJobs">
+			<prop:ClientSide.OnLoading>
+				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.show_loader(true);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oBulkActionsModal.show_loader(false);
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
 		<com:TCallback ID="CancelJobsAction" OnCallback="cancelJobs">
 			<prop:ClientSide.OnLoading>
 				oBulkActionsModal.clear_output(bulk_actions_output_id);

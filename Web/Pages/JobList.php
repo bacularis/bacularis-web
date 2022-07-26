@@ -76,62 +76,117 @@ class JobList extends BaculumWebPage
 		$this->RunJobModal->loadData();
 	}
 
+	/**
+	 * Run job again event handler.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 * @return none
+	 */
 	public function runJobAgain($sender, $param)
 	{
 		$jobid = (int) ($param->getCallbackParameter());
-		if ($jobid > 0) {
-			$jobdata = $this->getModule('api')->get(
-				['jobs', $jobid],
-				null,
-				true,
-				self::USE_CACHE
-			)->output;
-			$params = [];
-			$params['id'] = $jobid;
-			$level = trim($jobdata->level);
-			$params['level'] = !empty($level) ? $level : 'F'; // Admin job has empty level
-			$job_show = $this->getModule('api')->get(
-				['jobs', $jobid, 'show'],
-				null,
-				true,
-				self::USE_CACHE
-			)->output;
-			$job_info = $this->getModule('job_info')->parseResourceDirectives($job_show);
-			if ($jobdata->filesetid > 0) {
-				$params['filesetid'] = $jobdata->filesetid;
-			} else {
-				$params['fileset'] = key_exists('fileset', $job_info) ? $job_info['fileset']['name'] : '';
-			}
-			$params['clientid'] = $jobdata->clientid;
-			$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
-			$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
-			$params['storage'] = $storage ?: $autochanger;
+		$this->rerunJob($jobid);
+	}
 
-			/**
-			 * For 'c' type (Copy Job) and 'g' type (Migration Job) the in job table in poolid property is written
-			 * write pool, not read pool. Here in 'pool' property is set read pool and from this reason for 'c'
-			 * and 'g' types the pool cannot be taken from job table.
-			 */
-			if ($jobdata->poolid > 0 && $jobdata->type != 'c' && $jobdata->type != 'g') {
-				$params['poolid'] = $jobdata->poolid;
-			} else {
-				$params['pool'] = key_exists('pool', $job_info) ? $job_info['pool']['name'] : '';
-			}
-			$params['priority'] = key_exists('job', $job_info) ? $job_info['job']['priority'] : self::DEFAULT_JOB_PRIORITY;
-			$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
-			$params['accurate'] = ($accurate == 1);
-
-			$result = $this->getModule('api')->create(['jobs', 'run'], $params);
-			if ($result->error === 0) {
-				$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
-				if (!is_numeric($started_jobid)) {
-					$errmsg = implode('<br />', $result->output);
-					$this->getPage()->getCallbackClient()->callClientFunction('show_error', [$errmsg, $result->error]);
-				}
-			} else {
-				$this->getPage()->getCallbackClient()->callClientFunction('show_error', [$result->output, $result->error]);
-			}
+	/**
+	 * Rerun job by jobid.
+	 *
+	 * @param integer $jobid job identifier
+	 * @return object response from run job API request
+	 */
+	private function rerunJob($jobid)
+	{
+		if ($jobid <= 0) {
+			return;
 		}
+		$jobdata = $this->getModule('api')->get(
+			['jobs', $jobid],
+			null,
+			true,
+			self::USE_CACHE
+		)->output;
+		$params = [];
+		$params['id'] = $jobid;
+		$level = trim($jobdata->level);
+		$params['level'] = !empty($level) ? $level : 'F'; // Admin job has empty level
+		$job_show = $this->getModule('api')->get(
+			['jobs', $jobid, 'show'],
+			null,
+			true,
+			self::USE_CACHE
+		)->output;
+		$job_info = $this->getModule('job_info')->parseResourceDirectives($job_show);
+		if ($jobdata->filesetid > 0) {
+			$params['filesetid'] = $jobdata->filesetid;
+		} else {
+			$params['fileset'] = key_exists('fileset', $job_info) ? $job_info['fileset']['name'] : '';
+		}
+		$params['clientid'] = $jobdata->clientid;
+		$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
+		$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
+		$params['storage'] = $storage ?: $autochanger;
+
+		/**
+		 * For 'c' type (Copy Job) and 'g' type (Migration Job) the in job table in poolid property is written
+		 * write pool, not read pool. Here in 'pool' property is set read pool and from this reason for 'c'
+		 * and 'g' types the pool cannot be taken from job table.
+		 */
+		if ($jobdata->poolid > 0 && $jobdata->type != 'c' && $jobdata->type != 'g') {
+			$params['poolid'] = $jobdata->poolid;
+		} else {
+			$params['pool'] = key_exists('pool', $job_info) ? $job_info['pool']['name'] : '';
+		}
+		$params['priority'] = key_exists('job', $job_info) ? $job_info['job']['priority'] : self::DEFAULT_JOB_PRIORITY;
+		$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
+		$params['accurate'] = ($accurate == 1);
+
+		$result = $this->getModule('api')->create(
+			['jobs', 'run'],
+			$params
+		);
+		if ($result->error === 0) {
+			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
+			if (!is_numeric($started_jobid)) {
+				$errmsg = implode('<br />', $result->output);
+				$this->getPage()->getCallbackClient()->callClientFunction(
+					'show_error',
+					[$errmsg, $result->error]
+				);
+			}
+		} else {
+			$this->getPage()->getCallbackClient()->callClientFunction(
+				'show_error',
+				[$result->output, $result->error]
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * Rerun multiple jobs.
+	 * Used for bulk actions.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 * @return none
+	 */
+	public function rerunJobs($sender, $param)
+	{
+		$result = [];
+		$jobids = explode('|', $param->getCallbackParameter());
+		for ($i = 0; $i < count($jobids); $i++) {
+			$ret = $this->rerunJob($jobids[$i]);
+			if ($ret->error !== 0) {
+				$result[] = $ret->output;
+				break;
+			}
+			$result[] = implode(PHP_EOL, $ret->output);
+		}
+		$this->getCallbackClient()->update(
+			$this->BulkActions->BulkActionsOutput,
+			implode(PHP_EOL, $result)
+		);
 	}
 
 	public function cancelJob($sender, $param)
@@ -165,7 +220,10 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+		$this->getCallbackClient()->update(
+			$this->BulkActions->BulkActionsOutput,
+			implode(PHP_EOL, $result)
+		);
 	}
 
 	/**
@@ -190,7 +248,10 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+		$this->getCallbackClient()->update(
+			$this->BulkActions->BulkActionsOutput,
+			implode(PHP_EOL, $result)
+		);
 	}
 
 	/**
@@ -222,6 +283,9 @@ class JobList extends BaculumWebPage
 		if ($result->error === 0) {
 			$log = implode(PHP_EOL, $result->output);
 		}
-		$this->getCallbackClient()->update('job_history_report_details_joblog_' . $jobid, $log);
+		$this->getCallbackClient()->update(
+			'job_history_report_details_joblog_' . $jobid,
+			$log
+		);
 	}
 }

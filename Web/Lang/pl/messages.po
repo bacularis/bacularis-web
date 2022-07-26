@@ -4394,3 +4394,6 @@ msgstr "%time ago"
 
 msgid "Last failed job"
 msgstr "Last failed job"
+
+msgid "Rerun"
+msgstr "Rerun"
