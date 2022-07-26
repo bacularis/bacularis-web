@@ -716,6 +716,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
 						<th><%[ Last successful job ]%></th>
+						<th><%[ Last failed job ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. concur. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -730,6 +731,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
 						<th><%[ Last successful job ]%></th>
+						<th><%[ Last failed job ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. concur. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -824,7 +826,7 @@ const oJobList = {
 				{
 					data: 'job',
 					render: (data, type, row) => {
-						let ret = '';
+						let ret = '-';
 						let ljob;
 						for (const job of oData.terminated_jobs) {
 							if (job.name == data && JobStatus.is_ok(job.jobstatus)) {
@@ -832,29 +834,32 @@ const oJobList = {
 								break;
 							}
 						}
-						let tdiff;
 						if (ljob) {
-							const ts = date_time_to_ts(ljob.starttime);
-							const now = (new Date()).getTime();
-							tdiff = parseInt((now - ts) / 1000);
+							ret = this.render_last_job(ljob.starttime, type);
 						}
-						if (type == 'display' || type == 'filter') {
-							const val = Units.format_time_period(tdiff, null, true);
-							const t = parseInt(val.value, 10);
-							if (ljob && this.txts.time.hasOwnProperty(val.format)) {
-								const tidx = t > 1 ? 1 : 0;
-								const ttext = this.txts.time[val.format][tidx];
-								ret = t + ' ' + this.txts.time_ago.replace('%time', ttext);
-							} else {
-								ret = '-';
+						return ret;
+					},
+					responsivePriority: 6,
+					width: '15%'
+				},
+				{
+					data: 'job',
+					render: (data, type, row) => {
+						let ret = '-';
+						let ljob;
+						for (const job of oData.terminated_jobs) {
+							if (job.name == data && JobStatus.is_error(job.jobstatus)) {
+								ljob = job;
+								break;
 							}
-						} else if (type == 'sort') {
-							ret = tdiff || '-';
+						}
+						if (ljob) {
+							ret = this.render_last_job(ljob.starttime, type);
 						}
 						return ret;
 					},
 					responsivePriority: 5,
-					width: '20%'
+					width: '15%'
 				},
 				{
 					data: 'enabled',
@@ -897,11 +902,11 @@ const oJobList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4, 5, 6, 7, 8 ]
+				targets: [ 1, 3, 4, 5, 6, 7, 8, 9 ]
 			}],
 			order: [2, 'asc'],
 			initComplete: function () {
-				this.api().columns([2, 3, 5, 6, 7]).every(function () {
+				this.api().columns([2, 3, 6, 7, 8]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
@@ -926,6 +931,27 @@ const oJobList = {
 	},
 	set_weather: function() {
 		this.job_weather = Weather.get_job_weather(oData.terminated_jobs, 5);
+	},
+	render_last_job: function(starttime, type) {
+		const empty = '-';
+		let ret = empty;
+		const ts = date_time_to_ts(starttime);
+		const now = (new Date()).getTime();
+		const tdiff = parseInt((now - ts) / 1000);
+		if (type == 'display' || type == 'filter') {
+			const val = Units.format_time_period(tdiff, null, true);
+			const t = parseInt(val.value, 10);
+			if (this.txts.time.hasOwnProperty(val.format)) {
+				const tidx = t > 1 ? 1 : 0;
+				const ttext = this.txts.time[val.format][tidx];
+				ret = t + ' ' + this.txts.time_ago.replace('%time', ttext);
+			} else {
+				ret = empty;
+			}
+		} else if (type == 'sort') {
+			ret = tdiff || empty;
+		}
+		return ret;
 	}
 };
 </script>

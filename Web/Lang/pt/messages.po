@@ -4392,3 +4392,6 @@ msgstr "minutes"
 
 msgid "%time ago"
 msgstr "%time ago"
+
+msgid "Last failed job"
+msgstr "Last failed job"
