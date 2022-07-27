@@ -99,7 +99,8 @@ var BaculaConfigClass = jQuery.klass({
 
 var BaculaConfigOptionsClass = jQuery.klass({
 	css: {
-		options_container: 'directive_setting'
+		options_container: 'directive_setting',
+		directive_option: 'directive_option'
 	},
 	options_id: null,
 	action_obj: null,
@@ -114,16 +115,15 @@ var BaculaConfigOptionsClass = jQuery.klass({
 	},
 	set_events: function() {
 		var element = document.getElementById(this.options_id);
-		var opts = element.getElementsByTagName('BUTTON');
-		for (var i = 0; i < opts.length; i++) {
-			opts[i].addEventListener('click', function(e) {
-				var el = e.srcElement || e.target;
-				if (el.nodeName != 'BUTTON') {
-					el = el.closest('button');
-				}
+		var opts = element.querySelectorAll('.' + this.css.directive_option);
+		const do_action_cb = (el) => {
+			el.addEventListener('click', () => {
 				var action = el.getAttribute('rel');
 				this.do_action(action);
-			}.bind(this));
+			});
+		};
+		for (var i = 0; i < opts.length; i++) {
+			do_action_cb(opts[i]);
 		}
 	},
 	do_action: function(param) {

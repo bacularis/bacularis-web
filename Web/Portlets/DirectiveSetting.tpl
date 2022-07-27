@@ -1,7 +1,12 @@
 <com:TActiveLabel ID="DirectiveOptions" CssClass="directive_setting">
-	<button type="button" class="w3-button w3-green" rel="show_all_directives" title="<%[ Show/hide all directives ]%>">
-		<i class="fa fa-expand-arrows-alt"></i><span class="w3-hide-small"> &nbsp;<%[ Show/hide all directives ]%></span>
-	</button>
+	<span>
+		<label><span class="w3-hide-small"><%[ All directives ]%></span>
+			<label class="switch" title="<%[ Show/hide all directives ]%>" style="vertical-align: middle; margin-right: 8px;">
+				<input type="checkbox" class="directive_option" rel="show_all_directives" />
+				<span class="slider round"></span>
+			</label>
+		</label>
+	</span>
 	<!--li rel="show_raw_config"><%[ Show the resource raw config ]%></li>
 	<li rel="save_multiple_hosts"><%[ Save the resource on multiple hosts ]%></li>
 	<li rel="save_addition_path"><%[ Save the resource to additional path ]%></li>

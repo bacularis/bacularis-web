@@ -26,7 +26,7 @@
 			ItemRenderer="Bacularis.Web.Portlets.DirectiveRenderer"
 			>
 		</com:TActiveRepeater>
-		<div class="w3-row w3-center<%=$this->ShowBottomButtons ? ' w3-border bottom_buttons' : ''%> page_main_el" style="<%=($this->ShowBottomButtons ? ' margin-left: 250px' : ($this->ShowSectionTabs ? 'padding-left: 70px; position: sticky; bottom: 5px;' : ''))%>">
+		<div class="w3-row w3-center<%=$this->ShowBottomButtons ? ' w3-border bottom_buttons' : ''%>" style="min-width: 250px; <%=($this->ShowBottomButtons ? '' : ($this->ShowSectionTabs ? 'position: sticky; bottom: 5px;' : ''))%>">
 			<com:Bacularis.Web.Portlets.DirectiveSetting
 				ID="DirectiveSetting"
 				Resource="<%=$this->getResource()%>"
@@ -37,7 +37,7 @@
 				Attributes.onclick="$(this).parent().parent().prev('div.resource_remove_confirm').show();"
 				Visible="<%=$this->ShowRemoveButton && $this->LoadValues%>"
 			>
-				<prop:Text><i class="fa fa-trash-alt"></i> &nbsp;<%=Prado::localize('Remove resource')%></prop:Text>
+				<prop:Text><i class="fa fa-trash-alt"></i> &nbsp;<span class="w3-hide-small"><%=Prado::localize('Remove resource')%></span><span class="w3-show-small"><%=Prado::localize('Remove')%></span></prop:Text>
 			</com:TActiveLinkButton>
 			<com:TActiveLinkButton
 				ID="Cancel"

@@ -4397,3 +4397,6 @@ msgstr "Last failed job"
 
 msgid "Rerun"
 msgstr "Rerun"
+
+msgid "All directives"
+msgstr "All directives"
