@@ -38,6 +38,7 @@ use Prado\Web\UI\ActiveControls\TActiveDataGrid;
 use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TActiveTextBox;
+use Bacularis\Common\Modules\AuditLog;
 
 /**
  * Restore wizard page.
@@ -1142,10 +1143,20 @@ class RestoreWizard extends BaculumWebPage
 		if (is_numeric($jobid)) {
 			$this->resetWizard();
 			$url_params['jobid'] = $jobid;
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Run restore. Job: {$restore_props['restorejob']}, JobId: $jobid"
+			);
 			$this->goToPage('JobView', $url_params);
 		} else {
 			$this->RestoreError->Text = implode('<br />', $ret->output);
 			$this->show_error = true;
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_ACTION,
+				"Run restore failed. Job: {$restore_props['restorejob']}"
+			);
 		}
 	}
 

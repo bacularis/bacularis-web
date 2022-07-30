@@ -21,6 +21,9 @@
 		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features');">
 			<%[ Features ]%>
 		</a>
+		<a id="btn_application_settings_audit_log" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_audit_log'); if (oAppSettingsAuditLog.table) { oAppSettingsAuditLog.table.responsive.recalc(); oAppSettingsAuditLog.table.columns.adjust().draw(); }">
+			<%[ Audit log ]%>
+		</a>
 	</div>
 	<!-- General options -->
 	<div class="w3-container tab_item" id="application_settings_general">
@@ -251,5 +254,304 @@
 			</com:TActiveLinkButton>
 			<i id="save_settings_features_loader" class="fa fa-sync w3-spin" style="display: none"></i>
 		</div>
+	</div>
+	<!-- Audit log -->
+	<div class="w3-container tab_item" id="application_settings_audit_log" style="display: none">
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Enable audit log ]%>:</div>
+			<div class="w3-quarter w3-col">
+				<com:TCheckBox
+					ID="EnableAuditLog"
+					CssClass="w3-check"
+					Attributes.onclick="const cfg = $('#application_settings_audit_log_config'); if (this.checked) { cfg.slideDown('fast'); } else { cfg.slideUp('fast'); }"
+				/>
+				<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+				<div class="directive_help" style="display: none">
+					<dd><%[ Audit log enables to log and track all important user actions. ]%></dd>
+				</div>
+			</div>
+		</div>
+		<div id="application_settings_audit_log_config" style="display: <%=$this->EnableAuditLog->Checked ? 'block' : 'none'%>">
+			<div class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><%[ Maximum number of log entries ]%>:</div>
+				<div class="w3-quarter w3-col">
+					<com:TTextBox
+						ID="AuditLogMaxLines"
+						CssClass="w3-input w3-border w3-show-inline-block"
+						Width="100px"
+					/>
+					<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+					<div class="directive_help" style="display: none">
+						<dd><%[ Maximum number of log lines stored in the audit log file. ]%></dd>
+					</div>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><%[ Log types ]%>:</div>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="LogTypeInfo"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogTypeInfo->ClientID%>"><%[ Information ]%></label>
+					&nbsp;<com:TCheckBox
+						ID="LogTypeWarning"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogTypeWarning->ClientID%>"><%[ Warning ]%></label>
+					&nbsp;<com:TCheckBox
+						ID="LogTypeError"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogTypeError->ClientID%>"><%[ Error ]%></label>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><%[ Log categories ]%>:</div>
+				<div class="w3-half w3-col">
+					<com:TCheckBox
+						ID="LogCategoryConfig"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogCategoryConfig->ClientID%>"><%[ Configuration ]%></label>
+					<i class="fas fa-info-circle help_icon w3-text-green" onclick="const el = $('div[rel=\'config\']'); const vis = el.is(':visible'); $(this).closest('div').find('div.directive_help').slideUp('fast'); if (!vis) { el.slideToggle('fast'); }" style="margin-left: 4px !important"></i>
+					&nbsp;<com:TCheckBox
+						ID="LogCategoryApplication"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogCategoryApplication->ClientID%>"><%[ Application ]%></label>
+					<i class="fas fa-info-circle help_icon w3-text-green" onclick="const el = $('div[rel=\'application\']'); const vis = el.is(':visible'); $(this).closest('div').find('div.directive_help').slideUp('fast'); if (!vis) { el.slideToggle('fast'); }" style="margin-left: 4px !important"></i>
+					&nbsp;<com:TCheckBox
+						ID="LogCategoryAction"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogCategoryAction->ClientID%>"><%[ Action ]%></label>
+					<i class="fas fa-info-circle help_icon w3-text-green" onclick="const el = $('div[rel=\'action\']'); const vis = el.is(':visible'); $(this).closest('div').find('div.directive_help').slideUp('fast'); if (!vis) { el.slideToggle('fast'); }" style="margin-left: 4px !important"></i>
+					&nbsp;<com:TCheckBox
+						ID="LogCategorySecurity"
+						CssClass="w3-check"
+					/> <label for="<%=$this->LogCategorySecurity->ClientID%>"><%[ Security ]%></label>
+					<i class="fas fa-info-circle help_icon w3-text-green" onclick="const el = $('div[rel=\'security\']'); const vis = el.is(':visible'); $(this).closest('div').find('div.directive_help').slideUp('fast'); if (!vis) { el.slideToggle('fast'); }" style="margin-left: 4px !important"></i>
+					<div rel="config" class="directive_help" style="display: none">
+						<dd><%[ This category logs actions on Bacula configuration like saving, creating or removing Bacula resources. ]%></dd>
+					</div>
+					<div rel="application" class="directive_help" style="display: none">
+						<dd><%[ This category logs application specific actions like adding, editing or removing users, roles, API hosts and others. ]%></dd>
+					</div>
+					<div rel="action" class="directive_help" style="display: none">
+						<dd><%[ This category logs actions possible to run by users like running backup or restore and others. ]%></dd>
+					</div>
+					<div rel="security" class="directive_help" style="display: none">
+						<dd><%[ This category logs security issues like log in actions, log in failed or 2FA failed. ]%></dd>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="w3-center w3-margin-top">
+			<com:TActiveLinkButton
+				CssClass="w3-button w3-green"
+				CausesValidation="true"
+				ValidationGroup="AppSettingAuditLog"
+				OnClick="saveAuditLog"
+			>
+				<prop:ClientSide.OnLoading>
+					document.getElementById('save_settings_audit_log_loader').style.display = '';
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.OnComplete>
+					setTimeout(function() {
+						document.getElementById('save_settings_audit_log_loader').style.display = 'none';
+					}, 300);
+				</prop:ClientSide.OnComplete>
+				<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+			</com:TActiveLinkButton>
+			<i id="save_settings_audit_log_loader" class="fa fa-sync w3-spin" style="display: none"></i>
+			<div class="w3-right w3-margin-top w3-margin-right w3-margin-bottom" title="<%[ To disable refreshing please type 0. ]%>">
+				<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="application_settings_audit_log_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="10" style="width: 50px">
+			</div>
+		</div>
+		<div class="w3-container">
+			<table id="application_settings_audit_log_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ IP address ]%></th>
+						<th><%[ Username ]%></th>
+						<th><%[ Date ]%></th>
+						<th><%[ Type ]%></th>
+						<th><%[ Category ]%></th>
+						<th><%[ Log message ]%></th>
+					</tr>
+				</thead>
+				<tbody id="application_settings_audit_log_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ IP address ]%></th>
+						<th><%[ Username ]%></th>
+						<th><%[ Date ]%></th>
+						<th><%[ Type ]%></th>
+						<th><%[ Category ]%></th>
+						<th><%[ Log message ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<com:TCallback ID="AuditLogUpdate" OnCallback="loadAuditLog" />
+		<script>
+var oAppSettingsAuditLog = {
+	ids: {
+		table: 'application_settings_audit_log_list',
+		refresh: 'application_settings_audit_log_refresh_interval'
+	},
+	types: {
+		info: 'INFO',
+		warning: 'WARNING',
+		error: 'ERROR'
+	},
+	def_refresh_interval: 10000,
+	refresh_interval: 0,
+	timeout: null,
+	init: function(data) {
+		const self = oAppSettingsAuditLog;
+		self.data = data;
+		if (self.table) {
+			self.table.clear();
+			self.table.rows.add(data);
+			self.table.draw(false);
+		} else {
+			self.set_table();
+			self.refresh_interval = self.def_refresh_interval;
+			self.add_events();
+		}
+		self.load_table_cb();
+	},
+	add_events: function() {
+		const refresh = document.getElementById(this.ids.refresh);
+		refresh.addEventListener('keyup', (e) => {
+			let val = refresh.value.trim();
+			if (!val) {
+				val = 0;
+			}
+			this.refresh_interval = parseInt(val, 10) * 1000;
+			if (this.refresh_interval > 0) {
+				this.load_table_cb();
+			}
+		});
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.table).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			pageLength : 25,
+			lengthMenu: [10, 25, 50, 75, 100],
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'ip_address',
+					width: '10%'
+				},
+				{
+					data: 'username',
+					width: '10%'
+				},
+				{
+					data: 'date',
+					render: render_date,
+					width: '15%'
+				},
+				{
+					data: 'type',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display') {
+							const span = document.createElement('SPAN');
+							span.textContent = data;
+							span.style.padding = '4px';
+							span.style.width = '70px';
+							span.classList.add('w3-tag', 'w3-small');
+							if (data == this.types.info) {
+								span.classList.add('w3-green');
+							} else if (data == this.types.warning) {
+								span.classList.add('w3-orange');
+							} else if (data == this.types.error) {
+								span.classList.add('w3-red');
+							}
+							ret = span.outerHTML;
+						} else if (type == 'filter' || type == 'sort') {
+							ret = data;
+						}
+						return ret;
+					},
+					width: '10%'
+				},
+				{
+					data: 'category',
+					width: '10%'
+				},
+				{
+					data: 'log',
+					width: '45%'
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 1, 2, 3, 4, 5 ]
+			}],
+			order: [3, 'desc'],
+			initComplete: function () {
+				this.api().columns([1, 2, 4, 5]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.data().sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	load_table: function() {
+		const cb = <%=$this->AuditLogUpdate->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_table_cb: function() {
+		clearTimeout(this.timeout);
+		if (this.refresh_interval > 0) {
+			this.timeout = setTimeout(() => {
+				this.load_table();
+			}, this.refresh_interval);
+		}
+	}
+};
+$(function() {
+	oAppSettingsAuditLog.load_table();
+});
+		</script>
 	</div>
 </com:TContent>

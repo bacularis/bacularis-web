@@ -31,6 +31,7 @@ namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Portlets\DirectiveListTemplate;
 
 /**
@@ -67,6 +68,22 @@ class ComponentActionsMenu extends DirectiveListTemplate
 				['actions', $component, $action],
 				$host
 			);
+
+			$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+			if ($result->error === 0) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_ACTION,
+					"Component action run successfully. Host: $host, Component: $component_full_name, Action: $action"
+				);
+			} else {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_ACTION,
+					"Component action run failed. Host: $host, Component: $component_full_name, Action: $action"
+				);
+			}
+
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				$this->ClientID . '_component_action_set_result',
 				[$action, $result]

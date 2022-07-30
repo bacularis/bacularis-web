@@ -30,6 +30,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Web\Pages\Requirements;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\BaculumPage;
 use Bacularis\Common\Modules\Logging;
@@ -108,6 +109,18 @@ class BaculumWebPage extends BaculumPage
 		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
 			$auth_mod = $this->getModule('basic_webuser');
 			$is_auth = ($this->getModule('auth_basic')->authenticate($auth_mod, AuthBasic::REALM_WEB) === true);
+			if (!$is_auth) {
+				/**
+				 * Basic auth is specific because log in takes place for each request.
+				 * From this reason audit reports only log in failed.
+				 */
+				$username = $_SERVER['PHP_AUTH_USER'] ?? '';
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_SECURITY,
+					"Log in failed (Basic auth). User: $username"
+				);
+			}
 		}
 		return $is_auth;
 	}

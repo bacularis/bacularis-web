@@ -28,6 +28,7 @@
  */
 
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Pages\Monitor;
 
@@ -66,6 +67,32 @@ class ApplicationSettings extends BaculumWebPage
 				$this->JobAgeOnJobStatusGraph->setDirectiveValue(0);
 			}
 			$this->JobAgeOnJobStatusGraph->createDirective();
+
+			$this->EnableAuditLog->Checked = (bool) ($this->web_config['baculum']['enable_audit_log'] ?? AuditLog::DEF_ENABLED);
+			$this->AuditLogMaxLines->Text = $this->web_config['baculum']['audit_log_max_lines'] ?? AuditLog::DEF_MAX_LINES;
+			if (key_exists('audit_log_types', $this->web_config['baculum']) && is_array($this->web_config['baculum']['audit_log_types'])) {
+				$types = $this->web_config['baculum']['audit_log_types'];
+				$this->LogTypeInfo->Checked = in_array(AuditLog::TYPE_INFO, $types);
+				$this->LogTypeWarning->Checked = in_array(AuditLog::TYPE_WARNING, $types);
+				$this->LogTypeError->Checked = in_array(AuditLog::TYPE_ERROR, $types);
+			} else {
+				// Default log settings (if not set in config)
+				$this->LogTypeInfo->Checked = in_array(AuditLog::TYPE_INFO, AuditLog::DEF_TYPES);
+				$this->LogTypeWarning->Checked = in_array(AuditLog::TYPE_WARNING, AuditLog::DEF_TYPES);
+				$this->LogTypeError->Checked = in_array(AuditLog::TYPE_ERROR, AuditLog::DEF_TYPES);
+			}
+			if (key_exists('audit_log_categories', $this->web_config['baculum']) && is_array($this->web_config['baculum']['audit_log_categories'])) {
+				$categories = $this->web_config['baculum']['audit_log_categories'];
+				$this->LogCategoryConfig->Checked = in_array(AuditLog::CATEGORY_CONFIG, $categories);
+				$this->LogCategoryAction->Checked = in_array(AuditLog::CATEGORY_ACTION, $categories);
+				$this->LogCategoryApplication->Checked = in_array(AuditLog::CATEGORY_APPLICATION, $categories);
+				$this->LogCategorySecurity->Checked = in_array(AuditLog::CATEGORY_SECURITY, $categories);
+			} else {
+				$this->LogCategoryConfig->Checked = in_array(AuditLog::CATEGORY_CONFIG, AuditLog::DEF_CATEGORIES);
+				$this->LogCategoryAction->Checked = in_array(AuditLog::CATEGORY_ACTION, AuditLog::DEF_CATEGORIES);
+				$this->LogCategoryApplication->Checked = in_array(AuditLog::CATEGORY_APPLICATION, AuditLog::DEF_CATEGORIES);
+				$this->LogCategorySecurity->Checked = in_array(AuditLog::CATEGORY_SECURITY, AuditLog::DEF_CATEGORIES);
+			}
 		}
 	}
 
@@ -100,5 +127,57 @@ class ApplicationSettings extends BaculumWebPage
 			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
 			$this->getModule('web_config')->setConfig($this->web_config);
 		}
+	}
+
+	public function saveAuditLog($sender, $param)
+	{
+		if (count($this->web_config) > 0) {
+			$this->web_config['baculum']['enable_audit_log'] = ($this->EnableAuditLog->Checked === true) ? 1 : 0;
+			$this->web_config['baculum']['audit_log_max_lines'] = (int) $this->AuditLogMaxLines->Text;
+			$types = [];
+			if ($this->LogTypeInfo->Checked) {
+				$types[] = AuditLog::TYPE_INFO;
+			}
+			if ($this->LogTypeWarning->Checked) {
+				$types[] = AuditLog::TYPE_WARNING;
+			}
+			if ($this->LogTypeError->Checked) {
+				$types[] = AuditLog::TYPE_ERROR;
+			}
+			if (count($types) > 0) {
+				$this->web_config['baculum']['audit_log_types'] = $types;
+			} elseif (isset($this->web_config['baculum']['audit_log_types'])) {
+				unset($this->web_config['baculum']['audit_log_types']);
+			}
+
+			$categories = [];
+			if ($this->LogCategoryConfig->Checked) {
+				$categories[] = AuditLog::CATEGORY_CONFIG;
+			}
+			if ($this->LogCategoryAction->Checked) {
+				$categories[] = AuditLog::CATEGORY_ACTION;
+			}
+			if ($this->LogCategoryApplication->Checked) {
+				$categories[] = AuditLog::CATEGORY_APPLICATION;
+			}
+			if ($this->LogCategorySecurity->Checked) {
+				$categories[] = AuditLog::CATEGORY_SECURITY;
+			}
+			if (count($categories) > 0) {
+				$this->web_config['baculum']['audit_log_categories'] = $categories;
+			} elseif (isset($this->web_config['baculum']['audit_log_categories'])) {
+				unset($this->web_config['baculum']['audit_log_categories']);
+			}
+			$this->getModule('web_config')->setConfig($this->web_config);
+		}
+	}
+
+	public function loadAuditLog($sender, $param)
+	{
+		$logs = $this->getModule('audit')->getLogs();
+		$this->getCallbackClient()->callClientFunction(
+			'oAppSettingsAuditLog.init',
+			[$logs]
+		);
 	}
 }

@@ -38,6 +38,7 @@ use Prado\Web\UI\ActiveControls\TActiveCheckBox;
 use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Portlets\Portlets;
 
 /**
@@ -440,17 +441,32 @@ class RunJob extends Portlets
 					$cc->callClientFunction('oMonitor');
 					$cc->hide('run_job');
 				}
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_ACTION,
+					"Run job. Job: $job_name, JobId: $started_jobid"
+				);
 			} else {
 				$output = implode('', $result->output);
 				$cc->callClientFunction(
 					'set_run_job_output',
 					[$output]
 				);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_ACTION,
+					"Run job failed. Job: $job_name"
+				);
 			}
 		} else {
 			$cc->callClientFunction(
 				'set_run_job_output',
 				[$result->output]
+			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_ACTION,
+				"Run job failed. Job: $job_name"
 			);
 		}
 	}

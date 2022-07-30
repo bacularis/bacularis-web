@@ -10,6 +10,7 @@
 
 use Prado\Prado;
 use Prado\Exceptions\TNotSupportedException;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
@@ -770,6 +771,14 @@ class NewUserWizard extends BaculumWebPage
 					$opts
 				);
 			}
+		}
+
+		if ($result === true) {
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Create new user. User: $username"
+			);
 		}
 	}
 

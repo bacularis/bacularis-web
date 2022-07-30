@@ -31,6 +31,7 @@ namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Portlets\BaculaConfigResources;
 use Bacularis\Web\Portlets\Portlets;
 
@@ -226,10 +227,23 @@ class BaculaConfigResourceList extends Portlets
 				$host,
 				false
 			);
+
+			$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+			$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 			if ($result->error !== 0) {
 				$this->showRemovedResourceError($result->output);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_CONFIG,
+					sprintf($amsg, 'Problem with removing Bacula config resource.')
+				);
 			} else {
 				$this->loadResourceListTable($sender, $param);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_CONFIG,
+					sprintf($amsg, 'Remove Bacula config resource.')
+				);
 			}
 		} else {
 			// DEPENDENCIES EXIST. List them on the interface.

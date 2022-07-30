@@ -47,6 +47,7 @@ use Prado\Web\UI\WebControls\TRadioButton;
 use Prado\Web\UI\WebControls\TRegularExpressionValidator;
 use Prado\Web\UI\WebControls\TRequiredFieldValidator;
 use Prado\Web\UI\WebControls\TValidationSummary;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\BasicUserConfig;
 use Bacularis\Common\Modules\Crypto;
 use Bacularis\Common\Modules\Ldap;
@@ -413,6 +414,20 @@ class Security extends BaculumWebPage
 			}
 		}
 
+		if ($result === true) {
+			$amsg = '';
+			if ($user_win_type == self::TYPE_ADD_WINDOW) {
+				$amsg = "Create Bacularis user. User: $username";
+			} elseif ($user_win_type == self::TYPE_EDIT_WINDOW) {
+				$amsg = "Save Bacularis user. User: $username";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
+		}
+
 		$this->setUserList(null, null);
 		$this->setRoleList(null, null);
 		$this->getCallbackClient()->callClientFunction('oUsers.save_user_cb');
@@ -445,6 +460,16 @@ class Security extends BaculumWebPage
 			// Remove basic auth users too
 			$basic = $this->getModule('basic_webuser');
 			$basic->removeUsers($usernames);
+		}
+
+		if ($result === true) {
+			for ($i = 0; $i < count($usernames); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove Bacularis user. User: {$usernames[$i]}"
+				);
+			}
 		}
 
 		// refresh user list
@@ -564,13 +589,27 @@ class Security extends BaculumWebPage
 		}
 		$config['resources'] = implode(',', $resources);
 		$config['enabled'] = $this->RoleEnabled->Checked ? 1 : 0;
-		$this->getModule('role_config')->setRoleConfig($role, $config);
+		$result = $this->getModule('role_config')->setRoleConfig($role, $config);
 		$this->setRoleList(null, null);
 		if ($role_win_type === self::TYPE_ADD_WINDOW) {
 			// refresh user window for new role
 			$this->initUserWindow();
 		}
 		$this->getCallbackClient()->callClientFunction('oRoles.save_role_cb');
+
+		if ($result === true) {
+			$amsg = '';
+			if ($role_win_type == self::TYPE_ADD_WINDOW) {
+				$amsg = "Create role. Role: $role";
+			} elseif ($role_win_type == self::TYPE_EDIT_WINDOW) {
+				$amsg = "Save role. Role: $role";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
+		}
 	}
 
 	/**
@@ -596,10 +635,19 @@ class Security extends BaculumWebPage
 				unset($config[$roles[$i]]);
 			}
 		}
-		$this->getModule('role_config')->setConfig($config);
+		$result = $this->getModule('role_config')->setConfig($config);
 		$this->setRoleList(null, null);
 		// refresh user window to now show removed roles
 		$this->initUserWindow();
+		if ($result === true) {
+			for ($i = 0; $i < count($roles); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove role. Role: {$roles[$i]}"
+				);
+			}
+		}
 	}
 
 	/**
@@ -1182,7 +1230,23 @@ class Security extends BaculumWebPage
 		} else {
 			$users_cfg = array_merge($users, $users_web);
 		}
-		$user_mod->setConfig($users_cfg);
+		$result = $user_mod->setConfig($users_cfg);
+
+
+		if ($result === true) {
+			$user_count = count($users_web);
+			$amsg = '';
+			if ($this->BasicAuth->Checked) {
+				$amsg = "Import Basic users. Count: $user_count";
+			} elseif ($this->LdapAuth->Checked) {
+				$amsg = "Import LDAP users. Count: $user_count";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
+		}
 
 		// refresh user list
 		$this->setUserList(null, null);
@@ -1244,9 +1308,19 @@ class Security extends BaculumWebPage
 		if ($ret === true) {
 			$this->getCallbackClient()->hide('auth_method_save_error');
 			$this->getCallbackClient()->show('auth_method_save_ok');
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				'Save application settings'
+			);
 		} else {
 			$this->getCallbackClient()->hide('auth_method_save_ok');
 			$this->getCallbackClient()->show('auth_method_save_error');
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_APPLICATION,
+				'Problem with saving application settings'
+			);
 		}
 	}
 
@@ -1360,12 +1434,28 @@ class Security extends BaculumWebPage
 				$consoles[$i]
 			);
 		}
-		$this->getModule('api')->set(
+		$result = $this->getModule('api')->set(
 			['config', 'dir'],
 			['config' => json_encode($config)],
 			$this->User->getDefaultAPIHost(),
 			false
 		);
+
+		if ($result->error === 0) {
+			for ($i = 0; $i < count($consoles); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_CONFIG,
+					"Remove Bacula config resource. Component: Director, Resource: Console, Name: {$consoles[$i]}"
+				);
+			}
+		} else {
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				'Problem with removing Bacula config resource. Component: Director, Resource: Console'
+			);
+		}
 
 		// refresh console list
 		$this->setConsoleList(null, null);
@@ -1488,6 +1578,18 @@ class Security extends BaculumWebPage
 		if ($result->error === 0) {
 			// Refresh API basic user list
 			$this->setAPIBasicUserList(null, null);
+
+			$amsg = '';
+			if ($win_type === self::TYPE_ADD_WINDOW) {
+				$amsg = "Create API Basic user. User: $username";
+			} elseif ($win_type === self::TYPE_EDIT_WINDOW) {
+				$amsg = "Save API Basic user. User: $username";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
 		}
 		$this->getCallbackClient()->callClientFunction('oAPIBasicUsers.save_api_basic_user_cb', [
 			$result
@@ -1516,6 +1618,14 @@ class Security extends BaculumWebPage
 		if (count($usernames) > 0) {
 			// Refresh API basic user list
 			$this->setAPIBasicUserList(null, null);
+
+			for ($i = 0; $i < count($usernames); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove API Basic user. User: {$usernames[$i]}"
+				);
+			}
 		}
 	}
 
@@ -1639,6 +1749,18 @@ class Security extends BaculumWebPage
 		if ($result->error === 0) {
 			// Refresh OAuth2 client list
 			$this->setOAuth2ClientList(null, null);
+
+			$amsg = '';
+			if ($win_type === self::TYPE_ADD_WINDOW) {
+				$amsg = "Create API OAuth2 client. ClientId: $client_id";
+			} elseif ($win_type === self::TYPE_EDIT_WINDOW) {
+				$amsg = "Save API OAuth2 client. ClientId: $client_id";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
 		}
 		$this->getCallbackClient()->callClientFunction('oOAuth2Clients.save_oauth2_client_cb', [
 			$result
@@ -1667,6 +1789,14 @@ class Security extends BaculumWebPage
 		if (count($client_ids) > 0) {
 			// Refresh OAuth2 client list
 			$this->setOAuth2ClientList(null, null);
+
+			for ($i = 0; $i < count($client_ids); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove API OAuth2 client. ClientId: {$client_ids[$i]}"
+				);
+			}
 		}
 	}
 
@@ -1930,10 +2060,27 @@ class Security extends BaculumWebPage
 		if (empty($host_name)) {
 			$host_name = $cfg_host['address'];
 		}
+		$host_exists = key_exists($host_name, $config);
 		$config[$host_name] = $cfg_host;
-		$hc->setConfig($config);
+		$result = $hc->setConfig($config);
 		$this->setAPIHostList(null, null);
 		$this->getCallbackClient()->hide('api_host_window');
+
+		if ($result === true) {
+			if (!$host_exists) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Create API host. Name: $host_name"
+				);
+			} else {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Save API host. Name: $host_name"
+				);
+			}
+		}
 
 		// refresh user window
 		$this->initUserWindow();
@@ -1960,7 +2107,17 @@ class Security extends BaculumWebPage
 			}
 			$cfg[$host] = $opts;
 		}
-		$hc->setConfig($cfg);
+		$result = $hc->setConfig($cfg);
+		if ($result === true) {
+			for ($i = 0; $i < count($names); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove API host. Name: {$names[$i]}"
+				);
+			}
+		}
+
 		$this->setAPIHostList(null, null);
 	}
 

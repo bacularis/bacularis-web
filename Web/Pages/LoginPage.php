@@ -28,6 +28,7 @@
  */
 
 use Prado\Prado;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -119,15 +120,30 @@ class LoginPage extends BaculumWebPage
 				$success = $this->getModule('auth')->login($username, $password);
 				if ($success === true) {
 					// Log in successful
+					$this->getModule('audit')->audit(
+						AuditLog::TYPE_INFO,
+						AuditLog::CATEGORY_SECURITY,
+						"Log in successful. User: $username"
+					);
 					$this->goToDefaultPage();
 				} else {
 					// Log in error
+					$this->getModule('audit')->audit(
+						AuditLog::TYPE_WARNING,
+						AuditLog::CATEGORY_SECURITY,
+						"Log in failed. User: $username"
+					);
 					sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 					$this->Msg->Display = 'Fixed';
 				}
 			}
 		} else {
 			// Log in error
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_SECURITY,
+				"Log in failed. User: $username"
+			);
 			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 			$this->Msg->Display = 'Fixed';
 		}
@@ -167,8 +183,18 @@ class LoginPage extends BaculumWebPage
 					'direct_to_def_page',
 					$url
 				);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_SECURITY,
+					"2FA auth successful . User: $username"
+				);
 			} else {
 				// Log in error after successful 2FA
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_SECURITY,
+					"2FA auth failed . User: $username"
+				);
 				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 				$emsg = Prado::localize('Invalid username or password');
 				$this->getCallbackClient()->update('login_2fa_error', $emsg);
@@ -179,6 +205,11 @@ class LoginPage extends BaculumWebPage
 			$emsg = Prado::localize('Invalid authentication code. Please try again.');
 			$this->getCallbackClient()->update('login_2fa_error', $emsg);
 			$this->getCallbackClient()->show('login_2fa_error');
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_SECURITY,
+				"2FA auth failed . User: $username"
+			);
 		}
 	}
 

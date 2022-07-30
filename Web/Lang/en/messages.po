@@ -4390,3 +4390,51 @@ msgstr "Rerun"
 
 msgid "All directives"
 msgstr "All directives"
+
+msgid "Audit log"
+msgstr "Audit log"
+
+msgid "Enable audit log"
+msgstr "Enable audit log"
+
+msgid "Audit log enables to log and track all important user actions."
+msgstr "Audit log enables to log and track all important user actions."
+
+msgid "Maximum number of log entries"
+msgstr "Maximum number of log entries"
+
+msgid "Maximum number of log lines stored in the audit log file."
+msgstr "Maximum number of log lines stored in the audit log file."
+
+msgid "Log types"
+msgstr "Log types"
+
+msgid "Application"
+msgstr "Application"
+
+msgid "This category logs actions on Bacula configuration like saving, creating or removing Bacula resources."
+msgstr "This category logs actions on Bacula configuration like saving, creating or removing Bacula resources."
+
+msgid "This category logs application specific actions like adding, editing or removing users, roles, API hosts and others."
+msgstr "This category logs application specific actions like adding, editing or removing users, roles, API hosts and others."
+
+msgid "This category logs actions possible to run by users like running backup or restore and others."
+msgstr "This category logs actions possible to run by users like running backup or restore and others."
+
+msgid "This category logs security issues like log in actions, log in failed or 2FA failed."
+msgstr "This category logs security issues like log in actions, log in failed or 2FA failed."
+
+msgid "IP address"
+msgstr "IP address"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Log message"
+msgstr "Log message"
+
+msgid "Log categories"
+msgstr "Log categories"

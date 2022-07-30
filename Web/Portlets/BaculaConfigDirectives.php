@@ -36,6 +36,7 @@ use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TActivePanel;
 use Prado\Web\UI\ActiveControls\TActiveRepeater;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Portlets\DirectiveListTemplate;
 use Bacularis\Web\Portlets\DirectiveCheckBox;
 use Bacularis\Web\Portlets\DirectiveComboBox;
@@ -426,6 +427,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$host,
 			false
 		);
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 		if ($result->error === 0) {
 			$this->SaveDirectiveOk->Display = 'Dynamic';
 			$this->SaveDirectiveError->Display = 'None';
@@ -433,11 +436,23 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			if ($this->getComponentType() == 'dir') {
 				$this->getModule('api')->set(['console'], ['reload']);
 			}
+			$action = $load_values && !$this->getCopyMode() ? 'Save Bacula config resource.' : 'Create Bacula config resource.';
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				sprintf($amsg, $action)
+			);
 		} else {
 			$this->SaveDirectiveOk->Display = 'None';
 			$this->SaveDirectiveError->Display = 'Dynamic';
 			$this->SaveDirectiveErrMsg->Display = 'Dynamic';
 			$this->SaveDirectiveErrMsg->Text = "Error {$result->error}: {$result->output}";
+			$action = $load_values && !$this->getCopyMode() ? 'Problem with saving Bacula config resource.' : 'Problem with creating Bacula config resource.';
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				sprintf($amsg, $action)
+			);
 		}
 		$this->onSave(null);
 	}
@@ -521,14 +536,26 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				$host,
 				false
 			);
+			$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+			$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 			if ($result->error === 0) {
 				$this->getModule('api')->set(['console'], ['reload']);
 				$this->showRemovedResourceInfo(
 					$resource_type,
 					$resource_name
 				);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_CONFIG,
+					sprintf($amsg, 'Remove Bacula config resource.')
+				);
 			} else {
 				$this->showRemovedResourceError($result->output);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_CONFIG,
+					sprintf($amsg, 'Problem with removing Bacula config resource.')
+				);
 			}
 		} else {
 			// DEPENDENCIES EXIST. List them on the interface.
@@ -681,7 +708,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$host,
 			false
 		);
-		if ($result->error != 0) {
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		if ($result->error == 0) {
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Rename Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name} => {$resource_name_new}"
+			);
+		} else {
 			$success = false;
 			$emsg = 'Error while renaming resource: ' . $result->output;
 			$this->Application->getModule('logging')->log(
@@ -690,6 +724,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				Logging::CATEGORY_APPLICATION,
 				__FILE__,
 				__LINE__
+			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Problem with renaming Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}"
 			);
 		}
 		return $success;

@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\ConfigFileModule;
 use Bacularis\Common\Modules\Crypto;
 
@@ -80,6 +81,26 @@ class WebConfig extends ConfigFileModule
 	 * Default date and time format.
 	 */
 	public const DEF_DATE_TIME_FORMAT = 'Y-M-D R';
+
+	/**
+	 * Default audit log enabled value.
+	 */
+	public const DEF_ENABLE_AUDIT_LOG = AuditLog::DEF_ENABLED;
+
+	/**
+	 * Default audit log maximum number of lines (entries).
+	 */
+	public const DEF_AUDIT_LOG_MAX_LINES = AuditLog::DEF_MAX_LINES;
+
+	/**
+	 * Default audit log types.
+	 */
+	public const DEF_AUDIT_LOG_TYPES = AuditLog::DEF_TYPES;
+
+	/**
+	 * Default audit log categories.
+	 */
+	public const DEF_AUDIT_LOG_CATEGORIES = AuditLog::DEF_CATEGORIES;
 
 	/**
 	 * Supported authentication methods.
@@ -197,7 +218,11 @@ class WebConfig extends ConfigFileModule
 			'size_values_unit' => self::DEF_SIZE_VAL_UNIT,
 			'time_in_job_log' => self::DEF_TIME_IN_JOB_LOG,
 			'date_time_format' => self::DEF_DATE_TIME_FORMAT,
-			'enable_messages_log' => self::DEF_ENABLE_MESSAGES_LOG
+			'enable_messages_log' => self::DEF_ENABLE_MESSAGES_LOG,
+			'enable_audit_log' => self::DEF_ENABLE_AUDIT_LOG,
+			'audit_log_max_lines' => self::DEF_AUDIT_LOG_MAX_LINES,
+			'audit_log_types' => self::DEF_AUDIT_LOG_TYPES,
+			'audit_log_categories' => self::DEF_AUDIT_LOG_CATEGORIES
 		];
 		if (key_exists('baculum', $config)) {
 			$config['baculum'] = array_merge($baculum, $config['baculum']);
