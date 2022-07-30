@@ -4449,3 +4449,6 @@ msgstr "Log message"
 
 msgid "Log categories"
 msgstr "Log categories"
+
+msgid "seconds"
+msgstr "seconds"
