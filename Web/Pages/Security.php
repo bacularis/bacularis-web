@@ -1466,12 +1466,10 @@ class Security extends BaculumWebPage
 
 	public function setAllCommandAcls($sender, $param)
 	{
-		$config = (object) [
+		$config = [
 			"CommandAcl" => JobInfo::COMMAND_ACL_USED_BY_WEB
 		];
-		$this->ConsoleConfig->setData($config);
-		$this->ConsoleConfig->IsDirectiveCreated = false;
-		$this->ConsoleConfig->raiseEvent('OnDirectiveListLoad', $this, null);
+		$this->ConsoleConfig->loadConfig($sender, $param, 'ondirectivelistload', $config);
 		$this->getCallbackClient()->callClientFunction('oBaculaConfigSection.show_sections', [true]);
 	}
 

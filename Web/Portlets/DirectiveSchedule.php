@@ -588,6 +588,11 @@ class DirectiveSchedule extends DirectiveListTemplate
 		return (($ret_obj) ? $objs : $values);
 	}
 
+	public function getDirectiveData()
+	{
+		return $this->getDirectiveValue(true);
+	}
+
 	public function newScheduleDirective()
 	{
 		$data = $this->getDirectiveValue(true);

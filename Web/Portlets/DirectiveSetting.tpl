@@ -2,7 +2,7 @@
 	<span>
 		<label><span class="w3-hide-small"><%[ All directives ]%></span>
 			<label class="switch" title="<%[ Show/hide all directives ]%>" style="vertical-align: middle; margin-right: 8px;">
-				<input type="checkbox" class="directive_option" rel="show_all_directives" />
+				<com:TActiveCheckBox ID="AllDirectives" CssClass="directive_option" Attributes.rel="show_all_directives" />
 				<span class="slider round"></span>
 			</label>
 		</label>
@@ -16,7 +16,7 @@
 	ID="DirectiveOptionCall"
 	OnCallback="setOption"
 />
-<script type="text/javascript">
+<script>
 	var BaculaConfigOptions = new BaculaConfigOptionsClass({
 		options_id: '<%=$this->DirectiveOptions->ClientID%>',
 		action_obj: <%=$this->DirectiveOptionCall->ActiveControl->Javascript%>

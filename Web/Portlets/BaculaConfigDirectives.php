@@ -75,6 +75,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveCheckBox',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
+		'Bacularis\Web\Portlets\DirectiveComboBoxReload',
 		'Bacularis\Web\Portlets\DirectiveInteger',
 		'Bacularis\Web\Portlets\DirectiveListBox',
 		'Bacularis\Web\Portlets\DirectivePassword',
@@ -93,7 +94,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		'Bacularis\Web\Portlets\DirectiveMultiTextBox'
 	];
 
-	private $field_multple_values = [
+	private $field_multiple_values = [
 		'ListBox'
 	];
 
@@ -119,13 +120,18 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		return $config;
 	}
 
-	public function loadConfig()
+	public function loadConfig($sender = null, $param = null, $name = '', $data = [])
 	{
-		$load_values = $this->getLoadValues();
-		if (!$load_values && $this->IsDirectiveCreated) {
-			// This control is loaded only once, otherwise fields loose assigned values.
-			return;
+		if (empty($name) || $name === 'ondirectivelistload') {
+			// initial config load, clear any remembered form values from previous sessions
+			$this->setData($data);
+			// default disable showing all directives
+			$this->setShowAllDirectives(false);
+		} else {
+			$directive_values = $this->getDirectiveValues(true);
+			$this->setData($directive_values);
 		}
+
 		$copy_mode = $this->getCopyMode();
 		if ($copy_mode) {
 			$this->setShowAllDirectives(true);
@@ -137,10 +143,10 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 		$directives = [];
-		$parent_directives = new \StdClass();
 		$config = new \StdClass();
 		$predefined = false;
-		if ($load_values === true) {
+		$load_values = $this->getLoadValues();
+		if ($load_values) {
 			$config = $this->getConfigData($host, [
 				$component_type,
 				$resource_type,
@@ -150,20 +156,22 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				$this->ConfigDirectives->Display = 'None';
 				return;
 			}
-			if ($resource_type === 'Job' && property_exists($config, 'JobDefs')) {
-				$parent_directives = $this->getConfigData($host, [
-					$component_type,
-					'JobDefs',
-					$config->JobDefs
-				]);
-			}
-		} else {
-			// Pre-defined config for new resource can be provided in Data property.
-			$data = $this->getData();
-			if (!empty($data)) {
-				$config = $data;
-				$predefined = true;
-			}
+		}
+
+		$data = $this->getData();
+		// Pre-defined config for new resource can be provided in Data property.
+		if (!empty($data)) {
+			$config = (object)$data;
+			$predefined = true;
+		}
+
+		$parent_directives = new \StdClass();
+		if ($resource_type === 'Job' && isset($config->JobDefs)) {
+			$parent_directives = $this->getConfigData($host, [
+				$component_type,
+				'JobDefs',
+				$config->JobDefs
+			]);
 		}
 		$data_desc = $this->Application->getModule('data_desc');
 		$resource_desc = $data_desc->getDescription($component_type, $resource_type);
@@ -187,7 +195,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			if (is_object($directive_desc)) {
 				if (property_exists($directive_desc, 'Required')) {
 					$required = $directive_desc->Required;
-					if ($load_values === true && property_exists($parent_directives, $directive_name)) {
+					if ($directive_name != 'Name' && property_exists($parent_directives, $directive_name)) {
 						// values can be taken from JobDefs
 						$required = false;
 					}
@@ -206,7 +214,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				}
 			}
 
-			if ((!is_array($directive_value) && !is_object($directive_value)) || in_array($field_type, $this->field_multple_values)) {
+			if ((!is_array($directive_value) && !is_object($directive_value)) || in_array($field_type, $this->field_multiple_values)) {
 				$directive_value = [$directive_value];
 			}
 			if (is_object($directive_value)) {
@@ -279,14 +287,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->getPage()->getCallbackClient()->show($this->ConfigDirectives);
 
 		// set buttons
-		$this->DirectiveSetting->showOptions($load_values);
+		$this->DirectiveSetting->showOptions($load_values && !$copy_mode);
 	}
 
-	public function loadDirectives($sender, $param)
+	public function loadDirectives($sender, $param, $name)
 	{
 		$show_all_directives = !$this->getShowAllDirectives();
 		$this->setShowAllDirectives($show_all_directives);
-		$this->loadConfig();
+		$this->loadConfig($sender, $param, $name);
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'oBaculaConfigSection.show_sections',
 			[$show_all_directives, $this->ClientID . '_directives']
@@ -299,10 +307,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->RepeaterDirectives->dataBind();
 	}
 
-	public function saveResource($sender, $param)
-	{
+	public function getDirectiveValues($data_mode = false) {
 		$directives = [];
-		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$resource_desc = $this->Application->getModule('data_desc')->getDescription($component_type, $resource_type);
@@ -313,6 +319,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				if (!is_null($parent_name)) {
 					continue;
 				}
+				$controls[$j]->setValue(); // set value for tracking unset and empty fields
 				$directive_name = $controls[$j]->getDirectiveName();
 				$directive_value = $controls[$j]->getDirectiveValue();
 
@@ -326,7 +333,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					$default_value = $resource_desc[$directive_name]->DefaultValue;
 				}
 				$in_config = $controls[$j]->getInConfig();
-				if (is_null($directive_value)) {
+				if (is_null($directive_value) || (is_array($directive_value) && count($directive_value) == 0)) {
 					// skip not changed values that don't exist in config
 					continue;
 				}
@@ -350,7 +357,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					continue;
 				}
 				$directive_name = $controls[$j]->getDirectiveName();
-				$directive_value = $controls[$j]->getDirectiveValue();
+				if ($data_mode && method_exists($controls[$j], 'getDirectiveData')) {
+					$directive_value = $controls[$j]->getDirectiveData();
+				} else {
+					$directive_value = $controls[$j]->getDirectiveValue();
+				}
 				if (is_null($directive_value)) {
 					continue;
 				}
@@ -362,6 +373,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				}
 				if (is_array($directive_value)) {
 					if ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMessages') {
+						if ($data_mode) {
+							$directive_value['Destinations'] = $directive_value;
+						}
 						$directives = array_merge($directives, $directive_value);
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveRunscript') {
 						if (!isset($directives[$directive_name])) {
@@ -374,12 +388,20 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 						}
 						$directives[$directive_name] = $directive_value[$directive_name];
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveSchedule') {
-						$directives[$directive_name] = $directive_value[$directive_name];
+						if ($data_mode) {
+							$directives[$directive_name] = $directive_value;
+						} else {
+							$directives[$directive_name] = $directive_value[$directive_name];
+						}
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMultiTextBox' || $this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMultiComboBox') {
 						if (key_exists($directive_name, $directives)) {
 							$directive_value = array_merge($directives[$directive_name], $directive_value);
 						}
-						$directives[$directive_name] = array_filter($directive_value);
+						if ($data_mode) {
+							$directives[$directive_name] = $directive_value;
+						} else {
+							$directives[$directive_name] = array_filter($directive_value);
+						}
 					} elseif (array_key_exists($directive_name, $directive_value)) {
 						$directives[$directive_name][] = $directive_value[$directive_name];
 					} elseif (count($directive_value) > 0) {
@@ -390,6 +412,15 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				}
 			}
 		}
+		return $directives;
+	}
+
+	public function saveResource($sender, $param)
+	{
+		$host = $this->getHost();
+		$component_type = $this->getComponentType();
+		$resource_type = $this->getResourceType();
+		$directives = $this->getDirectiveValues();
 		$load_values = $this->getLoadValues();
 		$res_name_dir = key_exists('Name', $directives) ? $directives['Name'] : null;
 		$resource_name = $this->getResourceName();
@@ -459,6 +490,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 
 	public function setShowAllDirectives($show_all_directives)
 	{
+		$this->DirectiveSetting->AllDirectives->Checked = $show_all_directives;
 		$this->setViewState(self::SHOW_ALL_DIRECTIVES, $show_all_directives);
 	}
 

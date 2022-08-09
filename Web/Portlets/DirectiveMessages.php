@@ -77,12 +77,11 @@ class DirectiveMessages extends DirectiveListTemplate
 		'Restored',
 		'Security',
 		'Alert',
-		'Volmgmt'
+		'VolMgmt'
 	];
 
 	public function loadConfig()
 	{
-		$load_values = $this->getLoadValues();
 		$dests = $this->getData();
 		if (key_exists('Destinations', $dests)) {
 			$dests = array_filter($dests['Destinations']);
@@ -228,6 +227,7 @@ class DirectiveMessages extends DirectiveListTemplate
 		$data = $this->getDirectiveData();
 		$msg_type = $sender->getID();
 		array_push($data, ['Type' => $msg_type, 'MsgTypes' => []]);
+		$this->SourceTemplateControl->setShowAllDirectives(true);
 		$this->setData($data);
 		$this->loadConfig();
 	}

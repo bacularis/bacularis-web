@@ -176,7 +176,25 @@ class DirectiveRunscript extends DirectiveListTemplate
 				$directive_values['Runscript'][$index]->{$directive_name} = $directive_value;
 			}
 		}
-		return $directive_values;
+		$directive_values_filtered = null;
+		if (isset($directive_values['Runscript'])) {
+			foreach ($directive_values['Runscript'] as $index => $directive) {
+				$found = false;
+				foreach ($directive as $directive_name => $directive_value) {
+					if ($directive_name === 'Command' || $directive_name === 'Console') {
+						$found = true;
+						break;
+					}
+				}
+				if (!isset($directive_values_filtered['Runscript'])) {
+					$directive_values_filtered['Runscript'] = [];
+				}
+				if ($found) {
+					$directive_values_filtered['Runscript'][$index] = $directive;
+				}
+			}
+		}
+		return $directive_values_filtered;
 	}
 
 	public function removeRunscript($sender, $param)
@@ -192,7 +210,7 @@ class DirectiveRunscript extends DirectiveListTemplate
 		}
 	}
 
-	public function newRunscriptDirective()
+	public function newRunscriptDirective($sender, $param)
 	{
 		$data = $this->getDirectiveValue();
 		if (is_array($data) && key_exists('Runscript', $data) && is_array($data['Runscript'])) {
@@ -201,7 +219,12 @@ class DirectiveRunscript extends DirectiveListTemplate
 			$data = ['Runscript' => [new \StdClass()]];
 		}
 		$this->setData($data);
+		$show_all_directives = $this->SourceTemplateControl->getShowAllDirectives();
 		$this->SourceTemplateControl->setShowAllDirectives(true);
 		$this->loadConfig();
+		if (!$show_all_directives) {
+			// revert to the original control state
+			$this->SourceTemplateControl->setShowAllDirectives(false);
+		}
 	}
 }

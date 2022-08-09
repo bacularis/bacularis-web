@@ -47,7 +47,10 @@ class DirectiveListBox extends DirectiveTemplate
 		$values = $this->Directive->getSelectedIndices();
 		$items = $this->Directive->getItems();
 		for ($i = 0; $i < count($values); $i++) {
-			$value[] = $items[$values[$i]]->getValue();
+			$val = $items[$values[$i]]->getValue();
+			if (!empty($val)) {
+				$value[] = $val;
+			}
 		}
 		return $value;
 	}

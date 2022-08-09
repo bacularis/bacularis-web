@@ -470,8 +470,16 @@
 				"FieldType": "TextBox",
 				"Section": "General"
 			},
-			"Type": {
+			"JobDefs": {
 				"Required": false,
+				"ValueType": "res",
+				"DefaultValue": 0,
+				"FieldType": "ComboBoxReload",
+				"Resource": "JobDefs",
+				"Section": "General"
+			},
+			"Type": {
+				"Required": true,
 				"ValueType": "jobtype",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
@@ -487,7 +495,7 @@
 				"Section": "General"
 			},
 			"Client": {
-				"Required": false,
+				"Required": true,
 				"ValueType": "res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
@@ -495,7 +503,7 @@
 				"Section": "General"
 			},
 			"Fileset": {
-				"Required": false,
+				"Required": true,
 				"ValueType": "res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
@@ -503,21 +511,21 @@
 				"Section": "General"
 			},
 			"Pool": {
-				"Required": false,
+				"Required": true,
 				"ValueType": "res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Section": "General"
 			},
 			"Storage": {
-				"Required": false,
+				"Required": true,
 				"ValueType": "alist_res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Section": "General"
 			},
 			"Messages": {
-				"Required": false,
+				"Required": true,
 				"ValueType": "res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
@@ -529,14 +537,6 @@
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Resource": "Schedule",
-				"Section": "General"
-			},
-			"JobDefs": {
-				"Required": false,
-				"ValueType": "res",
-				"DefaultValue": 0,
-				"FieldType": "ComboBox",
-				"Resource": "JobDefs",
 				"Section": "General"
 			},
 			"Priority": {
@@ -2170,14 +2170,6 @@
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Resource": "Schedule",
-				"Section": "General"
-			},
-			"JobDefs": {
-				"Required": false,
-				"ValueType": "res",
-				"DefaultValue": 0,
-				"FieldType": "ComboBox",
-				"Resource": "JobDefs",
 				"Section": "General"
 			},
 			"Priority": {

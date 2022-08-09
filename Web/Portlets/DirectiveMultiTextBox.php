@@ -47,7 +47,7 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 		$this->loadConfig();
 	}
 
-	public function getDirectiveValue()
+	public function getDirectiveValue($data_mode = false)
 	{
 		$values = [];
 		$controls = $this->MultiTextBoxRepeater->getItems();
@@ -59,7 +59,14 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 				$values[] = null;
 			}
 		}
+		if ($data_mode && count($values) === 0) {
+			$values[] = '';
+		}
 		return $values;
+	}
+
+	public function getDirectiveData() {
+		return $this->getDirectiveValue(true);
 	}
 
 	public function loadConfig()

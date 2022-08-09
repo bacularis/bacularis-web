@@ -47,7 +47,7 @@ class DirectiveMultiComboBox extends DirectiveListTemplate
 		$this->loadConfig();
 	}
 
-	public function getDirectiveValue()
+	public function getDirectiveValue($data_mode = false)
 	{
 		$values = [];
 		$controls = $this->MultiComboBoxRepeater->getItems();
@@ -57,7 +57,14 @@ class DirectiveMultiComboBox extends DirectiveListTemplate
 				$values[] = $val;
 			}
 		}
+		if ($data_mode && count($values) === 0) {
+			$values[] = '';
+		}
 		return $values;
+	}
+
+	public function getDirectiveData() {
+		return $this->getDirectiveValue(true);
 	}
 
 	public function loadConfig()

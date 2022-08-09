@@ -66,6 +66,7 @@ class DirectiveRenderer extends TItemDataRenderer
 	private $directive_types = [
 		'DirectiveCheckBox',
 		'DirectiveComboBox',
+		'DirectiveComboBoxReload',
 		'DirectiveInteger',
 		'DirectiveListBox',
 		'DirectivePassword',
