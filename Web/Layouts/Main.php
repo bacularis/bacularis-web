@@ -30,8 +30,6 @@
 namespace Bacularis\Web\Layouts;
 
 use Prado\Web\UI\TTemplateControl;
-use Bacularis\Common\Modules\Params;
-use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Main layout class.

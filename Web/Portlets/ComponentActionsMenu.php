@@ -32,7 +32,6 @@ namespace Bacularis\Web\Portlets;
 use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
 
 /**
  * Component actions control responsible for start,
@@ -55,7 +54,6 @@ class ComponentActionsMenu extends DirectiveListTemplate
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TCommandEventParameter $param command parameter
-	 * @return none
 	 */
 	public function componentAction($sender, $param)
 	{

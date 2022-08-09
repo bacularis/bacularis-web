@@ -27,9 +27,8 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TCallback;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -190,7 +189,6 @@ class JobView extends BaculumWebPage
 	 * Set jobid to run job again.
 	 *
 	 * @param mixed $jobid
-	 * @return none
 	 */
 	public function setJobId($jobid)
 	{
@@ -212,7 +210,6 @@ class JobView extends BaculumWebPage
 	 * Set job clientid
 	 *
 	 * @param mixed $clientid
-	 * @return none
 	 */
 	public function setClientId($clientid)
 	{
@@ -234,7 +231,6 @@ class JobView extends BaculumWebPage
 	 * Set job name to run job again.
 	 *
 	 * @param mixed $job_name
-	 * @return none;
 	 */
 	public function setJobName($job_name)
 	{
@@ -255,7 +251,6 @@ class JobView extends BaculumWebPage
 	 * Set job uname.
 	 *
 	 * @param mixed $job_uname
-	 * @return none;
 	 */
 	public function setJobUname($job_uname)
 	{
@@ -276,7 +271,6 @@ class JobView extends BaculumWebPage
 	 * Set job type.
 	 *
 	 * @param mixed $job_type
-	 * @return none;
 	 */
 	public function setJobType($job_type)
 	{
@@ -297,7 +291,6 @@ class JobView extends BaculumWebPage
 	 * Set job level.
 	 *
 	 * @param mixed $job_level
-	 * @return none;
 	 */
 	public function setJobLevel($job_level)
 	{
@@ -318,7 +311,6 @@ class JobView extends BaculumWebPage
 	 * Set job information from show job output.
 	 *
 	 * @param mixed $job_name
-	 * @return none
 	 */
 	public function setJobInfo($job_name)
 	{
@@ -347,7 +339,6 @@ class JobView extends BaculumWebPage
 	/**
 	 * Set all storage information.
 	 *
-	 * @return none
 	 */
 	public function setStorageInfo()
 	{
@@ -377,7 +368,6 @@ class JobView extends BaculumWebPage
 	 *
 	 * @param BaculaConfigDirectives $sender sender object
 	 * @param mixed $param save event parameter
-	 * @return none
 	 */
 	public function reloadJobInfo($sender, $param)
 	{

@@ -40,6 +40,7 @@ use Prado\Prado;
 class JobGraphs extends Portlets
 {
 	public const JOB = 'Job';
+	public const CLIENT = 'Client';
 
 	public function onInit($param)
 	{
@@ -65,7 +66,6 @@ class JobGraphs extends Portlets
 	 * Set client to show graphs.
 	 *
 	 * @param mixed $client
-	 * @return none
 	 */
 	public function setClient($client)
 	{
@@ -75,7 +75,6 @@ class JobGraphs extends Portlets
 	/**
 	 * Get client to show graph.
 	 *
-	 * @return none
 	 */
 	public function getClient()
 	{
@@ -86,7 +85,6 @@ class JobGraphs extends Portlets
 	 * Set job to show graphs.
 	 *
 	 * @param mixed $job
-	 * @return none
 	 */
 	public function setJob($job)
 	{
@@ -96,7 +94,6 @@ class JobGraphs extends Portlets
 	/**
 	 * Get job to show graph.
 	 *
-	 * @return none
 	 */
 	public function getJob()
 	{

@@ -29,7 +29,11 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\WebControls\TConditional;
+use Prado\IDataRenderer;
+use Prado\Web\UI\ActiveControls\IActiveControl;
+use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
+use Prado\Web\UI\ITemplate;
+
 
 /**
  * Baculum conditional control.
@@ -117,7 +121,7 @@ class BConditional extends TTemplateControl implements IDataRenderer, IActiveCon
 
 	public function setTrueTemplate($template)
 	{
-		if ($template instanceof Prado\Web\UI\ITemplate) {
+		if ($template instanceof ITemplate) {
 			$this->item_true_template = $template;
 		}
 	}
@@ -129,7 +133,7 @@ class BConditional extends TTemplateControl implements IDataRenderer, IActiveCon
 
 	public function setFalseTemplate($template)
 	{
-		if ($template instanceof Prado\Web\UI\ITemplate) {
+		if ($template instanceof ITemplate) {
 			$this->item_false_template = $template;
 		}
 	}

@@ -27,10 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
-use Bacularis\Web\Pages\Monitor;
+use Bacularis\Web\Modules\JobInfo;
+use Bacularis\Web\Modules\WebConfig;
 
 /**
  * Application settings class.
@@ -47,7 +47,7 @@ class ApplicationSettings extends BaculumWebPage
 		if (count($this->web_config) > 0) {
 			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
 			$this->Debug->Checked = ($this->web_config['baculum']['debug'] == 1);
-			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_jobs']) : Monitor::DEFAULT_MAX_JOBS);
+			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_jobs']) : JobInfo::DEFAULT_MAX_JOBS);
 			if (key_exists('size_values_unit', $this->web_config['baculum'])) {
 				$this->DecimalBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'decimal');
 				$this->BinaryBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'binary');

@@ -27,7 +27,6 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -81,7 +80,6 @@ class JobList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function runJobAgain($sender, $param)
 	{
@@ -169,7 +167,6 @@ class JobList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function rerunJobs($sender, $param)
 	{
@@ -204,7 +201,6 @@ class JobList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function cancelJobs($sender, $param)
 	{
@@ -232,7 +228,6 @@ class JobList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function deleteJobs($sender, $param)
 	{
@@ -259,7 +254,6 @@ class JobList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function loadJobLog($sender, $param)
 	{

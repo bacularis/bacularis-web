@@ -64,6 +64,8 @@ class JobInfo extends WebModule
 		'cancel'
 	];
 
+	public const DEFAULT_MAX_JOBS = 10000;
+
 	public function parseResourceDirectives(array $show_out)
 	{
 		$result = [];

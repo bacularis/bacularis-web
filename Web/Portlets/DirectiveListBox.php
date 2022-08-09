@@ -29,10 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveListBox;
-use Bacularis\Web\Portlets\DirectiveTemplate;
-
 /**
  * ListBox directive template.
  *

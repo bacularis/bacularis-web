@@ -28,7 +28,6 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\WebControls\TWizard;
 
 /**
@@ -92,7 +91,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardPrev($sender, $param)
 	{
@@ -103,7 +101,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardNext($sender, $param)
 	{
@@ -113,7 +110,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load JobDefs (step 1).
 	 *
-	 * @return none
 	 */
 	public function loadJobDefs()
 	{
@@ -132,7 +128,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Setup and remember selected JobDefs values to use in next wizard steps.
 	 *
-	 * @return none
 	 */
 	public function setupJobDefs()
 	{
@@ -165,7 +160,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load client list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadClients()
 	{
@@ -186,7 +180,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load fileset list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadFilesets()
 	{
@@ -212,7 +205,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load new fileset form.
 	 *
-	 * @return none
 	 */
 	public function loadNewFilesetForm()
 	{
@@ -229,7 +221,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load new pool form.
 	 *
-	 * @return none
 	 */
 	public function loadNewPoolForm()
 	{
@@ -246,7 +237,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load new schedule form.
 	 *
-	 * @return none
 	 */
 	public function loadNewScheduleForm()
 	{
@@ -263,7 +253,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load storage list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadStorages()
 	{
@@ -296,7 +285,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load pool list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadPools()
 	{
@@ -382,7 +370,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load job levels.
 	 *
-	 * @return none
 	 */
 	public function loadLevels()
 	{
@@ -400,7 +387,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load messages.
 	 *
-	 * @return none
 	 */
 	public function loadMessages()
 	{
@@ -421,7 +407,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	/**
 	 * Load schedule.
 	 *
-	 * @return none
 	 */
 	public function loadSchedules()
 	{
@@ -495,7 +480,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function wizardStop($sender, $param)
 	{
@@ -506,7 +490,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	 * Set selected JobDefs values.
 	 *
 	 * @param $jobdefs selected JobDefs values
-	 * @return none
 	 */
 	public function setJobDefs($jobdefs)
 	{
@@ -527,7 +510,6 @@ class NewBackupJobWizard extends BaculumWebPage
 	 * Set previous wizard step.
 	 *
 	 * @param int $step previous step number
-	 * @return none
 	 */
 	public function setPrevStep($step)
 	{

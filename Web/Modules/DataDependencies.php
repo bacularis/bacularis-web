@@ -29,8 +29,8 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\Logging;
 use Prado\Prado;
-use Bacularis\Web\Modules\WebModule;
 
 /**
  * Module responsible for checking and keeping Bacula config dependencies.

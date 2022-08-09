@@ -33,7 +33,6 @@ use Prado\Prado;
 use Prado\Security\IUserManager;
 use Prado\Security\TAuthorizationRule;
 use Prado\Web\Services\TPageService;
-use Bacularis\Common\Modules\Logging;
 
 /**
  * Web user manager module.
@@ -68,7 +67,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * Initialize module configuration.
 	 *
 	 * @param TXmlElement $config module configuration
-	 * @return none
 	 */
 	public function init($config)
 	{
@@ -140,7 +138,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * User class setter.
 	 *
 	 * @param string $cls user class name
-	 * @return none
 	 */
 	public function setUserClass($cls)
 	{
@@ -162,7 +159,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 *
 	 * @param string guest name
 	 * @param mixed $name
-	 * @return none
 	 */
 	public function setGuestName($name)
 	{
@@ -174,7 +170,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * Useful to keep login between sessions.
 	 *
 	 * @param THttpCookie $cookie cookie object
-	 * @return none
 	 */
 	public function getUserFromCookie($cookie)
 	{
@@ -186,7 +181,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * Useful to keep login between sessions.
 	 *
 	 * @param THttpCookie $cookie cookie object
-	 * @return none
 	 */
 	public function saveUserToCookie($cookie)
 	{
@@ -246,7 +240,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * authorization rules before they are used in authorization phase.
 	 *
 	 * @param TApplication $application application object
-	 * @return none
 	 */
 	public function doAuthentication($application)
 	{
@@ -352,7 +345,6 @@ class WebUserManager extends WebModule implements IUserManager
 	 * done by the framework.
 	 *
 	 * @param null|string $state flag state
-	 * @return none
 	 */
 	public function setAuthorizedFlag($state)
 	{

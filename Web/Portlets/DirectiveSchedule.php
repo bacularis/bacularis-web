@@ -30,19 +30,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\TCommandEventParameter;
-use Prado\Web\UI\ActiveControls\TActiveHiddenField;
-use Prado\Web\UI\ActiveControls\TActiveRadioButton;
 use Bacularis\Common\Modules\Params;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-use Bacularis\Web\Portlets\DirectiveCheckBox;
-use Bacularis\Web\Portlets\DirectiveComboBox;
-use Bacularis\Web\Portlets\DirectiveTextBox;
-use Bacularis\Web\Portlets\DirectiveTimePeriod;
-use Bacularis\Web\Portlets\DirectiveTime;
-use Bacularis\Web\Portlets\DirectiveDaysOfWeek;
-use Bacularis\Web\Portlets\DirectiveDaysOfMonth;
-use Bacularis\Web\Portlets\DirectiveWeeksOfMonth;
-use Bacularis\Web\Portlets\DirectiveWeeksOfYear;
 
 /**
  * Schedule directive control.
@@ -117,7 +105,7 @@ class DirectiveSchedule extends DirectiveListTemplate
 		$resource_name = $this->getResourceName();
 		$subdirectives = $this->getSubDirectives();
 		$resource_desc = $this->getResourceDesc();
-		$time_directives = $directive_values = [];
+		$time_directives = $directive_values = $overwrite_directives = [];
 		foreach ($directives as $index => $directive) {
 			for ($i = 0; $i < count($subdirectives); $i++) {
 				$default_value = null;

@@ -33,7 +33,6 @@ use Prado\Web\UI\ActiveControls\IActiveControl;
 use Prado\Web\UI\ActiveControls\ICallbackEventHandler;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
 use Prado\TPropertyValue;
-use Bacularis\Web\Portlets\ConfigListTemplate;
 
 /**
  * Directive list template.

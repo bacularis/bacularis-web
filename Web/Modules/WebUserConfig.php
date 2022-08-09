@@ -30,7 +30,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
-use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Common\Modules\Logging;
 
 /**
  * Manage web user configuration.

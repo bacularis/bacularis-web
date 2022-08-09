@@ -30,7 +30,6 @@
 namespace Bacularis\Web\Modules;
 
 use Prado\Prado;
-use Bacularis\Web\Modules\WebModule;
 
 /**
  * Data description module.

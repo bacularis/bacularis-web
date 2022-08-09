@@ -29,10 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\Ui\ActiveControls\TActiveRepeater;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-use Bacularis\Web\Portlets\DirectiveCheckBox;
-
 /**
  * Message types control.
  *

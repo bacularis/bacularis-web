@@ -66,7 +66,6 @@ class VolumeList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function pruneVolumes($sender, $param)
 	{
@@ -92,7 +91,6 @@ class VolumeList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function purgeVolumes($sender, $param)
 	{
@@ -118,7 +116,6 @@ class VolumeList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function deleteVolumes($sender, $param)
 	{
@@ -144,7 +141,6 @@ class VolumeList extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function updateVolumes($sender, $param)
 	{

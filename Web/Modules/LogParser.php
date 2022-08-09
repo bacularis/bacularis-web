@@ -29,8 +29,6 @@
 
 namespace Bacularis\Web\Modules;
 
-use Bacularis\Web\Modules\WebModule;
-
 /**
  * Bacula logs parser module.
  *

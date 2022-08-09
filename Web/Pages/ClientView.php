@@ -28,12 +28,7 @@
  */
 
 use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
-use Prado\Web\UI\JuiControls\TJuiProgressbar;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Web\Modules\BaculumWebPage;
 
@@ -220,7 +215,6 @@ class ClientView extends BaculumWebPage
 	 * Set client clientid.
 	 *
 	 * @param mixed $clientid
-	 * @return none;
 	 */
 	public function setClientId($clientid)
 	{
@@ -243,7 +237,6 @@ class ClientView extends BaculumWebPage
 	 * Set client name.
 	 *
 	 * @param mixed $client_name
-	 * @return none;
 	 */
 	public function setClientName($client_name)
 	{
@@ -265,7 +258,6 @@ class ClientView extends BaculumWebPage
 	 * Set client address.
 	 *
 	 * @param mixed $address
-	 * @return none;
 	 */
 	public function setClientAddress($address)
 	{

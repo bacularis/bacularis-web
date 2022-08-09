@@ -48,7 +48,6 @@ class FileSetBrowser extends Portlets
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function loadClients($sender, $param)
 	{
@@ -69,7 +68,6 @@ class FileSetBrowser extends Portlets
 	 *
 	 * @param TActiveDropDownList $sender, sender object
 	 * @param TCommandParameter $param parameters object
-	 * @return none
 	 */
 	public function selectClient($sender, $param)
 	{

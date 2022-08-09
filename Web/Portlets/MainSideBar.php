@@ -29,9 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Portlets\Portlets;
-
 /**
  * Main side-bar control.
  *

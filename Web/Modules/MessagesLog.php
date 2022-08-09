@@ -29,8 +29,8 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\Logging;
 use Prado\Prado;
-use Bacularis\Web\Modules\WebModule;
 
 /**
  * Module responsible for managing messages log.
@@ -100,7 +100,6 @@ class MessagesLog extends WebModule
 	/**
 	 * Truncate messages log.
 	 *
-	 * @return none
 	 */
 	public function truncate()
 	{
@@ -126,7 +125,6 @@ class MessagesLog extends WebModule
 	 * Save logs to file.
 	 *
 	 * @param array $logs log messages
-	 * @return none
 	 */
 	public function save(array $logs)
 	{

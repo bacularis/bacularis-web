@@ -81,7 +81,6 @@ class DirectorView extends BaculumWebPage
 	 * Set director name.
 	 *
 	 * @param mixed $client_name
-	 * @return none;
 	 */
 	public function setDirectorName($client_name)
 	{

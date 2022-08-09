@@ -35,8 +35,6 @@ use Prado\Web\UI\ActiveControls\IActiveControl;
 
 ;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
-use Bacularis\Web\Portlets\DirectiveControlTemplate;
-use Bacularis\Web\Portlets\IDirectiveField;
 
 /**
  * Directive template control.

@@ -30,16 +30,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActivePanel;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Prado\Web\UI\ActiveControls\TActiveCustomValidator;
-use Prado\Web\UI\ActiveControls\TActiveCheckBox;
-use Prado\Web\UI\ActiveControls\TCallback;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Run job control.
@@ -270,7 +261,6 @@ class RunJob extends Portlets
 	 * set jobid to run job again.
 	 *
 	 * @param mixed $jobid
-	 * @return none;
 	 */
 	public function setJobId($jobid)
 	{
@@ -292,7 +282,6 @@ class RunJob extends Portlets
 	 * set job name to run job again.
 	 *
 	 * @param mixed $job_name
-	 * @return none;
 	 */
 	public function setJobName($job_name)
 	{

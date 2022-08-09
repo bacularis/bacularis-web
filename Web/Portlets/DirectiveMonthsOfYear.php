@@ -30,10 +30,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveCheckBox;
 use Bacularis\Common\Modules\Params;
-use Bacularis\Web\Portlets\DirectiveTemplate;
 
 /**
  * Months of the year directive control.

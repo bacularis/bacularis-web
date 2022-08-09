@@ -29,8 +29,9 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Prado\Web\UI\ActiveControls\IActiveControl;
+use Prado\Web\UI\ActiveControls\ICallbackEventHandler;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
-use Bacularis\Web\Portlets\ConfigListTemplate;
 
 /**
  * Component list template control.

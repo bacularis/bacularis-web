@@ -32,25 +32,8 @@ namespace Bacularis\Web\Portlets;
 use Prado\Prado;
 use Prado\TPropertyValue;
 use Prado\Web\UI\TCommandEventParameter;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TActivePanel;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-use Bacularis\Web\Portlets\DirectiveCheckBox;
-use Bacularis\Web\Portlets\DirectiveComboBox;
-use Bacularis\Web\Portlets\DirectiveInteger;
-use Bacularis\Web\Portlets\DirectiveListBox;
-use Bacularis\Web\Portlets\DirectivePassword;
-use Bacularis\Web\Portlets\DirectiveSize;
-use Bacularis\Web\Portlets\DirectiveSpeed;
-use Bacularis\Web\Portlets\DirectiveTextBox;
-use Bacularis\Web\Portlets\DirectiveMultiComboBox;
-use Bacularis\Web\Portlets\DirectiveMultiTextBox;
-use Bacularis\Web\Portlets\DirectiveTimePeriod;
-use Bacularis\Web\Portlets\DirectiveRunscript;
-use Bacularis\Web\Portlets\DirectiveMessages;
+use Bacularis\Common\Modules\Logging;
 
 /**
  * Bacula config directives control.
@@ -513,7 +496,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Show or hide loader.
 	 *
 	 * @param bool $show if true, loader is displayed, if false it is hidden
-	 * @return none
 	 */
 	public function showLoader($show)
 	{
@@ -533,7 +515,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * @param mixed $param
 	 * @return object $sender sender instance
 	 * @return mixed $param additional parameters
-	 * @return none
 	 */
 	public function removeResource($sender, $param)
 	{
@@ -604,7 +585,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 *
 	 * @param string $resource_type removed resource type
 	 * @param string $resource_name removed resource name
-	 * @return none
 	 */
 	private function showRemovedResourceInfo($resource_type, $resource_name)
 	{
@@ -627,7 +607,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Show removed resource error message.
 	 *
 	 * @param string $error_message error message
-	 * @return none
 	 */
 	private function showRemovedResourceError($error_message)
 	{
@@ -642,7 +621,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * @param array $deps list dependencies for the removing resource
 	 * @param string $resource_type resource type of the removing resource
 	 * @param string $resource_name resource name of the removing resource
-	 * @return none
 	 */
 	private function showDependenciesError($deps, $resource_type, $resource_name)
 	{
@@ -673,7 +651,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * @param array $config entire config
 	 * @param string $resource_type resource type to remove
 	 * @param string $resource_name resource name to remove
-	 * @return none
 	 */
 	private function removeResourceFromConfig(&$config, $resource_type, $resource_name)
 	{
@@ -775,7 +752,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * @param string $resource_name resource name to rename
 	 * @param string $resource_name_new new resource name to set
 	 * @param mixed $deps
-	 * @return none
 	 */
 	private function renameResourceInConfig(&$config, $deps, $resource_type, $resource_name, $resource_name_new)
 	{
@@ -799,7 +775,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Set if remove button should be available.
 	 *
 	 * @param mixed $show
-	 * @return none;
 	 */
 	public function setShowRemoveButton($show)
 	{
@@ -821,7 +796,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Set if cancel button should be available.
 	 *
 	 * @param mixed $show
-	 * @return none;
 	 */
 	public function setShowCancelButton($show)
 	{
@@ -843,7 +817,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Set if buttons should be flexible and available at the bottom of the page.
 	 *
 	 * @param mixed $show
-	 * @return none
 	 */
 	public function setShowBottomButtons($show)
 	{
@@ -865,7 +838,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Set if config section tabs should be used.
 	 *
 	 * @param mixed $show
-	 * @return none
 	 */
 	public function setShowSectionTabs($show)
 	{
@@ -887,7 +859,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * On save event fired when resource is saved.
 	 *
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function onSave($param)
 	{
@@ -898,7 +869,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * On rename event fired when resource is renamed.
 	 *
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function onRename($param)
 	{
@@ -910,7 +880,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 * Set if name field should be disabled.
 	 *
 	 * @param mixed $rename
-	 * @return none;
 	 */
 	public function setDisableRename($rename)
 	{

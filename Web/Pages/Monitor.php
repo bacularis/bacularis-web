@@ -28,6 +28,7 @@
  */
 use Bacularis\Common\Modules\Errors\GenericError;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\WebUserRoles;
 
 /**
@@ -41,8 +42,6 @@ use Bacularis\Web\Modules\WebUserRoles;
  */
 class Monitor extends BaculumWebPage
 {
-	public const DEFAULT_MAX_JOBS = 10000;
-
 	/**
 	 * Pre-initialization with authenticate.
 	 *
@@ -76,7 +75,7 @@ class Monitor extends BaculumWebPage
 		$this->getModule('api')->initSessionCache(true);
 
 		$web_config = $this->getModule('web_config')->getConfig();
-		$job_limit = self::DEFAULT_MAX_JOBS;
+		$job_limit = JobInfo::DEFAULT_MAX_JOBS;
 		if (count($web_config) > 0 && key_exists('max_jobs', $web_config['baculum'])) {
 			$job_limit = $web_config['baculum']['max_jobs'];
 		}

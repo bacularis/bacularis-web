@@ -29,8 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-
 /**
  * New FileSet exclude menu.
  *

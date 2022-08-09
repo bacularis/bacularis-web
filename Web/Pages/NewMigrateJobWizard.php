@@ -28,7 +28,6 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\WebControls\TWizard;
 
 /**
@@ -112,7 +111,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardPrev($sender, $param)
 	{
@@ -123,7 +121,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardNext($sender, $param)
 	{
@@ -132,7 +129,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load JobDefs (step 1).
 	 *
-	 * @return none
 	 */
 	public function loadJobDefs()
 	{
@@ -156,7 +152,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Setup and remember selected JobDefs values to use in next wizard steps.
 	 *
-	 * @return none
 	 */
 	public function setupJobDefs()
 	{
@@ -201,7 +196,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param string $name pool type directive name
 	 * @param object $control different type of controls (usually DirectiveComboBox)
-	 * @return none
 	 */
 	public function setPools($name, $control)
 	{
@@ -222,7 +216,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load pool list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadPools()
 	{
@@ -234,7 +227,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function loadVolumes($sender, $param)
 	{
@@ -279,7 +271,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load source storage list (step 2).
 	 *
-	 * @return none
 	 */
 	public function loadSourceStorages()
 	{
@@ -291,7 +282,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function setSourceStorageByPool($sender, $param)
 	{
@@ -305,7 +295,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load selection types (step 3).
 	 *
-	 * @return none
 	 */
 	public function loadSelectionTypes()
 	{
@@ -318,7 +307,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function loadJobList($sender, $param)
 	{
@@ -353,7 +341,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function loadClientList($sender, $param)
 	{
@@ -373,7 +360,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load pool list (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadNextPools()
 	{
@@ -405,7 +391,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load destination storage list (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadDestinationStorages()
 	{
@@ -419,7 +404,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 * @param TCallbackEventParameter $param callback parameter
 	 * @param mixed $pool
 	 * @param mixed $cb
-	 * @return none
 	 */
 	public function setStorageByPool($pool, $cb)
 	{
@@ -443,7 +427,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function setDestinationStorageByPool($sender, $param)
 	{
@@ -459,7 +442,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function getJobsUsingPool($sender, $param)
 	{
@@ -491,7 +473,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load messages (step 5).
 	 *
-	 * @return none
 	 */
 	public function loadMessages()
 	{
@@ -518,7 +499,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load schedule (step 5).
 	 *
-	 * @return none
 	 */
 	public function loadSchedules()
 	{
@@ -545,7 +525,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load job levels (step 5).
 	 *
-	 * @return none
 	 */
 	public function loadLevels()
 	{
@@ -566,7 +545,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load clients (step 5).
 	 *
-	 * @return none
 	 */
 	public function loadClients()
 	{
@@ -594,7 +572,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	/**
 	 * Load filesets (step 5).
 	 *
-	 * @return none
 	 */
 	public function loadFileSets()
 	{
@@ -781,7 +758,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function wizardStop($sender, $param)
 	{
@@ -792,7 +768,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 * Set selected JobDefs values.
 	 *
 	 * @param $jobdefs selected JobDefs values
-	 * @return none
 	 */
 	public function setJobDefs($jobdefs)
 	{
@@ -813,7 +788,6 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 * Set previous wizard step.
 	 *
 	 * @param int $step previous step number
-	 * @return none
 	 */
 	public function setPrevStep($step)
 	{

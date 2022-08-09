@@ -30,8 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
-use Prado\Web\UI\ActiveControls\TCallback;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
 
 /**
  * Directive settings control.

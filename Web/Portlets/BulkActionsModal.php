@@ -30,8 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Bulk actions modal control.

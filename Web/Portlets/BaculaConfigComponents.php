@@ -29,12 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
-use Bacularis\Web\Portlets\ComponentListTemplate;
-use Bacularis\Web\Portlets\NewResourceMenu;
-use Bacularis\Web\Modules\Miscellaneous;
-
 /**
  * Bacula config components control.
  *

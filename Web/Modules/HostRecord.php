@@ -83,7 +83,6 @@ class HostRecord extends SessionRecord implements ISessionItem
 	 * @public
 	 * @param string $host host name in config
 	 * @param array $params host parameters in associative array
-	 * @return none
 	 */
 	public function setHost($host, array $params)
 	{

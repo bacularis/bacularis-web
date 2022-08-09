@@ -28,16 +28,9 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
-use Prado\Exceptions\TException;
 use Prado\Web\UI\WebControls\TWizard;
-use Prado\Web\UI\WebControls\TDataGrid;
-use Prado\Web\UI\JuiControls\TJuiDroppable;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TActiveDataGrid;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Prado\Web\UI\ActiveControls\TCallback;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
 use Bacularis\Common\Modules\AuditLog;
 
 /**
@@ -115,7 +108,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Initialize restore page.
 	 *
 	 * @param TXmlElement $param page config
-	 * @return none
 	 */
 	public function onInit($param)
 	{
@@ -134,7 +126,6 @@ class RestoreWizard extends BaculumWebPage
 	 * On pre-render action.
 	 *
 	 * @param TXmlElement $param page config
-	 * @return none
 	 */
 	public function onPreRender($param)
 	{
@@ -147,7 +138,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Used to restore specific job by jobid.
 	 *
 	 * @param mixed $jobid
-	 * @return none
 	 */
 	public function setJobIdToRestore($jobid)
 	{
@@ -163,7 +153,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set/prepare restore wizard to restore specific jobid.
 	 *
 	 * @param mixed $jobid
-	 * @return none
 	 */
 	public function setRestoreByJobId($jobid)
 	{
@@ -200,7 +189,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set navigation buttons.
 	 * Used for restore specific jobid (hide previous button)
 	 *
-	 * @return none
 	 */
 	public function setNavigationButtons()
 	{
@@ -217,7 +205,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardNext($sender, $param)
 	{
@@ -263,7 +250,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TWizard $sender sender object
 	 * @param TWizardNavigationEventParameter $param sender parameters
-	 * @return none
 	 */
 	public function wizardPrev($sender, $param)
 	{
@@ -284,7 +270,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function wizardStop($sender, $param)
 	{
@@ -297,7 +282,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TActiveDropDownList $sender sender object
 	 * @param TCommandParameter $param parameters object
-	 * @return none
 	 */
 	public function loadBackupClients()
 	{
@@ -318,7 +302,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load restore client list.
 	 *
-	 * @return none
 	 */
 	public function loadRestoreClients()
 	{
@@ -340,7 +323,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load backups for selected client (Step 2).
 	 *
-	 * @return none
 	 */
 	public function loadBackupsForClient()
 	{
@@ -397,7 +379,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param param object
-	 * @return none
 	 */
 	public function loadJobList($sender, $param)
 	{
@@ -451,7 +432,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set selected backup client.
 	 *
 	 * @param int $clientid client identifier
-	 * @return none
 	 */
 	public function getBackupClient($clientid)
 	{
@@ -469,7 +449,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load backup jobs to restore for group most recent backups feature.
 	 *
-	 * @return none
 	 */
 	public function loadGroupBackupToRestore()
 	{
@@ -491,7 +470,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load filesets to restore for group most recent backups feature.
 	 *
-	 * @return none
 	 */
 	public function loadGroupFileSetToRestore()
 	{
@@ -509,7 +487,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Prepare left file browser content.
 	 *
-	 * @return none
 	 */
 	private function prepareBrowserContent()
 	{
@@ -695,7 +672,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TEventParameter $param events parameter
-	 * @return none
 	 */
 	public function loadPath($sender, $param)
 	{
@@ -726,7 +702,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param array|string $path path to go
 	 * @param bool $full_path determines if $path param is full path or relative path (singel directory)
-	 * @return none
 	 */
 	private function goToPath($path = '', $full_path = false)
 	{
@@ -754,7 +729,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Go to specific path in the file browser by pathid.
 	 *
 	 * @param string $pathid path to go
-	 * @return none
 	 */
 	private function goToPathByPathId($pathid)
 	{
@@ -769,7 +743,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param object $sender sender object
 	 * @param object $param param object
-	 * @return none
 	 */
 	public function addFileToRestore($sender, $param)
 	{
@@ -787,7 +760,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TEventParameter $param param object
-	 * @return none
 	 */
 	public function removeSelectedFile($sender, $param)
 	{
@@ -802,7 +774,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param object $param param object
-	 * @return none
 	 */
 	public function getVersions($sender, $param)
 	{
@@ -859,7 +830,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Load file browser files to list.
 	 *
 	 * @param array $files files to list.
-	 * @return none
 	 */
 	public function loadBrowserFiles($sender, $param)
 	{
@@ -877,7 +847,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none;
 	 */
 	public function loadFileVersions($sender, $param)
 	{
@@ -890,7 +859,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function loadSelectedFiles($sender, $param)
 	{
@@ -901,7 +869,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Set file browser path field.
 	 *
-	 * @return none
 	 */
 	private function loadBrowserPath()
 	{
@@ -916,7 +883,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Generate Bvfs cache by job identifiers.
 	 *
 	 * @param string $jobids comma separated job identifiers
-	 * @return none
 	 */
 	private function generateBvfsCache($jobids)
 	{
@@ -930,7 +896,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set versions for selected file.
 	 *
 	 * @param array $versions file versions data
-	 * @return none
 	 */
 	private function setFileVersions($versions = [])
 	{
@@ -941,7 +906,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set browser files.
 	 *
 	 * @param array $files file list
-	 * @return none
 	 */
 	private function setBrowserFiles($files = [])
 	{
@@ -954,7 +918,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set restore browser path.
 	 *
 	 * @param array $path path
-	 * @return none
 	 */
 	private function setRestorePath($path = [])
 	{
@@ -965,7 +928,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set restore browser pathid.
 	 *
 	 * @param int $pathid pathid
-	 * @return none
 	 */
 	private function setRestorePathId($pathid)
 	{
@@ -977,7 +939,6 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @param string $uniqid file identifier
 	 * @param array $file_prop file properties to mark
-	 * @return none
 	 */
 	private function markFileToRestore($uniqid, $file_prop)
 	{
@@ -994,7 +955,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Unmark file to restore.
 	 *
 	 * @param string $uniqid file identifier
-	 * @return none
 	 */
 	private function unmarkFileToRestore($uniqid)
 	{
@@ -1019,7 +979,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Set files to restore
 	 *
 	 * @param array $files files to restore
-	 * @return none
 	 */
 	public function setFilesToRestore($files = [])
 	{
@@ -1062,7 +1021,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Wizard finish method.
 	 *
-	 * @return none
 	 */
 	public function wizardCompleted()
 	{
@@ -1163,7 +1121,6 @@ class RestoreWizard extends BaculumWebPage
 	/**
 	 * Load restore jobs on the list.
 	 *
-	 * @return none
 	 */
 	private function loadRestoreJobs()
 	{
@@ -1212,7 +1169,6 @@ class RestoreWizard extends BaculumWebPage
 	 * Reset wizard.
 	 * All fields are back to initial form.
 	 *
-	 * @return none
 	 */
 	private function resetWizard()
 	{

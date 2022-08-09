@@ -32,6 +32,7 @@ namespace Bacularis\Web\Modules;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\ConfigFileModule;
 use Bacularis\Common\Modules\Crypto;
+use Bacularis\Common\Modules\Logging;
 
 /**
  * Manage webGUI configuration.
@@ -131,7 +132,6 @@ class WebConfig extends ConfigFileModule
 	 * Initialize module configuration.
 	 *
 	 * @param TXmlElement $config module configuration
-	 * @return none
 	 */
 	public function init($config)
 	{
@@ -364,7 +364,6 @@ class WebConfig extends ConfigFileModule
 	 * Set culture for whole page.
 	 * Uses currently set language settings.
 	 *
-	 * @return none
 	 */
 	public function setCulture()
 	{
@@ -403,7 +402,6 @@ class WebConfig extends ConfigFileModule
 	 * Note, it is done in session only.
 	 *
 	 * @param mixed $lang
-	 * @return none
 	 */
 	public function setLanguage($lang)
 	{

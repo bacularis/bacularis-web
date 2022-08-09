@@ -29,9 +29,6 @@
 
 namespace Bacularis\Web\Modules;
 
-use Bacularis\Web\Modules\HostConfig;
-use Bacularis\Web\Modules\WebModule;
-
 /**
  * Page category module.
  *

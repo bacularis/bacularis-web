@@ -72,7 +72,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set role list control.
 	 *
 	 * @param null|mixed $selected_value
-	 * @return none
 	 */
 	private function setRoles($selected_value = null)
 	{
@@ -112,7 +111,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function saveRole($sender, $param)
 	{
@@ -138,7 +136,6 @@ class NewUserWizard extends BaculumWebPage
 	/**
 	 * Initialize values in role modal window.
 	 *
-	 * @return none
 	 */
 	public function setRoleWindow()
 	{
@@ -153,7 +150,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param object $control control object
 	 * @param null|mixed $selected_value
-	 * @return none
 	 */
 	private function setAPIHostControl($control, $selected_value = null)
 	{
@@ -192,7 +188,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set API host list control.
 	 *
 	 * @param string $selected_value selected value
-	 * @return none
 	 */
 	private function setAPIHosts($selected_value = null)
 	{
@@ -319,7 +314,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param event parameter object
-	 * @return none
 	 */
 	public function setAPIHostList($sender, $param)
 	{
@@ -389,7 +383,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set API host job list control.
 	 *
 	 * @param string $api_host API host name
-	 * @return none
 	 */
 	private function setAPIHostJobs($api_host)
 	{
@@ -408,7 +401,6 @@ class NewUserWizard extends BaculumWebPage
 	 * @param null|TCallback $sender sender object
 	 * @param null|TCallbackEventParameter parameter object
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function setAPIHostConsoles($sender, $param)
 	{
@@ -440,7 +432,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set custom console control.
 	 *
 	 * @param mixed $api_host
-	 * @return none
 	 */
 	private function setAPIHostCustomConsole($api_host)
 	{
@@ -456,7 +447,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TActiveDropDownList $sender sender object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function loadConsoleWindow($sender, $param)
 	{
@@ -472,7 +462,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function setAllCommandAcls($sender, $param)
 	{
@@ -490,7 +479,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function setResourceAccess($sender, $param)
 	{
@@ -512,7 +500,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param string $api_host api host name
 	 * @param array $jobs job names
-	 * @return none
 	 */
 	private function setJobResourceAccess($api_host, $jobs)
 	{
@@ -599,7 +586,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set full resource access for given API host.
 	 *
 	 * @param string $api_host API host name
-	 * @return none
 	 */
 	private function setFullAccess($api_host)
 	{
@@ -610,7 +596,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set existing console for given API host.
 	 *
 	 * @param string $api_host API host name
-	 * @return none
 	 */
 	private function setExistingConsole($api_host)
 	{
@@ -624,7 +609,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param string $api_host API host name
 	 * @param string $console console name
-	 * @return none
 	 */
 	private function setResourceConsole($api_host, $console = '')
 	{
@@ -720,7 +704,6 @@ class NewUserWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function saveUser()
 	{
@@ -812,7 +795,6 @@ class NewUserWizard extends BaculumWebPage
 	 * Set previous wizard step.
 	 *
 	 * @param int $step previous step number
-	 * @return none
 	 */
 	public function setPrevStep($step)
 	{

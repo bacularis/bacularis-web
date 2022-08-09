@@ -27,9 +27,6 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -76,7 +73,6 @@ class DeviceView extends BaculumWebPage
 	 * Set storage storageid.
 	 *
 	 * @param mixed $storageid
-	 * @return none;
 	 */
 	public function setStorageId($storageid)
 	{
@@ -98,7 +94,6 @@ class DeviceView extends BaculumWebPage
 	 * Set storage name.
 	 *
 	 * @param mixed $storage_name
-	 * @return none;
 	 */
 	public function setStorageName($storage_name)
 	{
@@ -120,7 +115,6 @@ class DeviceView extends BaculumWebPage
 	 * Set device name.
 	 *
 	 * @param mixed $device_name
-	 * @return none;
 	 */
 	public function setDeviceName($device_name)
 	{

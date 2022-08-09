@@ -29,11 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Web\Portlets\BaculaConfigResources;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Bacula config resource list control.

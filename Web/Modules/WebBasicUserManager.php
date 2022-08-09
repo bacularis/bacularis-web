@@ -31,7 +31,6 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\IUserManager;
-use Bacularis\Web\Modules\WebModule;
 
 /**
  * Web HTTP Basic user manager module.

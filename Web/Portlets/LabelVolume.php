@@ -29,14 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Prado;
 use Prado\TPropertyValue;
-use Prado\Web\UI\ActiveControls\TActiveCheckBox;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActivePanel;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Label volume control.

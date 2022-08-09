@@ -29,10 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-
 /**
  * New schedule menu.
  *

@@ -29,10 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Portlets\DirectiveSpeed;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Set job bandwidth limit control.
@@ -50,7 +47,6 @@ class JobBandwidthLimit extends Portlets
 	 *
 	 * @param TActiveLinkButton $sender sender
 	 * @param TCallbackEventParameter $param callback parameter
-	 * @return none
 	 */
 	public function setupBandwidthLimit($sender, $param)
 	{
@@ -81,7 +77,6 @@ class JobBandwidthLimit extends Portlets
 	 * Callback event method.
 	 *
 	 * @param mixed $param callback parameter or null
-	 * @return none
 	 */
 	public function onCallback($param)
 	{
@@ -92,7 +87,6 @@ class JobBandwidthLimit extends Portlets
 	 * Set job jobid.
 	 *
 	 * @param mixed $jobid
-	 * @return none;
 	 */
 	public function setJobId($jobid)
 	{
@@ -115,7 +109,6 @@ class JobBandwidthLimit extends Portlets
 	 * Set job uname.
 	 *
 	 * @param mixed $job_uname
-	 * @return none;
 	 */
 	public function setJobUname($job_uname)
 	{
@@ -147,7 +140,6 @@ class JobBandwidthLimit extends Portlets
 	 * Set bandwidth limit value in field.
 	 *
 	 * @param int $bwlimit bandiwdth limit in bytes
-	 * @return none
 	 */
 	public function setBandwidthLimit($bwlimit)
 	{

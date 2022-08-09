@@ -31,7 +31,6 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Common\Modules\Logging;
-use Bacularis\Common\Modules\Miscellaneous;
 
 /**
  * Internal API client module.
@@ -248,7 +247,6 @@ class BaculumAPIClient extends WebModule
 	 * @access public
 	 * @param string $host host name
 	 * @param array $params host parameters
-	 * @return none
 	 */
 	public function setHostParams($host, $params)
 	{
@@ -502,7 +500,6 @@ class BaculumAPIClient extends WebModule
 	 * Note, header names are lower case.
 	 *
 	 * @param mixed $header
-	 * @return none
 	 */
 	public function parseHeader($header)
 	{
@@ -521,7 +518,6 @@ class BaculumAPIClient extends WebModule
 	 *
 	 * @access public
 	 * @param bool $force if true then cache is force initialized
-	 * @return none
 	 */
 	public function initSessionCache($force = false)
 	{
@@ -555,7 +551,6 @@ class BaculumAPIClient extends WebModule
 	 * @param string $host host name
 	 * @param array $params command parameters as numeric array
 	 * @param mixed $value value to save in cache
-	 * @return none
 	 */
 	private function setSessionCache($host, array $params, $value)
 	{

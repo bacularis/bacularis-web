@@ -29,11 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-
 /**
  * Multi-combobox directive control.
  *

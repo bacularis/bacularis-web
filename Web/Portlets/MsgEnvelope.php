@@ -29,10 +29,8 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\ActiveControls\TCallback;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\WebUserRoles;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Message envelope control.

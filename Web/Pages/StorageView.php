@@ -27,11 +27,6 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActivePanel;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Common\Modules\Errors\DeviceError;
 use Bacularis\Web\Modules\BaculumWebPage;
@@ -316,6 +311,7 @@ class StorageView extends BaculumWebPage
 	private function logActionError($result)
 	{
 		$emsg = sprintf('Error %s: %s', $result->error, $result->output);
+		$messages_log = $this->getModule('messages_log');
 		$messages_log->append($result->output);
 		$this->getCallbackClient()->callClientFunction(
 			'oStorageActions.log',
@@ -1053,7 +1049,6 @@ class StorageView extends BaculumWebPage
 	 * Set storage storageid.
 	 *
 	 * @param mixed $storageid
-	 * @return none;
 	 */
 	public function setStorageId($storageid)
 	{
@@ -1075,7 +1070,6 @@ class StorageView extends BaculumWebPage
 	 * Set storage name.
 	 *
 	 * @param mixed $storage_name
-	 * @return none;
 	 */
 	public function setStorageName($storage_name)
 	{
@@ -1096,7 +1090,6 @@ class StorageView extends BaculumWebPage
 	 * Set device name.
 	 *
 	 * @param mixed $device_name
-	 * @return none;
 	 */
 	public function setDeviceName($device_name)
 	{
@@ -1127,7 +1120,6 @@ class StorageView extends BaculumWebPage
 	 * Set autochanger value for storage
 	 *
 	 * @param mixed $is_autochanger
-	 * @return none;
 	 */
 	public function setIsAutochanger($is_autochanger)
 	{
@@ -1139,7 +1131,6 @@ class StorageView extends BaculumWebPage
 	 * Set storage address.
 	 *
 	 * @param mixed $address
-	 * @return none;
 	 */
 	public function setStorageAddress($address)
 	{

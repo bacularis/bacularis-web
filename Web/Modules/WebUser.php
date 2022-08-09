@@ -112,7 +112,6 @@ class WebUser extends TUser
 	 * Username setter.
 	 *
 	 * @param string $username user name
-	 * @return none
 	 */
 	public function setUsername($username)
 	{
@@ -133,7 +132,6 @@ class WebUser extends TUser
 	 * Long name setter.
 	 *
 	 * @param string $long_name long name
-	 * @return none
 	 */
 	public function setLongName($long_name)
 	{
@@ -154,7 +152,6 @@ class WebUser extends TUser
 	 * E-mail address setter.
 	 *
 	 * @param string $email e-mail address
-	 * @return none
 	 */
 	public function setEmail($email)
 	{
@@ -175,7 +172,6 @@ class WebUser extends TUser
 	 * Description setter.
 	 *
 	 * @param string $desc description
-	 * @return none
 	 */
 	public function setDescription($desc)
 	{
@@ -206,7 +202,6 @@ class WebUser extends TUser
 	 * Set user roles.
 	 *
 	 * @param mixed $value roles assigned to user
-	 * @return none
 	 */
 	public function setRoles($value)
 	{
@@ -227,7 +222,6 @@ class WebUser extends TUser
 	 * Set API hosts.
 	 *
 	 * @param array $api_hosts user API hosts
-	 * @return none
 	 */
 	public function setAPIHosts($api_hosts)
 	{
@@ -273,7 +267,6 @@ class WebUser extends TUser
 	 * and the console capabilities.
 	 *
 	 * @param string $api_host default API host
-	 * @return none
 	 */
 	public function setDefaultAPIHost($api_host)
 	{
@@ -324,7 +317,6 @@ class WebUser extends TUser
 	 * IP address restriction setter.
 	 *
 	 * @param string $ips comma separated IP addresses
-	 * @return none
 	 */
 	public function setIps($ips)
 	{
@@ -345,7 +337,6 @@ class WebUser extends TUser
 	 * Enabled setter
 	 *
 	 * @param bool $enabled enabled flag state
-	 * @return none
 	 */
 	public function setEnabled($enabled)
 	{
@@ -367,7 +358,6 @@ class WebUser extends TUser
 	 * Set if user exists in configuration file.
 	 *
 	 * @param bool $in_config in config state value
-	 * @return none
 	 */
 	public function setInConfig($in_config)
 	{
@@ -392,7 +382,6 @@ class WebUser extends TUser
 	 *
 	 * @param string $key state key
 	 * @param mixed $value value to set
-	 * @return none
 	 */
 	private function setCurrentState($key, $value)
 	{

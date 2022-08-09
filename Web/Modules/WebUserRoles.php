@@ -29,9 +29,6 @@
 
 namespace Bacularis\Web\Modules;
 
-use Bacularis\Web\Modules\WebModule;
-use Bacularis\Web\Modules\PageCategory;
-
 /**
  * Web user roles module.
  *

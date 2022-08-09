@@ -30,7 +30,6 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\IUserManager;
-use Bacularis\Web\Modules\WebModule;
 
 /**
  * Web local user manager module.

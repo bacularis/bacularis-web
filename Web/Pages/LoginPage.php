@@ -153,7 +153,6 @@ class LoginPage extends BaculumWebPage
 	 * Log in with 2FA.
 	 * This action happens after successful user/password login.
 	 *
-	 * @return none
 	 */
 	public function login2FA()
 	{

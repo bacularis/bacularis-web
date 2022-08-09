@@ -30,7 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Assign volumes to pool control.
@@ -46,7 +45,6 @@ class AssignVolumesToPool extends Portlets
 	 * Set pool identifier.
 	 *
 	 * @param mixed $pool
-	 * @return none;
 	 */
 	public function setPoolId($pool)
 	{

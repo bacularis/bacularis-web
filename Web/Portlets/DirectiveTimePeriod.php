@@ -30,10 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Bacularis\Web\Portlets\DirectiveTemplate;
 
 /**
  * Time period directive control.

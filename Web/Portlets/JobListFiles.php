@@ -29,15 +29,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Prado;
-use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
-use Prado\Web\UI\ActiveControls\TCallback;
-use Prado\Web\UI\WebControls\TListItem;
-use Bacularis\Web\Portlets\Portlets;
-
 /**
  * Job list files control.
  *
@@ -108,7 +99,6 @@ class JobListFiles extends Portlets
 	 * Set job identifier to show files.
 	 *
 	 * @param mixed $jobid
-	 * @return none
 	 */
 	public function setJobId($jobid)
 	{

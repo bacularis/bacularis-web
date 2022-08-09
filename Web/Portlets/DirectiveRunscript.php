@@ -30,10 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\TCommandEventParameter;
-use Bacularis\Web\Portlets\DirectiveListTemplate;
-use Bacularis\Web\Portlets\DirectiveCheckBox;
-use Bacularis\Web\Portlets\DirectiveTextBox;
-use Bacularis\Web\Portlets\DirectiveComboBox;
 
 /**
  * Runscript directive control.

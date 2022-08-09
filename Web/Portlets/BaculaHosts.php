@@ -30,10 +30,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Web\UI\TCommandEventParameter;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Prado\Web\UI\ActiveControls\TActiveRepeater;
 use Bacularis\Web\Modules\HostConfig;
-use Bacularis\Web\Portlets\HostListTemplate;
 
 /**
  * Bacula hosts control.

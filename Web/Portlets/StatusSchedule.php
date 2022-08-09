@@ -29,11 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Prado;
 use Prado\TPropertyValue;
-use Prado\Web\UI\JuiControls\TJuiDatePicker;
-use Prado\Web\UI\ActiveControls\TActiveLinkButton;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Schedule status control.

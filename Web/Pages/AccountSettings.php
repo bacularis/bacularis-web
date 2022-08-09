@@ -11,7 +11,6 @@
 use Prado\Prado;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\WebConfig;
-use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -74,7 +73,6 @@ class AccountSettings extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function saveGeneral($sender, $param)
 	{
@@ -141,7 +139,6 @@ class AccountSettings extends BaculumWebPage
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param parameters
-	 * @return none
 	 */
 	public function show2FAWindow($sender, $param)
 	{
@@ -162,7 +159,6 @@ class AccountSettings extends BaculumWebPage
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TCallbackEventParameter $param parameters
-	 * @return none
 	 */
 	public function enable2FA($sender, $param)
 	{
@@ -194,7 +190,6 @@ class AccountSettings extends BaculumWebPage
 	 *
 	 * @param TActiveCheckBox $sender sender object
 	 * @param TCallbackEventParameter $param parameters
-	 * @return none
 	 */
 	public function disable2FA($sender, $param)
 	{

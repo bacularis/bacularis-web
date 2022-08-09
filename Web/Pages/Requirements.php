@@ -27,6 +27,8 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+namespace Bacularis\Web\Pages;
+
 use Bacularis\Common\Modules\GeneralRequirements;
 
 /**
@@ -65,7 +67,6 @@ class Requirements extends GeneralRequirements
 	/**
 	 * Validate all Web environment depenencies.
 	 *
-	 * @return none
 	 */
 	public function validateEnvironment()
 	{

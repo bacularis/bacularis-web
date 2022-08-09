@@ -77,7 +77,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load JobDefs (step 1).
 	 *
-	 * @return none
 	 */
 	public function loadJobDefs()
 	{
@@ -100,7 +99,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Setup and remember selected JobDefs values to use in next wizard steps.
 	 *
-	 * @return none
 	 */
 	public function setupJobDefs()
 	{
@@ -156,7 +154,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 * Reset verify job directives.
 	 * Useful when JobDefs selection is changed from one to another.
 	 *
-	 * @return none
 	 */
 	private function resetDirectives()
 	{
@@ -177,7 +174,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load clients (step 3)
 	 *
-	 * @return none
 	 */
 	public function loadClients()
 	{
@@ -213,7 +209,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load clients verify (step 4)
 	 *
-	 * @return none
 	 */
 	public function loadClientsVerify()
 	{
@@ -249,7 +244,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load storages (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadStorages()
 	{
@@ -279,7 +273,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load jobs (step 3).
 	 *
-	 * @return none
 	 */
 	public function loadJobs()
 	{
@@ -312,7 +305,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Set verify job directives basing on selected job to verify directives.
 	 *
-	 * @return none
 	 */
 	public function setJobDirectives()
 	{
@@ -411,7 +403,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load messages (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadMessages()
 	{
@@ -446,7 +437,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load schedule (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadSchedules()
 	{
@@ -475,7 +465,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	/**
 	 * Load pools (step 4).
 	 *
-	 * @return none
 	 */
 	public function loadPools()
 	{
@@ -739,7 +728,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function wizardStop($sender, $param)
 	{
@@ -750,7 +738,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 * Set selected JobDefs values.
 	 *
 	 * @param $jobdefs selected JobDefs values
-	 * @return none
 	 */
 	public function setJobDefs($jobdefs)
 	{
@@ -771,7 +758,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 * Set previous wizard step.
 	 *
 	 * @param int $step previous step number
-	 * @return none
 	 */
 	public function setPrevStep($step)
 	{
@@ -795,7 +781,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
-	 * @return none
 	 */
 	public function loadFSBrowser($sender, $param)
 	{
@@ -821,7 +806,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 *
 	 * @param mixed $sender
 	 * @param mixed $param
-	 * @return none
 	 */
 	public function checkIncludePathValidator($sender, $param)
 	{
@@ -832,7 +816,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 * Set selected client name.
 	 *
 	 * @param string $client client name
-	 * @return none
 	 */
 	public function setClient($client)
 	{
@@ -853,7 +836,6 @@ class NewVerifyJobWizard extends BaculumWebPage
 	 * Set selected storage name.
 	 *
 	 * @param string $storage storage name
-	 * @return none
 	 */
 	public function setStorage($storage)
 	{

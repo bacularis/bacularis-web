@@ -29,14 +29,10 @@
 
 namespace Bacularis\Web\Modules;
 
-use Bacularis\Web\Pages\Requirements;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\BaculumPage;
 use Bacularis\Common\Modules\Logging;
-use Bacularis\Web\Init;
-use Bacularis\Web\Modules\WebConfig;
-use Bacularis\Web\Modules\PageCategory;
 
 /**
  * Baculum Web page module.
@@ -129,7 +125,6 @@ class BaculumWebPage extends BaculumPage
 	 * Check if default API host is set.
 	 * If it isn't direct to API host selection page.
 	 *
-	 * @return none
 	 */
 	private function isDefaultAPIHost()
 	{
@@ -143,7 +138,6 @@ class BaculumWebPage extends BaculumPage
 	/**
 	 * Set page session values.
 	 *
-	 * @return none
 	 */
 	private function setSessionUserVars()
 	{
@@ -196,7 +190,6 @@ class BaculumWebPage extends BaculumPage
 	 *
 	 * @access public
 	 * @param array $params HTTP GET method parameters in associative array
-	 * @return none
 	 */
 	public function goToDefaultPage($params = null)
 	{
@@ -239,7 +232,6 @@ class BaculumWebPage extends BaculumPage
 	 * Common actions which has to be done for each web page just after
 	 * page pre-loading.
 	 *
-	 * @return none
 	 */
 	private function postInitActions()
 	{

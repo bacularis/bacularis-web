@@ -30,11 +30,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\TPropertyValue;
-use Prado\Web\UI\ActiveControls\TCallback;
-use Prado\Web\UI\ActiveControls\TActiveCheckBox;
-use Prado\Web\UI\ActiveControls\TActiveDropDownList;
-use Prado\Web\UI\ActiveControls\TActiveTextBox;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Update slots control.
