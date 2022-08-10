@@ -73,7 +73,3 @@ class Requirements extends GeneralRequirements
 		parent::validateExtensions($this->req_exts);
 	}
 }
-
-// Check requirements and if are some needed then show requirements page
-$service_dir = dirname(__DIR__);
-new Requirements(APPLICATION_WEBROOT, APPLICATION_PROTECTED, $service_dir);

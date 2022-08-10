@@ -27,12 +27,19 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Web\Pages\Requirements as WebRequirements;
+
 /**
  * Initialization file.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Initialization
  */
+
+// Check requirements and if are some needed then show requirements page
+$service_dir = __DIR__;
+new WebRequirements(APPLICATION_WEBROOT, APPLICATION_PROTECTED, $service_dir);
+
 $timezone = 'UTC';
 if (!ini_get('date.timezone')) {
 	date_default_timezone_set($timezone);
