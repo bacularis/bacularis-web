@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-08-02 16:54\n"
-"Project-Id-Version: b02f04a28aec0155df9503e3b78ae8cc\n"
+"PO-Revision-Date: 2022-08-18 04:07\n"
+"Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
 "Language-Team: Polish\n"
@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Crowdin-Project: b02f04a28aec0155df9503e3b78ae8cc\n"
-"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Project: bacularis\n"
+"X-Crowdin-Project-ID: 522050\n"
 "X-Crowdin-Language: pl\n"
-"X-Crowdin-File: /Baculum Web/messages.po\n"
-"X-Crowdin-File-ID: 53\n"
+"X-Crowdin-File: /Bacularis Web/messages.po\n"
+"X-Crowdin-File-ID: 35\n"
 
 msgid "Language:"
 msgstr "Język:"
@@ -255,7 +255,7 @@ msgid "Switch the window view (normal/details)"
 msgstr "Przełącz widok okna (normalny/szczegóły)"
 
 msgid "Maximum volumes:"
-msgstr "Maximum volumes:"
+msgstr "Maksymalna liczba wolumenów:"
 
 msgid "AutoPrune:"
 msgstr "AutoPrune:"
@@ -672,7 +672,7 @@ msgid "This action will clear bvfs cache that was created during preparing resto
 msgstr "Ta akcja wyczyści bvfs cache który był stworzony podczas przygotowania każdej akcji przywracania danych.\\n\\nNie jest zalecane używanie tej akcji podczas gdy jest uruchomione zadanie przywracania danych.\\n\\nCzy chcesz kontynuować?"
 
 msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
-msgstr "Pliki rozszerzonych dzienników programu (tzw. debug programu) umożliwiają zapisywanie akcji wykonywanych na interfejsie Bacularis. Funkcjonalność dzienników programu powinna być załączana jeśli wydarzy się coś złego z interfejsem Bacularis lub coś co wygląda jak błąd. Rozszerzone dzienniki programu mogą być użyteczne przy wykrywaniu problemów w działaniu Bacularis. Po potwierdzeniu tej wiadomości debug Bacularis będą zapisywany w lokalizacji /protected/Web/Logs/. Czy chcesz kontynuować?"
+msgstr "Pliki debugowania umożliwiają zapisywanie więksozści akcji wykonywanych w interfejsie web Bacularis. Funkcja debugowania powinna być załączona, jeżeli zdarzy się coś złego z Bacularis lub coś, co wygląda na błąd. Dzienniki debug mogą być przydatne do określenia probelmów związanych z pracą Bacularis. Po potwierdzeniu tej wiadomości pliki debug Bacularis będą stale zapisywane w katalogu /protected/eb/Logs/. Czy jesteś pewien?"
 
 msgid "10 elements"
 msgstr "10 elementów"
@@ -1333,7 +1333,7 @@ msgid "Auth Type:"
 msgstr "Typ autentykacji:"
 
 msgid "OAuth2 Redirect URI:"
-msgstr "OAuth2 Redirect URI:"
+msgstr "Adres URI przekierowania OAuth2:"
 
 msgid "OAuth2 Scope:"
 msgstr "Zakresy OAuth2:"
@@ -1627,10 +1627,10 @@ msgid "Action on purge"
 msgstr "Action on purge"
 
 msgid "Recycle pool"
-msgstr "Recycle pool"
+msgstr "Pula recyklingu"
 
 msgid "Scratch pool"
-msgstr "Scratch pool"
+msgstr "Pula scratch"
 
 msgid "Next pool"
 msgstr "Następna pula"
@@ -3043,7 +3043,7 @@ msgid "The API hosts define connection parameters to hosts with the Bacularis AP
 msgstr "Hosty API definiują parametry połączenia do hostów z instancjami Bacularis API. Możesz stworzyć połączenia do hostów API dedykowane dla określonych użytkowników poprzez przypisanie hostów API do nich na zakładce Użytkownicy. Jest możliwe utworzenie wielu połączeń do hostów API dla tej samej instancji Bacularis API."
 
 msgid "Set all CommandAcls used by Bacularis Web"
-msgstr "Ustaw wszystkie wartości CommandAcl używane przez Bacularis Web"
+msgstr "Ustaw wszystkie komendy używane przez Bacularis Web"
 
 msgid "Find job by filename (without path):"
 msgstr "Znajdź zadanie według nazwy pliku (bez ścieżki):"
@@ -3160,7 +3160,7 @@ msgid "idle"
 msgstr "bezczynny"
 
 msgid "Autochanger:"
-msgstr "Autochanger:"
+msgstr "Zmieniarka taśm:"
 
 msgid "Single devices"
 msgstr "Pojedyncze urządzenia"
@@ -3918,11 +3918,11 @@ msgstr "Dodaj konto użytkownika API basic"
 msgid "Edit API basic user account"
 msgstr "Edytuj konto użytkownika API basic"
 
-msgid "Please retype password."
-msgstr "Proszę powtórzyć hasło."
-
 msgid "Password must be longer than 4 chars and not longer than 60 chars."
 msgstr "Hasło musi mieć długość większą niż 4 znaki i nie być dłuższe niż 60 znaków."
+
+msgid "Please retype password."
+msgstr "Proszę powtórzyć hasło."
 
 msgid "Invalid user. User may contain a-z A-Z 0-9 characters."
 msgstr "Niepoprawny użytkownik. Nazwa użytkownika może zawierać znaki: a-z A-Z 0-9."
@@ -4114,340 +4114,341 @@ msgid "tree browser"
 msgstr "drzewo katalogów"
 
 msgid "Job age on the dashboard job graphs"
-msgstr "Wiek zadań na wykresach zadań strony głównej"
+msgstr "Wiek zadań na grafach na stronie głównej"
 
 msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
-msgstr "Ustaw maksymalny wiek dla zadań do wyświetlenia na wykresach zadań na stronie głównej. Ustawienie zera oznacza wyświetlanie wykresów dla wszystkich zadań bez limitu."
+msgstr "Ustaw wiek zadań do wyświetlania grafów zadań na stronie głównej. Ustawienie zera oznacza wyświetlanie grafów dla wszystkich zadań bez ograniczeń."
 
 msgid "last %time %unit"
 msgstr "ostatni %time %unit"
 
 msgid "Job %jobname details"
-msgstr "Job %jobname details"
+msgstr "Szczegóły zadania %jobname"
 
 msgid "Reports"
-msgstr "Reports"
+msgstr "Raporty"
 
 msgid "Job history report"
-msgstr "Job history report"
+msgstr "Raport historii zadań"
 
 msgid "Date:"
-msgstr "Date:"
+msgstr "Data:"
 
 msgid "All jobs"
-msgstr "All jobs"
+msgstr "Wszystkie zadania"
 
 msgid "All issues"
-msgstr "All issues"
+msgstr "Wszystkie problemy"
 
 msgid "Only errors"
-msgstr "Only errors"
+msgstr "Tylko błędy"
 
 msgid "%count job(s) finished successfully."
-msgstr "%count job(s) finished successfully."
+msgstr "%count zadań zakończonych pomyślnie."
 
 msgid "Job report with errors and warnings"
-msgstr "Job report with errors and warnings"
+msgstr "Raport zadań z błędami i ostrzeżeniami"
 
 msgid "Job report with errors but not warnings"
-msgstr "Job report with errors but not warnings"
+msgstr "Raport zadań z błędami, ale nie ostrzeżeniami"
 
 msgid "all X jobs finished successfully (no X means one job)"
-msgstr "all X jobs finished successfully (no X means one job)"
+msgstr "wszystkie X zadań zakończyły się pomyślnie (brak X oznacza jedno zadanie)"
 
 msgid "X jobs with at least one job finished successfully"
-msgstr "X jobs with at least one job finished successfully"
+msgstr "X zadania z conajmniej jednym zakończonym pomyślnie"
 
 msgid "all X jobs finished with error or cancelled"
-msgstr "all X jobs finished with error or cancelled"
+msgstr "wszystkie X zadania zakończyły się z błędem lub zostały anulowane"
 
 msgid "All %count jobs finished with error or cancelled."
-msgstr "All %count jobs finished with error or cancelled."
+msgstr "Wszystkie %count zadania zakończyły się z błędami lub zostały anulowane."
 
 msgid "%errors/%count jobs finished with error or cancelled."
-msgstr "%errors/%count jobs finished with error or cancelled."
+msgstr "%errors/%count zadania zakończone z błędami lub anulowane."
 
 msgid "No job"
-msgstr "No job"
+msgstr "Brak zadań"
 
 msgid "Display options"
-msgstr "Display options"
+msgstr "Opcje wyświetlania"
 
 msgid "Features"
-msgstr "Features"
+msgstr "Funkcje"
 
 msgid "Type bconsole command"
-msgstr "Type bconsole command"
+msgstr "Wpisz polecenie bconsole"
 
 msgid "API Panel"
-msgstr "API Panel"
+msgstr "Panel API"
 
 msgid "Go to resource"
-msgstr "Go to resource"
+msgstr "Przejdź do zasobu"
 
 msgid "Pool: %pool, Vol. status: %volstatus"
-msgstr "Pool: %pool, Vol. status: %volstatus"
+msgstr "Pula: %pool, Status wol.: %volstatus"
 
 msgid "Pool volume status summary"
-msgstr "Pool volume status summary"
+msgstr "Podsumowanie statusu wolumenów puli"
 
 msgid "New user"
-msgstr "New user"
+msgstr "Nowy użytkownik"
 
 msgid "Step 1 - basic information about new user"
-msgstr "Step 1 - basic information about new user"
+msgstr "Krok 1 - Podstawowe informacje o nowym użytkowniku"
 
 msgid "New user wizard"
-msgstr "New user wizard"
+msgstr "Kreator nowego użytkownika"
 
 msgid "This wizard enables you to create in easy way a new Bacularis user."
-msgstr "This wizard enables you to create in easy way a new Bacularis user."
+msgstr "Ten kreator umożliwia łatwe tworzenie nowego użytkownika Bacularis."
 
 msgid "Password"
-msgstr "Password"
+msgstr "Hasło"
 
 msgid "Step 2 - assign roles to user"
-msgstr "Step 2 - assign roles to user"
+msgstr "Krok 2 - Przypisz role do użytkownika"
 
 msgid "Assign roles"
-msgstr "Assign roles"
+msgstr "Przypisz role"
 
 msgid "Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles."
-msgstr "Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles."
+msgstr "Role umożliwiają użytkownikom ograniczony dostęp do zdefiniowanych obszarów interfejsu Bacularis (stron). Każda rola ma skonfigurowane strony interfejsu. Użytkownicy z przypisanymi rolami mogą odwiedzać tylko strony, które znajdują się w rolach użytkownika."
 
 msgid "Invalid role value."
-msgstr "Invalid role value."
+msgstr "Nieprawidłowa wartość roli."
 
 msgid "Step 3 - assign API hosts"
-msgstr "Step 3 - assign API hosts"
+msgstr "Krok 3 - Przypisz hosty API"
 
 msgid "Assign API hosts"
-msgstr "Assign API hosts"
+msgstr "Przypisz hosty API"
 
 msgid "In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user."
-msgstr "In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user."
+msgstr "W tym kroku możesz tworzyć i przypisywać konta hostów API użytkownikom. Te konta są zdefiniowanymi połączeniami z hostami zawierającymi zasoby Bacula. Możesz mieć wiele połączeń hostów API do tego samego lokalnego lub zdalnego hosta API. Możesz przypisać jeden lub więcej hostów API do jednego użytkownika."
 
 msgid "Step 4 - access to Bacula resources"
-msgstr "Step 4 - access to Bacula resources"
+msgstr "Krok 4 - dostęp do zasobów Bacula"
 
 msgid "Bacula resources access"
-msgstr "Bacula resources access"
+msgstr "Dostęp do zasobów Bacula"
 
 msgid "Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.)"
-msgstr "Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.)"
+msgstr "Tutaj możesz ograniczyć zasoby Bacula dla użytkownika. Jest to szczególnie przydatne w przypadku, gdy użytkownik nie powinien mieć dostępu do wszystkich zasobów Baculi lub powinien mieć dostęp wyłącznie do zasobów własnych (własne zadania, możliwość przywrócenia tylko własnych kopii zapasowych, uruchamianie własnych backupów... itd.)"
 
 msgid "Should this user have access to all Bacula resources or only to specific resources?"
-msgstr "Should this user have access to all Bacula resources or only to specific resources?"
+msgstr "Czy ten użytkownik powinien mieć dostęp do wszystkich zasobów Bacula, czy tylko do określonych zasobów?"
 
 msgid "Access to all shared API host resources (all jobs, all clients, all storages...etc.)"
-msgstr "Access to all shared API host resources (all jobs, all clients, all storages...etc.)"
+msgstr "Dostęp do wszystkich udostępnionych zasobów hosta API (wszystkie zadania, wszyscy klienci, wszystkie magazyny storage...itp.)"
 
 msgid "Access to selected resources only"
-msgstr "Access to selected resources only"
+msgstr "Dostęp tylko do wybranych zasobów"
 
 msgid "Access"
-msgstr "Access"
+msgstr "Dostęp"
 
 msgid "Set access"
-msgstr "Set access"
+msgstr "Ustaw dostęp"
 
 msgid "Access to resources"
-msgstr "Access to resources"
+msgstr "Dostęp do zasobów"
 
 msgid "Select a way to restrict Bacula resources available for the new user:"
-msgstr "Select a way to restrict Bacula resources available for the new user:"
+msgstr "Wybierz sposób ograniczenia zasobów Baculi dostępnych dla nowego użytkownika:"
 
 msgid "Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host."
-msgstr "Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host."
+msgstr "Utwórz konsolę z wybranymi zadaniami i z zasobami zależnymi od tego zadania (FileSet, Client, Storage, Schedule...itd.). Po stworzeniu przypisz tę konsolę do hosta API."
 
 msgid "API host jobs:"
-msgstr "API host jobs:"
+msgstr "Zadania hosta API:"
 
 msgid "Select already existing Console and assign it to the API host."
-msgstr "Select already existing Console and assign it to the API host."
+msgstr "Wybierz już istniejącą konsolę i przypisz ją do hosta API."
 
 msgid "API host console:"
-msgstr "API host console:"
+msgstr "Konsola hosta API:"
 
 msgid "Full access to all resources. The Console access is not used."
-msgstr "Full access to all resources. The Console access is not used."
+msgstr "Pełny dostęp do wszystkich zasobów. Dostęp poprzez konsolę (Console) nie jest używany."
 
 msgid "Step 5 - summary"
-msgstr "Step 5 - summary"
+msgstr "Krok 5 - podsumowanie"
 
 msgid "Resource access"
-msgstr "Resource access"
+msgstr "Dostęp do zasobów"
 
 msgid "Console:"
-msgstr "Console:"
+msgstr "Konsola:"
 
 msgid "Create user"
-msgstr "Create user"
+msgstr "Utwórz użytkownika"
 
 msgid "Restricted"
-msgstr "Restricted"
+msgstr "Ograniczony"
 
 msgid "Select existing API host account to create the new account:"
-msgstr "Select existing API host account to create the new account:"
+msgstr "Wybierz istniejące konto hosta API, aby utworzyć nowe konto:"
 
 msgid "Admin API host:"
-msgstr "Admin API host:"
+msgstr "Host API administracyjny:"
 
 msgid "New API host name:"
-msgstr "New API host name:"
+msgstr "Nowa nazwa hosta API:"
 
 msgid "Access to all available resources"
-msgstr "Access to all available resources"
+msgstr "Dostęp do wszystkich dostępnych zasobów"
 
 msgid "Client jobs"
-msgstr "Client jobs"
+msgstr "Zadania klienta"
 
 msgid "Information"
-msgstr "Information"
+msgstr "Informacje"
 
 msgid "After starting the job, go to the running job status"
-msgstr "After starting the job, go to the running job status"
+msgstr "Po rozpoczęciu zadania przejdź do bieżącego statusu zadania"
 
 msgid "Account settings"
-msgstr "Account settings"
+msgstr "Ustawienia konta"
 
 msgid "Enable 2FA"
-msgstr "Enable 2FA"
+msgstr "Włącz 2FA"
 
 msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
-msgstr "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+msgstr "Uwierzytelnianie dwuskładnikowe wzmacnia proces uwierzytelniania poprzez dodanie do tradycyjnej metody logowania użytkownika/hasła jeden dodatkowy krok (drugi składnik). Ten drugi krok może korzystać z aplikacji uwierzytelniającej (np. aplikacja mobilna lub stacjonarna), która pokazuje wygenerowany i często zmieniający kod używany do uwierzytelniania."
 
 msgid "2FA settings"
-msgstr "2FA settings"
+msgstr "Ustawienia 2FA"
 
 msgid "TOTP two-factor authentication"
-msgstr "TOTP two-factor authentication"
+msgstr "Uwierzytelnianie dwuskładnikowe TOTP"
 
 msgid "TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps."
-msgstr "TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps."
+msgstr "TOTP jest algorytmem używanym do uwierzytelniania za pomocą jednorazowego bazującego na wartości czasu hasła. Ta metoda uwierzytelniania generuje jednorazowe hasło. Używa aplikacji uwierzytelniającej, takiej jak Google Authenticator lub inne podobnej aplikacji."
 
 msgid "Step 1"
-msgstr "Step 1"
+msgstr "Krok 1"
 
 msgid "Scan in the authenticator app the QR code"
-msgstr "Scan in the authenticator app the QR code"
+msgstr "Zeskanuj w aplikacji uwierzytelniającej kod QR"
 
 msgid "or alternatively type the code below manually to the authenticator app:"
-msgstr "or alternatively type the code below manually to the authenticator app:"
+msgstr "lub wpisz poniższy kod ręcznie do aplikacji uwierzytelniającej:"
 
 msgid "show"
-msgstr "show"
+msgstr "pokaż"
 
 msgid "hide"
-msgstr "hide"
+msgstr "ukryj"
 
 msgid "Step 2"
-msgstr "Step 2"
+msgstr "Krok 2"
 
 msgid "In the field below please type currently displayed 6 digit code from the authenticator app"
-msgstr "In the field below please type currently displayed 6 digit code from the authenticator app"
+msgstr "W polu poniżej wpisz aktualnie wyświetlany 6-cyfrowy kod z aplikacji uwierzytelniającej"
 
 msgid "Authenticator code:"
-msgstr "Authenticator code:"
+msgstr "Kod uwierzytelniający:"
 
 msgid "Invalid authentication code. Please try again."
-msgstr "Invalid authentication code. Please try again."
+msgstr "Nieprawidłowy kod uwierzytelniający. Spróbuj ponownie."
 
 msgid "For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication)."
-msgstr "For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication)."
+msgstr "Dla używanego uwierzytelniania HTTP Basic 2FA nie jest dostępny. Aby użyć uwierzytelniania wieloskładnikowego, przełącz Bacularis na inną metodę uwierzytelniania (np. lokalne uwierzytelnianie użytkownika)."
 
 msgid "Two-factor authentication"
-msgstr "Two-factor authentication"
+msgstr "Uwierzytelnianie dwuskładnikowe"
 
 msgid "Result"
-msgstr "Result"
+msgstr "Wynik"
 
 msgid "Raw output"
-msgstr "Raw output"
+msgstr "Surowy output"
 
 msgid "Estimated job files"
-msgstr "Estimated job files"
+msgstr "Szacowana ilość plików zadania"
 
 msgid "Estimated job bytes"
-msgstr "Estimated job bytes"
+msgstr "Szacowany rozmiar zadania"
 
 msgid "Job size and files per day"
-msgstr "Job size and files per day"
+msgstr "Rozmiar i ilość plików zadań na dzień"
 
 msgid "Last successful job"
-msgstr "Last successful job"
+msgstr "Ostatnie pomyślne zadanie"
 
 msgid "hour"
-msgstr "hour"
+msgstr "godzina"
 
 msgid "hours"
-msgstr "hours"
+msgstr "godziny"
 
 msgid "minute"
-msgstr "minute"
+msgstr "minuta"
 
 msgid "minutes"
-msgstr "minutes"
+msgstr "minuty"
 
 msgid "%time ago"
 msgstr "%time ago"
 
 msgid "Last failed job"
-msgstr "Last failed job"
+msgstr "Ostatnie nieudane zadanie"
 
 msgid "Rerun"
-msgstr "Rerun"
+msgstr "Ponów"
 
 msgid "All directives"
-msgstr "All directives"
+msgstr "Wszystkie dyrektywy"
 
 msgid "Audit log"
-msgstr "Audit log"
+msgstr "Dziennik audytu"
 
 msgid "Enable audit log"
-msgstr "Enable audit log"
+msgstr "Włącz dziennik audytu"
 
 msgid "Audit log enables to log and track all important user actions."
-msgstr "Audit log enables to log and track all important user actions."
+msgstr "Dziennik audytu umożliwia rejestrowanie i śledzenie wszystkich ważnych działań użytkowników."
 
 msgid "Maximum number of log entries"
-msgstr "Maximum number of log entries"
+msgstr "Maksymalna liczba wpisów w dzienniku"
 
 msgid "Maximum number of log lines stored in the audit log file."
-msgstr "Maximum number of log lines stored in the audit log file."
+msgstr "Maksymalna liczba linii logów zapisanych w pliku dziennika audytu."
 
 msgid "Log types"
-msgstr "Log types"
+msgstr "Typy logów"
 
 msgid "Application"
-msgstr "Application"
+msgstr "Aplikacja"
 
 msgid "This category logs actions on Bacula configuration like saving, creating or removing Bacula resources."
-msgstr "This category logs actions on Bacula configuration like saving, creating or removing Bacula resources."
+msgstr "Ta kategoria rejestruje działania w konfiguracji Bacula, takie jak zapisywanie, tworzenie lub usuwanie zasobów Bacula."
 
 msgid "This category logs application specific actions like adding, editing or removing users, roles, API hosts and others."
-msgstr "This category logs application specific actions like adding, editing or removing users, roles, API hosts and others."
+msgstr "Ta kategoria rejestruje specyficzne działania aplikacji, takie jak dodawanie, edytowanie lub usuwanie użytkowników, roli, hostów API i innych."
 
 msgid "This category logs actions possible to run by users like running backup or restore and others."
-msgstr "This category logs actions possible to run by users like running backup or restore and others."
+msgstr "Ta kategoria rejestruje działania możliwe do uruchomienia przez użytkowników, takie jak uruchomiona kopia zapasowa lub przywracanie i inne."
 
 msgid "This category logs security issues like log in actions, log in failed or 2FA failed."
-msgstr "This category logs security issues like log in actions, log in failed or 2FA failed."
+msgstr "Ta kategoria rejestruje problemy związane z bezpieczeństwem, takie jak akcje logowan, błędy logowanie lub błędy 2FA."
 
 msgid "IP address"
-msgstr "IP address"
+msgstr "Adres IP"
 
 msgid "Date"
-msgstr "Date"
+msgstr "Data"
 
 msgid "Category"
-msgstr "Category"
+msgstr "Kategoria"
 
 msgid "Log message"
-msgstr "Log message"
+msgstr "Wiadomości dziennika"
 
 msgid "Log categories"
-msgstr "Log categories"
+msgstr "Kategorie logów"
 
 msgid "seconds"
-msgstr "seconds"
+msgstr "sekundy"
+
