@@ -230,44 +230,44 @@
 		</div>
 		<com:TActiveHiddenField ID="ScheduleMode" Value="daily" />
 		<h3 class="<%=$this->Level->Show || $this->Pool->Show || $this->Storage->Show || $this->Messages->Show || $this->NextPool->Show || $this->FullPool->Show || $this->DifferentialPool->Show || $this->IncrementalPool->Show || $this->Accurate->Show || $this->Priority->Show || $this->SpoolData->Show || $this->MaxRunSchedTime->Show || $this->MaxConnectTime->Show ? 'w3-show' : 'w3-hide'%>"><%[ Override directives ]%></h3>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="Level"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="Pool"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="Storage"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="Messages"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="NextPool"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="FullPool"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="DifferentialPool"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveComboBox
+		<com:Bacularis\Web\Portlets\DirectiveComboBox
 			ID="IncrementalPool"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveCheckBox
+		<com:Bacularis\Web\Portlets\DirectiveCheckBox
 			ID="Accurate"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveTextBox
+		<com:Bacularis\Web\Portlets\DirectiveTextBox
 			ID="Priority"
 			CssClass="smallbox"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveCheckBox
+		<com:Bacularis\Web\Portlets\DirectiveCheckBox
 			ID="SpoolData"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+		<com:Bacularis\Web\Portlets\DirectiveTimePeriod
 			ID="MaxRunSchedTime"
 		/>
-		<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+		<com:Bacularis\Web\Portlets\DirectiveTimePeriod
 			ID="MaxConnectTime"
 		/>
 	</div>
