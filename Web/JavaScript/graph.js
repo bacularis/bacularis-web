@@ -136,18 +136,15 @@ var GraphClass = jQuery.klass({
 			timeMode: 'local',
 			labelsAngle : 45,
 			autoscale: true,
-			color: 'black',
 			showLabels: true
 		},
 		yaxis: {
-			color: 'black',
 			min: 0
 		},
 		selection: {
 			mode : 'x'
 		},
 		grid: {
-			color: '#000000',
 			outlineWidth: 0
 		},
 		HtmlText: false
@@ -249,13 +246,11 @@ var GraphClass = jQuery.klass({
 					mode : 'time',
 					timeMode: 'local',
 					labelsAngle : 45,
-					color: 'black',
 					autoscale: true
 					},
 				yaxis : {
 					min : area.y1,
 					max : area.y2,
-					color: 'black',
 					autoscale: true
 				}
 			});
@@ -471,21 +466,27 @@ var GraphClass = jQuery.klass({
 	prepare_series_job_size: function() {
 		var graph_options = $.extend(true, {}, this.graph_options_orig);
 		this.graph_options = $.extend(true, graph_options, {
+			fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
 			title: this.txt.job_size.graph_title,
 			xaxis: {
-				title: this.txt.job_size.xaxis_title
+				title: this.txt.job_size.xaxis_title,
+				color: (ThemeMode.is_dark() ? 'white': 'black')
 			},
 			yaxis: {
 				title: this.txt.job_size.yaxis_title,
 				tickFormatter: function(val, axis_opts) {
 					return Units.get_formatted_size(val);
-				}
+				},
+				color: (ThemeMode.is_dark() ? 'white': 'black')
 			},
 			lines: {
 				show: true,
 				lineWidth: 0,
 				fill: true,
 				steps: true
+			},
+			grid: {
+				color: (ThemeMode.is_dark() ? 'white': 'black')
 			}
 		});
 

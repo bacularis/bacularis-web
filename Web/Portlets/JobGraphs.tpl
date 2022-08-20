@@ -161,6 +161,9 @@
 				client_filter: '<%=$this->Clients->ClientID%>'
 			});
 		});
+		ThemeMode.add_cb(() => {
+			oGraph.update();
+		});
 	});
 </script>
 <p class="info w3-hide-medium w3-hide-small"><%[ Tip: to use zoom, please mark area on graph. ]%></p>

@@ -112,7 +112,7 @@ const oVolumes = <%=json_encode($this->volumes_in_pool)%>;
 				</table>
 			</div>
 		</div>
-		<div id="pool_log" class="w3-panel w3-card w3-light-grey" style="display: none">
+		<div id="pool_log" class="w3-panel w3-card" style="display: none">
 			<div class="w3-code notranslate">
 				<pre><com:TActiveLabel ID="PoolLog" /></pre>
 			</div>
@@ -205,6 +205,10 @@ const oPoolVolumeStatus = {
 						return PieGraphBase.pie_legend_formatter.call(PieGraphPool, label);
 					}
 				},
+				grid: {
+					color: (ThemeMode.is_dark() ? 'white': 'black')
+				},
+				fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
 				title: this.txt.pool_volume_status.graph_title,
 				colors: this.colors.pool_volume_status
 			}
@@ -216,10 +220,13 @@ const oPoolVolumeStatus = {
 		}
 	}
 };
+ThemeMode.add_cb(() => {
+	oPoolVolumeStatus.prepare_pool_volume_status_graph();
+});
 		</script>
 	</div>
 	<div class="w3-container tab_item" id="volumes_in_pool" style="display: none">
-		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>

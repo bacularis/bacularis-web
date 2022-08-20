@@ -602,7 +602,7 @@
 					<h2 id="get_users_table_title"></h2>
 				</header>
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
-					<table id="get_users_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%;">
+					<table id="get_users_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%;">
 						<thead>
 							<tr>
 								<th><%[ Username ]%></th>
@@ -688,7 +688,7 @@
 									CssClass="w3-select w3-border"
 									AutoPostBack="false"
 								/>
-								<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+								<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 								<com:TRequiredFieldValidator
 									ValidationGroup="GetUsersGroup"
 									ControlToValidate="GetUsersDefaultRole"
@@ -707,7 +707,7 @@
 									CssClass="w3-select w3-border"
 									AutoPostBack="false"
 								/>
-								<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+								<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 							</div>
 						</div>
 						<div class="w3-row w3-section" title="<%[ Comma separated IP addresses. Using asterisk character, there is also possible to provide subnet, for example: 192.168.1.* ]%>">
@@ -719,7 +719,7 @@
 									MaxLength="500"
 									CssClass="w3-input w3-border"
 								/>
-								<p class="w3-text-black"><a href="javascript:void(0)" onclick="document.getElementById('<%=$this->GetUsersDefaultIps->ClientID%>').value = '<%=$_SERVER['REMOTE_ADDR']%>';"><%[ Set your IP address ]%></a></p>
+								<p><a href="javascript:void(0)" onclick="document.getElementById('<%=$this->GetUsersDefaultIps->ClientID%>').value = '<%=$_SERVER['REMOTE_ADDR']%>';"><%[ Set your IP address ]%></a></p>
 								<com:TActiveCustomValidator
 									ID="GetUsersDefaultIpsValidator"
 									ValidationGroup="GetUsersGroup"
@@ -1001,7 +1001,7 @@ oLdapUserSecurity.init();
 			<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new user ]%></button>
 			<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
 		</div>
-		<table id="user_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="user_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1394,7 +1394,7 @@ $(function() {
 								ControlCssClass="field_invalid"
 								Display="None"
 							/>
-							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
 					<div class="w3-row directive_field">
@@ -1407,7 +1407,7 @@ $(function() {
 								CssClass="w3-select w3-border"
 								AutoPostBack="false"
 							/>
-							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div>
 					</div>
 					<div class="w3-row directive_field">
@@ -1420,7 +1420,7 @@ $(function() {
 							/>
 						</div>
 					</div>
-					<i class="fas fa-wrench w3-text-black"></i> &nbsp;<a href="javascript:void(0)" onclick="$('#user_window_advanced_options').toggle('fast');" class="w3-text-black"><%[ Advanced options ]%></a>
+					<i class="fas fa-wrench"></i> &nbsp;<a href="javascript:void(0)" onclick="$('#user_window_advanced_options').toggle('fast');"><%[ Advanced options ]%></a>
 					<div id="user_window_advanced_options" style="display: none">
 						<div class="w3-row directive_field" title="<%[ Comma separated IP addresses. Using asterisk character, there is also possible to provide subnet, for example: 192.168.1.* ]%>">
 							<div class="w3-col w3-third"><com:TLabel ForControl="UserIps" Text="<%[ IP address restrictions: ]%>"/></div>
@@ -1431,7 +1431,7 @@ $(function() {
 									MaxLength="500"
 									CssClass="w3-input w3-border"
 								/>
-								<p class="w3-text-black"><a href="javascript:void(0)" onclick="document.getElementById('<%=$this->UserIps->ClientID%>').value = '<%=$_SERVER['REMOTE_ADDR']%>';"><%[ Set your IP address ]%></a></p>
+								<p><a href="javascript:void(0)" onclick="document.getElementById('<%=$this->UserIps->ClientID%>').value = '<%=$_SERVER['REMOTE_ADDR']%>';"><%[ Set your IP address ]%></a></p>
 								<com:TActiveCustomValidator
 									ID="UserIpsValidator"
 									ValidationGroup="UserGroup"
@@ -1465,7 +1465,7 @@ $(function() {
 		<div class="w3-panel">
 			<button type="button" id="add_role_btn" class="w3-button w3-green" onclick="oRoles.load_role_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a>
 		</div>
-		<table id="role_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="role_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1845,7 +1845,7 @@ $(function() {
 								ControlCssClass="field_invalid"
 								Display="None"
 							/>
-							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 
 					</div>
@@ -1897,7 +1897,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		<div class="w3-panel">
 			<button type="button" id="add_console_btn" class="w3-button w3-green" onclick="oConsoles.load_console_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new console ]%></button>
 		</div>
-		<table id="console_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="console_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -2202,7 +2202,7 @@ $(function() {
 		<div id="api_basic_user_btn" class="w3-panel">
 			<button type="button" id="add_api_basic_user_btn" class="w3-button w3-green" onclick="oAPIBasicUsers.load_api_basic_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API basic user ]%></button>
 		</div>
-		<table id="api_basic_user_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="api_basic_user_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -2612,7 +2612,7 @@ $(function() {
 		<div id="oauth2_client_btn" class="w3-panel">
 			<button type="button" id="add_oauth2_client_btn" class="w3-button w3-green" onclick="oOAuth2Clients.load_oauth2_client_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OAuth2 client ]%></button>
 		</div>
-		<table id="oauth2_client_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="oauth2_client_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -3035,7 +3035,7 @@ $(function() {
 		<div class="w3-panel">
 			<button type="button" id="add_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_api_host_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></button>
 		</div>
-		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -3312,7 +3312,7 @@ $(function() {
 									document.getElementById('api_host_settings_loading').style.visibility = 'hidden';
 								</prop:ClientSide.OnComplete>
 							</com:TActiveDropDownList>
-						</div> &nbsp;<i id="api_host_settings_loading" class="fas fa-sync w3-spin w3-text-black" style="visibility: hidden; margin: 10px 5px"></i>
+						</div> &nbsp;<i id="api_host_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
 					</div>
 				</div>
 				<div class="w3-row directive_field">
@@ -3388,7 +3388,7 @@ $(function() {
 									document.getElementById('api_host_basic_user_settings_loading').style.visibility = 'hidden';
 								</prop:ClientSide.OnComplete>
 							</com:TActiveDropDownList>
-						</div> &nbsp;<i id="api_host_basic_user_settings_loading" class="fas fa-sync w3-spin w3-text-black" style="visibility: hidden; margin: 10px 5px"></i>
+						</div> &nbsp;<i id="api_host_basic_user_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
 					</div>
 					<div class="w3-row directive_field">
 						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostBasicLogin" Text="<%[ API Login: ]%>" /></div>
@@ -3448,7 +3448,7 @@ $(function() {
 									document.getElementById('api_host_oauth2_client_settings_loading').style.visibility = 'hidden';
 								</prop:ClientSide.OnComplete>
 							</com:TActiveDropDownList>
-						</div> &nbsp;<i id="api_host_oauth2_client_settings_loading" class="fas fa-sync w3-spin w3-text-black" style="visibility: hidden; margin: 10px 5px"></i>
+						</div> &nbsp;<i id="api_host_oauth2_client_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
 					</div>
 					<div class="w3-row directive_field">
 						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2ClientId" Text="<%[ OAuth2 Client ID: ]%>" /></div>
@@ -3573,7 +3573,7 @@ $(function() {
 									</com:TActiveLinkButton>
 								</td>
 								<td valign="middle">
-									<com:TActiveLabel ID="APIHostTestLoader" Display="None"><i class="fa fa-sync w3-spin w3-text-black"></i></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostTestLoader" Display="None"><i class="fa fa-sync w3-spin"></i></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostTestResultErr" Display="None" CssClass="w3-text-red" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<%[ Connection error ]%></com:TActiveLabel>
 								</td>

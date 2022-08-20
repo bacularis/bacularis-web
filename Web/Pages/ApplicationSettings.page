@@ -364,7 +364,7 @@
 			</div>
 		</div>
 		<div class="w3-container">
-			<table id="application_settings_audit_log_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<table id="application_settings_audit_log_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>

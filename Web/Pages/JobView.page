@@ -26,7 +26,7 @@
 			Attributes.onclick="W3Tabs.open(this.id, 'job_config');"
 			Text="<%[ Configure job ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
-			OnClick="loadJobConfig"
+			OnCallback="loadJobConfig"
 		/>
 		<com:TActiveLinkButton
 			ID="FilesetConfigBtn"
@@ -34,7 +34,7 @@
 			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config');"
 			Text="<%[ Configure fileset ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
-			OnClick="loadFileSetConfig"
+			OnCallback="loadFileSetConfig"
 		/>
 		<com:TActiveLinkButton
 			ID="ScheduleConfigBtn"
@@ -42,7 +42,7 @@
 			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config');"
 			Text="<%[ Configure schedule ]%>"
 			Visible="<%=!empty($_SESSION['dir'])%>"
-			OnClick="loadScheduleConfig"
+			OnCallback="loadScheduleConfig"
 		/>
 		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc();"><%[ Job history ]%></button>
 		<com:TActiveLinkButton
@@ -76,7 +76,7 @@
 		<com:TActiveLinkButton ID="DeleteBtn" CssClass="w3-button w3-red w3-margin-bottom w3-right" Attributes.onclick="$('#job_delete_confirm').show(); return false;">
 			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Delete job ]%> <%=$this->getJobId()%>
 		</com:TActiveLinkButton>
-		<div class="w3-panel w3-card w3-light-grey" style="clear: right;">
+		<div class="w3-panel w3-card-2" style="clear: right;">
 			<h5><%[ Job: ]%> <%=$this->getJobUname()%> &nbsp;
 				<com:TActiveLabel ID="RunningIcon" Attributes.title="<%[ Job is running ]%>">
 					<i class="fa fa-cog w3-spin"></i>
@@ -602,46 +602,49 @@ var oJobGraphs = {
 		D: '#D68910',
 		O: 'red'
 	},
-	graph_options: {
-		legend: {
-			show: true,
-			noColumns: 9,
-			labelBoxHeight: 10,
-			fontColor: '#000000',
-			position : 'ne'
-		},
-		bars: {
-			show: true,
-			fill: true,
-			horizontal : false,
-			shadowSize : 0
-		},
-		xaxis: {
-			mode : 'time',
-			timeMode: 'local',
-			labelsAngle : 45,
-			autoscale: true,
-			color: 'black',
-			showLabels: true
-		},
-		yaxis: {
-			color: 'black',
-			min: 0
-		},
-		lines: {
-			show: true,
-			lineWidth: 0,
-			fill: true,
-			steps: true
-		},
-		selection: {
-			mode : 'x'
-		},
-		grid: {
-			color: '#000000',
-			outlineWidth: 0
-		},
-		HtmlText: false
+	get_graph_options: function() {
+		return {
+			fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
+			legend: {
+				show: true,
+				noColumns: 9,
+				labelBoxHeight: 10,
+				position : 'ne',
+				backgroundColor: (ThemeMode.is_dark() ? 'black' : 'white')
+			},
+			bars: {
+				show: true,
+				fill: true,
+				horizontal : false,
+				shadowSize : 0
+			},
+			xaxis: {
+				mode : 'time',
+				timeMode: 'local',
+				labelsAngle : 45,
+				autoscale: true,
+				showLabels: true,
+				color: (ThemeMode.is_dark() ? 'white': 'black')
+			},
+			yaxis: {
+				min: 0,
+				color: (ThemeMode.is_dark() ? 'white': 'black')
+			},
+			lines: {
+				show: true,
+				lineWidth: 0,
+				fill: true,
+				steps: true
+			},
+			selection: {
+				mode : 'x'
+			},
+			grid: {
+				outlineWidth: 0,
+				color: (ThemeMode.is_dark() ? 'white': 'black')
+			},
+			HtmlText: false
+		}
 	},
 	txt: {
 		job_summary: {
@@ -712,13 +715,15 @@ var oJobGraphs = {
 					timeMode: 'local',
 					labelsAngle : 45,
 					color: 'black',
-					autoscale: true
+					autoscale: true,
+					color: (ThemeMode.is_dark() ? 'white': 'black')
 					},
 				yaxis : {
 					min : area.y1,
 					max : area.y2,
 					color: 'black',
-					autoscale: true
+					autoscale: true,
+					color: (ThemeMode.is_dark() ? 'white': 'black')
 				}
 			};
 			return opts;
@@ -781,14 +786,19 @@ var oJobGraphs = {
 			data: Statistics.jobs_summary,
 			container_id: this.ids.jobs_summary_graph,
 			graph_options: {
+				fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
 				legend: {
 					container: $('#' + this.ids.jobs_summary_legend)
+				},
+				grid: {
+					color: (ThemeMode.is_dark() ? 'white': 'black')
 				},
 				title: this.txt.job_summary.graph_title
 			}
 		});
 	},
 	prepare_job_size: function(opts) {
+		this.destroy_job_size();
 		var options = {
 			title: this.txt.job_size.graph_title,
 			xaxis: {
@@ -807,6 +817,7 @@ var oJobGraphs = {
 		this.graphs.job_size = this.prepare_job_graph(jobs, container, opts);
 	},
 	prepare_job_files: function(opts) {
+		this.destroy_job_files();
 		var options = {
 			title: this.txt.job_files.graph_title,
 			xaxis: {
@@ -826,7 +837,8 @@ var oJobGraphs = {
 	},
 	prepare_job_graph: function(jobs, container, opts) {
 		var now = (new Date()).getTime();
-		var options = $.extend(true, this.graph_options, {
+		const graph_options = this.get_graph_options();
+		var options = $.extend(true, graph_options, {
 			xaxis: {
 				min: (now - 2592000000),
 				max: now
@@ -843,7 +855,7 @@ var oJobGraphs = {
 
 		var series_uniq = {};
 		for (var i = 0; i < jobs.length; i++) {
-			if(jobs[i].start_stamp < this.graph_options.xaxis.min || jobs[i].end_stamp > this.graph_options.xaxis.max) {
+			if(jobs[i].start_stamp < graph_options.xaxis.min || jobs[i].end_stamp > graph_options.xaxis.max) {
 				continue;
 			}
 			if (series_uniq.hasOwnProperty(jobs[i].job.level) == false) {
@@ -877,6 +889,16 @@ var oJobGraphs = {
 			series,
 			opts
 		);
+	},
+	destroy_job_files: function() {
+		if (this.graphs.job_files) {
+			this.graphs.job_files.destroy();
+		}
+	},
+	destroy_job_size: function() {
+		if (this.graphs.job_size) {
+			this.graphs.job_size.destroy();
+		}
 	},
 	destroy_job_summary: function() {
 		if (this.graphs.job_summary) {
@@ -918,7 +940,7 @@ var oJobGraphs = {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="job_history" style="display: none">
-		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1225,6 +1247,9 @@ $(function() {
 	MonitorCallsInterval.push(function() {
 		oJobGraphs.update();
 		oJobHistoryList.init();
+	});
+	ThemeMode.add_cb(() => {
+		oJobGraphs.update();
 	});
 });
 let fragment = get_url_fragment();

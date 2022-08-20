@@ -36,7 +36,7 @@
 	<!-- Job History List -->
 	<div class="w3-container tab_item" id="job_history">
 		<div class="w3-container">
-			<table id="job_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom selectable" style="width: 100%">
+			<table id="job_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -168,11 +168,21 @@ function show_btn_loader(jobid) {
 	var btns = document.querySelectorAll('button[data-btn-id="' + jobid + '"]');
 	var loader;
 	for (var i = 0; i < btns.length; i++) {
-		loader = document.createElement('IMG');
+		let loader;
+		if (ThemeMode.is_dark()) {
+			loader = document.createElement('I');
+			loader.classList.add('fa-solid', 'fa-rotate', 'fa-spin');
+			loader.style.margin = '0 auto';
+			loader.style.padding = '0 11px 0 10px';
+			loader.style.verticalAlign = 'middle';
+			loader.style.fontSize = '21px';
+		} else {
+			loader = document.createElement('IMG');
+			loader.src = '<%~ ../../../../../Common/Images/loader-small.gif %>';
+		}
 		loader.setAttribute('data-loader-id', jobid);
-		loader.src = '<%~ ../../../../../Common/Images/loader-small.gif %>';
 		loader.style.display = 'none';
-		loader.className = 'btn_loader';
+		loader.classList.add('btn_loader');
 		btns[i].parentNode.insertBefore(loader, btns[i]);
 		btns[i].style.display = 'none';
 		loader.style.display = '';
@@ -181,7 +191,7 @@ function show_btn_loader(jobid) {
 
 function hide_btn_loader(jobid) {
 	var btns = document.querySelectorAll('button[data-btn-id="' + jobid + '"]');
-	var loaders = document.querySelectorAll('img[data-loader-id="' + jobid + '"]');
+	var loaders = document.querySelectorAll('[data-loader-id="' + jobid + '"]');
 	var loader_list = Array.prototype.slice.call(loaders);
 
 	// Note, there can be more loaders with the same loader-id in small width view.
@@ -734,7 +744,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 	<!-- Job Details List -->
 	<div class="w3-container tab_item" id="job_details" style="display: none">
 		<div class="w3-container">
-			<table id="job_details_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<table id="job_details_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -1004,7 +1014,7 @@ const oJobList = {
 			</span>
 		</div>
 		<div id="job_history_report" class="w3-container" style="display: none">
-			<table id="job_history_report_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom small_padding" style="width: 100%">
+			<table id="job_history_report_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom small_padding" style="width: 100%">
 				<thead id="job_history_report_header"></thead>
 				<tbody id="job_history_report_body"></tbody>
 				<tfoot id="job_history_report_footer"></tfoot>
@@ -1020,7 +1030,7 @@ const oJobList = {
 					</header>
 					<div class="w3-container w3-margin-left w3-margin-right">
 						<h4 id="job_history_report_details_date"></h4>
-						<table id="job_history_report_details_table" class="w3-table w3-striped w3-white w3-margin-bottom" style="width: 100%">
+						<table id="job_history_report_details_table" class="w3-table w3-striped w3-margin-bottom" style="width: 100%">
 							<thead>
 								<tr>
 									<th><%[ Job log ]%></th>

@@ -129,7 +129,7 @@
 					<i id="label_status_finish" class="fa fa-check" style="display: none" title="<%[ Finished ]%>"></i>
 				</div>
 			</div>
-			<div id="label_volume_log" class="w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+			<div id="label_volume_log" class="w3-panel w3-card" style="display: none; max-height: 200px; overflow-x: auto;">
 				<div class="w3-code notranslate">
 					<pre><com:TActiveLabel ID="LabelVolumeLog" /></pre>
 				</div>

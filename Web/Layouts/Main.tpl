@@ -3,9 +3,10 @@
 	<com:THead Title="Bacularis - Bacula Web Interface">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="color-scheme" content="dark light" />
 	<link rel="icon" href="<%~ ../../../../../Common/Images/favicon.ico %>" type="image/x-icon" />
 	</com:THead>
-	<body  class="w3-light-grey">
+	<body>
 		<com:TForm>
 			<com:TClientScript PradoScripts="ajax, effects" />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/datatables.net/js/jquery.dataTables.min.js %> />
@@ -17,8 +18,8 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/flotr2/flotr2.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/gaugejs/dist/gauge.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
-			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/misc.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/graph.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/statistics.js %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-dt/css/jquery.dataTables.min.css %> />
@@ -52,6 +53,14 @@
 						Height="34px"
 					/>
 				</com:TLabel>
+				<span class="w3-right w3-padding-small w3-margin-top w3-margin-right">
+					<label><span class="w3-hide-small"><i class="fa-solid fa-sun"></i></span>
+						<label class="switch small" onclick="ThemeMode.toggle_mode();">
+							<input type="checkbox" id="theme_mode_switcher" />
+							<span class="slider small round"></span>
+						</label> <i class="fa-solid fa-moon"></i>
+					</label>
+				</span>
 				<script type="text/javascript">
 					var SIZE_VALUES_UNIT = '<%=(count($this->web_config) > 0 && key_exists('size_values_unit', $this->web_config['baculum'])) ? $this->web_config['baculum']['size_values_unit'] : WebConfig::DEF_SIZE_VAL_UNIT%>';
 					var DATE_TIME_FORMAT = '<%=(count($this->web_config) > 0 && key_exists('date_time_format', $this->web_config['baculum'])) ? $this->web_config['baculum']['date_time_format'] : WebConfig::DEF_DATE_TIME_FORMAT%>';

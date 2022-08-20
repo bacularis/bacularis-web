@@ -5,7 +5,7 @@
 	<div class="w3-container">
 		<a href="javascript:void(0)" class="w3-button w3-margin-bottom w3-green" onclick="oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add ]%> <com:TActiveLabel ID="ResourceTypeAddLink" /></a>
 	</div>
-	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 		<thead>
 			<tr>
 				<th></th>

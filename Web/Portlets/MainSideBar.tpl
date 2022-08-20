@@ -1,5 +1,5 @@
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-white w3-animate-left w3-margin-bottom" style="z-index:3;width:250px;" id="sidebar"><br />
+<nav class="w3-sidebar w3-animate-left w3-margin-bottom" style="z-index:3;width:250px;" id="sidebar"><br />
 	<div class="w3-container w3-row" style="margin-bottom: 8px">
 		<div class="w3-col s3">
 			<img src="<%~ ../../../../../Common/Images/avatar2.png %>" class="w3-circle w3-margin-right" style="width: 33px" />

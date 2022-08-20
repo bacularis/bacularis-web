@@ -192,15 +192,17 @@ var oBaculaConfigSection = {
 		const top = document.querySelector('.' + this.css.top);
 		if (top) {
 			sect_el.style.top = top.offsetHeight;
+			let color;
 			if ($(sect_el).closest('.' + this.css.modal).length == 1) {
 				// in modal
 				sect_el.style.top = '-' + (top.offsetHeight + 14) + 'px';
-				sect_el.classList.add(this.css.white); // modals have white background
+				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.white;
 			} else {
 				// in non-modal
 				sect_el.style.top = top.offsetHeight + 'px';
-				sect_el.classList.add(this.css.lgray); // non-modals have light gray background
+				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.lgray;
 			}
+			sect_el.classList.add(color);
 		}
 		const width = (99 / sections.length).toFixed(2);
 		const self = this;

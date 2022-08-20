@@ -1,4 +1,4 @@
-<div id="<%=$this->ClientID%>_new_schedule" class="w3-card w3-white w3-padding config_new_schedule left" style="display: none">
+<div id="<%=$this->ClientID%>_new_schedule" class="w3-card w3-padding config_new_schedule left" style="display: none">
 	<i class="fa fa-times w3-right" onclick="$('#<%=$this->ClientID%>_new_schedule').hide();" /></i>
 	<ul class="w3-ul new_element_menu">
 		<li><com:TActiveLinkButton

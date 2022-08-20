@@ -171,7 +171,7 @@
 								ControlCssClass="field_invalid"
 								Display="Dynamic"
 							/>
-							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
 					<span><a href="javascript:void(0)" onclick="oRoleWindow.open();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a></span>
@@ -258,7 +258,7 @@
 									ControlCssClass="field_invalid"
 									Display="None"
 								/>
-								<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+								<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 							</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 
 						</div>
@@ -351,7 +351,7 @@ var oRoles = {
 								ControlCssClass="field_invalid"
 								Display="Dynamic"
 							/>
-							<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
 					<span><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
@@ -462,7 +462,7 @@ var oAPIHosts = {
 
 					<!-- API host table -->
 					<div id="new_user_step4_api_host_table_container" style="display: <%=$this->SelectedResources->Checked ? 'block' : 'none'%>">
-						<table id="new_user_step4_api_host_table" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+						<table id="new_user_step4_api_host_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 							<thead>
 								<tr>
 									<th></th>
@@ -650,7 +650,7 @@ $(function() {
 											</prop:ClientSide.OnValidate>
 										</com:TRequiredFieldValidator>
 
-										<p class="w3-text-black" style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+										<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 									</div>
 								</div>
 							</div>
@@ -712,7 +712,7 @@ $(function() {
 									OnCommand="setAllCommandAcls"
 									CommandParameter="save"
 								>
-									<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Baculum Web ]%>
+									<i class="fas fa-globe"></i> &nbsp;<%[ Set all CommandAcls used by Bacularis Web ]%>
 								</com:TActiveLinkButton>
 								<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 									ID="ConsoleConfig"

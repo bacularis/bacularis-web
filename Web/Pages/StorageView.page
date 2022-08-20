@@ -229,7 +229,7 @@ var oStorageActions = {
 			<div class="w3-right w3-margin-top w3-margin-right" title="<%[ To disable refreshing please type 0. ]%>">
 				<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_storage_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="10" style="width: 50px"/>
 			</div>
-			<div class="w3-panel w3-card w3-light-grey" style="padding-bottom: 16px;">
+			<div class="w3-panel w3-card" style="padding-bottom: 16px;">
 				<div class="w3-row">
 					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_storage_subtab_graphical', 'status_storage_graphical_output', 'status_storage_container');">
 						<div id="status_storage_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding"><%[ Graphical status ]%></div>
@@ -323,7 +323,7 @@ var oGraphicalStorageStatus = {
 			pointer: {
 				length: 0.6, // // Relative to gauge radius
 				strokeWidth: 0.035, // The thickness
-				color: '#000000' // Fill color
+				color: (ThemeMode.is_dark() ? 'white' : 'black') // Fill color
 			},
 			limitMax: false,     // If false, max value increases automatically if value > maxValue
 			limitMin: false,     // If true, the min value of the gauge will be fixed
@@ -356,7 +356,7 @@ var oGraphicalStorageStatus = {
 			pointer: {
 				length: 0.6, // // Relative to gauge radius
 				strokeWidth: 0.035, // The thickness
-				color: '#000000' // Fill color
+				color: (ThemeMode.is_dark() ? 'white' : 'black') // Fill color
 			},
 			limitMax: false,     // If false, max value increases automatically if value > maxValue
 			limitMin: false,     // If true, the min value of the gauge will be fixed
@@ -1718,7 +1718,7 @@ function load_sd_res_config(resource) {
 		</div>
 		<div id="drive_list_container">
 			<h5><%[ Tape drives ]%></h5>
-			<table id="drive_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<table id="drive_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -1872,7 +1872,7 @@ var oDrives = {
 			<button type="button" id="release_all_ie_btn" class="w3-button w3-green" style="display: none" onclick="oSlots.release_all_ie();">
 				<i class="fas fa-share-square"></i> &nbsp;<%[ Release all I/E slots ]%>
 			</button>
-			<table id="slot_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+			<table id="slot_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>

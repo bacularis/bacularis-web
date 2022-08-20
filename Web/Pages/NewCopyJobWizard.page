@@ -216,7 +216,7 @@ function set_storage_from_pool_cb(storage) {
 </script>
 			</div>
 			<div id="source_pool_volume_list" class="w3-container w3-margin" style="display: none">
-				<table id="volume_list" class="w3-table w3-striped w3-white w3-margin-bottom" style="width: 100%">
+				<table id="volume_list" class="w3-table w3-striped w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>
@@ -757,7 +757,7 @@ var oVolumeList = {
 				</div>
 			</div>
 			<div id="selection_type_jobs_table" class="w3-container w3-margin" style="display: none">
-				<table id="job_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<table id="job_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>
@@ -899,7 +899,7 @@ var oJobList = {
 </script>
 			</div>
 			<div id="selection_type_clients_table" class="w3-container w3-margin" style="display: none">
-				<table id="client_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<table id="client_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>
@@ -1051,7 +1051,7 @@ var oClientList = {
 </script>
 			</div>
 			<div id="selection_type_volumes_table" class="w3-container w3-margin" style="display: none">
-				<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>

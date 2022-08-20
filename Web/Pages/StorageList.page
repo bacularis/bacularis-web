@@ -12,7 +12,7 @@
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['sd']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $_SESSION['sd'], 'resource_type' => 'Autochanger'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add autochanger ]%></button>
 	</div>
 	<div class="w3-container">
-		<table id="storage_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+		<table id="storage_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>

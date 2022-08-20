@@ -2,7 +2,7 @@
 <com:TContent ID="Main">
 	<div style="width: 100%; height: 100%;">
 		<com:TPanel ID="LoginForm" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px" DefaultButton="LoginBtn">
-			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" style="width: auto; margin: 0 auto 10px auto;"/>
+			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" rel="logo" style="width: auto; margin: 0 auto 10px auto;"/>
 			<com:TLabel ID="Msg" CssClass="w3-text-red w3-block" Display="Hidden"><%[ Invalid username or password ]%></com:TLabel>
 			<div class="w3-section">
 				<label for="<%=$this->Username->ClientID%>" class="w3-show-inline-block" style="width: 95px"><%[ Username: ]%></label> <com:TTextBox ID="Username" CssClass="w3-input w3-border w3-show-inline-block" Style="width: 335px" />
@@ -17,7 +17,7 @@
 			</div>
 		</com:TPanel>
 		<com:TPanel ID="AuthorizationError" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 440px" Display="None">
-			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" style="width: auto; margin: 0 auto 40px auto;"/>
+			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" rel="logo" style="width: auto; margin: 0 auto 40px auto;"/>
 			<p class="w3-text-red"><%[ Authorization failed. Please contact the Bacularis administrator to grant permissions. ]%></p>
 			<p class="w3-center">
 				<script>var login_form_reload_url = '<%=$this->reload_url%>';</script>
@@ -81,6 +81,11 @@
 		</div>
 	</div>
 <script>
+	if (ThemeMode.is_dark()) {
+		document.querySelectorAll('[rel="logo"]').forEach(function(el) {
+			el.src = '<%~ ../../../../../Common/Images/logo_xl_white.png %>';
+		});
+	}
 	document.getElementById('<%=$this->Username->ClientID%>').focus();
 	if (<%=$this->mfa ? 'true' : 'false'%> === true) {
 		document.getElementById('<%=$this->Auth2FAToken->ClientID%>').focus();

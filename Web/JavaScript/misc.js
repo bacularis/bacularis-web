@@ -1008,10 +1008,18 @@ var Dashboard = {
 		if (this.pie != null) {
 			this.pie.destroy();
 		}
+		if (!document.getElementById(this.ids.pie_summary.container_id)) {
+			// no container, no update
+			return;
+		}
 		this.pie = new GraphPieClass({
 			data: this.stats.jobs_summary,
 			container_id: this.ids.pie_summary.container_id,
 			graph_options: {
+				fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
+				grid: {
+					color: (ThemeMode.is_dark() ? 'white': 'black')
+				},
 				legend: {
 					container: $('#' + this.ids.pie_summary.legend_container_id)
 				},
@@ -1023,6 +1031,10 @@ var Dashboard = {
 		if (this.bytes_files_graph != null) {
 			this.bytes_files_graph.destroy();
 		}
+		if (!document.getElementById(this.ids.bytes_files_graph.container_id)) {
+			// no container, no update
+			return;
+		}
 		const t = new Date().getTime() / 1000;
 		const now = parseInt(t / 86400, 10) * 86400;
 		const def_min = this.stats.opts.job_age ? now - this.stats.opts.job_age + 86400 : null;
@@ -1031,6 +1043,10 @@ var Dashboard = {
 			data: this.stats.jobs_total_bytes_files,
 			container_id: this.ids.bytes_files_graph.container_id,
 			graph_options: {
+				fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
+				grid: {
+					color: (ThemeMode.is_dark() ? 'white': 'black')
+				},
 				xaxis: {
 					min: def_min,
 					max: def_max,
@@ -1040,18 +1056,18 @@ var Dashboard = {
 					timeMode: 'local',
 					timeUnit: 'second',
 					labelsAngle: 45,
-					color: '#000000',
+					color: (ThemeMode.is_dark() ? 'white': 'black'),
 					tickFormatter: (tick) => {
 						const t = new Date(tick * 1000);
 						return (t.getDate() + ' ' + t.toLocaleString('default', { month: 'long' }));
 					}
 				},
 				yaxis: {
-					color: '#000000',
+					color: (ThemeMode.is_dark() ? 'white': 'black'),
 					tickFormatter: Units.get_formatted_size.bind(Units)
 				},
 				y2axis: {
-					color: '#000000'
+					color: (ThemeMode.is_dark() ? 'white': 'black'),
 				},
 				legend: {
 					container: $('#' + this.ids.bytes_files_graph.legend_container_id)

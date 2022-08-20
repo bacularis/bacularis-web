@@ -36,7 +36,7 @@
 			<div class="w3-right w3-margin-top w3-margin-right" title="<%[ To disable refreshing please type 0. ]%>">
 				<span style="line-height: 41px"><%[ Refresh interval (sec.): ]%></span> <input type="text" id="status_director_refresh_interval" class="w3-input w3-border w3-right w3-margin-left" value="10" style="width: 50px"/>
 			</div>
-			<div class="w3-panel w3-card w3-light-grey" style="padding-bottom: 16px;">
+			<div class="w3-panel w3-card" style="padding-bottom: 16px;">
 				<div class="w3-row">
 					<a href="javascript:void(0)" onclick="W3SubTabs.open('status_director_subtab_graphical', 'status_director_graphical_output', 'status_director_container');">
 						<div id="status_director_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding"><%[ Graphical status ]%></div>

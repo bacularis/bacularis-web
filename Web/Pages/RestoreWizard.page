@@ -1,6 +1,5 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
 <com:TContent ID="Wizard">
-	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/restore-wizard.css %> />
 	<com:TWizard ID="RestoreWizard"
 		CssClass="wizard"
 		StepStyle.CssClass="w3-container"
@@ -680,7 +679,11 @@ $(function() {
 			<table id="restore-browser">
 				<tr>
 					<td rowspan="2" style="height: 100%">
-						<div id="restore-browser-files-loading" style="display: none"></div>
+						<div id="restore-browser-files-loading" style="display: none">
+							<div style="position: relative; height: 100%;">
+								<i class="fa-solid fa-sync-alt fa-5x w3-spin"></i>
+							</div>
+						</div>
 						<div id="restore-browser-files" class="w3-border">
 							<div id="restore-browser-files-content-flat"></div>
 							<div id="restore-browser-files-content-tree" style="display: none;"></div>
@@ -1419,7 +1422,7 @@ $(function() {
 					$(rb).find('tbody')[0].style.height = comp_rb_height;
 
 					var rb_files = document.getElementById('restore-browser-files');
-					var rb_load = document.getElementById('restore-browser-files-loading');
+					var rb_load = document.querySelector('#restore-browser-files-loading > div');
 					rb_load.style.width = rb_files.offsetWidth + 'px';
 					rb_load.style.height = rb_files.offsetHeight + 'px';
 				}
@@ -1455,7 +1458,7 @@ $(function() {
 				<p><%[ During restore there will be used following volumes: ]%></p>
 				<com:TRepeater ID="RestoreVolumes">
 					<prop:HeaderTemplate>
-						<table class="w3-table w3-striped w3-border w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+						<table class="w3-table w3-striped w3-border w3-hoverable w3-margin-bottom" style="width: 100%">
 							<thead>
 								<tr>
 									<th><%[ In Changer ]%></th>
@@ -1466,7 +1469,7 @@ $(function() {
 					<prop:ItemTemplate>
 							<tr>
 								<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
-								<td> <i class="fa fa-hdd w3-text-black"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
+								<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
 							</tr>
 					</prop:ItemTemplate>
 					<prop:FooterTemplate>

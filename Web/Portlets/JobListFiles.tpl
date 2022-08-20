@@ -33,7 +33,7 @@
 	<div id="job_list_files_no_result" class="w3-panel w3-center" style="display: none"><strong><%[ No item result ]%></strong></div>
 	<com:TActiveRepeater ID="FileList">
 		<prop:HeaderTemplate>
-			<table class="w3-table w3-striped w3-white w3-margin-bottom dataTable dtr-column">
+			<table class="w3-table w3-striped w3-margin-bottom dataTable dtr-column">
 				<thead>
 					<tr class="row">
 						<th class="w3-center w3-hide-small" style="width: 65px"><%[ Attributes ]%></th>

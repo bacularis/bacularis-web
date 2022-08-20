@@ -37,7 +37,7 @@
 			</com:TActiveLinkButton>
 			<i id="job_bandwidth_limit_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
 		</footer>
-		<div id="job_bandwidth_limit_log" class="w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+		<div id="job_bandwidth_limit_log" class="w3-panel w3-card" style="display: none; max-height: 200px; overflow-x: auto;">
 			<div class="w3-code">
 				<pre><com:TActiveLabel ID="BandwidthLog" /></pre>
 			</div>

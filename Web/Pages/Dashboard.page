@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<div class="w3-quarter">
-			<div class="w3-container w3-card-4 w3-blue w3-padding-24 w3-tooltip w3-animate-top usage_box">
+			<div class="w3-container w3-card-4 w3-blue w3-padding-24 w3-tooltip w3-animate-top usage_box" style="background-color: #2196F3!important">
 				<div class="w3-left"><i class="fa fa-tasks w3-xxlarge w3-margin-right"></i></div>
 				<div class="w3-right">
 					<h4 id="job_no">-</h4>
@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<div class="w3-threequarter">
-				<table id="last_jobs_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+				<table id="last_jobs_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>
@@ -133,5 +133,9 @@ MonitorParams = {
 	job_totals: null,
 	dbsize: null
 };
+ThemeMode.add_cb(() => {
+	Dashboard.update_pie_jobstatus();
+	Dashboard.update_bytes_files_graph();
+});
 </script>
 </com:TContent>

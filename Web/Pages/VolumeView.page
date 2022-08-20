@@ -30,7 +30,7 @@
 				<i class="fa fa-recycle"></i> &nbsp;<%[ Purge ]%>
 			</com:TActiveLinkButton>
 		</div>
-		<div id="volume_action_log" class="w3-panel w3-card w3-light-grey" style="display: none;">
+		<div id="volume_action_log" class="w3-panel w3-card" style="display: none;">
 			<div class="w3-code notranslate">
 				<pre><com:TActiveLabel ID="VolumeActionLog" /></pre>
 			</div>
@@ -152,7 +152,7 @@
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="jobs_on_volume" style="display: none">
-		<table id="jobs_on_volume_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+		<table id="jobs_on_volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -379,7 +379,7 @@
 				<com:TActiveCheckBox ID="InChanger" AutoPostBack="false" CssClass="w3-check" />
 			</div>
 		</div>
-		<div id="volume_config_log" class="w3-panel w3-card w3-light-grey" style="display: none">
+		<div id="volume_config_log" class="w3-panel w3-card" style="display: none">
 			<div class="w3-code notranslate">
 				<pre><com:TActiveLabel ID="VolumeConfigLog" /></pre>
 			</div>

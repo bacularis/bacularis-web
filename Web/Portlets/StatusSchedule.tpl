@@ -81,7 +81,7 @@
 			<i class="fa fa-check"></i> &nbsp;<%[ Apply filters ]%>
 		</com:TActiveLinkButton>
 	</div>
-	<table id="schedule_list" class="w3-table w3-striped w3-hoverable w3-white w3-margin-bottom" style="width: 100%">
+	<table id="schedule_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 		<thead>
 			<tr>
 				<th></th>

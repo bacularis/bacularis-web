@@ -4,6 +4,8 @@
 	<body id="message-body">
 		<com:TForm>
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
 			<com:TContentPlaceHolder ID="Message" />
 		</com:TForm>
 	</body>
