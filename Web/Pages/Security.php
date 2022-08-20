@@ -917,6 +917,9 @@ class Security extends BaculumWebPage
 	private function convertLdapUsers(array $users, array $params, $config_form_result = false)
 	{
 		$user_list = [];
+		if (!key_exists('count', $users)) {
+			return $user_list;
+		}
 		for ($i = 0; $i < $users['count']; $i++) {
 			if (!key_exists($params['user_attr'], $users[$i])) {
 				$emsg = "User attribute '{$params['user_attr']}' doesn't exist in LDAP response.";
