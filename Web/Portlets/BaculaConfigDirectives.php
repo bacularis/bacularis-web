@@ -57,6 +57,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 
 	private $directive_types = [
 		'Bacularis\Web\Portlets\DirectiveCheckBox',
+		'Bacularis\Web\Portlets\DirectiveCheckBoxSimple',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveComboBoxReload',
 		'Bacularis\Web\Portlets\DirectiveInteger',
@@ -320,7 +321,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					// skip not changed values that don't exist in config
 					continue;
 				}
-				if ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBox') {
+				if ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBox' || $this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveCheckBoxSimple') {
 					settype($default_value, 'bool');
 				} elseif ($this->directive_types[$i] === 'Bacularis\Web\Portlets\DirectiveInteger') {
 					settype($directive_value, 'int');

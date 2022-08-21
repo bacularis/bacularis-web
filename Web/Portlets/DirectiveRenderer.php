@@ -33,6 +33,7 @@ use Prado\Prado;
 use Prado\Web\UI\WebControls\TItemDataRenderer;
 use Bacularis\Web\Portlets\DirectiveListTemplate;
 use Bacularis\Web\Portlets\DirectiveCheckBox;
+use Bacularis\Web\Portlets\DirectiveCheckBoxSimple;
 use Bacularis\Web\Portlets\DirectiveComboBox;
 use Bacularis\Web\Portlets\DirectiveComboBoxReload;
 use Bacularis\Web\Portlets\DirectiveInteger;
