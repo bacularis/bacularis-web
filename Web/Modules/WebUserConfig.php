@@ -173,9 +173,6 @@ class WebUserConfig extends ConfigFileModule
 	{
 		$config = $this->getConfig();
 		$config[$username] = $user_config;
-		if (key_exists('username', $user_config)) {
-			unset($user_config['username']);
-		}
 		return $this->setConfig($config);
 	}
 

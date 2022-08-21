@@ -321,16 +321,16 @@ class Security extends BaculumWebPage
 		}
 		$user_win_type = $this->UserWindowType->Value;
 		$username = $this->UserName->Text;
+		$config = $this->getModule('user_config')->getUserConfig($username);
 		$this->getCallbackClient()->hide('user_window_username_exists');
 		if ($user_win_type === self::TYPE_ADD_WINDOW) {
-			$config = $this->getModule('user_config')->getUserConfig($username);
 			if (count($config) > 0) {
 				$this->getCallbackClient()->show('user_window_username_exists');
 				return;
 			}
 		}
 
-		$config = [];
+		$config['username'] = $username;
 		$config['long_name'] = $this->UserLongName->Text;
 		$config['description'] = $this->UserDescription->Text;
 		$config['email'] = $this->UserEmail->Text;
