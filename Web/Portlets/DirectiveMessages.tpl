@@ -14,6 +14,7 @@
 			<h2><%#$this->Data['directive_name']%></h2>
 			<com:Bacularis.Web.Portlets.DirectiveTextBox />
 			<com:Bacularis.Web.Portlets.MessageTypes ID="Types" />
+			<div class="w3-clear"></div>
 		</div>
 	</prop:ItemTemplate>
 </com:TActiveRepeater>

@@ -45,7 +45,7 @@ class MessageTypes extends DirectiveListTemplate
 
 	public function getDirectiveValues()
 	{
-		$type_controls = $this->RepeaterMessageTypes->findControlsByType('Bacularis\Web\Portlets\DirectiveCheckBox');
+		$type_controls = $this->RepeaterMessageTypes->findControlsByType('Bacularis\Web\Portlets\DirectiveCheckBoxSimple');
 		$is_all = false;
 		$types = [];
 		for ($i = 0; $i < count($type_controls); $i++) {
@@ -70,7 +70,7 @@ class MessageTypes extends DirectiveListTemplate
 			// skip parent repeater items
 			return;
 		}
-		$control = $this->getChildControl($param->Item, 'Bacularis\Web\Portlets\DirectiveCheckBox');
+		$control = $this->getChildControl($param->Item, 'Bacularis\Web\Portlets\DirectiveCheckBoxSimple');
 		if (is_object($control)) {
 			$control->setHost($param->Item->Data['host']);
 			$control->setComponentType($param->Item->Data['component_type']);
