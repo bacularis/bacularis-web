@@ -295,6 +295,7 @@ var oJobHistoryList = {
 		this.table = $('#' + this.ids.job_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar"><"#table_mode"><"#table_adv_filters">frtip',
 			stateSave: true,
 			buttons: [
@@ -432,6 +433,9 @@ var oJobHistoryList = {
 				{
 					data: 'jobid',
 					render: function (data, type, row) {
+						if (type !== 'display') {
+							return data;
+						}
 						var container = document.createElement('DIV');
 						var btn, i;
 						if (['C', 'R'].indexOf(row.jobstatus) === -1) {
@@ -469,7 +473,6 @@ var oJobHistoryList = {
 						i.className = 'fa fa-list-ul';
 						btn.title = '<%[ Details ]%>';
 						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
 						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
 						container.appendChild(btn);
 						return container.outerHTML;
@@ -1714,9 +1717,11 @@ MonitorParams = {jobs: null};
 let oJobHistoryReport;
 $(function() {
 	MonitorCalls.push(() => {
-		oJobHistoryReport = new JobHistoryReport();
+		setTimeout(() => {
+			oJobHistoryReport = new JobHistoryReport();
+			oJobList.init();
+		}, 1000);
 	});
-	MonitorCalls.push(oJobList.init.bind(oJobList));
 });
 </script>
 </com:TContent>
