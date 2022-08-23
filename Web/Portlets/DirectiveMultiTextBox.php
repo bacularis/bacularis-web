@@ -60,7 +60,8 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 		return $values;
 	}
 
-	public function getDirectiveData() {
+	public function getDirectiveData()
+	{
 		return $this->getDirectiveValue(true);
 	}
 

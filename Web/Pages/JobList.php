@@ -90,7 +90,7 @@ class JobList extends BaculumWebPage
 	/**
 	 * Rerun job by jobid.
 	 *
-	 * @param integer $jobid job identifier
+	 * @param int $jobid job identifier
 	 * @return object response from run job API request
 	 */
 	private function rerunJob($jobid)

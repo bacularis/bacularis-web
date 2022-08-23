@@ -18,8 +18,8 @@ namespace Bacularis\Web\Modules;
 use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
 
-class WebAuditLog extends AuditLog {
-
+class WebAuditLog extends AuditLog
+{
 	/**
 	 * Audit log file path
 	 */
@@ -30,7 +30,8 @@ class WebAuditLog extends AuditLog {
 	 */
 	protected const LOG_FILE_EXT = '.log';
 
-	public function getConfigFile() {
+	public function getConfigFile()
+	{
 		return Prado::getPathOfNamespace(
 			self::LOG_FILE_PATH,
 			self::LOG_FILE_EXT

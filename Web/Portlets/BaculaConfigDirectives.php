@@ -145,7 +145,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$data = $this->getData();
 		// Pre-defined config for new resource can be provided in Data property.
 		if (!empty($data)) {
-			$config = (object)$data;
+			$config = (object) $data;
 			$predefined = true;
 		}
 
@@ -291,7 +291,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->RepeaterDirectives->dataBind();
 	}
 
-	public function getDirectiveValues($data_mode = false) {
+	public function getDirectiveValues($data_mode = false)
+	{
 		$directives = [];
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
