@@ -4441,3 +4441,6 @@ msgstr "Log categories"
 
 msgid "seconds"
 msgstr "seconds"
+
+msgid "Job over time report"
+msgstr "Job over time report"
