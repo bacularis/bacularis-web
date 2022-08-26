@@ -212,7 +212,7 @@ var oGraphicalClientStatus = {
 			return el;
 		},
 		started_epoch: function(value) {
-			return Units.format_date(value);
+			return Units.format_date(value, true);
 		},
 		jobs_run: function(value) {
 			return (this.data.hasOwnProperty('running') ? this.data.running.length : 0);
@@ -716,26 +716,26 @@ var oJobForClientList = {
 					visible: false
 				},
 				{
-					data: 'schedtime',
-					render: render_date,
+					data: 'schedtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
-					data: 'starttime',
-					render: render_date
+					data: 'starttime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'endtime',
-					render: render_date
+					data: 'endtime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'realendtime',
-					render: render_date,
+					data: 'realendtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
 					data: 'jobtdate',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{
@@ -744,7 +744,7 @@ var oJobForClientList = {
 				},
 				{
 					data: 'volsessiontime',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{

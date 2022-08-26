@@ -158,7 +158,7 @@ var oJobScheduleList = {
 				{data: 'priority'},
 				{
 					data: 'schedtime_epoch',
-					render: render_date_ts
+					render: render_date_ts_local
 				},
 				<%=empty($this->Job) ? '{data: "name"},' : ''%>
 				{data: 'client'},

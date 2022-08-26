@@ -460,7 +460,7 @@ var oAppSettingsAuditLog = {
 				},
 				{
 					data: 'date',
-					render: render_date,
+					render: render_date_local,
 					width: '15%'
 				},
 				{

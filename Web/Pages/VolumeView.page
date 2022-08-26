@@ -453,26 +453,26 @@ var oJobsOnVolumeList = {
 					visible: false
 				},
 				{
-					data: 'schedtime',
-					render: render_date,
+					data: 'schedtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
-					data: 'starttime',
-					render: render_date
+					data: 'starttime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'endtime',
-					render: render_date
+					data: 'endtime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'realendtime',
-					render: render_date,
+					data: 'realendtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
 					data: 'jobtdate',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{
@@ -481,7 +481,7 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'volsessiontime',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{

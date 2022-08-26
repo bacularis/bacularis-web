@@ -483,7 +483,7 @@ var oGraphicalStorageStatus = {
 			return el;
 		},
 		started_epoch: function(value) {
-			return Units.format_date(value);
+			return Units.format_date(value, true);
 		},
 		plugins: function(value) {
 			var val;
@@ -1469,11 +1469,11 @@ var oGraphicalStorageStatus = {
 		this.add_row(table, '<%[ Type: ]%>', type);
 
 		// Start time
-		var starttime = Units.format_date(job.starttime_epoch);
+		var starttime = Units.format_date(job.starttime_epoch, true);
 		this.add_row(table, '<%[ Start time: ]%>', starttime);
 
 		// End time
-		var endtime = Units.format_date(job.endtime_epoch);
+		var endtime = Units.format_date(job.endtime_epoch, true);
 		this.add_row(table, '<%[ End time: ]%>', endtime);
 
 		// Level
@@ -2081,7 +2081,7 @@ var oSlotList = {
 				{data: 'mediatype'},
 				{
 					data: 'lastwritten',
-					render: render_date
+					render: render_date_local
 				},
 				{
 					data: 'whenexpire',

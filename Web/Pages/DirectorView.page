@@ -183,7 +183,7 @@ var oGraphicalDirectorStatus = {
 			return el;
 		},
 		started_epoch: function(value) {
-			return Units.format_date(value);
+			return Units.format_date(value, true);
 		}
 	},
 	init: function() {
@@ -346,7 +346,7 @@ var oGraphicalDirectorStatus = {
 		job_schedtime_icon = document.createElement('I');
 		job_schedtime_icon.className = 'fa fa-clock';
 		var job_schedtime_desc = document.createElement('SPAN');
-		var schedtime = Units.format_date(job.schedtime_epoch);
+		var schedtime = Units.format_date(job.schedtime_epoch, true);
 		job_schedtime_desc.innerHTML = '&nbsp; ' + schedtime;
 		job_schedtime.appendChild(job_schedtime_icon);
 		job_schedtime.appendChild(job_schedtime_desc);
@@ -613,11 +613,11 @@ var oGraphicalDirectorStatus = {
 		this.add_row(table, '<%[ Storage: ]%>', job.storage);
 
 		// Scheduled time
-		var sched_time = Units.format_date(job.schedtime_epoch);
+		var sched_time = Units.format_date(job.schedtime_epoch, true);
 		this.add_row(table, '<%[ Scheduled time: ]%>', sched_time);
 
 		// Start time
-		var start_time = Units.format_date(job.starttime_epoch);
+		var start_time = Units.format_date(job.starttime_epoch, true);
 		this.add_row(table, '<%[ Start time: ]%>', start_time);
 
 		// Priority
@@ -705,7 +705,7 @@ var oGraphicalDirectorStatus = {
 		job_endtime_icon = document.createElement('I');
 		job_endtime_icon.className = 'fa fa-clock';
 		var job_endtime_desc = document.createElement('SPAN');
-		var endtime = Units.format_date(job.endtime_epoch);
+		var endtime = Units.format_date(job.endtime_epoch, true);
 		job_endtime_desc.innerHTML = '&nbsp; ' + endtime;
 		job_endtime.appendChild(job_endtime_icon);
 		job_endtime.appendChild(job_endtime_desc);
@@ -768,7 +768,7 @@ var oGraphicalDirectorStatus = {
 		this.add_row(table, '<%[ Job errors: ]%>', job.errors);
 
 		// Start time
-		var start_time = Units.format_date(job.starttime_epoch);
+		var start_time = Units.format_date(job.starttime_epoch, true);
 		this.add_row(table, '<%[ Start time: ]%>', start_time);
 
 		container.appendChild(header);

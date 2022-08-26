@@ -620,7 +620,7 @@ var oJobGraphs = {
 			},
 			xaxis: {
 				mode : 'time',
-				timeMode: 'local',
+				timeMode: 'UTC',
 				labelsAngle : 45,
 				autoscale: true,
 				showLabels: true,
@@ -712,7 +712,7 @@ var oJobGraphs = {
 					min : area.x1,
 					max : area.x2,
 					mode : 'time',
-					timeMode: 'local',
+					timeMode: 'UTC',
 					labelsAngle : 45,
 					color: 'black',
 					autoscale: true,
@@ -841,7 +841,8 @@ var oJobGraphs = {
 		var options = $.extend(true, graph_options, {
 			xaxis: {
 				min: (now - 2592000000),
-				max: now
+				max: now,
+				timeMode: 'UTC'
 			},
 			yaxis: {
 				autoscale: true,
@@ -1068,26 +1069,26 @@ var oJobHistoryList = {
 					visible: false
 				},
 				{
-					data: 'schedtime',
-					render: render_date,
+					data: 'schedtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
-					data: 'starttime',
-					render: render_date
+					data: 'starttime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'endtime',
-					render: render_date
+					data: 'endtime_epoch',
+					render: render_date_ts
 				},
 				{
-					data: 'realendtime',
-					render: render_date,
+					data: 'realendtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
 					data: 'jobtdate',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{
@@ -1096,7 +1097,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'volsessiontime',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{

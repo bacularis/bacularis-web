@@ -439,12 +439,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'firstwritten',
-					render: render_date,
+					render: render_date_local,
 					visible: false
 				},
 				{
 					data: 'lastwritten',
-					render: render_date
+					render: render_date_local
 				},
 				{
 					data: 'volbytes',
@@ -500,7 +500,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'labeldate',
-					render: render_date,
+					render: render_date_local,
 					visible: false
 				},
 				{
@@ -1267,12 +1267,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'firstwritten',
-					render: render_date,
+					render: render_date_local,
 					visible: false
 				},
 				{
 					data: 'lastwritten',
-					render: render_date
+					render: render_date_local
 				},
 				{
 					data: 'volbytes',
@@ -1328,7 +1328,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'labeldate',
-					render: render_date,
+					render: render_date_local,
 					visible: false
 				},
 				{

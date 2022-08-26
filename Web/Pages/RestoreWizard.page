@@ -457,12 +457,12 @@ var oJobsToRestoreList = {
 				},
 				{
 					data: 'starttime',
-					render: render_date,
+					render: render_date_local,
 					responsivePriority: 9
 				},
 				{
 					data: 'endtime',
-					render: render_date,
+					render: render_date_local,
 					responsivePriority: 10
 				},
 				{
@@ -1053,7 +1053,7 @@ var oRestoreBrowserFiles = {
 		status.innerHTML = JobStatus.get_icon(status.textContent).outerHTML;
 		var time_point = document.getElementById(this.ids.time_point);
 		var d = date_time_to_ts(time_point.textContent);
-		time_point.textContent = Units.format_date(d);
+		time_point.textContent = Units.format_date(d, true);
 	}
 };
 $(function() {
@@ -1169,7 +1169,7 @@ var oRestoreBrowserVersions = {
 		// file mtime
 		var span_mtime = document.createElement('SPAN');
 		span_mtime.className = this.cls.third;
-		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime) : 0);
+		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime, true) : 0);
 		mtime = document.createTextNode(mtime);
 		span_mtime.appendChild(mtime);
 
@@ -1350,7 +1350,7 @@ var oRestoreBrowserSelectedFiles = {
 		// file mtime
 		var span_mtime = document.createElement('SPAN');
 		span_mtime.className = this.cls.third;
-		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime) : 0);
+		var mtime = 'MTIME: ' + (item.lstat ? Units.format_date(item.lstat.mtime, true) : 0);
 		mtime = document.createTextNode(mtime);
 		span_mtime.appendChild(mtime);
 

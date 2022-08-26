@@ -89,12 +89,12 @@ var JobClass = jQuery.klass({
 		 * migration job in which no SelectionType defined.
 		 */
 		if (this.job.starttime) {
-			this.start_stamp = iso_date_to_timestamp(this.job.starttime);
+			this.start_stamp = this.job.starttime_epoch * 1000;
 		}
 	},
 	set_end_stamp: function() {
 		if (this.job.endtime) {
-			this.end_stamp =  iso_date_to_timestamp(this.job.endtime);
+			this.end_stamp =  this.job.endtime_epoch * 1000;
 		}
 	}
 });
@@ -133,7 +133,7 @@ var GraphClass = jQuery.klass({
 		},
 		xaxis: {
 			mode : 'time',
-			timeMode: 'local',
+			timeMode: 'UTC',
 			labelsAngle : 45,
 			autoscale: true,
 			showLabels: true
@@ -244,7 +244,7 @@ var GraphClass = jQuery.klass({
 					min : area.x1,
 					max : area.x2,
 					mode : 'time',
-					timeMode: 'local',
+					timeMode: 'UTC',
 					labelsAngle : 45,
 					autoscale: true
 					},
@@ -549,7 +549,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -598,7 +598,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -649,7 +649,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 				series_count[date] = 0;
@@ -703,7 +703,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 				series_count[date] = 0;
@@ -799,7 +799,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -848,7 +848,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -899,7 +899,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 				series_count[date] = 0;
@@ -953,7 +953,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 				series_count[date] = 0;
@@ -1007,7 +1007,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), d.getUTCHours())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -1056,7 +1056,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (series_uniq.hasOwnProperty(date) == false) {
 				series_uniq[date] = 0;
 			}
@@ -1187,7 +1187,7 @@ var GraphClass = jQuery.klass({
 				continue;
 			}
 			d = new Date(this.jobs[i].start_stamp);
-			date = (new Date(d.getFullYear(), d.getMonth(), d.getDate())).getTime();
+			date = (new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())).getTime();
 			if (!series_uniq.hasOwnProperty(date)) {
 				series_uniq[date] = {ok: 0, error: 0, cancel: 0};
 			}

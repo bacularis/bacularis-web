@@ -128,7 +128,7 @@ var Units = {
 		}
 		return ret;
 	},
-	format_date: function(timestamp) {
+	format_date: function(timestamp, is_utc) {
 		if (typeof(timestamp) === 'string') {
 			timestamp = parseInt(timestamp, 10);
 		}
@@ -137,67 +137,89 @@ var Units = {
 		}
 		var d = new Date(timestamp);
 		var dt = DATE_TIME_FORMAT;
+		let r;
 		if (dt.indexOf('Y') !== -1) { // full 4 digits year, ex. 2021
-			dt = dt.replace(/Y/g, d.getFullYear());
+			r = is_utc ? d.getFullYear() : d.getUTCFullYear()
+			dt = dt.replace(/Y/g, r);
 		}
 		if (dt.indexOf('y') !== -1) { // 2 digits year, ex, 21
-			dt = dt.replace(/y/g, ('0' + d.getFullYear()).slice(-2));
+			r = is_utc ? d.getFullYear() : d.getUTCFullYear();
+			dt = dt.replace(/y/g, ('0' + r).slice(-2));
 		}
 		if (dt.indexOf('M') !== -1) { // 2 digits month 01..12
-			dt = dt.replace(/M/g, ('0' + (d.getMonth() + 1)).slice(-2));
+			r = is_utc ? d.getMonth() : d.getUTCMonth();
+			dt = dt.replace(/M/g, ('0' + (r + 1)).slice(-2));
 		}
 		if (dt.indexOf('m') !== -1) { // 1-2 digits month 1..12
-			dt = dt.replace(/m/g, (d.getMonth() + 1));
+			r = is_utc ? d.getMonth() : d.getUTCMonth();
+			dt = dt.replace(/m/g, (r + 1));
 		}
 		if (dt.indexOf('D') !== -1) { // 2 digits day 01..31
-			dt = dt.replace(/D/g, ('0' + d.getDate()).slice(-2));
+			r = is_utc ? d.getDate() : d.getUTCDate();
+			dt = dt.replace(/D/g, ('0' + r).slice(-2));
 		}
 		if (dt.indexOf('d') !== -1) { // 1-2 digits day 1..31
-			dt = dt.replace(/d/g, d.getDate());
+			r = is_utc ? d.getDate() : d.getUTCDate();
+			dt = dt.replace(/d/g, r);
 		}
 		if (dt.indexOf('H') !== -1) { // 2 digits 24-hour format hour 00..23
-			dt = dt.replace(/H/g, ('0' + d.getHours()).slice(-2));
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			dt = dt.replace(/H/g, ('0' + r).slice(-2));
 		}
 		if (dt.indexOf('h') !== -1) { // 1-2 digits 24-hour format hour 0..23
-			dt = dt.replace(/h/g, d.getHours());
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			dt = dt.replace(/h/g, r);
 		}
 		if (dt.indexOf('G') !== -1) { // 2 digits 12-hour format hour value 01..12
-			var hours = d.getHours() % 12;
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			var hours = r % 12;
 			hours = hours ? hours : 12;
 			dt = dt.replace(/G/g, ('0' + hours).slice(-2));
 		}
 		if (dt.indexOf('g') !== -1) { // 1-2 digits 12-hour format hour value 1..12
-			var hours = d.getHours() % 12;
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			var hours = r % 12;
 			hours = hours ? hours : 12;
 			dt = dt.replace(/g/g, hours);
 		}
 		if (dt.indexOf('I') !== -1) { // 2 digits minutes 00..59
-			dt = dt.replace(/I/g, ('0' + d.getMinutes()).slice(-2));
+			r = is_utc ? d.getMinutes() : d.getUTCMinutes();
+			dt = dt.replace(/I/g, ('0' + r).slice(-2));
 		}
 		if (dt.indexOf('i') !== -1) { // 1-2 digits minutes 0..59
-			dt = dt.replace(/i/g, d.getMinutes());
+			r = is_utc ? d.getMinutes() : d.getUTCMinutes();
+			dt = dt.replace(/i/g, r);
 		}
 		if (dt.indexOf('S') !== -1) { // 2 digits seconds 00..23
-			dt = dt.replace(/S/g, ('0' + d.getSeconds()).slice(-2));
+			r = is_utc ? d.getSeconds() : d.getUTCSeconds();
+			dt = dt.replace(/S/g, ('0' + r).slice(-2));
 		}
 		if (dt.indexOf('s') !== -1) { // 1-2 digits seconds 0..23
-			dt = dt.replace(/s/g, d.getSeconds());
+			r = is_utc ? d.getSeconds() : d.getUTCSeconds();
+			dt = dt.replace(/s/g, r);
 		}
 		if (dt.indexOf('p') !== -1) { // AM/PM value
-			var am_pm = d.getHours() >= 12 ? 'PM' : 'AM';
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			var am_pm = r >= 12 ? 'PM' : 'AM';
 			dt = dt.replace(/p/g, am_pm);
 		}
 		if (dt.indexOf('R') !== -1) { // 24-hours format time value 17:22:41
-			var minutes = ('0' + d.getMinutes()).slice(-2);
-			var seconds = ('0' + d.getSeconds()).slice(-2);
-			dt = dt.replace(/R/g, d.getHours() + ':' + minutes + ':' + seconds);
+			r = is_utc ? d.getMinutes() : d.getUTCMinutes();
+			var minutes = ('0' + r).slice(-2);
+			r = is_utc ? d.getSeconds() : d.getUTCSeconds();
+			var seconds = ('0' + r).slice(-2);
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			dt = dt.replace(/R/g, r + ':' + minutes + ':' + seconds);
 		}
 		if (dt.indexOf('r') !== -1) { // time in digits 12-hours format 11:05:12 AM
-			var am_pm = d.getHours() >= 12 ? 'PM' : 'AM';
-			var hours = d.getHours() % 12;
+			r = is_utc ? d.getHours() : d.getUTCHours();
+			var am_pm = r >= 12 ? 'PM' : 'AM';
+			var hours = r % 12;
 			hours = hours ? hours : 12;
-			var minutes = ('0' + d.getMinutes()).slice(-2);
-			var seconds = ('0' + d.getSeconds()).slice(-2);
+			r = is_utc ? d.getMinutes() : d.getUTCMinutes();
+			var minutes = ('0' + r).slice(-2);
+			r = is_utc ? d.getSeconds() : d.getUTCSeconds();
+			var seconds = ('0' + r).slice(-2);
 			dt = dt.replace(/r/g, hours + ':' + minutes + ':' + seconds + ' ' + am_pm);
 		}
 		return dt;
@@ -206,7 +228,7 @@ var Units = {
 		var d = date;
 		if (/^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}$/.test(d)) {
 			var t = date_time_to_ts(d);
-			d = Units.format_date(t);
+			d = Units.format_date(t, true);
 		}
 		return d;
 	},
@@ -319,7 +341,7 @@ var Formatters = {
 		{css_class: 'size', format_func: function(val) { return Units.get_formatted_size(val); }},
 		{css_class: 'time', format_func: function(val) { return Units.format_time_period(val); }},
 		{css_class: 'datetime', format_func: function(val) { return Units.format_date_str(val); }},
-		{css_class: 'udatetime', format_func: function(val) { return Units.format_date(val); }}
+		{css_class: 'udatetime', format_func: function(val) { return Units.format_date(val, true); }}
 	],
 	set_formatters: function() {
 		var elements, formatter, txt, val;
@@ -367,10 +389,33 @@ function render_date(data, type, row) {
 	return t;
 }
 
+function render_date_local(data, type, row) {
+	var t = data;
+	if (t) {
+		var d = date_time_to_ts(t);
+		if (type == 'display') {
+			t = Units.format_date(d, true);
+		} else {
+			t = d;
+		}
+	}
+	return t;
+}
+
 function render_date_ts(data, type, row) {
 	var t;
 	if (type == 'display' || type == 'filter') {
 		t = Units.format_date(data)
+	} else {
+		t = data;
+	}
+	return t;
+}
+
+function render_date_ts_local(data, type, row) {
+	var t;
+	if (type == 'display' || type == 'filter') {
+		t = Units.format_date(data, true)
 	} else {
 		t = data;
 	}
@@ -382,7 +427,7 @@ function render_date_ex(data, type, row) {
 	if (t && t != 'no date') {
 		var d = (new Date(t)).getTime();
 		if (type == 'display') {
-			t = Units.format_date(d);
+			t = Units.format_date(d, true);
 		} else {
 			t = d;
 		}
@@ -437,15 +482,12 @@ function render_time_period(data, type, row) {
 function render_job_duration(data, type, row) {
 	let ret;
 	let duration = 0;
-	if (row.starttime && row.endtime) {
-		const st = iso_date_to_timestamp(row.starttime);
-		const et = iso_date_to_timestamp(row.endtime);
-		duration = et - st;
+	if (row.starttime_epoch && row.endtime_epoch) {
+		duration = row.endtime_epoch - row.starttime_epoch;
 	}
 	if (type == 'display' || type == 'filter') {
-		if (row.starttime && row.endtime) {
-			const d = parseInt(duration / 1000, 10);
-			ret = Units.format_time_duration(d);
+		if (row.starttime_epoch && row.endtime_epoch) {
+			ret = Units.format_time_duration(duration);
 		} else {
 			ret = '-';
 		}
@@ -738,28 +780,28 @@ var oLastJobsList = {
 					visible: false
 				},
 				{
-					data: 'schedtime',
-					render: render_date,
+					data: 'schedtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
-					data: 'starttime',
-					render: render_date,
+					data: 'starttime_epoch',
+					render: render_date_ts,
 					responsivePriority: 5
 				},
 				{
-					data: 'endtime',
-					render: render_date,
+					data: 'endtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
-					data: 'realendtime',
-					render: render_date,
+					data: 'realendtime_epoch',
+					render: render_date_ts,
 					visible: false
 				},
 				{
 					data: 'jobtdate',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{
@@ -768,7 +810,7 @@ var oLastJobsList = {
 				},
 				{
 					data: 'volsessiontime',
-					render: render_date_ts,
+					render: render_date_ts_local,
 					visible: false
 				},
 				{
@@ -1053,7 +1095,7 @@ var Dashboard = {
 					def_min: def_min,
 					def_max: def_max,
 					mode: 'time',
-					timeMode: 'local',
+					timeMode: 'UTC',
 					timeUnit: 'second',
 					labelsAngle: 45,
 					color: (ThemeMode.is_dark() ? 'white': 'black'),
