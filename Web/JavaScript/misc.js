@@ -1017,7 +1017,7 @@ var Dashboard = {
 		document.getElementById(this.ids.jobs.most_count).textContent = occupancy;
 	},
 	update_jobtotals: function() {
-		document.getElementById(this.ids.jobtotals.total_bytes).textContent = Units.get_formatted_size(this.stats.jobtotals.bytes);
+		document.getElementById(this.ids.jobtotals.total_bytes).textContent = Units.get_formatted_size(this.stats.jobtotals.bytes || 0);
 		document.getElementById(this.ids.jobtotals.total_files).textContent = this.stats.jobtotals.files || 0;
 	},
 	update_database: function() {
