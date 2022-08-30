@@ -608,14 +608,11 @@ msgstr "Drive has to contain digit value from set [0-9]."
 msgid "Slots for update have to contain string value from set [0-9-,]."
 msgstr "Slots for update have to contain string value from set [0-9-,]."
 
-msgid "Baculum problem"
-msgstr "Baculum problem"
-
 msgid "or run"
 msgstr "or run"
 
-msgid "Baculum Initial Wizard"
-msgstr "Baculum Initial Wizard"
+msgid "Bacularis Initial Wizard"
+msgstr "Bacularis Initial Wizard"
 
 msgid "internal Baculum error."
 msgstr "internal Baculum error."

@@ -30,12 +30,12 @@
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
- * Baculum error page.
+ * Bacularis error page.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Page
  */
-class BaculumError extends BaculumWebPage
+class BacularisError extends BaculumWebPage
 {
 	public $error;
 	public $output;

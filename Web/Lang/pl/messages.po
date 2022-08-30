@@ -614,14 +614,11 @@ msgstr "Napęd musi zawierać cyfry z zakresu [0-9]"
 msgid "Slots for update have to contain string value from set [0-9-,]."
 msgstr "Sloty do aktualizacji muszą zawierać ciąg znaków ze zbioru [0-9-,]."
 
-msgid "Baculum problem"
-msgstr "Baculum zgłosił problem"
-
 msgid "or run"
 msgstr "lub uruchom"
 
-msgid "Baculum Initial Wizard"
-msgstr "Kreator konfiguracji Baculum"
+msgid "Bacularis Initial Wizard"
+msgstr "Kreator konfiguracji Bacularis"
 
 msgid "internal Baculum error."
 msgstr "wewnętrzny błąd Baculum."

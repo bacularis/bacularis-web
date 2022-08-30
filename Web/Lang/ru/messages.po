@@ -614,14 +614,11 @@ msgstr "Диск должен содержать числовое значени
 msgid "Slots for update have to contain string value from set [0-9-,]."
 msgstr "Слоты для метки должны содержать строковое значение из набора [0-9-,]."
 
-msgid "Baculum problem"
-msgstr "Baculum проблема"
-
 msgid "or run"
 msgstr "или запустить"
 
-msgid "Baculum Initial Wizard"
-msgstr "Мастер инициализации Baculum"
+msgid "Bacularis Initial Wizard"
+msgstr "Мастер инициализации Bacularis"
 
 msgid "internal Baculum error."
 msgstr "внутренняя ошибка Baculum."

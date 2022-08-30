@@ -476,7 +476,7 @@ class BaculumAPIClient extends WebModule
 			$headers = $this->Request->getHeaders(CASE_UPPER);
 			if (!isset($headers['X-REQUESTED-WITH']) || $headers['X-REQUESTED-WITH'] !== 'XMLHttpRequest') {
 				// it is non-ajax request - redirect it to error page
-				$url = $this->Service->constructUrl('BaculumError', (array) $resource, false);
+				$url = $this->Service->constructUrl('BacularisError', (array) $resource, false);
 				header("Location: $url");
 				// write all logs before exiting, otherwise they will be lost
 				$this->getModule('log')->collectLogs(null);

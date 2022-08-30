@@ -614,14 +614,11 @@ msgstr "O nº do drive deve conter apenas os seguintes caracteres [0-9]."
 msgid "Slots for update have to contain string value from set [0-9-,]."
 msgstr "Os slots para atualização devem conter apenas os seguintes caracteres [0-9-,]."
 
-msgid "Baculum problem"
-msgstr "Problema no Baculum"
-
 msgid "or run"
 msgstr "ou execute"
 
-msgid "Baculum Initial Wizard"
-msgstr "Assistente inicial do Baculum"
+msgid "Bacularis Initial Wizard"
+msgstr "Assistente inicial do Bacularis"
 
 msgid "internal Baculum error."
 msgstr "Ocorreu um erro interno do Baculum."

@@ -53,7 +53,7 @@ class PageCategory extends WebModule
 	 * System pages - always allowed for authenticated users
 	 */
 	public const MONITOR = 'Monitor';
-	public const BACULUM_ERROR = 'BaculumError';
+	public const BACULARIS_ERROR = 'BacularisError';
 	public const SELECT_API_HOST = 'SelectAPIHost';
 
 	/**
@@ -96,7 +96,7 @@ class PageCategory extends WebModule
 	{
 		return [
 			self::MONITOR,
-			self::BACULUM_ERROR,
+			self::BACULARIS_ERROR,
 			self::SELECT_API_HOST
 		];
 	}

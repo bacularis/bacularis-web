@@ -194,17 +194,14 @@ msgstr "リストア対象を選択:"
 msgid "Bacula console"
 msgstr "Bacula console"
 
-msgid "Baculum Initial Wizard"
-msgstr "Baculum Initial Wizard"
+msgid "Bacularis Initial Wizard"
+msgstr "Bacularis Initial Wizard"
 
 msgid "Baculum Settings"
 msgstr "Baculum Settings"
 
 msgid "Baculum needs access to bconsole by the web server."
 msgstr "Baculum needs access to bconsole by the web server."
-
-msgid "Baculum problem"
-msgstr "Baculum problem"
 
 msgid ""
 "Baculum web interface requires to add at least one Baculum API instance with "

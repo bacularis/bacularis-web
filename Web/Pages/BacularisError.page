@@ -1,7 +1,7 @@
 <%@ MasterClass="Bacularis\Web\Layouts\MessageBox" Theme="Baculum-v2"%>
 <com:TContent ID="Message">
 <div class="w3-container w3-red">
-	<h2><%[ Baculum problem ]%></h2>
+	<h2><%[ Error ]%></h2>
 </div>
 <div class="w3-container">
 	<h3>Error <%=$this->error%> - <%=$this->output%></h3>
@@ -9,7 +9,7 @@
 	<div class="w3-center">
 		<a class="w3-button w3-green" href="<%=$this->Service->constructUrl('Dashboard')%>"><i class="fa fa-redo-alt"></i> &nbsp;<%[ TRY AGAIN ]%></a>
 		<%[ or run ]%>
-		<a class="w3-button w3-green" href="<%=$this->Service->constructUrl('WebConfigWizard')%>"><i class="fa fa-reply"></i> &nbsp;<%[ Baculum Initial Wizard ]%></a>
+		<a class="w3-button w3-green" href="<%=$this->Service->constructUrl('WebConfigWizard')%>"><i class="fa fa-magic"></i> &nbsp;<%[ Bacularis Initial Wizard ]%></a>
 	</div>
 </div>
 <script type="text/javascript">
