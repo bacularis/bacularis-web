@@ -147,8 +147,7 @@ class WebUserConfig extends ConfigFileModule
 	/**
 	 * Get single user config.
 	 *
-	 * @param $user user name
-	 * @param mixed $username
+	 * @param string $username
 	 * @return array user config
 	 */
 	public function getUserConfig($username)

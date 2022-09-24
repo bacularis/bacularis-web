@@ -1,0 +1,3576 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa-solid fa-rocket"></i> <%[ Deployment ]%></b>
+		</h5>
+	</header>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<button id="btn_api_hosts" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'api_hosts'); if (oAPIHostList.table) { oAPIHostList.table.responsive.recalc(); }"><%[ Hosts ]%></button>
+		<button id="btn_os_profiles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'os_profiles'); if (oOSProfileList.table) { oOSProfileList.table.responsive.recalc(); } "><%[ OS profiles ]%></button>
+		<button id="btn_ssh_configs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_configs'); if (oSSHConfigList.table) { oSSHConfigList.table.responsive.recalc(); }"><%[ SSH configs ]%></button>
+		<button id="btn_ssh_keys" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_keys'); if (oSSHKeyList.table) { oSSHKeyList.table.responsive.recalc(); }"><%[ SSH keys ]%></button>
+	</div>
+	<div class="w3-container tab_item" id="api_hosts">
+		<div class="w3-panel">
+			<button type="button" id="deploy_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_deploy_api_host_window()"><i class="fa-solid fa-rocket"></i> &nbsp;<%[ Deploy API host ]%></button>
+		</div>
+		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Short name ]%></th>
+					<th class="w3-center">Protocol</th>
+					<th class="w3-center">IP address/hostname</th>
+					<th class="w3-center">Port</th>
+					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="api_host_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Short name ]%></th>
+					<th class="w3-center">Protocol</th>
+					<th class="w3-center">IP address/hostname</th>
+					<th class="w3-center">Port</th>
+					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+<com:TCallback ID="APIHostList" OnCallback="TemplateControl.setAPIHostList" />
+<com:TCallback ID="LoadAPIHost" OnCallback="TemplateControl.loadAPIHostWindow" />
+<com:TCallback ID="RemoveAPIHostsAction" OnCallback="TemplateControl.removeAPIHosts" />
+<script>
+var oAPIHostList = {
+	ids: {
+		api_host_list: 'api_host_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveAPIHostsAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oAPIHostList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.api_host_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.api_host_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{data: 'protocol'},
+				{data: 'address'},
+				{data: 'port'},
+				{
+					data: 'auth_type',
+					render: function (data, type, row) {
+						var at = data;
+						if (at == 'basic') {
+							at = 'Basic';
+						} else if (at == 'oauth2') {
+							at = 'OAuth2';
+						}
+						return at;
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						let btns = document.createElement('DIV');
+						btns.style.minWidth = '450px';
+						// install button
+						const btn_install = document.createElement('BUTTON');
+						btn_install.className = 'w3-button w3-green';
+						btn_install.type = 'button';
+						const i_install = document.createElement('I');
+						i_install.className = 'fa-solid fa-box-open';
+						const label_install = document.createTextNode(' <%[ Install ]%>');
+						btn_install.appendChild(i_install);
+						btn_install.innerHTML += '&nbsp';
+						btn_install.style.marginRight = '8px';
+						btn_install.appendChild(label_install);
+						btn_install.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'install\', true)');
+						btns.appendChild(btn_install);
+
+						// upgrade button
+						const btn_upgrade = document.createElement('BUTTON');
+						btn_upgrade.className = 'w3-button w3-green';
+						btn_upgrade.type = 'button';
+						const i_upgrade = document.createElement('I');
+						i_upgrade.className = 'fa-solid fa-arrows-up-to-line';
+						const label_upgrade = document.createTextNode(' <%[ Upgrade ]%>');
+						btn_upgrade.appendChild(i_upgrade);
+						btn_upgrade.innerHTML += '&nbsp';
+						btn_upgrade.style.marginRight = '8px';
+						btn_upgrade.appendChild(label_upgrade);
+						btn_upgrade.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'upgrade\', true)');
+						btns.appendChild(btn_upgrade);
+
+						// uninstall button
+						const btn_uninstall = document.createElement('BUTTON');
+						btn_uninstall.className = 'w3-button w3-green';
+						btn_uninstall.type = 'button';
+						const i_uninstall = document.createElement('I');
+						i_uninstall.className = 'fa-solid fa-trash-alt';
+						const label_uninstall = document.createTextNode(' <%[ Uninstall ]%>');
+						btn_uninstall.appendChild(i_uninstall);
+						btn_uninstall.innerHTML += '&nbsp';
+						btn_uninstall.style.marginRight = '8px';
+						btn_uninstall.appendChild(label_uninstall);
+						btn_uninstall.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'remove\', true)');
+						btns.appendChild(btn_uninstall);
+
+						/** TEMPORARY DISABLE EDITING API HOSTS **/
+						/*
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa-solid fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oAPIHosts.load_api_host_window(\'' + data + '\')');
+						btns.appendChild(btn_edit);
+						*/
+						return btns.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 6 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oAPIHostList.set_filters(this.api());
+			}
+		});
+	},
+	set_filters: function(api) {
+		api.columns([1, 2, 3, 4, 5]).every(function () {
+			var column = this;
+			var select = $('<select><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				var val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+					select.append('<option value="' + d + '" selected>' + d + '</option>');
+				} else if(d) {
+					select.append('<option value="' + d + '">' + d + '</option>');
+				}
+			});
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+
+var oSteps = {
+	add_step: function(step, container_id) {
+		const container = document.getElementById(container_id)
+
+		// div left
+		const div_left = document.createElement('DIV');
+		div_left.classList.add('w3-half');
+		div_left.textContent = step.desc;
+		div_left.style.padding = '3px 0';
+
+		// div right
+		const div_right = document.createElement('DIV');
+		div_right.id = step.id;
+		div_right.textContent = '-';
+		div_right.style.padding = '3px 0';
+
+		// append divs
+		container.appendChild(div_left);
+		container.appendChild(div_right);
+	},
+	mark_step_running: function(step_id) {
+		const step = document.getElementById(step_id);
+		step.removeChild(step.firstChild);
+		const icon = document.createElement('I');
+		icon.classList.add('fa-solid', 'fa-sync', 'w3-spin');
+		step.appendChild(icon);
+	},
+	mark_step_ok: function(step_id) {
+		const step = document.getElementById(step_id);
+		step.removeChild(step.firstChild);
+		const icon = document.createElement('I');
+		icon.classList.add('fa-solid', 'fa-check', 'w3-text-green');
+		step.appendChild(icon);
+	},
+	mark_step_err: function(step_id) {
+		const step = document.getElementById(step_id);
+		step.removeChild(step.firstChild);
+		const icon = document.createElement('I');
+		icon.classList.add('fa-solid', 'fa-times', 'w3-text-red');
+		step.appendChild(icon);
+	},
+	clear_steps: function(container_id) {
+		const container = document.getElementById(container_id);
+		while(container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	}
+};
+
+var oAPIHosts = {
+	load_api_host_window: function(name) {
+		var title_add = document.getElementById('api_host_window_title_add');
+		var title_edit = document.getElementById('api_host_window_title_edit');
+		var api_host_win_type = document.getElementById('<%=$this->APIHostWindowType->ClientID%>');
+		var host_name = document.getElementById('<%=$this->APIHostName->ClientID%>');
+		// callback is sent both for new and edit api_host because there is realized
+		// checking if password is allowed to set or not
+		var cb = <%=$this->LoadAPIHost->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		if (name) {
+			// edit existing api_host
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			api_host_win_type.value = 'edit';
+			host_name.setAttribute('readonly', '');
+		} else {
+			// add new api_host
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			api_host_win_type.value = 'add';
+			host_name.removeAttribute('readonly');
+			this.clear_api_host_window();
+		}
+		document.getElementById('api_host_window').style.display = 'block';
+	},
+	load_api_host_list: function() {
+		var cb = <%=$this->APIHostList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_api_host_list_cb: function(list) {
+		oAPIHostList.data = list;
+		oAPIHostList.init();
+	},
+	load_deploy_api_host_window: function(name) {
+		const api_host_field_name = document.getElementById('<%=$this->DeployAPIHostHostname->ClientID%>');
+		document.getElementById('deploy_api_host_window').style.display = 'block';
+		api_host_field_name.focus();
+	},
+};
+
+var oAPIHostCommands = {
+	ids: {
+		window: 'api_host_command_window',
+		window_title: 'api_host_command_window_title',
+		command_director: 'api_host_command_director',
+		command_storage: 'api_host_command_storage',
+		command_client: 'api_host_command_client',
+		command_console: 'api_host_command_console',
+		container: 'api_host_command_container',
+		graphical_result: 'api_host_command_graphical_results',
+		raw_output: 'api_host_command_raw_output',
+		submit_btn: 'api_host_command_btn',
+		add_comp_to_dir: 'api_host_command_add_component_to_director',
+		info_msg_prefix: 'api_host_command_window_info_'
+	},
+	css: {
+		info_msg: 'info_msg'
+	},
+	txt: {
+		commands: {
+			install: {
+				desc: '<%[ Installing %component ]%>:',
+				title: '<%[ Install Bacula components on API host ]%>',
+				btn: ' <%[ Install ]%>',
+				icon: 'fa-solid fa-box-open'
+			},
+			upgrade: {
+				desc: '<%[ Upgrading %component ]%>:',
+				title: '<%[ Upgrade Bacula components on API host ]%>',
+				btn: ' <%[ Upgrade ]%>',
+				icon: 'fa-solid fa-arrows-up-to-line'
+			},
+			remove: {
+				desc: '<%[ Uninstalling %component ]%>:',
+				title: '<%[ Uninstall Bacula components on API host ]%>',
+				btn: ' <%[ Uninstall ]%>',
+				icon: 'fa-solid fa-trash-alt'
+			}
+		}
+	},
+	commands: [],
+	load_window: function(host, command, open) {
+		if (open) {
+			// hide previous results
+			this.show_results(false);
+
+			// set title
+			this.set_window_title(command);
+
+			// set info message
+			this.set_info_msg(command);
+
+			// set submit button
+			this.set_submit_btn(command);
+		}
+
+		const win = document.getElementById(this.ids.window);
+		win.style.display = 'block';
+
+		// show loaders
+		this.set_component_info_loaders();
+
+		const cb = <%=$this->LoadAPIHostCommandWindow->ActiveControl->Javascript%>;
+		cb.setCallbackParameter([host, command]);
+		cb.dispatch();
+	},
+	load_window_cb: function(result) {
+		let element, details, output;
+		for (const component in result) {
+			element = document.getElementById(oAPIHostCommands.ids['command_' + component]);
+			oAPIHostCommands.set_component_info(component, result[component], element);
+		}
+	},
+	set_info_msg: function(command) {
+		$('.' + this.css.info_msg).hide();
+		$('.' + this.css.info_msg + '_' + command).show();
+	},
+	set_window_title: function(command) {
+		const title = document.getElementById(this.ids.window_title);
+		title.textContent = this.txt.commands[command].title;
+	},
+	set_submit_btn: function(command) {
+		const btn = document.getElementById(this.ids.submit_btn);
+		const img = document.createElement('I');
+		img.style.marginRight = '3px';
+		img.className = this.txt.commands[command].icon;
+		const label = document.createTextNode(' ' + this.txt.commands[command].btn);
+
+		// clear previous btn if any
+		while (btn.firstChild) {
+			btn.removeChild(btn.firstChild);
+		}
+
+		// add new btn label
+		btn.appendChild(img);
+		btn.appendChild(label);
+	},
+	set_component_info_loaders: function() {
+		const container = document.createElement('DIV');
+		const loading = document.createElement('I');
+		loading.classList.add('fa-solid', 'fa-sync-alt', 'w3-spin');
+		const info = document.createTextNode(' <%[ getting package information... ]%>');
+		container.appendChild(loading);
+		container.appendChild(info);
+		const ids = '#' + [
+			this.ids.command_director,
+			this.ids.command_storage,
+			this.ids.command_client,
+			this.ids.command_console
+		].join(',#');
+		$(ids).html(container);
+	},
+	set_component_info: function(component, result, element) {
+		const container = document.createElement('DIV');
+		if (result.error === 0) {
+			// component package is installed
+			if (result.command == 'install') {
+				// checkbox
+				const input = document.createElement('INPUT');
+				input.type = 'checkbox';
+				input.checked = true;
+				input.disabled = true;
+				input.classList.add('w3-check');
+				input.style.marginRight = '4px';
+
+				// installed label
+				const label = document.createTextNode(' <%[ installed ]%>');
+
+				// output
+				const output = document.createElement('DIV');
+				output.classList.add('w3-code');
+				output.style.display = 'none';
+				output.innerHTML = result.output.replace(/\n/g, '<br />');
+
+				// details
+				const details = document.createElement('I');
+				details.classList.add('fa-solid', 'fa-circle-info', 'w3-small');
+				details.title = '<%[ details ]%>';
+				details.addEventListener('click', () => {
+					$(output).slideToggle('fast');
+				});
+				details.style.marginLeft = '8px';
+				details.style.cursor = 'pointer';
+
+				container.appendChild(input);
+				container.appendChild(label);
+				container.appendChild(details);
+				container.appendChild(output);
+
+				// details (output)
+				$(element).html(container);
+			} else if (result.command === 'upgrade' || result.command === 'remove') {
+				// checkbox
+				const input = document.createElement('INPUT');
+				input.type = 'checkbox';
+				input.setAttribute('data-host', result.host);
+				input.setAttribute('data-component', component);
+				input.setAttribute('data-command', result.command);
+				input.classList.add('w3-check');
+
+				// output
+				const output = document.createElement('DIV');
+				output.classList.add('w3-code');
+				output.style.display = 'none';
+				output.innerHTML = result.output.replace(/\n/g, '<br />');
+
+				// details
+				const details = document.createElement('I');
+				details.classList.add('fa-solid', 'fa-circle-info', 'w3-small');
+				details.title = '<%[ details ]%>';
+				details.addEventListener('click', () => {
+					$(output).slideToggle('fast');
+				});
+				details.style.marginLeft = '8px';
+				details.style.cursor = 'pointer';
+
+				container.appendChild(input);
+				container.appendChild(details);
+				container.appendChild(output);
+			}
+		} else {
+			// package is not installed
+			if (result.command == 'install') {
+				const input = document.createElement('INPUT');
+				input.type = 'checkbox';
+				input.setAttribute('data-host', result.host);
+				input.setAttribute('data-component', component);
+				input.setAttribute('data-command', result.command);
+				input.classList.add('w3-check');
+				container.appendChild(input);
+			} else if (result.command == 'upgrade' || result.command == 'remove') {
+				// checkbox
+				const input = document.createElement('INPUT');
+				input.type = 'checkbox';
+				input.disabled = true;
+				input.classList.add('w3-check');
+				input.style.marginRight = '4px';
+
+				// not installed icon and label
+				const label = document.createTextNode(' <%[ not installed ]%>');
+
+				container.appendChild(input);
+				container.appendChild(label);
+			}
+		}
+
+		if (result.error !== 0) {
+			// output
+			const output = document.createElement('DIV');
+			output.classList.add('w3-code');
+			output.style.display = 'none';
+			output.innerHTML = result.output.replace(/\n/g, '<br />');
+
+			// details
+			const details = document.createElement('I');
+			details.classList.add('fa-solid', 'fa-circle-info', 'w3-small');
+			details.title = '<%[ details ]%>';
+			details.addEventListener('click', () => {
+				$(output).slideToggle('fast');
+			});
+			details.style.marginLeft = '8px';
+			details.style.cursor = 'pointer';
+
+			container.appendChild(details);
+			container.appendChild(output);
+		}
+		// details (output)
+		$(element).html(container);
+	},
+	run_command: function() {
+		// clear previous results if any
+		oSteps.clear_steps(this.ids.graphical_result);
+		this.clear_raw_output();
+
+		let host, component, command, desc;
+		this.commands = [];
+		const container = document.querySelectorAll('input[type="checkbox"][data-command]');
+		for (let i = 0; i < container.length; i++) {
+			if (!container[i].checked) {
+				continue;
+			}
+			host = container[i].getAttribute('data-host');
+			component = container[i].getAttribute('data-component');
+			command = container[i].getAttribute('data-command');
+			this.commands.push([host, component, command]);
+
+			// add step to run
+			desc = this.txt.commands[command].desc.replace('%component', component);
+			oSteps.add_step({
+				id: this.get_id(component, command),
+				desc: desc
+			}, this.ids.graphical_result);
+		}
+
+		if (this.commands.length == 0) {
+			// without any command selected - do nothing
+			return;
+		}
+
+		// show check list to run
+		this.show_results(true);
+
+		// Commands are prepared, so now run them sequentially
+
+		const options = {
+			add_comp_to_dir: document.getElementById(this.ids.add_comp_to_dir).checked
+		};
+		[host, component, command] = this.commands.shift();
+		this.execute(host, component, command, options);
+	},
+	execute: function(host, component, command, options) {
+		let id = this.get_id(component, command);
+		oSteps.mark_step_running(id);
+
+		const cb = <%=$this->RunAPIHostCommand->ActiveControl->Javascript%>;
+		cb.setCallbackParameter([host, component, command, options]);
+		cb.setRequestTimeOut(120000);
+		cb.dispatch();
+	},
+	execute_cb: function(result) {
+		oAPIHostCommands.set_raw_output(result.output);
+		const id = oAPIHostCommands.get_id(result.component, result.command);
+		if (result.error === 0) {
+			oSteps.mark_step_ok(id);
+		} else {
+			oSteps.mark_step_err(id);
+			// stop execution, reset commands
+			oAPIHostCommands.commands = [];
+		}
+
+		if (oAPIHostCommands.commands.length > 0) {
+			[host, component, command] = oAPIHostCommands.commands.shift();
+			oAPIHostCommands.execute(host, component, command, result.options);
+		} else if (result.command !== 'upgrade') {
+			// for upgrade we don't need to refresh the list because nothing is added nor removed.
+			oAPIHostCommands.load_window(result.host, result.command);
+		}
+	},
+	get_id: function(component, command) {
+		return [component, command].join('_');
+	},
+	set_raw_output: function(output) {
+		const container = document.getElementById(this.ids.raw_output);
+		container.textContent += output;
+	},
+	clear_raw_output: function() {
+		const container = document.getElementById(this.ids.raw_output);
+		container.textContent = '';
+	},
+	show_results: function(show) {
+		const container = document.getElementById(this.ids.container);
+		container.style.display = show ? 'block' : 'none';
+	}
+};
+$(function() {
+	oAPIHosts.load_api_host_list();
+});
+var oDeployAPIHost = {
+	ids: {
+		log_container: 'run_deploy_api_log_container',
+		deploy_graphical_results: 'deploy_api_graphical_results',
+		deploy_raw_results: 'deploy_api_raw_results',
+		deploy_log: 'deploy_api_raw_output'
+	},
+	steps: [
+		{
+			id: 'add_bacularis_repo',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['add_bacularis_repo'] %>',
+			cb: <%=$this->DeployAPIAddBacularisRepository->ActiveControl->Javascript%>
+		},
+		{
+			id: 'add_sudo',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['add_sudo'] %>',
+			cb: <%=$this->DeployAPIAddSUDOSettings->ActiveControl->Javascript%>
+		},
+		{
+			id: 'pre_install_bacularis',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['pre_install_bacularis'] %>',
+			cb: <%=$this->DeployAPIPreInstallBacularis->ActiveControl->Javascript%>
+		},
+		{
+			id: 'install_bacularis',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['install_bacularis'] %>',
+			cb: <%=$this->DeployAPIInstallBacularis->ActiveControl->Javascript%>
+		},
+		{
+			id: 'post_install_bacularis',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['post_install_bacularis'] %>',
+			cb: <%=$this->DeployAPIPostInstallBacularis->ActiveControl->Javascript%>
+		},
+		{
+			id: 'configure_bacularis',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['configure_bacularis'] %>',
+			cb: <%=$this->DeployAPIConfigureBacularis->ActiveControl->Javascript%>
+		},
+		{
+			id: 'create_bacularis_user',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['create_bacularis_user'] %>',
+			cb: <%=$this->DeployAPICreateBacularisUser->ActiveControl->Javascript%>
+		},
+		{
+			id: 'set_bacularis_pwd',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['set_bacularis_pwd'] %>',
+			cb: <%=$this->DeployAPISetBacularisPwd->ActiveControl->Javascript%>
+		},
+		{
+			id: 'start_bacularis',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['start_bacularis'] %>',
+			cb: <%=$this->DeployAPIStartBacularis->ActiveControl->Javascript%>
+		},
+		{
+			id: 'access_link',
+			desc: '<%= Deployment::DEPLOY_STEPS_TXT['access_link'] %>',
+			cb: <%=$this->DeployAPIAccessLink->ActiveControl->Javascript%>
+		}
+	],
+	run: function() {
+		this.clear_steps();
+
+		// Add steps in results
+		for (const step of this.steps) {
+			oSteps.add_step(step, this.ids.deploy_graphical_results);
+		}
+
+		this.show_results(true);
+
+		// run particular steps
+		this.run_step(this.steps[0]);
+	},
+	run_step: function(step) {
+		oSteps.mark_step_running(step.id);
+		step.cb.setCallbackParameter(step.id);
+		step.cb.setRequestTimeOut(120000);
+		const error_f = step.cb.options.error;
+		step.cb.options.error = (request, textStatus, errorThrown) => {
+			oDeployAPIHost.run_step_cb_err(step.id);
+			return error_f(request, textStatus, errorThrown);
+		}
+		step.cb.dispatch();
+	},
+	run_step_cb_ok: function(step_id, output_id) {
+		if (output_id) {
+			setTimeout(() => {
+				oDeployAPIHost.get_deploy_output(step_id, output_id)
+			}, 1500);
+			return;
+		}
+		const step_len = oDeployAPIHost.steps.length;
+		for (let i = 0; i < step_len; i++) {
+			if (oDeployAPIHost.steps[i].id == step_id) {
+				// mark step as finished successfully
+				oSteps.mark_step_ok(step_id);
+
+				if ((i+1) < step_len) {
+					// run next step
+					oDeployAPIHost.run_step(oDeployAPIHost.steps[i+1]);
+				}
+				break;
+			}
+		}
+	},
+	run_step_cb_err: function(step_id) {
+		oSteps.mark_step_err(step_id);
+	},
+	set_access_link: function(step_id, url) {
+		const step = document.getElementById(step_id);
+		step.removeChild(step.firstChild);
+		const a = document.createElement('A');
+		a.href = url;
+		a.target = '_blank';
+		a.textContent = url;
+		const label = document.createTextNode(' - <%[ Finish. ]%>');
+		step.appendChild(a);
+		step.appendChild(label);
+	},
+	get_deploy_output: function(step_id, output_id) {
+		const cb = <%=$this->DeployAPIGetOutput->ActiveControl->Javascript%>;
+		cb.setCallbackParameter([step_id, output_id]);
+		cb.dispatch();
+	},
+	show_results: function(show) {
+		const container = document.getElementById(this.ids.log_container);
+		container.style.display = show ? 'block' : 'none';
+	},
+	clear_steps: function() {
+		this.clear_graphical_results();
+		this.clear_raw_results();
+	},
+	clear_graphical_results: function() {
+		oSteps.clear_steps(this.ids.deploy_graphical_results);
+	},
+	clear_raw_results: function() {
+		const container = document.getElementById(this.ids.deploy_log);
+		container.textContent = '';
+	}
+};
+</script>
+		<com:TCallback ID="DeployAPIGetOutput" OnCallback="getDeployOutput" />
+		<com:TCallback ID="DeployAPIAddBacularisRepository" OnCallback="deployAPIAddBacularisRepository" />
+		<com:TCallback ID="DeployAPIAddSUDOSettings" OnCallback="deployAPIAddSUDOSettings" />
+		<com:TCallback ID="DeployAPIAddBaculaSUDOSettings" OnCallback="deployAPIAddBaculaSUDOSettings" />
+		<com:TCallback ID="DeployAPIPreInstallBacularis" OnCallback="deployAPIPreInstallBacularis" />
+		<com:TCallback ID="DeployAPIInstallBacularis" OnCallback="deployAPIInstallBacularis" />
+		<com:TCallback ID="DeployAPIPostInstallBacularis" OnCallback="deployAPIPostInstallBacularis" />
+		<com:TCallback ID="DeployAPIConfigureBacularis" OnCallback="deployAPIConfigureBacularis" />
+		<com:TCallback ID="DeployAPICreateBacularisUser" OnCallback="deployAPICreateBacularisUser" />
+		<com:TCallback ID="DeployAPISetBacularisPwd" OnCallback="deployAPISetBacularisPwd" />
+		<com:TCallback ID="DeployAPIStartBacularis" OnCallback="deployAPIStartBacularis" />
+		<com:TCallback ID="DeployAPIAccessLink" OnCallback="deployAPIAccessLink" />
+		<com:TCallback ID="LoadAPIHostCommandWindow" OnCallback="loadAPIHostCommandWindow" />
+		<com:TCallback ID="RunAPIHostCommand" OnCallback="runAPIHostCommand" />
+
+		<div id="deploy_api_host_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('deploy_api_host_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="deploy_api_host_window_title_add"><%[ Deploy API host ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<com:TValidationSummary
+						CssClass="field_invalid-summary"
+						ValidationGroup="DeployAPIHostGroup"
+						AutoUpdate="true"
+						Display="Dynamic"
+						/>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostHostname" Text="<%[ IP Address/Hostname: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="DeployAPIHostHostname"
+								AutoPostBack="false"
+								MaxLength="100"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="DeployAPIHostGroup"
+								ControlToValidate="DeployAPIHostHostname"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i id="deploy_api_host_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostOSProfile" Text="<%[ OS profile: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveDropDownList
+								ID="DeployAPIHostOSProfile"
+								AutoPostBack="false"
+								CssClass="w3-select w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="DeployAPIHostGroup"
+								ControlToValidate="DeployAPIHostOSProfile"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostUsePassword" Text="<%[ Select authentication method: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveRadioButton
+								ID="DeployAPIHostUsePassword"
+								GroupName="DeployAPIHostAuthMethod"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Checked="true"
+								Attributes.onclick="$('#deploy_api_host_key_auth').hide('fast');$('#deploy_api_host_key_passphrase').hide('fast');$('#deploy_api_host_user_auth').show('fast');$('#deploy_api_host_user_pass_auth').show('fast');"
+							/> &nbsp;<label for="<%=$this->DeployAPIHostUsePassword->ClientID%>"><%[ Use username and password ]%><label><br />
+							<com:TActiveRadioButton
+								ID="DeployAPIHostUseKey"
+								GroupName="DeployAPIHostAuthMethod"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Attributes.onclick="const sudo = $('#<%=$this->DeployAPIHostUseSudo->ClientID%>'); $('#deploy_api_host_user_auth').show('fast'); if (!sudo.is(':checked')) { $('#deploy_api_host_user_pass_auth').hide('fast'); } $('#deploy_api_host_key_auth').show('fast');$('#deploy_api_host_key_passphrase').show('fast');"
+							/> &nbsp;<label for="<%=$this->DeployAPIHostUseKey->ClientID%>"><%[ Use username and SSH key ]%></label><br />
+							<com:TActiveRadioButton
+								ID="DeployAPIHostUseSSHConfig"
+								GroupName="DeployAPIHostAuthMethod"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Attributes.onclick="const sudo = $('#<%=$this->DeployAPIHostUseSudo->ClientID%>'); $('#deploy_api_host_user_auth').hide('fast'); if (!sudo.is(':checked')) { $('#deploy_api_host_user_pass_auth').hide('fast'); }$('#deploy_api_host_key_auth').hide('fast');$('#deploy_api_host_key_passphrase').show('fast');"
+							/> &nbsp;<label for="<%=$this->DeployAPIHostUseSSHConfig->ClientID%>"><%[ Use username and SSH key from SSH config for host ]%></label>
+						</div>
+					</div>
+					<div id="deploy_api_host_user_auth" class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostUsername" Text="<%[ Admin username: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="DeployAPIHostUsername"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+								Attributes.placeholder="e.g. root"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="DeployAPIHostGroup"
+								ControlToValidate="DeployAPIHostUsername"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							>
+								<prop:ClientSide.OnValidate>
+									sender.enabled = document.getElementById('<%=$this->DeployAPIHostUsePassword->ClientID%>').checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<div id="deploy_api_host_user_pass_auth">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostPassword" Text="<%[ Password: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="DeployAPIHostPassword"
+									TextMode="Password"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<div id="deploy_api_host_key_auth" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostSSHKey" Text="<%[ SSH key: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveDropDownList
+									ID="DeployAPIHostSSHKey"
+									AutoPostBack="false"
+									CssClass="w3-select w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<div id="deploy_api_host_key_passphrase" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostPassphrase" Text="<%[ Key passphrase (optional): ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="DeployAPIHostPassphrase"
+									TextMode="Password"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<div id="deploy_api_host_use_sudo">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="DeployAPIHostUseSudo"
+									AutoPostBack="false"
+									CssClass="w3-check"
+									Attributes.onclick="const key = $('#<%=$this->DeployAPIHostUseKey->ClientID%>'); const sshcfg = $('#<%=$this->DeployAPIHostUseSSHConfig->ClientID%>'); const el = $('#deploy_api_host_user_pass_auth'); if (key.is(':checked') || sshcfg.is(':checked')) { this.checked ? el.slideDown('fast') : el.slideUp('fast'); }"
+								/>
+							</div>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostName" Text="<%[ Save as name (optional): ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="DeployAPIHostName"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="DeployAPIHostGroup"
+								RegularExpression="<%=Deployment::API_HOST_SHORT_NAME_PATTERN%>"
+								ControlToValidate="DeployAPIHostName"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div>
+					</div>
+					<div id="run_deploy_api_log_container" class="w3-container" style="display: none;">
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('deploy_api_subtab_result', 'deploy_api_graphical_results', 'run_deploy_api_log_container');">
+							<div id="deploy_api_subtab_result" class="subtab_btn w3-half w3-bottombar w3-padding w3-border-red"><%[ Result ]%></div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('deploy_api_subtab_raw_output', 'deploy_api_raw_results', 'run_deploy_api_log_container');">
+							<div id="deploy_api_subtab_raw_output" class="subtab_btn w3-half w3-bottombar w3-padding"><%[ Raw output ]%></div>
+						</a>
+						<div id="deploy_api_graphical_results" class="subtab_item w3-panel w3-card" style="max-height: 288px; overflow-x: auto; overflow-y: hidden;"></div>
+						<div id="deploy_api_raw_results" class="subtab_item w3-panel w3-card" style="display: none; max-height: 288px; overflow-x: auto;">
+							<div class="w3-code">
+								<pre><span id="deploy_api_raw_output"></span></pre>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('deploy_api_host_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
+					<com:TLinkButton
+						ID="DeployAPIHostRun"
+						ValidationGroup="DeployAPIHostGroup"
+						CausesValidation="true"
+						CssClass="w3-button w3-section w3-green w3-padding"
+						Attributes.onclick="if (Prado.Validation.validate(Prado.Validation.getForm(), 'DeployAPIHostGroup')) { oDeployAPIHost.run(); } return false;"
+					>
+						<i class="fa-solid fa-rocket"></i> &nbsp;<%[ Deploy ]%>
+					</com:TLinkButton>
+				</footer>
+			</div>
+		</div>
+		<div id="api_host_command_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('api_host_command_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="api_host_command_window_title"></h2>
+				</header>
+				<div class="w3-margin-left w3-margin-right">
+					<div class="info_msg info_msg_install w3-margin-left" style="display: none">
+						<p><%[ In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button. ]%></p>
+					</div>
+					<div class="info_msg info_msg_upgrade w3-margin-left" style="display: none"></div>
+					<div class="info_msg info_msg_remove w3-margin-left" style="display: none"></div>
+					<h3 class="w3-margin-left"><%[ Components ]%></h3>
+					<div class="w3-container" style="min-height: 45px;">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><%[ Director: ]%></div>
+							<div class="w3-rest">
+								<div id="api_host_command_director" class="w3-show-inline-block"></div>
+							</div>
+						</div>
+					</div>
+					<div class="w3-container" style="min-height: 45px;">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><%[ Storage: ]%></div>
+							<div class="w3-rest">
+								<div id="api_host_command_storage" class="w3-show-inline-block"></div>
+							</div>
+						</div>
+					</div>
+					<div class="w3-container" style="min-height: 45px;">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><%[ Client: ]%></div>
+							<div class="w3-rest">
+								<div id="api_host_command_client" class="w3-show-inline-block"></div>
+							</div>
+						</div>
+					</div>
+					<div class="w3-container" style="min-height: 45px;">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><%[ Console: ]%></div>
+							<div class="w3-rest">
+								<div id="api_host_command_console" class="w3-show-inline-block"></div>
+							</div>
+						</div>
+					</div>
+					<div class="info_msg info_msg_install">
+						<h3 class="w3-margin-left"><%[ Install options ]%></h3>
+						<div class="w3-container">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><%[ Add new component to current Director (for client and storage only) ]%>:</div>
+								<div class="w3-rest">
+									<input type="checkbox" id="api_host_command_add_component_to_director" class="w3-check" checked />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="api_host_command_container" class="w3-container" style="display: none;">
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('api_host_command_subtab_result', 'api_host_command_graphical_results', 'api_host_command_container');">
+						<div id="api_host_command_subtab_result" class="subtab_btn w3-half w3-bottombar w3-padding w3-border-red"><%[ Result ]%></div>
+					</a>
+					<a href="javascript:void(0)" onclick="W3SubTabs.open('api_host_command_subtab_raw_output', 'api_host_command_raw_results', 'api_host_command_container');">
+						<div id="api_host_command_subtab_raw_output" class="subtab_btn w3-half w3-bottombar w3-padding"><%[ Raw output ]%></div>
+					</a>
+					<div id="api_host_command_graphical_results" class="subtab_item w3-panel w3-card" style="max-height: 226px; overflow-x: auto; overflow-y: hidden;"></div>
+					<div id="api_host_command_raw_results" class="subtab_item w3-panel w3-card" style="display: none; max-height: 226px; overflow-x: auto;">
+						<div class="w3-code">
+							<pre><span id="api_host_command_raw_output"></span></pre>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('api_host_command_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
+					<a href="javascript:void(0)" id="api_host_command_btn" class="w3-button w3-section w3-green w3-padding" onclick="oAPIHostCommands.run_command();">
+					</a>
+				</footer>
+			</div>
+		</div>
+	</div>
+
+	<div id="api_host_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('api_host_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="api_host_window_title_add" style="display: none"><%[ Add API host ]%></h2>
+				<h2 id="api_host_window_title_edit" style="display: none"><%[ Edit API host ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<div id="api_host_settings">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostSettings" Text="<%[ Get existing API host settings: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TActiveDropDownList
+								ID="APIHostSettings"
+								CssClass="w3-select w3-border"
+								CausesValidation="false"
+								OnCallback="loadAPIHostSettings"
+							>
+								<prop:ClientSide.OnLoading>
+									document.getElementById('api_host_settings_loading').style.visibility = 'visible';
+								</prop:ClientSide.OnLoading>
+								<prop:ClientSide.OnComplete>
+									document.getElementById('api_host_settings_loading').style.visibility = 'hidden';
+								</prop:ClientSide.OnComplete>
+							</com:TActiveDropDownList>
+						</div> &nbsp;<i id="api_host_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
+					</div>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostProtocol" Text="<%[ Protocol: ]%>" /></div>
+					<div class="w3-col w3-third">
+						<com:TActiveDropDownList ID="APIHostProtocol" CssClass="w3-select w3-border" Width="150px" CausesValidation="false">
+							<com:TListItem Value="http" Text="HTTP" />
+							<com:TListItem Value="https" Text="HTTPS" Selected="true"/>
+						</com:TActiveDropDownList>&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostAddress" Text="<%[ IP Address/Hostname: ]%>" /></div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox ID="APIHostAddress" CssClass="w3-input w3-border" CausesValidation="false" />
+						<com:TRequiredFieldValidator ValidationGroup="APIHostGroup" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="APIHostAddress" Text="<%[ Please enter API address. ]%>" />
+					</div>
+					&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostPort" Text="<%[ Port: ]%>" /></div>
+					<div class="w3-col w3-third">
+						<com:TActiveTextBox ID="APIHostPort" CssClass="w3-input w3-border" CausesValidation="false" Text="9097" Width="70px" Style="display: inline-block" />
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+						<com:TRequiredFieldValidator ValidationGroup="APIHostGroup" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="APIHostPort" Text="<%[ Please enter API port. ]%>" />
+					</div>
+				</div>
+				<div class="auth_setting">
+					<div class="w3-row directive_field">
+						<com:TActiveRadioButton
+							ID="APIHostAuthOAuth2"
+							GroupName="SelectAuth"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#configure_basic_auth').hide();$('#configure_oauth2_auth').show();"
+						/>
+						<com:TLabel
+							ForControl="APIHostAuthOAuth2"
+							CssClass="normal w3-radio"
+							Style="vertical-align: super"
+							Text="<%[ Use OAuth2 for authorization and authentication ]%>"
+						/>
+					</div>
+					<div class="w3-row directive_field">
+						<com:TActiveRadioButton
+							ID="APIHostAuthBasic"
+							GroupName="SelectAuth"
+							Checked="true"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#configure_oauth2_auth').hide();$('#configure_basic_auth').show();"
+						/>
+						<com:TLabel
+							ForControl="APIHostAuthBasic"
+							CssClass="normal w3-radio"
+							Style="vertical-align: super"
+							Text="<%[ Use HTTP Basic authentication ]%>"
+						/>
+					</div>
+				</div>
+				<div id="configure_basic_auth" class="w3-margin-top" style="display: <%=($this->APIHostAuthBasic->Checked === true) ? '' : 'none';%>">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostBasicUserSettings" Text="<%[ Get existing basic user name: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TActiveDropDownList
+								ID="APIHostBasicUserSettings"
+								CssClass="w3-select w3-border"
+								CausesValidation="false"
+								OnCallback="loadAPIBasicUserSettings"
+							>
+								<prop:ClientSide.OnLoading>
+									document.getElementById('api_host_basic_user_settings_loading').style.visibility = 'visible';
+								</prop:ClientSide.OnLoading>
+								<prop:ClientSide.OnComplete>
+									document.getElementById('api_host_basic_user_settings_loading').style.visibility = 'hidden';
+								</prop:ClientSide.OnComplete>
+							</com:TActiveDropDownList>
+						</div> &nbsp;<i id="api_host_basic_user_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostBasicLogin" Text="<%[ API Login: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostBasicLogin"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostBasicLogin"
+								ValidationGroup="APIHostBasic"
+								Text="<%[ Please enter API login. ]%>"
+							 />
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostBasicPassword" Text="<%[ API Password: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostBasicPassword"
+								TextMode="Password"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+								PersistPassword="true"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostBasicPassword"
+								ValidationGroup="APIHostBasic"
+								Text="<%[ Please enter API password. ]%>"
+							/>
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+				</div>
+				<div id="configure_oauth2_auth" class="w3-margin-top" style="display: <%=($this->APIHostAuthOAuth2->Checked === true) ? '' : 'none';%>">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2ClientSettings" Text="<%[ Get existing OAuth2 client settings: ]%>" /></div>
+						<div class="w3-col w3-third">
+							<com:TActiveDropDownList
+								ID="APIHostOAuth2ClientSettings"
+								CssClass="w3-select w3-border"
+								CausesValidation="false"
+								OnCallback="loadOAuth2ClientSettings"
+							>
+								<prop:ClientSide.OnLoading>
+									document.getElementById('api_host_oauth2_client_settings_loading').style.visibility = 'visible';
+								</prop:ClientSide.OnLoading>
+								<prop:ClientSide.OnComplete>
+									document.getElementById('api_host_oauth2_client_settings_loading').style.visibility = 'hidden';
+								</prop:ClientSide.OnComplete>
+							</com:TActiveDropDownList>
+						</div> &nbsp;<i id="api_host_oauth2_client_settings_loading" class="fas fa-sync w3-spin" style="visibility: hidden; margin: 10px 5px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2ClientId" Text="<%[ OAuth2 Client ID: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostOAuth2ClientId"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+								MaxLength="32"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2ClientId"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Please enter Client ID. ]%>"
+							/>
+							<com:TRegularExpressionValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2ClientId"
+								RegularExpression="<%=OAuth2::CLIENT_ID_PATTERN%>"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Invalid Client ID value. Client ID may contain a-z A-Z 0-9 - _ characters. ]%>"
+								/>
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2ClientSecret" Text="<%[ OAuth2 Client Secret: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostOAuth2ClientSecret"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+								MaxLength="50"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2ClientSecret"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Please enter Client Secret. ]%>"
+							/>
+							<com:TRegularExpressionValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2ClientSecret"
+								RegularExpression="<%=OAuth2::CLIENT_SECRET_PATTERN%>"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Invalid Client Secret value. Client Secret may contain any character that is not a whitespace character. ]%>"
+							/>
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2RedirectURI" Text="<%[ OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect): ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostOAuth2RedirectURI"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2RedirectURI"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Please enter Redirect URI. ]%>"
+							/>
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostOAuth2Scope" Text="<%[ OAuth2 scopes (space separated): ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="APIHostOAuth2Scope"
+								CssClass="w3-input w3-border"
+								CausesValidation="false"
+								TextMode="MultiLine"
+							/>
+							<com:TRequiredFieldValidator
+								CssClass="validator-block"
+								Display="Dynamic"
+								ControlCssClass="invalidate"
+								ControlToValidate="APIHostOAuth2Scope"
+								ValidationGroup="APIHostOAuth2"
+								Text="<%[ Please enter OAuth2 scopes. ]%>"
+							/>
+						</div>
+						&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostConnectionTest" Text="<%[ API connection test: ]%>" /></div>
+					<div class="w3-col w3-half">
+						<table border="0" cellpadding="1px" id="new_host_status">
+							<tr>
+								<td align="center" valign="middle">
+									<com:TActiveLinkButton ID="APIHostConnectionTest" CausesValidation="true" OnCallback="connectionAPITest" CssClass="w3-button w3-green">
+										<prop:ClientSide.OnLoading>
+											$('#<%=$this->APIHostTestResultOk->ClientID%>').hide();
+											$('#<%=$this->APIHostTestResultErr->ClientID%>').hide();
+											$('#<%=$this->APIHostCatalogSupportYes->ClientID%>').hide();
+											$('#<%=$this->APIHostCatalogSupportNo->ClientID%>').hide();
+											$('#<%=$this->APIHostConsoleSupportYes->ClientID%>').hide();
+											$('#<%=$this->APIHostConsoleSupportNo->ClientID%>').hide();
+											$('#<%=$this->APIHostConfigSupportYes->ClientID%>').hide();
+											$('#<%=$this->APIHostConfigSupportNo->ClientID%>').hide();
+											$('#<%=$this->APIHostTestLoader->ClientID%>').show();
+										</prop:ClientSide.OnLoading>
+										<prop:ClientSide.OnComplete>
+											$('#<%=$this->APIHostTestLoader->ClientID%>').hide();
+										</prop:ClientSide.OnComplete>
+										<i class="fa fa-play"></i> &nbsp;<%[ test ]%>
+									</com:TActiveLinkButton>
+								</td>
+								<td valign="middle">
+									<com:TActiveLabel ID="APIHostTestLoader" Display="None"><i class="fa fa-sync w3-spin"></i></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostTestResultErr" Display="None" CssClass="w3-text-red" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<%[ Connection error ]%></com:TActiveLabel>
+								</td>
+							</tr>
+							<tr>
+								<td><%[ Catalog support ]%></td>
+								<td>
+									<com:TActiveLabel ID="APIHostCatalogSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostCatalogSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
+								</td>
+							</tr>
+							<tr>
+								<td><%[ Console support ]%></td>
+								<td>
+									<com:TActiveLabel ID="APIHostConsoleSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostConsoleSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
+								</td>
+							</tr>
+							<tr>
+								<td><%[ Config support ]%></td>
+								<td>
+									<com:TActiveLabel ID="APIHostConfigSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostConfigSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostName" Text="<%[ Short name: ]%>" /></div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="APIHostName"
+							CssClass="w3-input w3-border"
+							CausesValidation="false"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center">
+				<button type="button" class="w3-button w3-red" onclick="document.getElementById('api_host_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ID="APIHostSave"
+					ValidationGroup="APIHostGroup"
+					CausesValidation="true"
+					OnCallback="saveAPIHost"
+					CssClass="w3-button w3-section w3-green w3-padding"
+					Attributes.onclick="return fields_validation()"
+				>
+					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+		</div>
+		<com:TActiveHiddenField ID="APIHostWindowType" />
+	</div>
+
+
+	<div class="w3-container tab_item" id="os_profiles" style="display: none">
+		<div class="w3-panel">
+			<button type="button" id="add_os_profile_btn" class="w3-button w3-green" onclick="oOSProfiles.load_osprofile_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OS profile ]%></button>
+		</div>
+		<table id="osprofile_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Repository type ]%></th>
+					<th class="w3-center"><%[ Pre-defined ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="osprofile_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Repository type ]%></th>
+					<th class="w3-center"><%[ Pre-defined ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+<com:TCallback ID="OSProfileList" OnCallback="TemplateControl.setOSProfileList" />
+<com:TCallback ID="LoadOSProfile" OnCallback="TemplateControl.loadOSProfileWindow" />
+<com:TCallback ID="RemoveOSProfilesAction" OnCallback="TemplateControl.removeOSProfiles" />
+<script>
+var oOSProfileList = {
+	ids: {
+		osprofile_list: 'osprofile_list_table',
+		osprofile_list_body: 'osprofile_list_body'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveOSProfilesAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oOSProfileList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.osprofile_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.osprofile_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{data: 'description'},
+				{data: 'repository_type'},
+				{
+					data: null,
+					render: function(data, type, row) {
+						let ret;
+						data = row.hasOwnProperty('predefined') ? 1 : 0;
+						if (type == 'display') {
+							ret = '';
+							if (data == 1) {
+								const check = document.createElement('I');
+								check.className = 'fas fa-check';
+								ret = check.outerHTML;
+							}
+						} else {
+							ret = data;
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa-solid fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oOSProfiles.load_osprofile_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 3, 4, 5 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oOSProfileList.set_filters(this.api());
+			}
+		});
+	},
+	set_filters: function(api) {
+		api.columns([1, 3, 4]).every(function () {
+			const column = this;
+			const select = $('<select><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				const val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			if (column[0][0] == 4) { // Pre-defined OS profile column
+				let pdvals = [];
+				column.data().unique().sort().each(function (d, j) {
+					var ds = '';
+					let predefined = d.predefined ? 1 : 0;
+					if (predefined == 1) {
+						ds = '<%[ Yes ]%>';
+					} else if (predefined == 0) {
+						ds = '<%[ No ]%>';
+					}
+					if (pdvals.indexOf(predefined) == -1) {
+						pdvals.push(predefined);
+						if (column.search() === '^' + dtEscapeRegex(predefined) + '$') {
+							select.append('<option value="' + predefined + '" title="' + ds + '" selected>' + ds + '</option>');
+						} else if (ds) {
+							select.append('<option value="' + predefined + '" title="' + ds + '">' + ds + '</option>');
+						}
+					}
+				});
+			} else {
+				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+						select.append('<option value="' + d + '" selected>' + d + '</option>');
+					} else if(d) {
+						select.append('<option value="' + d + '">' + d + '</option>');
+					}
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+
+var oOSProfiles = {
+	load_osprofile_window: function(name) {
+		const title_add = document.getElementById('osprofile_window_title_add');
+		const title_edit = document.getElementById('osprofile_window_title_edit');
+		const osprofile_field_name = document.getElementById('<%=$this->OSProfileName->ClientID%>');
+		const osprofile_field_req = document.getElementById('osprofile_window_required');
+		const osprofile_win_type = document.getElementById('<%=$this->OSProfileWindowType->ClientID%>');
+		if (name) {
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			osprofile_field_name.setAttribute('readonly', '');
+			osprofile_field_req.style.display = 'none';
+			osprofile_win_type.value = 'edit';
+		} else {
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			this.clear_osprofile_window();
+			if (osprofile_field_name.hasAttribute('readonly')) {
+				osprofile_field_name.removeAttribute('readonly');
+			}
+			osprofile_field_req.style.display = 'inline';
+			osprofile_win_type.value = 'add';
+		}
+		document.getElementById('osprofile_window').style.display = 'block';
+		osprofile_field_name.focus();
+		const cb = <%=$this->LoadOSProfile->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+	},
+	clear_osprofile_window: function() {
+		[
+			'<%=$this->OSProfileName->ClientID%>',
+			'<%=$this->OSProfileDescription->ClientID%>',
+			'<%=$this->OSProfileRepositoryType->ClientID%>',
+			'<%=$this->OSProfileBacularisRepositoryAddr->ClientID%>',
+			'<%=$this->OSProfileBacularisRepositoryKey->ClientID%>',
+			'<%=$this->OSProfileBacularisAdminUser->ClientID%>',
+			'<%=$this->OSProfileBacularisAdminPwd->ClientID%>',
+			'<%=$this->OSProfileBaculaRepositoryAddr->ClientID%>',
+			'<%=$this->OSProfilePackagesSudoUser->ClientID%>',
+			'<%=$this->OSProfilePackagesBacularisStart->ClientID%>',
+			'<%=$this->OSProfilePackagesBacularisEnable->ClientID%>',
+
+			'<%=$this->OSProfilePackagesDirInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesDirUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesDirRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesPreDirInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreDirUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreDirRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostDirInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostDirUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostDirRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesDirInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesDirEnable->ClientID%>',
+
+			'<%=$this->OSProfilePackagesSdInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesSdUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesSdRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesSdInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesSdUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesSdRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesPreSdInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreSdUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreSdRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostSdInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostSdUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostSdRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesSdInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesSdEnable->ClientID%>',
+
+			'<%=$this->OSProfilePackagesFdInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesFdUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesFdRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesFdInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesFdInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesFdUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesFdRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesPreFdInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreFdUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreFdRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostFdInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostFdUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostFdRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesFdInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesFdEnable->ClientID%>',
+
+			'<%=$this->OSProfilePackagesBconsInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesBconsRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesPreBconsInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreBconsUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreBconsRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostBconsInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostBconsUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostBconsRemoveCmd->ClientID%>',
+
+			'<%=$this->OSProfileJSONToolsWorkDir->ClientID%>',
+			'<%=$this->OSProfileJSONToolsBDirJSONPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsDirCfgPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsBSdJSONPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsSdCfgPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsBFdJSONPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsFdCfgPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsBBconsJSONPath->ClientID%>',
+			'<%=$this->OSProfileJSONToolsBconsCfgPath->ClientID%>',
+
+			'<%=$this->OSProfileBconsoleBin->ClientID%>',
+			'<%=$this->OSProfileBconsoleCfg->ClientID%>',
+
+			'<%=$this->OSProfileDbType->ClientID%>',
+			'<%=$this->OSProfileDbName->ClientID%>',
+			'<%=$this->OSProfileDbLogin->ClientID%>',
+			'<%=$this->OSProfileDbPassword->ClientID%>',
+			'<%=$this->OSProfileDbAddress->ClientID%>',
+			'<%=$this->OSProfileDbPort->ClientID%>',
+			'<%=$this->OSProfileDbPath->ClientID%>',
+
+			'<%=$this->OSProfileActionsDirStart->ClientID%>',
+			'<%=$this->OSProfileActionsDirStop->ClientID%>',
+			'<%=$this->OSProfileActionsDirRestart->ClientID%>',
+			'<%=$this->OSProfileActionsSdStart->ClientID%>',
+			'<%=$this->OSProfileActionsSdStop->ClientID%>',
+			'<%=$this->OSProfileActionsSdRestart->ClientID%>',
+			'<%=$this->OSProfileActionsFdStart->ClientID%>',
+			'<%=$this->OSProfileActionsFdStop->ClientID%>',
+			'<%=$this->OSProfileActionsFdRestart->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+
+		[
+			'<%=$this->OSProfileBacularisUseHTTPS->ClientID%>',
+			'<%=$this->OSProfilePackagesUseSudo->ClientID%>',
+			'<%=$this->OSProfileJSONToolsUseSudo->ClientID%>',
+			'<%=$this->OSProfileBconsoleUseSudo->ClientID%>',
+			'<%=$this->OSProfileActionsUseSudo->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).checked = false;
+		});
+	},
+	load_osprofile_list: function() {
+		const cb = <%=$this->OSProfileList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_osprofile_list_cb: function(list) {
+		oOSProfileList.data = list;
+		oOSProfileList.init();
+	},
+	save_osprofile_cb: function() {
+		document.getElementById('osprofile_window').style.display = 'none';
+	}
+};
+
+$(function() {
+	oOSProfiles.load_osprofile_list();
+});
+</script>
+		<div id="osprofile_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('osprofile_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="osprofile_window_title_add" style="display: none"><%[ Add OS profile ]%></h2>
+					<h2 id="osprofile_window_title_edit" style="display: none"><%[ Edit OS profile ]%></h2>
+				</header>
+				<div id="osprofile_window_copy_osprofile"class="w3-container w3-margin-left w3-margin-right w3-right" style="display: none">
+					<span style="vertical-align: super"><%[ Copy configuration from: ]%></span>
+					<div class="directive_field w3-show-inline-block w3-margin-bottom" style="vertical-align: middle">
+						<com:TActiveDropDownList
+							ID="OSProfileToCopy"
+							CssClass="w3-select w3-border w3-show-inline-block"
+							Style="min-width: 300px"
+							OnSelectedIndexChanged="deployAPICopyOSProfileConfig"
+						/>
+					</div>
+				</div>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<com:TValidationSummary
+						CssClass="field_invalid-summary"
+						ValidationGroup="OSProfileGroup"
+						AutoUpdate="true"
+						Display="Dynamic"
+						/>
+					<span id="osprofile_window_osprofilename_exists" class="error" style="display: none"><ul><li><%[ OS profile with the given name already exists. ]%></li></ul></span>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileName" Text="<%[ OS profile name: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="OSProfileName"
+								AutoPostBack="false"
+								MaxLength="100"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="OSProfileGroup"
+								ControlToValidate="OSProfileName"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="OSProfileGroup"
+								RegularExpression="<%=OSProfileConfig::OSPROFILE_NAME_PATTERN%>"
+								ControlToValidate="OSProfileName"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i id="osprofile_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDescription" Text="<%[ Description: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="OSProfileDescription"
+								TextMode="MultiLine"
+								Rows="3"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+					</div>
+					<h3><%[ Repositories ]%></h3>
+					<p><%[ Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment. ]%>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileAddRepos" Text="<%[ Add repository entry to remote host: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveCheckBox
+								ID="OSProfileAddRepos"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Checked="true"
+								Attributes.onclick="$('#osprofile_window_add_repos_options').toggle('fast');"
+							/>
+						</div>
+					</div>
+					<div id="osprofile_window_add_repos_options" style="display: <%=$this->OSProfileAddRepos->Checked ? 'block' : 'none'%>">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Repository type: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveDropDownList
+									ID="OSProfileRepositoryType"
+									AutoPostBack="false"
+									CssClass="w3-select w3-border"
+									Width="100px"
+								>
+									<com:TListItem Value="deb" Text="DEB" />
+									<com:TListItem Value="rpm" Text="RPM" />
+								</com:TActiveDropDownList>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAddr" Text="<%[ Bacularis repository URL (or entry): ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileBacularisRepositoryAddr"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryKey" Text="<%[ Bacularis repository key URL: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileBacularisRepositoryKey"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaUseSystemRepo" Text="<%[ Use system repository for Bacula packages: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="OSProfileBaculaUseSystemRepo"
+									AutoPostBack="false"
+									CssClass="w3-check w3-border"
+									Checked="true"
+									Attributes.onclick="$('#osprofile_window_bacula_repo_options').toggle('fast');"
+								/>
+							</div>
+						</div>
+						<div id="osprofile_window_bacula_repo_options" style="display: <%=$this->OSProfileBaculaUseSystemRepo->Checked ? 'none' : 'block'%>">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryAddr" Text="<%[ Bacula repository URL (or entry): ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBaculaRepositoryAddr"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryKey" Text="<%[ Bacula repository key URL: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBaculaRepositoryKey"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h3><%[ Bacularis API access ]%></h3>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisUseHTTPS" Text="<%[ Use HTTPS: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveCheckBox
+								ID="OSProfileBacularisUseHTTPS"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Checked="true"
+							/>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminUser" Text="<%[ Bacularis admin user: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="OSProfileBacularisAdminUser"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminPwd" Text="<%[ Bacularis admin password: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="OSProfileBacularisAdminPwd"
+								TextMode="Password"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+						<a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>" style="vertical-align: sub"><i class="fa fa-eye"></i></a>
+						&nbsp;<a href="javascript:void(0)" onclick="document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>').value = get_random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_~!@#$%^&*()_+}{|?[]\\/.,', 10); return false;" title="<%[ Generate new password ]%>" style="vertical-align: sub"><i class="fas fa-random"></i></a>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisStart" Text="<%[ Bacularis start command: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="OSProfilePackagesBacularisStart"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+					</div>
+					<h3><%[ Bacularis API settings ]%></h3>
+					<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
+					<h4><%[ Package management ]%></h4>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesUseSudo" Text="<%[ Use sudo for commands: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveCheckBox
+								ID="OSProfilePackagesUseSudo"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+								Attributes.onclick="const el = $('#osprofile_packages_sudo_user'); this.checked ? el.show('fast') : el.hide('fast');"
+							/>
+						</div>
+					</div>
+					<div id="osprofile_packages_sudo_user" style="display: <%=$this->OSProfilePackagesUseSudo->Checked ? 'block' : 'none'%>">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSudoUser" Text="<%[ Sudo user: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSudoUser"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_bacularis_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Bacularis commands ]%></a>
+					<div id="osprofile_window_bacularis_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInstall" Text="<%[ Bacularis installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesBacularisInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisUpgrade" Text="<%[ Bacularis upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBacularisUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisRemove" Text="<%[ Bacularis removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBacularisRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInfo" Text="<%[ Bacularis info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBacularisInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisEnable" Text="<%[ Bacularis enable command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBacularisEnable"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bacularis_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_bacularis_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisInstallCmd" Text="<%[ Bacularis pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreBacularisInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisUpgradeCmd" Text="<%[ Bacularis pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBacularisUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisRemoveCmd" Text="<%[ Bacularis pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBacularisRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisInstallCmd" Text="<%[ Bacularis post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostBacularisInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisUpgradeCmd" Text="<%[ Bacularis post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBacularisUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisRemoveCmd" Text="<%[ Bacularis post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBacularisRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_director_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Director commands ]%></a>
+					<div id="osprofile_window_director_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInstall" Text="<%[ Director installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesDirInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirUpgrade" Text="<%[ Director upgrade command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesDirUpgrade"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirRemove" Text="<%[ Director removal command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesDirRemove"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInfo" Text="<%[ Director info command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesDirInfo"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirEnable" Text="<%[ Director enable command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesDirEnable"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_director_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_director_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirInstallCmd" Text="<%[ Director pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreDirInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirUpgradeCmd" Text="<%[ Director pre-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreDirUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirRemoveCmd" Text="<%[ Director pre-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreDirRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirInstallCmd" Text="<%[ Director post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostDirInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirUpgradeCmd" Text="<%[ Director post-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostDirUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirRemoveCmd" Text="<%[ Director post-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostDirRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_storage_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Storage commands ]%></a>
+					<div id="osprofile_window_storage_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInstall" Text="<%[ Storage installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSdInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdUpgrade" Text="<%[ Storage upgrade command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSdUpgrade"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdRemove" Text="<%[ Storage removal command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSdRemove"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInfo" Text="<%[ Storage info command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSdInfo"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdEnable" Text="<%[ Storage enable command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesSdEnable"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_storage_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_storage_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdInstallCmd" Text="<%[ Storage pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreSdInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdUpgradeCmd" Text="<%[ Storage pre-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreSdUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdRemoveCmd" Text="<%[ Storage pre-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreSdRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdInstallCmd" Text="<%[ Storage post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostSdInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdUpgradeCmd" Text="<%[ Storage post-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostSdUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdRemoveCmd" Text="<%[ Storage post-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostSdRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_filedaemon_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Client commands ]%></a>
+					<div id="osprofile_window_filedaemon_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInstall" Text="<%[ Client installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesFdInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdUpgrade" Text="<%[ Client upgrade command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesFdUpgrade"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdRemove" Text="<%[ Client removal command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesFdRemove"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInfo" Text="<%[ Client info command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesFdInfo"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdEnable" Text="<%[ Client enable command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesFdEnable"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_filedaemon_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_filedaemon_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdInstallCmd" Text="<%[ Client pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreFdInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdUpgradeCmd" Text="<%[ Client pre-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreFdUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdRemoveCmd" Text="<%[ Client pre-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreFdRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdInstallCmd" Text="<%[ Client post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostFdInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdUpgradeCmd" Text="<%[ Client post-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostFdUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdRemoveCmd" Text="<%[ Client post-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostFdRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_bconsole_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Bconsole commands ]%></a>
+					<div id="osprofile_window_bconsole_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInstall" Text="<%[ Bconsole installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesBconsInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsUpgrade" Text="<%[ Bconsole upgrade command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesBconsUpgrade"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsRemove" Text="<%[ Bconsole removal command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesBconsRemove"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInfo" Text="<%[ Bconsole info command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesBconsInfo"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bconsole_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_bconsole_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsInstallCmd" Text="<%[ Bconsole pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreBconsInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsUpgradeCmd" Text="<%[ Bconsole pre-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreBconsUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsRemoveCmd" Text="<%[ Bconsole pre-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreBconsRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsInstallCmd" Text="<%[ Bconsole post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostBconsInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsUpgradeCmd" Text="<%[ Bconsole post-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostBconsUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsRemoveCmd" Text="<%[ Bconsole post-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostBconsRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_configuration_options').toggle('fast');"><h4><%[ Configuration ]%></h4></a>
+					<div id="osprofile_window_configuration_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="OSProfileJSONToolsUseSudo"
+									AutoPostBack="false"
+									CssClass="w3-check w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsWorkDir" Text="<%[ Working directory: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsWorkDir"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBDirJSONPath" Text="<%[ Bdirjson binary file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsBDirJSONPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsDirCfgPath" Text="<%[ Main Director config file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsDirCfgPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBSdJSONPath" Text="<%[ Bsdjson binary file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsBSdJSONPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsSdCfgPath" Text="<%[ Main Storage config file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsSdCfgPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBFdJSONPath" Text="<%[ Bfdjson binary file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsBFdJSONPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsFdCfgPath" Text="<%[ Main Client config file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsFdCfgPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBBconsJSONPath" Text="<%[ Bbconsjson binary file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsBBconsJSONPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBconsCfgPath" Text="<%[ Main Bconsole config file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileJSONToolsBconsCfgPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_console_options').toggle('fast');"><h4><%[ Console ]%></h4></a>
+					<div id="osprofile_window_console_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="OSProfileBconsoleUseSudo"
+									AutoPostBack="false"
+									CssClass="w3-check w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleBin" Text="<%[ Bconsole binary file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileBconsoleBin"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleCfg" Text="<%[ Bconsole admin config file path: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileBconsoleCfg"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_options').toggle('fast');"><h4><%[ Catalog ]%></h4></a>
+					<div id="osprofile_window_catalog_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Database type: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveDropDownList
+									ID="OSProfileDbType"
+									AutoPostBack="false"
+									CssClass="w3-select w3-border"
+								>
+									<com:TListItem Value="" Text="<%[ select database ]%>" />
+									<com:TListItem Value="pgsql" Text="PostgreSQL" />
+									<com:TListItem Value="mysql" Text="MySQL" />
+									<com:TListItem Value="sqlite" Text="SQLite" />
+								</com:TActiveDropDownList>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbName" Text="<%[ Database name: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbName"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbLogin" Text="<%[ Username: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbLogin"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPassword" Text="<%[ Password: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbPassword"
+									TextMode="Password"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbAddress" Text="<%[ IP address (or hostname): ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbAddress"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPort" Text="<%[ Port: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbPort"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+									Width="100px"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPath" Text="<%[ Database path (SQLite only): ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileDbPath"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_actions_options').toggle('fast');"><h4><%[ Actions ]%></h4></a>
+					<div id="osprofile_window_actions_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="OSProfileActionsUseSudo"
+									AutoPostBack="false"
+									CssClass="w3-check w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStart" Text="<%[ Director start command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsDirStart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStop" Text="<%[ Director stop command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsDirStop"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirRestart" Text="<%[ Director restart command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsDirRestart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStart" Text="<%[ Storage start command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsSdStart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStop" Text="<%[ Storage stop command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsSdStop"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdRestart" Text="<%[ Storage restart command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsSdRestart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStart" Text="<%[ Client start command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsFdStart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStop" Text="<%[ Client stop command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsFdStop"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdRestart" Text="<%[ Client restart command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfileActionsFdRestart"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<h6 id="osprofile_window_predefined_profile_msg" class="txt-center"><%[ NOTE: This is predefined OS profile that cannot be modified nor removed. ]%></h6>
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('osprofile_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<com:TActiveLinkButton
+						ID="OSProfileSave"
+						ValidationGroup="OSProfileGroup"
+						CausesValidation="true"
+						OnCallback="saveOSProfile"
+						CssClass="w3-button w3-section w3-green w3-padding"
+					>
+						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+					</com:TActiveLinkButton>
+				</footer>
+			</div>
+			<com:TActiveHiddenField ID="OSProfileWindowType" />
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="ssh_configs" style="display: none">
+		<div class="w3-panel">
+			<button type="button" id="add_ssh_config_btn" class="w3-button w3-green" onclick="oSSHConfigs.load_ssh_config_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH config ]%></button>
+		</div>
+		<table id="ssh_config_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Hostname ]%></th>
+					<th class="w3-center"><%[ Port ]%></th>
+					<th class="w3-center"><%[ Username ]%></th>
+					<th class="w3-center"><%[ SSH key ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="ssh_config_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Hostname ]%></th>
+					<th class="w3-center"><%[ Port ]%></th>
+					<th class="w3-center"><%[ Username ]%></th>
+					<th class="w3-center"><%[ SSH key ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+<com:TCallback ID="SSHConfigList" OnCallback="TemplateControl.setSSHConfigList" />
+<com:TCallback ID="LoadSSHConfig" OnCallback="TemplateControl.loadSSHConfigWindow" />
+<com:TCallback ID="RemoveSSHConfigsAction" OnCallback="TemplateControl.removeSSHConfigs" />
+<script>
+var oSSHConfigList = {
+	ids: {
+		ssh_config_list: 'ssh_config_list_table',
+		ssh_config_list_body: 'ssh_config_list_body'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'Hostname',
+			callback: <%=$this->RemoveSSHConfigsAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oSSHConfigList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.ssh_config_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.ssh_config_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'Hostname'},
+				{data: 'Port'},
+				{data: 'User'},
+				{data: 'IdentityFile'},
+				{
+					data: 'Hostname',
+					render: function (data, type, row) {
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa-solid fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oSSHConfigs.load_ssh_config_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oSSHConfigList.set_filters(this.api());
+			}
+		});
+	},
+	set_filters: function(api) {
+		api.columns([1, 2, 3, 4]).every(function () {
+			const column = this;
+			const select = $('<select><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				const val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+					select.append('<option value="' + d + '" selected>' + d + '</option>');
+				} else if(d) {
+					select.append('<option value="' + d + '">' + d + '</option>');
+				}
+			});
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+
+var oSSHConfigs = {
+	load_ssh_config_window: function(name) {
+		const title_add = document.getElementById('ssh_config_window_title_add');
+		const title_edit = document.getElementById('ssh_config_window_title_edit');
+		const ssh_config_field_name = document.getElementById('<%=$this->SSHConfigHostname->ClientID%>');
+		const ssh_config_field_req = document.getElementById('ssh_config_window_required');
+		const ssh_config_win_type = document.getElementById('<%=$this->SSHConfigWindowType->ClientID%>');
+		if (name) {
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			ssh_config_field_name.setAttribute('readonly', '');
+			ssh_config_field_req.style.display = 'none';
+			ssh_config_win_type.value = 'edit';
+		} else {
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			this.clear_ssh_config_window();
+			if (ssh_config_field_name.hasAttribute('readonly')) {
+				ssh_config_field_name.removeAttribute('readonly');
+			}
+			ssh_config_field_req.style.display = 'inline';
+			ssh_config_win_type.value = 'add';
+		}
+		document.getElementById('ssh_config_window').style.display = 'block';
+		ssh_config_field_name.focus();
+		const cb = <%=$this->LoadSSHConfig->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+	},
+	clear_ssh_config_window: function() {
+		[
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+
+		[
+		].forEach(function(id) {
+			document.getElementById(id).checked = false;
+		});
+	},
+	load_ssh_config_list: function() {
+		const cb = <%=$this->SSHConfigList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_ssh_config_list_cb: function(list) {
+		oSSHConfigList.data = list;
+		oSSHConfigList.init();
+	},
+	save_ssh_config_cb: function() {
+		document.getElementById('ssh_config_window').style.display = 'none';
+	}
+};
+$(function() {
+	oSSHConfigs.load_ssh_config_list();
+});
+</script>
+		<div id="ssh_config_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('ssh_config_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="ssh_config_window_title_add" style="display: none"><%[ Add SSH config ]%></h2>
+					<h2 id="ssh_config_window_title_edit" style="display: none"><%[ Edit SSH config ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<com:TValidationSummary
+						CssClass="field_invalid-summary"
+						ValidationGroup="SSHConfigGroup"
+						AutoUpdate="true"
+						Display="Dynamic"
+						/>
+					<span id="ssh_config_window_ssh_configname_exists" class="error" style="display: none"><ul><li><%[ SSH config with the given name already exists. ]%></li></ul></span>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHConfigHostname" Text="<%[ Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?): ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="SSHConfigHostname"
+								AutoPostBack="false"
+								MaxLength="100"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="SSHConfigGroup"
+								ControlToValidate="SSHConfigHostname"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="SSHConfigGroup"
+								RegularExpression="<%=SSHConfig::SSH_CONFIG_NAME_PATTERN%>"
+								ControlToValidate="SSHConfigHostname"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i id="ssh_config_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHConfigPort" Text="<%[ Port: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="SSHConfigPort"
+								AutoPostBack="false"
+								MaxLength="5"
+								Width="100px"
+								CssClass="w3-input w3-border"
+								Text="22"
+							/>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHConfigUsername" Text="<%[ Username: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="SSHConfigUsername"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHConfigSSHKey" Text="<%[ SSH key: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveDropDownList
+								ID="SSHConfigSSHKey"
+								AutoPostBack="false"
+								CssClass="w3-select w3-border"
+							/>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('ssh_config_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<com:TActiveLinkButton
+						ID="SSHConfigSave"
+						ValidationGroup="SSHConfigGroup"
+						CausesValidation="true"
+						OnCallback="saveSSHConfig"
+						CssClass="w3-button w3-section w3-green w3-padding"
+					>
+						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+					</com:TActiveLinkButton>
+				</footer>
+			</div>
+			<com:TActiveHiddenField ID="SSHConfigWindowType" />
+		</div>
+	</div>
+	<div class="w3-container tab_item" id="ssh_keys" style="display: none">
+		<div class="w3-panel">
+			<button type="button" id="add_ssh_key_btn" class="w3-button w3-green" onclick="oSSHKeys.load_ssh_key_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH key ]%></button>
+		</div>
+		<table id="ssh_key_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Key name ]%></th>
+					<!--th class="w3-center"><%[ Fingerprint ]%></th-->
+				</tr>
+			</thead>
+			<tbody id="ssh_key_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Key name ]%></th>
+					<!--th class="w3-center"><%[ Fingerprint ]%></th-->
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+<com:TCallback ID="SSHKeyList" OnCallback="TemplateControl.setSSHKeyList" />
+<com:TCallback ID="RemoveSSHKeysAction" OnCallback="TemplateControl.removeSSHKeys" />
+<script>
+var oSSHKeyList = {
+	ids: {
+		ssh_key_list: 'ssh_key_list_table',
+		ssh_key_list_body: 'ssh_key_list_body'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'key',
+			callback: <%=$this->RemoveSSHKeysAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oSSHKeyList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.ssh_key_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.ssh_key_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'key'}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oSSHKeyList.set_filters(this.api());
+			}
+		});
+	},
+	set_filters: function(api) {
+		api.columns([1]).every(function () {
+			const column = this;
+			const select = $('<select><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				const val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+					select.append('<option value="' + d + '" selected>' + d + '</option>');
+				} else if(d) {
+					select.append('<option value="' + d + '">' + d + '</option>');
+				}
+			});
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+
+var oSSHKeys = {
+	load_ssh_key_window: function(name) {
+		const ssh_key_field_name = document.getElementById('<%=$this->SSHKeyName->ClientID%>');
+		const ssh_key_field_req = document.getElementById('ssh_key_window_required');
+		const ssh_key_win_type = document.getElementById('<%=$this->SSHKeyWindowType->ClientID%>');
+		if (name) {
+			ssh_key_field_name.setAttribute('readonly', '');
+			ssh_key_field_req.style.display = 'none';
+			ssh_key_win_type.value = 'edit';
+		} else {
+			this.clear_ssh_key_window();
+			if (ssh_key_field_name.hasAttribute('readonly')) {
+				ssh_key_field_name.removeAttribute('readonly');
+			}
+			ssh_key_field_req.style.display = 'inline';
+			ssh_key_win_type.value = 'add';
+		}
+		document.getElementById('ssh_key_window').style.display = 'block';
+		ssh_key_field_name.focus();
+	},
+	clear_ssh_key_window: function() {
+		[
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+
+		[
+		].forEach(function(id) {
+			document.getElementById(id).checked = false;
+		});
+	},
+	load_ssh_key_list: function() {
+		const cb = <%=$this->SSHKeyList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_ssh_key_list_cb: function(list) {
+		oSSHKeyList.data = list;
+		oSSHKeyList.init();
+	},
+	save_ssh_key_cb: function() {
+		document.getElementById('ssh_key_window').style.display = 'none';
+	}
+};
+$(function() {
+	oSSHKeys.load_ssh_key_list();
+});
+</script>
+		<div id="ssh_key_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('ssh_key_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="ssh_key_window_title_add"><%[ Add SSH key ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<com:TValidationSummary
+						CssClass="field_invalid-summary"
+						ValidationGroup="SSHKeyGroup"
+						AutoUpdate="true"
+						Display="Dynamic"
+						/>
+					<span id="ssh_key_window_ssh_keyname_exists" class="error" style="display: none"><ul><li><%[ SSH config with the given name already exists. ]%></li></ul></span>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHKeyName" Text="<%[ SSH key name: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="SSHKeyName"
+								AutoPostBack="false"
+								MaxLength="100"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="SSHKeyGroup"
+								ControlToValidate="SSHKeyName"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="SSHKeyGroup"
+								RegularExpression="<%=SSHKey::SSH_KEY_NAME_PATTERN%>"
+								ControlToValidate="SSHKeyName"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i id="ssh_key_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="SSHKeyContent" Text="<%[ Private SSH key content: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="SSHKeyContent"
+								TextMode="MultiLine"
+								Rows="6"
+								AutoPostBack="false"
+								MaxLength="5"
+								Width="400px"
+								CssClass="w3-input w3-border"
+							/>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('ssh_key_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<com:TActiveLinkButton
+						ID="SSHKeySave"
+						ValidationGroup="SSHKeyGroup"
+						CausesValidation="true"
+						OnCallback="saveSSHKey"
+						CssClass="w3-button w3-section w3-green w3-padding"
+					>
+						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+					</com:TActiveLinkButton>
+				</footer>
+			</div>
+			<com:TActiveHiddenField ID="SSHKeyWindowType" />
+		</div>
+	</div>
+</com:TContent>

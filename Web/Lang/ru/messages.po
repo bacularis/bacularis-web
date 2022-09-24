@@ -4451,3 +4451,471 @@ msgstr "seconds"
 
 msgid "Job over time report"
 msgstr "Job over time report"
+
+msgid "Field cannot be empty."
+msgstr "Field cannot be empty."
+
+msgid "OS profile:"
+msgstr "OS profile:"
+
+msgid "Select authentication method:"
+msgstr "Select authentication method:"
+
+msgid "Admin username:"
+msgstr "Admin username:"
+
+msgid "SSH key:"
+msgstr "SSH key:"
+
+msgid "Key passphrase (optional):"
+msgstr "Key passphrase (optional):"
+
+msgid "Save as name (optional):"
+msgstr "Save as name (optional):"
+
+msgid "Invalid value."
+msgstr "Invalid value."
+
+msgid "OS profile name:"
+msgstr "OS profile name:"
+
+msgid "Add repository entry to remote host:"
+msgstr "Add repository entry to remote host:"
+
+msgid "Repository type:"
+msgstr "Repository type:"
+
+msgid "Bacularis repository URL (or entry):"
+msgstr "Bacularis repository URL (or entry):"
+
+msgid "Bacularis repository key URL:"
+msgstr "Bacularis repository key URL:"
+
+msgid "Use system repository for Bacula packages:"
+msgstr "Use system repository for Bacula packages:"
+
+msgid "Bacula repository URL (or entry):"
+msgstr "Bacula repository URL (or entry):"
+
+msgid "Bacula repository key URL:"
+msgstr "Bacula repository key URL:"
+
+msgid "Use HTTPS:"
+msgstr "Use HTTPS:"
+
+msgid "Bacularis admin user:"
+msgstr "Bacularis admin user:"
+
+msgid "Bacularis admin password:"
+msgstr "Bacularis admin password:"
+
+msgid "Bacularis start command:"
+msgstr "Bacularis start command:"
+
+msgid "Use sudo for commands:"
+msgstr "Use sudo for commands:"
+
+msgid "Sudo user:"
+msgstr "Sudo user:"
+
+msgid "Bacularis installation command:"
+msgstr "Bacularis installation command:"
+
+msgid "Bacularis upgrade command:"
+msgstr "Bacularis upgrade command:"
+
+msgid "Bacularis removal command:"
+msgstr "Bacularis removal command:"
+
+msgid "Bacularis info command:"
+msgstr "Bacularis info command:"
+
+msgid "Bacularis enable command:"
+msgstr "Bacularis enable command:"
+
+msgid "Bacularis pre-install command:"
+msgstr "Bacularis pre-install command:"
+
+msgid "Bacularis pre-upgrade command:"
+msgstr "Bacularis pre-upgrade command:"
+
+msgid "Bacularis pre-remove command:"
+msgstr "Bacularis pre-remove command:"
+
+msgid "Bacularis post-install command:"
+msgstr "Bacularis post-install command:"
+
+msgid "Bacularis post-upgrade command:"
+msgstr "Bacularis post-upgrade command:"
+
+msgid "Bacularis post-remove command:"
+msgstr "Bacularis post-remove command:"
+
+msgid "Director installation command:"
+msgstr "Director installation command:"
+
+msgid "Director upgrade command:"
+msgstr "Director upgrade command:"
+
+msgid "Director removal command:"
+msgstr "Director removal command:"
+
+msgid "Director info command:"
+msgstr "Director info command:"
+
+msgid "Director enable command:"
+msgstr "Director enable command:"
+
+msgid "Director pre-install command:"
+msgstr "Director pre-install command:"
+
+msgid "Director pre-upgrade command:"
+msgstr "Director pre-upgrade command:"
+
+msgid "Director pre-remove command:"
+msgstr "Director pre-remove command:"
+
+msgid "Director post-install command:"
+msgstr "Director post-install command:"
+
+msgid "Director post-upgrade command:"
+msgstr "Director post-upgrade command:"
+
+msgid "Director post-remove command:"
+msgstr "Director post-remove command:"
+
+msgid "Storage installation command:"
+msgstr "Storage installation command:"
+
+msgid "Storage upgrade command:"
+msgstr "Storage upgrade command:"
+
+msgid "Storage removal command:"
+msgstr "Storage removal command:"
+
+msgid "Storage info command:"
+msgstr "Storage info command:"
+
+msgid "Storage enable command:"
+msgstr "Storage enable command:"
+
+msgid "Storage pre-install command:"
+msgstr "Storage pre-install command:"
+
+msgid "Storage pre-upgrade command:"
+msgstr "Storage pre-upgrade command:"
+
+msgid "Storage pre-remove command:"
+msgstr "Storage pre-remove command:"
+
+msgid "Storage post-install command:"
+msgstr "Storage post-install command:"
+
+msgid "Storage post-upgrade command:"
+msgstr "Storage post-upgrade command:"
+
+msgid "Storage post-remove command:"
+msgstr "Storage post-remove command:"
+
+msgid "Client installation command:"
+msgstr "Client installation command:"
+
+msgid "Client upgrade command:"
+msgstr "Client upgrade command:"
+
+msgid "Client removal command:"
+msgstr "Client removal command:"
+
+msgid "Client info command:"
+msgstr "Client info command:"
+
+msgid "Client enable command:"
+msgstr "Client enable command:"
+
+msgid "Client pre-install command:"
+msgstr "Client pre-install command:"
+
+msgid "Client pre-upgrade command:"
+msgstr "Client pre-upgrade command:"
+
+msgid "Client pre-remove command:"
+msgstr "Client pre-remove command:"
+
+msgid "Client post-install command:"
+msgstr "Client post-install command:"
+
+msgid "Client post-upgrade command:"
+msgstr "Client post-upgrade command:"
+
+msgid "Client post-remove command:"
+msgstr "Client post-remove command:"
+
+msgid "Bconsole installation command:"
+msgstr "Bconsole installation command:"
+
+msgid "Bconsole upgrade command:"
+msgstr "Bconsole upgrade command:"
+
+msgid "Bconsole removal command:"
+msgstr "Bconsole removal command:"
+
+msgid "Bconsole info command:"
+msgstr "Bconsole info command:"
+
+msgid "Bconsole pre-install command:"
+msgstr "Bconsole pre-install command:"
+
+msgid "Bconsole pre-upgrade command:"
+msgstr "Bconsole pre-upgrade command:"
+
+msgid "Bconsole pre-remove command:"
+msgstr "Bconsole pre-remove command:"
+
+msgid "Bconsole post-install command:"
+msgstr "Bconsole post-install command:"
+
+msgid "Bconsole post-upgrade command:"
+msgstr "Bconsole post-upgrade command:"
+
+msgid "Bconsole post-remove command:"
+msgstr "Bconsole post-remove command:"
+
+msgid "Working directory:"
+msgstr "Working directory:"
+
+msgid "Bdirjson binary file path:"
+msgstr "Bdirjson binary file path:"
+
+msgid "Main Director config file path:"
+msgstr "Main Director config file path:"
+
+msgid "Bsdjson binary file path:"
+msgstr "Bsdjson binary file path:"
+
+msgid "Main Storage config file path:"
+msgstr "Main Storage config file path:"
+
+msgid "Bfdjson binary file path:"
+msgstr "Bfdjson binary file path:"
+
+msgid "Main Client config file path:"
+msgstr "Main Client config file path:"
+
+msgid "Bbconsjson binary file path:"
+msgstr "Bbconsjson binary file path:"
+
+msgid "Main Bconsole config file path:"
+msgstr "Main Bconsole config file path:"
+
+msgid "Database path (SQLite only):"
+msgstr "Database path (SQLite only):"
+
+msgid "Director start command:"
+msgstr "Director start command:"
+
+msgid "Director stop command:"
+msgstr "Director stop command:"
+
+msgid "Director restart command:"
+msgstr "Director restart command:"
+
+msgid "Storage start command:"
+msgstr "Storage start command:"
+
+msgid "Storage stop command:"
+msgstr "Storage stop command:"
+
+msgid "Storage restart command:"
+msgstr "Storage restart command:"
+
+msgid "Client start command:"
+msgstr "Client start command:"
+
+msgid "Client stop command:"
+msgstr "Client stop command:"
+
+msgid "Client restart command:"
+msgstr "Client restart command:"
+
+msgid "Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?):"
+msgstr "Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?):"
+
+msgid "SSH key name:"
+msgstr "SSH key name:"
+
+msgid "Private SSH key content:"
+msgstr "Private SSH key content:"
+
+msgid "Deployment"
+msgstr "Deployment"
+
+msgid "Hosts"
+msgstr "Hosts"
+
+msgid "OS profiles"
+msgstr "OS profiles"
+
+msgid "SSH configs"
+msgstr "SSH configs"
+
+msgid "SSH keys"
+msgstr "SSH keys"
+
+msgid "Deploy API host"
+msgstr "Deploy API host"
+
+msgid "Install"
+msgstr "Install"
+
+msgid "Upgrade"
+msgstr "Upgrade"
+
+msgid "Uninstall"
+msgstr "Uninstall"
+
+msgid "Installing %component"
+msgstr "Installing %component"
+
+msgid "Install Bacula components on API host"
+msgstr "Install Bacula components on API host"
+
+msgid "Upgrading %component"
+msgstr "Upgrading %component"
+
+msgid "Upgrade Bacula components on API host"
+msgstr "Upgrade Bacula components on API host"
+
+msgid "Uninstalling %component"
+msgstr "Uninstalling %component"
+
+msgid "Uninstall Bacula components on API host"
+msgstr "Uninstall Bacula components on API host"
+
+msgid "getting package information..."
+msgstr "getting package information..."
+
+msgid "installed"
+msgstr "installed"
+
+msgid "not installed"
+msgstr "not installed"
+
+msgid "Finish."
+msgstr "Finish."
+
+msgid "Use username and password"
+msgstr "Use username and password"
+
+msgid "Use username and SSH key"
+msgstr "Use username and SSH key"
+
+msgid "Use username and SSH key from SSH config for host"
+msgstr "Use username and SSH key from SSH config for host"
+
+msgid "Deploy"
+msgstr "Deploy"
+
+msgid "In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button."
+msgstr "In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button."
+
+msgid "Components"
+msgstr "Components"
+
+msgid "Install options"
+msgstr "Install options"
+
+msgid "Add new component to current Director (for client and storage only)"
+msgstr "Add new component to current Director (for client and storage only)"
+
+msgid "Add new OS profile"
+msgstr "Add new OS profile"
+
+msgid "Repository type"
+msgstr "Repository type"
+
+msgid "Pre-defined"
+msgstr "Pre-defined"
+
+msgid "Add OS profile"
+msgstr "Add OS profile"
+
+msgid "Edit OS profile"
+msgstr "Edit OS profile"
+
+msgid "OS profile with the given name already exists."
+msgstr "OS profile with the given name already exists."
+
+msgid "Repositories"
+msgstr "Repositories"
+
+msgid "Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment."
+msgstr "Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment."
+
+msgid "Bacularis API access"
+msgstr "Bacularis API access"
+
+msgid "Bacularis API settings"
+msgstr "Bacularis API settings"
+
+msgid "All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile."
+msgstr "All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile."
+
+msgid "Package management"
+msgstr "Package management"
+
+msgid "Bacularis commands"
+msgstr "Bacularis commands"
+
+msgid "Advanced settings"
+msgstr "Advanced settings"
+
+msgid "Director commands"
+msgstr "Director commands"
+
+msgid "Storage commands"
+msgstr "Storage commands"
+
+msgid "Client commands"
+msgstr "Client commands"
+
+msgid "Bconsole commands"
+msgstr "Bconsole commands"
+
+msgid "Catalog"
+msgstr "Catalog"
+
+msgid "NOTE: This is predefined OS profile that cannot be modified nor removed."
+msgstr "NOTE: This is predefined OS profile that cannot be modified nor removed."
+
+msgid "Add new SSH config"
+msgstr "Add new SSH config"
+
+msgid "Hostname"
+msgstr "Hostname"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "SSH key"
+msgstr "SSH key"
+
+msgid "Add SSH config"
+msgstr "Add SSH config"
+
+msgid "Edit SSH config"
+msgstr "Edit SSH config"
+
+msgid "SSH config with the given name already exists."
+msgstr "SSH config with the given name already exists."
+
+msgid "Add new SSH key"
+msgstr "Add new SSH key"
+
+msgid "Key name"
+msgstr "Key name"
+
+msgid "Fingerprint"
+msgstr "Fingerprint"
+
+msgid "Add SSH key"
+msgstr "Add SSH key"

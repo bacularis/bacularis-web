@@ -11,6 +11,9 @@
 		<module id="host_config" class="Bacularis\Web\Modules\HostConfig" />
 		<module id="user_config" class="Bacularis\Web\Modules\WebUserConfig" />
 		<module id="role_config" class="Bacularis\Web\Modules\WebRoleConfig" />
+		<module id="ssh_config" class="Bacularis\Web\Modules\SSHConfig" />
+		<module id="ssh_key" class="Bacularis\Web\Modules\SSHKey" />
+		<module id="osprofile_config" class="Bacularis\Web\Modules\OSProfileConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
@@ -33,6 +36,11 @@
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
 		<module id="messages_log" class="Bacularis\Web\Modules\MessagesLog" />
+		<!-- remote management modules -->
+		<module id="ssh" class="Bacularis\Web\Modules\SSH" />
+		<module id="scp" class="Bacularis\Web\Modules\SCP" />
+		<module id="gpg" class="Bacularis\Web\Modules\GPG" />
+		<module id="deploy_api" class="Bacularis\Web\Modules\DeployAPIHost" />
 		<!-- Common modules available for web (temporary here due to no way to update composer project) -->
 		<module id="base32" class="Bacularis\Common\Modules\Base32" />
 		<module id="totp" class="Bacularis\Common\Modules\Totp" />
