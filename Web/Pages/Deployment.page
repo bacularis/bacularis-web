@@ -657,52 +657,52 @@ var oDeployAPIHost = {
 	steps: [
 		{
 			id: 'add_bacularis_repo',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['add_bacularis_repo'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['add_bacularis_repo']) %>',
 			cb: <%=$this->DeployAPIAddBacularisRepository->ActiveControl->Javascript%>
 		},
 		{
 			id: 'add_sudo',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['add_sudo'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['add_sudo']) %>',
 			cb: <%=$this->DeployAPIAddSUDOSettings->ActiveControl->Javascript%>
 		},
 		{
 			id: 'pre_install_bacularis',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['pre_install_bacularis'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['pre_install_bacularis']) %>',
 			cb: <%=$this->DeployAPIPreInstallBacularis->ActiveControl->Javascript%>
 		},
 		{
 			id: 'install_bacularis',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['install_bacularis'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['install_bacularis']) %>',
 			cb: <%=$this->DeployAPIInstallBacularis->ActiveControl->Javascript%>
 		},
 		{
 			id: 'post_install_bacularis',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['post_install_bacularis'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['post_install_bacularis']) %>',
 			cb: <%=$this->DeployAPIPostInstallBacularis->ActiveControl->Javascript%>
 		},
 		{
 			id: 'configure_bacularis',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['configure_bacularis'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['configure_bacularis']) %>',
 			cb: <%=$this->DeployAPIConfigureBacularis->ActiveControl->Javascript%>
 		},
 		{
 			id: 'create_bacularis_user',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['create_bacularis_user'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['create_bacularis_user']) %>',
 			cb: <%=$this->DeployAPICreateBacularisUser->ActiveControl->Javascript%>
 		},
 		{
 			id: 'set_bacularis_pwd',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['set_bacularis_pwd'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['set_bacularis_pwd']) %>',
 			cb: <%=$this->DeployAPISetBacularisPwd->ActiveControl->Javascript%>
 		},
 		{
 			id: 'start_bacularis',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['start_bacularis'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['start_bacularis']) %>',
 			cb: <%=$this->DeployAPIStartBacularis->ActiveControl->Javascript%>
 		},
 		{
 			id: 'access_link',
-			desc: '<%= Deployment::DEPLOY_STEPS_TXT['access_link'] %>',
+			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['access_link']) %>',
 			cb: <%=$this->DeployAPIAccessLink->ActiveControl->Javascript%>
 		}
 	],

@@ -4919,3 +4919,36 @@ msgstr "Fingerprint"
 
 msgid "Add SSH key"
 msgstr "Add SSH key"
+
+msgid "Add package repository"
+msgstr "Add package repository"
+
+msgid "Add SUDO settings"
+msgstr "Add SUDO settings"
+
+msgid "Pre-install Bacularis command"
+msgstr "Pre-install Bacularis command"
+
+msgid "Install Bacularis"
+msgstr "Install Bacularis"
+
+msgid "Post-install Bacularis command"
+msgstr "Post-install Bacularis command"
+
+msgid "Configure Bacularis"
+msgstr "Configure Bacularis"
+
+msgid "Create Bacularis user"
+msgstr "Create Bacularis user"
+
+msgid "Set Bacularis password"
+msgstr "Set Bacularis password"
+
+msgid "Start Bacularis"
+msgstr "Start Bacularis"
+
+msgid "API access link"
+msgstr "API access link"
+
+msgid "Step"
+msgstr "Step"
