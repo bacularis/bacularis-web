@@ -16,6 +16,7 @@
 use Prado\Prado;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\DeployAPIHost;
+use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\OSProfileConfig;
 use Bacularis\Web\Modules\SSH;
@@ -1262,6 +1263,14 @@ class Deployment extends BaculumWebPage
 		$username = $this->User->getUsername();
 		$user = $user_config->getUserConfig($username);
 		if (!in_array($host, $user['api_hosts'])) {
+			if (count($user['api_hosts']) == 0) {
+				/**
+				 * If user is not assigned to any host, it means that he uses Main host.
+				 * To not loose access to Main host after assigning new API host first he needs
+				 * to be assigned to the Main host.
+				 */
+				$user['api_hosts'][] = HostConfig::MAIN_CATALOG_HOST;
+			}
 			$user['api_hosts'][] = $host;
 			$user_config->setUserConfig($username, $user);
 		}
