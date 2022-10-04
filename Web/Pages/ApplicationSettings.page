@@ -288,7 +288,7 @@
 			</div>
 			<div class="w3-container w3-row w3-padding">
 				<div class="w3-quarter w3-col"><%[ Log types ]%>:</div>
-				<div class="w3-quarter w3-col">
+				<div class="w3-half w3-col">
 					<com:TCheckBox
 						ID="LogTypeInfo"
 						CssClass="w3-check"
