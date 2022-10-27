@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-08-18 04:07\n"
+"PO-Revision-Date: 2022-10-27 03:18\n"
 "Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
@@ -669,7 +669,7 @@ msgid "This action will clear bvfs cache that was created during preparing resto
 msgstr "Ta akcja wyczyści bvfs cache który był stworzony podczas przygotowania każdej akcji przywracania danych.\\n\\nNie jest zalecane używanie tej akcji podczas gdy jest uruchomione zadanie przywracania danych.\\n\\nCzy chcesz kontynuować?"
 
 msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
-msgstr "Pliki debugowania umożliwiają zapisywanie więksozści akcji wykonywanych w interfejsie web Bacularis. Funkcja debugowania powinna być załączona, jeżeli zdarzy się coś złego z Bacularis lub coś, co wygląda na błąd. Dzienniki debug mogą być przydatne do określenia probelmów związanych z pracą Bacularis. Po potwierdzeniu tej wiadomości pliki debug Bacularis będą stale zapisywane w katalogu /protected/eb/Logs/. Czy jesteś pewien?"
+msgstr "Pliki debugowania umożliwiają zapisywanie większości akcji wykonywanych w interfejsie web Bacularis. Funkcja debugowania powinna być załączona, jeżeli zdarzy się coś złego z Bacularis lub coś, co wygląda na błąd. Dzienniki debug mogą być przydatne do określenia probelmów związanych z pracą Bacularis. Po potwierdzeniu tej wiadomości pliki debug Bacularis będą stale zapisywane w katalogu /protected/eb/Logs/. Czy jesteś pewien?"
 
 msgid "10 elements"
 msgstr "10 elementów"
@@ -4449,507 +4449,507 @@ msgstr "Kategorie logów"
 msgid "seconds"
 msgstr "sekundy"
 
-
 msgid "Job over time report"
-msgstr "Job over time report"
+msgstr "Raport zadań w czasie"
 
 msgid "Field cannot be empty."
-msgstr "Field cannot be empty."
+msgstr "Pole nie może być puste."
 
 msgid "OS profile:"
-msgstr "OS profile:"
+msgstr "Profil systemu operacyjnego:"
 
 msgid "Select authentication method:"
-msgstr "Select authentication method:"
+msgstr "Wybierz metodę uwierzytelniania:"
 
 msgid "Admin username:"
-msgstr "Admin username:"
+msgstr "Nazwa użytkownika administratora:"
 
 msgid "SSH key:"
-msgstr "SSH key:"
+msgstr "Klucz SSH:"
 
 msgid "Key passphrase (optional):"
-msgstr "Key passphrase (optional):"
+msgstr "Hasło klucza (opcjonalnie):"
 
 msgid "Save as name (optional):"
-msgstr "Save as name (optional):"
+msgstr "Zapisz jako nazwę (opcjonalnie):"
 
 msgid "Invalid value."
-msgstr "Invalid value."
+msgstr "Niepoprawna wartość."
 
 msgid "OS profile name:"
-msgstr "OS profile name:"
+msgstr "Nazwa profilu systemu operacyjnego:"
 
 msgid "Add repository entry to remote host:"
-msgstr "Add repository entry to remote host:"
+msgstr "Dodaj wpis repozytorium do zdalnego hosta:"
 
 msgid "Repository type:"
-msgstr "Repository type:"
+msgstr "Typ repozytorium:"
 
 msgid "Bacularis repository URL (or entry):"
-msgstr "Bacularis repository URL (or entry):"
+msgstr "Adres URL repozytorium Bacularis (lub wpis):"
 
 msgid "Bacularis repository key URL:"
-msgstr "Bacularis repository key URL:"
+msgstr "Adres URL klucza repozytorium Bacularis:"
 
 msgid "Use system repository for Bacula packages:"
-msgstr "Use system repository for Bacula packages:"
+msgstr "Użyj repozytorium systemowego dla pakietów Bacula:"
 
 msgid "Bacula repository URL (or entry):"
-msgstr "Bacula repository URL (or entry):"
+msgstr "Adres URL repozytorium Bacula (lub wpis):"
 
 msgid "Bacula repository key URL:"
-msgstr "Bacula repository key URL:"
+msgstr "Adres URL klucza repozytorium Bacula:"
 
 msgid "Use HTTPS:"
-msgstr "Use HTTPS:"
+msgstr "Użyj HTTPS:"
 
 msgid "Bacularis admin user:"
-msgstr "Bacularis admin user:"
+msgstr "Nazwa użytkownika administratora Bacularis:"
 
 msgid "Bacularis admin password:"
-msgstr "Bacularis admin password:"
+msgstr "Hasło administratora Bacularis:"
 
 msgid "Bacularis start command:"
-msgstr "Bacularis start command:"
+msgstr "Komenda startu Bacularis:"
 
 msgid "Use sudo for commands:"
-msgstr "Use sudo for commands:"
+msgstr "Użyj sudo dla komend:"
 
 msgid "Sudo user:"
-msgstr "Sudo user:"
+msgstr "Użytkownik Sudo:"
 
 msgid "Bacularis installation command:"
-msgstr "Bacularis installation command:"
+msgstr "Komenda instalacji Bacularis:"
 
 msgid "Bacularis upgrade command:"
-msgstr "Bacularis upgrade command:"
+msgstr "Komenda aktualizacji Bacularis:"
 
 msgid "Bacularis removal command:"
-msgstr "Bacularis removal command:"
+msgstr "Polecenie usuwania Bacularis:"
 
 msgid "Bacularis info command:"
-msgstr "Bacularis info command:"
+msgstr "Komenda informacji Bacularis:"
 
 msgid "Bacularis enable command:"
-msgstr "Bacularis enable command:"
+msgstr "Komenda włączania Bacularis:"
 
 msgid "Bacularis pre-install command:"
-msgstr "Bacularis pre-install command:"
+msgstr "Komenda preinstalacji Bacularis:"
 
 msgid "Bacularis pre-upgrade command:"
-msgstr "Bacularis pre-upgrade command:"
+msgstr "Komenda preaktualizacji Bacularis:"
 
 msgid "Bacularis pre-remove command:"
-msgstr "Bacularis pre-remove command:"
+msgstr "Komenda preusuwania Bacularis:"
 
 msgid "Bacularis post-install command:"
-msgstr "Bacularis post-install command:"
+msgstr "Komenda postinstalacji Bacularis:"
 
 msgid "Bacularis post-upgrade command:"
-msgstr "Bacularis post-upgrade command:"
+msgstr "Komenda postaktualizacji Bacularis:"
 
 msgid "Bacularis post-remove command:"
-msgstr "Bacularis post-remove command:"
+msgstr "Komenda postusuwania Bacularis:"
 
 msgid "Director installation command:"
-msgstr "Director installation command:"
+msgstr "Komenda instalacji Zarządcy:"
 
 msgid "Director upgrade command:"
-msgstr "Director upgrade command:"
+msgstr "Komenda aktualizacji Zarządcy:"
 
 msgid "Director removal command:"
-msgstr "Director removal command:"
+msgstr "Komenda usuwania Zarządcy:"
 
 msgid "Director info command:"
-msgstr "Director info command:"
+msgstr "Komenda informacji Zarządcy:"
 
 msgid "Director enable command:"
-msgstr "Director enable command:"
+msgstr "Komenda włączania Zarządcy:"
 
 msgid "Director pre-install command:"
-msgstr "Director pre-install command:"
+msgstr "Komenda preinstalacji Zarządcy:"
 
 msgid "Director pre-upgrade command:"
-msgstr "Director pre-upgrade command:"
+msgstr "Komenda preaktualizacji Zarządcy:"
 
 msgid "Director pre-remove command:"
-msgstr "Director pre-remove command:"
+msgstr "Komenda preusuwania Zarządcy:"
 
 msgid "Director post-install command:"
-msgstr "Director post-install command:"
+msgstr "Komenda postusuwania Zarządcy:"
 
 msgid "Director post-upgrade command:"
-msgstr "Director post-upgrade command:"
+msgstr "Komenda postaktualizacji Zarządcy:"
 
 msgid "Director post-remove command:"
-msgstr "Director post-remove command:"
+msgstr "Komenda postusuwania Zarządcy:"
 
 msgid "Storage installation command:"
-msgstr "Storage installation command:"
+msgstr "Komenda instalacji Magazynu:"
 
 msgid "Storage upgrade command:"
-msgstr "Storage upgrade command:"
+msgstr "Komenda aktualizacji Magazynu:"
 
 msgid "Storage removal command:"
-msgstr "Storage removal command:"
+msgstr "Komenda usuwania Magazynu:"
 
 msgid "Storage info command:"
-msgstr "Storage info command:"
+msgstr "Komenda informacji Magazynu:"
 
 msgid "Storage enable command:"
-msgstr "Storage enable command:"
+msgstr "Komenda włączania Magazynu:"
 
 msgid "Storage pre-install command:"
-msgstr "Storage pre-install command:"
+msgstr "Komenda preinstalacji Magazynu:"
 
 msgid "Storage pre-upgrade command:"
-msgstr "Storage pre-upgrade command:"
+msgstr "Komenda preaktualizacji Magazynu:"
 
 msgid "Storage pre-remove command:"
-msgstr "Storage pre-remove command:"
+msgstr "Komenda preusuwania Magazynu:"
 
 msgid "Storage post-install command:"
-msgstr "Storage post-install command:"
+msgstr "Komenda preinstalacji Magazynu:"
 
 msgid "Storage post-upgrade command:"
-msgstr "Storage post-upgrade command:"
+msgstr "Komenda postaktualizacji Magazynu:"
 
 msgid "Storage post-remove command:"
-msgstr "Storage post-remove command:"
+msgstr "Komenda postusuwania Magazynu:"
 
 msgid "Client installation command:"
-msgstr "Client installation command:"
+msgstr "Komenda instalacji Klienta:"
 
 msgid "Client upgrade command:"
-msgstr "Client upgrade command:"
+msgstr "Komenda aktualizacji Klienta:"
 
 msgid "Client removal command:"
-msgstr "Client removal command:"
+msgstr "Komenda usuwania Klienta:"
 
 msgid "Client info command:"
-msgstr "Client info command:"
+msgstr "Komenda informacji Klienta:"
 
 msgid "Client enable command:"
-msgstr "Client enable command:"
+msgstr "Komenda włączania Klienta:"
 
 msgid "Client pre-install command:"
-msgstr "Client pre-install command:"
+msgstr "Komenda preinstalacji Klienta:"
 
 msgid "Client pre-upgrade command:"
-msgstr "Client pre-upgrade command:"
+msgstr "Komenda preaktualizacji Klienta:"
 
 msgid "Client pre-remove command:"
-msgstr "Client pre-remove command:"
+msgstr "Komenda preusuwania Klienta:"
 
 msgid "Client post-install command:"
-msgstr "Client post-install command:"
+msgstr "Komenda postinstalacji Klienta:"
 
 msgid "Client post-upgrade command:"
-msgstr "Client post-upgrade command:"
+msgstr "Komenda postaktualizacji Klienta:"
 
 msgid "Client post-remove command:"
-msgstr "Client post-remove command:"
+msgstr "Komenda postusuwania Klienta:"
 
 msgid "Bconsole installation command:"
-msgstr "Bconsole installation command:"
+msgstr "Komenda instalacji Bconsole:"
 
 msgid "Bconsole upgrade command:"
-msgstr "Bconsole upgrade command:"
+msgstr "Komenda aktualizacji Bconsole:"
 
 msgid "Bconsole removal command:"
-msgstr "Bconsole removal command:"
+msgstr "Komenda usuwania Bconsole:"
 
 msgid "Bconsole info command:"
-msgstr "Bconsole info command:"
+msgstr "Komenda informacji Bconsole:"
 
 msgid "Bconsole pre-install command:"
-msgstr "Bconsole pre-install command:"
+msgstr "Komenda preinstalacji Bconsole:"
 
 msgid "Bconsole pre-upgrade command:"
-msgstr "Bconsole pre-upgrade command:"
+msgstr "Komenda preaktualizacji Bconsole:"
 
 msgid "Bconsole pre-remove command:"
-msgstr "Bconsole pre-remove command:"
+msgstr "Komenda preusuwania Bconsole:"
 
 msgid "Bconsole post-install command:"
-msgstr "Bconsole post-install command:"
+msgstr "Komenda postinstalacji Bconsole:"
 
 msgid "Bconsole post-upgrade command:"
-msgstr "Bconsole post-upgrade command:"
+msgstr "Komenda postaktualizacji Bconsole:"
 
 msgid "Bconsole post-remove command:"
-msgstr "Bconsole post-remove command:"
+msgstr "Komenda postusuwania Bconsole:"
 
 msgid "Working directory:"
-msgstr "Working directory:"
+msgstr "Katalog roboczy:"
 
 msgid "Bdirjson binary file path:"
-msgstr "Bdirjson binary file path:"
+msgstr "Lokalizacja programu bdirjson:"
 
 msgid "Main Director config file path:"
-msgstr "Main Director config file path:"
+msgstr "Główny plik konfiguracyjny Director:"
 
 msgid "Bsdjson binary file path:"
-msgstr "Bsdjson binary file path:"
+msgstr "Lokalizacja programu bsdjson:"
 
 msgid "Main Storage config file path:"
-msgstr "Main Storage config file path:"
+msgstr "Główny plik konfiguracyjny Magazynu:"
 
 msgid "Bfdjson binary file path:"
-msgstr "Bfdjson binary file path:"
+msgstr "Lokalizacja programu bfdjson:"
 
 msgid "Main Client config file path:"
-msgstr "Main Client config file path:"
+msgstr "Główny plik konfiguracyjny Klienta:"
 
 msgid "Bbconsjson binary file path:"
-msgstr "Bbconsjson binary file path:"
+msgstr "Lokalizacja programu bbconsjson:"
 
 msgid "Main Bconsole config file path:"
-msgstr "Main Bconsole config file path:"
+msgstr "Główny plik konfiguracyjny konsoli Bconsole:"
 
 msgid "Database path (SQLite only):"
-msgstr "Database path (SQLite only):"
+msgstr "Ścieżka do bazy danych (tylko SQLite):"
 
 msgid "Director start command:"
-msgstr "Director start command:"
+msgstr "Komenda uruchomienia Zarządcy:"
 
 msgid "Director stop command:"
-msgstr "Director stop command:"
+msgstr "Komenda zatrzymania Zarządcy:"
 
 msgid "Director restart command:"
-msgstr "Director restart command:"
+msgstr "Komenda restartu Zarządcy:"
 
 msgid "Storage start command:"
-msgstr "Storage start command:"
+msgstr "Komenda uruchomienia Magazynu:"
 
 msgid "Storage stop command:"
-msgstr "Storage stop command:"
+msgstr "Komenda zatrzymania Zarządcy:"
 
 msgid "Storage restart command:"
-msgstr "Storage restart command:"
+msgstr "Komenda restartu Magazynu:"
 
 msgid "Client start command:"
-msgstr "Client start command:"
+msgstr "Komenda uruchomienia Klienta:"
 
 msgid "Client stop command:"
-msgstr "Client stop command:"
+msgstr "Komenda zatrzymania Klienta:"
 
 msgid "Client restart command:"
-msgstr "Client restart command:"
+msgstr "Komenda restartu Klienta:"
 
 msgid "Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?):"
-msgstr "Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?):"
+msgstr "Nazwa hosta (akceptuje znaki takie jak * lub ?, na przykład *.host.com lub 192.168.3.?):"
 
 msgid "SSH key name:"
-msgstr "SSH key name:"
+msgstr "Nazwa klucza SSH:"
 
 msgid "Private SSH key content:"
-msgstr "Private SSH key content:"
+msgstr "Zawartość prywatnego klucza SSH:"
 
 msgid "Deployment"
-msgstr "Deployment"
+msgstr "Wdrożenie"
 
 msgid "Hosts"
-msgstr "Hosts"
+msgstr "Hosty"
 
 msgid "OS profiles"
-msgstr "OS profiles"
+msgstr "Profile systemu operacyjnego"
 
 msgid "SSH configs"
-msgstr "SSH configs"
+msgstr "Konfiguracja SSH"
 
 msgid "SSH keys"
-msgstr "SSH keys"
+msgstr "Klucze SSH"
 
 msgid "Deploy API host"
-msgstr "Deploy API host"
+msgstr "Wdrożenie hosta API"
 
 msgid "Install"
-msgstr "Install"
+msgstr "Instaluj"
 
 msgid "Upgrade"
-msgstr "Upgrade"
+msgstr "Aktualizuj"
 
 msgid "Uninstall"
-msgstr "Uninstall"
+msgstr "Odinstaluj"
 
 msgid "Installing %component"
-msgstr "Installing %component"
+msgstr "Instalowanie %component"
 
 msgid "Install Bacula components on API host"
-msgstr "Install Bacula components on API host"
+msgstr "Zainstaluj komponenty Bacula na hoście API"
 
 msgid "Upgrading %component"
-msgstr "Upgrading %component"
+msgstr "Aktualizacja %component"
 
 msgid "Upgrade Bacula components on API host"
-msgstr "Upgrade Bacula components on API host"
+msgstr "Aktualizuj komponenty Bacula na hoście API"
 
 msgid "Uninstalling %component"
-msgstr "Uninstalling %component"
+msgstr "Odinstalowanie %component"
 
 msgid "Uninstall Bacula components on API host"
-msgstr "Uninstall Bacula components on API host"
+msgstr "Odinstaluj komponenty Bacula na hoście API"
 
 msgid "getting package information..."
-msgstr "getting package information..."
+msgstr "pobieranie informacji o pakietach..."
 
 msgid "installed"
-msgstr "installed"
+msgstr "zainstalowany"
 
 msgid "not installed"
-msgstr "not installed"
+msgstr "niezainstalowany"
 
 msgid "Finish."
-msgstr "Finish."
+msgstr "Koniec."
 
 msgid "Use username and password"
-msgstr "Use username and password"
+msgstr "Użyj nazwy użytkownika i hasła"
 
 msgid "Use username and SSH key"
-msgstr "Use username and SSH key"
+msgstr "Użyj nazwy użytkownika i klucza SSH"
 
 msgid "Use username and SSH key from SSH config for host"
-msgstr "Use username and SSH key from SSH config for host"
+msgstr "Użyj nazwy użytkownika i klucza SSH z konfiguracji SSH dla hosta"
 
 msgid "Deploy"
-msgstr "Deploy"
+msgstr "Wdróż"
 
 msgid "In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button."
-msgstr "In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button."
+msgstr "W tym oknie możesz zainstalować komponenty Bacula na wybranym hoście API. Wybierz komponenty, które chcesz zainstalować, a następnie kliknij przycisk Instaluj."
 
 msgid "Components"
-msgstr "Components"
+msgstr "Komponenty"
 
 msgid "Install options"
-msgstr "Install options"
+msgstr "Opcje instalacji"
 
 msgid "Add new component to current Director (for client and storage only)"
-msgstr "Add new component to current Director (for client and storage only)"
+msgstr "Dodaj nowy komponent do bieżącego Zarządcy (tylko dla Klientów i Magazynów)"
 
 msgid "Add new OS profile"
-msgstr "Add new OS profile"
+msgstr "Dodaj nowy profil systemu operacyjnego"
 
 msgid "Repository type"
-msgstr "Repository type"
+msgstr "Typ repozytorium"
 
 msgid "Pre-defined"
-msgstr "Pre-defined"
+msgstr "Predefiniowany"
 
 msgid "Add OS profile"
-msgstr "Add OS profile"
+msgstr "Dodaj profil systemu operacyjnego"
 
 msgid "Edit OS profile"
-msgstr "Edit OS profile"
+msgstr "Edytuj profil systemu operacyjnego"
 
 msgid "OS profile with the given name already exists."
-msgstr "OS profile with the given name already exists."
+msgstr "Profil systemu operacyjnego o podanej nazwie już istnieje."
 
 msgid "Repositories"
-msgstr "Repositories"
+msgstr "Repozytoria"
 
 msgid "Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment."
-msgstr "Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment."
+msgstr "Tutaj możesz zdefiniować repozytorium, aby zainstalować Bacularis na zdalnym hoście, a także repozytorium Bacula, jeśli jest inne niż domyślne repozytorium systemu. Repozytoria są dodawane do zdalnego hosta podczas wdrażania API."
 
 msgid "Bacularis API access"
-msgstr "Bacularis API access"
+msgstr "Dostęp do Bacularis API"
 
 msgid "Bacularis API settings"
-msgstr "Bacularis API settings"
+msgstr "Ustawienia Bacularis API"
 
 msgid "All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile."
-msgstr "All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile."
+msgstr "Wszystkie następujące ustawienia są dodawane do każdego nowego, zdalnie zainstalowanego Bacularis API, który używa tego profilu systemu operacyjnego."
 
 msgid "Package management"
-msgstr "Package management"
+msgstr "Zarządzanie pakietami"
 
 msgid "Bacularis commands"
-msgstr "Bacularis commands"
+msgstr "Komendy Bacularis"
 
 msgid "Advanced settings"
-msgstr "Advanced settings"
+msgstr "Ustawienia zaawansowane"
 
 msgid "Director commands"
-msgstr "Director commands"
+msgstr "Komendy dyrektora"
 
 msgid "Storage commands"
-msgstr "Storage commands"
+msgstr "Komendy Magazynu"
 
 msgid "Client commands"
-msgstr "Client commands"
+msgstr "Komendy Klienta"
 
 msgid "Bconsole commands"
-msgstr "Bconsole commands"
+msgstr "Komendy Bconsole"
 
 msgid "Catalog"
-msgstr "Catalog"
+msgstr "Baza danych Catalog"
 
 msgid "NOTE: This is predefined OS profile that cannot be modified nor removed."
-msgstr "NOTE: This is predefined OS profile that cannot be modified nor removed."
+msgstr "UWAGA: To jest predefiniowany profil systemu operacyjnego, który nie może być zmodyfikowany ani usunięty."
 
 msgid "Add new SSH config"
-msgstr "Add new SSH config"
+msgstr "Dodaj nową konfigurację SSH"
 
 msgid "Hostname"
-msgstr "Hostname"
+msgstr "Nazwa hosta"
 
 msgid "Port"
 msgstr "Port"
 
 msgid "SSH key"
-msgstr "SSH key"
+msgstr "Klucz SSH"
 
 msgid "Add SSH config"
-msgstr "Add SSH config"
+msgstr "Dodaj konfigurację SSH"
 
 msgid "Edit SSH config"
-msgstr "Edit SSH config"
+msgstr "Edytuj konfigurację SSH"
 
 msgid "SSH config with the given name already exists."
-msgstr "SSH config with the given name already exists."
+msgstr "Konfiguracja SSH o podanej nazwie już istnieje."
 
 msgid "Add new SSH key"
-msgstr "Add new SSH key"
+msgstr "Dodaj nowy klucz SSH"
 
 msgid "Key name"
-msgstr "Key name"
+msgstr "Nazwa klucza"
 
 msgid "Fingerprint"
-msgstr "Fingerprint"
+msgstr "Odcisk klucza"
 
 msgid "Add SSH key"
-msgstr "Add SSH key"
+msgstr "Dodaj klucz SSH"
 
 msgid "Add package repository"
-msgstr "Add package repository"
+msgstr "Dodaj repozytorium pakietów"
 
 msgid "Add SUDO settings"
-msgstr "Add SUDO settings"
+msgstr "Dodaj ustawienia SUDO"
 
 msgid "Pre-install Bacularis command"
-msgstr "Pre-install Bacularis command"
+msgstr "Komenda preinstalacji Bacularis"
 
 msgid "Install Bacularis"
-msgstr "Install Bacularis"
+msgstr "Instaluj Bacularis"
 
 msgid "Post-install Bacularis command"
-msgstr "Post-install Bacularis command"
+msgstr "Komenda postinstalacji Bacularis"
 
 msgid "Configure Bacularis"
-msgstr "Configure Bacularis"
+msgstr "Konfiguruj Bacularis"
 
 msgid "Create Bacularis user"
-msgstr "Create Bacularis user"
+msgstr "Utwórz użytkownika Bacularis"
 
 msgid "Set Bacularis password"
-msgstr "Set Bacularis password"
+msgstr "Ustaw hasło Bacularis"
 
 msgid "Start Bacularis"
-msgstr "Start Bacularis"
+msgstr "Uruchom Bacularis"
 
 msgid "API access link"
-msgstr "API access link"
+msgstr "Link dostępu do API"
 
 msgid "Step"
-msgstr "Step"
+msgstr "Krok"
+
