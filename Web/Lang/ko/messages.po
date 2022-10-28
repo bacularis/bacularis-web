@@ -1,0 +1,4960 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bacularis\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2022-10-28 11:19+0900\n"
+"Last-Translator: Seungwan Ryu <webee@hanafos.com>\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.2\n"
+"X-Crowdin-Project: bacularis\n"
+"X-Crowdin-Project-ID: 522050\n"
+"X-Crowdin-Language: ko\n"
+"X-Crowdin-File: /Bacularis Web/messages.po\n"
+"X-Crowdin-File-ID: 35\n"
+
+msgid "Language:"
+msgstr "언어:"
+
+msgid "select language"
+msgstr "언어 선택"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Licence"
+msgstr "라이센스"
+
+msgid "Database"
+msgstr "데이터베이스"
+
+msgid "Authentication"
+msgstr "인증"
+
+msgid "Finish"
+msgstr "종료"
+
+msgid "Console"
+msgstr "콘솔"
+
+msgid "Step 1 - select language"
+msgstr "1단계 - 언어 선택"
+
+msgid "Please select language."
+msgstr "언어를 선택하십시오."
+
+msgid "Step 2 - add API instances"
+msgstr "2 단계 - API 인스턴스 추가"
+
+msgid "Step 3 - params of Bacula database connection"
+msgstr "3 단계 - Bacula 데이터베이스 연결의 매개변수"
+
+msgid "Step 4 - Baculum access to bconsole"
+msgstr "4 단계 - bconsole에 접근할 Baculum"
+
+msgid "Step 5 - authorization params to Baculum"
+msgstr "5 단계 - Baculum에 인증 매개변수"
+
+msgid "Step 6 - Finish"
+msgstr "6 단계 - 완료"
+
+msgid "Save"
+msgstr "저장"
+
+msgid "I have read the license terms and agree to"
+msgstr "나는 라이센스 약관을 읽었으며 동의합니다"
+
+msgid "Database type:"
+msgstr "데이터베이스 유형:"
+
+msgid "select database"
+msgstr "데이터베이스 선택"
+
+msgid "Need to move on to accept the license."
+msgstr "라이센스 승인으로 이동해야 합니다."
+
+msgid "Database name:"
+msgstr "데이터베이스 이름:"
+
+msgid "Please select database type."
+msgstr "데이터베이스 유형을 선택하십시오."
+
+msgid "Please enter database name."
+msgstr "데이터베이스 이름을 입력하십시오."
+
+msgid "Login:"
+msgstr "로그인:"
+
+msgid "Please enter login."
+msgstr "로그인 입력하십시오."
+
+msgid "Password:"
+msgstr "암호:"
+
+msgid "IP address (or hostname):"
+msgstr "IP 주소 (또는 호스트명):"
+
+msgid "Please enter IP address or hostname."
+msgstr "IP 주소 또는 호스트명을 입력하십시오."
+
+msgid "Port:"
+msgstr "포트:"
+
+msgid "Please enter database port."
+msgstr "데이터베이스 포트를 입력하십시오."
+
+msgid "SQLite database path:"
+msgstr "SQLite 데이터베이스 경로:"
+
+msgid "Please enter database path."
+msgstr "데이터베이스 경로를 입력하십시오."
+
+msgid "Connection test:"
+msgstr "연결 테스트:"
+
+msgid "Loading..."
+msgstr "로드 중..."
+
+msgid "OK"
+msgstr "확인"
+
+msgid "Connection error"
+msgstr "연결 오류"
+
+msgid "test"
+msgstr "테스트"
+
+msgid "Bconsole binary file path:"
+msgstr "Bconsole 바이너리 파일 경로:"
+
+msgid "Please enter bconsole path."
+msgstr "Bconsole 경로를 입력하십시오."
+
+msgid "Please enter bconsole config file path."
+msgstr "Bconsole 설정 파일의 경로를 입력하십시오."
+
+msgid "Use sudo:"
+msgstr "Sudo 사용하기:"
+
+msgid "Bconsole connection test:"
+msgstr "Bconsole 연결 테스트:"
+
+msgid "Administration login:"
+msgstr "관리 로그인:"
+
+msgid "Administration password:"
+msgstr "관리 비밀번호:"
+
+msgid "Please enter password."
+msgstr "비밀번호를 입력 해주세요."
+
+msgid "Password must be longer than 4 chars."
+msgstr "비밀번호는 4 개 문자 이상이어야 합니다."
+
+msgid "Retype administration password:"
+msgstr "관리 암호를 재입력하세요:"
+
+msgid "Please enter retype password."
+msgstr "암호를 재입력 하십시오."
+
+msgid "Passwords must be the same."
+msgstr "암호는 동일해야 합니다."
+
+msgid "Database parameters"
+msgstr "데이터베이스 매개변수"
+
+msgid "Database port:"
+msgstr "데이터베이스 포트:"
+
+msgid "Bconsole access"
+msgstr "Bconsole 접근"
+
+msgid "Use sudo for bconsole requests:"
+msgstr "Bconsole 요청을 sudo 사용:"
+
+msgid "Authorization to Baculum panel"
+msgstr "Baculum 패널에 권한 부여"
+
+msgid "Step 7 - Finish"
+msgstr "7 단계 - 완료"
+
+msgid "Storage name:"
+msgstr "저장소 이름:"
+
+msgid "Console status"
+msgstr "콘솔 상태"
+
+msgid "Drive number:"
+msgstr "드라이브 번호:"
+
+msgid "Slot number:"
+msgstr "슬롯 번호:"
+
+msgid "Mount"
+msgstr "마운트"
+
+msgid "Release"
+msgstr "해제"
+
+msgid "Umount"
+msgstr "마운트 해제"
+
+msgid "Status"
+msgstr "상태"
+
+msgid "Available actions"
+msgstr "가능한 조치"
+
+msgid "Close"
+msgstr "닫기"
+
+msgid "Operation is in progress"
+msgstr "작업 진행 중"
+
+msgid "Volume status:"
+msgstr "볼륨 상태:"
+
+msgid "Pool:"
+msgstr "풀:"
+
+msgid "Recycle:"
+msgstr "재활용:"
+
+msgid "Enabled:"
+msgstr "사용:"
+
+msgid "In changer:"
+msgstr "체인저에서:"
+
+msgid "Apply"
+msgstr "적용"
+
+msgid "Volume name:"
+msgstr "볼륨 이름:"
+
+msgid "Client name:"
+msgstr "클라이언트명:"
+
+msgid "Information about version"
+msgstr "버전에 대한 정보"
+
+msgid "Pool name:"
+msgstr "풀 이름:"
+
+msgid "Purge"
+msgstr "제거"
+
+msgid "Prune"
+msgstr "손질"
+
+msgid "Switch the window view (normal/details)"
+msgstr "창보기 전환 (정상/세부사항)"
+
+msgid "Maximum volumes:"
+msgstr "최대 볼륨:"
+
+msgid "AutoPrune:"
+msgstr "자동손질:"
+
+msgid "Action on purge:"
+msgstr "손질 작업:"
+
+msgid "Label format:"
+msgstr "레이블 형식:"
+
+msgid "Scratch pool:"
+msgstr "스크래치 풀:"
+
+msgid "Recycle pool:"
+msgstr "재활용 풀:"
+
+msgid "Restore configuration"
+msgstr "구성을 복원"
+
+msgid "Update volumes"
+msgstr "볼륨 업데이트"
+
+msgid "Client:"
+msgstr "고객:"
+
+msgid "Job name:"
+msgstr "작업명:"
+
+msgid "Storage:"
+msgstr "저장소:"
+
+msgid "Level:"
+msgstr "레벨:"
+
+msgid "FileSet:"
+msgstr "파일세트:"
+
+msgid "Priority:"
+msgstr "우선 순위:"
+
+msgid "Run job"
+msgstr "작업 실행"
+
+msgid "Estimate job"
+msgstr "작업 예상 견적"
+
+msgid "Accurate:"
+msgstr "정확한:"
+
+msgid "Storage Daemons"
+msgstr "저장소 데몬"
+
+msgid "Clients"
+msgstr "클라이언트"
+
+msgid "Volumes"
+msgstr "볼륨"
+
+msgid "Pools"
+msgstr "풀"
+
+msgid "Jobs"
+msgstr "작업"
+
+msgid "Limit:"
+msgstr "한도:"
+
+msgid "Search:"
+msgstr "검색:"
+
+msgid "View mode:"
+msgstr "보기 모드:"
+
+msgid "simple"
+msgstr "단순"
+
+msgid "details"
+msgstr "상세"
+
+msgid "Retention period value must be integer."
+msgstr "보존 기간 값은 정수 여야 합니다."
+
+msgid "There is not possible to run selected action because:"
+msgstr "다음의 이유 때문에 선택한 작업을 실행할 수 없습니다.:"
+
+msgid "Drive number must be integer."
+msgstr "드라이브 수는 정수 여야 합니다."
+
+msgid "Slot number must be integer."
+msgstr "슬롯 번호는 정수 여야 합니다."
+
+msgid "File retention value must be integer."
+msgstr "파일 보유 값은 정수 여야 합니다."
+
+msgid "Job retention value must be integer."
+msgstr "작업 보존 값은 정수 여야 합니다."
+
+msgid "Vol. use duration value must be integer."
+msgstr "Vol. 사용 기간 값은 정수 여야 합니다."
+
+msgid "Max. vol. jobs:"
+msgstr "최대. Vol. 작업:"
+
+msgid "Max. vol. jobs value must be integer."
+msgstr "최대. Vol. 작업 값은 정수 여야 합니다."
+
+msgid "Max. vol. files:"
+msgstr "최대. Vol. 파일:"
+
+msgid "Max. vol. files value must be integer."
+msgstr "최대. Vol. 파일의 값은 정수 여야 합니다."
+
+msgid "Max. vol. bytes:"
+msgstr "최대. Vol. 바이트:"
+
+msgid "Max. vol. bytes value must be integer."
+msgstr "최대. Vol. 바이트 값은 정수 여야 합니다."
+
+msgid "Slot value must be integer."
+msgstr "슬롯 값은 정수 여야 합니다."
+
+msgid "Max. volumes value must be integer."
+msgstr "최대. 볼륨 값은 정수 여야 합니다."
+
+msgid "Use duration value must be integer."
+msgstr "사용 기간 값은 정수여야 합니다."
+
+msgid "Label format value must not be empty."
+msgstr "레이블 형식 값은 비워 둘 수 없습니다."
+
+msgid "Priority value must be integer greather than 0."
+msgstr "우선 순위 값은 0보다 큰 정수 여야 합니다."
+
+msgid "File retention value must be positive integer or zero."
+msgstr "파일 보유 값은 양의 정수 또는 0이어야합니다."
+
+msgid "Job retention value must be positive integer or zero."
+msgstr "작업 보존 값은 양의 정수 또는 0이어야합니다."
+
+msgid "File retention (in days):"
+msgstr "파일 보존(일):"
+
+msgid "Job retention (in days):"
+msgstr "작업 보존(일):"
+
+msgid "select pool"
+msgstr "풀 선택"
+
+msgid "Retention period (in hours):"
+msgstr "보존 기간(시):"
+
+msgid "Vol. use duration (in hours):"
+msgstr "Vol. (시간) 시간을 사용합니다:"
+
+msgid "Job to restore:"
+msgstr "복원해야 할 작업:"
+
+msgid "Backup from client:"
+msgstr "클라이언트로부터 백업:"
+
+msgid "Restore to client:"
+msgstr "클라이언트 복원:"
+
+msgid "Backup to restore:"
+msgstr "복원 할 백업:"
+
+msgid "Step 1 - select source backup client"
+msgstr "1 단계 - 소스를 백업할 클라이언트를 선택"
+
+msgid "Client"
+msgstr "고객"
+
+msgid "Backup"
+msgstr "백업"
+
+msgid "Step 2 - select backup to restore"
+msgstr "2 단계 - 백업을 복원할 것을 선택하세요"
+
+msgid "Backup selection method:"
+msgstr "백업 선택 방법:"
+
+msgid "Selected backup"
+msgstr "선택한 백업"
+
+msgid "FileSet resource:"
+msgstr "파일 세트 자원:"
+
+msgid "Storage resource:"
+msgstr "저장소 자원:"
+
+msgid "Pool resource:"
+msgstr "풀 자원:"
+
+msgid "Step 3 - select files to restore"
+msgstr "3 단계 - 복원할 파일은 선택하세요"
+
+msgid "Files"
+msgstr "파일"
+
+msgid "To see file versions please click a file on the left files browser."
+msgstr "파일 버전을 보려면 왼쪽 파일 브라우저에서 파일을 클릭하십시오."
+
+msgid "To add a file to restore please click 'Add' link or please drag here the file from the top frame or from the frame on the left."
+msgstr "복원 할 파일을 추가하려면, '추가'링크를 클릭하고 상단 프레임이나 왼쪽 프레임에서 파일을 드래그하시기 바랍니다."
+
+msgid "It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired)"
+msgstr "(파일 보유 기간이 만료) 제거 된 이 작업에 대해 데이터베이스에서 레코드를 선택하거나 파일에 대한 파일이 없는 것 같습니다"
+
+msgid "Group most recent backups"
+msgstr "그룹 가장 최근의 백업"
+
+msgid "Where"
+msgstr "어디"
+
+msgid "Restore to directory:"
+msgstr "디렉토리로 복원:"
+
+msgid "Step 4 - select destination for restore"
+msgstr "4 단계 - 복원 대상 선택"
+
+msgid "Step 5 - options for restore"
+msgstr "5 단계 - 복원에 대한 옵션"
+
+msgid "Replace files:"
+msgstr "파일 교체 :"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Restore job priority:"
+msgstr "작업 우선 순위 복원:"
+
+msgid "do not replace files"
+msgstr "파일을 바꾸지 않음"
+
+msgid "if files from restore are older"
+msgstr "복구 영역에서 파일들이 더 오래 되었다면"
+
+msgid "if files from restore are newer"
+msgstr "복구 영역에서 파일들이 더 새롭다면"
+
+msgid "always replace files"
+msgstr "항상 파일 교체"
+
+msgid "Source parameters"
+msgstr "소스 매개 변수"
+
+msgid "Backup data from client:"
+msgstr "클라이언트에서 데이터 백업:"
+
+msgid "FileSet to restore:"
+msgstr "복원될 파일 세트:"
+
+msgid "Files for restore"
+msgstr "복원될 파일"
+
+msgid "Selected files count:"
+msgstr "선택한 파일 수:"
+
+msgid "Destination parameters"
+msgstr "대상 매개 변수"
+
+msgid "Restore to path:"
+msgstr "경로 복원:"
+
+msgid "Restore job options"
+msgstr "작업 옵션 복원"
+
+msgid "Run restore"
+msgstr "복원 실행"
+
+msgid "Run"
+msgstr "실행"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "There is no backup for restore. Please go to previous step and select another client for restore or proceed backups for the client selected in previous step."
+msgstr "복원에 대한 백업이 없습니다. 이전 단계로 이동해서 이전 단계에서 선택한 클라이언트에 대한 복원하거나 진행 백업 다른 클라이언트를 선택하십시오."
+
+msgid "Database file path (SQLite only):"
+msgstr "데이터베이스 파일 경로 (SQLite는 전용):"
+
+msgid "Selected directories count:"
+msgstr "선택한 디렉토리 수:"
+
+msgid "Delete job"
+msgstr "작업 삭제"
+
+msgid "Cancel job"
+msgstr "작업 취소"
+
+msgid "NOTE!"
+msgstr "주의!"
+
+msgid "Baculum needs access to bconsole by the web server."
+msgstr "Baculum은 웹 서버에서 bconsole에 접근해야 합니다."
+
+msgid "Director:"
+msgstr "디렉터:"
+
+msgid "Jobs for run"
+msgstr "실행에 대한 작업"
+
+msgid "Run job again"
+msgstr "다시 작업을 실행"
+
+msgid "Job status"
+msgstr "작업 상태"
+
+msgid "Bacula console"
+msgstr "Bacula 콘솔"
+
+msgid "show console"
+msgstr "콘솔 보기"
+
+msgid "hide console"
+msgstr "콘솔 숨기기"
+
+msgid "volumes tools"
+msgstr "볼륨 도구"
+
+msgid "Label volume(s)"
+msgstr "레이블 볼륨(들)"
+
+msgid "Update slots using barcodes"
+msgstr "바코드를 사용하여 슬롯 업데이트"
+
+msgid "Update slots without barcodes"
+msgstr "바코드가 없는 슬롯 업데이트"
+
+msgid "Label name:"
+msgstr "레이블 이름:"
+
+msgid "Label"
+msgstr "레이블"
+
+msgid "Use barcodes as label:"
+msgstr "레이블을 바코드처럼 사용:"
+
+msgid "Update barcodes slots"
+msgstr "바코드 슬롯 업데이트"
+
+msgid "Update slots scan"
+msgstr "슬롯 스캔 업데이트"
+
+msgid "Label name have to contain string value from set [0-9a-zA-Z_-]."
+msgstr "레이블 이름 세트 [0-9a-zA-Z_-] 에서 문자열 값을 포함한다."
+
+msgid "Slots for label have to contain string value from set [0-9-,]."
+msgstr "레이블 슬롯 세트 [0-9-,]에서 문자열 값을 포함해야 합니다."
+
+msgid "Drive has to contain digit value from set [0-9]."
+msgstr "드라이브 세트 [0-9 ]에서 숫자 값을 포함한다."
+
+msgid "Slots for update have to contain string value from set [0-9-,]."
+msgstr "업데이트에 대한 슬롯 세트 [0-9-,]에서 문자열 값을 포함해야 합니다."
+
+msgid "or run"
+msgstr "또는 실행"
+
+msgid "Bacularis Initial Wizard"
+msgstr "Bacularis 초기 마법사"
+
+msgid "internal Baculum error."
+msgstr "내부 Baculum 오류."
+
+msgid "TRY AGAIN"
+msgstr "다시 시도하십시오"
+
+msgid "Enable debug"
+msgstr "디버그 사용"
+
+msgid "clear bvfs cache"
+msgstr "bvfs 캐시 지우기"
+
+msgid "Bconsole admin config file path:"
+msgstr "Bconsole 관리자 설정 파일 경로:"
+
+msgid "Bconsole custom config file path:"
+msgstr "Bconsole 사용자 지정 설정 파일 경로:"
+
+msgid "Please enter bconsole custom config file path."
+msgstr "Bconsole 사용자 지정 설정 파일의 경로를 입력하십시오."
+
+msgid "For need defining more Baculum users with custom access or restricted console access (Bconsole ACLs) here is possible to determine custom bconsole configuration file format for each user."
+msgstr "사용자 정의 접근 또는 제한된 콘솔 접근(Bconsole ACL)를 가진 더 많은 Baculum 사용자를 정의하려면 여기서 각 사용자에 대한 사용자 정의 Bconsole 설정 파일 형식을 결정할 수 있습니다."
+
+msgid "If there is used only one Baculum user then below field value will be ignored"
+msgstr "Baculum 사용자가 한 명만 사용되는 경우 아래 필드 값은 무시됨"
+
+msgid "{user} keyword will be replaced for each logged user into according username."
+msgstr "기록된 각 사용자에 대해 {user} 키워드가 사용자 이름에 따라 바뀝니다."
+
+msgid "If there is used only one Baculum user then below field value will be ignored."
+msgstr "Baculum 사용자가 한 명만 사용되는 경우 아래 필드 값은 무시됩니다."
+
+msgid "Above administration login and administration password will be used for login as administrator to Baculum WebGUI. They are your HTTP Basic authorization params by using which you will be logged in to Baculum."
+msgstr "위의 관리 로그인 및 관리 암호는 Baculum WebGUI에 관리자로 로그인하는 데 사용됩니다. 이 매개변수는 Baculum에 로그인할 때 사용하는 HTTP Basic 권한 부여 매개변수입니다."
+
+msgid "If all above steps will not help or if during installation you made mistake in password in Initial Wizard, please remove settings file located in baculum/protected/Data/settings.conf and re-run Initial wizard."
+msgstr "위의 모든 단계가 도움이 되지 않거나 설치 중에 초기 마법사에서 암호를 잘못 입력한 경우 baculum/protected/Data/settings.conf에 있는 설정 파일을 제거하고 초기 마법사를 다시 실행하십시오."
+
+msgid "Action:"
+msgstr "동작:"
+
+msgid "unmark all and close"
+msgstr "마크 해제 후 닫기"
+
+msgid "This action will clear bvfs cache that was created during preparing restore files. There is not recommended use this action during restore job working. Are you sure?"
+msgstr "이 작업을 수행하면 복원 파일을 준비하는 동안 생성된 bvfs 캐시가 지워집니다. 복원 작업 중에는 이 작업을 사용하지 않는 것이 좋습니다. 확실합니까?"
+
+msgid "Debug files enable possibility to save most of actions executed on Bacularis WebGUI. Debug functionality should be enabled if there is happening something wrong with Bacularis or if something that looks like a bug. Logs can be useful for detecting a problems in Bacularis working. After confirmation this message Bacularis debug files will be continuously saving in /protected/Web/Logs/ directory. Are you sure?"
+msgstr "디버그 파일을 사용하면 Bacularis WebGUI에서 실행되는 대부분의 작업을 저장할 수 있습니다. Bacularis에 문제가 있거나 버그처럼 보이는 경우 디버그 기능을 활성화해야 합니다. 로그는 Bacularis에서 작동하는 문제를 탐지하는 데 유용할 수 있습니다. 확인 후 Bacularis 디버그 파일은 /protected/Web/Logs/ 디렉토리에 계속 저장됩니다. 확실합니까?"
+
+msgid "10 elements"
+msgstr "10 개 요소"
+
+msgid "25 elements"
+msgstr "25 개 요소"
+
+msgid "50 elements"
+msgstr "50 개 요소"
+
+msgid "100 elements"
+msgstr "100 개 요소"
+
+msgid "200 elements"
+msgstr "200 개 요소"
+
+msgid "500 elements"
+msgstr "500 개 요소"
+
+msgid "unlimited"
+msgstr "무제한"
+
+msgid "1000 elements"
+msgstr "1000 개 요소"
+
+msgid "Volume name"
+msgstr "볼륨 이름"
+
+msgid "Slot"
+msgstr "슬롯"
+
+msgid "Pool"
+msgstr "풀"
+
+msgid "When expire"
+msgstr "만기가 되면"
+
+msgid "Storage name"
+msgstr "저장소 이름"
+
+msgid "Autochanger"
+msgstr "오토체인저"
+
+msgid "No"
+msgstr "아니오"
+
+msgid "days"
+msgstr "일"
+
+msgid "day"
+msgstr "일"
+
+msgid "Warning! You checked over 50 elements. Please note, that in case more time consuming actions, web browser request may timed out after 30 seconds. It this case action will be canceled and in consequence the action may not touch all selected elements. Are you sure you want to continue?"
+msgstr "경고! 50개 이상의 요소를 확인했습니다. 시간이 더 많이 걸리는 작업의 경우 웹 브라우저 요청이 30초 후에 시간 초과될 수 있습니다. 이 경우 작업이 취소되고 결과적으로 선택한 일부 요소에 작업이 적용되지 않을 수 있습니다. 계속하시겠습니까?"
+
+msgid "Close the window"
+msgstr "창을 닫습니다"
+
+msgid "Change the window size"
+msgstr "창 크기를 변경"
+
+msgid "Configuration of storage daemons."
+msgstr "저장소 데몬 구성."
+
+msgid "Configuration of clients daemons."
+msgstr "클라이언트 데몬 구성."
+
+msgid "Management of volumes."
+msgstr "볼륨의 관리."
+
+msgid "Management of volumes pools."
+msgstr "볼륨 풀의 관리."
+
+msgid "Jobs settings."
+msgstr "작업 설정."
+
+msgid "Starting jobs."
+msgstr "작업을 시작하는 중."
+
+msgid "Restore"
+msgstr "복원"
+
+msgid "Restore wizard."
+msgstr "복원 마법사."
+
+msgid "Settings"
+msgstr "설정"
+
+msgid "Management settings wizard."
+msgstr "관리 설정 마법사."
+
+msgid "Client name"
+msgstr "클라이언트 이름"
+
+msgid "File Retention"
+msgstr "파일 보존"
+
+msgid "Job Retention"
+msgstr "작업 보존"
+
+msgid "Last written:"
+msgstr "마지막 작성:"
+
+msgid "never written"
+msgstr "절대 쓰여지지 않음"
+
+msgid "When expire:"
+msgstr "만기가 되면:"
+
+msgid "Job name"
+msgstr "작업명"
+
+msgid "End time"
+msgstr "종료 시간"
+
+msgid "Type"
+msgstr "유형"
+
+msgid "Level"
+msgstr "레벨"
+
+msgid "Director"
+msgstr "디렉터"
+
+msgid "Enter"
+msgstr "진입하다"
+
+msgid "Clear"
+msgstr "해결"
+
+msgid "select action"
+msgstr "동작 선택"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid ""
+"Output for selected job is not available yet or you do not have enabled logging job logs to the catalog database.\n"
+"\n"
+"To watch job log you need to add to the job Messages resource the following directive:\n"
+"\n"
+"Catalog = all, !debug, !skipped, !saved"
+msgstr ""
+"선택한 작업의 출력을 아직 사용할 수 없거나 카탈로그 데이터베이스에 작업 로그 로깅을 사용하도록 설정하지 않았습니다.\n"
+"\n"
+"작업 로그를 보려면 작업 메시지 리소스에 다음 지시문을 추가해야 합니다:\n"
+"\n"
+"Catalog = all, !debug, !skipped, !saved"
+
+msgid "Workspace"
+msgstr "작업공간"
+
+msgid "Graphs"
+msgstr "그래프"
+
+msgid "select job"
+msgstr "작업 선택"
+
+msgid "Last 6 hours"
+msgstr "지난 6시간"
+
+msgid "Last 12 hours"
+msgstr "지난 12시간"
+
+msgid "Today"
+msgstr "오늘"
+
+msgid "Two days"
+msgstr "이틀"
+
+msgid "Last week"
+msgstr "지난주"
+
+msgid "Last two weeks"
+msgstr "지난 2 주"
+
+msgid "Last month"
+msgstr "지난 달"
+
+msgid "Last three months"
+msgstr "지난 3 개월"
+
+msgid "Last six months"
+msgstr "지난 6 개월"
+
+msgid "Last year"
+msgstr "작년"
+
+msgid "Date From:"
+msgstr "시작 날짜:"
+
+msgid "Date To:"
+msgstr "종료 날짜:"
+
+msgid "Legend:"
+msgstr "범례:"
+
+msgid "select client"
+msgstr "클라이언트 선택"
+
+msgid "Job size / Time"
+msgstr "작업 크기 / 시간"
+
+msgid "Job size"
+msgstr "작업 크기"
+
+msgid "Time"
+msgstr "시각"
+
+msgid "File retention (in sec.):"
+msgstr "파일 보존(초):"
+
+msgid "Job retention (in sec.):"
+msgstr "작업 보존(초):"
+
+msgid "Max. Vol. Bytes:"
+msgstr "최대. Vol. 바이트:"
+
+msgid "Max. Vol. Files:"
+msgstr "최대. Vol. 파일:"
+
+msgid "Max. Vol. Jobs:"
+msgstr "최대. Vol. 작업:"
+
+msgid "Retention Period (in sec.):"
+msgstr "보존 기간(초):"
+
+msgid "Storage Daemons."
+msgstr "저장소 데몬."
+
+msgid "Vol. Use Duration (in sec.):"
+msgstr "Vol. 사용 기간(초):"
+
+msgid "Yes"
+msgstr "예"
+
+msgid "JobId to Verify:"
+msgstr "확인해야 할 작업 Id:"
+
+msgid "JobId to Verify value must be integer greather than 0."
+msgstr "확인해야 할 작업 Id는 값이 0보다 큰 정수여야 합니다."
+
+msgid "Job to Verify:"
+msgstr "확인해야 할 작업:"
+
+msgid "Verify by Job Name"
+msgstr "작업 이름에 의해 확인"
+
+msgid "Verify by JobId"
+msgstr "작업 Id에 의해 확인"
+
+msgid "Verify option:"
+msgstr "옵션 확인:"
+
+msgid "Running jobs:"
+msgstr "작업을 실행:"
+
+msgid "Finished jobs:"
+msgstr "종료된 작업:"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Actions"
+msgstr "동작"
+
+msgid "Size"
+msgstr "크기"
+
+msgid "Job:"
+msgstr "작업:"
+
+msgid "Media Type"
+msgstr "미디어 유형"
+
+msgid "Dashboard"
+msgstr "대시보드"
+
+msgid "Go to started job after start:"
+msgstr "시작 후 시작된 작업으로 이동:"
+
+msgid "Job status summary"
+msgstr "작업 상태 요약"
+
+msgid "Quick job access"
+msgstr "빠른 작업 접근"
+
+msgid "Finished jobs"
+msgstr "종료된 작업"
+
+msgid "The most often used:"
+msgstr "가장 자주 사용되는:"
+
+msgid "Number of clients"
+msgstr "클라이언트 수"
+
+msgid "jobs"
+msgstr "작업들"
+
+msgid "Job count the most used:"
+msgstr "가장 많이 사용된 작업 수:"
+
+msgid "level"
+msgstr "레벨"
+
+msgid "status"
+msgstr "상태"
+
+msgid "Jump to job (last 100):"
+msgstr "작업으로 점프 (지난 100)"
+
+msgid "View"
+msgstr "보기"
+
+msgid "Total bytes:"
+msgstr "총 바이트 수:"
+
+msgid "Total files:"
+msgstr "총 파일:"
+
+msgid "Database size:"
+msgstr "데이터베이스 크기:"
+
+msgid "Number of pools:"
+msgstr "풀 수:"
+
+msgid "times"
+msgstr "번"
+
+msgid "Execution count most used:"
+msgstr "가장 많이 사용된 실행 회수:"
+
+msgid "Total bytes"
+msgstr "총 바이트"
+
+msgid "Restore Wizard"
+msgstr "복원 마법사"
+
+msgid "Perform restore"
+msgstr "복원을 수행"
+
+msgid "Configuration Wizard"
+msgstr "설정 마법사"
+
+msgid "Baculum Settings"
+msgstr "Baculum 설정"
+
+msgid "start time"
+msgstr "시작 시간"
+
+msgid "Users"
+msgstr "사용자"
+
+msgid "User name"
+msgstr "사용자 이름"
+
+msgid "Role"
+msgstr "역할"
+
+msgid "Remove user"
+msgstr "사용자 제거"
+
+msgid "Logout"
+msgstr "로그 아웃"
+
+msgid "Change password"
+msgstr "암호 변경"
+
+msgid "Administrator"
+msgstr "관리자"
+
+msgid "Normal user"
+msgstr "일반 사용자"
+
+msgid "Add new user"
+msgstr "새로운 사용자 추가"
+
+msgid "Username:"
+msgstr "사용자 이름:"
+
+msgid "Invalid login value. Login may contain a-z A-Z 0-9 characters."
+msgstr "잘못된 로그인 값입니다. 로그인 A-Z A-Z 0-9 문자를 포함 할 수 있습니다."
+
+msgid "Jobs on volume"
+msgstr "볼륨에 있는 작업"
+
+msgid "No jobs on the volume."
+msgstr "볼륨에서 어떤 작업이 없습니다."
+
+msgid "Jobs for Client"
+msgstr "클라이언트에 대한 작업"
+
+msgid "No jobs for the client."
+msgstr "클라이언트에 대한 작업이 없습니다."
+
+msgid "Configuration"
+msgstr "설정"
+
+msgid "bdirjson binary file path:"
+msgstr "bdirjson 이진 파일 경로:"
+
+msgid "bsdjson binary file path:"
+msgstr "bsdjson 이진 파일 경로:"
+
+msgid "bfdjson binary file path:"
+msgstr "bfdjson 이진 파일 경로:"
+
+msgid "bbconsjson binary file path:"
+msgstr "bbconsjson 이진 파일 경로:"
+
+msgid "Main Director config file path (usually bacula-dir.conf):"
+msgstr "홈페이지 관리자 설정 파일 경로 (일반적으로 bacula-dir.conf):"
+
+msgid "Main Storage Daemon config file path (usually bacula-sd.conf):"
+msgstr "메인 저장소 데몬 설정 파일 경로 (일반적으로 bacula-인 sd.conf):"
+
+msgid "Main File Daemon config file path (usually bacula-fd.conf):"
+msgstr "홈페이지 파일 데몬 설정 파일 경로 (일반적으로 bacula-fd.conf):"
+
+msgid "Admin Bconsole config file path (usually bconsole.conf):"
+msgstr "관리자 Bconsole 설정 파일 경로 (일반적으로 bconsole.conf):"
+
+msgid "Test configuration"
+msgstr "설정 테스트"
+
+msgid "General configuration"
+msgstr "일반 구성"
+
+msgid "To setup configuration module please provide Bacula JSON tools paths and config files paths."
+msgstr "설치 구성 모듈에 Bacula JSON 도구 경로와 설정 파일의 경로를 제공하십시오."
+
+msgid "Error during config save"
+msgstr "저장 설정 중 오류"
+
+msgid "There is required to provide both binary file and config file paths."
+msgstr "이진 파일과 설정 파일 경로 모두 제공하기 위해서 필요합니다."
+
+msgid "Directory path for new config files:"
+msgstr "새로운 설정 파일의 디렉토리 경로:"
+
+msgid "Directory path field is required."
+msgstr "디렉토리 경로 필드가 필요합니다."
+
+msgid "Provided directory path is not writable by web server."
+msgstr "제공된 디렉토리 경로는 웹 서버에 쓰기 권한이 없습니다."
+
+msgid "Error"
+msgstr "오류"
+
+msgid "Seconds"
+msgstr "초"
+
+msgid "Minutes"
+msgstr "분"
+
+msgid "Hours"
+msgstr "시간"
+
+msgid "Days"
+msgstr "일"
+
+msgid "Host:"
+msgstr "호스트:"
+
+msgid "IP Address/Hostname:"
+msgstr "IP 주소 / 호스트 이름:"
+
+msgid "Remove"
+msgstr "제거"
+
+msgid "Edit"
+msgstr "편집"
+
+msgid "Show/hide all directives"
+msgstr "모든 지시를 노출/감춤"
+
+msgid "Show the resource raw config"
+msgstr "자원 원시 설정 보기"
+
+msgid "Save the resource on multiple hosts"
+msgstr "여러 호스트에 자원을 저장"
+
+msgid "Save the resource to additional path"
+msgstr "추가 경로에 리소스를 저장"
+
+msgid "Download the resource config"
+msgstr "자원 설정 다운로드"
+
+msgid "Add APIs"
+msgstr "API 추가"
+
+msgid "Protocol:"
+msgstr "프로토콜:"
+
+msgid "API Address:"
+msgstr "API 주소:"
+
+msgid "API Login:"
+msgstr "API 로그인:"
+
+msgid "API Password:"
+msgstr "API 암호:"
+
+msgid "Please enter API address."
+msgstr "API 주소를 입력하십시오."
+
+msgid "Please enter API port."
+msgstr "API 포트를 입력하십시오."
+
+msgid "Please enter API login."
+msgstr "API 로그인을 입력하십시오."
+
+msgid "Please enter API password."
+msgstr "API 암호를 입력하십시오."
+
+msgid "Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance."
+msgstr "Baculum 웹 인터페이스는 공유 카탈로그 접근 할 수 있는 적어도 하나 개의 Baculum의 API 인스턴스를 추가해야 합니다. API 인스턴스를 추가하십시오."
+
+msgid "Save with name:"
+msgstr "이름으로 저장 :"
+
+msgid "API connection test:"
+msgstr "API 연결 테스트:"
+
+msgid "Catalog support"
+msgstr "카탈로그 지원"
+
+msgid "Console support"
+msgstr "콘솔 지원"
+
+msgid "Config support"
+msgstr "구성 지원"
+
+msgid "Supported"
+msgstr "지원됨"
+
+msgid "Not supported"
+msgstr "지원되지 않음"
+
+msgid "Step 3 - authentication params to Baculum Web panel"
+msgstr "3 단계 - Baculum 웹 패널로 인증 매개변수"
+
+msgid "Step 4 - Finish"
+msgstr "4 단계 - 완료"
+
+msgid "Disabled"
+msgstr "비활성화"
+
+msgid "From month"
+msgstr "월부터"
+
+msgid "To month"
+msgstr "월까지"
+
+msgid "Month"
+msgstr "월"
+
+msgid "From day"
+msgstr "일부터"
+
+msgid "To day"
+msgstr "일까지"
+
+msgid "Day"
+msgstr "일"
+
+msgid "Day of week"
+msgstr "일 (1주일에서)"
+
+msgid "From day of week"
+msgstr "요일부터"
+
+msgid "To day of week"
+msgstr "요일까지"
+
+msgid "Hour"
+msgstr "시"
+
+msgid "Minute"
+msgstr "분"
+
+msgid "From week"
+msgstr "주부터"
+
+msgid "To week"
+msgstr "주까지"
+
+msgid "Week"
+msgstr "주"
+
+msgid "Add new %resource_type resource on %component_name (%component_type)"
+msgstr "%component_name (%component_type)에  새로운 %resource_type 리소스 추가"
+
+msgid "Reset to default value"
+msgstr "값을 기본값으로 재설정"
+
+msgid "Remove directive"
+msgstr "지침 제거"
+
+msgid "Add API host"
+msgstr "API 호스트 추가"
+
+msgid "Add host"
+msgstr "호스트 추가"
+
+msgid "Given host already exists in config file."
+msgstr "주어진 호스트는 이미 설정 파일에 존재합니다."
+
+msgid "Problem during save to config file. Please check host config file permission."
+msgstr "설정 파일에 저장하는 동안 문제가 발생했습니다. 호스트 설정 파일 권한을 확인하시기 바랍니다."
+
+msgid "Host added successfully."
+msgstr "호스트가 성공적으로 추가되었습니다."
+
+msgid "Save as:"
+msgstr "다른 이름으로 저장:"
+
+msgid "(optional)"
+msgstr "(옵션)"
+
+msgid "Use HTTP Basic authentication"
+msgstr "HTTP 기본 인증 사용"
+
+msgid "Use OAuth2 for authorization and authentication"
+msgstr "인증 및 권한 부여 OAuth2 사용"
+
+msgid "Invalid Client ID value. Client ID may contain a-z A-Z 0-9 - _ characters."
+msgstr "클라이언트 ID 값이 잘못되었습니다. 클라이언트 ID에는 a-z A-Z 0-9 - _ 문자가 포함될 수 있습니다."
+
+msgid "Please enter Client ID."
+msgstr "클라이언트 ID를 입력하십시오."
+
+msgid "OAuth2 Client ID:"
+msgstr "OAuth2 클라이언트 ID:"
+
+msgid "OAuth2 Client Secret:"
+msgstr "OAuth2 클라이언트 Secret:"
+
+msgid "Please enter Client Secret."
+msgstr "클라이언트 암호를 입력하십시오."
+
+msgid "Invalid Client Secret value. Client Secret may contain any character that is not a whitespace character."
+msgstr "잘못된 클라이언트 Secret 값입니다. 클라이언트 Secret은 공백 문자가 아닌 모든 문자를 포함 할 수 있습니다."
+
+msgid "generate"
+msgstr "생성하기"
+
+msgid "Dedicated Bconsole config file path:"
+msgstr "전용 Bconsole 설정 파일 경로:"
+
+msgid "Please enter Redirect URI."
+msgstr "리디렉션 URI를 입력하십시오."
+
+msgid "OAuth2 Redirect URI (example: https://bacularis:9097/web/redirect):"
+msgstr "OAuth2 디라이렉트 URI (예: https://bacularis:9097/web/redirect):"
+
+msgid "OAuth2 scopes (space separated):"
+msgstr "OAuth2 스코프(공백으로 구분):"
+
+msgid "Please enter OAuth2 scopes."
+msgstr "OAuth2 스코프를 입력하십시오."
+
+msgid "Auth Type:"
+msgstr "인증 유형:"
+
+msgid "OAuth2 Redirect URI:"
+msgstr "OAuth2 리디렉션 URI:"
+
+msgid "OAuth2 Scope:"
+msgstr "OAuth2 범위:"
+
+msgid "Restore job:"
+msgstr "복원 작업:"
+
+msgid "API host"
+msgstr "API 호스트"
+
+msgid "API host:"
+msgstr "API 호스트:"
+
+msgid "Select host"
+msgstr "호스트 선택"
+
+msgid "Field required."
+msgstr "필드가 필요합니다."
+
+msgid "Invalid value. Integer value required."
+msgstr "잘못된 값입니다. 정수 값이 필요합니다."
+
+msgid "Resource %s \"%s\" is used in the following resources:"
+msgstr "자원 %s \"%s\"은(는) 다음과 같은 리소스에 사용된다 :"
+
+msgid "Component: %s, Resource: %s \"%s\", Directive: %s"
+msgstr "구성 요소: %s, 자원: %s \"%s\", 지침: %s"
+
+msgid "Are you sure that you want to remove %s resource \"%s\"?"
+msgstr "%s 를 자원 %s 에서 삭제하겠습니까?"
+
+msgid "Resource %s \"%s\" removed successfully."
+msgstr "자원 %s \"%s\"은(는) 성공적으로 제거했습니다."
+
+msgid "Please unassign resource %s \"%s\" from these resources and try again."
+msgstr "이러한 자원으로부터 자원 %s \"%s\"을(를) 할당 해제하고 다시 시도하십시오."
+
+msgid "Size:"
+msgstr "크기:"
+
+msgid "JobId:"
+msgstr "작업 Id:"
+
+msgid "Volume:"
+msgstr "볼륨:"
+
+msgid "InChanger:"
+msgstr "인체인저:"
+
+msgid "Sum:"
+msgstr "합계:"
+
+msgid "Select"
+msgstr "선택"
+
+msgid "Path:"
+msgstr "경로:"
+
+msgid "Restore wizard"
+msgstr "복원 마법사"
+
+msgid "This wizard enables you to do in easy way restore files to destination Bacula Client."
+msgstr "이 마법사는 대상 Bacula 클라이언트에 파일을 복원하면 쉬운 방법으로 수행 할 수 있습니다."
+
+msgid "To start, please select backup Client which data you want to restore."
+msgstr "시작하려면, 복원 할 데이터 백업 클라이언트를 선택하십시오."
+
+msgid "There are two ways to select backup to restore. The selected backup way provides list of jobs from which there is possible to select a job. If you need the latest backups from the Client alternatively you can use Group most recent backups way which will select backups for you basing on backup job name and fileset resource."
+msgstr "복원할 백업을 선택하는 방법은 두 가지가 있습니다. 선택한 백업 방법은 작업을 선택할 수 있는 작업 목록을 제공합니다. 클라이언트에서 최신 백업이 필요한 경우 백업 작업 이름 및 파일 세트 리소스를 기준으로 백업을 선택하는 가장 최근 백업 그룹화 방법을 사용할 수 있습니다."
+
+msgid "Do not relocate files"
+msgstr "파일을 재배치하지 마십시오"
+
+msgid "Relocate files with prefix and/or suffix"
+msgstr "접두사 및 / 또는 접미사로 파일 이전"
+
+msgid "Relocate files with regular expression"
+msgstr "정규 표현식으로 파일 이전"
+
+msgid "Strip prefix:"
+msgstr "스트립 접두사:"
+
+msgid "Add prefix:"
+msgstr "접두사를 추가:"
+
+msgid "Add suffix:"
+msgstr "접미사를 추가:"
+
+msgid "RegexWhere:"
+msgstr "RegexWhere :"
+
+msgid "File relocation option:"
+msgstr "파일 재배치 옵션:"
+
+msgid "In Changer"
+msgstr "체인저에서"
+
+msgid "Volume"
+msgstr "볼륨"
+
+msgid "During restore there will be used following volumes:"
+msgstr "다음 볼륨이 사용됩니다 복원 중:"
+
+msgid "Go back"
+msgstr "이동 다시"
+
+msgid "Start time"
+msgstr "시작 시간"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "JobId"
+msgstr "작업 Id"
+
+msgid "More jobs"
+msgstr "더 많은 작업"
+
+msgid "Welcome"
+msgstr "환영합니다"
+
+msgid "Details"
+msgstr "세부"
+
+msgid "Job is running"
+msgstr "작업이 실행 중입니다"
+
+msgid "Job is finished"
+msgstr "작업은 완료"
+
+msgid "Refresh log"
+msgstr "새로 고침 로그"
+
+msgid "Job list"
+msgstr "작업 목록"
+
+msgid "Action"
+msgstr "동작"
+
+msgid "Storage list"
+msgstr "저장소 목록"
+
+msgid "Status storage"
+msgstr "저장소 상태"
+
+msgid "Storages"
+msgstr "저장소"
+
+msgid "Client list"
+msgstr "클라이언트 목록"
+
+msgid "Uname"
+msgstr "Uname(시스템 식별 명령어)"
+
+msgid "AutoPrune"
+msgstr "자동제거"
+
+msgid "Job retention"
+msgstr "작업 보존"
+
+msgid "File retention"
+msgstr "파일 보존"
+
+msgid "Client details"
+msgstr "클라이언트 세부 사항"
+
+msgid "Status client"
+msgstr "클라이언트 상태"
+
+msgid "Configure client"
+msgstr "구성 클라이언트"
+
+msgid "Add new Client"
+msgstr "새 클라이언트를 추가"
+
+msgid "New"
+msgstr "새로운"
+
+msgid "Resource to create:"
+msgstr "생성될 자원:"
+
+msgid "Create"
+msgstr "창조하다"
+
+msgid "Add new resource"
+msgstr "새 리소스 추가"
+
+msgid "Please select host"
+msgstr "호스트를 선택하세요"
+
+msgid "Component:"
+msgstr "구성 요소:"
+
+msgid "Please select component"
+msgstr "구성 요소를 선택하세요"
+
+msgid "Add client"
+msgstr "클라이언트 추가"
+
+msgid "Add job"
+msgstr "작업 추가"
+
+msgid "Job to run:"
+msgstr "실행해야 할 작업:"
+
+msgid "Add storage"
+msgstr "저장소 추가"
+
+msgid "Add device"
+msgstr "기기 추가"
+
+msgid "Add autochanger"
+msgstr "자동 변경 추가"
+
+msgid "Resource has been saved successfully."
+msgstr "자원이 성공적으로 저장되었습니다."
+
+msgid "Configure storage"
+msgstr "구성 저장"
+
+msgid "Configure devices"
+msgstr "구성 장치"
+
+msgid "Configure autochanger"
+msgstr "구성 자동 변경"
+
+msgid "Storage details"
+msgstr "저장소 정보"
+
+msgid "Device name"
+msgstr "장치 이름"
+
+msgid "Device details"
+msgstr "장치 세부 사항"
+
+msgid "Device:"
+msgstr "장치:"
+
+msgid "Configure device"
+msgstr "장치 구성"
+
+msgid "Job details"
+msgstr "작업 세부 정보"
+
+msgid "No. vols"
+msgstr "Vol. 없음"
+
+msgid "Max. vols"
+msgstr "최대. Vol"
+
+msgid "Vol. retention"
+msgstr "Vol. 보유"
+
+msgid "Max. vol. jobs"
+msgstr "최대. Vol. 작업"
+
+msgid "Max. vol. bytes"
+msgstr "최대. Vol. 바이트"
+
+msgid "Max. vol. files"
+msgstr "최대. Vol. 파일"
+
+msgid "Recycle"
+msgstr "재활용"
+
+msgid "Pool list"
+msgstr "풀 목록"
+
+msgid "Add pool"
+msgstr "풀 추가"
+
+msgid "Update pool"
+msgstr "풀 업데이트"
+
+msgid "Update all vols in pool"
+msgstr "풀에 있는 모든 Vol 업데이트"
+
+msgid "Pool details"
+msgstr "풀 세부 사항"
+
+msgid "Limits"
+msgstr "제한"
+
+msgid "Recycling"
+msgstr "재활용"
+
+msgid "Vol. use duration"
+msgstr "Vol. 사용 기간"
+
+msgid "Action on purge"
+msgstr "정화에 대한 작업"
+
+msgid "Recycle pool"
+msgstr "재활용 풀"
+
+msgid "Scratch pool"
+msgstr "스크래치 풀"
+
+msgid "Next pool"
+msgstr "다음 풀"
+
+msgid "Enabled"
+msgstr "사용"
+
+msgid "Volumes in pool"
+msgstr "풀의 볼륨"
+
+msgid "Configure pool"
+msgstr "구성 풀"
+
+msgid "First written"
+msgstr "초기 작성된"
+
+msgid "Last written"
+msgstr "마지막 기록"
+
+msgid "Vol. jobs"
+msgstr "Vol. 작업"
+
+msgid "Vol. bytes"
+msgstr "Vol. 바이트"
+
+msgid "Volume list"
+msgstr "볼륨 목록"
+
+msgid "Volume details"
+msgstr "볼륨 세부 사항"
+
+msgid "Recycle count"
+msgstr "재활용 회수"
+
+msgid "Configure volume"
+msgstr "구성 볼륨"
+
+msgid "InChanger"
+msgstr "인체인저"
+
+msgid "Vol. files"
+msgstr "Vol. 파일"
+
+msgid "Writing"
+msgstr "쓰기"
+
+msgid "Vol. status"
+msgstr "Vol. 상태"
+
+msgid "Vol. errors"
+msgstr "Vol. 오류"
+
+msgid "Vol. mounts"
+msgstr "Vol. 마운트"
+
+msgid "Configure job"
+msgstr "구성 작업"
+
+msgid "Configure fileset"
+msgstr "설정 파일 세트"
+
+msgid "Configure schedule"
+msgstr "구성 일정"
+
+msgid "Remove resource"
+msgstr "자원 제거"
+
+msgid "Job history"
+msgstr "작업 기록"
+
+msgid "Job history list"
+msgstr "작업 기록 목록"
+
+msgid "Job history details"
+msgstr "작업 이력 사항"
+
+msgid "Are you sure you want to remove this resource?"
+msgstr "이 자원을 삭제하겠습니까?"
+
+msgid "FileSets"
+msgstr "파일 세트"
+
+msgid "FileSet list"
+msgstr "파일 세트 목록"
+
+msgid "Add fileset"
+msgstr "파일 세트 추가"
+
+msgid "FileSet details"
+msgstr "파일 세트 세부 사항"
+
+msgid "Schedule list"
+msgstr "일정 목록"
+
+msgid "Add schedule"
+msgstr "일정 추가"
+
+msgid "Schedules"
+msgstr "일정"
+
+msgid "Schedule:"
+msgstr "일정:"
+
+msgid "Schedule details"
+msgstr "일정 세부 사항"
+
+msgid "Configure"
+msgstr "설정"
+
+msgid "Configure Bacula hosts"
+msgstr "구성 Bacula 호스트"
+
+msgid "Previous"
+msgstr "이전"
+
+msgid "Next"
+msgstr "다음"
+
+msgid "Exit wizard"
+msgstr "종료 마법사"
+
+msgid "Time range:"
+msgstr "시간 범위:"
+
+msgid "Application settings"
+msgstr "어플리케이션 설정"
+
+msgid "Update slots"
+msgstr "슬롯 업데이트"
+
+msgid "Max. number of jobs visible in tables"
+msgstr "최대. 테이블에 표시 작업 수"
+
+msgid "Max. number of jobs value must be integer greather than 0."
+msgstr "최대. 작업 값의 수는 0보다 큰 정수 여야 합니다."
+
+msgid "Log order"
+msgstr "로그인 순서"
+
+msgid "Close Menu"
+msgstr "메뉴 닫기"
+
+msgid "Error code:"
+msgstr "오류 코드:"
+
+msgid "Message:"
+msgstr "메시지:"
+
+msgid "Include"
+msgstr "포함"
+
+msgid "Exclude"
+msgstr "예외"
+
+msgid "Step 1 - select job type"
+msgstr "1 단계 - 작업 유형을 선택"
+
+msgid "New job wizard"
+msgstr "새로운 작업 마법사"
+
+msgid "This wizard enables you to create in easy way a new job."
+msgstr "이 마법사는 쉬운 방법으로 새 작업을 만들 수 있습니다."
+
+msgid "To start please select job type that you wish to create."
+msgstr "시작하려면 만들려는 작업 유형을 선택하십시오."
+
+msgid "Step 2 - what you want to backup"
+msgstr "2 단계 - 백업 할 것을 지정하십시오"
+
+msgid "Client and FileSet"
+msgstr "클라이언트 및 파일 세트"
+
+msgid "Please select Client from which you want to backup data and please select FileSet with files/directories definition to backup."
+msgstr "데이터를 백업하려는 클라이언트를 선택하고 백업 파일 / 디렉토리 정의와 파일 세트 선택하십시오."
+
+msgid "If your FileSet for this backup does not exist yet, you can create it."
+msgstr "이 백업을 위해 파일 세트가 아직 존재하지 않는 경우, 당신은 그것을 만들 수 있습니다."
+
+msgid "Add new FileSet"
+msgstr "새로운 파일 세트 추가"
+
+msgid "New FileSet"
+msgstr "새로운 파일 세트"
+
+msgid "Step 3 - where you want to backup"
+msgstr "3 단계 - 백업 할 곳을 지정하세요"
+
+msgid "Storage and Pool"
+msgstr "저장소와 풀"
+
+msgid "Spool setting"
+msgstr "스풀 설정"
+
+msgid "Please select Storage where you want to backup data and please select Pool with volumes which Storage will use to store backup data."
+msgstr "백업 데이터를 원하는 위치에 저장을 선택하고 저장 백업 데이터를 저장하는 데 사용할 볼륨과 풀을 선택하십시오."
+
+msgid "Show Storage directives for Job"
+msgstr "작업에 대한 보관 지시 보기"
+
+msgid "Show Pool directives for Job"
+msgstr "작업에 대한 풀 지침 보기"
+
+msgid "Pool setting"
+msgstr "풀 설정"
+
+msgid "Step 4 - how would you like to backup"
+msgstr "4 단계 - 백업 할 방법"
+
+msgid "Job directives"
+msgstr "작업 지시"
+
+msgid "Step 5 - when would you like to run backup"
+msgstr "5 단계 - 백업을 실행하고 싶습니다"
+
+msgid "Show Reschedule directives"
+msgstr "일정 변경 지시 보기"
+
+msgid "Reschedule setting"
+msgstr "일정 변경 설정"
+
+msgid "What"
+msgstr "무엇을"
+
+msgid "General"
+msgstr "일반"
+
+msgid "How"
+msgstr "어떻게"
+
+msgid "When"
+msgstr "언제"
+
+msgid "Other directives"
+msgstr "기타 지침"
+
+msgid "Step 6 - summary"
+msgstr "6 단계 - 요약"
+
+msgid "Add new Pool"
+msgstr "새로운 풀 추가"
+
+msgid "New Pool"
+msgstr "새로운 풀"
+
+msgid "Add new Schedule"
+msgstr "새 일정 추가"
+
+msgid "New Schedule"
+msgstr "새로운 일정"
+
+msgid "Summary"
+msgstr "요약"
+
+msgid "inherited from JobDefs"
+msgstr "작업 정의로부터 상 속됨"
+
+msgid "Create job"
+msgstr "작업 만들기"
+
+msgid "Please select Client"
+msgstr "클라이언트를 선택하세요"
+
+msgid "Go to path"
+msgstr "경로로 이동"
+
+msgid "Add new include path"
+msgstr "새 포함 경로 추가"
+
+msgid "Add new global exclude path"
+msgstr "새 전역 제외 경로 추가"
+
+msgid "Include files to FileSet"
+msgstr "파일 세트 파일을 포함"
+
+msgid "Apply file selection"
+msgstr "파일 선택 적용"
+
+msgid "Schedule"
+msgstr "일정"
+
+msgid "To browse Windows host please type in text field below drive letter as path, for example: C:/"
+msgstr "Windows 호스트를 검색하기 위해, 예를 들어, 경로로 드라이브 문자 아래 텍스트 필드에 입력하십시오: 예를 들자면, C:/"
+
+msgid "Add single file/directory"
+msgstr "단일 파일 / 디렉토리 추가"
+
+msgid "Add files by file browser"
+msgstr "파일 브라우저에서 파일을 추가"
+
+msgid "Add options block"
+msgstr "옵션 블록 추가"
+
+msgid "Add include block"
+msgstr "블록 포함 추가"
+
+msgid "Add exclude block"
+msgstr "블록 제외 추가"
+
+msgid "Add file/directory"
+msgstr "파일 / 디렉토리 추가"
+
+msgid "Plugins"
+msgstr "플러그인"
+
+msgid "Add plugin"
+msgstr "플러그인 추가"
+
+msgid "Job schedules"
+msgstr "작업 일정"
+
+msgid "Priority"
+msgstr "우선 순위"
+
+msgid "Scheduled"
+msgstr "예약"
+
+msgid "FileSet"
+msgstr "파일 세트"
+
+msgid "Filters:"
+msgstr "필터:"
+
+msgid "Date from:"
+msgstr "시작 날짜:"
+
+msgid "Days:"
+msgstr "일:"
+
+msgid "Apply filters"
+msgstr "필터를 적용"
+
+msgid "You must enter an integer."
+msgstr "반드시 정수 값을 입력해야 합니다."
+
+msgid "Invalid date format."
+msgstr "날짜 형식이 잘못되었습니다."
+
+msgid "Input must be between 1 and 1000."
+msgstr "입력은 1 내지 1000이어야 합니다."
+
+msgid "Schedule status"
+msgstr "일정 상태"
+
+msgid "Slots to label (ex. 4 or 1-5 or 2,4,6-10):"
+msgstr "레이블 슬롯 (예: 4 또는 1-5 또는 2,4,6-10.)"
+
+msgid "Labeling status:"
+msgstr "레이블 상태:"
+
+msgid "Ready to label"
+msgstr "레이블 준비"
+
+msgid "Finished"
+msgstr "종료되었습니다"
+
+msgid "Updating status:"
+msgstr "상태 업데이트:"
+
+msgid "Ready to update"
+msgstr "업데이트 할 준비"
+
+msgid "Updating..."
+msgstr "업데이트 중..."
+
+msgid "Slots to update (ex. 4 or 1-5 or 2,4,6-10):"
+msgstr "갱신에 슬롯 (예: 4 또는 1-5 또는 2,4,6-10.)"
+
+msgid "Command status:"
+msgstr "명령 상태:"
+
+msgid "Ready"
+msgstr "준비된"
+
+msgid "Show size values as:"
+msgstr "크기 값을 다음과 같이 보기:"
+
+msgid "Decimal Bytes (1 mega = 10<sup>6</sup>)"
+msgstr "십진 바이트 (1 메가 = 10 <sup> 6 </sup>)"
+
+msgid "Binary Bytes (1 mebi = 2<sup>20</sup>)"
+msgstr "이진 바이트 (1 mebi = 2 <sup> 20 </sup>)"
+
+msgid "Statistics list"
+msgstr "통계 목록"
+
+msgid "Add director statistics"
+msgstr "디렉터 통계 추가"
+
+msgid "Add storage statistics"
+msgstr "저장소 통계 추가"
+
+msgid "Add file daemon statistics"
+msgstr "파일 데몬 통계 추가"
+
+msgid "Component type"
+msgstr "구성 요소 유형"
+
+msgid "Component name"
+msgstr "구성 요소 이름"
+
+msgid "Statistics details"
+msgstr "통계 상세"
+
+msgid "Statistics:"
+msgstr "통계:"
+
+msgid "Statistics"
+msgstr "통계"
+
+msgid "Job files / Time"
+msgstr "작업 파일 / 시간"
+
+msgid "Job files per day"
+msgstr "하루 작업 파일"
+
+msgid "Files count"
+msgstr "파일 수"
+
+msgid "Jobs status / Day"
+msgstr "작업 상태 / 일"
+
+msgid "Job status per day"
+msgstr "하루 작업 상태"
+
+msgid "Jobs count"
+msgstr "작업 개수"
+
+msgid "Job files"
+msgstr "작업 파일"
+
+msgid "Graph type:"
+msgstr "그래프 타입:"
+
+msgid "Tip: to use zoom, please mark area on graph."
+msgstr "팁: 확대를 사용하기 위해서는 그래프 위 영역을 마크해 주십시오."
+
+msgid "Tip 2: to exit zoom, please click somewhere on graph."
+msgstr "팁 2 : 종료 확대하려면 그래프 어딘가를 클릭하십시오."
+
+msgid "Job size / Day"
+msgstr "작업 크기 / 일"
+
+msgid "Job size per day"
+msgstr "하루 작업 크기"
+
+msgid "Job files / Day"
+msgstr "작업 파일 / 일"
+
+msgid "Graph:"
+msgstr "그래프:"
+
+msgid "Job duration"
+msgstr "작업 시간"
+
+msgid "Jobs duration / Time"
+msgstr "작업 기간 / 시간"
+
+msgid "Duration"
+msgstr "지속"
+
+msgid "Job size per hour"
+msgstr "시간당 작업 크기"
+
+msgid "Job size / Hour"
+msgstr "작업 크기 / 시간"
+
+msgid "Job files per hour"
+msgstr "시간 당 작업 파일"
+
+msgid "Job files / Hour"
+msgstr "작업 파일 / 시간"
+
+msgid "Average job size per hour"
+msgstr "시간당 평균 작업 크기"
+
+msgid "Average job size per day"
+msgstr "하루 평균 작업 크기"
+
+msgid "Average job size / Hour"
+msgstr "평균 작업 크기 / 시간"
+
+msgid "Average job size / Day"
+msgstr "평균 작업 크기 / 일"
+
+msgid "Average job files per hour"
+msgstr "시간당 평균 작업 파일"
+
+msgid "Average job files per day"
+msgstr "하루 평균 작업 파일"
+
+msgid "Average job files / Hour"
+msgstr "평균 작업 파일 / 시간"
+
+msgid "Average job files / Day"
+msgstr "평균 작업 파일 / 일"
+
+msgid "Average job speed / Time"
+msgstr "평균 작업 속도 / 시간"
+
+msgid "Job speed"
+msgstr "작업 속도"
+
+msgid "Average job speed"
+msgstr "평균 작업 속도"
+
+msgid "Job count per hour"
+msgstr "시간 당 작업 수"
+
+msgid "Job count per day"
+msgstr "하루 작업 수"
+
+msgid "Job count / Hour"
+msgstr "작업 횟수 / 시간"
+
+msgid "Job count"
+msgstr "작업 수"
+
+msgid "Job count / Day"
+msgstr "작업 수 / 일"
+
+msgid "Job level:"
+msgstr "작업 수준:"
+
+msgid "All levels"
+msgstr "모든 레벨"
+
+msgid "Full"
+msgstr "전체"
+
+msgid "Incremental"
+msgstr "증분"
+
+msgid "Differential"
+msgstr "차이"
+
+msgid "Custom time range"
+msgstr "사용자 정의 시간 범위"
+
+msgid "Version:"
+msgstr "버전:"
+
+msgid "Add directive"
+msgstr "지침 추가"
+
+msgid "Go to job with jobid %jobid"
+msgstr "작업 Id %jobid 작업로 이동"
+
+msgid "Go to job %job"
+msgstr "작업 %job 으로 이동"
+
+msgid "Graphical status"
+msgstr "그래픽 상태"
+
+msgid "Raw status"
+msgstr "원시 상태"
+
+msgid "Uname:"
+msgstr "Uname(시스템 식별 명령어):"
+
+msgid "Started time:"
+msgstr "시작 시간:"
+
+msgid "Plugins:"
+msgstr "플러그인:"
+
+msgid "Bandwidth limit:"
+msgstr "대역폭 제한:"
+
+msgid "No limit"
+msgstr "제한 없음"
+
+msgid "Debug:"
+msgstr "디버그:"
+
+msgid "No debug"
+msgstr "디버그 없습니다"
+
+msgid "Job bytes:"
+msgstr "작업 바이트:"
+
+msgid "Job files:"
+msgstr "작업 파일:"
+
+msgid "Average speed:"
+msgstr "평균 속도:"
+
+msgid "Processing file:"
+msgstr "파일을 처리:"
+
+msgid "Read bytes:"
+msgstr "읽기 바이트:"
+
+msgid "Examined files:"
+msgstr "심사 파일:"
+
+msgid "Running jobs"
+msgstr "작업을 실행"
+
+msgid "Job errors:"
+msgstr "작업 오류:"
+
+msgid "Type:"
+msgstr "유형:"
+
+msgid "Refresh interval (sec.):"
+msgstr "새로 고침 간격 (초):"
+
+msgid "To disable refreshing please type 0."
+msgstr "새로고침을 비활성화하기 위해서는 0을 입력해주세요."
+
+msgid "No jobs running"
+msgstr "실행중인 작업이 없습니다"
+
+msgid "Graphical client status is supported for Bacula clients version 9.0 and greater."
+msgstr "그래픽 클라이언트 상태는 Bacula 클라이언트 버전 9.0 이상에서 지원됩니다."
+
+msgid "Status request timed out. The most probably the Bacula client is not available or it is not running."
+msgstr "상태 요청 시간이 초과되었습니다. 아마도 Bacula 클라이언트를 사용할 수 없거나 실행되고 있지 않습니다."
+
+msgid "Start"
+msgstr "시작"
+
+msgid "Stop"
+msgstr "중지"
+
+msgid "Restart"
+msgstr "재시작"
+
+msgid "Component action result"
+msgstr "구성 요소 조치 결과"
+
+msgid "Component start finished successfully."
+msgstr "구성 요소 시작이 성공적으로 완료."
+
+msgid "Component stop finished successfully."
+msgstr "구성 요소 중지가 성공적으로 완료."
+
+msgid "Component restart finished successfully."
+msgstr "구성 요소 다시 시작이 성공적으로 완료."
+
+msgid "Set bandwidth"
+msgstr "대역폭 설정"
+
+msgid "Set client bandwidth limit"
+msgstr "클라이언트 대역폭 제한 설정"
+
+msgid "Here you can set bandwidth limit on client. This changes is applied on running client. There is no need to restart it."
+msgstr "여기에서 클라이언트의 대역폭 제한을 설정할 수 있습니다. 이 변화는 클라이언트를 실행에 적용됩니다. 다시 시작할 필요가 없습니다."
+
+msgid "Bandwidth limit"
+msgstr "대역폭 제한"
+
+msgid "Here you can set bandwidth limit on client. This change is applied on running client. There is no need to restart it."
+msgstr "여기에서 클라이언트의 대역폭 제한을 설정할 수 있습니다. 이 변경 사항은 클라이언트를 실행에 적용됩니다. 다시 시작할 필요가 없습니다."
+
+msgid "Setting 0 (zero) value disables bandwidth limitation."
+msgstr "0 (제로) 값이 대역폭 제한 비활성화를 설정."
+
+msgid "Set job bandwidth limit"
+msgstr "작업 대역폭 제한 설정"
+
+msgid "Here you can set bandwidth limit for job. This change is applied on running job."
+msgstr "여기에서 작업에 대한 대역폭 제한을 설정할 수 있습니다. 이러한 변화는 작업을 실행에 적용됩니다."
+
+msgid "est."
+msgstr "미국 동부 표준시."
+
+msgid "Progress bar displays estimated values"
+msgstr "추정된 값이 표시되는 진행률 표시줄"
+
+msgid "Byte progress bar:"
+msgstr "바이트 진행 표시 줄:"
+
+msgid "File progress bar:"
+msgstr "파일 진행률 표시 줄:"
+
+msgid "Running job status"
+msgstr "작업 상태를 실행"
+
+msgid "Raw job log"
+msgstr "원시 작업 로그"
+
+msgid "Not available"
+msgstr "사용할 수 없습니다"
+
+msgid "The storage has been selected basing on job configuration. This item may require adjusting before job run."
+msgstr "저장소는 작업 구성 기반으로 선택되었습니다. 이 항목은 작업 실행하기 전에 조정이 필요할 수 있습니다."
+
+msgid "Graphical job status is supported for jobs running on Bacula clients version 9.0 and greater."
+msgstr "그래픽 작업 상태는 Bacula 클라이언트 버전 9.0 이상에서 실행중인 작업에 대한 지원됩니다."
+
+msgid "Offset:"
+msgstr "오프셋:"
+
+msgid "List type:"
+msgstr "목록 유형:"
+
+msgid "saved items"
+msgstr "저장된 아이템"
+
+msgid "deleted items"
+msgstr "삭제 된 아이템"
+
+msgid "all"
+msgstr "모든"
+
+msgid "Find file or directory"
+msgstr "파일이나 디렉토리 찾기"
+
+msgid "Find"
+msgstr "찾기"
+
+msgid "Item count:"
+msgstr "항목 수:"
+
+msgid "No item result"
+msgstr "항목 결과가 없음"
+
+msgid "Refresh job log"
+msgstr "새로 고침 작업 로그"
+
+msgid "Set job log order (ascending/descending)"
+msgstr "작업 로그 순서 (오름차순 / 내림차순) 설정"
+
+msgid "Run every month"
+msgstr "매월 실행"
+
+msgid "Run one month a year"
+msgstr "일년에 한 달 실행"
+
+msgid "Run from month to month a year (range)"
+msgstr "월 범위 실행 (범위)"
+
+msgid "Run every week"
+msgstr "매주 실행"
+
+msgid "Run one week a month"
+msgstr "한 달에 일주일 실행"
+
+msgid "Run from week to week a month (range)"
+msgstr "주 범위 실행 (범위)"
+
+msgid "Run every day"
+msgstr "매일 실행"
+
+msgid "Run one day a month"
+msgstr "한 달에 하루 실행"
+
+msgid "Run from day to day a month (range)"
+msgstr "일 범위 실행 (범위)"
+
+msgid "Run every day of week"
+msgstr "모든 요일의 실행"
+
+msgid "Run one day of week"
+msgstr "일주일에 하루 실행"
+
+msgid "Run from day of week to day of week (range)"
+msgstr "요일 범위 실행 (범위)"
+
+msgid "Run every full hour"
+msgstr "모든 전체 시간을 실행"
+
+msgid "Run at hour and minute"
+msgstr "시간과 분에 실행"
+
+msgid "Run hourly at minute"
+msgstr "매시간 정해진 분에 실행"
+
+msgid "Hour and minute"
+msgstr "시간과 분"
+
+msgid "Validation error"
+msgstr "검증 오류"
+
+msgid "Please select month in Run block"
+msgstr "실행 블록에서 월을 선택하세요"
+
+msgid "Please select month range in Run block"
+msgstr "실행 블록의 달 범위를 선택하세요"
+
+msgid "Please select week in Run block"
+msgstr "실행 블록에 주 선택하세요"
+
+msgid "Please select week range in Run block"
+msgstr "실행 블록의 주 범위를 선택하세요"
+
+msgid "Please select day in Run block"
+msgstr "실행 블록에서 일을 선택하세요"
+
+msgid "Please select day range in Run block"
+msgstr "실행 블록에서 하루 범위를 선택하세요"
+
+msgid "Please select day of week in Run block"
+msgstr "실행 블록에서 요일을 선택하세요"
+
+msgid "Please select day of week range in Run block"
+msgstr "실행 블록의 주 범위의 일을 선택하세요"
+
+msgid "Please select hour in Run block"
+msgstr "실행 블록에서 시간을 선택하세요"
+
+msgid "Please select hour and minute in Run block"
+msgstr "실행 블록의 시간과 분을 선택하세요"
+
+msgid "Are you sure, you want to delete this job?"
+msgstr "이 작업을 삭제하겠습니까?"
+
+msgid "Access-control list"
+msgstr "접근 제어 목록"
+
+msgid "Communications encryption"
+msgstr "통신 암호화"
+
+msgid "Copy and migration"
+msgstr "복사 및 마이그레이션"
+
+msgid "CSV file"
+msgstr "CSV 파일"
+
+msgid "Data encryption"
+msgstr "데이터 암호화"
+
+msgid "Deduplication optimized volumes"
+msgstr "중복 제거 최적화 된 볼륨"
+
+msgid "Device"
+msgstr "장치"
+
+msgid "Disk"
+msgstr "디스크"
+
+msgid "Duplicates and priorities"
+msgstr "중복 및 우선 순위"
+
+msgid "Graphite"
+msgstr "흑연"
+
+msgid "Limitations"
+msgstr "제한"
+
+msgid "Networking"
+msgstr "네트워킹"
+
+msgid "Pruning"
+msgstr "손질"
+
+msgid "Spooling"
+msgstr "스풀링"
+
+msgid "Tape"
+msgstr "테이프"
+
+msgid "Verify"
+msgstr "확인"
+
+msgid "Virtual full backup"
+msgstr "가상 전체 백업"
+
+msgid "Volume recycling"
+msgstr "볼륨 재활용"
+
+msgid "Tip: checking 'All' message type causes, that rest checked message types are saved with negation ex. Catalog = All, !Debug, !Saved, !Skipped"
+msgstr "팁 : '전체' 메시지 유형 원인을 확인은, 그 나머지는 메시지 유형은 부정 전으로 저장됩니다. 예) Catalog = All, !Debug, !Saved, !Skipped"
+
+msgid "Enable restore from copy jobs feature:"
+msgstr "복사 작업 기능에서 복원 사용:"
+
+msgid "Note: if you select incremental or differential backup, on the next step will be also loaded all directories and files from older backups required to do the job restore. In other words, the selected backup determines time point from which will be loaded the selected backup and other older backups (incremental, differential) backups up till closest full backup."
+msgstr "참고: 증분 또는 차등 백업을 선택하는 경우 다음 단계에서 작업 복원을 수행하는 데 필요한 이전 백업의 모든 디렉터리 및 파일도 로드됩니다. 다시 말해, 선택한 백업은 선택한 백업과 다른 이전 백업(증분, 차등)을 가장 가까운 전체 백업까지 로드할 시점을 결정합니다."
+
+msgid "Create new resource"
+msgstr "새 리소스 만들기"
+
+msgid "The resource has been created successfully."
+msgstr "자원이 성공적으로 생성되었습니다."
+
+msgid "Scheduled time"
+msgstr "예약된 시간"
+
+msgid "Real end time"
+msgstr "실제 종료 시간"
+
+msgid "Read bytes"
+msgstr "읽기 바이트"
+
+msgid "Job errors"
+msgstr "작업 오류"
+
+msgid "Job missing files"
+msgstr "작업 누락 된 파일"
+
+msgid "Purged files"
+msgstr "정리된 파일"
+
+msgid "Has base"
+msgstr "기반을 가지고"
+
+msgid "Reviewed"
+msgstr "검토"
+
+msgid "Comment"
+msgstr "의견"
+
+msgid "File table"
+msgstr "파일 테이블"
+
+msgid "Label date"
+msgstr "레이블 날짜"
+
+msgid "Vol. blocks"
+msgstr "Vol. 블록"
+
+msgid "Vol. abytes"
+msgstr "Vol. 어바이트(abytes)"
+
+msgid "Vol. apadding"
+msgstr "Vol. 덧추가(apadding)"
+
+msgid "Vol. hole bytes"
+msgstr "Vol. 홀 바이트"
+
+msgid "Vol. holes"
+msgstr "Vol. 홀"
+
+msgid "Vol. parts"
+msgstr "Vol. 파트"
+
+msgid "Vol. writes"
+msgstr "Vol. 쓰기"
+
+msgid "Vol. capacity bytes"
+msgstr "Vol. 용량 바이트"
+
+msgid "Storage"
+msgstr "저장소"
+
+msgid "Media addressing"
+msgstr "미디어 주소따기"
+
+msgid "Vol. read time"
+msgstr "Vol. 읽기 시간"
+
+msgid "Vol. write time"
+msgstr "Vol. 쓰기 시간"
+
+msgid "End file"
+msgstr "최종 파일"
+
+msgid "End block"
+msgstr "최종 블록"
+
+msgid "Initial write"
+msgstr "초기 쓰기"
+
+msgid "Vol. type"
+msgstr "Vol. 유형"
+
+msgid "Vol. cloud parts"
+msgstr "Vol. 클라우드 부품"
+
+msgid "Last part bytes"
+msgstr "마지막 부분 바이트"
+
+msgid "Cache retention"
+msgstr "캐시 유지"
+
+msgid "Bulk action"
+msgstr "대량 작업"
+
+msgid "Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again."
+msgstr "다음 작업을 실행하고 삭제할 수 없습니다: %running_jobs는 이러한 작업을 중지하고 다시 시도하십시오 그들을 삭제합니다."
+
+msgid "Refresh page"
+msgstr "새로 고침 페이지"
+
+msgid "Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection."
+msgstr "팁: 테이블 행을 선택 왼쪽 버튼으로 클릭합니다. CTRL + 여러 행 선택하고 좌측 클릭을 사용하세요. SHIFT + 왼쪽 클릭 선택에 행의 범위를 추가 할 수 있습니다."
+
+msgid "Show time in job log:"
+msgstr "작업 로그에 시간을 표시:"
+
+msgid "Security"
+msgstr "보안"
+
+msgid "Roles"
+msgstr "역할"
+
+msgid "Long name"
+msgstr "긴 이름"
+
+msgid "Edit user"
+msgstr "사용자 편집"
+
+msgid "Long name:"
+msgstr "긴 이름:"
+
+msgid "Description:"
+msgstr "설명:"
+
+msgid "E-mail:"
+msgstr "이메일:"
+
+msgid "Roles:"
+msgstr "역할:"
+
+msgid "Invalid e-mail address value."
+msgstr "잘못된 이메일 주소 값입니다."
+
+msgid "Invalid username value."
+msgstr "잘못된 사용자 이름 값입니다."
+
+msgid "Username"
+msgstr "사용자 이름"
+
+msgid "E-mail"
+msgstr "이메일"
+
+msgid "Description"
+msgstr "설명"
+
+msgid "Add user"
+msgstr "사용자 추가"
+
+msgid "Username field cannot be empty."
+msgstr "사용자 이름 필드는 비워 둘 수 없습니다."
+
+msgid "At least one role must be selected."
+msgstr "적어도 하나의 역할을 선택해야 합니다."
+
+msgid "Username with the given name already exists."
+msgstr "지정된 이름의 사용자 이름이 이미 존재합니다."
+
+msgid "Edit role"
+msgstr "역할 편집"
+
+msgid "Role with limitted access"
+msgstr "제한된 접근 역할"
+
+msgid "Role with full access"
+msgstr "모든 권한과 역할"
+
+msgid "Role:"
+msgstr "역할:"
+
+msgid "Resources:"
+msgstr "자원:"
+
+msgid "Role name"
+msgstr "역할 이름"
+
+msgid "Resources"
+msgstr "자원"
+
+msgid "Add new role"
+msgstr "새 역할을 추가"
+
+msgid "Role field cannot be empty."
+msgstr "역할 필드는 비어있을 수 없습니다."
+
+msgid "At least one resource must be selected."
+msgstr "적어도 하나의 자원을 선택해야 합니다."
+
+msgid "Role with the given name already exists."
+msgstr "지정된 이름의 역할이 이미 존재합니다."
+
+msgid "This is native predefined role, that cannot be changed. For having custom roles please use the button to add new role."
+msgstr "이것은 변경할 수 없는 기본 미리 정의된 역할이다. 사용자 지정 역할을 가지려면 버튼을 사용하여 새 역할을 추가하십시오."
+
+msgid "The following roles are predefined and cannot be removed: %predefined_roles"
+msgstr "아래의 역할이 미리 정의되어 제거 할 수 없습니다:  %predefined_roles"
+
+msgid "The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles."
+msgstr "아래의 역할이 사용자가 사용하고 제거 할 수 없습니다: %used_roles 을(를) 제거하려면 다음 역할에서 모든 사용자를 할당 해제하시기 바랍니다."
+
+msgid "Add role"
+msgstr "역할 추가"
+
+msgid "Authentication method"
+msgstr "인증 방법"
+
+msgid "HTTP Basic authentication"
+msgstr "HTTP 기본 인증"
+
+msgid "LDAP authentication"
+msgstr "LDAP 인증"
+
+msgid "LDAP server options"
+msgstr "LDAP 서버 옵션"
+
+msgid "SSL encryption (LDAPS):"
+msgstr "SSL 암호화 (LDAPS):"
+
+msgid "Protocol version:"
+msgstr "프로토콜 버전:"
+
+msgid "LDAP version"
+msgstr "LDAP 버전"
+
+msgid "LDAP authentication method"
+msgstr "LDAP 인증 방법"
+
+msgid "Anonymous authentication"
+msgstr "익명 인증"
+
+msgid "Simple authentication"
+msgstr "간단한 인증"
+
+msgid "Base DN:"
+msgstr "기본 DN:"
+
+msgid "Attributes"
+msgstr "속성"
+
+msgid "Please enter port."
+msgstr "포트를 입력하십시오."
+
+msgid "Please enter username."
+msgstr "사용자 이름을 입력하세요."
+
+msgid "Manager DN:"
+msgstr "관리자 DN:"
+
+msgid "Please enter IP Address/Hostname."
+msgstr "IP 주소/호스트명을 입력하십시오."
+
+msgid "Please enter username attribute."
+msgstr "사용자 이름 속성을 입력하십시오."
+
+msgid "Test LDAP connection"
+msgstr "LDAP 연결 테스트"
+
+msgid "Manage LDAP users"
+msgstr "LDAP 사용자 관리"
+
+msgid "Please enter Base DN."
+msgstr "기본 DN을 입력하십시오."
+
+msgid "LDAP user list"
+msgstr "LDAP 사용자 목록"
+
+msgid "Import users"
+msgstr "사용자 가져 오기"
+
+msgid "Import all users"
+msgstr "모든 사용자 가져 오기"
+
+msgid "Import selected users"
+msgstr "가져 오기 선택한 사용자"
+
+msgid "Import users whose fulfill criteria"
+msgstr "그 기준을 충족 사용자 가져 오기"
+
+msgid "Import options:"
+msgstr "가져 오기 옵션:"
+
+msgid "Criteria filter:"
+msgstr "기준 필터:"
+
+msgid "contains:"
+msgstr "포함:"
+
+msgid "Reload"
+msgstr "새로 고침"
+
+msgid "Please select users in table to import."
+msgstr "수입에 테이블에서 사용자를 선택하십시오."
+
+msgid "Do not overwrite existing Bacularis Web users, if they have the same username"
+msgstr "기존 Bacularis 웹 사용자가 동일한 사용자 이름을 가진 경우 덮어쓰기 안 함"
+
+msgid "Default role for imported users:"
+msgstr "가져온 사용자에 대한 역할을 기본:"
+
+msgid "Advanced options"
+msgstr "고급 옵션"
+
+msgid "Default API hosts for imported users:"
+msgstr "가져온 사용자의 기본 API 호스트:"
+
+msgid "Log in"
+msgstr "로그인"
+
+msgid "Invalid username or password"
+msgstr "잘못된 사용자 이름 또는 암호"
+
+msgid "IP address restrictions"
+msgstr "IP 주소 제한"
+
+msgid "IP address restrictions:"
+msgstr "IP 주소 제한:"
+
+msgid "Use CTRL + left-click to multiple item selection"
+msgstr "여러 항목 선택하려면 CTRL + 왼쪽 클릭 사용"
+
+msgid "Comma separated IP addresses. Using asterisk character, there is also possible to provide subnet, for example: 192.168.1.*"
+msgstr "쉼표는 IP 주소를 분리. 별표 (*) 문자를 사용하여, 예를 들어, 서브넷을 제공 할 수도있다: 192.168.1 *"
+
+msgid "Default IP address restrictions for imported users:"
+msgstr "가져온 사용자에 대한 IP 주소 제한을 기본:"
+
+msgid "Set your IP address"
+msgstr "당신의 IP 주소 설정"
+
+msgid "Invalid IP address restrictions value. This field can have comma separated IP addresses only or subnet addresses like 192.168.1.*"
+msgstr "잘못된 IP 주소 제한 값입니다. 쉼표로 분리된 이 필드는 192.168.1.*같은 서브넷이거나 같은에만 IP 주소 또는 서브넷 주소를 분리. *"
+
+msgid "General settings"
+msgstr "일반 설정"
+
+msgid "Default access setting for logged in users not defined in Bacularis Web:"
+msgstr "Bacularis 웹에서 정의되지 않은 로그인 사용자에 대한 기본 접근 설정:"
+
+msgid "No access"
+msgstr "접근 금지"
+
+msgid "Access with default settings"
+msgstr "기본 설정에 접근"
+
+msgid "Default role:"
+msgstr "기본 역할:"
+
+msgid "Default API host:"
+msgstr "기본 API 호스트:"
+
+msgid "Users file path:"
+msgstr "사용자 파일 경로:"
+
+msgid "Hash algorithm:"
+msgstr "해시 알고리즘:"
+
+msgid "Please enter users file path value."
+msgstr "사용자에게 파일 경로 값을 입력하십시오."
+
+msgid "Test"
+msgstr "테스트"
+
+msgid "The user file is not accessible."
+msgstr "사용자 파일에 접근 할 수 없습니다."
+
+msgid "The user file is not readable by web server user."
+msgstr "사용자 파일은 웹 서버 사용자가 읽을 수 없습니다."
+
+msgid "The user file is readable but not writeable by web server user."
+msgstr "사용자의 파일을 읽을 수 있지만 웹 서버 사용자가 쓸 수 없습니다."
+
+msgid "Allow Bacularis Web to manage the Basic authentication users (add/remove users and change their passwords)"
+msgstr "Bacularis Web에서 기본 인증 사용자 관리 허용(사용자 추가/제거 및 암호 변경)"
+
+msgid "Authorization failed. Please contact the Bacularis administrator to grant permissions."
+msgstr "인증에 실패했습니다. 권한을 부여하려면 Bacularis 관리자에게 문의하십시오."
+
+msgid "Try again"
+msgstr "다시 시도하십시오"
+
+msgid "Manage Basic users"
+msgstr "기본 사용자 관리"
+
+msgid "Empty user list"
+msgstr "빈 사용자 목록"
+
+msgid "Basic user list"
+msgstr "기본 사용자 목록"
+
+msgid "Access to Baculum API"
+msgstr "Baculum API에 접근"
+
+msgid "Access to Baculum Web"
+msgstr "Baculum 웹 접근"
+
+msgid "Requried support from web server side - e.g. %supported_web_server_list"
+msgstr "요구되는 웹 서버 측의 지원 (예: %supported_web_server_list)"
+
+msgid "Apache 2.4 with apr-util 1.5+"
+msgstr "Apache 2.4 apr-util 1.5+"
+
+msgid "Apache, Lighttpd and Nginx on most UNIX platforms"
+msgstr "대부분의 UNIX 플랫폼에서 apache, Lighttpd와 Nginx"
+
+msgid "Nginx on most UNIX platforms"
+msgstr "대부분의 UNIX 플랫폼에서 Nginx"
+
+msgid "No file found for selected backup. It can mean file records for this backup are pruned. Restoring selected files is not available but if you continue, there will be performed full restore all backup files."
+msgstr "선택한 백업에서 파일을 찾을 수 없습니다. 그것은 백업에서 파일 레코드가 정리되었다는 것을 의미할 수 있습니다. 선택한 파일을 복원에 사용할 수 없습니다. 하지만, 계속하면 전체 모든 백업 파일을 복원이 수행됩니다.(주: 솔직히 번역해놓고도 뭔 소린지 모르겠음)"
+
+msgid "Date and time format:"
+msgstr "날짜 및 시간 형식:"
+
+msgid "Available formats:"
+msgstr "사용 가능한 형식:"
+
+msgid "full 4 digits year, ex. 2021"
+msgstr "4 자리 연도. 예: 2021"
+
+msgid "2 digits year, ex, 21"
+msgstr "2 자리 년, 전, 21"
+
+msgid "2 digits month 01..12"
+msgstr "2 자리 월 01..12"
+
+msgid "1-2 digits month 1..12"
+msgstr "1-2 자리 월 1..12"
+
+msgid "2 digits day 01..31"
+msgstr "2 자리 일 01..31"
+
+msgid "1-2 digits day 1..31"
+msgstr "1-2 자리 일 1..31"
+
+msgid "2 digits 24-hour format hour 00..23"
+msgstr "2 자리 24 시간 포맷 시간 00..23"
+
+msgid "1-2 digits 24-hour format hour 0..23"
+msgstr "1-2 자리 24 시간 형식 시간 0..23"
+
+msgid "2 digits 12-hour format hour 01..12"
+msgstr "2 자리 12 시간 포맷 시간 01..12"
+
+msgid "1-2 digits 12-hour format hour 1..12"
+msgstr "1-2 자리 12 시간 형식 시간 1..12"
+
+msgid "2 digits minutes 00..59"
+msgstr "2 자리의 분 00..59"
+
+msgid "1-2 digits minutes 0..59"
+msgstr "1-2 자리 분 0..59"
+
+msgid "2 digits seconds 00..59"
+msgstr "2 자리의 초 00..59"
+
+msgid "1-2 digits seconds 0..59"
+msgstr "1-2 자리 초 0..59"
+
+msgid "AM/PM value"
+msgstr "AM / PM 값"
+
+msgid "24-hours format time 17:22:41"
+msgstr "24 시간 형식 시간 17시 22분 41초"
+
+msgid "12-hours format time 5:22:41 PM"
+msgstr "12 시간 형식 시간 5:22:41 PM"
+
+msgid "Local user authentication"
+msgstr "로컬 사용자 인증"
+
+msgid "Console ACLs"
+msgstr "콘솔 ACL"
+
+msgid "Add new console"
+msgstr "새 콘솔 추가"
+
+msgid "Edit console"
+msgstr "콘솔 편집"
+
+msgid "Add console"
+msgstr "콘솔 추가"
+
+msgid "OAuth2 clients"
+msgstr "OAuth2 클라이언트"
+
+msgid "Short name"
+msgstr "짧은 이름"
+
+msgid "Add new OAuth2 client"
+msgstr "새 OAuth2 클라이언트 추가"
+
+msgid "Short name:"
+msgstr "짧은 이름:"
+
+msgid "Add OAuth2 client account"
+msgstr "OAuth2 클라이언트 계정 추가"
+
+msgid "set all scopes"
+msgstr "모든 스코프로 설정"
+
+msgid "Edit OAuth2 client account"
+msgstr "OAuth2 클라이언트 계정 편집"
+
+msgid "Add new API host"
+msgstr "새로운 API 호스트 추가"
+
+msgid "Get existing API host settings:"
+msgstr "API 호스트 설정을 기존 받기:"
+
+msgid "Get existing OAuth2 client settings:"
+msgstr "기존 OAuth2를 클라이언트 설정을 가져 오기:"
+
+msgid "API hosts"
+msgstr "API 호스트"
+
+msgid "Edit API host"
+msgstr "API 호스트 편집"
+
+msgid "Create dedicated Bconsole config file:"
+msgstr "전용 Bconsole 설정 파일 생성:"
+
+msgid "Console ACL to use in new Bconsole config file:"
+msgstr "새로운 Bconsole 설정 파일의 사용에 콘솔 ACL:"
+
+msgid "Director for Bconsole config:"
+msgstr "Bconsole 설정에 대한 디렉터:"
+
+msgid "The console ACLs enable to define available resources for users. The consoles are used in the Bacula configuration on the API host side. There is possible to assign the consoles to the API basic users or to the OAuth2 clients. The assign relation for the basic users is: Console ACL -&gt; API basic user -&gt; API host -&gt; User account. For OAuth2 clients the assign relation is: Console ACL -&gt; OAuth2 client -&gt; API host -&gt; User account."
+msgstr "콘솔 ACL을 사용하여 사용자가 사용할 수 있는 리소스를 정의할 수 있습니다. 콘솔은 API 호스트 측의 Bacula 구성에서 사용됩니다. 콘솔을 API 기본 사용자 또는 OAuth2 클라이언트에 할당할 수 있습니다. 기본 사용자에 대한 할당 관계는 Console ACL -&gt; API 기본 사용자 -&gt; API host -&gt; User account입니다. OAuth2 클라이언트의 경우 할당 관계는 Console ACL -&gt; OAuth2 클라이언트 -&gt; API host -&gt; User account입니다."
+
+msgid "The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Bacularis API."
+msgstr "OAuth2 클라이언트는 API 호스트에서 구성됩니다. 이 페이지에서 OAuth2 클라이언트를 생성하려면 현재 관리 사용자 계정과 관련된 OAuth2 계정에 'oauth2' 범위가 있어야 합니다. OAuth2 클라이언트 계정은 Bacularis API의 패널에서 직접 생성할 수도 있습니다."
+
+msgid "The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance."
+msgstr "API 호스트는 Bacularis API 인스턴스를 사용하여 호스트에 대한 연결 매개 변수를 정의합니다. 사용자 탭에서 특정 사용자에게 API 호스트를 할당하여 특정 사용자 전용 API 호스트 연결을 생성할 수 있습니다. 동일한 Bacularis API 인스턴스에 많은 API 호스트 연결을 생성할 수 있습니다."
+
+msgid "Set all CommandAcls used by Bacularis Web"
+msgstr "Bacularis Web에서 사용하는 모든 CommandAcl 설정"
+
+msgid "Find job by filename (without path):"
+msgstr "(경로 제외) 파일 이름으로 작업 찾기:"
+
+msgid "File"
+msgstr "파일"
+
+msgid "match exact filename"
+msgstr "정확한 파일명 일치"
+
+msgid "With this option are searched files with names equal provided filename, otherwise there are searched files with names containing provided filename like *filename*."
+msgstr "이 옵션을 사용하면 제공된 파일 이름과 이름이 같은 검색 파일이 되고, 그렇지 않으면 *filename*과 같이 제공된 파일 이름을 포함하는 검색 파일이 있습니다."
+
+msgid "State"
+msgstr "상태"
+
+msgid "saved"
+msgstr "저장됨"
+
+msgid "deleted"
+msgstr "삭제됨"
+
+msgid "last %days days"
+msgstr "마지막 %days 일"
+
+msgid "Path (optional):"
+msgstr "경로 (옵션):"
+
+msgid "With the given path, the results narrow down to the files in the path only."
+msgstr "지정된 경로를 사용하면 결과가 경로의 파일로만 좁혀집니다."
+
+msgid "Storage Daemon:"
+msgstr "저장소 데몬:"
+
+msgid "# Autochangers:"
+msgstr "# 오토체인저:"
+
+msgid "# Devices:"
+msgstr "# 장치:"
+
+msgid "Devices"
+msgstr "장치"
+
+msgid "Archive device:"
+msgstr "압축 장치:"
+
+msgid "Device type:"
+msgstr "장치 유형:"
+
+msgid "Media type:"
+msgstr "미디어 유형:"
+
+msgid "Device type"
+msgstr "장치 유형"
+
+msgid "Media type"
+msgstr "미디어 유형"
+
+msgid "Maximum concurrent jobs:"
+msgstr "최대 동시 작업 수:"
+
+msgid "Maximum volume size:"
+msgstr "최대 볼륨 크기:"
+
+msgid "Mounted:"
+msgstr "마운트됨:"
+
+msgid "Opened:"
+msgstr "열림:"
+
+msgid "Waiting:"
+msgstr "대기중:"
+
+msgid "Blocked:"
+msgstr "블록됨:"
+
+msgid "Blocked description:"
+msgstr "블록된 설명:"
+
+msgid "Read-only:"
+msgstr "읽기 전용:"
+
+msgid "Last speed:"
+msgstr "최종 속도:"
+
+msgid "Write pool:"
+msgstr "쓰기 풀:"
+
+msgid "Write device:"
+msgstr "쓰기 장치:"
+
+msgid "Write volume:"
+msgstr "쓰기 볼륨:"
+
+msgid "Read pool:"
+msgstr "읽기 풀:"
+
+msgid "Read device:"
+msgstr "읽기 장치:"
+
+msgid "Read volume:"
+msgstr "읽기 볼륨:"
+
+msgid "Used space:"
+msgstr "사용된 공간:"
+
+msgid "Status:"
+msgstr "상태:"
+
+msgid "running"
+msgstr "실행중"
+
+msgid "idle"
+msgstr "가동되지 않고 있음"
+
+msgid "Autochanger:"
+msgstr "오토체인저:"
+
+msgid "Single devices"
+msgstr "단일 장치"
+
+msgid "Start time:"
+msgstr "시작 시간:"
+
+msgid "End time:"
+msgstr "종료 시간:"
+
+msgid "Terminated jobs"
+msgstr "종료된 작업"
+
+msgid "All devices"
+msgstr "모든 장치"
+
+msgid "All device types"
+msgstr "모든 장치 유형"
+
+msgid "All media types"
+msgstr "모든 미디어 유형"
+
+msgid "All statuses"
+msgstr "모든 상태"
+
+msgid "Graphical storage status is supported for Bacula storages version 9.0 and greater."
+msgstr "그래픽으로 표현되는 저장소 상태는 Bacula 저장소 버전 9.0 이상에서 지원됩니다."
+
+msgid "Status request timed out. The most probably the Bacula storage is not available or it is not running."
+msgstr "상태 요청이 시간 초과되었습니다. 대부분의 경우 Bacula 저장소를 사용할 수 없거나 실행 중이 아닙니다."
+
+msgid "Display messages log window"
+msgstr "메시지 로그 창 표시"
+
+msgid "Truncate log"
+msgstr "로그 잘라내기"
+
+msgid "Messages"
+msgstr "메시지"
+
+msgid "Last %errors/%count jobs finished with error."
+msgstr "마지막 %errors/%count 작업이 오류와 함께 완료되었습니다."
+
+msgid "All last %count jobs finished successfully."
+msgstr "마지막 %count 작업이 모두 완료되었습니다."
+
+msgid "Drive index"
+msgstr "드라이브 인덱스"
+
+msgid "Drive name"
+msgstr "드라이브명"
+
+msgid "Unload"
+msgstr "언로드"
+
+msgid "Manage autochanger"
+msgstr "오토체인저 관리"
+
+msgid "Slot in device"
+msgstr "장치의 슬롯"
+
+msgid "Slot in catalog"
+msgstr "카탈로그의 슬롯"
+
+msgid "Load"
+msgstr "로드"
+
+msgid "Load drive"
+msgstr "로드 드라이브"
+
+msgid "index"
+msgstr "인덱스"
+
+msgid "device"
+msgstr "장치"
+
+msgid "Drive"
+msgstr "드라이브"
+
+msgid "Empty"
+msgstr "비어있음"
+
+msgid "In drive %index (%drive)"
+msgstr "드라이브 %index(%drive)에 있음"
+
+msgid "Import/Export"
+msgstr "가져오기/내보내기"
+
+msgid "Label using barcodes"
+msgstr "바코드를 사용한 라벨"
+
+msgid "Move to import/export slot"
+msgstr "가져오기/내보내기 슬롯으로 이동"
+
+msgid "Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side."
+msgstr "자동 변경 관리를 사용할 수 없습니다. 여기서 오토체인저를 관리하려면 API 호스트 측의 API 호스트 장치에 오토체인저를 추가하십시오."
+
+msgid "Drive index:"
+msgstr "드라이브 인덱스:"
+
+msgid "Slots"
+msgstr "슬롯"
+
+msgid "Release I/E"
+msgstr "릴리스 I/E"
+
+msgid "Move to import/export slots"
+msgstr "가져오기/내보내기 슬롯으로 이동"
+
+msgid "There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count."
+msgstr "선택한 볼륨을 전송할 가져오기/내보내기 슬롯이 거의 없습니다. 사용 가능한 가져오기/내보내기 슬롯 수: %slots_count, 선택한 볼륨 수: %vols_count."
+
+msgid "Import/export slot"
+msgstr "가져오기/내보내기 슬롯"
+
+msgid "Destination slot"
+msgstr "대상 슬롯"
+
+msgid "Release import/export slot"
+msgstr "가져오기/내보내기 슬롯 해제"
+
+msgid "Tape drives"
+msgstr "테이프 드라이브"
+
+msgid "Changer slots"
+msgstr "체인저 슬롯"
+
+msgid "Release all I/E slots"
+msgstr "모든 I/E 슬롯 해제"
+
+msgid "There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count."
+msgstr "가져오기/내보내기 슬롯에서 선택한 볼륨을 전송할 일반 슬롯이 거의 없습니다. 전체 가져오기/내보내기 슬롯 수: %ie_slot_count, 사용 가능한 일반 슬롯 수: %slot_count."
+
+msgid "Tip: To use bulk autochanger actions, please select table rows."
+msgstr "팁: 대량 자동 변경 작업을 사용하려면 테이블 행을 선택하십시오."
+
+msgid "Mount volume"
+msgstr "마운트 볼륨"
+
+msgid "API hosts:"
+msgstr "API 호스트:"
+
+msgid "Please select API host"
+msgstr "API 호스트를 선택해주세요"
+
+msgid "FD address"
+msgstr "FD 주소"
+
+msgid "FD port"
+msgstr "FD 포트"
+
+msgid "FD API host"
+msgstr "FD API 호스트"
+
+msgid "Configure file daemon"
+msgstr "파일 데몬 설정"
+
+msgid "There was a problem with loading the resource configuration. Please check if selected API host is working and if it provides access to the resource configuration."
+msgstr "리소스 구성을 로드하는 동안 문제가 발생했습니다. 선택한 API 호스트가 작동하는지, 리소스 구성에 대한 접근을 제공하는지 확인하십시오."
+
+msgid "SD API host"
+msgstr "SD API 호스트"
+
+msgid "SD address"
+msgstr "SD 주소"
+
+msgid "SD port"
+msgstr "SD 포트"
+
+msgid "Configure storage daemon"
+msgstr "저장소 데몬 설정"
+
+msgid "# Directories:"
+msgstr "# 디렉토리:"
+
+msgid "# Files:"
+msgstr "# 파일:"
+
+msgid "Search..."
+msgstr "검색..."
+
+msgid "case sensitive"
+msgstr "대소문자 구분"
+
+msgid "Backup client"
+msgstr "백업 클라이언트"
+
+msgid "Job type"
+msgstr "작업 유형"
+
+msgid "Restore time point"
+msgstr "복원 시점"
+
+msgid "Catalogs"
+msgstr "카탈로그"
+
+msgid "Status director"
+msgstr "상태 디렉터"
+
+msgid "Configure director"
+msgstr "설정 디렉터"
+
+msgid "Job"
+msgstr "작업"
+
+msgid "Job status desc.:"
+msgstr "작업 상태 요약:"
+
+msgid "Scheduled time:"
+msgstr "예약된 시간:"
+
+msgid "Scheduled jobs"
+msgstr "예약된 작업"
+
+msgid "No jobs scheduled"
+msgstr "예약된 작업이 없음"
+
+msgid "No jobs terminated"
+msgstr "종료된 작업이 없음"
+
+msgid "Director details"
+msgstr "디렉터 상세"
+
+msgid "Graphical director status is supported for Bacula directors version 9.0 and greater."
+msgstr "그래픽한 디렉터 상태는 Bacula 디렉터 버전 9.0 이상에서 지원됩니다."
+
+msgid "Status request timed out. The most probably the Bacula director is not available or it is not running."
+msgstr "상태 요청이 시간 초과되었습니다. 아마도 Bacula 디렉터가 없거나 실행되고 있지 않을 것입니다."
+
+msgid "To use the console page please configure bbconsjson binary file path on the API side."
+msgstr "콘솔 페이지를 사용하려면 API 측에서 bbconsjon 바이너리 파일 경로를 구성하십시오."
+
+msgid "Console details"
+msgstr "콘솔 상세"
+
+msgid "Configure console"
+msgstr "콘솔 설정"
+
+msgid "Mode:"
+msgstr "모드:"
+
+msgid "Reset table mode"
+msgstr "테이블 모드 재설정"
+
+msgid "Jobs terminated normally"
+msgstr "작업이 정상적으로 종료되었음"
+
+msgid "Jobs with warning"
+msgstr "경고가 있는 작업"
+
+msgid "Jobs finished with error"
+msgstr "작업이 오류로 종료되었음"
+
+msgid "Jobs running"
+msgstr "작업 실행중"
+
+msgid "Jobs canceled"
+msgstr "작업이 취소됨"
+
+msgid "Copy"
+msgstr "복사"
+
+msgid "Column visibility"
+msgstr "컬럼 가시성"
+
+msgid "1 row selected"
+msgstr "1개의 행이 선택됨"
+
+msgid "%d rows selected"
+msgstr "%d 개의 행이 선택됨"
+
+msgid "Show _MENU_ entries"
+msgstr "_MENU_ 항목 보기"
+
+msgid "Showing _START_ to _END_ of _TOTAL_ entries"
+msgstr "_TOTAL_ 중 _START_ 에서 _END_ 항목 보여주기"
+
+msgid "First"
+msgstr "처음"
+
+msgid "Last"
+msgstr "마지막"
+
+msgid "No matching records found"
+msgstr "일치하는 레코드가 없습니다."
+
+msgid "filtered from _MAX_ total entries"
+msgstr "총 _MAX_ 항목에서 필터링"
+
+msgid "No data available in table"
+msgstr "표에서 사용 가능한 데이터가 없음"
+
+msgid "Jump to:"
+msgstr "점프하기:"
+
+msgid "Previous error/warning"
+msgstr "이전 오류/경고"
+
+msgid "Next error/warning"
+msgstr "다음 오류/경고"
+
+msgid "New backup job"
+msgstr "새로운 백업 작업"
+
+msgid "New copy job"
+msgstr "새로운 복사 작업"
+
+msgid "Step 1 - basic information about new job"
+msgstr "1단계 - 새 작업에 대한 기본 정보"
+
+msgid "New copy job wizard"
+msgstr "새로운 복사 작업 마법사"
+
+msgid "Copy jobs run copying backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. All process runs without using file daemon."
+msgstr "복사 작업은 한 볼륨에서 다른 볼륨으로 백업 작업 데이터를 복사하는 작업을 실행합니다. 이전에 백업한 데이터를 볼륨에서 읽은 후 다른 풀의 다른 볼륨에 기록하면 됩니다. 모든 프로세스는 파일 데몬을 사용하지 않고 실행됩니다."
+
+msgid "Step 2 - what you want to copy"
+msgstr "2단계 - 복사할 내용"
+
+msgid "Source Pool"
+msgstr "소스 풀"
+
+msgid "Please select a pool from which you want to copy data."
+msgstr "데이터를 복사할 풀을 선택하십시오."
+
+msgid "The source pool will be examined for finding backup jobs to copy."
+msgstr "복사할 백업 작업을 찾기 위해 원본 풀이 검사됩니다."
+
+msgid "See volumes in selected pool"
+msgstr "선택한 풀의 볼륨 보기"
+
+msgid "Step 3 - how would you like to copy"
+msgstr "3단계 - 복사 방법"
+
+msgid "Backup jobs selection criteria"
+msgstr "백업 작업 선택 기준"
+
+msgid "Please select the criteria that will be used for selecting backup jobs to copy."
+msgstr "복사할 백업 작업을 선택하는 데 사용할 기준을 선택하십시오."
+
+msgid "Copy by job"
+msgstr "작업별 복사"
+
+msgid "Copy by client"
+msgstr "클라이언트별 복사"
+
+msgid "Copy by volume"
+msgstr "볼륨별 복사"
+
+msgid "Copy by smallest volume"
+msgstr "가장 작은 볼륨별 복사"
+
+msgid "Copy by oldest volume"
+msgstr "가장 오래된 볼륨별 복사"
+
+msgid "Copy by SQL query"
+msgstr "SQL 쿼리별 복사"
+
+msgid "Copy all uncopied jobs (Pool Uncopied Jobs)"
+msgstr "복사되지 않은 모든 작업 복사(복사되지 않은 작업 풀)"
+
+msgid "See backup jobs"
+msgstr "작업 작업 보기"
+
+msgid "See clients"
+msgstr "클라이언트 보기"
+
+msgid "See volumes"
+msgstr "볼륨 보기"
+
+msgid "Warning"
+msgstr "경고"
+
+msgid "Note."
+msgstr "메모."
+
+msgid "To chosen destination pool %pool will be assigned new Storage %storage. This action can affect all jobs (listed below) that use this pool. Are you sure you want to assign the storage %storage to pool %pool?"
+msgstr "선택한 대상 풀에 %pool에 새 저장소 %storage가 할당됩니다. 이 작업은 이 풀을 사용하는 모든 작업(아래 목록)에 영향을 줄 수 있습니다. 저장소 %storage를 %pool 풀에 할당하시겠습니까?"
+
+msgid "See all jobs that use the pool"
+msgstr "풀을 사용하는 모든 작업 보기"
+
+msgid "Step 4 - where you like to copy"
+msgstr "4단계 - 복사할 위치"
+
+msgid "Destination Pool"
+msgstr "대상 풀"
+
+msgid "Please select destination pool to which will be stored data."
+msgstr "데이터를 저장할 대상 풀을 선택하십시오."
+
+msgid "Destination Storage"
+msgstr "대상 저장소"
+
+msgid "Step 5 - copy job options"
+msgstr "5단계 - 작업 옵션 복사"
+
+msgid "Other options"
+msgstr "다른 옵션"
+
+msgid "Pick job name"
+msgstr "작업 이름 선택"
+
+msgid "Pick client name"
+msgstr "클라이언트 이름 선택"
+
+msgid "Pick volume name"
+msgstr "볼륨 이름 선택"
+
+msgid "Level, Client and FileSet are not used during copy jobs running but they are required to define in copy job resource as the standard Job directives."
+msgstr "수준, 클라이언트 및 FileSet은 복사 작업을 실행하는 동안 사용되지 않지만 복사 작업 리소스에서 표준 작업 지시어로 정의해야 합니다."
+
+msgid "Source Storage"
+msgstr "소스 저장소"
+
+msgid "Please select a storage using which you want to read copy data."
+msgstr "복사 데이터를 읽을 저장소를 선택하십시오."
+
+msgid "Please select a storage using which you want to write copied data."
+msgstr "복사된 데이터를 쓸 저장소를 선택하십시오."
+
+msgid "Not used"
+msgstr "사용되지 않음"
+
+msgid "New backup job wizard"
+msgstr "새로운 백업 작업 마법사"
+
+msgid "This wizard enables you to create in easy way a new backup job."
+msgstr "이 마법사를 사용하면 새 백업 작업을 쉽게 생성할 수 있습니다."
+
+msgid "Monday"
+msgstr "월요일"
+
+msgid "Tuesday"
+msgstr "화요일"
+
+msgid "Wednesday"
+msgstr "수요일"
+
+msgid "Thursday"
+msgstr "목요일"
+
+msgid "Friday"
+msgstr "금요일"
+
+msgid "Saturday"
+msgstr "토요일"
+
+msgid "Sunday"
+msgstr "일요일"
+
+msgid "Days of the week"
+msgstr "요일"
+
+msgid "Weeks of the month"
+msgstr "월별 주"
+
+msgid "first"
+msgstr "첫번째"
+
+msgid "second"
+msgstr "두번째"
+
+msgid "third"
+msgstr "세번째"
+
+msgid "fourth"
+msgstr "네번째"
+
+msgid "fifth"
+msgstr "다섯번째"
+
+msgid "sixth"
+msgstr "여섯번째"
+
+msgid "Days of the month"
+msgstr "월별 일수"
+
+msgid "Weeks of the year"
+msgstr "한 해의 주별"
+
+msgid "All weeks"
+msgstr "매주"
+
+msgid "All days"
+msgstr "매일"
+
+msgid "Run at specified HH:MM"
+msgstr "지정된 HH:MM 에서 실행"
+
+msgid "Run at"
+msgstr "다음에서 실행"
+
+msgid "All months"
+msgstr "매월"
+
+msgid "January"
+msgstr "1월"
+
+msgid "February"
+msgstr "2월"
+
+msgid "March"
+msgstr "3월"
+
+msgid "April"
+msgstr "4월"
+
+msgid "May"
+msgstr "5월"
+
+msgid "June"
+msgstr "6월"
+
+msgid "July"
+msgstr "7월"
+
+msgid "August"
+msgstr "8월"
+
+msgid "September"
+msgstr "9월"
+
+msgid "October"
+msgstr "10월"
+
+msgid "November"
+msgstr "11월"
+
+msgid "December"
+msgstr "12월"
+
+msgid "Last day of the month"
+msgstr "달의 마지막 날"
+
+msgid "Months of the year"
+msgstr "1년 중 몇 개월"
+
+msgid "Hourly"
+msgstr "매시가"
+
+msgid "Daily"
+msgstr "매일"
+
+msgid "Weekly"
+msgstr "매주"
+
+msgid "Monthly"
+msgstr "매월"
+
+msgid "Custom"
+msgstr "사용자 지정"
+
+msgid "Run job every hour at the specified minute"
+msgstr "지정된 분에 매시간 작업 실행"
+
+msgid "Run job every day at the specified time"
+msgstr "지정된 시간에 매일 작업 실행"
+
+msgid "Run job every week at the specified time on selected days of the week"
+msgstr "선택한 요일에 지정된 시간에 매주 작업 실행"
+
+msgid "Run job every month at the specified time in selected weeks of the month"
+msgstr "매월 선택한 주의 지정된 시간에 작업 실행"
+
+msgid "Setup your custom schedule"
+msgstr "사용자 정의 스케줄 설정"
+
+msgid "Override directives"
+msgstr "지시 재정의"
+
+msgid "Migrate by job"
+msgstr "작업별 마이그레이션"
+
+msgid "Migrate by client"
+msgstr "클라이언트별 마이그레이션"
+
+msgid "Migrate by volume"
+msgstr "볼륨별 마이그레이션"
+
+msgid "Migrate by smallest volume"
+msgstr "최소 볼륨별 마이그레이션"
+
+msgid "Migrate by oldest volume"
+msgstr "가장 오래된 볼륨별 마이그레이션"
+
+msgid "Migrate using Pool occupancy"
+msgstr "풀 점유를 사용하여 마이그레이션"
+
+msgid "Migrate by Pool time"
+msgstr "풀 시간별 마이그레이션"
+
+msgid "Migrate by SQL query"
+msgstr "SQL 쿼리별 마이그레이션"
+
+msgid "New migrate job wizard"
+msgstr "새 마이그레이션 작업 마법사"
+
+msgid "Step 2 - what you want to migrate"
+msgstr "2단계 - 마이그레이션하려는 항목"
+
+msgid "Please select a pool from which you want to migrate data."
+msgstr "데이터를 마이그레이션할 풀을 선택하십시오."
+
+msgid "The source pool will be examined for finding backup jobs to migrate."
+msgstr "마이그레이션할 백업 작업을 찾기 위해 원본 풀이 검사됩니다."
+
+msgid "Please select a storage using which you want to read migrate data."
+msgstr "마이그레이션 데이터를 읽을 저장소를 선택하십시오."
+
+msgid "Because you selected migrate using Pool occupancy, to chosen source pool %pool will be added two directives: Migration Low Bytes and Migration High Bytes."
+msgstr "풀 점유를 사용하여 마이그레이션을 선택했으므로 선택한 소스 풀 %pool에 마이그레이션 낮은 바이트 및 마이그레이션 높은 바이트라는 두 가지 지시어가 추가됩니다."
+
+msgid "Because you selected migrate using Pool time, to chosen source pool %pool will be added the Migration Time directive."
+msgstr "풀 시간을 사용하여 마이그레이션을 선택했으므로 선택한 소스 풀 %pool에 마이그레이션 시간 지시어가 추가됩니다."
+
+msgid "Step 3 - how would you like to migrate"
+msgstr "3단계 - 마이그레이션 방법"
+
+msgid "Step 4 - where you like to migrate"
+msgstr "4단계 - 마이그레이션할 위치"
+
+msgid "Please select a storage using which you want to write migrated data."
+msgstr "마이그레이션된 데이터를 쓸 저장소를 선택하십시오."
+
+msgid "Step 5 - migrate job options"
+msgstr "5단계 - 작업 옵션 마이그레이션"
+
+msgid "Purge jobs"
+msgstr "작업 정리"
+
+msgid "Level, Client and FileSet are not used during migrate jobs running but they are required to define in migrate job resource as the standard Job directives."
+msgstr "수준, 클라이언트 및 파일셋은 실행 중인 마이그레이션 작업 중에는 사용되지 않지만 마이그레이션 작업 리소스를 표준 작업 지시어로 정의하기 위해 필요합니다."
+
+msgid "Migrate jobs run moving backup jobs data from one volume to another. It is done by reading the previously backed up data from volume and writing it to another volume in a different pool. The file catalog records associated with the original backup jobs are purged. All process runs without using file daemon."
+msgstr "마이그레이션 작업은 백업 작업 데이터를 한 볼륨에서 다른 볼륨으로 이동하는 작업을 실행합니다. 이전에 백업한 데이터를 볼륨에서 읽은 후 다른 풀의 다른 볼륨에 기록하면 됩니다. 원래 백업 작업과 연결된 파일 카탈로그 레코드가 삭제됩니다. 모든 프로세스는 파일 데몬을 사용하지 않고 실행됩니다."
+
+msgid "New migrate job"
+msgstr "새 마이그레이션 작업"
+
+msgid "Please select the criteria that will be used for selecting backup jobs to migrate."
+msgstr "마이그레이션할 백업 작업을 선택하는 데 사용할 기준을 선택하십시오."
+
+msgid "The job needs media."
+msgstr "이 작업에는 미디어가 필요합니다."
+
+msgid "Please mount volume %volume or label a new one for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "볼륨 %volume을 마운트하거나 새 저장소 라벨로 저장: %storage, 풀: %pool, 미디어 유형: %mediatype 으로 지정하십시오."
+
+msgid "Please mount volume %volume for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "저장소에 대한 볼륨 %volume 을 마운트하십시오. %storage, 풀: %pool, 미디어 유형: %mediatype."
+
+msgid "Please create a new volume for storage: %storage, pool: %pool, media type: %mediatype."
+msgstr "저장소에 대한 새 볼륨을 생성하십시오. %storage, 풀: %pool, 미디어 유형: %mediatype."
+
+msgid "Assign volumes from selected pool"
+msgstr "선택한 풀에서 볼륨 할당"
+
+msgid "This function enables re-assigning volumes from selected pool to this pool."
+msgstr "이 기능을 사용하면 선택한 풀에서 이 풀로 볼륨을 다시 할당할 수 있습니다."
+
+msgid "Please select a pool from which you would like to assign volumes to this pool."
+msgstr "이 풀에 볼륨을 할당할 풀을 선택하십시오."
+
+msgid "Assigned volume count:"
+msgstr "할당된 볼륨 수:"
+
+msgid "Assign volumes"
+msgstr "볼륨 할당"
+
+msgid "No volumes in the pool to assign."
+msgstr "풀에 할당할 볼륨이 없습니다."
+
+msgid "The pool has not been renamed but it has been copied with the new name. Please note that if the original pool contained volumes, they have not been moved and they are still assigned to the original pool in the catalog database. To re-assign volumes from the original pool to this one please go to the MAIN MENU &#10148; Pools &#10148; [NEW POOL] &#10148; Tab: Actions and please use the 'Assign volumes' button. After re-assgning volumes you can delete the original pool."
+msgstr "풀의 이름은 변경되지 않았지만 새 이름으로 복사되었습니다. 원래 풀에 볼륨이 포함되어 있는 경우 볼륨이 이동되지 않았으며 카탈로그 데이터베이스의 원래 풀에 할당되어 있습니다. 원래 풀에서 이 풀로 볼륨을 재할당하려면 메인 메뉴 &#10148; 풀 &#10148; [NEW POOL] &#10148; 탭: 작업으로 이동하고 '볼륨 할당' 버튼을 사용하십시오. 볼륨을 다시 할당한 후 원래 풀을 삭제할 수 있습니다."
+
+msgid "Add Connect directive"
+msgstr "접속 지시어 추가"
+
+msgid "Add Run directive"
+msgstr "명령 지시어 추가"
+
+msgid "Add Runscript block"
+msgstr "실행스크립트 블록 추가"
+
+msgid "Add Console directive"
+msgstr "콘솔 지시어 추가"
+
+msgid "Add Stdout directive"
+msgstr "Stdout 지시어 추가"
+
+msgid "Add Stderr directive"
+msgstr "Stderr 지시어 추가"
+
+msgid "Add Syslog directive"
+msgstr "Syslog 지시어 추가"
+
+msgid "Add Catalog directive"
+msgstr "카탈로그 지시어 추가"
+
+msgid "Add Director directive"
+msgstr "디렉터 지시어 추가"
+
+msgid "Add File directive"
+msgstr "파일 지시어 추가"
+
+msgid "Add Append directive"
+msgstr "추가 지시어 추가"
+
+msgid "Add Mail directive"
+msgstr "메일 지시어 추가"
+
+msgid "Add MailOnError directive"
+msgstr "MailOnError 지시어 추가"
+
+msgid "Add MailOnSuccess directive"
+msgstr "MailOnSuccess 지시어 추가"
+
+msgid "Add Operator directive"
+msgstr "연산자 지시어 추가"
+
+msgid "Enable Bacula messages log window:"
+msgstr "Bacula 메시지 로그창 활성:"
+
+msgid "The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned."
+msgstr "메시지 로그 창을 사용하면 인터페이스의 거의 모든 부분에서 사용할 수 있는 한 곳에서 Bacula 로그를 검토할 수 있습니다. 로그를 수집하려면 bconsole 'messages' 명령을 사용합니다. 메시지 로그 창은 인터페이스의 오른쪽 상단에 있는 봉투 아이콘을 클릭하면 표시됩니다. 이 기능은 기본적으로 활성화되어 있습니다. 이 옵션을 선택하면 관리자 역할이 할당된 사용자만 사용할 수 있습니다."
+
+msgid "Copy configuration from:"
+msgstr "어디서 부터 설정 복사:"
+
+msgid "API basic users"
+msgstr "API 기본 사용자"
+
+msgid "API OAuth2 clients"
+msgstr "API OAUTH2 클라이언트"
+
+msgid "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API."
+msgstr "API 기본 사용자는 API 호스트에 구성되며 API 호스트에 접근하는 데 사용됩니다. 이 페이지에 소개된 변경 사항은 현재 사용되는 API 호스트에서 직접 수행됩니다. 기본 사용자 자격 증명을 사용하여 'API hosts' 탭에서 API 호스트를 Bacularis 웹에 연결할 수 있습니다. 기본 사용자 계정은 Bacularis API의 패널에서 직접 생성할 수도 있습니다."
+
+msgid "Add new API basic user"
+msgstr "새로운 API 기본 사용자 추가"
+
+msgid "API basic username:"
+msgstr "API 기본 사용자명:"
+
+msgid "API basic password:"
+msgstr "API 기본 암호:"
+
+msgid "Retype password:"
+msgstr "암호 재입력:"
+
+msgid "Add API basic user account"
+msgstr "API 기본 사용자 계정 추가"
+
+msgid "Edit API basic user account"
+msgstr "API 기본 사용자 계정 편집"
+
+msgid "Password must be longer than 4 chars and not longer than 60 chars."
+msgstr "암호는 4자 이상 60자 이하여야 합니다."
+
+msgid "Please retype password."
+msgstr "암호를 재입력해주세요."
+
+msgid "Invalid user. User may contain a-z A-Z 0-9 characters."
+msgstr "잘못된 사용자입니다. 사용자는 a-z A-Z 0-9자를 사용할 수 있습니다."
+
+msgid "Dedicated Bconsole config"
+msgstr "전용 Bconsole 구성"
+
+msgid "Get existing basic user name:"
+msgstr "이미 존재하는 기본 사용자 이름 가져오기:"
+
+msgid "Generate new password"
+msgstr "새 암호 생성"
+
+msgid "Show/hide password"
+msgstr "암호 노출/감춤"
+
+msgid "Advanced filters"
+msgstr "고급 필터"
+
+msgid "Wrong time range."
+msgstr "잘못된 시간 범위입니다."
+
+msgid "From"
+msgstr "에서부터"
+
+msgid "To"
+msgstr "에게"
+
+msgid "This type of authentication is fully realized by Bacularis Web. To authenticate it uses the Bacularis Web login form."
+msgstr "이러한 유형의 인증은 Bacularis Web에 의해 완전히 실현됩니다. 인증하려면 Bacularis 웹 로그인 양식을 사용합니다."
+
+msgid "This type of authentication is realized by Bacularis Web with using custom user credentials file. To authenticate it uses the Basic authentication."
+msgstr "이러한 유형의 인증은 사용자 정의 사용자 자격 증명 파일을 사용하여 Bacularis Web에 의해 구현됩니다. 인증하려면 기본 인증을 사용합니다."
+
+msgid "This type of authentication is realized by an external directory service. To authenticate it uses the Bacularis Web login form."
+msgstr "이러한 유형의 인증은 외부 디렉터리 서비스에 의해 구현됩니다. 인증하려면 Bacularis 웹 로그인 양식을 사용합니다."
+
+msgid "Job log"
+msgstr "작업 로그"
+
+msgid "New verify job"
+msgstr "새로운 확인 작업"
+
+msgid "New verify job wizard"
+msgstr "새로운 확인 작업 마법사"
+
+msgid "Verify jobs run checking the integrity of the backup jobs data and metadata and also can help improving the computer security. It is done by computing and comparing job metadata between three locations: volumes, catalog database and filesystem."
+msgstr "백업 작업 데이터 및 메타데이터의 무결성을 확인하는 작업이 실행되고 시스템 보안 향상에도 도움이 되는지 확인합니다. 볼륨, 카탈로그 데이터베이스 및 파일 시스템의 세 위치 간에 작업 메타데이터를 계산하고 비교하는 방식으로 수행됩니다."
+
+msgid "Step 2 - what to verify"
+msgstr "2단계 - 확인할 내용"
+
+msgid "What would you like to verify"
+msgstr "무엇을 확인하시겠습니까"
+
+msgid "Backup job data and metadata"
+msgstr "백업 작업 데이터 및 메타데이터"
+
+msgid "File attributes and checksums on the filesystem"
+msgstr "파일 시스템의 파일 속성 및 체크섬"
+
+msgid "This option is for verifying job data and metadata (file attributes and checksums) on the volumes, in the catalog database and on the filesystem. It uses the job levels: VolumeToCatalog, Data or DiskToCatalog."
+msgstr "이 옵션은 볼륨, 카탈로그 데이터베이스 및 파일 시스템에서 작업 데이터와 메타데이터(파일 속성 및 체크섬)를 확인하기 위한 것입니다. 볼륨-투-카탈로그로, 데이터 또는 디스크-투-카탈로그로 작업 수준을 사용합니다."
+
+msgid "This option is for improving the computer security by saving the snapshot of the filesystem metadata in the catalog database and periodicaly check if something on the filesystem has changed. It uses the job levels: InitCatalog and Catalog."
+msgstr "이 옵션은 파일 시스템 메타데이터의 스냅샷을 카탈로그 데이터베이스에 저장하고 파일 시스템의 무언가가 변경되었는지 정기적으로 확인하여 시스템 보안을 향상시키는 데 사용됩니다. 작업 수준을 사용합니다. 이닛카탈로그 및 카탈로그."
+
+msgid "Choose a way you would like to verify job data"
+msgstr "작업 데이터를 확인할 방법을 선택"
+
+msgid "Verify if the job metadata written on the volume match the job metadata written in the catalog database. This way does not validate the data, only the metadata (file attributes and checksums). It is useful to check the integrity of the metadata between the volume and the catalog."
+msgstr "볼륨에 작성된 작업 메타데이터가 카탈로그 데이터베이스에 작성된 작업 메타데이터와 일치하는지 확인하십시오. 이렇게 하면 데이터는 검증되지 않고 메타데이터(파일 속성 및 체크섬)만 검증됩니다. 볼륨과 카탈로그 간의 메타데이터 무결성을 확인하는 데 유용합니다."
+
+msgid "Verify the integrity of the job data written on the volume and optionaly compare the file sizes and checksums written on the volume with the file sizes and checksums stored in the catalog database. It is useful to check the data integrity on volumes to know if the job data has not been corrupted or modified. Optionaly there is also possible to compare file sizes and checksums between the volumes and the catalog database."
+msgstr "볼륨에 작성된 작업 데이터의 무결성을 확인하고 선택적으로 볼륨에 작성된 파일 크기 및 체크섬과 카탈로그 데이터베이스에 저장된 파일 크기 및 체크섬을 비교합니다. 볼륨의 데이터 무결성을 확인하여 작업 데이터가 손상되거나 수정되지 않았는지 확인하는 것이 유용합니다. 또는 볼륨과 카탈로그 데이터베이스 간에 파일 크기 및 체크섬을 비교할 수도 있습니다."
+
+msgid "Check changes in the file attributes on the filesystem since the last backup. This is useful for seeing what has changed on the filesystem since the last backup. The backup data file attributes from the catalog database are compared to the current file attributes on the filesystem."
+msgstr "마지막 백업 이후 파일 시스템의 파일 특성 변경 사항을 확인합니다. 이 기능은 마지막 백업 이후 파일 시스템에서 무엇이 변경되었는지 확인하는 데 유용합니다. 카탈로그 데이터베이스의 백업 데이터 파일 특성은 파일 시스템의 현재 파일 특성과 비교됩니다."
+
+msgid "Select a backup job you would like to verify"
+msgstr "확인할 백업 작업 선택"
+
+msgid "Select a backup job to verify by job name. The verify job will always use the most recent backup with that name for verification."
+msgstr "작업 이름으로 확인할 백업 작업을 선택하십시오. 확인 작업에서는 항상 해당 이름의 최신 백업을 사용하여 확인합니다."
+
+msgid "Create a general purpose verify job. The verify job will verify the last job in the catalog so the verify job needs to be run just after finished backup job. If the verify job is started manually, you can select a jobid or a job name to verify in the run job window."
+msgstr "범용 확인 작업을 생성합니다. 확인 작업은 카탈로그의 마지막 작업을 확인하므로 백업 작업이 완료된 후 바로 확인 작업을 실행해야 합니다. 확인 작업을 수동으로 시작한 경우 작업 실행 창에서 확인할 작업 ID 또는 작업 이름을 선택할 수 있습니다."
+
+msgid "What file attributes you would like to compare"
+msgstr "비교할 파일 특성"
+
+msgid "Compare the inodes"
+msgstr "아이노드 비교"
+
+msgid "Compare the permission bits"
+msgstr "권한 비트 비교"
+
+msgid "Compare the number of links"
+msgstr "링크수 비교"
+
+msgid "Compare the user ID"
+msgstr "사용자 ID 비교"
+
+msgid "Compare the group ID"
+msgstr "그룹 ID 비교"
+
+msgid "Compare the size"
+msgstr "크기 비교"
+
+msgid "Compare the access time"
+msgstr "접근시간 비교"
+
+msgid "Compare the modification time"
+msgstr "수정시간 비교"
+
+msgid "Report file size decreases"
+msgstr "보고서 파일 크기 감소"
+
+msgid "Compare the MD5 signature"
+msgstr "MD5 시그니처 비교"
+
+msgid "Compare the SHA1 signature"
+msgstr "SHA1 시그니처 비교"
+
+msgid "Verify job directives"
+msgstr "작업 지시서 확인"
+
+msgid "The client is used in all verify job levels to deal with file attributes and checksums sent from the Storage Daemon (for levels: VolumeToCatalog and Data) or read from the filesystem (for level: DiskToCatalog, InitCatalog and Catalog)."
+msgstr "클라이언트는 모든 확인 작업 수준에서 저장소 데몬(레벨의 경우 VolumeToCatalog 및 Data)에서 전송되거나 파일 시스템에서 읽히는 파일 속성 및 체크섬을 처리하는 데 사용됩니다(레벨의 경우: DiskToCatalog, InitCatalog 및 Catalog)."
+
+msgid "The storage is used in the VolumeToCatalog and Data job levels to read the backup data and metadata from volumes and sent it to the File Daemon for verification."
+msgstr "저장소는 볼륨에서 백업 데이터 및 메타데이터를 읽고 확인을 위해 파일 데몬으로 보내는 데 VolumeToCatalog 및 Data 작업 수준에서 사용됩니다."
+
+msgid "The pool is not used in the verify job but it should be defined as a standard Job directive."
+msgstr "풀은 확인 작업에 사용되지 않지만 표준 작업 지시어로 정의되어야 합니다."
+
+msgid "What to verify"
+msgstr "확인할 내용"
+
+msgid "Job data"
+msgstr "작업 데이터"
+
+msgid "How to verify"
+msgstr "확인 방법"
+
+msgid "Job to verify"
+msgstr "확인 할 작업"
+
+msgid "File attributes to compare"
+msgstr "비교할 파일 특성"
+
+msgid "Select a client on which system you want to check file attributes"
+msgstr "파일 속성을 확인할 시스템을 선택"
+
+msgid "Click the button below to specify the paths in the filesystem to check the attributes:"
+msgstr "속성을 확인할 파일 시스템의 경로를 지정하려면 아래 버튼을 클릭:"
+
+msgid "Add paths"
+msgstr "경로 추가"
+
+msgid "Include paths"
+msgstr "포함 경로"
+
+msgid "Exclude paths"
+msgstr "예외 경로"
+
+msgid "Step 3 - how to verify"
+msgstr "3단계 - 확인 방법"
+
+msgid "Apply path selection"
+msgstr "경로 선택 적용"
+
+msgid "Include paths:"
+msgstr "포함 경로:"
+
+msgid "Exclude paths:"
+msgstr "예외 경로:"
+
+msgid "Filesystem data"
+msgstr "파일시스템 데이터"
+
+msgid "General purpose verify job"
+msgstr "범용 확인 작업"
+
+msgid "flat browser"
+msgstr "플랫 탐색기"
+
+msgid "tree browser"
+msgstr "트리 탐색기"
+
+msgid "Job age on the dashboard job graphs"
+msgstr "대시보드 작업 그래프의 작업 기간"
+
+msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
+msgstr "대시보드 페이지에 작업 그래프를 표시할 작업 기간을 설정합니다. 0으로 설정하면 모든 작업에 대한 그래프를 제한 없이 표시할 수 있습니다."
+
+msgid "last %time %unit"
+msgstr "마지막 %time %unit"
+
+msgid "Job %jobname details"
+msgstr "%jobname 작업 상세"
+
+msgid "Reports"
+msgstr "리포트"
+
+msgid "Job history report"
+msgstr "작업 히스토리 보고서"
+
+msgid "Date:"
+msgstr "날짜:"
+
+msgid "All jobs"
+msgstr "모든 작업"
+
+msgid "All issues"
+msgstr "모든 이슈"
+
+msgid "Only errors"
+msgstr "오류만"
+
+msgid "%count job(s) finished successfully."
+msgstr "%count 작업이 완료되었습니다."
+
+msgid "Job report with errors and warnings"
+msgstr "오류 및 경고가 있는 작업 리포트"
+
+msgid "Job report with errors but not warnings"
+msgstr "오류가 있지만 경고가 없는 작업 보고서"
+
+msgid "all X jobs finished successfully (no X means one job)"
+msgstr "모든 X개의 작업이 성공적으로 완료됨(X 없음은 하나의 작업을 의미함)"
+
+msgid "X jobs with at least one job finished successfully"
+msgstr "하나 이상의 작업이 있는 X개의 작업이 성공적으로 완료"
+
+msgid "all X jobs finished with error or cancelled"
+msgstr "모든 X개의 작업이 오류와 함께 완료되거나 취소됨"
+
+msgid "All %count jobs finished with error or cancelled."
+msgstr "%count 작업이 모두 오류와 함께 완료되었거나 취소되었습니다."
+
+msgid "%errors/%count jobs finished with error or cancelled."
+msgstr "%errors/%count 작업이 오류와 함께 완료되었거나 취소되었습니다."
+
+msgid "No job"
+msgstr "작업 없음"
+
+msgid "Display options"
+msgstr "디스플레이 옵션"
+
+msgid "Features"
+msgstr "특징"
+
+msgid "Type bconsole command"
+msgstr "Bconsole 명령어 입력"
+
+msgid "API Panel"
+msgstr "API 패널"
+
+msgid "Go to resource"
+msgstr "리소스로 이동"
+
+msgid "Pool: %pool, Vol. status: %volstatus"
+msgstr "풀: %pool, Vol. 상태: %volstatus"
+
+msgid "Pool volume status summary"
+msgstr "풀 볼륨 상태 요약"
+
+msgid "New user"
+msgstr "새로운 사용자"
+
+msgid "Step 1 - basic information about new user"
+msgstr "1단계 - 새 사용자에 대한 기본 정보"
+
+msgid "New user wizard"
+msgstr "새로운 사용자 마법사"
+
+msgid "This wizard enables you to create in easy way a new Bacularis user."
+msgstr "이 마법사를 사용하면 새로운 Bacularis 사용자를 쉽게 만들 수 있습니다."
+
+msgid "Password"
+msgstr "비밀번호"
+
+msgid "Step 2 - assign roles to user"
+msgstr "2단계 - 사용자에게 역할 할당"
+
+msgid "Assign roles"
+msgstr "역할 지정"
+
+msgid "Roles are for giving users restricted access to defined Bacularis interface areas (pages). Each role have configured interface pages. Users with roles assigned are allowed to visit only the pages that are in the user roles."
+msgstr "역할은 정의된 Bacularis 인터페이스 영역(페이지)에 대한 제한된 접근를 사용자에게 제공하는 것입니다. 각 역할에는 구성된 인터페이스 페이지가 있습니다. 역할이 할당된 사용자는 사용자 역할에 있는 페이지만 방문할 수 있습니다."
+
+msgid "Invalid role value."
+msgstr "잘못된 역할 값입니다."
+
+msgid "Step 3 - assign API hosts"
+msgstr "3단계 - API 호스트 할당"
+
+msgid "Assign API hosts"
+msgstr "API 호스트 지정"
+
+msgid "In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user."
+msgstr "이 단계에서는 API 호스트 계정을 생성하고 사용자에게 할당할 수 있습니다. 이러한 계정은 Bacula 리소스를 사용하는 호스트에 대한 정의된 연결입니다. 동일한 로컬 또는 원격 API 호스트에 여러 API 호스트를 연결할 수 있습니다. 한 사용자에게 하나 이상의 API 호스트를 할당할 수 있습니다."
+
+msgid "Step 4 - access to Bacula resources"
+msgstr "4단계 - Bacula 리소스 접근"
+
+msgid "Bacula resources access"
+msgstr "Bacula 리소스 접근"
+
+msgid "Here you can restrict Bacula resources for the user. It is specially useful for case when the user should not have access to all Bacula resources or it should have access only to own resources (own jobs, ability to restore only own backups, run own backup jobs... etc.)"
+msgstr "여기서 사용자에 대한 Bacula 리소스를 제한할 수 있습니다. 사용자가 모든 Bacula 리소스에 접근할 수 없거나 자신의 리소스(자체 작업, 자체 백업만 복원하는 기능, 자체 백업 작업 실행...)에만 접근할 수 있어야 하는 경우에 특히 유용합니다. 등)"
+
+msgid "Should this user have access to all Bacula resources or only to specific resources?"
+msgstr "이 사용자는 모든 Bacula 리소스에 접근할 수 있어야 합니까 아니면 특정 리소스에만 접근할 수 있어야 합니까?"
+
+msgid "Access to all shared API host resources (all jobs, all clients, all storages...etc.)"
+msgstr "모든 공유 API 호스트 리소스(모든 작업, 모든 클라이언트, 모든 저장소 등)에 대한 접근"
+
+msgid "Access to selected resources only"
+msgstr "선택한 리소스에만 접근"
+
+msgid "Access"
+msgstr "접근"
+
+msgid "Set access"
+msgstr "접근 설정"
+
+msgid "Access to resources"
+msgstr "리소스에 접근"
+
+msgid "Select a way to restrict Bacula resources available for the new user:"
+msgstr "새 사용자가 사용할 수 있는 Bacula 리소스를 제한하는 방법을 선택:"
+
+msgid "Create a Console with selected job(s) and with the job dependent resources (FileSet, Client, Storage, Schedule...etc.). After creating assign this Console to the API host."
+msgstr "선택한 작업과 작업 종속 리소스(파일 세트, 클라이언트, 저장소, 예약 등)를 사용하여 콘솔을 생성합니다. 생성 후 이 콘솔을 API 호스트에 할당합니다."
+
+msgid "API host jobs:"
+msgstr "API 호스트 작업:"
+
+msgid "Select already existing Console and assign it to the API host."
+msgstr "기존 콘솔을 선택하고 API 호스트에 할당합니다."
+
+msgid "API host console:"
+msgstr "API 호스트 콘솔:"
+
+msgid "Full access to all resources. The Console access is not used."
+msgstr "모든 리소스에 대한 전체 접근 권한. 콘솔 접근이 사용되지 않습니다."
+
+msgid "Step 5 - summary"
+msgstr "5단계 - 요약"
+
+msgid "Resource access"
+msgstr "리소스 접근"
+
+msgid "Console:"
+msgstr "콘솔:"
+
+msgid "Create user"
+msgstr "사용자 생성"
+
+msgid "Restricted"
+msgstr "제한됨"
+
+msgid "Select existing API host account to create the new account:"
+msgstr "새 계정을 만들려면 기존 API 호스트 계정을 선택:"
+
+msgid "Admin API host:"
+msgstr "관리 API 호스트:"
+
+msgid "New API host name:"
+msgstr "새로운 API 호스트명:"
+
+msgid "Access to all available resources"
+msgstr "사용 가능한 모든 리소스에 대한 접근"
+
+msgid "Client jobs"
+msgstr "클라이언트 작업"
+
+msgid "Information"
+msgstr "정보"
+
+msgid "After starting the job, go to the running job status"
+msgstr "작업을 시작한 후 실행 중인 작업 상태로 이동"
+
+msgid "Account settings"
+msgstr "계정 설정"
+
+msgid "Enable 2FA"
+msgstr "2단계 보안인증 설정 활성"
+
+msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+msgstr "2단계 보안인증은 기존의 사용자/비밀번호 로그인 방법에 한 단계(두 번째 요인)를 추가하여 인증 프로세스를 강화합니다. 두 번째 요소는 인증에 사용하기 위해 생성되고 자주 변경되는 코드를 보여주는 타사 인증 프로그램(예: 모바일 또는 데스크톱 앱)을 사용할 수 있다."
+
+msgid "2FA settings"
+msgstr "2단계 보안인증 설정"
+
+msgid "TOTP two-factor authentication"
+msgstr "TOTP 2단계 보안인증"
+
+msgid "TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps."
+msgstr "TOTP는 시간 기반 일회성 비밀번호 인증에 사용되는 알고리즘입니다. 이 인증 방법은 시간 기반 일회용 암호를 생성합니다. 다음과 같은 인증 프로그램을 사용합니다. Google 인증 프로그램 또는 기타 인증 프로그램."
+
+msgid "Step 1"
+msgstr "1단계"
+
+msgid "Scan in the authenticator app the QR code"
+msgstr "인증 앱에서 QR 코드를 스캔"
+
+msgid "or alternatively type the code below manually to the authenticator app:"
+msgstr "또는 인증자 앱에 수동으로 아래 코드를 입력:"
+
+msgid "show"
+msgstr "보기"
+
+msgid "hide"
+msgstr "숨김"
+
+msgid "Step 2"
+msgstr "2단계"
+
+msgid "In the field below please type currently displayed 6 digit code from the authenticator app"
+msgstr "아래 필드에 인증자 앱에서 현재 표시된 6자리 코드를 입력"
+
+msgid "Authenticator code:"
+msgstr "인증자 코드:"
+
+msgid "Invalid authentication code. Please try again."
+msgstr "잘못된 인증 코드입니다. 다시 시도하십시오."
+
+msgid "For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication)."
+msgstr "HTTP 기본 인증의 경우 2단계 보안인증을 사용할 수 없습니다. 다중 요소 인증을 사용하려면 Bacularis를 다른 인증 방법(예: 로컬 사용자 인증)으로 전환하십시오."
+
+msgid "Two-factor authentication"
+msgstr "2단계 보안인증"
+
+msgid "Result"
+msgstr "결과"
+
+msgid "Raw output"
+msgstr "Raw 출력"
+
+msgid "Estimated job files"
+msgstr "예상 작업 파일"
+
+msgid "Estimated job bytes"
+msgstr "예상 작업 바이트"
+
+msgid "Job size and files per day"
+msgstr "작업 크기 및 일별 파일 수"
+
+msgid "Last successful job"
+msgstr "마지막 성공 작업"
+
+msgid "hour"
+msgstr "시간"
+
+msgid "hours"
+msgstr "시간"
+
+msgid "minute"
+msgstr "분"
+
+msgid "minutes"
+msgstr "분"
+
+msgid "%time ago"
+msgstr "%time 시간 전"
+
+msgid "Last failed job"
+msgstr "마지막 실패 작업"
+
+msgid "Rerun"
+msgstr "재실행"
+
+msgid "All directives"
+msgstr "모든 지시어"
+
+msgid "Audit log"
+msgstr "감사 로그"
+
+msgid "Enable audit log"
+msgstr "감사 로그 활성"
+
+msgid "Audit log enables to log and track all important user actions."
+msgstr "감사 로그를 사용하면 모든 중요한 사용자 작업을 기록하고 추적할 수 있습니다."
+
+msgid "Maximum number of log entries"
+msgstr "최대 로그 항목 수"
+
+msgid "Maximum number of log lines stored in the audit log file."
+msgstr "감사 로그 파일에 저장된 최대 로그 행 수입니다."
+
+msgid "Log types"
+msgstr "로그 유형"
+
+msgid "Application"
+msgstr "어플리케이션"
+
+msgid "This category logs actions on Bacula configuration like saving, creating or removing Bacula resources."
+msgstr "이 범주는 Bacula 리소스 저장, 생성 또는 제거와 같은 Bacula 구성에 대한 작업을 기록합니다."
+
+msgid "This category logs application specific actions like adding, editing or removing users, roles, API hosts and others."
+msgstr "이 범주는 사용자, 역할, API 호스트 및 기타 추가, 편집 또는 제거와 같은 애플리케이션별 작업을 기록합니다."
+
+msgid "This category logs actions possible to run by users like running backup or restore and others."
+msgstr "이 카테고리는 백업 또는 복원 실행과 같은 사용자가 실행할 수 있는 작업을 기록합니다."
+
+msgid "This category logs security issues like log in actions, log in failed or 2FA failed."
+msgstr "이 범주는 로그인 작업, 로그인 실패 또는 2단계 보안인증 실패와 같은 보안 문제를 기록합니다."
+
+msgid "IP address"
+msgstr "IP 주소"
+
+msgid "Date"
+msgstr "날짜"
+
+msgid "Category"
+msgstr "카테고리"
+
+msgid "Log message"
+msgstr "로그 메시지"
+
+msgid "Log categories"
+msgstr "로그 카테고리"
+
+msgid "seconds"
+msgstr "초"
+
+msgid "Job over time report"
+msgstr "시간 초과 작업 보고서"
+
+msgid "Field cannot be empty."
+msgstr "필드는 비워 둘 수 없습니다."
+
+msgid "OS profile:"
+msgstr "OS 프로필:"
+
+msgid "Select authentication method:"
+msgstr "인증 방법 선택:"
+
+msgid "Admin username:"
+msgstr "관리 사용자명:"
+
+msgid "SSH key:"
+msgstr "SSH 키:"
+
+msgid "Key passphrase (optional):"
+msgstr "키 암호 구문(선택 사항):"
+
+msgid "Save as name (optional):"
+msgstr "이름으로 저장(선택 사항):"
+
+msgid "Invalid value."
+msgstr "잘못된 값입니다."
+
+msgid "OS profile name:"
+msgstr "OS 프로필명:"
+
+msgid "Add repository entry to remote host:"
+msgstr "원격 호스트에 리포지토리 항목 추가:"
+
+msgid "Repository type:"
+msgstr "저장소 유형:"
+
+msgid "Bacularis repository URL (or entry):"
+msgstr "Bacularis 저장소 URL(또는 항목):"
+
+msgid "Bacularis repository key URL:"
+msgstr "Bacularis 저장소 키 URL:"
+
+msgid "Use system repository for Bacula packages:"
+msgstr "Bacula 패키지에 시스템 저장소 사용:"
+
+msgid "Bacula repository URL (or entry):"
+msgstr "Bacula 저장소 URL(또는 항목):"
+
+msgid "Bacula repository key URL:"
+msgstr "Bacula 저장소 키 URL:"
+
+msgid "Use HTTPS:"
+msgstr "HTTPS 사용:"
+
+msgid "Bacularis admin user:"
+msgstr "Bacularis 관리 사용자:"
+
+msgid "Bacularis admin password:"
+msgstr "Bacularis 관리 암호:"
+
+msgid "Bacularis start command:"
+msgstr "Bacularis 시작 명령어:"
+
+msgid "Use sudo for commands:"
+msgstr "명령어에 sudo 사용:"
+
+msgid "Sudo user:"
+msgstr "Sudo 사용자:"
+
+msgid "Bacularis installation command:"
+msgstr "Bacularis 설치 명령어:"
+
+msgid "Bacularis upgrade command:"
+msgstr "Bacularis 업그레이드 명령어:"
+
+msgid "Bacularis removal command:"
+msgstr "Bacularis 제거 명령어:"
+
+msgid "Bacularis info command:"
+msgstr "Bacularis 정보 명령어:"
+
+msgid "Bacularis enable command:"
+msgstr "Bacularis 활성 명령어:"
+
+msgid "Bacularis pre-install command:"
+msgstr "Bacularis 설치 전 명령어:"
+
+msgid "Bacularis pre-upgrade command:"
+msgstr "Bacularis 업그레이드 전 명령어:"
+
+msgid "Bacularis pre-remove command:"
+msgstr "Bacularis 제거 후 명령어:"
+
+msgid "Bacularis post-install command:"
+msgstr "Bacularis 설치 후 명령어:"
+
+msgid "Bacularis post-upgrade command:"
+msgstr "Bacularis 업그레이드 후 명령어:"
+
+msgid "Bacularis post-remove command:"
+msgstr "Bacularis 제거 후 명령어:"
+
+msgid "Director installation command:"
+msgstr "디렉터 설치 명령어:"
+
+msgid "Director upgrade command:"
+msgstr "디렉터 업그레이드 명령어:"
+
+msgid "Director removal command:"
+msgstr "디렉터 제거 명령어:"
+
+msgid "Director info command:"
+msgstr "디렉터 정보 명령어:"
+
+msgid "Director enable command:"
+msgstr "디렉터 활성 명령어:"
+
+msgid "Director pre-install command:"
+msgstr "디렉터 설치 전 명령어:"
+
+msgid "Director pre-upgrade command:"
+msgstr "디렉터 업그레이드 전 명령어:"
+
+msgid "Director pre-remove command:"
+msgstr "디렉터 제거 전 명령어:"
+
+msgid "Director post-install command:"
+msgstr "디렉터 설치 후 명령어:"
+
+msgid "Director post-upgrade command:"
+msgstr "디렉터 업그레이드 후 명령어:"
+
+msgid "Director post-remove command:"
+msgstr "디렉터 제거 후 명령어:"
+
+msgid "Storage installation command:"
+msgstr "저장소 설치 명령어:"
+
+msgid "Storage upgrade command:"
+msgstr "저장소 업그레이드 명령어:"
+
+msgid "Storage removal command:"
+msgstr "저장소 제거 명령어:"
+
+msgid "Storage info command:"
+msgstr "저장소 정보 명령어:"
+
+msgid "Storage enable command:"
+msgstr "저장소 활성 명령어:"
+
+msgid "Storage pre-install command:"
+msgstr "저장소 설치 전 명령어:"
+
+msgid "Storage pre-upgrade command:"
+msgstr "저장소 업그레이드 전 명령어:"
+
+msgid "Storage pre-remove command:"
+msgstr "저장소 제거 전 명령어:"
+
+msgid "Storage post-install command:"
+msgstr "저장소 설치 후 명령어:"
+
+msgid "Storage post-upgrade command:"
+msgstr "저장소 업그레이드 후 명령어:"
+
+msgid "Storage post-remove command:"
+msgstr "저장소 제거 후 명령어:"
+
+msgid "Client installation command:"
+msgstr "클라이언트 설치 명령어:"
+
+msgid "Client upgrade command:"
+msgstr "클라이언트 업그레이드 명령어:"
+
+msgid "Client removal command:"
+msgstr "클라이언트 제거 명령어:"
+
+msgid "Client info command:"
+msgstr "클라이언트 정보 명령어:"
+
+msgid "Client enable command:"
+msgstr "클라이언트 활성 명령어:"
+
+msgid "Client pre-install command:"
+msgstr "클라이언트 설치 전 명령어:"
+
+msgid "Client pre-upgrade command:"
+msgstr "클라이언트 업그레이드 전 명령어:"
+
+msgid "Client pre-remove command:"
+msgstr "클라이언트 제거 전 명령어:"
+
+msgid "Client post-install command:"
+msgstr "클라이언트 설치 후 명령어:"
+
+msgid "Client post-upgrade command:"
+msgstr "클라이언트 업그레이드 후 명령어:"
+
+msgid "Client post-remove command:"
+msgstr "클라이언트 제거 후 명령어:"
+
+msgid "Bconsole installation command:"
+msgstr "Bconsole 설치 명령어:"
+
+msgid "Bconsole upgrade command:"
+msgstr "Bconsole 업그레이드 명령어:"
+
+msgid "Bconsole removal command:"
+msgstr "Bconsole 제거 명령어:"
+
+msgid "Bconsole info command:"
+msgstr "Bconsole 정보 명령어:"
+
+msgid "Bconsole pre-install command:"
+msgstr "Bconsole 설치 전 명령어:"
+
+msgid "Bconsole pre-upgrade command:"
+msgstr "Bconsole 업그레이드 전 명령어:"
+
+msgid "Bconsole pre-remove command:"
+msgstr "Bconsole 제거 전 명령어:"
+
+msgid "Bconsole post-install command:"
+msgstr "Bconsole 설치 후 명령어:"
+
+msgid "Bconsole post-upgrade command:"
+msgstr "Bconsole 업그레이드 후 명령어:"
+
+msgid "Bconsole post-remove command:"
+msgstr "Bconsole 제거 후 명령어:"
+
+msgid "Working directory:"
+msgstr "작업 디렉토리:"
+
+msgid "Bdirjson binary file path:"
+msgstr "Bdirjson 바이너리 파일 경로:"
+
+msgid "Main Director config file path:"
+msgstr "메인 디렉터 설정 파일 경로:"
+
+msgid "Bsdjson binary file path:"
+msgstr "Bsdjson 바이너리 파일 경로:"
+
+msgid "Main Storage config file path:"
+msgstr "메일 저장소 설정 파일 경로:"
+
+msgid "Bfdjson binary file path:"
+msgstr "Bfdjson 바이너리 파일 경로:"
+
+msgid "Main Client config file path:"
+msgstr "메인 클라이언트 설정 파일 경로:"
+
+msgid "Bbconsjson binary file path:"
+msgstr "Bbconsjson 바이너리 파일 경로:"
+
+msgid "Main Bconsole config file path:"
+msgstr "메인 Bconsole 설정 파일 경로:"
+
+msgid "Database path (SQLite only):"
+msgstr "데이터베이스 경로(SQLite만):"
+
+msgid "Director start command:"
+msgstr "디렉터 시작 명령어:"
+
+msgid "Director stop command:"
+msgstr "디렉터 중지 명령어:"
+
+msgid "Director restart command:"
+msgstr "디렉터 재시작 명령어:"
+
+msgid "Storage start command:"
+msgstr "저장소 시작 명령어:"
+
+msgid "Storage stop command:"
+msgstr "저장소 중지 명령어:"
+
+msgid "Storage restart command:"
+msgstr "저장소 재시작 명령어:"
+
+msgid "Client start command:"
+msgstr "클라이언트 시작 명령어:"
+
+msgid "Client stop command:"
+msgstr "클라이언트 중지 명령어:"
+
+msgid "Client restart command:"
+msgstr "클라이언트 재시작 명령어:"
+
+msgid "Hostname (accepts wildcards like * or ?, for example *.host.com or 192.168.3.?):"
+msgstr "호스트명(예: * 또는 ?와 같은 와일드카드 포함. *.host.com 또는 192.168.3.?)):"
+
+msgid "SSH key name:"
+msgstr "SSH 키 이름:"
+
+msgid "Private SSH key content:"
+msgstr "개인 SSH 키 내용:"
+
+msgid "Deployment"
+msgstr "배포"
+
+msgid "Hosts"
+msgstr "호스트"
+
+msgid "OS profiles"
+msgstr "OS 프로필"
+
+msgid "SSH configs"
+msgstr "SSH 설정"
+
+msgid "SSH keys"
+msgstr "SSH 키"
+
+msgid "Deploy API host"
+msgstr "API 호스트 배포"
+
+msgid "Install"
+msgstr "설치"
+
+msgid "Upgrade"
+msgstr "업그레이드"
+
+msgid "Uninstall"
+msgstr "제거"
+
+msgid "Installing %component"
+msgstr "%component 설지중"
+
+msgid "Install Bacula components on API host"
+msgstr "API 호스트에 Bacula 구성 요소 설치"
+
+msgid "Upgrading %component"
+msgstr "%component 업그레이드"
+
+msgid "Upgrade Bacula components on API host"
+msgstr "API 호스트에서 Bacula 구성 요소 업그레이드"
+
+msgid "Uninstalling %component"
+msgstr "%component 제거"
+
+msgid "Uninstall Bacula components on API host"
+msgstr "API 호스트에서 Bacula 구성요소 제거"
+
+msgid "getting package information..."
+msgstr "패키지 정보 가져오기..."
+
+msgid "installed"
+msgstr "설치됨"
+
+msgid "not installed"
+msgstr "설치되지 않음"
+
+msgid "Finish."
+msgstr "종료."
+
+msgid "Use username and password"
+msgstr "사용자 이름 및 암호 사용"
+
+msgid "Use username and SSH key"
+msgstr "사용자 이름 및 SSH 키 사용"
+
+msgid "Use username and SSH key from SSH config for host"
+msgstr "호스트에 대해 SSH 구성의 사용자 이름 및 SSH 키 사용"
+
+msgid "Deploy"
+msgstr "배포"
+
+msgid "In this window you can install Bacula components on selected API host. Please select components that you would like to install and next click the install button."
+msgstr "이 창에서 선택한 API 호스트에 Bacula 구성 요소를 설치할 수 있습니다. 설치할 구성 요소를 선택하고 설치 단추를 클릭하십시오."
+
+msgid "Components"
+msgstr "구성요소"
+
+msgid "Install options"
+msgstr "설치 옵션"
+
+msgid "Add new component to current Director (for client and storage only)"
+msgstr "현재 디렉터에 새 구성 요소 추가(클라이언트 및 저장소 전용)"
+
+msgid "Add new OS profile"
+msgstr "새로운 OS 프로필 추가"
+
+msgid "Repository type"
+msgstr "저장소 유형"
+
+msgid "Pre-defined"
+msgstr "미리 정의됨"
+
+msgid "Add OS profile"
+msgstr "OS 프로필 추가"
+
+msgid "Edit OS profile"
+msgstr "OS 프로필 편집"
+
+msgid "OS profile with the given name already exists."
+msgstr "지정된 이름의 OS 프로파일이 이미 있습니다."
+
+msgid "Repositories"
+msgstr "저장소들"
+
+msgid "Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment."
+msgstr "여기서 원격 호스트에 Bacula 저장소를 설치할 저장소를 정의할 수 있으며 기본 시스템 저장소와 다를 경우 Bacula 저장소도 설치할 수 있습니다. 저장소는 API 호스트 배포 중에 원격 호스트에 추가됩니다."
+
+msgid "Bacularis API access"
+msgstr "Bacularis API 접근"
+
+msgid "Bacularis API settings"
+msgstr "Bacularis API 설정"
+
+msgid "All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile."
+msgstr "이 OS 프로필을 사용하는 새로 설치된 Bacularis API에 다음 설정이 모두 추가됩니다."
+
+msgid "Package management"
+msgstr "패키지 관리"
+
+msgid "Bacularis commands"
+msgstr "Bacularis 명령어"
+
+msgid "Advanced settings"
+msgstr "고급 설정"
+
+msgid "Director commands"
+msgstr "디렉터 명령"
+
+msgid "Storage commands"
+msgstr "저장소 명령어"
+
+msgid "Client commands"
+msgstr "클라이언트 명령어"
+
+msgid "Bconsole commands"
+msgstr "Bconsole 명령어"
+
+msgid "Catalog"
+msgstr "카탈로그"
+
+msgid "NOTE: This is predefined OS profile that cannot be modified nor removed."
+msgstr "참고: 이것은 수정하거나 제거할 수 없는 미리 정의된 OS 프로필입니다."
+
+msgid "Add new SSH config"
+msgstr "새로운 SSH 설정 추가"
+
+msgid "Hostname"
+msgstr "호스트명"
+
+msgid "Port"
+msgstr "포트"
+
+msgid "SSH key"
+msgstr "SSH 키"
+
+msgid "Add SSH config"
+msgstr "SSH 설정 추가"
+
+msgid "Edit SSH config"
+msgstr "SSH 구성 편집"
+
+msgid "SSH config with the given name already exists."
+msgstr "주어진 이름의 SSH 설정은 이미 존재합니다."
+
+msgid "Add new SSH key"
+msgstr "새로운 SSH 키 추가"
+
+msgid "Key name"
+msgstr "키 이름"
+
+msgid "Fingerprint"
+msgstr "지문"
+
+msgid "Add SSH key"
+msgstr "SSH키 추가"
+
+msgid "Add package repository"
+msgstr "패키지 저장소 추가"
+
+msgid "Add SUDO settings"
+msgstr "SUDO 설정 추가"
+
+msgid "Pre-install Bacularis command"
+msgstr "설치 전 Bacularis 명령어"
+
+msgid "Install Bacularis"
+msgstr "Bacularis 설치"
+
+msgid "Post-install Bacularis command"
+msgstr "설치 후 Bacularis 명령어"
+
+msgid "Configure Bacularis"
+msgstr "Bacularis 설정"
+
+msgid "Create Bacularis user"
+msgstr "Bacularis 사용자 생성"
+
+msgid "Set Bacularis password"
+msgstr "Bacularis 암호 설정"
+
+msgid "Start Bacularis"
+msgstr "Bacularis 시작"
+
+msgid "API access link"
+msgstr "API 접근 링크"
+
+msgid "Step"
+msgstr "단계"
