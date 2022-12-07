@@ -1110,15 +1110,10 @@
 				"Required": false,
 				"ValueType": "ac_res",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
-				"Section": "Device"
-			},
-			"Autochanger": {
-				"Required": false,
-				"ValueType": "bool",
-				"DefaultValue": 0,
-				"FieldType": "CheckBox",
-				"Section": "Device"
+				"FieldType": "ComboBox",
+				"Resource": "Storage",
+				"Section": "Device",
+				"Data": ["yes"]
 			},
 			"MaximumConcurrentJobs": {
 				"Required": false,

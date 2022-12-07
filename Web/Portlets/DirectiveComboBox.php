@@ -57,13 +57,21 @@ class DirectiveComboBox extends DirectiveTemplate
 		$items = [];
 		if (is_array($data)) {
 			$items = $data;
-		} elseif (is_array($resource_names)) {
-			if (array_key_exists($directive_name, $resource_names)) {
-				$items = $resource_names[$directive_name];
-			} elseif (array_key_exists($resource, $resource_names)) {
-				$items = $resource_names[$resource];
+		}
+		if (is_array($resource_names)) {
+			$ritems = [];
+			if (key_exists($directive_name, $resource_names)) {
+				$ritems = $resource_names[$directive_name];
+			} elseif (key_exists($resource, $resource_names)) {
+				$ritems = $resource_names[$resource];
+			}
+			if (count($items) > 0) {
+				$items = array_merge($items, $ritems);
+			} else {
+				$items = $ritems;
 			}
 		}
+
 		reset($items);
 		if (key($items) === 0) {
 			// indexed array as data source
