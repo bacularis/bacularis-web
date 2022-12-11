@@ -38,6 +38,7 @@ use Bacularis\Web\Portlets\DirectiveComboBox;
 use Bacularis\Web\Portlets\DirectiveComboBoxReload;
 use Bacularis\Web\Portlets\DirectiveInteger;
 use Bacularis\Web\Portlets\DirectiveListBox;
+use Bacularis\Web\Portlets\DirectiveOrderedListBox;
 use Bacularis\Web\Portlets\DirectivePassword;
 use Bacularis\Web\Portlets\DirectiveSize;
 use Bacularis\Web\Portlets\DirectiveSpeed;
@@ -65,6 +66,7 @@ class DirectiveRenderer extends TItemDataRenderer
 		'DirectiveComboBoxReload',
 		'DirectiveInteger',
 		'DirectiveListBox',
+		'DirectiveOrderedListBox',
 		'DirectivePassword',
 		'DirectiveTextBox',
 		'DirectiveSize',

@@ -311,3 +311,69 @@ var oBaculaConfigSection = {
 };
 
 var BaculaConfig = new BaculaConfigClass();
+
+var oDirectiveOrderedListBox = {
+	set_items: function(event, select) {
+		const el = event.target;
+		const selected_len = select.querySelectorAll('select option:checked').length;
+		let pos;
+		let rm = false;
+		if (el.selected) {
+			pos = selected_len;
+			el.setAttribute('data-pos', selected_len);
+		} else {
+			pos = el.getAttribute('data-pos');
+			rm = true;
+		}
+		if (pos !== null) {
+			this.set_list(select, pos, rm);
+		}
+	},
+	set_list: function(select, pos, rm) {
+		const els = select.querySelectorAll('option');
+		for (let i = 0; i < els.length; i++) {
+			epos = els[i].getAttribute('data-pos');
+			els[i].textContent = els[i].textContent.replace(/^\[\d+\]\s/, '');
+			if (els[i].selected) {
+				// element selected
+				if (rm) {
+					if (epos > pos) {
+						// requires update
+						epos--;
+						els[i].setAttribute('data-pos', epos);
+					} else {
+						// rest selected options stays untouched
+					}
+					els[i].textContent = '[' + epos + '] ' + els[i].textContent;
+				} else {
+					// selected elements
+					els[i].textContent = '[' + epos + '] ' + els[i].textContent;
+				}
+			} else {
+				// element not selected
+				els[i].removeAttribute('data-pos');
+			}
+		}
+	},
+	set_options: function(select_id, hidden_id) {
+
+		const opts = document.querySelectorAll('#' + select_id + ' option:checked');
+		const hidden = document.getElementById(hidden_id);
+		const vals = [];
+		const els = Array.from(opts);
+		els.sort((a, b) => {
+			const aa = parseInt(a.getAttribute('data-pos'), 10);
+			const ab = parseInt(b.getAttribute('data-pos'), 10);
+			if (aa < ab) {
+				return -1;
+			} else if (aa > ab) {
+				return 1;
+			}
+			return 0
+		});
+		for (let i = 0; i < els.length; i++) {
+			vals.push(els[i].value);
+		}
+		hidden.value = vals.join('!');
+	}
+};

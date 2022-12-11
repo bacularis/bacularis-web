@@ -62,6 +62,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		'Bacularis\Web\Portlets\DirectiveComboBoxReload',
 		'Bacularis\Web\Portlets\DirectiveInteger',
 		'Bacularis\Web\Portlets\DirectiveListBox',
+		'Bacularis\Web\Portlets\DirectiveOrderedListBox',
 		'Bacularis\Web\Portlets\DirectivePassword',
 		'Bacularis\Web\Portlets\DirectiveTextBox',
 		'Bacularis\Web\Portlets\DirectiveSize',
@@ -79,7 +80,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	];
 
 	private $field_multiple_values = [
-		'ListBox'
+		'ListBox',
+		'OrderedListBox'
 	];
 
 	public $display_directives;
