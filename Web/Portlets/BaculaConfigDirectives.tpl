@@ -1,5 +1,5 @@
 <div id="<%=$this->ClientID%>_directives">
-	<div class="w3-modal resource_remove_confirm" style="display: none">
+	<div class="w3-modal resource_remove_confirm" style="display: none; z-index: 10;">
 		<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
 			<span onclick="$(this).closest('div.resource_remove_confirm').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
 			<h2><%[ Remove resource ]%></h2>
