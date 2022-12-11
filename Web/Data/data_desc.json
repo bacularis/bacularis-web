@@ -2269,7 +2269,7 @@
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Data": ["LeastUsed", "ListedOrder"],
-				"Section": "General"
+				"Section": "Backup"
 			},
 			"SpoolData": {
 				"Required": false,
