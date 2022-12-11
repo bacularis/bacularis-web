@@ -521,7 +521,7 @@
 				"Required": true,
 				"ValueType": "alist_res",
 				"DefaultValue": 0,
-				"FieldType": "ComboBox",
+				"FieldType": "OrderedListBox",
 				"Section": "General"
 			},
 			"Messages": {
@@ -610,6 +610,14 @@
 				"ValueType": "dir",
 				"DefaultValue": 0,
 				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"StorageGroupPolicy": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["LeastUsed", "ListedOrder"],
 				"Section": "Backup"
 			},
 			"SpoolData": {
@@ -1635,7 +1643,15 @@
 				"Required": false,
 				"ValueType": "alist_res",
 				"DefaultValue": 0,
+				"FieldType": "OrderedListBox",
+				"Section": "General"
+			},
+			"StorageGroupPolicy": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
 				"FieldType": "ComboBox",
+				"Data": ["LeastUsed", "ListedOrder"],
 				"Section": "General"
 			},
 			"Catalog": {
@@ -2149,7 +2165,7 @@
 				"Required": false,
 				"ValueType": "alist_res",
 				"DefaultValue": 0,
-				"FieldType": "ComboBox",
+				"FieldType": "OrderedListBox",
 				"Section": "General"
 			},
 			"Messages": {
@@ -2239,6 +2255,14 @@
 				"DefaultValue": 0,
 				"FieldType": "TextBox",
 				"Section": "Backup"
+			},
+			"StorageGroupPolicy": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "ComboBox",
+				"Data": ["LeastUsed", "ListedOrder"],
+				"Section": "General"
 			},
 			"SpoolData": {
 				"Required": false,
