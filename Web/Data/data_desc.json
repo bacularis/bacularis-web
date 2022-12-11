@@ -1392,7 +1392,7 @@
 						"ValueType": "str",
 						"DefaultValue": 0,
 						"FieldType": "ComboBox",
-						"Data": ["Sha1", "Md5"]
+						"Data": ["Sha1", "Sha256", "Sha512", "Md5"]
 					},
 					"BaseJob": {
 						"Required": false,
@@ -2105,6 +2105,13 @@
 				"DefaultValue": 0,
 				"FieldType": "TextBox",
 				"Section": "Communications encryption"
+			},
+			"AuthenticationPlugin": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": 0,
+				"FieldType": "TextBox",
+				"Section": "Plugins"
 			}
 		},
 		"JobDefs": {
@@ -3449,6 +3456,13 @@
 				"FieldType": "TextBox",
 				"Section": "Tape"
 			},
+			"UseLintape": {
+				"Required": false,
+				"ValueType": "bit",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Tape"
+			},
 			"MaximumConcurrentJobs": {
 				"Required": false,
 				"ValueType": "pint32",
@@ -4233,6 +4247,13 @@
 				"ValueType": "speed",
 				"DefaultValue": 0,
 				"FieldType": "Speed",
+				"Section": "Limitations"
+			},
+			"SdPacketCheck": {
+				"Required": false,
+				"ValueType": "pint32",
+				"DefaultValue": 0,
+				"FieldType": "Integer",
 				"Section": "Limitations"
 			}
 		},
