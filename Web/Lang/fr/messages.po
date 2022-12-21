@@ -456,13 +456,13 @@ msgid "Files"
 msgstr "Fichiers"
 
 msgid "To see file versions please click a file on the left files browser."
-msgstr "Pour voir les versions d\\\\'un fichier sélectionnez-le dans l\\\\'arborescence à gauche."
+msgstr "Pour voir les versions d\\'un fichier sélectionnez-le dans l\\'arborescence à gauche."
 
 msgid "To add a file to restore please click 'Add' link or please drag here the file from the top frame or from the frame on the left."
-msgstr "Ajouter un fichier à restaurer en utilisant le lien \\\\\"Ajouter\\\\\" ou faites glisser jusqu\\\\'ici le fichier de l\\\\'un des cadres haut ou gauche."
+msgstr "Ajouter un fichier à restaurer en utilisant le lien \\\"Ajouter\\\" ou faites glisser jusqu\\'ici le fichier de l\\'un des cadres haut ou gauche."
 
 msgid "It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired)"
-msgstr "Il semble qu\\\\'il n\\\\'y ait aucun fichier à sélectionner ou que le catalogue a été élagué pour ce job (expiration de la période de rétention des fichiers)"
+msgstr "Il semble qu\\'il n\\'y ait aucun fichier à sélectionner ou que le catalogue a été élagué pour ce job (expiration de la période de rétention des fichiers)"
 
 msgid "Group most recent backups"
 msgstr "Grouper les sauvegardes les plus récentes"
@@ -2599,7 +2599,7 @@ msgid "Bulk action"
 msgstr "Action groupée"
 
 msgid "Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again."
-msgstr "Les jobs suivants sont en cours d\\\\'exécution et ne peuvent pas être supprimées : %running_jobs Pour les supprimer, veuillez arrêter ces jobs et réessayer."
+msgstr "Les jobs suivants sont en cours d\\'exécution et ne peuvent pas être supprimées : %running_jobs Pour les supprimer, veuillez arrêter ces jobs et réessayer."
 
 msgid "Refresh page"
 msgstr "Actualiser la page"
