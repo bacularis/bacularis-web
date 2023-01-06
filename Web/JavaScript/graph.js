@@ -1412,6 +1412,9 @@ var GraphLinesClass = jQuery.klass({
 });
 
 var iso_date_to_timestamp = function(iso_date) {
+	if (!iso_date) {
+		return 0;
+	}
 	var date_split = iso_date.split(' ');
 	var date = date_split[0].split('-');
 	if (date_split[1]) {
