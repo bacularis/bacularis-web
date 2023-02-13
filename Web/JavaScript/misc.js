@@ -228,7 +228,9 @@ var Units = {
 		var d = date;
 		if (/^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}$/.test(d)) {
 			var t = date_time_to_ts(d);
-			d = Units.format_date(t, true);
+			if (typeof(t) == 'number' && t >= 0) {
+				d = Units.format_date(t, true);
+			}
 		}
 		return d;
 	},
