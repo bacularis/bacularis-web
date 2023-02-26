@@ -2299,7 +2299,7 @@ msgid "Progress bar displays estimated values"
 msgstr "La barre de progression affiche les valeurs estimées"
 
 msgid "Byte progress bar:"
-msgstr "Barre de progression d'octet :"
+msgstr "Barre de progression d\\'octet :"
 
 msgid "File progress bar:"
 msgstr "Barre de progression du fichier :"
