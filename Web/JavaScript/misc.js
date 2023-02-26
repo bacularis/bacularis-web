@@ -224,12 +224,12 @@ var Units = {
 		}
 		return dt;
 	},
-	format_date_str: function(date) {
+	format_date_str: function(date, is_utc) {
 		var d = date;
 		if (/^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}$/.test(d)) {
 			var t = date_time_to_ts(d);
 			if (typeof(t) == 'number' && t >= 0) {
-				d = Units.format_date(t, true);
+				d = Units.format_date(t, is_utc);
 			}
 		}
 		return d;
@@ -342,7 +342,7 @@ var Formatters = {
 	formatter: [
 		{css_class: 'size', format_func: function(val) { return Units.get_formatted_size(val); }},
 		{css_class: 'time', format_func: function(val) { return Units.format_time_period(val); }},
-		{css_class: 'datetime', format_func: function(val) { return Units.format_date_str(val); }},
+		{css_class: 'datetime', format_func: function(val) { return Units.format_date_str(val, true); }},
 		{css_class: 'udatetime', format_func: function(val) { return Units.format_date(val, true); }}
 	],
 	set_formatters: function() {
@@ -381,11 +381,10 @@ function date_time_to_ts(datetime) {
 function render_date(data, type, row) {
 	var t = data;
 	if (t) {
-		var d = date_time_to_ts(t);
 		if (type == 'display') {
-			t = Units.format_date(d);
+			t = Units.format_date_str(t);
 		} else {
-			t = d;
+			t = date_time_to_ts(t);
 		}
 	}
 	return t;
@@ -394,11 +393,10 @@ function render_date(data, type, row) {
 function render_date_local(data, type, row) {
 	var t = data;
 	if (t) {
-		var d = date_time_to_ts(t);
 		if (type == 'display') {
-			t = Units.format_date(d, true);
+			t = Units.format_date_str(t, true);
 		} else {
-			t = d;
+			t = date_time_to_ts(t);
 		}
 	}
 	return t;

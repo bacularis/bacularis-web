@@ -1052,8 +1052,7 @@ var oRestoreBrowserFiles = {
 		var status = document.getElementById(this.ids.status);
 		status.innerHTML = JobStatus.get_icon(status.textContent).outerHTML;
 		var time_point = document.getElementById(this.ids.time_point);
-		var d = date_time_to_ts(time_point.textContent);
-		time_point.textContent = Units.format_date(d, true);
+		time_point.textContent = Units.format_date_str(time_point.textContent, true);
 	}
 };
 $(function() {
