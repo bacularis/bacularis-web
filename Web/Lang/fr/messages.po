@@ -582,7 +582,7 @@ msgid "Label volume(s)"
 msgstr "Étiqueter volume(s)"
 
 msgid "Update slots using barcodes"
-msgstr "Mettre à jour les emplacements à l'aide de codes-barres"
+msgstr "Mettre à jour les emplacements à l\\'aide de codes-barres"
 
 msgid "Update slots without barcodes"
 msgstr "Mettre à jour les emplacements sans codes-barres"
@@ -919,7 +919,7 @@ msgid "Verify option:"
 msgstr "Vérifier l'option :"
 
 msgid "Running jobs:"
-msgstr "Jobs en cours d'exécution :"
+msgstr "Jobs en cours d\\'exécution :"
 
 msgid "Finished jobs:"
 msgstr "Jobs terminés :"
@@ -1456,7 +1456,7 @@ msgid "Details"
 msgstr "Détails"
 
 msgid "Job is running"
-msgstr "Job en cours d'exécution"
+msgstr "Job en cours d\\'exécution"
 
 msgid "Job is finished"
 msgstr "Job terminé"
@@ -2224,7 +2224,7 @@ msgid "Examined files:"
 msgstr "Fichiers examinés :"
 
 msgid "Running jobs"
-msgstr "Jobs en cours d'exécution"
+msgstr "Jobs en cours d\\'exécution"
 
 msgid "Job errors:"
 msgstr "Erreurs de job :"
@@ -2245,7 +2245,7 @@ msgid "Graphical client status is supported for Bacula clients version 9.0 and g
 msgstr "L'état du client graphique est supporté pour les clients Bacula version 9.0 et supérieure."
 
 msgid "Status request timed out. The most probably the Bacula client is not available or it is not running."
-msgstr "La demande d'état a expiré. La raison la plus probable est que le client Bacula n'est pas disponible ou n'est pas en cours d'exécution."
+msgstr "La demande d\\'état a expiré. La raison la plus probable est que le client Bacula n\\'est pas disponible ou n\\'est pas en cours d\\'exécution."
 
 msgid "Start"
 msgstr "Démarrer"
@@ -3085,7 +3085,7 @@ msgid "Devices"
 msgstr "Appareils"
 
 msgid "Archive device:"
-msgstr "Dispositif d'archivage :"
+msgstr "Dispositif d\\'archivage :"
 
 msgid "Device type:"
 msgstr "Type de périphérique :"
@@ -3130,7 +3130,7 @@ msgid "Write pool:"
 msgstr "Écrire un pool :"
 
 msgid "Write device:"
-msgstr "Périphérique d'écriture :"
+msgstr "Périphérique d\\'écriture :"
 
 msgid "Write volume:"
 msgstr "Écrire le volume :"
@@ -3151,7 +3151,7 @@ msgid "Status:"
 msgstr "État :"
 
 msgid "running"
-msgstr "en cours d'exécution"
+msgstr "en cours d\\'exécution"
 
 msgid "idle"
 msgstr "inactif"
@@ -3175,7 +3175,7 @@ msgid "All devices"
 msgstr "Tous les appareils"
 
 msgid "All device types"
-msgstr "Tous les types d'appareils"
+msgstr "Tous les types d\\'appareils"
 
 msgid "All media types"
 msgstr "Tous les types de média"
@@ -3187,7 +3187,7 @@ msgid "Graphical storage status is supported for Bacula storages version 9.0 and
 msgstr "L'état du stockage graphique est pris en charge pour les stockages Bacula version 9.0 et supérieure."
 
 msgid "Status request timed out. The most probably the Bacula storage is not available or it is not running."
-msgstr "La demande de l'état a expiré. La raison la plus probable est que le stockage Bacula n'est pas disponible ou n'est pas en cours d'exécution."
+msgstr "La demande de l\\'état a expiré. La raison la plus probable est que le stockage Bacula n\\'est pas disponible ou n\\'est pas en cours d\\'exécution."
 
 msgid "Display messages log window"
 msgstr "Afficher la fenêtre du journal des messages"
@@ -3247,10 +3247,10 @@ msgid "Import/Export"
 msgstr "Import / Export"
 
 msgid "Label using barcodes"
-msgstr "Étiquette à l'aide de codes-barres"
+msgstr "Étiquette à l\\'aide de codes-barres"
 
 msgid "Move to import/export slot"
-msgstr "Déplacer vers l'emplacement import/export"
+msgstr "Déplacer vers l\\'emplacement import/export"
 
 msgid "Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side."
 msgstr "La gestion du changement automatique n'est pas disponible. Pour gérer le changement automatique à partir d'ici, ajoutez-le aux périphériques hôtes API du côté hôte de l'API."
@@ -3268,7 +3268,7 @@ msgid "Move to import/export slots"
 msgstr "Déplacer vers les emplacements d'import/export"
 
 msgid "There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count."
-msgstr "Il y a à peu de slots d'import/export pour transférer les volumes sélectionnés. Nombre de slots d'import/export gratuits : %slots_count, nombre de volumes sélectionnés : %vols_count."
+msgstr "Il y a à peu de slots d\\'import/export pour transférer les volumes sélectionnés. Nombre de slots d\\'import/export gratuits : %slots_count, nombre de volumes sélectionnés : %vols_count."
 
 msgid "Import/export slot"
 msgstr "Importer/exporter un emplacement"
@@ -3289,7 +3289,7 @@ msgid "Release all I/E slots"
 msgstr "Libérer tous les emplacements I/E"
 
 msgid "There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count."
-msgstr "Il y a peu d'emplacements réguliers pour transférer les volumes sélectionnés des emplacements import/export. Nombre d'emplacements d'import/export complets : %ie_slot_count, nombre d'emplacements réguliers gratuits : %slot_count"
+msgstr "Il y a peu d\\'emplacements réguliers pour transférer les volumes sélectionnés des emplacements import/export. Nombre d\\'emplacements d\\'import/export complets : %ie_slot_count, nombre d\\'emplacements réguliers gratuits : %slot_count"
 
 msgid "Tip: To use bulk autochanger actions, please select table rows."
 msgstr "Astuce : Pour utiliser des actions de changement automatique en masse, veuillez sélectionner les lignes du tableau."
@@ -3364,7 +3364,7 @@ msgid "Job"
 msgstr "Job"
 
 msgid "Job status desc.:"
-msgstr "Description de l'état du job .:"
+msgstr "Description de l\\'état du job .:"
 
 msgid "Scheduled time:"
 msgstr "Heure programmé :"
@@ -3385,7 +3385,7 @@ msgid "Graphical director status is supported for Bacula directors version 9.0 a
 msgstr "État graphique du directeur est supporté pour les versions 9.0 et supérieur des directeurs Bacula."
 
 msgid "Status request timed out. The most probably the Bacula director is not available or it is not running."
-msgstr "La requête de status a expiré. La raison la plus probable est que le directeur Bacula n'est pas disponible ou n'est pas en cours d'exécution."
+msgstr "La requête de status a expiré. La raison la plus probable est que le directeur Bacula n\\'est pas disponible ou n\\'est pas en cours d\\'exécution."
 
 msgid "To use the console page please configure bbconsjson binary file path on the API side."
 msgstr "Pour utiliser la page de la console, veuillez configurer le chemin du fichier binaire bbconsjson du côté de l'API."
@@ -4186,7 +4186,7 @@ msgid "Pool: %pool, Vol. status: %volstatus"
 msgstr "Pool : %pool, État de Vol. : %volstatus"
 
 msgid "Pool volume status summary"
-msgstr "Résumé de l'état du volume du pool"
+msgstr "Résumé de l\\'état du volume du pool"
 
 msgid "New user"
 msgstr "Nouvel utilisateur"
@@ -4246,7 +4246,7 @@ msgid "Access"
 msgstr "Accès"
 
 msgid "Set access"
-msgstr "Définir l'accès"
+msgstr "Définir l\\'accès"
 
 msgid "Access to resources"
 msgstr "Accès aux ressources"
@@ -4777,19 +4777,19 @@ msgid "Installing %component"
 msgstr "Installer %component"
 
 msgid "Install Bacula components on API host"
-msgstr "Installer les composants Bacula sur l'hôte de l'API"
+msgstr "Installer les composants Bacula sur l\\'hôte de l\\'API"
 
 msgid "Upgrading %component"
 msgstr "Mise à niveau %component"
 
 msgid "Upgrade Bacula components on API host"
-msgstr "Mettre à jour les composants Bacula sur l'hôte de l'API"
+msgstr "Mettre à jour les composants Bacula sur l\\'hôte de l\\'API"
 
 msgid "Uninstalling %component"
 msgstr "Désinstallation de %component"
 
 msgid "Uninstall Bacula components on API host"
-msgstr "Désinstaller les composants Bacula sur l'hôte de l'API"
+msgstr "Désinstaller les composants Bacula sur l\\'hôte de l\\'API"
 
 msgid "getting package information..."
 msgstr "récupération des informations du paquet..."
@@ -4948,7 +4948,7 @@ msgid "Start Bacularis"
 msgstr "Démarrer Bacularis"
 
 msgid "API access link"
-msgstr "Lien d'accès à l'API"
+msgstr "Lien d\\'accès à l\\'API"
 
 msgid "Step"
 msgstr "Étape"
