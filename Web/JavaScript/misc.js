@@ -25,6 +25,15 @@ var Units = {
 			{long: 'minute', value: 60, full: 60},
 			{long: 'hour', value: 60, full: 3600},
 			{long: 'day', value: 24, full: 86400}
+		],
+		number: [
+			{short: '', long: '', value: 1000},
+			{short: 'k', long: 'K', value: 1000},
+			{short: 'm', long: 'M', value: 1000},
+			{short: 'g', long: 'G', value: 1000},
+			{short: 't', long: 'T', value: 1000},
+			{short: 'p', long: 'P', value: 1000},
+			{short: 'e', long: 'E', value: 1000}
 		]
 	},
 	get_size: function(size, unit_value) {
@@ -77,6 +86,33 @@ var Units = {
 			}
 		}
 		return value;
+	},
+	get_number_short: function(number) {
+		const num = parseInt(number) || 0;
+		let num_copy = num;
+
+		// divide the number
+		let result;
+		let cnt = 0;
+		for (let i = 0; i < Units.units.number.length; i++) {
+			result = num_copy / Units.units.number[i].value;
+			if (result >= 1) {
+				num_copy = result;
+				cnt++;
+				continue;
+			}
+			break;
+		}
+
+		// get unit prefix
+		let unit = Units.units.number[cnt].long;
+
+		// check rest if plus is needed
+		const rest = num % Math.pow(1000, cnt);
+		if (rest > 0) {
+			unit += '+';
+		}
+		return (parseInt(num_copy, 10) + unit);
 	},
 	format_size: function(size_bytes, format) {
 		var reminder;
@@ -1110,6 +1146,7 @@ var Dashboard = {
 				},
 				y2axis: {
 					color: (ThemeMode.is_dark() ? 'white': 'black'),
+					tickFormatter: Units.get_number_short.bind(Units)
 				},
 				legend: {
 					container: $('#' + this.ids.bytes_files_graph.legend_container_id)
