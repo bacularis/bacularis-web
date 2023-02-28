@@ -262,6 +262,7 @@ class OSProfileConfig extends ConfigFileModule
 			'Fedora 34' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora34/',
 			'Fedora 35' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora35/',
 			'Fedora 36' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora36/',
+			'Fedora 37' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora37/',
 			'Oracle Linux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux8/',
 			'Oracle Linux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux9/',
 			'Rocky 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky8/',
