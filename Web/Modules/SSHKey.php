@@ -154,12 +154,13 @@ class SSHKey extends WebModule
 			return $ret;
 		}
 		$key_pem = file_get_contents($kpath);
-		$key = preg_match(
+		$result = preg_match(
 			'/^-----BEGIN (?:[A-Z]+ )?PRIVATE KEY-----\n(?P<key>[\S\s]+)\n-----END (?:[A-Z]+ )?PRIVATE KEY-----$/',
 			$key_pem,
 			$match
 		);
-		$key = preg_replace('/\s+/', '', $match['key']);
+		$key = ($result === 1) ? $match['key'] : $key_pem;
+		$key = preg_replace('/\s+/', '', $key);
 		$key = base64_decode($key);
 		$hkey = '';
 		if ($algo == 'sha1') {
