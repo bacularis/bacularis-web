@@ -21,10 +21,11 @@
 				<tr>
 					<th></th>
 					<th><%[ Short name ]%></th>
-					<th class="w3-center">Protocol</th>
-					<th class="w3-center">IP address/hostname</th>
-					<th class="w3-center">Port</th>
-					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Protocol ]%></th>
+					<th class="w3-center"><%[ IP address/hostname ]%></th>
+					<th class="w3-center"><%[ Port ]%></th>
+					<th class="w3-center"><%[ Access method ]%></th>
+					<th class="w3-center"><%[ Link ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -33,10 +34,11 @@
 				<tr>
 					<th></th>
 					<th><%[ Short name ]%></th>
-					<th class="w3-center">Protocol</th>
-					<th class="w3-center">IP address/hostname</th>
-					<th class="w3-center">Port</th>
-					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Protocol ]%></th>
+					<th class="w3-center"><%[ IP address/hostname ]%></th>
+					<th class="w3-center"><%[ Port ]%></th>
+					<th class="w3-center"><%[ Access method ]%></th>
+					<th class="w3-center"><%[ Link ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -114,10 +116,23 @@ var oAPIHostList = {
 					}
 				},
 				{
+					data: 'address',
+					render: function (data, type, row) {
+						const label = document.createTextNode('<%[ open ]%>');
+						const a = document.createElement('A');
+						a.href = row.protocol + '://' + data + ':' + row.port + '/panel';
+						a.target = '_blank';
+						a.classList.add('w3-block', 'w3-center');
+						a.appendChild(label);
+						return a.outerHTML;
+					}
+				},
+				{
 					data: 'name',
 					render: function (data, type, row) {
 						let btns = document.createElement('DIV');
 						btns.style.minWidth = '450px';
+						btns.style.textAlign = 'center';
 						// install button
 						const btn_install = document.createElement('BUTTON');
 						btn_install.className = 'w3-button w3-green';
@@ -191,8 +206,11 @@ var oAPIHostList = {
 			},
 			{
 				className: 'action_col',
+				targets: [ 7 ]
+			},
+			{
 				orderable: false,
-				targets: [ 6 ]
+				targets: [ 6, 7 ]
 			},
 			{
 				className: "dt-center",

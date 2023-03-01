@@ -4953,3 +4953,18 @@ msgstr "Lien d\\'accès à l\\'API"
 msgid "Step"
 msgstr "Étape"
 
+
+msgid "Protocol"
+msgstr "Protocol"
+
+msgid "IP address/hostname"
+msgstr "IP address/hostname"
+
+msgid "Access method"
+msgstr "Access method"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "open"
+msgstr "open"
