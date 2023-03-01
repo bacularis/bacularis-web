@@ -17,7 +17,6 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
 
-
 /**
  * Manage operating system profile configuration.
  * Module is responsible for get/set OS profile config data.
@@ -143,11 +142,11 @@ class OSProfileConfig extends ConfigFileModule
 			'actions_fd_start' => '/usr/bin/systemctl start bacula-fd',
 			'actions_fd_stop' => '/usr/bin/systemctl stop bacula-fd',
 			'actions_fd_restart' => '/usr/bin/systemctl restart bacula-fd',
-			'bacularis_repository_key'  => '',
-			'bacularis_repository_addr'  => '',
+			'bacularis_repository_key' => '',
+			'bacularis_repository_addr' => '',
 			'bacula_use_system_repo' => '1',
-			'bacula_repository_key'  => '',
-			'bacula_repository_addr'  => '',
+			'bacula_repository_key' => '',
+			'bacula_repository_addr' => '',
 			'predefined' => true
 		],
 		'deb' => [
@@ -243,11 +242,11 @@ class OSProfileConfig extends ConfigFileModule
 			'actions_fd_start' => '/usr/bin/systemctl start bacula-fd',
 			'actions_fd_stop' => '/usr/bin/systemctl stop bacula-fd',
 			'actions_fd_restart' => '/usr/bin/systemctl restart bacula-fd',
-			'bacularis_repository_key'  => '',
-			'bacularis_repository_addr'  => '',
+			'bacularis_repository_key' => '',
+			'bacularis_repository_addr' => '',
 			'bacula_use_system_repo' => '1',
-			'bacula_repository_key'  => '',
-			'bacula_repository_addr'  => '',
+			'bacula_repository_key' => '',
+			'bacula_repository_addr' => '',
 			'predefined' => true
 		]
 	];
@@ -293,7 +292,8 @@ class OSProfileConfig extends ConfigFileModule
 	 *
 	 * @return array pre-defined OS profile list
 	 */
-	private function getPreDefinedOSProfiles() {
+	private function getPreDefinedOSProfiles()
+	{
 		$profiles = [];
 		foreach (self::DEF_BACULARIS_REPOSITORIES as $type => $repos) {
 			foreach ($repos as $os => $repo) {
@@ -317,6 +317,7 @@ class OSProfileConfig extends ConfigFileModule
 	 * Get (read) OS profile config.
 	 *
 	 * @param string $section config section name
+	 * @param mixed $predefined
 	 * @return array config
 	 */
 	public function getConfig($section = null, $predefined = true)

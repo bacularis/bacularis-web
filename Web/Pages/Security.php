@@ -372,7 +372,6 @@ class Security extends BaculumWebPage
 				);
 			} elseif ($this->getModule('web_config')->isAuthMethodBasic() &&
 				isset($this->web_config['auth_basic']['user_file'])) { // Set Basic auth users password
-
 				$opts = [];
 				if (isset($this->web_config['auth_basic']['hash_alg'])) {
 					$opts['hash_alg'] = $this->web_config['auth_basic']['hash_alg'];
@@ -1040,10 +1039,14 @@ class Security extends BaculumWebPage
 		if ($this->GetUsersImportOptions->SelectedValue == self::IMPORT_OPT_CRITERIA) {
 			$crit = (int) ($this->GetUsersCriteria->SelectedValue);
 			switch ($crit) {
-				case self::IMPORT_CRIT_USERNAME: $params['filter_attr'] = $params['user_attr']; break;
-				case self::IMPORT_CRIT_LONG_NAME: $params['filter_attr'] = $params['long_name_attr']; break;
-				case self::IMPORT_CRIT_DESCRIPTION: $params['filter_attr'] = $params['desc_attr']; break;
-				case self::IMPORT_CRIT_EMAIL: $params['filter_attr'] = $params['email_attr']; break;
+				case self::IMPORT_CRIT_USERNAME: $params['filter_attr'] = $params['user_attr'];
+				break;
+				case self::IMPORT_CRIT_LONG_NAME: $params['filter_attr'] = $params['long_name_attr'];
+				break;
+				case self::IMPORT_CRIT_DESCRIPTION: $params['filter_attr'] = $params['desc_attr'];
+				break;
+				case self::IMPORT_CRIT_EMAIL: $params['filter_attr'] = $params['email_attr'];
+				break;
 			}
 			$params['filter_val'] = $this->GetUsersCriteriaFilter->Text;
 		}

@@ -289,7 +289,8 @@ class Deployment extends BaculumWebPage
 	 *
 	 * @param array $config single OS profile config
 	 */
-	private function setOSProfileFieldsInWindow(array $config) {
+	private function setOSProfileFieldsInWindow(array $config)
+	{
 		// General
 		$this->OSProfileName->Text = $config['name'];
 		$this->OSProfileDescription->Text = $config['description'];
@@ -806,7 +807,8 @@ class Deployment extends BaculumWebPage
 	{
 	}
 
-	private function deployAPICopyStep($file) {
+	private function deployAPICopyStep($file)
+	{
 		$scp = $this->getModule('scp');
 		$ssh = $this->getModule('ssh');
 		$host = $this->DeployAPIHostHostname->Text;
@@ -846,7 +848,6 @@ class Deployment extends BaculumWebPage
 			);
 			$ret['output'] = array_merge($ret['output'], $ret_cp['output']);
 			$ret['exitcode'] = $ret_cp['exitcode'];
-
 		}
 		unlink($file['src_file']);
 
@@ -1258,7 +1259,8 @@ class Deployment extends BaculumWebPage
 		}
 	}
 
-	private function assignNewAPIHostToUser($host) {
+	private function assignNewAPIHostToUser($host)
+	{
 		$user_config = $this->getModule('user_config');
 		$username = $this->User->getUsername();
 		$user = $user_config->getUserConfig($username);
@@ -1415,7 +1417,7 @@ class Deployment extends BaculumWebPage
 			['software', $component, $command],
 			$host
 		);
-		if ($result->error === 0  && $command === 'install' && property_exists($options, 'add_comp_to_dir') && $options->add_comp_to_dir === true && in_array($component, ['client', 'storage'])) {
+		if ($result->error === 0 && $command === 'install' && property_exists($options, 'add_comp_to_dir') && $options->add_comp_to_dir === true && in_array($component, ['client', 'storage'])) {
 			$ctd = $this->addComponentToDirector($host, $component);
 			if ($ctd->error === 0) {
 				$result->output = array_merge($result->output, [$ctd->output]);
@@ -1468,7 +1470,6 @@ class Deployment extends BaculumWebPage
 					$dir_name = $dir_cfg->output[$i]->Director->Name;
 				} elseif (property_exists($dir_cfg->output[$i], 'Catalog')) {
 					$cat_name = $dir_cfg->output[$i]->Catalog->Name;
-
 				}
 			}
 			$host_config = $this->getModule('host_config')->getHostConfig($host);
@@ -1500,7 +1501,8 @@ class Deployment extends BaculumWebPage
 		return $result;
 	}
 
-	private function addClientToDirector($host, $fd_addr, $dir_name, $cat_name) {
+	private function addClientToDirector($host, $fd_addr, $dir_name, $cat_name)
+	{
 		$fd_name = "{$host}-fd";
 		$crypto = $this->getModule('crypto');
 		$fd_pwd = $crypto->getRandomString(32);
@@ -1529,7 +1531,8 @@ class Deployment extends BaculumWebPage
 		return $result;
 	}
 
-	private function addStorageToDirector($host, $sd_addr, $dir_name) {
+	private function addStorageToDirector($host, $sd_addr, $dir_name)
+	{
 		$crypto = $this->getModule('crypto');
 		$sd_pwd = $crypto->getRandomString(32);
 		$api = $this->getModule('api');
@@ -1634,7 +1637,8 @@ class Deployment extends BaculumWebPage
 		return $result;
 	}
 
-	private function enableComponent($host, $component) {
+	private function enableComponent($host, $component)
+	{
 		$result = $this->getModule('api')->get(
 			['software', $component, 'enable'],
 			$host
@@ -1642,7 +1646,8 @@ class Deployment extends BaculumWebPage
 		return $result;
 	}
 
-	private function startComponent($host, $component) {
+	private function startComponent($host, $component)
+	{
 		$result = $this->getModule('api')->get(
 			['actions', $component, 'stop'],
 			$host

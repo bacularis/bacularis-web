@@ -17,7 +17,6 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
 
-
 /**
  * Manage SSH configuration.
  * Module is responsible for get/set SSH config data.
@@ -40,10 +39,10 @@ class SSHConfig extends ConfigFileModule
 	/**
 	 * SSH config file format
 	 */
-
 	public const CONFIG_FILE_FORMAT = 'section';
 
-	public function init($config) {
+	public function init($config)
+	{
 		$this->getModule('config_section')->setSectionName('Host');
 	}
 

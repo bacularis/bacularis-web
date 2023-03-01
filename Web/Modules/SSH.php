@@ -25,7 +25,6 @@ use Prado\Prado;
  */
 class SSH extends WebModule
 {
-
 	/**
 	 * Base command to run.
 	 */
@@ -85,7 +84,7 @@ class SSH extends WebModule
 	 * @param string $address destination host address
 	 * @param array $creds credentials ('username', 'password', 'sshkey', 'passphrase')
 	 * @param array $command command to execute
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return array command output, exitcode and output file for background commands
 	 */
 	public function execCommand($address, $creds = [], $command = [], $ptype = self::PTYPE_REG_CMD)
@@ -130,7 +129,7 @@ class SSH extends WebModule
 	 * @param string $address destination address
 	 * @param array $params SSH parameters (user/SSH config...)
 	 * @param array $command command to execute on remote host
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string full command string
 	 */
 	private function prepareCommand($address, array $params, array $command, $ptype)
@@ -189,16 +188,19 @@ class SSH extends WebModule
 	/**
 	 * Get command pattern by pattern type.
 	 *
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string command pattern
 	 */
 	private function getCmdPattern($ptype)
 	{
 		$pattern = null;
 		switch ($ptype) {
-			case self::PTYPE_REG_CMD: $pattern = self::SSH_COMMAND_PATTERN; break;
-			case self::PTYPE_BG_CMD: $pattern = self::SSH_BG_COMMAND_PATTERN; break;
-			default: $pattern = self::SSH_COMMAND_PATTERN; break;
+			case self::PTYPE_REG_CMD: $pattern = self::SSH_COMMAND_PATTERN;
+			break;
+			case self::PTYPE_BG_CMD: $pattern = self::SSH_BG_COMMAND_PATTERN;
+			break;
+			default: $pattern = self::SSH_COMMAND_PATTERN;
+			break;
 		}
 		return $pattern;
 	}
@@ -257,9 +259,11 @@ class SSH extends WebModule
 	 * If exitcode not found, default exit code is -1.
 	 *
 	 * @param array command output
-	 * @return integer command exit code
+	 * @param array $output
+	 * @return int command exit code
 	 */
-	private static function getExitCode(array $output) {
+	private static function getExitCode(array $output)
+	{
 		$exitcode = -1; // -1 means that process is pending
 		$output_count = count($output);
 		if ($output_count > 1 && preg_match('/^EXITCODE=(?P<exitcode>\d+)$/i', $output[$output_count - 2], $match) === 1) {
@@ -275,7 +279,8 @@ class SSH extends WebModule
 	 * @param string $file file path to put output (only for background commands)
 	 * @return string command to execute
 	 */
-	private function prepareExpectCommand($cmd, $file) {
+	private function prepareExpectCommand($cmd, $file)
+	{
 		$command = '';
 		if (!empty($file)) {
 			$command = $this->prepareExpectBgCommand($cmd, $file);
@@ -381,9 +386,11 @@ exit\' 1>' . $file . ' 2>&1 &';
 	 * Quote special characters in expect spawn command.
 	 *
 	 * @param string spawn expect command
+	 * @param mixed $cmd
 	 * @return string spawn expect command with escaped special characters
 	 */
-	private function quoteExpectCommand($cmd) {
+	private function quoteExpectCommand($cmd)
+	{
 		return str_replace(
 			['[', ']', '$'],
 			['\\[', '\\]', '\\\\\\$'],

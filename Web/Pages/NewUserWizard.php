@@ -742,7 +742,6 @@ class NewUserWizard extends BaculumWebPage
 				);
 			} elseif ($this->getModule('web_config')->isAuthMethodBasic() &&
 				isset($this->web_config['auth_basic']['user_file'])) { // Set Basic auth users password
-
 				$opts = [];
 				if (isset($this->web_config['auth_basic']['hash_alg'])) {
 					$opts['hash_alg'] = $this->web_config['auth_basic']['hash_alg'];

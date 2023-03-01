@@ -606,10 +606,14 @@ class NewMigrateJobWizard extends BaculumWebPage
 		$control = null;
 		$sel_type = $this->SelectionType->getDirectiveValue();
 		switch ($sel_type) {
-			case 'Job': $control = $this->SelectionPatternJob; break;
-			case 'Client': $control = $this->SelectionPatternClient; break;
-			case 'Volume': $control = $this->SelectionPatternVolume; break;
-			case 'SQLQuery': $control = $this->SelectionPatternSQLQuery; break;
+			case 'Job': $control = $this->SelectionPatternJob;
+			break;
+			case 'Client': $control = $this->SelectionPatternClient;
+			break;
+			case 'Volume': $control = $this->SelectionPatternVolume;
+			break;
+			case 'SQLQuery': $control = $this->SelectionPatternSQLQuery;
+			break;
 		}
 		return $control;
 	}

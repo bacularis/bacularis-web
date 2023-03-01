@@ -23,7 +23,6 @@ namespace Bacularis\Web\Modules;
  */
 class SCP extends WebModule
 {
-
 	/**
 	 * Base command to run.
 	 */
@@ -53,7 +52,7 @@ class SCP extends WebModule
 	 * @param string $dest_path destination path on remote host
 	 * @param string $address destination host address
 	 * @param array $creds credentials ('username', 'password', 'sshkey', 'passphrase')
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return array command output
 	 */
 	public function execCommand($src_file, $dest_path, $address, $creds = [], $ptype = self::PTYPE_REG_CMD)
@@ -91,7 +90,7 @@ class SCP extends WebModule
 	 * @param string $dest_path destination path on remote host
 	 * @param string $address destination address
 	 * @param array $params SSH parameters (user/SSH config...)
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string full command string
 	 */
 	private function prepareCommand($src_file, $dest_path, $address, array $params, $ptype)
@@ -138,14 +137,17 @@ class SCP extends WebModule
 	 * Get command pattern by pattern type.
 	 * So far support is only foreground command regular pattern.
 	 *
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string command pattern
 	 */
-	private function getCmdPattern($ptype) {
+	private function getCmdPattern($ptype)
+	{
 		$pattern = null;
 		switch ($ptype) {
-			case self::PTYPE_REG_CMD: $pattern = self::SCP_COMMAND_PATTERN; break;
-			default: $pattern = self::SCP_COMMAND_PATTERN; break;
+			case self::PTYPE_REG_CMD: $pattern = self::SCP_COMMAND_PATTERN;
+			break;
+			default: $pattern = self::SCP_COMMAND_PATTERN;
+			break;
 		}
 		return $pattern;
 	}
@@ -156,7 +158,8 @@ class SCP extends WebModule
 	 * If exitcode not found, default exit code is 100.
 	 *
 	 * @param array command output
-	 * @return integer command exit code
+	 * @param mixed $output
+	 * @return int command exit code
 	 */
 	public static function getExitCode($output)
 	{
@@ -213,9 +216,11 @@ exit\' 2>&1';
 	 * Quote special characters in expect spawn command.
 	 *
 	 * @param string spawn expect command
+	 * @param mixed $cmd
 	 * @return string spawn expect command with escaped special characters
 	 */
-	private function quoteExpectCommand($cmd) {
+	private function quoteExpectCommand($cmd)
+	{
 		return str_replace(
 			['[', ']'],
 			['\\[', '\\]'],

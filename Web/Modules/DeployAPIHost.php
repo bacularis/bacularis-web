@@ -51,7 +51,8 @@ class DeployAPIHost extends WebModule
 	 *
 	 * @return array create temp directory command
 	 */
-	public function getCreateTmpDirCommand() {
+	public function getCreateTmpDirCommand()
+	{
 		return ['mkdir', '-p', '-m', '700', self::TMP_DIR];
 	}
 
@@ -61,7 +62,8 @@ class DeployAPIHost extends WebModule
 	 *
 	 * @return array remove temp directory command
 	 */
-	public function getRemoveTmpDirCommand() {
+	public function getRemoveTmpDirCommand()
+	{
 		return ['rmdir', self::TMP_DIR];
 	}
 
@@ -158,7 +160,8 @@ deb-src [signed-by=$key] $entry
 	 * @param string $dest_file key remote destination path
 	 * @return array source and destination file parameters
 	 */
-	public function prepareGPGKey($key_path, $dest_file) {
+	public function prepareGPGKey($key_path, $dest_file)
+	{
 		$key = file_get_contents($key_path);
 		if ($key === false) {
 			$this->getModule('logging')->log(
@@ -186,7 +189,7 @@ deb-src [signed-by=$key] $entry
 			// unlink previous key if any
 			unlink("{$file}.gpg");
 		}
-		$key_dearmor =  $this->getModule('gpg')->execCommand($file, ['dearmor' => true]);
+		$key_dearmor = $this->getModule('gpg')->execCommand($file, ['dearmor' => true]);
 		if ($key_dearmor['exitcode'] !== 0) {
 			$this->getModule('logging')->log(
 				'Error while dearmoring GPG key ' . $file,
@@ -216,7 +219,8 @@ deb-src [signed-by=$key] $entry
 	 * @param array $osprofile current OS profile configuration
 	 * @return array source and destination file parameters
 	 */
-	public function prepareSUDOFile(array $osprofile) {
+	public function prepareSUDOFile(array $osprofile)
+	{
 		$sudo_cmd = [];
 
 		foreach ($osprofile as $key => $value) {
@@ -241,7 +245,7 @@ deb-src [signed-by=$key] $entry
 			array_unshift($sudo_cmd, "Defaults:{$osprofile['packages_sudo_user']} !requiretty");
 			$sudo_cmd[] = ''; // last line in sudo must be empty
 			$fbody = implode(PHP_EOL, $sudo_cmd);
-			$dst_file = DIRECTORY_SEPARATOR. implode(DIRECTORY_SEPARATOR, ['etc', 'sudoers.d', 'bacularis-api']);
+			$dst_file = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['etc', 'sudoers.d', 'bacularis-api']);
 			$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 			$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
 			if (file_put_contents($src_file, $fbody) === false) {
@@ -348,15 +352,16 @@ deb-src [signed-by=$key] $entry
 
 	/**
 	 * Prepare command to create user file on remote host.
-	 * 
+	 *
 	 * @param array $osprofile current OS profile configuration
 	 * @return array source and destination file parameters
 	 */
-	public function prepareCreateUserFile(array $osprofile) {
+	public function prepareCreateUserFile(array $osprofile)
+	{
 		$fbody = "[{$osprofile['bacularis_admin_user']}]
 bconfig_cfg_path = \"\"
 ";
-		$dst_file =  DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['etc', 'bacularis', 'API', 'basic.conf']);
+		$dst_file = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['etc', 'bacularis', 'API', 'basic.conf']);
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
 		if (file_put_contents($src_file, $fbody) === false) {
@@ -378,19 +383,21 @@ bconfig_cfg_path = \"\"
 
 	/**
 	 * Prepare command to create user file on remote host.
-	 * 
+	 *
 	 * @param array $osprofile current OS profile configuration
+	 * @param mixed $type
 	 * @return array source and destination file parameters
 	 */
-	public function prepareUserPwdFile(array $osprofile, $type) {
+	public function prepareUserPwdFile(array $osprofile, $type)
+	{
 		$pwd = $this->getModule('crypto')->getHashedPassword($osprofile['bacularis_admin_pwd']);
 		$creds = [$osprofile['bacularis_admin_user'], $pwd];
 		$fbody = implode(':', $creds);
 		$dst_file = [];
 		if ($type == 'API') {
-			$dst_file =  $this->getUserAPIPwdFile();
+			$dst_file = $this->getUserAPIPwdFile();
 		} elseif ($type == 'Web') {
-			$dst_file =  $this->getUserWebPwdFile();
+			$dst_file = $this->getUserWebPwdFile();
 		}
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file) . '_new']);
@@ -413,32 +420,35 @@ bconfig_cfg_path = \"\"
 
 	/**
 	 * Get API user password file path.
-	 * 
+	 *
 	 * @return string user password file path
 	 */
-	private function getUserAPIPwdFile() {
+	private function getUserAPIPwdFile()
+	{
 		$path = ['etc', 'bacularis', 'API', 'bacularis.users'];
 		return DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $path);
 	}
 
 	/**
 	 * Get Web user password file path.
-	 * 
+	 *
 	 * @return string user password file path
 	 */
-	private function getUserWebPwdFile() {
+	private function getUserWebPwdFile()
+	{
 		$path = ['etc', 'bacularis', 'Web', 'bacularis.users'];
 		return DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $path);
 	}
 
 	/**
 	 * Get command to set file ownership.
-	 * 
+	 *
 	 * @param array $file file parameters
 	 * @param array $params deployment options
 	 * @return array command to set ownership
 	 */
-	public function getSetOwnershipCommand($file, $params) {
+	public function getSetOwnershipCommand($file, $params)
+	{
 		$ret = [
 			'chown',
 			$file['user'] . (isset($file['group']) ? ':' . $file['group'] : ''),
@@ -452,12 +462,13 @@ bconfig_cfg_path = \"\"
 
 	/**
 	 * Get command to set file permissions.
-	 * 
+	 *
 	 * @param array $file file parameters
 	 * @param array $params deployment options
 	 * @return array command to set permissions
 	 */
-	public function getSetPermissionsCommand($file, $params) {
+	public function getSetPermissionsCommand($file, $params)
+	{
 		$ret = [
 			'chmod',
 			$file['perm'],
@@ -478,7 +489,8 @@ bconfig_cfg_path = \"\"
 	 * @param array $params deployment options
 	 * @return array command to prepare certificate
 	 */
-	public function getPrepareHTTPSCertCommand($address, $params) {
+	public function getPrepareHTTPSCertCommand($address, $params)
+	{
 		$cert_dir = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, [
 			'etc',
 			'bacularis'
@@ -517,7 +529,8 @@ EOF'];
 	 * @param array $params deployment options
 	 * @return array command to prepare certificate PEM file
 	 */
-	public function getPrepareHTTPSPemCommand($params) {
+	public function getPrepareHTTPSPemCommand($params)
+	{
 		$cert_dir = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, [
 			'etc',
 			'bacularis'
@@ -620,7 +633,8 @@ EOF'];
 	 * @param array $params deployment options
 	 * @return array command to enable HTTPS in Nginx config
 	 */
-	public function getEnableHTTPSLighttpdCommand($params) {
+	public function getEnableHTTPSLighttpdCommand($params)
+	{
 		$cfg_path = '/etc/bacularis/bacularis-lighttpd.conf';
 		$ret = [
 			'{',

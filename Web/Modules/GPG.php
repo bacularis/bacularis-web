@@ -23,7 +23,6 @@ namespace Bacularis\Web\Modules;
  */
 class GPG extends WebModule
 {
-
 	/**
 	 * Base command to run.
 	 */
@@ -46,7 +45,7 @@ class GPG extends WebModule
 	 *
 	 * @param string $file file (usually a key)
 	 * @param string $options command options
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return array command output
 	 */
 	public function execCommand($file, $options = [], $ptype = self::PTYPE_REG_CMD)
@@ -69,7 +68,7 @@ class GPG extends WebModule
 	 *
 	 * @param string $file file (usually a key)
 	 * @param string $options command options
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string full command string
 	 */
 	private function prepareCommand($file, array $options, $ptype)
@@ -95,14 +94,17 @@ class GPG extends WebModule
 	 * Get command pattern by pattern type.
 	 * So far support is only foreground command regular pattern.
 	 *
-	 * @param integer $ptype command pattern type
+	 * @param int $ptype command pattern type
 	 * @return string command pattern
 	 */
-	private function getCmdPattern($ptype) {
+	private function getCmdPattern($ptype)
+	{
 		$pattern = null;
 		switch ($ptype) {
-			case self::PTYPE_REG_CMD: $pattern = self::GPG_COMMAND_PATTERN; break;
-			default: $pattern = self::GPG_COMMAND_PATTERN; break;
+			case self::PTYPE_REG_CMD: $pattern = self::GPG_COMMAND_PATTERN;
+			break;
+			default: $pattern = self::GPG_COMMAND_PATTERN;
+			break;
 		}
 		return $pattern;
 	}

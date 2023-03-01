@@ -47,7 +47,8 @@ class SSHKey extends WebModule
 	 *
 	 * @return array SSH keys
 	 */
-	public function getKeys() {
+	public function getKeys()
+	{
 		$keys = [];
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$pattern = $path . self::SSH_KEY_PATTERN;
@@ -71,7 +72,8 @@ class SSHKey extends WebModule
 	 * @param string $key SSH key body
 	 * @return bool true on success, otherwise false
 	 */
-	public function setKey($name, $key) {
+	public function setKey($name, $key)
+	{
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$kname = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $kname]);
@@ -91,9 +93,11 @@ class SSHKey extends WebModule
 	 * Remove single SSH key.
 	 *
 	 * @param string $key key name
+	 * @param mixed $name
 	 * @return bool true on success, otherwise false
 	 */
-	public function removeKey($name) {
+	public function removeKey($name)
+	{
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$kname = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $kname]);
@@ -108,9 +112,11 @@ class SSHKey extends WebModule
 	 * Get full SSH key name by short name.
 	 *
 	 * @param string short key name
+	 * @param mixed $name
 	 * @return string full key name
 	 */
-	private function getKeyByName($name) {
+	private function getKeyByName($name)
+	{
 		return sprintf('ssh_%s.pem', $name);
 	}
 
@@ -118,9 +124,11 @@ class SSHKey extends WebModule
 	 * Get full SSH key path by short name.
 	 *
 	 * @param string short key name
+	 * @param mixed $name
 	 * @return string full key path
 	 */
-	public function getPathByName($name) {
+	public function getPathByName($name)
+	{
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$key = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $key]);
@@ -131,9 +139,11 @@ class SSHKey extends WebModule
 	 * Get key name from full SSH key path.
 	 *
 	 * @param string short key name
+	 * @param mixed $path
 	 * @return string full key path
 	 */
-	public function getNameByKey($path) {
+	public function getNameByKey($path)
+	{
 		$key = basename($path);
 		$key = preg_replace('/^ssh_|\.pem$/', '', $key);
 		return $key;
@@ -148,7 +158,8 @@ class SSHKey extends WebModule
 	 * @param string $algo fingerprint algorithm (supported: sha1 and md5)
 	 * @return string SSH key fingerprint or empty string of failure
 	 */
-	private function getSSHKeyFingerprint($kpath, $algo = 'md5') {
+	private function getSSHKeyFingerprint($kpath, $algo = 'md5')
+	{
 		$ret = '';
 		if (!file_exists($kpath)) {
 			return $ret;
