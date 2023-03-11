@@ -103,8 +103,8 @@ class BaculumAPIClient extends WebModule
 		if (count($host_cfg) > 0 && $host_cfg['auth_type'] === 'basic') {
 			$userpwd = sprintf('%s:%s', $host_cfg['login'], $host_cfg['password']);
 			curl_setopt($ch, CURLOPT_USERPWD, $userpwd);
+			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		}
-		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
