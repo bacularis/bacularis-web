@@ -56,7 +56,7 @@ set_time_limit(60);
  * Support for web servers (for example Lighttpd) which do not provide direct
  * info about HTTP Basic auth to PHP superglobal $_SERVER array.
  */
-if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['HTTP_AUTHORIZATION']) && strpos($_SERVER['HTTP_AUTHORIZATION'], 'Basic') === 0) {
 	/*
 	 * Substring 'Basic ' from  HTTP authorization header
 	 * Example 'Basic YWRtaW46YWRtaW4=' becomes 'YWRtaW46YWRtaW4='
