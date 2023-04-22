@@ -975,7 +975,9 @@ const oJobList = {
 		const empty = '-';
 		let ret = empty;
 		const ts = starttime_epoch * 1000;
-		const now = (new Date()).getTime();
+		const d = new Date();
+		const tz = d.getTimezoneOffset() * 60 * 1000;
+		const now = d.getTime() - tz;
 		const tdiff = parseInt((now - ts) / 1000);
 		if (type == 'display' || type == 'filter') {
 			const val = Units.format_time_period(tdiff, null, true);
