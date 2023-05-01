@@ -205,6 +205,7 @@ var oVolumeList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar"><"#table_mode">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],

@@ -119,6 +119,55 @@
 			</div>
 		</div>
 		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Keep custom table settings: ]%></div>
+			<div class="w3-quarter w3-col">
+				<p><com:TRadioButton
+					ID="KeepTableSettingsNoLimit"
+					CssClass="w3-radio"
+					GroupName="KeepTableSettings"
+					Attributes.onclick="$('#keep_table_settings_specific_time').hide(); if (Prado.Validation.validateControl('<%=$this->KeepTableSettingsFor->Directive->ClientID%>') === false) { reset_keep_time_settings_for_field(); }"
+				/> <com:TLabel ForControl="KeepTableSettingsNoLimit"><%[ No time limit (persistent settings) ]%></com:TLabel></p>
+				<p>
+				<com:TRadioButton
+					ID="KeepTableSettingsEndOfSession"
+					CssClass="w3-radio"
+					GroupName="KeepTableSettings"
+					Attributes.onclick="$('#keep_table_settings_specific_time').hide(); if (Prado.Validation.validateControl('<%=$this->KeepTableSettingsFor->Directive->ClientID%>') === false) { reset_keep_time_settings_for_field(); }"
+				/> <com:TLabel ForControl="KeepTableSettingsEndOfSession"><%[ Until end of web browser session ]%></com:TLabel></p>
+				<com:TRadioButton
+					ID="KeepTableSettingsSpecificTime"
+					CssClass="w3-radio"
+					GroupName="KeepTableSettings"
+					Attributes.onclick="$('#keep_table_settings_specific_time').show(); Prado.Validation.validateControl('<%=$this->KeepTableSettingsFor->Directive->ClientID%>')"
+				/> <com:TLabel ForControl="KeepTableSettingsSpecificTime"><%[ For specific time ]%></com:TLabel></p>
+			</div>
+			<div id="keep_table_settings_specific_time" style="display: <%=$this->KeepTableSettingsSpecificTime->Checked ? 'block' : 'none'%>;">
+				<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+					ID="KeepTableSettingsFor"
+					DirectiveName="KeepTableSettingsFor"
+					Label="<%[ Keep table settings for ]%>"
+					ValidationGroup="AppSettingDisplay"
+					DefaultValue="<%=WebConfig::DEF_KEEP_TABLE_SETTINGS%>"
+					Show="true"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					TimeFormat="hour"
+					Doc="<%[ Set time for which table settings will be preserved. Setting 0 (zero) is equivalent to no time limit option. ]%>"
+				/>
+			</div>
+			<script>
+				function reset_keep_time_settings_for_field() {
+					const ctl_id = '<%=$this->KeepTableSettingsFor->Directive->ClientID%>';
+					const ctl_format_id = '<%=$this->KeepTableSettingsFor->TimeFormat->ClientID%>';
+					const val = '<%=$this->KeepTableSettingsFor->getValue() ?: $this->KeepTableSettingsFor->DefaultValue%>';
+					const ftime = Units.format_time_period(parseInt(val, 'seconds'));
+					$('#' + ctl_id).val(ftime.value);
+					$('#' + ctl_format_id).val(ftime.format);
+				}
+			</script>
+		</div>
+		<div class="w3-container w3-row w3-padding">
 			<div class="w3-quarter w3-col"><%[ Show size values as: ]%></div>
 			<div class="w3-quarter w3-col">
 				<p><com:TRadioButton
@@ -439,6 +488,7 @@ var oAppSettingsAuditLog = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			pageLength : 25,
 			lengthMenu: [10, 25, 50, 75, 100],
 			buttons: [

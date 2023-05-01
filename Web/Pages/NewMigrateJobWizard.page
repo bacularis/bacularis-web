@@ -374,6 +374,7 @@ var oVolumeList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -800,6 +801,7 @@ var oJobList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -944,6 +946,7 @@ var oClientList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -1202,6 +1205,7 @@ var oVolumeList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],

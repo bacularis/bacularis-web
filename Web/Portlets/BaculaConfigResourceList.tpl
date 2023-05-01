@@ -56,6 +56,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],

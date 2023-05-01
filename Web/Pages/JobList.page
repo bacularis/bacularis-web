@@ -298,6 +298,7 @@ var oJobHistoryList = {
 			autoWidth: false,
 			dom: 'lB<"table_toolbar"><"#table_mode"><"#table_adv_filters">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -809,6 +810,7 @@ const oJobList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -1660,6 +1662,7 @@ class JobHistoryReport {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			autoWidth: true,
 			buttons: [
 				{

@@ -1769,6 +1769,7 @@ var oDriveList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -2027,6 +2028,7 @@ var oSlotList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],

@@ -775,6 +775,7 @@ var oLastJobsList = {
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -1030,7 +1031,9 @@ var Dashboard = {
 	update_job_access: function() {
 		// get last 15 jobs
 		var data = this.stats.jobs.slice(0, 15);
-		oLastJobsList.init(data);
+		$(function() {
+			oLastJobsList.init(data);
+		});
 	},
 	update_jobs: function() {
 		var jobs = this.stats.jobs_occupancy;

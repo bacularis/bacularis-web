@@ -48,6 +48,23 @@ class ApplicationSettings extends BaculumWebPage
 			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
 			$this->Debug->Checked = ($this->web_config['baculum']['debug'] == 1);
 			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_jobs']) : JobInfo::DEFAULT_MAX_JOBS);
+			if (key_exists('keep_table_settings', $this->web_config['baculum'])) {
+				if ($this->web_config['baculum']['keep_table_settings'] === '-1') {
+					// keep settings until end of web browser session
+					$this->KeepTableSettingsEndOfSession->Checked = true;
+				} elseif ($this->web_config['baculum']['keep_table_settings'] === '0') {
+					// keep settings with no time limit (persistent settings)
+					$this->KeepTableSettingsNoLimit->Checked = true;
+				} else {
+					// keep settings for specific time (default 2 hours)
+					$this->KeepTableSettingsSpecificTime->Checked = true;
+					$this->KeepTableSettingsFor->setDirectiveValue($this->web_config['baculum']['keep_table_settings']);
+				}
+			} else {
+				// default setting
+				$this->KeepTableSettingsSpecificTime->Checked = true;
+				$this->KeepTableSettingsFor->setDirectiveValue(WebConfig::DEF_KEEP_TABLE_SETTINGS);
+			}
 			if (key_exists('size_values_unit', $this->web_config['baculum'])) {
 				$this->DecimalBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'decimal');
 				$this->BinaryBytes->Checked = ($this->web_config['baculum']['size_values_unit'] === 'binary');
@@ -112,7 +129,16 @@ class ApplicationSettings extends BaculumWebPage
 	{
 		if (count($this->web_config) > 0) {
 			$max_jobs = (int) ($this->MaxJobs->Text);
+			$keep_table_settings = null;
+			if ($this->KeepTableSettingsNoLimit->Checked) {
+				$keep_table_settings = '0';
+			} elseif ($this->KeepTableSettingsEndOfSession->Checked) {
+				$keep_table_settings = '-1';
+			} elseif ($this->KeepTableSettingsSpecificTime->Checked) {
+				$keep_table_settings = $this->KeepTableSettingsFor->getValue();
+			}
 			$this->web_config['baculum']['max_jobs'] = $max_jobs;
+			$this->web_config['baculum']['keep_table_settings'] = $keep_table_settings;
 			$this->web_config['baculum']['size_values_unit'] = $this->BinaryBytes->Checked ? 'binary' : 'decimal';
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
 			$this->web_config['baculum']['date_time_format'] = $this->DateTimeFormat->Text;

@@ -368,6 +368,7 @@ var oJobsToRestoreList = {
 				'copy', 'csv', 'colvis'
 			],
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			columns: [
 				{
 					className: 'details-control',

@@ -64,6 +64,15 @@ class WebConfig extends ConfigFileModule
 	public const DEF_MAX_JOBS = 15000;
 
 	/**
+	 * Default keep table settings for specific time.
+	 * Values:
+	 *   -1 - keep value in sessionStorage. Settings are forget when web browser is closed.
+	 *   0 - keep value in localStorage. Settings are persistent.
+	 *   int > 0 - keep value in localStorage for specific given time.
+	 */
+	public const DEF_KEEP_TABLE_SETTINGS = 7200;
+
+	/**
 	 * Default size values unit.
 	 */
 	public const DEF_SIZE_VAL_UNIT = 'decimal';

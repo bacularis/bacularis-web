@@ -89,6 +89,7 @@ var oAPIHostList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -1517,6 +1518,7 @@ var oOSProfileList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -3103,6 +3105,7 @@ var oSSHConfigList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
@@ -3410,6 +3413,7 @@ var oSSHKeyList = {
 			deferRender: true,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
 				'copy', 'csv', 'colvis'
 			],
