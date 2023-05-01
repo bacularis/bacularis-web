@@ -30,6 +30,14 @@
 			Text="Field required."
 			Enabled="<%=$this->getRequired() && $this->getShow()%>"
 		/>
+		<com:TRegularExpressionValidator
+			ID="DirectiveTypeValidator"
+			ValidationGroup="<%=$this->getValidationGroup()%>"
+			ControlToValidate="Directive"
+			ErrorMessage="<%[ The value must be positive integer or zero. ]%>"
+			Display="Dynamic"
+			RegularExpression="[0-9][0-9]*"
+		/>
 		<div class="directive_help" style="clear: left; display: none"><%=$this->doc%></div>
 	</div>
 </div>
