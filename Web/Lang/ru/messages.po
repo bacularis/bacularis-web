@@ -4985,3 +4985,6 @@ msgstr "Keep table settings for"
 
 msgid "The value must be positive integer or zero."
 msgstr "The value must be positive integer or zero."
+
+msgid "Set time for which table settings will be preserved. Setting 0 (zero) is equivalent to no time limit option."
+msgstr "Set time for which table settings will be preserved. Setting 0 (zero) is equivalent to no time limit option."
