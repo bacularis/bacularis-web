@@ -911,7 +911,8 @@ var oLastJobsList = {
 				},
 				{
 					data: 'filetable',
-					visible: false
+					visible: false,
+					defaultContent: ''
 				}
 			],
 			responsive: {

@@ -546,7 +546,8 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'filetable',
-					visible: false
+					visible: false,
+					defaultContent: ''
 				},
 				{
 					data: 'jobid',
