@@ -315,19 +315,6 @@
 			</div>
 			<div class="w3-container w3-row directive_field">
 				<div class="w3-third w3-col">
-					<%[ SSL encryption (LDAPS): ]%>
-				</div>
-				<div class="w3-col" style="width: 70px;">
-					<com:TActiveCheckBox
-						ID="LdapAuthServerLdaps"
-						CssClass="w3-check w3-border"
-						CausesValidation="false"
-						AutoPostBack="false"
-					/>
-				</div>
-			</div>
-			<div class="w3-container w3-row directive_field">
-				<div class="w3-third w3-col">
 					<%[ Protocol version: ]%>
 				</div>
 				<div class="w3-col" style="width: 160px">
@@ -341,6 +328,56 @@
 						<com:TListItem Value="2" Text="LDAP version 2" />
 						<com:TListItem Value="3" Text="LDAP version 3" Selected="true" />
 					</com:TActiveDropDownList>
+				</div>
+			</div>
+			<strong><%[ TLS/SSL encryption ]%></strong>
+			<div class="w3-container w3-row directive_field">
+				<div class="w3-third w3-col">
+					<label for="<%=$this->LdapAuthServerNoEncryption->ClientID%>">
+						<%[ No encryption ]%>:
+					</label>
+				</div>
+				<div class="w3-col" style="width: 70px;">
+					<com:TActiveRadioButton
+						ID="LdapAuthServerNoEncryption"
+						GroupName="LdapAuthServerEncryption"
+						CssClass="w3-radio"
+						CausesValidation="false"
+						AutoPostBack="false"
+						Checked="true"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row directive_field">
+				<div class="w3-third w3-col">
+					<label for="<%=$this->LdapAuthServerStartTLS->ClientID%>">
+						StartTLS:
+					</label>
+				</div>
+				<div class="w3-col" style="width: 70px;">
+					<com:TActiveRadioButton
+						ID="LdapAuthServerStartTLS"
+						GroupName="LdapAuthServerEncryption"
+						CssClass="w3-radio"
+						CausesValidation="false"
+						AutoPostBack="false"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row directive_field">
+				<div class="w3-third w3-col">
+					<label for="<%=$this->LdapAuthServerLdaps->ClientID%>">
+						LDAPS:
+					</label>
+				</div>
+				<div class="w3-col" style="width: 70px;">
+					<com:TActiveRadioButton
+						ID="LdapAuthServerLdaps"
+						GroupName="LdapAuthServerEncryption"
+						CssClass="w3-radio"
+						CausesValidation="false"
+						AutoPostBack="false"
+					/>
 				</div>
 			</div>
 			<h5><%[ LDAP authentication method ]%></h5>

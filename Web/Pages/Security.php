@@ -155,6 +155,7 @@ class Security extends BaculumWebPage
 				$this->LdapAuthServerAddress->Text = $this->web_config['auth_ldap']['address'];
 				$this->LdapAuthServerPort->Text = $this->web_config['auth_ldap']['port'];
 				$this->LdapAuthServerLdaps->Checked = ($this->web_config['auth_ldap']['ldaps'] == 1);
+				$this->LdapAuthServerStartTLS->Checked = (key_exists('starttls', $this->web_config['auth_ldap']) && $this->web_config['auth_ldap']['starttls'] == 1);
 				$this->LdapAuthServerProtocolVersion->Text = $this->web_config['auth_ldap']['protocol_ver'];
 				$this->LdapAuthServerBaseDn->Text = $this->web_config['auth_ldap']['base_dn'];
 				if ($this->web_config['auth_ldap']['auth_method'] === Ldap::AUTH_METHOD_ANON) {
@@ -1002,6 +1003,7 @@ class Security extends BaculumWebPage
 		$params['address'] = $this->LdapAuthServerAddress->Text;
 		$params['port'] = $this->LdapAuthServerPort->Text;
 		$params['ldaps'] = $this->LdapAuthServerLdaps->Checked ? 1 : 0;
+		$params['starttls'] = $this->LdapAuthServerStartTLS->Checked ? 1 : 0;
 		$params['protocol_ver'] = $this->LdapAuthServerProtocolVersion->SelectedValue;
 		$params['base_dn'] = $this->LdapAuthServerBaseDn->Text;
 		if ($this->LdapAuthMethodAnonymous->Checked) {
