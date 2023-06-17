@@ -116,6 +116,8 @@
 							<th><%[ Reviewed ]%></th>
 							<th><%[ Comment ]%></th>
 							<th><%[ File table ]%></th>
+							<th><%[ First vol. ]%></th>
+							<th><%[ Vol. count ]%></th>
 						</tr>
 					</thead>
 					<tbody id="last_jobs_list_body">

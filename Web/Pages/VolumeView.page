@@ -185,6 +185,8 @@
 					<th class="w3-center"><%[ Reviewed ]%></th>
 					<th class="w3-center"><%[ Comment ]%></th>
 					<th class="w3-center"><%[ File table ]%></th>
+					<th class="w3-center"><%[ First vol. ]%></th>
+					<th class="w3-center"><%[ Vol. count ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -221,6 +223,8 @@
 					<th class="w3-center"><%[ Reviewed ]%></th>
 					<th class="w3-center"><%[ Comment ]%></th>
 					<th class="w3-center"><%[ File table ]%></th>
+					<th class="w3-center"><%[ First vol. ]%></th>
+					<th class="w3-center"><%[ Vol. count ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -550,6 +554,16 @@ var oJobsOnVolumeList = {
 					defaultContent: ''
 				},
 				{
+					data: 'firstvol',
+					visible: false,
+					defaultContent: ''
+				},
+				{
+					data: 'volcount',
+					visible: false,
+					defaultContent: ''
+				},
+				{
 					data: 'jobid',
 					render: function (data, type, row) {
 						var btn = document.createElement('BUTTON');
@@ -578,7 +592,7 @@ var oJobsOnVolumeList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 22, 24, 25, 26, 27, 30 ]
+				targets: [ 1, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 20, 22, 24, 25, 26, 27, 30, 31, 32 ]
 			},
 			{
 				className: "dt-body-right",

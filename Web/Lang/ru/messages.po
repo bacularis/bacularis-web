@@ -4994,3 +4994,9 @@ msgstr "TLS/SSL encryption"
 
 msgid "No encryption"
 msgstr "No encryption"
+
+msgid "First vol."
+msgstr "First vol."
+
+msgid "Vol. count"
+msgstr "Vol. count"
