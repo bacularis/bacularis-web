@@ -5064,3 +5064,132 @@ msgstr "First vol."
 
 msgid "Vol. count"
 msgstr "Vol. count"
+
+msgid "Virtual Full backup job wizard"
+msgstr "Virtual Full backup job wizard"
+
+msgid "This wizard enables you to easily set up a synthetic backup (Virtual Full)."
+msgstr "This wizard enables you to easily set up a synthetic backup (Virtual Full)."
+
+msgid "The Virtual Full backup consolidates the previous full backup, recent differential backup and subsequent incremental backups into a new full backup. This new full backup becomes the most recent full for next incremental/differential backups. The Virtual Full backup is realized without using Bacula client."
+msgstr "The Virtual Full backup consolidates the previous full backup, recent differential backup and subsequent incremental backups into a new full backup. This new full backup becomes the most recent full for next incremental/differential backups. The Virtual Full backup is realized without using Bacula client."
+
+msgid "You can select an existing backup or create a new backup job that will be able to run Virtual Full job level."
+msgstr "You can select an existing backup or create a new backup job that will be able to run Virtual Full job level."
+
+msgid "Modify existing backup job to support Virtual Full."
+msgstr "Modify existing backup job to support Virtual Full."
+
+msgid "Create a new backup job with the Virtual Full capability."
+msgstr "Create a new backup job with the Virtual Full capability."
+
+msgid "Step 3 - where you want to store data"
+msgstr "Step 3 - where you want to store data"
+
+msgid "Virtual Full Pool"
+msgstr "Virtual Full Pool"
+
+msgid "Storage to write Virtual Full"
+msgstr "Storage to write Virtual Full"
+
+msgid "Add new Virtual Full Pool"
+msgstr "Add new Virtual Full Pool"
+
+msgid "Select the pool and storage that will write Virtual Full."
+msgstr "Select the pool and storage that will write Virtual Full."
+
+msgid "Virtual Full Type"
+msgstr "Virtual Full Type"
+
+msgid "Step 4 - how would you like to use Virtual Full"
+msgstr "Step 4 - how would you like to use Virtual Full"
+
+msgid "What kind of Virtual Full backup do you want to create:"
+msgstr "What kind of Virtual Full backup do you want to create:"
+
+msgid "Standard Virtual Full backup"
+msgstr "Standard Virtual Full backup"
+
+msgid "create a new full backup by consolidating the last full backup and subsequent incremental/diifferential backups. Processed backups are preserved."
+msgstr "create a new full backup by consolidating the last full backup and subsequent incremental/diifferential backups. Processed backups are preserved."
+
+msgid "Progressive Virtual Full backup"
+msgstr "Progressive Virtual Full backup"
+
+msgid "This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time."
+msgstr "This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time."
+
+msgid "Last 90 days"
+msgstr "Last 90 days"
+
+msgid "New virtual full job"
+msgstr "New virtual full job"
+
+msgid "Reset zoom"
+msgstr "Reset zoom"
+
+msgid "Zoom in"
+msgstr "Zoom in"
+
+msgid "Range of days:"
+msgstr "Range of days:"
+
+msgid "Jobs in range:"
+msgstr "Jobs in range:"
+
+msgid "Backups to keep:"
+msgstr "Backups to keep:"
+
+msgid "Sum of job bytes in range:"
+msgstr "Sum of job bytes in range:"
+
+msgid "Sum of job files in range:"
+msgstr "Sum of job files in range:"
+
+msgid "Jobs out of range on the right:"
+msgstr "Jobs out of range on the right:"
+
+msgid "Would you like to delete old jobs that are consolidated during a Virtual Full?"
+msgstr "Would you like to delete old jobs that are consolidated during a Virtual Full?"
+
+msgid "Schedule setting"
+msgstr "Schedule setting"
+
+msgid "When would you like to run the job?"
+msgstr "When would you like to run the job?"
+
+msgid "Create a basic schedule"
+msgstr "Create a basic schedule"
+
+msgid "Normal backup"
+msgstr "Normal backup"
+
+msgid "Run level"
+msgstr "Run level"
+
+msgid "Run daily"
+msgstr "Run daily"
+
+msgid "Virtual Full backup"
+msgstr "Virtual Full backup"
+
+msgid "Run on"
+msgstr "Run on"
+
+msgid "Select schedule"
+msgstr "Select schedule"
+
+msgid "No schedule. I will run Virtual Full manually"
+msgstr "No schedule. I will run Virtual Full manually"
+
+msgid "New Job Name"
+msgstr "New Job Name"
+
+msgid "Save job"
+msgstr "Save job"
+
+msgid "Existing Job Name"
+msgstr "Existing Job Name"
+
+msgid "Prepare resources for a new backup job."
+msgstr "Prepare resources for a new backup job."

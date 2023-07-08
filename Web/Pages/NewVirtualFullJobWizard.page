@@ -1,0 +1,1098 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewVirtualFullJobWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CssClass="navigation"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnPreviousButtonClick="wizardPrev"
+		OnNextButtonClick="wizardNext"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-upload w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="What" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Where" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="w3-half w3-hide-small">
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3  ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-question w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="How" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clock w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="When" /></h4>
+					</div>
+				</div>
+				<div class="w3-third w3-padding-16">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 5 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					CssClass="w3-button w3-green"
+					Attributes.onclick="return validate_new_virtual_full_step1();"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewJobDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa <%=$this->getPage()->WhatToDoWithVirtualFullExistingJob->Checked ? 'fa-save' : 'fa-paper-plane'%>"></i> &nbsp;<%=$this->getPage()->WhatToDoWithVirtualFullExistingJob->Checked ? Prado::localize('Save job') : Prado::localize('Create job') %>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - basic information about new job ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Virtual Full backup job wizard ]%></h2>
+					<p><%[ This wizard enables you to easily set up a synthetic backup (Virtual Full). ]%></p>
+					<p><%[ The Virtual Full backup consolidates the previous full backup, recent differential backup and subsequent incremental backups into a new full backup. This new full backup becomes the most recent full for next incremental/differential backups. The Virtual Full backup is realized without using Bacula client. ]%></p>
+					<p><%[ You can select an existing backup or create a new backup job that will be able to run Virtual Full job level. ]%></p>
+				</div>
+				<p>
+					<com:TRadioButton
+						GroupName="WhatToDoWithVirtualFull"
+						ID="WhatToDoWithVirtualFullExistingJob"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#what_to_do_with_virtual_full_new_job').slideUp('fast'); $('#what_to_do_with_virtual_full_existing_job').slideDown('fast');"
+						Checked="true"
+						/> &nbsp;<label for="<%=$this->WhatToDoWithVirtualFullExistingJob->ClientID%>"><%[ Modify existing backup job to support Virtual Full. ]%></label>
+				</p>
+				<div id="what_to_do_with_virtual_full_existing_job" style="display: <%=$this->WhatToDoWithVirtualFullExistingJob->Checked ? 'block' : 'none'%>">
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="ExistingJob"
+						DirectiveName="Name"
+						Label="Job Name"
+						ValidationGroup="ExistingJobDirective"
+						Required="true"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+				<p>
+					<com:TRadioButton
+						GroupName="WhatToDoWithVirtualFull"
+						ID="WhatToDoWithVirtualFullNewJob"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#what_to_do_with_virtual_full_existing_job').slideUp('fast'); $('#what_to_do_with_virtual_full_new_job').slideDown('fast');"
+						/> &nbsp;<label for="<%=$this->WhatToDoWithVirtualFullNewJob->ClientID%>"><%[ Create a new backup job with the Virtual Full capability. ]%></label>
+				</p>
+				<div id="what_to_do_with_virtual_full_new_job" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="Name"
+						DirectiveName="Name"
+						Label="Job Name"
+						ValidationGroup="NewJobDirective"
+						Required="true"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="Description"
+						DirectiveName="Description"
+						Label="Description"
+						ValidationGroup="NewJobDirective"
+						Required="false"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="JobDefs"
+						DirectiveName="JobDefs"
+						Label="JobDefs"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+			</div>
+			<script>
+				function validate_new_virtual_full_step1() {
+					const new_job = document.getElementById('<%=$this->WhatToDoWithVirtualFullNewJob->ClientID%>');
+					const existing_job = document.getElementById('<%=$this->WhatToDoWithVirtualFullExistingJob->ClientID%>');
+					const main_form = Prado.Validation.getForm();
+					let validation_group;
+					if (new_job.checked) {
+						validation_group = 'NewJobDirective';
+					} else if (existing_job.checked) {
+						validation_group = 'ExistingJobDirective';
+					}
+					return Prado.Validation.validate(main_form, validation_group);
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - what you want to backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Client and FileSet ]%></h2>
+					<p><%[ Prepare resources for a new backup job. ]%></p>
+					<p><%[ Please select Client from which you want to backup data and please select FileSet with files/directories definition to backup. ]%></p>
+					<p><%[ If your FileSet for this backup does not exist yet, you can create it. ]%></p>
+				</div>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Client"
+					DirectiveName="Client"
+					Label="Client"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Fileset"
+					DirectiveName="Fileset"
+					Label="FileSet"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_fileset').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new FileSet ]%></a></span>
+				<div id="fileset_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<div id="job_wizard_new_fileset" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ New FileSet ]%></h3>
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+						ID="FilesetConfig"
+						ComponentType="dir"
+						ResourceType="Fileset"
+						ShowCancelButton="false"
+						SaveDirectiveActionOk="$('#job_wizard_new_fileset').slideUp(); set_new_fileset(); $('#fileset_save_ok').show();"
+					/>
+				</div>
+			</div>
+			<com:TCallback ID="LoadFilesetList" OnCallback="LoadFilesetList" />
+			<script type="text/javascript">
+				function set_new_fileset() {
+					var container_id = 'job_wizard_new_fileset';
+					var resource_id = '<%=$this->Fileset->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					var cb = <%=$this->LoadFilesetList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - where you want to store data ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+					<div>
+						<h2><%[ Storage and Pool ]%></h2>
+						<p><%[ Prepare resources for a new backup job. ]%></p>
+						<p><%[ Please select Storage where you want to backup data and please select Pool with volumes which Storage will use to store backup data. ]%></p>
+					</div>
+					<com:Bacularis.Web.Portlets.DirectiveOrderedListBox
+						ID="Storage"
+						DirectiveName="Storage"
+						Label="Storage"
+						Show="true"
+						ValidationGroup="NewJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+					/>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="Pool"
+						DirectiveName="Pool"
+						Label="Pool"
+						Show="true"
+						ValidationGroup="NewJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<span><a href="javascript:void(0)" onclick="create_pool_type = 'normal'; $('#job_wizard_new_pool').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Pool ]%></a></span>
+				</div>
+				<div id="pool_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<h3><%[ Virtual Full Pool ]%></h3>
+				<p><%[ Select the pool and storage that will write Virtual Full. ]%></p>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="NextPool"
+					DirectiveName="NextPool"
+					Label="Pool to write Virtual Full (NextPool)"
+					Show="true"
+					Required="true"
+					ValidationGroup="NewJobDirective"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					Attributes.onchange="set_storage_list();"
+					 />
+				<com:TCallback ID="LoadStorageList" OnCallback="setVirtualFullBackupStorageValue" />
+<script>
+let storage_from_pool;
+function set_storage_list() {
+	const cb = <%=$this->LoadStorageList->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+function set_storage_list_cb(storage) {
+	storage_from_pool = storage || [<%=$this->VirtualFullBackupStorage->getDirectiveValue() ? '"' . implode('","', $this->VirtualFullBackupStorage->getDirectiveValue()) . '"' : ''%>];
+	previous_storage = storage;
+	const select = document.getElementById('<%=$this->VirtualFullBackupStorage->Directive->ClientID%>');
+	const opts = select.options;
+	for (let i = 0; i < opts.length; i++) {
+		if (opts[i].selected) {
+			opts[i].selected = false;
+			oDirectiveOrderedListBox.set_items(
+				{target: opts[i]},
+				select
+			);
+		}
+	}
+	OUTER:
+	for (let i = 0; i < storage.length; i++) {
+		INNER:
+		for (let j = 0; j < opts.length; j++) {
+			if (storage[i] === opts[j].value) {
+				opts[j].selected = true;
+				break INNER;
+			}
+		}
+	}
+	const hidden = document.getElementById('<%=$this->VirtualFullBackupStorage->DirectiveHidden->ClientID%>');
+	hidden.value = storage.join('!');
+	<%=$this->VirtualFullBackupStorage->ClientID%>_load_ordered_list_box();
+}
+$(function() {
+	<%=!empty($this->NextPool->getDirectiveValue()) && empty($this->VirtualFullBackupStorage->getDirectiveValue()) ? 'set_storage_list();' : ''%>
+});
+</script>
+				<com:Bacularis.Web.Portlets.DirectiveOrderedListBox
+					ID="VirtualFullBackupStorage"
+					DirectiveName="VirtualFullBackupStorage"
+					Label="<%[ Storage to write Virtual Full ]%>"
+					Show="true"
+					ValidationGroup="NewJobDirective"
+					Required="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					Attributes.onchange="set_storage(this.value);"
+					/>
+				<com:TCallback ID="SetVirtualFullStorage" OnCallback="setVirtualFullBackupStorageValue" />
+				<com:TCallback ID="GetJobsUsingPool" OnCallback="getJobsUsingPool" />
+<script>
+var previous_storage = [];
+function set_storage_from_nextpool() {
+	const cb = <%=$this->SetVirtualFullStorage->ActiveControl->Javascript%>;
+	cb.dispatch();
+}
+function set_storage(storage) {
+	storage = [];
+	const stg = document.getElementById('<%=$this->VirtualFullBackupStorage->Directive->ClientID%>');
+	for (let i = 0; i < stg.options.length; i++) {
+		if (stg.options[i].selected) {
+			storage.push(stg.options[i].value);
+		}
+	}
+	const pool = document.getElementById('<%=$this->NextPool->Directive->ClientID%>');
+	if (storage.length > 0 && pool.value && storage !== storage_from_pool) {
+		var param = {
+			storage: storage,
+			pool: pool.value
+		};
+		var cb = <%=$this->GetJobsUsingPool->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(param);
+		cb.dispatch();
+	}
+}
+
+function apply_storage() {
+	previous_storage = [];
+	var storage = document.getElementById('<%=$this->VirtualFullBackupStorage->Directive->ClientID%>');
+	for (let i = 0; i < storage.options.length; i++) {
+		if (storage.options[i].selected) {
+			previous_storage.push(storage.options[i].value);
+		}
+	}
+}
+
+function revert_storage() {
+	set_storage_list_cb(previous_storage);
+}
+</script>
+				<div id="warning_message_box" class="w3-modal" style="display: none">
+					<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width:600px">
+						<header class="w3-container w3-orange">
+							<span onclick="revert_storage(); document.getElementById('warning_message_box').style.display='none'" class="w3-button w3-display-topright">×</span>
+							<h2><%[ Warning ]%></h2>
+						</header>
+						<div class="w3-panel w3-padding">
+							<p><strong><%[ Note. ]%></strong> <span id="warning_message_note"></span></p>
+						</div>
+						<div class="w3-container">
+							<a href="javascript:void(0)" onclick="$('#warning_message_job_list').slideToggle();"><%[ See all jobs that use the pool ]%></a>
+						</div>
+						<div id="warning_message_job_list" class="w3-panel w3-padding" style="display: none">
+							<ul id="warning_message_jobs"></ul>
+						</div>
+						<footer class="w3-container w3-center">
+							<button type="button" class="w3-button w3-section w3-red" onclick="revert_storage(); document.getElementById('warning_message_box').style.display='none'"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+							<button type="button" class="w3-button w3-section w3-green" onclick="apply_storage(); document.getElementById('warning_message_box').style.display='none'"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></button>
+						</footer>
+					</div>
+				</div>
+<script>
+function show_storage_warning(storage, pool, jobs) {
+	if (jobs.length == 0) {
+		previous_storage = storage;
+	}
+	var msg = '<%[ To chosen destination pool %pool will be assigned new Storage %storage. This action can affect all jobs (listed below) that use this pool. Are you sure you want to assign the storage %storage to pool %pool? ]%>';
+	msg = msg.replace(/%pool/g, pool);
+	msg = msg.replace(/%storage/g, storage);
+	var warn_box = document.getElementById('warning_message_box');
+	var warn_msg = document.getElementById('warning_message_note');
+	var ul = document.getElementById('warning_message_jobs');
+	ul.innerHTML = '';
+	var li, txt;
+	for (var i = 0; i < jobs.length; i++) {
+		li = document.createElement('LI');
+		li.textContent = jobs[i];
+		ul.appendChild(li);
+	}
+	warn_msg.textContent = msg;
+	warn_box.style.display = 'block';
+}
+</script>
+
+
+
+
+
+
+				<span><a href="javascript:void(0)" onclick="create_pool_type = 'vf'; $('#job_wizard_new_pool').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Virtual Full Pool ]%></a></span>
+				<div id="job_wizard_new_pool" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+					<h3><%[ New Pool ]%></h3>
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+						ID="PoolConfig"
+						ComponentType="dir"
+						ResourceType="Pool"
+						ShowCancelButton="false"
+						SaveDirectiveActionOk="$('#job_wizard_new_pool').slideUp(); set_new_pool(); $('#pool_save_ok').show(); set_storage_list();"
+					/>
+				</div>
+			</div>
+			<com:TCallback ID="LoadPoolList" OnCallback="loadPools" />
+			<script>
+				let create_pool_type;
+				function set_new_pool() {
+					const container_id = 'job_wizard_new_pool';
+					const resource_id = create_pool_type == 'normal' ? '<%=$this->Pool->Directive->ClientID%>' : '<%=$this->NextPool->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					var cb = <%=$this->LoadPoolList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - how would you like to use Virtual Full ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Virtual Full Type ]%></h2>
+				</div>
+				<p><%[ What kind of Virtual Full backup do you want to create: ]%></p>
+				<p><com:TRadioButton
+					GroupName="VirtualFullSetting"
+					ID="VirtualFullTypeStandard"
+					CssClass="w3-radio"
+					Attributes.onclick="$('#virtual_full_type_progressive').slideUp('fast'); $('#<%=$this->DeleteConsolidatedJobs->Directive->ClientID%>').prop('checked', false);"
+					Checked="true"
+				/> &nbsp;<label for="<%=$this->VirtualFullTypeStandard->ClientID%>"><strong><%[ Standard Virtual Full backup ]%></strong> - <%[ create a new full backup by consolidating the last full backup and subsequent incremental/diifferential backups. Processed backups are preserved. ]%></label></p>
+				<p><com:TRadioButton
+					GroupName="VirtualFullSetting"
+					ID="VirtualFullTypeProgressive"
+					CssClass="w3-radio"
+					Attributes.onclick="$('#virtual_full_type_progressive').slideDown('fast'); $('#<%=$this->DeleteConsolidatedJobs->Directive->ClientID%>').prop('checked', true);"
+				/> &nbsp;<label for="<%=$this->VirtualFullTypeProgressive->ClientID%>"><strong><%[ Progressive Virtual Full backup ]%></strong> - <%[ This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time. ]%></label></p>
+				<div id="virtual_full_type_progressive" style="display: <%=$this->VirtualFullTypeProgressive->Checked ? 'block' : 'none'%>">
+					<div id="virtual_full_existing_job_history" style="display: <%=$this->WhatToDoWithVirtualFullExistingJob->Checked ? 'block' : 'none'%>">
+						<h3><%[ Job history ]%> - <%=$this->ExistingJob->getValue()%> - <%[ Last 90 days ]%></h3>
+						<com:Bacularis.Web.Portlets.JobHistoryRangeSlider
+							ID="JobHistorySlider"
+							Days="90"
+							JobName="<%=$this->ExistingJob->getValue()%>"
+						/>
+					</div>
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="BackupsToKeep"
+						DirectiveName="BackupsToKeep"
+						DefaultValue="30"
+						Label="Backups to keep"
+						Show="true"
+						Attributes.style="width: 100px"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<p><%[ Would you like to delete old jobs that are consolidated during a Virtual Full? ]%></p>
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
+						ID="DeleteConsolidatedJobs"
+						DirectiveName="DeleteConsolidatedJobs"
+						DefaultValue="1"
+						Label="Delete Consolidated Jobs"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+				<div style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+					<div>
+						<h2><%[ Other directives ]%></h2>
+					</div>
+					<com:Bacularis.Web.Portlets.DirectiveCheckBox
+						ID="Accurate"
+						DirectiveName="Accurate"
+						DefaultValue="true"
+						Label="Accurate"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="Priority"
+						DirectiveName="Priority"
+						DefaultValue="12"
+						Label="Priority"
+						Show="true"
+						Required="<%=$this->WhatToDoWithVirtualFullNewJob->Checked%>"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="Messages"
+						DirectiveName="Messages"
+						Label="Messages"
+						Show="true"
+						ValidationGroup="NewJobDirective"
+						Required="<%=$this->WhatToDoWithVirtualFullNewJob->Checked%>"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - when would you like to run backup ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ Schedule setting ]%></h2>
+				</div>
+				<p><%[ When would you like to run the job? ]%></p>
+				<p><com:TRadioButton
+					GroupName="VirtualFullSchedule"
+					ID="VirtualFullScheduleBasic"
+					CssClass="w3-radio"
+					Attributes.onclick="$('#virtual_full_schedule_custom').slideUp('fast');$('#virtual_full_schedule_existing').slideUp('fast');$('#virtual_full_schedule_basic').slideDown('fast');"
+				/> &nbsp;<label for="<%=$this->VirtualFullScheduleBasic->ClientID%>"><%[ Create a basic schedule ]%></label></p>
+				<div id="virtual_full_schedule_basic" style="display: <%=$this->VirtualFullScheduleBasic->Checked ? 'block' : 'none'%>">
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="VirtualFullScheduleBasicName"
+						DirectiveName="VirtualFullScheduleBasicName"
+						Label="Schedule Name"
+						Show="true"
+						Required="true"
+						ValidationGroup="NewJobDirective"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						 />
+					<h5><%[ Normal backup ]%></h5>
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="VirtualFullScheduleBasicLevel"
+						DirectiveName="VirtualFullScheduleBasicLevel"
+						Label="<%[ Run level ]%>"
+						DefaultValue="Incremental"
+						Data="<%=['Incremental', 'Differential']%>"
+						Show="true"
+						ValidationGroup="NewJobDirective"
+						Required="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<div class="directive_field w3-row">
+						<div class="w3-col w3-quarter"><%[ Run daily ]%>:</div>
+						<div class="w3-col w3-threequarter directive_value">
+							<%[ From ]%>:
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleFrom"
+								CssClass="w3-select w3-border"
+								Width="150px"
+							>
+								<com:TListItem Value="1" Text="Monday" />
+								<com:TListItem Value="2" Text="Tuesday" />
+								<com:TListItem Value="3" Text="Wednesday" />
+								<com:TListItem Value="4" Text="Thursday" />
+								<com:TListItem Value="5" Text="Friday" />
+								<com:TListItem Value="6" Text="Saturday" />
+								<com:TListItem Value="0" Text="Sunday" />
+							</com:TDropDownList>
+							<%[ To ]%>: <com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleTo"
+								CssClass="w3-select w3-border"
+								Width="150px"
+								SelectedIndex="1"
+							>
+								<com:TListItem Value="1" Text="Monday" />
+								<com:TListItem Value="2" Text="Tuesday" />
+								<com:TListItem Value="3" Text="Wednesday" />
+								<com:TListItem Value="4" Text="Thursday" />
+								<com:TListItem Value="5" Text="Friday" />
+								<com:TListItem Value="6" Text="Saturday" />
+								<com:TListItem Value="0" Text="Sunday" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<div class="directive_field w3-row">
+						<div class="w3-col w3-quarter"><%[ Run at ]%>:</div>
+						<div class="w3-col w3-threequarter directive_value">
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleAtHour"
+								CssClass="w3-select w3-border"
+								Width="65px"
+							>
+								<com:TListItem Value="0" Text="00" />
+								<com:TListItem Value="1" Text="01" />
+								<com:TListItem Value="2" Text="02" />
+								<com:TListItem Value="3" Text="03" />
+								<com:TListItem Value="4" Text="04" />
+								<com:TListItem Value="5" Text="05" />
+								<com:TListItem Value="6" Text="06" />
+								<com:TListItem Value="7" Text="07" />
+								<com:TListItem Value="8" Text="08" />
+								<com:TListItem Value="9" Text="09" />
+								<com:TListItem Value="10" Text="10" />
+								<com:TListItem Value="11" Text="11" />
+								<com:TListItem Value="12" Text="12" />
+								<com:TListItem Value="13" Text="13" />
+								<com:TListItem Value="14" Text="14" />
+								<com:TListItem Value="15" Text="15" />
+								<com:TListItem Value="16" Text="16" />
+								<com:TListItem Value="17" Text="17" />
+								<com:TListItem Value="18" Text="18" />
+								<com:TListItem Value="19" Text="19" />
+								<com:TListItem Value="20" Text="20" />
+								<com:TListItem Value="21" Text="21" />
+								<com:TListItem Value="22" Text="22" />
+								<com:TListItem Value="23" Text="23" />
+							</com:TDropDownList> : 
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleAtMinute"
+								CssClass="w3-select w3-border"
+								Width="65px"
+							>
+								<com:TListItem Value="0" Text="00" />
+								<com:TListItem Value="1" Text="01" />
+								<com:TListItem Value="2" Text="02" />
+								<com:TListItem Value="3" Text="03" />
+								<com:TListItem Value="4" Text="04" />
+								<com:TListItem Value="5" Text="05" />
+								<com:TListItem Value="6" Text="06" />
+								<com:TListItem Value="7" Text="07" />
+								<com:TListItem Value="8" Text="08" />
+								<com:TListItem Value="9" Text="09" />
+								<com:TListItem Value="10" Text="10" />
+								<com:TListItem Value="11" Text="11" />
+								<com:TListItem Value="12" Text="12" />
+								<com:TListItem Value="13" Text="13" />
+								<com:TListItem Value="14" Text="14" />
+								<com:TListItem Value="15" Text="15" />
+								<com:TListItem Value="16" Text="16" />
+								<com:TListItem Value="17" Text="17" />
+								<com:TListItem Value="18" Text="18" />
+								<com:TListItem Value="19" Text="19" />
+								<com:TListItem Value="20" Text="20" />
+								<com:TListItem Value="21" Text="21" />
+								<com:TListItem Value="22" Text="22" />
+								<com:TListItem Value="23" Text="23" />
+								<com:TListItem Value="24" Text="24" />
+								<com:TListItem Value="25" Text="25" />
+								<com:TListItem Value="26" Text="26" />
+								<com:TListItem Value="27" Text="27" />
+								<com:TListItem Value="28" Text="28" />
+								<com:TListItem Value="29" Text="29" />
+								<com:TListItem Value="30" Text="30" />
+								<com:TListItem Value="31" Text="31" />
+								<com:TListItem Value="32" Text="32" />
+								<com:TListItem Value="33" Text="33" />
+								<com:TListItem Value="34" Text="34" />
+								<com:TListItem Value="35" Text="35" />
+								<com:TListItem Value="36" Text="36" />
+								<com:TListItem Value="37" Text="37" />
+								<com:TListItem Value="38" Text="38" />
+								<com:TListItem Value="39" Text="39" />
+								<com:TListItem Value="40" Text="40" />
+								<com:TListItem Value="41" Text="41" />
+								<com:TListItem Value="42" Text="42" />
+								<com:TListItem Value="43" Text="43" />
+								<com:TListItem Value="44" Text="44" />
+								<com:TListItem Value="45" Text="45" />
+								<com:TListItem Value="46" Text="46" />
+								<com:TListItem Value="47" Text="47" />
+								<com:TListItem Value="48" Text="48" />
+								<com:TListItem Value="49" Text="49" />
+								<com:TListItem Value="50" Text="50" />
+								<com:TListItem Value="51" Text="51" />
+								<com:TListItem Value="52" Text="52" />
+								<com:TListItem Value="53" Text="53" />
+								<com:TListItem Value="54" Text="54" />
+								<com:TListItem Value="55" Text="55" />
+								<com:TListItem Value="56" Text="56" />
+								<com:TListItem Value="57" Text="57" />
+								<com:TListItem Value="58" Text="58" />
+								<com:TListItem Value="59" Text="59" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<h5><%[ Virtual Full backup ]%></h5>
+					<div class="directive_field w3-row">
+						<div class="w3-col w3-quarter"><%[ Run on ]%>:</div>
+						<div class="w3-col w3-threequarter directive_value">
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleRunVFOn"
+								CssClass="w3-select w3-border"
+								Width="150px"
+							>
+								<com:TListItem Value="1" Text="Monday" />
+								<com:TListItem Value="2" Text="Tuesday" />
+								<com:TListItem Value="3" Text="Wednesday" />
+								<com:TListItem Value="4" Text="Thursday" />
+								<com:TListItem Value="5" Text="Friday" />
+								<com:TListItem Value="6" Text="Saturday" />
+								<com:TListItem Value="0" Text="Sunday" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<div class="directive_field w3-row">
+						<div class="w3-col w3-quarter"><%[ Run at ]%>:</div>
+						<div class="w3-col w3-threequarter directive_value">
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleVFAtHour"
+								CssClass="w3-select w3-border"
+								Width="65px"
+							>
+								<com:TListItem Value="0" Text="00" />
+								<com:TListItem Value="1" Text="01" />
+								<com:TListItem Value="2" Text="02" />
+								<com:TListItem Value="3" Text="03" />
+								<com:TListItem Value="4" Text="04" />
+								<com:TListItem Value="5" Text="05" />
+								<com:TListItem Value="6" Text="06" />
+								<com:TListItem Value="7" Text="07" />
+								<com:TListItem Value="8" Text="08" />
+								<com:TListItem Value="9" Text="09" />
+								<com:TListItem Value="10" Text="10" />
+								<com:TListItem Value="11" Text="11" />
+								<com:TListItem Value="12" Text="12" />
+								<com:TListItem Value="13" Text="13" />
+								<com:TListItem Value="14" Text="14" />
+								<com:TListItem Value="15" Text="15" />
+								<com:TListItem Value="16" Text="16" />
+								<com:TListItem Value="17" Text="17" />
+								<com:TListItem Value="18" Text="18" />
+								<com:TListItem Value="19" Text="19" />
+								<com:TListItem Value="20" Text="20" />
+								<com:TListItem Value="21" Text="21" />
+								<com:TListItem Value="22" Text="22" />
+								<com:TListItem Value="23" Text="23" />
+							</com:TDropDownList> : 
+							<com:TDropDownList
+								ID="VirtualFullScheduleBasicScheduleVFAtMinute"
+								CssClass="w3-select w3-border"
+								Width="65px"
+							>
+								<com:TListItem Value="0" Text="00" />
+								<com:TListItem Value="1" Text="01" />
+								<com:TListItem Value="2" Text="02" />
+								<com:TListItem Value="3" Text="03" />
+								<com:TListItem Value="4" Text="04" />
+								<com:TListItem Value="5" Text="05" />
+								<com:TListItem Value="6" Text="06" />
+								<com:TListItem Value="7" Text="07" />
+								<com:TListItem Value="8" Text="08" />
+								<com:TListItem Value="9" Text="09" />
+								<com:TListItem Value="10" Text="10" />
+								<com:TListItem Value="11" Text="11" />
+								<com:TListItem Value="12" Text="12" />
+								<com:TListItem Value="13" Text="13" />
+								<com:TListItem Value="14" Text="14" />
+								<com:TListItem Value="15" Text="15" />
+								<com:TListItem Value="16" Text="16" />
+								<com:TListItem Value="17" Text="17" />
+								<com:TListItem Value="18" Text="18" />
+								<com:TListItem Value="19" Text="19" />
+								<com:TListItem Value="20" Text="20" />
+								<com:TListItem Value="21" Text="21" />
+								<com:TListItem Value="22" Text="22" />
+								<com:TListItem Value="23" Text="23" />
+								<com:TListItem Value="24" Text="24" />
+								<com:TListItem Value="25" Text="25" />
+								<com:TListItem Value="26" Text="26" />
+								<com:TListItem Value="27" Text="27" />
+								<com:TListItem Value="28" Text="28" />
+								<com:TListItem Value="29" Text="29" />
+								<com:TListItem Value="30" Text="30" />
+								<com:TListItem Value="31" Text="31" />
+								<com:TListItem Value="32" Text="32" />
+								<com:TListItem Value="33" Text="33" />
+								<com:TListItem Value="34" Text="34" />
+								<com:TListItem Value="35" Text="35" />
+								<com:TListItem Value="36" Text="36" />
+								<com:TListItem Value="37" Text="37" />
+								<com:TListItem Value="38" Text="38" />
+								<com:TListItem Value="39" Text="39" />
+								<com:TListItem Value="40" Text="40" />
+								<com:TListItem Value="41" Text="41" />
+								<com:TListItem Value="42" Text="42" />
+								<com:TListItem Value="43" Text="43" />
+								<com:TListItem Value="44" Text="44" />
+								<com:TListItem Value="45" Text="45" />
+								<com:TListItem Value="46" Text="46" />
+								<com:TListItem Value="47" Text="47" />
+								<com:TListItem Value="48" Text="48" />
+								<com:TListItem Value="49" Text="49" />
+								<com:TListItem Value="50" Text="50" />
+								<com:TListItem Value="51" Text="51" />
+								<com:TListItem Value="52" Text="52" />
+								<com:TListItem Value="53" Text="53" />
+								<com:TListItem Value="54" Text="54" />
+								<com:TListItem Value="55" Text="55" />
+								<com:TListItem Value="56" Text="56" />
+								<com:TListItem Value="57" Text="57" />
+								<com:TListItem Value="58" Text="58" />
+								<com:TListItem Value="59" Text="59" />
+							</com:TDropDownList>
+						</div>
+					</div>
+				</div>
+				<p><com:TRadioButton
+					GroupName="VirtualFullSchedule"
+					ID="VirtualFullScheduleExisting"
+					CssClass="w3-radio"
+					Attributes.onclick="$('#virtual_full_schedule_basic').slideUp('fast');$('#virtual_full_schedule_custom').slideUp('fast');$('#virtual_full_schedule_existing').slideDown('fast');"
+				/> &nbsp;<label for="<%=$this->VirtualFullScheduleExisting->ClientID%>"><%[ Select schedule ]%></label></p>
+				<div id="schedule_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+					<p><%[ The resource has been created successfully. ]%></p>
+				</div>
+				<div id="virtual_full_schedule_existing" style="display: <%=$this->VirtualFullScheduleExisting->Checked ? 'block' : 'none'%>">
+					<com:Bacularis.Web.Portlets.DirectiveComboBox
+						ID="VirtualFullScheduleExistingList"
+						DirectiveName="Schedule"
+						Label="Schedule"
+						Show="true"
+						Required="true"
+						ValidationGroup="NewJobDirective"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_schedule').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new Schedule ]%></a></span>
+					<div id="schedule_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
+						<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
+						<p><%[ The resource has been created successfully. ]%></p>
+					</div>
+					<div id="job_wizard_new_schedule" class="w3-card-4 w3-padding w3-margin-top" style="display: none">
+						<h3><%[ New Schedule ]%></h3>
+						<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+							ID="ScheduleConfig"
+							ComponentType="dir"
+							ResourceType="Schedule"
+							ShowCancelButton="false"
+							SaveDirectiveActionOk="$('#job_wizard_new_schedule').slideUp(); set_new_schedule(); $('#schedule_save_ok').show();"
+						/>
+					</div>
+				</div>
+				<p><com:TRadioButton
+					GroupName="VirtualFullSchedule"
+					ID="VirtualFullScheduleNoSchedule"
+					CssClass="w3-radio"
+					Attributes.onclick="$('#virtual_full_schedule_custom').slideUp('fast');$('#virtual_full_schedule_existing').slideUp('fast');$('#virtual_full_schedule_basic').slideUp('fast');"
+				/> &nbsp;<label for="<%=$this->VirtualFullScheduleNoSchedule->ClientID%>"><%[ No schedule. I will run Virtual Full manually ]%></label></p>
+			</div>
+			<com:TCallback ID="LoadScheduleList" OnCallback="loadScheduleList" />
+			<script type="text/javascript">
+				function set_new_schedule() {
+					const container_id = 'job_wizard_new_schedule';
+					const resource_id = '<%=$this->VirtualFullScheduleExistingList->Directive->ClientID%>';
+					set_new_resource(container_id, resource_id);
+					const cb = <%=$this->LoadScheduleList->ActiveControl->JavaScript%>;
+					cb.dispatch();
+				}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step6" Title="<%[ Step 6 - summary ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container">
+						<div style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+							<div class="w3-quarter"><%[ New Job Name ]%></div>
+							<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+						</div>
+						<div style="display: <%=$this->WhatToDoWithVirtualFullExistingJob->Checked ? 'block' : 'none'%>">
+							<div class="w3-quarter"><%[ Existing Job Name ]%></div>
+							<div class="w3-threequarter bold"><%=$this->ExistingJob->getDirectiveValue()%></div>
+						</div>
+					</div>
+					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Description</div>
+						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">JobDefs</div>
+						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+					<legend><%[ What ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Client</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Client->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">FileSet</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Fileset->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Fileset', $this->Fileset->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Where ]%></legend>
+					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Storage</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Storage->getDirectiveValue() ? implode(',', $this->Storage->getDirectiveValue()) : '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Pool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Pool->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">NextPool</div>
+						<div class="w3-threequarter bold">
+							<%=$this->NextPool->getDirectiveValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('NextPool', $this->NextPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter"><%[ Storage to write Virtual Full ]%></div>
+						<div class="w3-threequarter bold">
+							<%=implode(',', $this->VirtualFullBackupStorage->getDirectiveValue())%>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ How ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter"><%[ Virtual Full Type ]%></div>
+						<div class="w3-threequarter bold">
+							<%=$this->VirtualFullTypeStandard->Checked ? Prado::localize('Standard Virtual Full backup') : '' %>
+							<%=$this->VirtualFullTypeProgressive->Checked ? Prado::localize('Progressive Virtual Full backup') : '' %>
+						</div>
+					</div>
+					<div class="w3-container" style="display: <%=$this->VirtualFullTypeProgressive->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Backups to keep</div>
+						<div class="w3-threequarter bold">
+							<%=$this->BackupsToKeep->getDirectiveValue() ?: $this->BackupsToKeep->getDefaultValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('BackupsToKeep', $this->BackupsToKeep->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container" style="display: <%=$this->VirtualFullTypeProgressive->Checked ? 'block' : 'none'%>">
+						<div class="w3-quarter">Delete Consolidated Jobs</div>
+						<div class="w3-threequarter bold">
+							<%=$this->DeleteConsolidatedJobs->getValue() ?  Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('DeleteConsolidatedJobs', $this->DeleteConsolidatedJobs->getValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ When ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Schedule</div>
+						<div class="w3-threequarter bold">
+							<%=$this->VirtualFullScheduleBasic->Checked ? $this->VirtualFullScheduleBasicName->getDirectiveValue() : '' %>
+							<%=$this->VirtualFullScheduleExisting->Checked ? $this->VirtualFullScheduleExistingList->getDirectiveValue() : '' %>
+							<%=$this->VirtualFullScheduleNoSchedule->Checked ? '-' : '' %>
+							<span class="w3-small normal"><%=$this->VirtualFullScheduleExisting->Checked && $this->isInJobDefs('Schedule', $this->VirtualFullScheduleExistingList->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div style="display: <%=$this->VirtualFullScheduleBasic->Checked ? 'block' : 'none'%>">
+						<strong><%[ Normal backup ]%></strong>
+						<div class="w3-container">
+							<div class="w3-quarter"><%[ Run level ]%></div>
+							<div class="w3-threequarter bold">
+								<%=$this->VirtualFullScheduleBasicLevel->getValue()%>
+							</div>
+						</div>
+						<div class="w3-container">
+							<div class="w3-quarter"><%[ Run daily ]%></div>
+							<div class="w3-threequarter bold">
+								<%[ From ]%>: <%=$this->VirtualFullScheduleBasicScheduleFrom->getSelectedItem()->Text%>
+								<%[ To ]%>: <%=$this->VirtualFullScheduleBasicScheduleTo->getSelectedItem()->Text%>
+							</div>
+						</div>
+						<div class="w3-container">
+							<div class="w3-quarter"><%[ Run at ]%></div>
+							<div class="w3-threequarter bold">
+								<%=$this->VirtualFullScheduleBasicScheduleAtHour->getSelectedItem()->Text%>:<%=$this->VirtualFullScheduleBasicScheduleAtMinute->getSelectedItem()->Text%>
+							</div>
+						</div>
+						<strong><%[ Virtual Full backup ]%></strong>
+						<div class="w3-container">
+							<div class="w3-quarter"><%[ Run on ]%></div>
+							<div class="w3-threequarter bold">
+								<%=$this->VirtualFullScheduleBasicScheduleRunVFOn->getSelectedItem()->Text%>
+							</div>
+						</div>
+						<div class="w3-container">
+							<div class="w3-quarter"><%[ Run at ]%></div>
+							<div class="w3-threequarter bold">
+								<%=$this->VirtualFullScheduleBasicScheduleVFAtHour->getSelectedItem()->Text%>:<%=$this->VirtualFullScheduleBasicScheduleVFAtMinute->getSelectedItem()->Text%>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
+					<legend><%[ Other directives ]%></legend>
+					<div class="w3-container">
+						<div class="w3-quarter">Accurate</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Accurate->getValue() ? Prado::localize('Yes') : Prado::localize('No') %>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Accurate', $this->Accurate->getValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Priority</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue()%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Priority', $this->Priority->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+					<div class="w3-container">
+						<div class="w3-quarter">Messages</div>
+						<div class="w3-threequarter bold">
+							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
+						</div>
+					</div>
+				</fieldset>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+	<script>
+		function set_new_resource(container_id, resource_id) {
+			var resource_container =  document.getElementById(container_id);
+			var new_resource = resource_container.querySelector('div.directive_value input').value;
+			var resource_el = document.getElementById(resource_id);
+			var opt = document.createElement('OPTION');
+			var txt = document.createTextNode(new_resource);
+			opt.appendChild(txt);
+			opt.value = new_resource;
+			resource_el.appendChild(opt);
+			resource_el.value = new_resource;
+		}
+	</script>
+</com:TContent>
