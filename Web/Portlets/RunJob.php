@@ -85,10 +85,13 @@ class RunJob extends Portlets
 			}
 		}
 
+		$job_info_keys = array_keys($job_info);
+		$storage_idx = array_search('storage', $job_info_keys) ?: -1;
+		$autochanger_idx = array_search('autochanger', $job_info_keys) ?: -1;
 		if ($jobid > 0) {
 			$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
 			$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
-			$jobdata->storage = $storage ?: $autochanger;
+			$jobdata->storage = ($autochanger_idx > -1 && ($storage_idx == -1 || $autochanger_idx < $storage_idx)) ? $autochanger : $storage;
 			$this->getPage()->getCallbackClient()->show('run_job_storage_from_config_info');
 		} elseif (!empty($jobname)) {
 			$jobdata = new \StdClass();
@@ -108,7 +111,7 @@ class RunJob extends Portlets
 			$jobdata->client = $client;
 			$jobdata->fileset = $fileset;
 			$jobdata->pool = $pool;
-			$jobdata->storage = $storage ?: $autochanger;
+			$jobdata->storage = ($autochanger_idx > -1 && ($storage_idx == -1 || $autochanger_idx < $storage_idx)) ? $autochanger : $storage;
 			$jobdata->priorjobid = $priority;
 			$jobdata->accurate = ($accurate == 1);
 		} else {

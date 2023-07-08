@@ -115,6 +115,9 @@ class JobList extends BaculumWebPage
 			self::USE_CACHE
 		)->output;
 		$job_info = $this->getModule('job_info')->parseResourceDirectives($job_show);
+		$job_info_keys = array_keys($job_info);
+		$storage_idx = array_search('storage', $job_info_keys) ?: -1;
+		$autochanger_idx = array_search('autochanger', $job_info_keys) ?: -1;
 		if ($jobdata->filesetid > 0) {
 			$params['filesetid'] = $jobdata->filesetid;
 		} else {
@@ -123,7 +126,7 @@ class JobList extends BaculumWebPage
 		$params['clientid'] = $jobdata->clientid;
 		$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
 		$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
-		$params['storage'] = $storage ?: $autochanger;
+		$params['storage'] = ($autochanger_idx > -1 && ($storage_idx == -1 || $autochanger_idx < $storage_idx)) ? $autochanger : $storage;
 
 		/**
 		 * For 'c' type (Copy Job) and 'g' type (Migration Job) the in job table in poolid property is written
