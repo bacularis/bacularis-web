@@ -617,9 +617,6 @@ class RestoreWizard extends BaculumWebPage
 			$params = [
 				'jobid' => $this->Session['restore_job']['jobid']
 			];
-			if ($this->EnableCopyJobRestore->Checked) {
-				$params['inc_copy_job'] = 1;
-			}
 			$query = '?' . http_build_query($params);
 			$jobs = $this->getModule('api')->get(
 				['bvfs', 'getjobids', $query]
