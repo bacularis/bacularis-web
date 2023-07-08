@@ -32,8 +32,6 @@ namespace Bacularis\Web\Portlets;
 use Prado\TPropertyValue;
 use Prado\Web\UI\TCommandEventParameter;
 use Prado\Web\UI\ActiveControls\IActiveControl;
-
-;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
 
 /**
