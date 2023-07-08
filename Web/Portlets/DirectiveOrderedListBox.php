@@ -58,7 +58,6 @@ class DirectiveOrderedListBox extends DirectiveTemplate
 			$control = Prado::createComponent('\Prado\Web\UI\WebControls\TListItem');
 			$control->setValue($items[$i]);
 			$idx = array_search($items[$i], $directive_value);
-			$label = '';
 			if ($idx !== false) {
 				// element selected
 				$pos = $idx + 1;

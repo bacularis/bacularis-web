@@ -313,14 +313,39 @@ var oBaculaConfigSection = {
 var BaculaConfig = new BaculaConfigClass();
 
 var oDirectiveOrderedListBox = {
-	set_items: function(event, select) {
+	init_items: function(select_id, hidden_id) {
+		const select = document.getElementById(select_id);
+		const hidden = document.getElementById(hidden_id);
+		if (hidden.value) {
+			const vals = hidden.value.split('!');
+			OUTER:
+			for (let i = 0; i < vals.length; i++) {
+				INNER:
+				for (let j = 0; j < select.options.length; j++) {
+					if (select.options[j].value !== vals[i]) {
+						continue INNER;
+					}
+					this.set_items(
+						{
+							target: select.options[j]
+						},
+						select,
+						(i+1)
+					);
+					break INNER;
+				}
+			}
+		}
+		this.set_options(select_id, hidden_id);
+	},
+	set_items: function(event, select, fpos) {
 		const el = event.target;
 		const selected_len = select.querySelectorAll('select option:checked').length;
 		let pos;
 		let rm = false;
 		if (el.selected) {
-			pos = selected_len;
-			el.setAttribute('data-pos', selected_len);
+			pos = fpos || selected_len;
+			el.setAttribute('data-pos', pos);
 		} else {
 			pos = el.getAttribute('data-pos');
 			rm = true;
@@ -333,6 +358,9 @@ var oDirectiveOrderedListBox = {
 		const els = select.querySelectorAll('option');
 		for (let i = 0; i < els.length; i++) {
 			epos = els[i].getAttribute('data-pos');
+			if (epos === null) {
+				continue;
+			}
 			els[i].textContent = els[i].textContent.replace(/^\[\d+\]\s/, '');
 			if (els[i].selected) {
 				// element selected

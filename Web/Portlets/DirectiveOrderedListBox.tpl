@@ -38,9 +38,12 @@ $('#<%=$this->Directive->ClientID%> option').on('mousemove', function(e) {
 	// Disable selecting multiple items by mouse drag
 	return false;
 });
-oDirectiveOrderedListBox.set_options(
-	'<%=$this->Directive->ClientID%>',
-	'<%=$this->DirectiveHidden->ClientID%>'
-);
+function <%=$this->ClientID%>_load_ordered_list_box() {
+	oDirectiveOrderedListBox.init_items(
+		'<%=$this->Directive->ClientID%>',
+		'<%=$this->DirectiveHidden->ClientID%>'
+	);
+}
+<%=$this->ClientID%>_load_ordered_list_box();
 	</script>
 </div>
