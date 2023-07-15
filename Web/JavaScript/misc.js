@@ -1020,23 +1020,12 @@ var Dashboard = {
 		this.update_bytes_files_graph();
 	},
 	update_clients: function() {
-		var clients = this.stats.clients_occupancy;
-		var most_occuped_client = this.noval;
-		var occupancy = -1;
-		for (client in clients) {
-			if (occupancy < clients[client]) {
-				most_occuped_client = client;
-				occupancy = clients[client];
-			}
-		}
-
-		if (occupancy === -1) {
-			occupancy = 0;
-		}
-
-		document.getElementById(this.ids.clients.no).textContent = Object.keys(this.stats.clients).length;
-		document.getElementById(this.ids.clients.most).setAttribute('title', most_occuped_client);
-		document.getElementById(this.ids.clients.most).textContent = Strings.get_short_label(most_occuped_client);
+		const client_no = Object.keys(this.stats.clients).length;
+		const most_occupied_client = this.stats.jobtotals.most_occupied_client || this.noval;
+		const occupancy = this.stats.jobtotals.most_occupied_client_count || this.noval;
+		document.getElementById(this.ids.clients.no).textContent = client_no;
+		document.getElementById(this.ids.clients.most).setAttribute('title', most_occupied_client);
+		document.getElementById(this.ids.clients.most).textContent = Strings.get_short_label(most_occupied_client);
 		document.getElementById(this.ids.clients.jobs).textContent = occupancy;
 	},
 	update_job_access: function() {
@@ -1047,23 +1036,13 @@ var Dashboard = {
 		});
 	},
 	update_jobs: function() {
-		var jobs = this.stats.jobs_occupancy;
-		var most_occuped_job = this.noval;
-		var occupancy = -1;
-		for (job in jobs) {
-			if (occupancy < jobs[job]) {
-				most_occuped_job = job;
-				occupancy = jobs[job];
-			}
-		}
+		const job_no = this.stats.jobtotals.job_count || Object.keys(this.stats.jobs).length || this.noval;
+		const most_occupied_job = this.stats.jobtotals.most_occupied_job || this.noval;
+		const occupancy = this.stats.jobtotals.most_occupied_job_count || this.noval;
 
-		if (occupancy === -1) {
-			occupancy = 0;
-		}
-
-		document.getElementById(this.ids.jobs.no).textContent = Object.keys(this.stats.jobs).length;
-		document.getElementById(this.ids.jobs.most).setAttribute('title',most_occuped_job);
-		document.getElementById(this.ids.jobs.most).textContent = Strings.get_short_label(most_occuped_job);
+		document.getElementById(this.ids.jobs.no).textContent = job_no;
+		document.getElementById(this.ids.jobs.most).setAttribute('title', most_occupied_job);
+		document.getElementById(this.ids.jobs.most).textContent = Strings.get_short_label(most_occupied_job);
 		document.getElementById(this.ids.jobs.most_count).textContent = occupancy;
 	},
 	update_jobtotals: function() {
@@ -1077,23 +1056,12 @@ var Dashboard = {
 		}
 	},
 	update_pools: function() {
-		var pools = this.stats.pools_occupancy;
-		var most_occuped_pool = this.noval;
-		var occupancy = -1;
-		for (pool in pools) {
-			if (occupancy < pools[pool]) {
-				most_occuped_pool = pool;
-				occupancy = pools[pool];
-			}
-		}
-
-		if (occupancy === -1) {
-			occupancy = 0;
-		}
-
-		document.getElementById(this.ids.pools.no).textContent = Object.keys(this.stats.pools).length;
-		document.getElementById(this.ids.pools.most).setAttribute('title', most_occuped_pool);
-		document.getElementById(this.ids.pools.most).textContent = Strings.get_short_label(most_occuped_pool);
+		const pool_no = Object.keys(this.stats.pools).length;
+		const most_occupied_pool = this.stats.jobtotals.most_occupied_pool || this.noval;
+		const occupancy = this.stats.jobtotals.most_occupied_pool_count || this.noval;
+		document.getElementById(this.ids.pools.no).textContent = pool_no;
+		document.getElementById(this.ids.pools.most).setAttribute('title', most_occupied_pool);
+		document.getElementById(this.ids.pools.most).textContent = Strings.get_short_label(most_occupied_pool);
 		document.getElementById(this.ids.pools.jobs).textContent = occupancy;
 	},
 	update_pie_jobstatus: function() {

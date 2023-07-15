@@ -16,6 +16,7 @@ $(function() {
 			data: {
 				'params': (typeof(MonitorParams) == 'object' ? MonitorParams : []),
 				'use_limit' : <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '0' : '1'%>,
+				'use_age' : <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '1' : '0'%>
 			},
 			beforeSend: function() {
 				last_callback_time = new Date().getTime();
