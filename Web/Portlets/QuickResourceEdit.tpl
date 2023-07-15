@@ -1,5 +1,5 @@
 <div id="quick_resource_edit" class="w3-sidebar w3-animate-right w3-border-black w3-border-left w3-bar-block w3-padding" style="width:45%; top: 0; right:0; bottom: 0; z-index: 3; display: none;">
-	<h3 style="margin-top: 45px; margin-bottom: 0;"><span id="quick_resource_edit_res_type"></span> <span id="quick_resource_edit_res_name"></span> <i class="fas fa-times w3-right w3-padding" style="cursor: pointer" onclick="show_quick_resource_edit(false);"></i></h3>
+	<h3 style="margin-top: 45px; margin-bottom: 0;"><span id="quick_resource_edit_res_type"></span> <span id="quick_resource_edit_res_name"></span> <i class="fas fa-times w3-right" style="cursor: pointer; padding: 8px 16px 0 8px;" onclick="show_quick_resource_edit(false);"></i></h3>
 	<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 		ID="QuickResourceEditDirectives"
 		ShowSectionTabs="true"
