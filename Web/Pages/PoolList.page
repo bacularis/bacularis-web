@@ -93,17 +93,30 @@ var oPoolList = {
 				{
 					data: 'poolid',
 					render: function (data, type, row) {
-						var btn = document.createElement('BUTTON');
-						btn.className = 'w3-button w3-green';
-						btn.type = 'button';
-						var i = document.createElement('I');
+						let btns = '';
+						let i;
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+							// Quick edit button
+							const quick_edit = document.createElement('BUTTON');
+							quick_edit.className = 'w3-button w3-green';
+							quick_edit.type = 'button';
+							quick_edit.title = '<%[ Quick edit ]%>';
+							i = document.createElement('I');
+							i.className = 'fa fa-edit';
+							quick_edit.appendChild(i);
+							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Pool', '" + row.name + "')");
+							btns += (quick_edit.outerHTML + ' ');
+						}
+						const details = document.createElement('BUTTON');
+						details.className = 'w3-button w3-green';
+						details.type = 'button';
+						details.title = '<%[ Details ]%>';
+						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						var label = document.createTextNode(' <%[ Details ]%>');
-						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
-						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.location.href = '/web/pool/" + data + "/'");
-						return btn.outerHTML;
+						details.appendChild(i);
+						details.setAttribute('onclick', "document.location.href = '/web/pool/" + data + "/'");
+						btns += details.outerHTML;
+						return btns;
 					}
 				}
 			],

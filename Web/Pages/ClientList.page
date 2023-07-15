@@ -44,6 +44,9 @@ var oClientList = {
 		client_list: 'client_list',
 		client_list_body: 'client_list_body'
 	},
+	opts: {
+		uname_len: 40
+	},
 	init: function() {
 		this.set_table();
 	},
@@ -66,7 +69,19 @@ var oClientList = {
 				},
 				{data: 'clientid'},
 				{data: 'name'},
-				{data: 'uname'},
+				{
+					data: 'uname',
+					render: function(data, type, row) {
+						let ret = data;
+						if (type == 'display') {
+							const span = document.createElement('SPAN');
+							span.title = data;
+							span.textContent = data.substr(0, oClientList.opts.uname_len);
+							ret = span.outerHTML;
+						}
+						return ret;
+					}
+				},
 				{
 					data: 'autoprune',
 					render: function(data, type, row) {
@@ -84,17 +99,30 @@ var oClientList = {
 				{
 					data: 'clientid',
 					render: function (data, type, row) {
-						var btn = document.createElement('BUTTON');
-						btn.className = 'w3-button w3-green';
-						btn.type = 'button';
-						var i = document.createElement('I');
+						let btns = '';
+						let i;
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+							// Quick edit button
+							const quick_edit = document.createElement('BUTTON');
+							quick_edit.className = 'w3-button w3-green';
+							quick_edit.type = 'button';
+							quick_edit.title = '<%[ Quick edit ]%>';
+							i = document.createElement('I');
+							i.className = 'fa fa-edit';
+							quick_edit.appendChild(i);
+							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Client', '" + row.name + "')");
+							btns += (quick_edit.outerHTML + ' ');
+						}
+						const details = document.createElement('BUTTON');
+						details.className = 'w3-button w3-green';
+						details.type = 'button';
+						details.title = '<%[ Details ]%>';
+						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						var label = document.createTextNode(' <%[ Details ]%>');
-						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
-						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.location.href = '/web/client/" + data + "/'");
-						return btn.outerHTML;
+						details.appendChild(i);
+						details.setAttribute('onclick', "document.location.href = '/web/client/" + data + "/'");
+						btns += details.outerHTML;
+						return btns;
 					}
 				}
 			],
@@ -126,7 +154,16 @@ var oClientList = {
 						.search(val ? '^' + val + '$' : '', true, false)
 						.draw();
 					});
-					if (column[0][0] == 5 || column[0][0] == 6) {
+					if (column[0][0] == 3) {
+						column.data().unique().sort(sort_natural).each(function (d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else if (d) {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+							select.css('max-width', '265px');
+						});
+					} else if (column[0][0] == 5 || column[0][0] == 6) {
 						column.data().unique().sort(sort_natural).each(function (d, j) {
 							var time = Units.format_time_period(d);
 							var time_f = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');

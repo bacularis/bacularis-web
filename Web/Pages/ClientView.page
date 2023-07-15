@@ -829,15 +829,13 @@ var oJobForClientList = {
 				{
 					data: 'jobid',
 					render: function (data, type, row) {
-						var btn = document.createElement('BUTTON');
+						const btn = document.createElement('BUTTON');
 						btn.className = 'w3-button w3-green';
 						btn.type = 'button';
-						var i = document.createElement('I');
+						btn.title = '<%[ Details ]%>';
+						const i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						var label = document.createTextNode(' <%[ Details ]%>');
 						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
-						btn.appendChild(label);
 						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
 						return btn.outerHTML;
 					}

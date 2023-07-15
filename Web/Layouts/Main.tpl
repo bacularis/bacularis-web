@@ -34,6 +34,10 @@
 				<img class="w3-bar-item w3-right" src="<%~ ../../../../../Common/Images/logo.png %>" alt="" style="margin-top: 3px" />
 			</div>
 			<com:Bacularis.Web.Portlets.MainSideBar />
+			<com:Bacularis.Web.Portlets.QuickResourceEdit
+				ID="QuickResourceEdit"
+				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN) && in_array($this->Service->getRequestedPagePath(), ['JobList', 'ClientList', 'StorageList', 'PoolList'])%>"
+			/>
 			<!-- !PAGE CONTENT! -->
 			<div class="w3-main page_main_el" id="page_main" style="margin-left: 250px; margin-top: 43px;">
 				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small w3-margin-top w3-margin-right" style="border-radius: 3px">

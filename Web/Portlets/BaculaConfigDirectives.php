@@ -49,6 +49,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public const SHOW_BOTTOM_BUTTONS = 'ShowBottomButtons';
 	public const SHOW_SECTION_TABS = 'ShowSectionTabs';
 	public const SAVE_DIRECTIVE_ACTION_OK = 'SaveDirectiveActionOk';
+	public const CANCEL_DIRECTIVE_ACTION_OK = 'CancelDirectiveActionOk';
 	public const DISABLE_RENAME = 'DisableRename';
 
 	private $show_all_directives = false;
@@ -494,6 +495,16 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public function setSaveDirectiveActionOK($action_ok)
 	{
 		$this->setViewState(self::SAVE_DIRECTIVE_ACTION_OK, $action_ok);
+	}
+
+	public function getCancelDirectiveActionOK()
+	{
+		return $this->getViewState(self::CANCEL_DIRECTIVE_ACTION_OK, '');
+	}
+
+	public function setCancelDirectiveActionOK($action_ok)
+	{
+		$this->setViewState(self::CANCEL_DIRECTIVE_ACTION_OK, $action_ok);
 	}
 
 	/**

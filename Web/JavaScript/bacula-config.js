@@ -37,7 +37,7 @@ var BaculaConfigClass = jQuery.klass({
 		const options = {
 			scrollTop: offset
 		};
-		$('html,body,.w3-modal').animate(options, 'slow', 'swing', oncomplete);
+		$('html,body,.w3-modal,.w3-sidebar').animate(options, 'slow', 'swing', oncomplete);
 	},
 	get_child_container: function(sender) {
 		var child_container = $('#' + sender).closest('table').next('div');
@@ -151,7 +151,8 @@ var oBaculaConfigSection = {
 		white: 'w3-white',
 		lgray: 'w3-light-gray',
 		top: 'w3-top',
-		modal: 'w3-modal'
+		modal: 'w3-modal',
+		sidebar: 'w3-sidebar'
 	},
 	attrs: {
 		data_section: 'data-section',
@@ -182,10 +183,10 @@ var oBaculaConfigSection = {
 		const sections = this.get_sections(root_el);
 		const sect_el = root_el.querySelector(this.css.section_tabs);
 		if (sections.length < this.min_tab_sections) {
-			sect_el.style.display = 'none';
+			sect_el.style.visibility = 'hidden';
 			return;
 		}
-		sect_el.style.display = 'block';
+		sect_el.style.visibility = 'visible';
 		sect_el.style.top = 0;
 
 		// Determine top position basing on the top bar and if config form is in modal or not.
@@ -196,6 +197,10 @@ var oBaculaConfigSection = {
 			if ($(sect_el).closest('.' + this.css.modal).length == 1) {
 				// in modal
 				sect_el.style.top = '-' + (top.offsetHeight + 14) + 'px';
+				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.white;
+			} else if ($(sect_el).closest('.' + this.css.sidebar).length == 1) {
+				// in sidebar
+				sect_el.style.top = '35px';
 				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.white;
 			} else {
 				// in non-modal
@@ -290,7 +295,7 @@ var oBaculaConfigSection = {
 		while (sect_el.firstChild) {
 			sect_el.removeChild(sect_el.firstChild);
 		}
-		sect_el.style.display = 'none';
+		sect_el.style.visibility = 'hidden';
 	},
 	show_sections: function(show, root_id) {
 		// this method has to be static

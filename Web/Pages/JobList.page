@@ -454,44 +454,60 @@ var oJobHistoryList = {
 							return data;
 						}
 						var container = document.createElement('DIV');
-						var btn, i;
+						var run_job, i;
 						if (['C', 'R'].indexOf(row.jobstatus) === -1) {
 							// rerun job button
-							btn = document.createElement('BUTTON');
-							btn.className = 'w3-button w3-tiny w3-green';
-							btn.type = 'button';
+							run_job = document.createElement('BUTTON');
+							run_job.className = 'w3-button w3-tiny w3-green';
+							run_job.type = 'button';
 							i = document.createElement('I');
-							btn.title = '<%[ Run job again ]%>';
+							run_job.title = '<%[ Run job again ]%>';
 							i.className = 'fa fa-play';
-							btn.appendChild(i);
-							btn.setAttribute('data-btn-id', data);
-							btn.setAttribute('onclick', 'var rjc = get_run_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
+							run_job.appendChild(i);
+							run_job.setAttribute('data-btn-id', data);
+							run_job.setAttribute('onclick', 'var rjc = get_run_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
+							container.appendChild(run_job);
 						} else {
 							// cancel job button
-							btn = document.createElement('BUTTON');
-							btn.className = 'w3-button w3-tiny w3-green';
-							btn.type = 'button';
+							cancel_job = document.createElement('BUTTON');
+							cancel_job.className = 'w3-button w3-tiny w3-green';
+							cancel_job.type = 'button';
 							i = document.createElement('I');
-							btn.title = '<%[ Cancel job ]%>';
+							cancel_job.title = '<%[ Cancel job ]%>';
 							i.className = 'fa fa-stop';
-							btn.appendChild(i);
-							btn.setAttribute('data-btn-id', data);
-							btn.setAttribute('onclick', 'var cjc = get_cancel_job_callback(); cjc.setCallbackParameter(' + data + '); cjc.dispatch();');
+							cancel_job.appendChild(i);
+							cancel_job.setAttribute('data-btn-id', data);
+							cancel_job.setAttribute('onclick', 'var cjc = get_cancel_job_callback(); cjc.setCallbackParameter(' + data + '); cjc.dispatch();');
+							container.appendChild(cancel_job);
 						}
-						container.appendChild(btn);
 						var space = document.createTextNode(' ');
 						container.appendChild(space);
 
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+							// Quick edit button
+							const quick_edit = document.createElement('BUTTON');
+							quick_edit.className = 'w3-button w3-green';
+							quick_edit.type = 'button';
+							quick_edit.title = '<%[ Quick edit ]%>';
+							i = document.createElement('I');
+							i.className = 'fa fa-edit';
+							quick_edit.appendChild(i);
+							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + row.name + "')");
+							container.appendChild(quick_edit);
+							space = document.createTextNode(' ');
+							container.appendChild(space);
+						}
+
 						// job details button
-						btn = document.createElement('BUTTON');
-						btn.className = 'w3-button w3-tiny w3-green';
-						btn.type = 'button';
+						details = document.createElement('BUTTON');
+						details.className = 'w3-button w3-tiny w3-green';
+						details.type = 'button';
 						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						btn.title = '<%[ Details ]%>';
-						btn.appendChild(i);
-						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
-						container.appendChild(btn);
+						details.title = '<%[ Details ]%>';
+						details.appendChild(i);
+						details.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
+						container.appendChild(details);
 						return container.outerHTML;
 					}
 				}
@@ -933,17 +949,33 @@ const oJobList = {
 				{
 					data: 'job',
 					render: function(data, type, row) {
-						var btn = document.createElement('BUTTON');
-						btn.className = 'w3-button w3-green';
-						btn.type = 'button';
-						var i = document.createElement('I');
+						let btns = '';
+						let i;
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+							// Quick edit button
+							const quick_edit = document.createElement('BUTTON');
+							quick_edit.className = 'w3-button w3-green';
+							quick_edit.type = 'button';
+							quick_edit.title = '<%[ Quick edit ]%>';
+							i = document.createElement('I');
+							i.className = 'fa fa-edit';
+							quick_edit.appendChild(i);
+							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + data + "')");
+							btns += (quick_edit.outerHTML + ' ');
+						}
+
+						// Details button
+						const details = document.createElement('BUTTON');
+						details.className = 'w3-button w3-green';
+						details.type = 'button';
+						details.title = '<%[ Details ]%>';
+						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						var label = document.createTextNode(' <%[ Details ]%>');
-						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
-						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
-						return btn.outerHTML;
+						details.appendChild(i);
+						details.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
+						btns += details.outerHTML;
+
+						return btns;
 					}
 				}
 			],
@@ -1011,7 +1043,7 @@ const oJobList = {
 			ret = tdiff || empty;
 		}
 		return ret;
-	}
+	},
 };
 </script>
 	</div>

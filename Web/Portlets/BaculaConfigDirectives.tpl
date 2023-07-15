@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	<com:TActivePanel ID="ConfigDirectives" Style="margin-bottom: 48px;" Attributes.data-on-visible="if ($('#<%=$this->RepeaterDirectives->ClientID%>_Container').children().length == 0) { $(this).hide(); $('#bcd_loader_<%=$this->ClientID%>').show(); } else { $('#bcd_loader_<%=$this->ClientID%>').hide(); }">
-		<div rel="section_tabs" class="w3-hide-small" style="z-index: 5; height: 34px; position: -webkit-sticky; position: sticky; top: 0; display: <%=$this->ShowSectionTabs ? 'block' : 'none'%>"></div>
+		<div rel="section_tabs" class="w3-hide-small" style="z-index: 5; height: 34px; position: -webkit-sticky; position: sticky; top: 0; visibility: <%=$this->ShowSectionTabs ? 'visible' : 'hidden'%>"></div>
 		<div class="w3-clear"></div>
 		<com:TActiveRepeater
 			ID="RepeaterDirectives"
@@ -49,6 +49,9 @@
 				<prop:Text>
 					<i class="fa fa-times"></i> &nbsp;<%=Prado::localize('Cancel')%>
 				</prop:Text>
+				<prop:ClientSide.OnComplete>
+					<%=$this->CancelDirectiveActionOk%>
+				</prop:ClientSide.OnComplete>
 			</com:TActiveLinkButton>
 			<com:TActiveLinkButton
 				ID="Save"
