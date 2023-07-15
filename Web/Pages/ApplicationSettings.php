@@ -81,7 +81,7 @@ class ApplicationSettings extends BaculumWebPage
 			if (key_exists('job_age_on_job_status_graph', $this->web_config['baculum'])) {
 				$this->JobAgeOnJobStatusGraph->setDirectiveValue($this->web_config['baculum']['job_age_on_job_status_graph']);
 			} else {
-				$this->JobAgeOnJobStatusGraph->setDirectiveValue(0);
+				$this->JobAgeOnJobStatusGraph->setDirectiveValue(WebConfig::DEF_JOB_AGE_ON_JOB_STATUS_GRAPH);
 			}
 			$this->JobAgeOnJobStatusGraph->createDirective();
 

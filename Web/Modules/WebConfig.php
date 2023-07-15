@@ -93,6 +93,11 @@ class WebConfig extends ConfigFileModule
 	public const DEF_DATE_TIME_FORMAT = 'Y-M-D R';
 
 	/**
+	 * Default job age on job status graph.
+	 */
+	public const DEF_JOB_AGE_ON_JOB_STATUS_GRAPH = 0;
+
+	/**
 	 * Default audit log enabled value.
 	 */
 	public const DEF_ENABLE_AUDIT_LOG = AuditLog::DEF_ENABLED;
@@ -227,6 +232,8 @@ class WebConfig extends ConfigFileModule
 			'size_values_unit' => self::DEF_SIZE_VAL_UNIT,
 			'time_in_job_log' => self::DEF_TIME_IN_JOB_LOG,
 			'date_time_format' => self::DEF_DATE_TIME_FORMAT,
+			'keep_table_settings' => self::DEF_KEEP_TABLE_SETTINGS,
+			'job_age_on_job_status_graph' => self::DEF_JOB_AGE_ON_JOB_STATUS_GRAPH,
 			'enable_messages_log' => self::DEF_ENABLE_MESSAGES_LOG,
 			'enable_audit_log' => self::DEF_ENABLE_AUDIT_LOG,
 			'audit_log_max_lines' => self::DEF_AUDIT_LOG_MAX_LINES,
