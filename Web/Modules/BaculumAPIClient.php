@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\Errors\BconsoleError;
 use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Common\Modules\Logging;
 
@@ -334,6 +335,7 @@ class BaculumAPIClient extends WebModule
 			if ($use_cache === true && $ret->error === 0) {
 				$this->setSessionCache($host, $params, $ret);
 			}
+			$this->doPostRequestAction($ret);
 		}
 		return $ret;
 	}
@@ -511,6 +513,26 @@ class BaculumAPIClient extends WebModule
 			}
 		}
 		$this->response_headers = $headers;
+	}
+
+	/**
+	 * Do post-request action.
+	 * Currently used only to GET requests.
+	 *
+	 * @param StdClass $resource response output object
+	 */
+	private function doPostRequestAction($resource)
+	{
+		if (!is_object($resource) || !property_exists($resource, 'error')) {
+			// Do nothing
+		} elseif ($resource->error == BconsoleError::ERROR_INVALID_DIRECTOR) {
+			/**
+			 * Reset user session values. It is specially required if
+			 * user changes director to different. This way session variables
+			 * will be reseted for new director.
+			 */
+			$_SESSION['is_user_vars'] = false;
+		}
 	}
 
 	/**
