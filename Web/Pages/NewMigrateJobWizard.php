@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 use Prado\Web\UI\WebControls\TWizard;
 
 /**

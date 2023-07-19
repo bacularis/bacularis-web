@@ -174,6 +174,7 @@ class WebUserManager extends WebModule implements IUserManager
 	public function getUserFromCookie($cookie)
 	{
 		// not implemented
+		return null;
 	}
 
 	/**

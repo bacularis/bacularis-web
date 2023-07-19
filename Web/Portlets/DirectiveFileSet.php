@@ -145,7 +145,6 @@ class DirectiveFileSet extends DirectiveListTemplate
 				'in_config' => true,
 				'label' => $directive_name,
 				'show' => true,
-				'parent_name' => $name,
 				'group_name' => $i
 			];
 		}
@@ -181,7 +180,6 @@ class DirectiveFileSet extends DirectiveListTemplate
 				'in_config' => true,
 				'label' => $directive_name,
 				'show' => true,
-				'parent_name' => $name,
 				'group_name' => $i
 			];
 		}

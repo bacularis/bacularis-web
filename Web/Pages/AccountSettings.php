@@ -61,12 +61,9 @@ class AccountSettings extends BaculumWebPage
 		}
 
 		if (count(self::$user) == 0) {
-			$this->getModule('logging')->log(
-				__FUNCTION__,
-				"Attempt to get non-existing user '$username' access data.",
+			Logging::log(
 				Logging::CATEGORY_SECURITY,
-				__FILE__,
-				__LINE__
+				"Attempt to get non-existing user '$username' access data."
 			);
 		}
 
@@ -90,12 +87,9 @@ class AccountSettings extends BaculumWebPage
 		$username = $this->User->getUsername();
 		$ret = $this->getModule('user_config')->setUserConfig($username, self::$user);
 		if ($ret !== true) {
-			$this->getModule('logging')->log(
-				__FUNCTION__,
-				"Error while saving user config for user '$username'.",
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				"Error while saving user config for user '$username'."
 			);
 			return;
 		}

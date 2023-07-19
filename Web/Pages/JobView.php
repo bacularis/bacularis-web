@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Prado\Prado;
 use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Bacularis\Web\Modules\BaculumWebPage;

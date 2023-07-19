@@ -33,6 +33,7 @@ use Prado\IDataRenderer;
 use Prado\Web\UI\ActiveControls\IActiveControl;
 use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
 use Prado\Web\UI\ITemplate;
+use Prado\Web\UI\TTemplateControl;
 
 /**
  * Baculum conditional control.

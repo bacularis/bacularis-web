@@ -742,12 +742,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		} else {
 			$success = false;
 			$emsg = 'Error while renaming resource: ' . $result->output;
-			$this->Application->getModule('logging')->log(
-				__FUNCTION__,
-				$emsg,
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				$emsg
 			);
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_ERROR,

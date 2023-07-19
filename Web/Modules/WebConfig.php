@@ -280,12 +280,9 @@ class WebConfig extends ConfigFileModule
 		$ret = $this->setConfig($config);
 		if ($ret !== true) {
 			$emsg = 'Error while saving auth basic config.';
-			$this->getModule('logging')->log(
-				__FUNCTION__,
-				$emsg,
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				$emsg
 			);
 		}
 		return $ret;

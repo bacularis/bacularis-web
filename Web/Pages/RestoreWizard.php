@@ -331,12 +331,11 @@ class RestoreWizard extends BaculumWebPage
 			['clients', $clientid, 'jobs']
 		)->output;
 		$jobs = $this->getModule('misc')->objectToArray($jobs_for_client);
-		function add_file($item)
-		{
+		$add_file = function ($item) {
 			$item['file'] = '';
 			return $item;
-		}
-		$jobs = array_map('add_file', $jobs);
+		};
+		$jobs = array_map($add_file, $jobs);
 		return array_filter($jobs, [$this, 'isJobToRestore']);
 	}
 

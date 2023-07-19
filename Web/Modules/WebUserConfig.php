@@ -255,12 +255,9 @@ class WebUserConfig extends ConfigFileModule
 		} else {
 			$ret = false;
 			$emsg = 'Error while importing basic users.';
-			$this->getModule('logging')->log(
-				__FUNCTION__,
-				$emsg,
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				$emsg
 			);
 		}
 		return $ret;
@@ -295,12 +292,9 @@ class WebUserConfig extends ConfigFileModule
 			$path = $this->getConfigRealPath(self::CONFIG_FILE_PATH);
 			for ($i = 0; $i < $required_len; $i++) {
 				$emsg = "ERROR [$path] Required {$invalid['required'][$i]['type']} '{$invalid['required'][$i]['value']}' not found for user '{$invalid['required'][$i]['username']}.";
-				$this->Application->getModule('logging')->log(
-					__FUNCTION__,
-					$emsg,
+				Logging::log(
 					Logging::CATEGORY_APPLICATION,
-					__FILE__,
-					__LINE__
+					$emsg
 				);
 			}
 		}

@@ -923,24 +923,18 @@ class Security extends BaculumWebPage
 		for ($i = 0; $i < $users['count']; $i++) {
 			if (!key_exists($params['user_attr'], $users[$i])) {
 				$emsg = "User attribute '{$params['user_attr']}' doesn't exist in LDAP response.";
-				$this->getModule('logging')->log(
-					__FUNCTION__,
-					$emsg,
+				Logging::log(
 					Logging::CATEGORY_EXTERNAL,
-					__FILE__,
-					__LINE__
+					$emsg
 				);
 				continue;
 			}
 			$username = $long_name = $email = $desc = '';
 			if ($params['user_attr'] !== Ldap::DN_ATTR && $users[$i][$params['user_attr']]['count'] != 1) {
 				$emsg = "Invalid user attribute count for '{$params['user_attr']}'. Is {$users[$i][$params['user_attr']]['count']}, should be 1.";
-				$this->getModule('logging')->log(
-					__FUNCTION__,
-					$emsg,
+				Logging::log(
 					Logging::CATEGORY_EXTERNAL,
-					__FILE__,
-					__LINE__
+					$emsg
 				);
 				continue;
 			}
@@ -1333,17 +1327,16 @@ class Security extends BaculumWebPage
 			'DirectoryAcl' => ''
 		];
 		$consoles = [];
-		function join_cons($item)
-		{
+		$join_cons = function ($item) {
 			if (is_array($item)) {
 				$item = implode(',', $item);
 			}
 			return $item;
-		}
+		};
 		if ($config->error == 0) {
 			for ($i = 0; $i < count($config->output); $i++) {
 				$cons = (array) $config->output[$i]->Console;
-				$cons = array_map('join_cons', $cons);
+				$cons = array_map($join_cons, $cons);
 				$consoles[] = array_merge($console_directives, $cons);
 			}
 		}

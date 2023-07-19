@@ -100,12 +100,9 @@ class DeployAPIHost extends WebModule
 			$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 			$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($rfile)]);
 			if (file_put_contents($src_file, $repo) === false) {
-				$this->getModule('logging')->log(
-					'Cannot create repository file ' . $src_file,
-					'',
+				Logging::log(
 					Logging::CATEGORY_APPLICATION,
-					__FILE__,
-					__LINE__
+					'Cannot create repository file ' . $src_file
 				);
 			}
 			$dst_file = $rfile;
@@ -164,24 +161,18 @@ deb-src [signed-by=$key] $entry
 	{
 		$key = file_get_contents($key_path);
 		if ($key === false) {
-			$this->getModule('logging')->log(
-				'Cannot get GPG key file ' . $key_path,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Cannot get GPG key file ' . $key_path
 			);
 			return false;
 		}
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$file = implode(DIRECTORY_SEPARATOR, [$dir, 'bacularis.pub']);
 		if (!file_put_contents($file, $key)) {
-			$this->getModule('logging')->log(
-				'Cannot write armored GPG key file ' . $file,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Cannot write armored GPG key file ' . $file
 			);
 			return false;
 		}
@@ -191,12 +182,9 @@ deb-src [signed-by=$key] $entry
 		}
 		$key_dearmor = $this->getModule('gpg')->execCommand($file, ['dearmor' => true]);
 		if ($key_dearmor['exitcode'] !== 0) {
-			$this->getModule('logging')->log(
-				'Error while dearmoring GPG key ' . $file,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Error while dearmoring GPG key ' . $file
 			);
 			return false;
 		}
@@ -249,12 +237,9 @@ deb-src [signed-by=$key] $entry
 			$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 			$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
 			if (file_put_contents($src_file, $fbody) === false) {
-				$this->getModule('logging')->log(
-					'Cannot create sudo file ' . $src_file,
-					'',
+				Logging::log(
 					Logging::CATEGORY_APPLICATION,
-					__FILE__,
-					__LINE__
+					'Cannot create sudo file ' . $src_file
 				);
 			}
 		}
@@ -334,12 +319,9 @@ deb-src [signed-by=$key] $entry
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
 		if (file_put_contents($src_file, $fbody) === false) {
-			$this->getModule('logging')->log(
-				'Cannot create Bacularis configuration file ' . $src_file,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Cannot create Bacularis configuration file ' . $src_file
 			);
 		}
 		return [
@@ -365,12 +347,9 @@ bconfig_cfg_path = \"\"
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
 		if (file_put_contents($src_file, $fbody) === false) {
-			$this->getModule('logging')->log(
-				'Cannot create Bacularis user file ' . $src_file,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Cannot create Bacularis user file ' . $src_file
 			);
 		}
 		return [
@@ -402,12 +381,9 @@ bconfig_cfg_path = \"\"
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file) . '_new']);
 		if (file_put_contents($src_file, $fbody) === false) {
-			$this->getModule('logging')->log(
-				'Cannot create Bacularis password file ' . $src_file,
-				'',
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				'Cannot create Bacularis password file ' . $src_file
 			);
 		}
 		return [

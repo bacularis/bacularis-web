@@ -160,12 +160,9 @@ class WebConfigWizard extends BaculumWebPage
 				);
 			} else {
 				$emsg = 'Error while saving basic user config.';
-				$this->getModule('logging')->log(
-					__FUNCTION__,
-					$emsg,
+				Logging::log(
 					Logging::CATEGORY_APPLICATION,
-					__FILE__,
-					__LINE__
+					$emsg
 				);
 			}
 
@@ -180,12 +177,9 @@ class WebConfigWizard extends BaculumWebPage
 				$ret = $user_config->setUserConfig($this->WebLogin->Text, $new_user_prop);
 				if (!$ret) {
 					$emsg = 'Error while saving user config.';
-					$this->getModule('logging')->log(
-						__FUNCTION__,
-						$emsg,
+					Logging::log(
 						Logging::CATEGORY_APPLICATION,
-						__FILE__,
-						__LINE__
+						$emsg
 					);
 				}
 
@@ -197,12 +191,9 @@ class WebConfigWizard extends BaculumWebPage
 			$this->goToDefaultPage();
 		} else {
 			$emsg = 'Error while saving auth host config.';
-			$this->getModule('logging')->log(
-				__FUNCTION__,
-				$emsg,
+			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				__FILE__,
-				__LINE__
+				$emsg
 			);
 		}
 	}
