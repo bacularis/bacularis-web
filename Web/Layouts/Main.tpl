@@ -15,7 +15,7 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-buttons/js/buttons.html5.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-buttons/js/buttons.colVis.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-select/js/dataTables.select.min.js %> />
-			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/flotr2/flotr2.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/flotr2/flotr2.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/gaugejs/dist/gauge.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/misc.js %> />
