@@ -24,8 +24,8 @@ use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
  */
-class QuickResourceEdit extends Portlets implements IActiveControl {
-
+class QuickResourceEdit extends Portlets implements IActiveControl
+{
 	public const COMPONENT_TYPE = 'ComponentType';
 	public const RESOURCE_TYPE = 'ResourceType';
 	public const RESOURCE_NAME = 'ResourceName';
@@ -41,8 +41,9 @@ class QuickResourceEdit extends Portlets implements IActiveControl {
 		return $this->getAdapter()->getBaseActiveControl();
 	}
 
-	public function openQuickResourceEdit($sender, $param) {
-		list($component_type, $resource_type, $resource_name) = $param->getCallbackParameter();
+	public function openQuickResourceEdit($sender, $param)
+	{
+		[$component_type, $resource_type, $resource_name] = $param->getCallbackParameter();
 		$this->setComponentType($component_type);
 		$this->setResourceType($resource_type);
 		$this->setResourceName($resource_name);

@@ -145,9 +145,9 @@ class SCP extends WebModule
 		$pattern = null;
 		switch ($ptype) {
 			case self::PTYPE_REG_CMD: $pattern = self::SCP_COMMAND_PATTERN;
-			break;
+				break;
 			default: $pattern = self::SCP_COMMAND_PATTERN;
-			break;
+				break;
 		}
 		return $pattern;
 	}

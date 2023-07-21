@@ -165,7 +165,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	{
 		$jobdefs = $this->getJobDefs();
 		if ($directive_name == 'Priority') {
-			$directive_value = (int)$directive_value;
+			$directive_value = (int) $directive_value;
 		}
 		$ret = (key_exists($directive_name, $jobdefs) && $jobdefs[$directive_name] === $directive_value);
 		return $ret;
@@ -405,6 +405,9 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 
 	/**
 	 * Storage control validator method.
+	 *
+	 * @param TRequiredFieldValidator $sender sender object
+	 * @param null $param event parameter
 	 */
 	public function validateStorage($sender, $param)
 	{
@@ -474,10 +477,11 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	/**
 	 * Load normal and virtual full (NextPool) pools.
 	 *
-	 * @param TCallback sender object
-	 * @param TCallbackEventParameter callback parameter
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
 	 */
-	public function loadPools($sender, $param) {
+	public function loadPools($sender, $param)
+	{
 		$this->loadNormalBackupPools();
 		$this->loadVirtualFullBackupNextPools();
 	}
@@ -487,6 +491,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	 * Storage is taken from selected pool.
 	 *
 	 * @param string $pool pool name to get storage
+	 * @param null|TCallbackEventParameter $param callback parameter
 	 */
 	public function setVirtualFullBackupStorage($pool, $param = null)
 	{
@@ -513,8 +518,8 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	/**
 	 * Set control with virtual full backup storage.
 	 *
-	 * @param TCallback sender object
-	 * @param TCallbackEventParameter callback parameter
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
 	 */
 	public function setVirtualFullBackupStorageValue($sender, $param)
 	{
@@ -584,7 +589,6 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			$this->Messages->setDirectiveValue($def_msg);
 		}
 		$this->Messages->createDirective();
-
 	}
 
 	/**
@@ -712,24 +716,24 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 						'Level="%s" %s-%s %s',
 						$this->VirtualFullScheduleBasicLevel->getValue(),
 						Params::getDaysOfWeekConfig(
-							[(int)$this->VirtualFullScheduleBasicScheduleFrom->getSelectedValue()]
+							[(int) $this->VirtualFullScheduleBasicScheduleFrom->getSelectedValue()]
 						),
 						Params::getDaysOfWeekConfig(
-							[(int)$this->VirtualFullScheduleBasicScheduleTo->getSelectedValue()]
+							[(int) $this->VirtualFullScheduleBasicScheduleTo->getSelectedValue()]
 						),
 						Params::getTimeConfig(
-							[(int)$this->VirtualFullScheduleBasicScheduleAtHour->getSelectedValue()],
-							(int)$this->VirtualFullScheduleBasicScheduleAtHour->getSelectedValue()
+							[(int) $this->VirtualFullScheduleBasicScheduleAtHour->getSelectedValue()],
+							(int) $this->VirtualFullScheduleBasicScheduleAtHour->getSelectedValue()
 						)
 					),
 					sprintf(
 						'Level="VirtualFull" %s %s',
 						Params::getDaysOfWeekConfig(
-							[(int)$this->VirtualFullScheduleBasicScheduleRunVFOn->getSelectedValue()]
+							[(int) $this->VirtualFullScheduleBasicScheduleRunVFOn->getSelectedValue()]
 						),
 						Params::getTimeConfig(
-							[(int)$this->VirtualFullScheduleBasicScheduleVFAtHour->getSelectedValue()],
-							(int)$this->VirtualFullScheduleBasicScheduleVFAtMinute->getSelectedValue()
+							[(int) $this->VirtualFullScheduleBasicScheduleVFAtHour->getSelectedValue()],
+							(int) $this->VirtualFullScheduleBasicScheduleVFAtMinute->getSelectedValue()
 						)
 					)
 				]
@@ -784,7 +788,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 				$this->CreateResourceErrMsg->Text = $result->output;
 				return;
 			}
-			$job = (array)$result->output;
+			$job = (array) $result->output;
 			$directives = ['NextPool'];
 			if ($this->VirtualFullTypeProgressive->Checked) {
 				$directives[] = 'BackupsToKeep';
@@ -818,7 +822,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 				$this->CreateResourceErrMsg->Text = $result->output;
 				return;
 			}
-			$pool = (array)$result->output;
+			$pool = (array) $result->output;
 			$pool['Storage'] = $this->VirtualFullBackupStorage->getDirectiveValue();
 			$params = [
 				'config',

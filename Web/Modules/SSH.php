@@ -196,11 +196,11 @@ class SSH extends WebModule
 		$pattern = null;
 		switch ($ptype) {
 			case self::PTYPE_REG_CMD: $pattern = self::SSH_COMMAND_PATTERN;
-			break;
+				break;
 			case self::PTYPE_BG_CMD: $pattern = self::SSH_BG_COMMAND_PATTERN;
-			break;
+				break;
 			default: $pattern = self::SSH_COMMAND_PATTERN;
-			break;
+				break;
 		}
 		return $pattern;
 	}

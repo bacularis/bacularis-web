@@ -607,13 +607,13 @@ class NewCopyJobWizard extends BaculumWebPage
 		$sel_type = $this->SelectionType->getDirectiveValue();
 		switch ($sel_type) {
 			case 'Job': $control = $this->SelectionPatternJob;
-			break;
+				break;
 			case 'Client': $control = $this->SelectionPatternClient;
-			break;
+				break;
 			case 'Volume': $control = $this->SelectionPatternVolume;
-			break;
+				break;
 			case 'SQLQuery': $control = $this->SelectionPatternSQLQuery;
-			break;
+				break;
 		}
 		return $control;
 	}

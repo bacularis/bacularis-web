@@ -1036,13 +1036,13 @@ class Security extends BaculumWebPage
 			$crit = (int) ($this->GetUsersCriteria->SelectedValue);
 			switch ($crit) {
 				case self::IMPORT_CRIT_USERNAME: $params['filter_attr'] = $params['user_attr'];
-				break;
+					break;
 				case self::IMPORT_CRIT_LONG_NAME: $params['filter_attr'] = $params['long_name_attr'];
-				break;
+					break;
 				case self::IMPORT_CRIT_DESCRIPTION: $params['filter_attr'] = $params['desc_attr'];
-				break;
+					break;
 				case self::IMPORT_CRIT_EMAIL: $params['filter_attr'] = $params['email_attr'];
-				break;
+					break;
 			}
 			$params['filter_val'] = $this->GetUsersCriteriaFilter->Text;
 		}
