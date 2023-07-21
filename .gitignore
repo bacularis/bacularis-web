@@ -1,2 +1,4 @@
 Web/Config/*
 Web/Logs/*
+.php-cs-fixer.cache
+protected/
