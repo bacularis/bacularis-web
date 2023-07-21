@@ -69,7 +69,8 @@
 		"bacularis/bacularis-common": "*"
 	},
 	"require-dev": {
-		"phpstan/phpstan": "1.8.11"
+		"phpstan/phpstan": "1.8.11",
+		"friendsofphp/php-cs-fixer": "^3"
 	},
 	"autoload": {
 		"psr-4": {
@@ -81,7 +82,8 @@
 	},
 	"scripts": {
 		"analyse": [
-			"phpstan analyse Web"
+			"phpstan analyse Web",
+			"php-cs-fixer fix -vvv --dry-run --using-cache=no"
 		]
 	},
 	"support" : {
