@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-10-27 03:18\n"
+"PO-Revision-Date: 2023-07-22 15:26\n"
 "Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
@@ -4953,183 +4953,183 @@ msgstr "Link dostępu do API"
 msgid "Step"
 msgstr "Krok"
 
-
 msgid "Protocol"
-msgstr "Protocol"
+msgstr "Protokół"
 
 msgid "IP address/hostname"
-msgstr "IP address/hostname"
+msgstr "Adres IP/Nazwa hosta"
 
 msgid "Access method"
-msgstr "Access method"
+msgstr "Metoda dostępu"
 
 msgid "Link"
 msgstr "Link"
 
 msgid "open"
-msgstr "open"
+msgstr "otwórz"
 
 msgid "Keep custom table settings:"
-msgstr "Keep custom table settings:"
+msgstr "Zachowaj niestandardowe ustawienia tabeli:"
 
 msgid "No time limit (persistent settings)"
-msgstr "No time limit (persistent settings)"
+msgstr "Brak limitu czasowego (trwałe ustawienia)"
 
 msgid "Until end of web browser session"
-msgstr "Until end of web browser session"
+msgstr "Do końca sesji przeglądarki internetowej"
 
 msgid "For specific time"
-msgstr "For specific time"
+msgstr "Przez określony czas"
 
 msgid "Keep table settings for"
-msgstr "Keep table settings for"
+msgstr "Zachowaj ustawienia tabeli przez"
 
 msgid "The value must be positive integer or zero."
-msgstr "The value must be positive integer or zero."
+msgstr "Wartość musi być dodatnią liczbą całkowitą większą od zera."
 
 msgid "Set time for which table settings will be preserved. Setting 0 (zero) is equivalent to no time limit option."
-msgstr "Set time for which table settings will be preserved. Setting 0 (zero) is equivalent to no time limit option."
+msgstr "Ustaw czas, przez który ustawienia tabeli będą zachowane. Ustawienie 0 (zero) jest równoznaczne z wyłączeniem limitu czasowego."
 
 msgid "TLS/SSL encryption"
-msgstr "TLS/SSL encryption"
+msgstr "Szyfrowanie TLS/SSL"
 
 msgid "No encryption"
-msgstr "No encryption"
+msgstr "Brak szyfrowania"
 
 msgid "First vol."
-msgstr "First vol."
+msgstr "Pierwszy wol."
 
 msgid "Vol. count"
-msgstr "Vol. count"
+msgstr "Liczba wol."
 
 msgid "Virtual Full backup job wizard"
-msgstr "Virtual Full backup job wizard"
+msgstr "Kreator zadań kopii zapasowej Virtual Full"
 
 msgid "This wizard enables you to easily set up a synthetic backup (Virtual Full)."
-msgstr "This wizard enables you to easily set up a synthetic backup (Virtual Full)."
+msgstr "Ten kreator umożliwia ci łatwe skonfigurowanie syntetycznej kopii zapasowej (Virtual Full)."
 
 msgid "The Virtual Full backup consolidates the previous full backup, recent differential backup and subsequent incremental backups into a new full backup. This new full backup becomes the most recent full for next incremental/differential backups. The Virtual Full backup is realized without using Bacula client."
-msgstr "The Virtual Full backup consolidates the previous full backup, recent differential backup and subsequent incremental backups into a new full backup. This new full backup becomes the most recent full for next incremental/differential backups. The Virtual Full backup is realized without using Bacula client."
+msgstr "Kopia Virtual Full konsoliduje poprzednią kopię pełną, ostatnią kopię różnicową i następne po niej kopie przyrostowe w nową kopię pełną. Ten nowy pełny backup staje się najnowszą pełną kopią dla następnych kopii przyrostowych/różnicowych. Kopia Virtual Full jest realizowana bez udziału klienta Bacula."
 
 msgid "You can select an existing backup or create a new backup job that will be able to run Virtual Full job level."
-msgstr "You can select an existing backup or create a new backup job that will be able to run Virtual Full job level."
+msgstr "Możesz wybrać istniejący backup lub stworzyć nowe zadanie backupu, które będzie w stanie uruchomić poziom zadania Virtual Full."
 
 msgid "Modify existing backup job to support Virtual Full."
-msgstr "Modify existing backup job to support Virtual Full."
+msgstr "Modyfikuj istniejący backup, aby wspierać w nim Virtual Full."
 
 msgid "Create a new backup job with the Virtual Full capability."
-msgstr "Create a new backup job with the Virtual Full capability."
+msgstr "Stwórz nowy backup ze zdolnością Virtual Full."
 
 msgid "Step 3 - where you want to store data"
-msgstr "Step 3 - where you want to store data"
+msgstr "Krok 3 - gdzie chcesz składować dane"
 
 msgid "Virtual Full Pool"
-msgstr "Virtual Full Pool"
+msgstr "Pula Virtual Full"
 
 msgid "Storage to write Virtual Full"
-msgstr "Storage to write Virtual Full"
+msgstr "Magazyn danych do zapisu Virtual Full"
 
 msgid "Add new Virtual Full Pool"
-msgstr "Add new Virtual Full Pool"
+msgstr "Dodaj nową pulę Virtual Full"
 
 msgid "Select the pool and storage that will write Virtual Full."
-msgstr "Select the pool and storage that will write Virtual Full."
+msgstr "Wybierz pulę i magazyn danych, które będą zapisywać Virtual Full."
 
 msgid "Virtual Full Type"
-msgstr "Virtual Full Type"
+msgstr "Typ Virtual Full"
 
 msgid "Step 4 - how would you like to use Virtual Full"
-msgstr "Step 4 - how would you like to use Virtual Full"
+msgstr "Krok 4 - jak chciałbyś używać Virtual Full"
 
 msgid "What kind of Virtual Full backup do you want to create:"
-msgstr "What kind of Virtual Full backup do you want to create:"
+msgstr "Jaki rodzaj kopii Virtual Full chcesz stworzyć:"
 
 msgid "Standard Virtual Full backup"
-msgstr "Standard Virtual Full backup"
+msgstr "Standardowa kopia Virtual Full"
 
 msgid "create a new full backup by consolidating the last full backup and subsequent incremental/diifferential backups. Processed backups are preserved."
-msgstr "create a new full backup by consolidating the last full backup and subsequent incremental/diifferential backups. Processed backups are preserved."
+msgstr "tworzy nowy pełny backup poprzez konsolidowanie ostatniej kopii pełnej i następnych kopii przyrostowych/różnicowej. Przetwarzane kopie zapasowe są zachowywane."
 
 msgid "Progressive Virtual Full backup"
-msgstr "Progressive Virtual Full backup"
+msgstr "Progresywny backup Virtual Full"
 
 msgid "This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time."
-msgstr "This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time."
+msgstr "Ten backup konsoliduje kopie przyrostowe i różnicową, ale zachowuje stałą liczbę kopii nieskonsolidowanych. Opcjonalnie usuwa stare już skonsolidowane kopie. W tym ustawieniu mamy jedną kopię pełną i pewne kopie przyrostowe/różnicową, które są dynamicznie konsolidowane w czasie."
 
 msgid "Last 90 days"
-msgstr "Last 90 days"
+msgstr "Ostatnie 90 dni"
 
 msgid "New virtual full job"
-msgstr "New virtual full job"
+msgstr "Nowa kopia Virtual Full"
 
 msgid "Reset zoom"
-msgstr "Reset zoom"
+msgstr "Zresetuj powiększenie"
 
 msgid "Zoom in"
-msgstr "Zoom in"
+msgstr "Powiększ"
 
 msgid "Range of days:"
-msgstr "Range of days:"
+msgstr "Zakres dni:"
 
 msgid "Jobs in range:"
-msgstr "Jobs in range:"
+msgstr "Zadania w zakresie:"
 
 msgid "Backups to keep:"
 msgstr "Backups to keep:"
 
 msgid "Sum of job bytes in range:"
-msgstr "Sum of job bytes in range:"
+msgstr "Suma bajtów zadań w zakresie:"
 
 msgid "Sum of job files in range:"
-msgstr "Sum of job files in range:"
+msgstr "Suma plików zadań w zakresie:"
 
 msgid "Jobs out of range on the right:"
-msgstr "Jobs out of range on the right:"
+msgstr "Zadania poza zakresem na prawej stronie:"
 
 msgid "Would you like to delete old jobs that are consolidated during a Virtual Full?"
-msgstr "Would you like to delete old jobs that are consolidated during a Virtual Full?"
+msgstr "Czy chciałbyś usuwać stare zadania, które są konsolidowane podczas Virtual Full?"
 
 msgid "Schedule setting"
-msgstr "Schedule setting"
+msgstr "Ustawienia harmonogramu"
 
 msgid "When would you like to run the job?"
-msgstr "When would you like to run the job?"
+msgstr "Kiedy chciałbyś uruchomić zadanie?"
 
 msgid "Create a basic schedule"
-msgstr "Create a basic schedule"
+msgstr "Utwórz podstawowy harmonogram"
 
 msgid "Normal backup"
-msgstr "Normal backup"
+msgstr "Kopia normalna"
 
 msgid "Run level"
-msgstr "Run level"
+msgstr "Poziom kopii"
 
 msgid "Run daily"
-msgstr "Run daily"
+msgstr "Uruchom codziennie"
 
 msgid "Virtual Full backup"
-msgstr "Virtual Full backup"
+msgstr "Kopia Virtual Full"
 
 msgid "Run on"
-msgstr "Run on"
+msgstr "Uruchom w"
 
 msgid "Select schedule"
-msgstr "Select schedule"
+msgstr "Wybierz harmonogram"
 
 msgid "No schedule. I will run Virtual Full manually"
-msgstr "No schedule. I will run Virtual Full manually"
+msgstr "Bez harmonogramu. Uruchomię Virtual Full ręcznie"
 
 msgid "New Job Name"
-msgstr "New Job Name"
+msgstr "Nazwa nowego zadania"
 
 msgid "Save job"
-msgstr "Save job"
+msgstr "Zapisz zadanie"
 
 msgid "Existing Job Name"
-msgstr "Existing Job Name"
+msgstr "Nazwa istniejącego zadania"
 
 msgid "Prepare resources for a new backup job."
-msgstr "Prepare resources for a new backup job."
+msgstr "Przygotuj zasoby dla nowego zadania backupu."
 
 msgid "Quick edit"
-msgstr "Quick edit"
+msgstr "Szybka edycja"
+
