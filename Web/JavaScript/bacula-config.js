@@ -408,5 +408,16 @@ var oDirectiveOrderedListBox = {
 			vals.push(els[i].value);
 		}
 		hidden.value = vals.join('!');
+	},
+	clear_selection: function(select_id, hidden_id) {
+		const select = document.getElementById(select_id);
+		const opts = select.querySelectorAll('option:checked');
+		for (let i = 0; i < opts.length; i++) {
+			if (opts[i].selected) {
+				opts[i].selected = false;
+			}
+		}
+		this.set_list(select)
+		this.set_options(select_id, hidden_id);
 	}
 };
