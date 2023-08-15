@@ -95,14 +95,6 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 		$this->createDoc();
 	}
 
-	public function onLoad($param)
-	{
-		parent::onLoad($param);
-		if (!$this->getPage()->IsCallBack && !$this->getPage()->IsPostBack && method_exists($this, 'loadConfig')) {
-			$this->loadConfig();
-		}
-	}
-
 	public function getHost()
 	{
 		return $this->getViewState(self::HOST);
