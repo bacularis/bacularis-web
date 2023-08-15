@@ -320,7 +320,7 @@ class BaculumAPIClient extends WebModule
 			$ch = $this->getConnection($host_cfg);
 			curl_setopt($ch, CURLOPT_URL, $uri);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getAPIHeaders($host, $host_cfg));
-			curl_setopt($ch, CURLOPT_ENCODING , '');
+			curl_setopt($ch, CURLOPT_ENCODING, '');
 			$result = curl_exec($ch);
 			$error = curl_error($ch);
 			$errno = curl_errno($ch);
