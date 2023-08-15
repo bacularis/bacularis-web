@@ -21,7 +21,7 @@ $config
 	'combine_nested_dirname' => true,
 	'concat_space' => ['spacing' => 'one'],
 	'dir_constant' => true,
-	'function_typehint_space' => true,
+	'type_declaration_spaces' => true,
 	'list_syntax' => ['syntax' => 'short'],
 	'method_chaining_indentation' => true,
 	'modernize_types_casting' => true,
