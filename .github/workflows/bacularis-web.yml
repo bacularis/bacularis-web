@@ -32,9 +32,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-composer-
 
-    - name: Tweak composer config (until releasing Bacularis 2.1.1)
-      run: composer config minimum-stability dev
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
