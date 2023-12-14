@@ -46,6 +46,8 @@ class JobView extends BaculumWebPage
 	public const JOB_UNAME = 'JobUname';
 	public const JOB_LEVEL = 'JobLevel';
 	public const JOB_TYPE = 'JobType';
+	public const PREV_JOBID = 'PrevJobId';
+	public const NEXT_JOBID = 'NextJobId';
 	public const CLIENTID = 'ClientId';
 	public const JOB_INFO = 'JobInfo';
 	public const STORAGE_INFO = 'StorageInfo';
@@ -80,6 +82,12 @@ class JobView extends BaculumWebPage
 			$this->setJobId($jobdata->jobid);
 			$this->setJobUname($jobdata->job);
 			$this->setJobType($jobdata->type);
+			if (property_exists($jobdata, 'prev_jobid')) {
+				$this->setPrevJobId($jobdata->prev_jobid);
+			}
+			if (property_exists($jobdata, 'next_jobid')) {
+				$this->setNextJobId($jobdata->next_jobid);
+			}
 			$this->setJobLevel($jobdata->level);
 			$this->setClientId($jobdata->clientid);
 			$this->is_running = $this->getModule('misc')->isJobRunning($jobdata->jobstatus);
@@ -205,6 +213,48 @@ class JobView extends BaculumWebPage
 	public function getJobId()
 	{
 		return $this->getViewState(self::JOBID, 0);
+	}
+
+	/**
+	 * Set previous jobid.
+	 *
+	 * @param mixed $jobid
+	 */
+	public function setPrevJobId($jobid)
+	{
+		$jobid = (int) $jobid;
+		$this->setViewState(self::PREV_JOBID, $jobid, 0);
+	}
+
+	/**
+	 * Get previous jobid.
+	 *
+	 * @return int jobid
+	 */
+	public function getPrevJobId()
+	{
+		return $this->getViewState(self::PREV_JOBID, 0);
+	}
+
+	/**
+	 * Set next jobid.
+	 *
+	 * @param mixed $jobid
+	 */
+	public function setNextJobId($jobid)
+	{
+		$jobid = (int) $jobid;
+		$this->setViewState(self::NEXT_JOBID, $jobid, 0);
+	}
+
+	/**
+	 * Get next jobid.
+	 *
+	 * @return int jobid
+	 */
+	public function getNextJobId()
+	{
+		return $this->getViewState(self::NEXT_JOBID, 0);
 	}
 
 	/**

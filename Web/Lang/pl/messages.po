@@ -5133,3 +5133,9 @@ msgstr "Przygotuj zasoby dla nowego zadania backupu."
 msgid "Quick edit"
 msgstr "Szybka edycja"
 
+
+msgid "Prev job"
+msgstr "Prev job"
+
+msgid "Next job"
+msgstr "Next job"

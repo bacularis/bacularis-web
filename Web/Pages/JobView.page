@@ -16,6 +16,20 @@
 	</com:TActiveLinkButton>
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$_SESSION['director']%>" />
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
+	<com:TLinkButton
+		CssClass="w3-button w3-green w3-margin-left"
+		Visible="<%=($this->getPrevJobId() > 0)%>"
+		Attributes.onclick="window.location.href='/web/job/history/<%=$this->getPrevJobId()%>/'; return false;"
+	>
+		<i class="fa fa-angle-left"></i> &nbsp;<%[ Prev job ]%>
+	</com:TLinkButton>
+	<com:TLinkButton
+		CssClass="w3-button w3-green"
+		Visible="<%=($this->getNextJobId() > 0)%>"
+		Attributes.onclick="window.location.href='/web/job/history/<%=$this->getNextJobId()%>/'; return false;"
+	>
+		<%[ Next job ]%> &nbsp;<i class="fa fa-angle-right"></i>
+	</com:TLinkButton>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('JobList')%>#<%=$this->getJobId() > 0 ? 'job_history' : 'job_details'%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_job_log" type="button" class="w3-bar-item w3-button tab_btn <%=$this->getJobId() > 0 ? 'w3-grey' : 'hide'%>" onclick="W3Tabs.open(this.id, 'job_log'); job_callback_func(); oRunningJobStatus.init_refresh();"><%[ Job log ]%></button>
