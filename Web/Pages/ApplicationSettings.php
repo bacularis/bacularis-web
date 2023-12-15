@@ -40,9 +40,9 @@ use Bacularis\Web\Modules\WebConfig;
  */
 class ApplicationSettings extends BaculumWebPage
 {
-	public function onInit($param)
+	public function onPreRender($param)
 	{
-		parent::onInit($param);
+		parent::onPreRender($param);
 		$this->DecimalBytes->Checked = true;
 		if (count($this->web_config) > 0) {
 			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
