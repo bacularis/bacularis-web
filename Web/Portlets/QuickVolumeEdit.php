@@ -41,7 +41,7 @@ class QuickVolumeEdit extends Portlets implements IActiveControl
 
 	public function openQuickVolumeEdit($sender, $param)
 	{
-		$mediaid = (int)$param->getCallbackParameter();
+		$mediaid = (int) $param->getCallbackParameter();
 		$this->open($mediaid);
 	}
 
