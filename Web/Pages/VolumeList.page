@@ -192,6 +192,10 @@ var oVolumeList = {
 	update: function(data) {
 		oVolumeList.init(data);
 	},
+	update_volumes: function() {
+		const cb = <%=$this->UpdateVolumes->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
 	set_events: function() {
 		document.getElementById(this.ids.volume_list).addEventListener('click', function(e) {
 			$(function() {
@@ -656,9 +660,12 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		oVolumeList.reset_filters();
 	</prop:ClientSide.OnComplete>
 </com:TCallback>
+<com:TCallback ID="UpdateVolumes" OnCallback="updateVolumes" />
 <com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"
 	RefreshPageBtn="false"
 	/>
-<com:Bacularis.Web.Portlets.QuickVolumeEdit />
+<com:Bacularis.Web.Portlets.QuickVolumeEdit
+	SaveVolumeActionOk="oVolumeList.update_volumes();"
+/>
 </com:TContent>

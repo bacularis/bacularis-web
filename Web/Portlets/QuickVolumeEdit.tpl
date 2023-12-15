@@ -3,7 +3,7 @@
 	<com:Bacularis.Web.Portlets.VolumeConfig
 		ID="QuickVolumeEditDirectives"
 		DisplayLog="false"
-		SaveVolumeActionOk="show_quick_volume_edit(false);"
+		SaveVolumeActionOk="show_quick_volume_edit(false); <%=$this->SaveVolumeActionOk%>"
 	/>
 	<com:TCallback
 		ID="QuickVolumeEditCb"

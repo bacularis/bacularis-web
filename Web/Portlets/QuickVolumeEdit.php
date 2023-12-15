@@ -26,6 +26,8 @@ use Prado\Web\UI\ActiveControls\TActiveControlAdapter;
  */
 class QuickVolumeEdit extends Portlets implements IActiveControl
 {
+	public const SAVE_VOLUME_ACTION_OK = 'SaveVolumeActionOk';
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -47,5 +49,15 @@ class QuickVolumeEdit extends Portlets implements IActiveControl
 	{
 		$this->QuickVolumeEditDirectives->setMediaId($mediaid);
 		$this->QuickVolumeEditDirectives->setVolume();
+	}
+
+	public function getSaveVolumeActionOK()
+	{
+		return $this->getViewState(self::SAVE_VOLUME_ACTION_OK, '');
+	}
+
+	public function setSaveVolumeActionOK($action_ok)
+	{
+		$this->setViewState(self::SAVE_VOLUME_ACTION_OK, $action_ok);
 	}
 }
