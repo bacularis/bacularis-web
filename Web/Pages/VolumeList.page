@@ -448,15 +448,30 @@ var oVolumeList = {
 				{
 					data: 'mediaid',
 					render: function(data, type, row) {
-						const btn = document.createElement('BUTTON');
-						btn.className = 'w3-button w3-green';
-						btn.type = 'button';
-						btn.title = '<%[ Details ]%>';
-						const i = document.createElement('I');
+						let btns = '';
+						let i;
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+							// Quick edit button
+							const quick_edit = document.createElement('BUTTON');
+							quick_edit.className = 'w3-button w3-green';
+							quick_edit.type = 'button';
+							quick_edit.title = '<%[ Quick edit ]%>';
+							i = document.createElement('I');
+							i.className = 'fa fa-edit';
+							quick_edit.appendChild(i);
+							quick_edit.setAttribute('onclick', "open_quick_volume_edit(" + data + ", '" + row.volumename + "');");
+							btns += (quick_edit.outerHTML + ' ');
+						}
+						const details = document.createElement('BUTTON');
+						details.className = 'w3-button w3-green';
+						details.type = 'button';
+						details.title = '<%[ Details ]%>';
+						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						btn.appendChild(i);
-						btn.setAttribute('onclick', "document.location.href = '/web/volume/" + data + "/'");
-						return btn.outerHTML;
+						details.appendChild(i);
+						details.setAttribute('onclick', "document.location.href = '/web/volume/" + data + "/'");
+						btns += details.outerHTML;
+						return btns;
 					}
 				}
 			],
@@ -645,4 +660,5 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 	ID="BulkActions"
 	RefreshPageBtn="false"
 	/>
+<com:Bacularis.Web.Portlets.QuickVolumeEdit />
 </com:TContent>

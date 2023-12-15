@@ -45,10 +45,6 @@ class VolumeView extends BaculumWebPage
 
 	public $jobs_on_volume;
 
-	private $volstatus_by_dir = ['Recycle', 'Purged', 'Error', 'Busy'];
-
-	private $volstatus_by_user = ['Append', 'Archive', 'Disabled', 'Full', 'Used', 'Cleaning', 'Read-Only'];
-
 	public function onInit($param)
 	{
 		parent::onInit($param);
@@ -72,6 +68,8 @@ class VolumeView extends BaculumWebPage
 		}
 		$this->setMediaId($mediaid);
 		$this->setVolume();
+		$this->VolumeConfig->setMediaId($mediaid);
+		$this->VolumeConfig->setVolume();
 	}
 
 	/**
@@ -170,59 +168,7 @@ class VolumeView extends BaculumWebPage
 		$this->OVolErrors->Text = $volume->volerrors;
 		$this->OVolMounts->Text = $volume->volmounts;
 
-		$volstatus = $this->volstatus_by_user;
-		if (!in_array($volume->volstatus, $this->volstatus_by_user)) {
-			array_push($volstatus, $volume->volstatus);
-		}
-		$this->VolumeStatus->DataSource = array_combine($volstatus, $volstatus);
-		$this->VolumeStatus->SelectedValue = $volume->volstatus;
-		$this->VolumeStatus->dataBind();
-		$this->RetentionPeriod->Text = (int) ($volume->volretention / 3600); // conversion to hours
-		$this->UseDuration->Text = (int) ($volume->voluseduration / 3600);  // conversion to hours
-		$this->MaxVolJobs->Text = $volume->maxvoljobs;
-		$this->MaxVolFiles->Text = $volume->maxvolfiles;
-		$this->MaxVolBytes->Text = $volume->maxvolbytes;
-		$this->Slot->Text = $volume->slot;
-		$this->Recycle->Checked = ($volume->recycle === 1);
-		$this->Enabled->Checked = ($volume->enabled === 1);
-		$this->InChanger->Checked = ($volume->inchanger === 1);
-		$pools = $this->Application->getModule('api')->get(['pools'])->output;
-		$pool_list = [];
-		foreach ($pools as $pool) {
-			$pool_list[$pool->poolid] = $pool->name;
-		}
-		$this->Pool->dataSource = $pool_list;
-		$this->Pool->SelectedValue = $volume->poolid;
-		$this->Pool->dataBind();
-
 		$this->jobs_on_volume = $this->getModule('api')->get(['volumes', $volume->mediaid, 'jobs'])->output;
-	}
-
-	public function updateVolume($sender, $param)
-	{
-		$volume = [];
-		$volume['mediaid'] = $this->getMediaId();
-		$volume['volstatus'] = $this->VolumeStatus->SelectedValue;
-		$volume['poolid'] = $this->Pool->SelectedValue;
-		$volume['volretention'] = $this->RetentionPeriod->Text * 3600; // conversion to seconds
-		$volume['voluseduration'] = $this->UseDuration->Text * 3600;  // conversion to seconds
-		$volume['maxvoljobs'] = $this->MaxVolJobs->Text;
-		$volume['maxvolfiles'] = $this->MaxVolFiles->Text;
-		$volume['maxvolbytes'] = $this->MaxVolBytes->Text;
-		$volume['slot'] = $this->Slot->Text;
-		$volume['recycle'] = (int) $this->Recycle->Checked;
-		$volume['enabled'] = (int) $this->Enabled->Checked;
-		$volume['inchanger'] = (int) $this->InChanger->Checked;
-		$result = $this->getModule('api')->set(
-			['volumes', $volume['mediaid']],
-			$volume
-		);
-		if ($result->error === 0) {
-			$this->VolumeConfigLog->Text = implode(PHP_EOL, $result->output);
-		} else {
-			$this->VolumeConfigLog->Text = $result->output;
-		}
-		$this->setVolume();
 	}
 
 	public function prune($sender, $param)
