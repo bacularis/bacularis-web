@@ -100,8 +100,8 @@ class DirectiveTimePeriod extends DirectiveTemplate
 		$formatted_value = $this->formatTimePeriod($directive_value, $time_format);
 		$this->Directive->Text = $formatted_value['value'];
 		$this->TimeFormat->DataSource = $this->getTimeFormats();
-		$this->TimeFormat->dataBind();
 		$this->TimeFormat->SelectedValue = $formatted_value['format'];
+		$this->TimeFormat->dataBind();
 		$this->Label->Text = $this->getLabel();
 		$validate = $this->getRequired();
 		$this->DirectiveValidator->setVisible($validate);

@@ -5,7 +5,6 @@
 			OnTextChanged="saveValue"
 			CssClass="w3-input w3-border w3-half"
 			Visible="<%=$this->display_directive%>"
-			ActiveControl.EnableUpdate="false"
 		/>
 		<com:TActiveDropDownList
 			ID="TimeFormat"
@@ -13,7 +12,6 @@
 			DataTextField="label"
 			DataValueField="format"
 			Visible="<%=$this->display_directive%>"
-			ActiveControl.EnableUpdate="false"
 			AutoPostBack="false"
 			Style="max-width: 200px"
 			OnSelectedIndexChanged="saveValue"
