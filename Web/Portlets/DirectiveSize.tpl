@@ -5,7 +5,6 @@
 			OnTextChanged="saveValue"
 			CssClass="w3-input w3-border w3-half"
 			Visible="<%=$this->display_directive%>"
-			ActiveControl.EnableUpdate="false"
 		/>
 		<com:TActiveDropDownList
 			ID="SizeFormat"
@@ -13,7 +12,6 @@
 			DataTextField="label"
 			DataValueField="format"
 			Visible="<%=$this->display_directive%>"
-			ActiveControl.EnableUpdate="false"
 			AutoPostBack="false"
 			OnSelectedIndexChanged="saveValue"
 		/> &nbsp;<i class="fa fa-asterisk w3-text-red directive_required" style="visibility: <%=$this->getRequired() ? 'visible' : 'hidden'%>;"></i>
