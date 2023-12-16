@@ -57,7 +57,7 @@ class VolumeJobList extends Portlets
 	/**
 	 * Set media identifier to get jobs on the volume.
 	 *
-	 * @param integer $mediaid media identifier
+	 * @param int $mediaid media identifier
 	 */
 	public function setMediaId($mediaid)
 	{
@@ -68,7 +68,7 @@ class VolumeJobList extends Portlets
 	/**
 	 * Get media identifier to get jobs on the volume.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMediaId()
 	{
