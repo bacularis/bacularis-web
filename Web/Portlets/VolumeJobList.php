@@ -68,7 +68,7 @@ class VolumeJobList extends Portlets
 	/**
 	 * Get media identifier to get jobs on the volume.
 	 *
-	 * @return int
+	 * @return int media identifier
 	 */
 	public function getMediaId()
 	{
