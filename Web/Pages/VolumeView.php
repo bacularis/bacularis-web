@@ -168,7 +168,9 @@ class VolumeView extends BaculumWebPage
 		$this->OVolErrors->Text = $volume->volerrors;
 		$this->OVolMounts->Text = $volume->volmounts;
 
-		$this->jobs_on_volume = $this->getModule('api')->get(['volumes', $volume->mediaid, 'jobs'])->output;
+		// Load jobs on volume list
+		$this->VolumeJobList->setMediaId($volume->mediaid);
+		$this->VolumeJobList->loadJobs(null, null);
 	}
 
 	public function prune($sender, $param)
