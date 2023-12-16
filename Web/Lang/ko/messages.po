@@ -5147,3 +5147,6 @@ msgstr "Next job"
 
 msgid "Volume job list"
 msgstr "Volume job list"
+
+msgid "Log"
+msgstr "Log"
