@@ -5144,3 +5144,6 @@ msgstr "Prev job"
 
 msgid "Next job"
 msgstr "Next job"
+
+msgid "Volume job list"
+msgstr "Volume job list"
