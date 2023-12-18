@@ -263,6 +263,7 @@ class OSProfileConfig extends ConfigFileModule
 			'Fedora 36' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora36/',
 			'Fedora 37' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora37/',
 			'Fedora 38' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora38/',
+			'Fedora 39' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora39/',
 			'Oracle Linux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux8/',
 			'Oracle Linux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux9/',
 			'Rocky 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky8/',
@@ -275,7 +276,8 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 18.04 Bionic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ bionic main',
 			'Ubuntu 20.04 Focal' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ focal main',
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
-			'Ubuntu 23.04 Lunar' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ lunar main'
+			'Ubuntu 23.04 Lunar' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ lunar main',
+			'Ubuntu 23.10 Mantic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ mantic main'
 		]
 	];
 
