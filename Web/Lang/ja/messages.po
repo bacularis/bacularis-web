@@ -5208,3 +5208,6 @@ msgstr "Volume job list"
 
 msgid "Log"
 msgstr "Log"
+
+msgid "Latest"
+msgstr "Latest"

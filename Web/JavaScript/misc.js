@@ -1377,7 +1377,7 @@ var Weather = {
 		const jobs_len = jobs.length;
 		for (let i = 0; i < jobs_len; i++) {
 			if (!job_weather.hasOwnProperty(jobs[i].name)) {
-				job_weather[jobs[i].name] = {count: 0, cancel: 0, error: 0};
+				job_weather[jobs[i].name] = {count: 0, cancel: 0, error: 0, latest_jobstatus: jobs[i].jobstatus};
 			}
 			if (typeof(last_jobs) == 'number' && job_weather[jobs[i].name].count >= last_jobs) {
 				continue;

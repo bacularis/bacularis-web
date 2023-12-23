@@ -805,6 +805,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 				<thead>
 					<tr>
 						<th></th>
+						<th><%[ Latest ]%></th>
 						<th><%[ Status ]%></th>
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
@@ -820,6 +821,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 				<tfoot>
 					<tr>
 						<th></th>
+						<th><%[ Latest ]%></th>
 						<th><%[ Status ]%></th>
 						<th><%[ Name ]%></th>
 						<th><%[ Type ]%></th>
@@ -877,6 +879,18 @@ const oJobList = {
 				{
 					data: 'job',
 					render: function(data, type, row) {
+						let ret = '-';
+						if (this.job_weather.hasOwnProperty(data) && this.job_weather[data].hasOwnProperty('latest_jobstatus')) {
+							ret = render_jobstatus(this.job_weather[data].latest_jobstatus, type, row);
+						}
+						return ret;
+					}.bind(this),
+					className: 'w3-center',
+					responsivePriority: 3
+				},
+				{
+					data: 'job',
+					render: function(data, type, row) {
 						var ret = '';
 						if (Object.keys(this.job_weather).length > 0) {
 							if (type == 'display' || type == 'filter') {
@@ -904,7 +918,7 @@ const oJobList = {
 						}
 						return ret;
 					}.bind(this),
-					responsivePriority: 3
+					responsivePriority: 4
 				},
 				{
 					data: 'job',
@@ -933,7 +947,7 @@ const oJobList = {
 						}
 						return ret;
 					},
-					responsivePriority: 6,
+					responsivePriority: 7,
 					width: '15%'
 				},
 				{
@@ -952,7 +966,7 @@ const oJobList = {
 						}
 						return ret;
 					},
-					responsivePriority: 5,
+					responsivePriority: 6,
 					width: '15%'
 				},
 				{
@@ -960,7 +974,7 @@ const oJobList = {
 					render: function(data, type, row) {
 						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
 					},
-					responsivePriority: 4
+					responsivePriority: 5
 				},
 				{data: 'maxjobs'},
 				{
@@ -1012,11 +1026,11 @@ const oJobList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4, 5, 6, 7, 8, 9 ]
+				targets: [ 1, 2, 4, 5, 6, 7, 8, 9, 10 ]
 			}],
-			order: [2, 'asc'],
+			order: [3, 'asc'],
 			initComplete: function () {
-				this.api().columns([2, 3, 6, 7, 8]).every(function () {
+				this.api().columns([3, 4, 7, 8, 9]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
