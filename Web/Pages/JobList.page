@@ -138,8 +138,20 @@
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none">
-			<a href="javascript:void(0)" class="w3-show-inline-block w3-left w3-margin-right" onclick="$('#table_adv_filters_fields').slideToggle('fast');"><%[ Advanced filters ]%></a>
+		<div id="table_predefined_filters_body" class="w3-margin-left" style="display: none;">
+			<div id="table_predefined_filters_fields" class="w3-left" style="width: 250px;">
+				<select id="table_predefined_filters_value_type" style="width: 250px;">
+					<option value=""><%[ All jobs ]%></option>
+					<option value="running"><%[ Running jobs ]%></option>
+					<option value="ok"><%[ Jobs finished successfully ]%></option>
+					<option value="warning"><%[ Jobs finished with warnings ]%></option>
+					<option value="error"><%[ Jobs finished with errors ]%></option>
+					<option value="cancel"><%[ Jobs cancelled ]%></option>
+				</select>
+			</div>
+		</div>
+		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none; height: 38px;">
+			<a href="javascript:void(0)" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px" onclick="$('#table_adv_filters_fields').slideToggle('fast');" title="<%[ Advanced filters ]%>"><i class="fa-solid fa-filter"></i></a>
 			<div id="table_adv_filters_fields" class="w3-left" style="width: 500px; display: none;">
 				<select id="table_adv_filters_value_type">
 					<option value="schedtime_epoch">Scheduled time</option>
@@ -261,14 +273,16 @@ var oJobHistoryList = {
 	ids: {
 		job_list: 'job_list',
 		job_list_body: 'job_list_body',
-		table_mode: 'table_mode',
 		table_adv_filters: 'table_adv_filters',
 		table_adv_filters_body: 'table_adv_filters_body',
 		table_adv_filters_value_type: 'table_adv_filters_value_type',
 		table_adv_filters_from : '<%=$this->TableAdvFiltersDateFrom->ClientID%>',
 		table_adv_filters_to: '<%=$this->TableAdvFiltersDateTo->ClientID%>',
 		table_adv_filters_clear: 'table_adv_filters_clear',
-		date_picker: 'TDatePicker_default'
+		date_picker: 'TDatePicker_default',
+		table_predefined_filters: 'table_predefined_filters',
+		table_predefined_filters_body: 'table_predefined_filters_body',
+		table_predefined_filters_value_type: 'table_predefined_filters_value_type',
 	},
 	data: [],
 	table: null,
@@ -280,6 +294,7 @@ var oJobHistoryList = {
 			this.set_table();
 			this.set_bulk_actions();
 			this.set_events();
+			this.set_predefined_filters();
 			this.set_adv_filters(); // adv filter MUST be set before other filters
 			this.set_filters();
 		}
@@ -297,13 +312,21 @@ var oJobHistoryList = {
 				hide_btn_loader(jobid);
 			});
 		});
+		const filters_select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		filters_select.addEventListener('change', (e) => {
+			this.reset_filters();
+			const type = filters_select.value;
+			if (type) {
+				this.set_filters(type);
+			}
+		});
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.job_list).DataTable({
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar"><"#table_mode"><"#table_adv_filters">frtip',
+			dom: 'lB<"table_toolbar"><"#table_predefined_filters"><"#table_adv_filters">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
@@ -561,7 +584,7 @@ var oJobHistoryList = {
 				blurable: false
 			},
 			order: [1, 'desc'],
-			initComplete: function () {
+			drawCallback: function () {
 				this.api().columns([2, 3, 4, 5, 15]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
@@ -574,7 +597,7 @@ var oJobHistoryList = {
 						.search(val ? '^' + val + '$' : '', true, false)
 						.draw();
 					});
-					if (column[0][0] == 15) { // NOTE: this column is used also in filters (@see oJobHistoryList.set_mode())
+					if (column[0][0] == 15) { // NOTE: this column is used also in filters
 						column.data().unique().sort().each(function (d, j) {
 							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
 								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
@@ -601,47 +624,22 @@ var oJobHistoryList = {
 			ok: '<%[ OK ]%>'
 		});
 	},
-	set_mode: function(type) {
-		var types = {
-			ok: '<%[ Jobs terminated normally ]%>',
-			warning: '<%[ Jobs with warning ]%>',
-			error: '<%[ Jobs finished with error ]%>',
-			running: '<%[ Jobs running ]%>',
-			cancel: '<%[ Jobs canceled ]%>'
-		}
-		var container = document.getElementById(this.ids.table_mode);
-		container.className = 'dt-buttons';
-		var mode = document.createTextNode(' <%[ Mode: ]%> ' + types[type] + ' ');
-		container.appendChild(mode);
-		var label = document.createTextNode(' <%[ Reset table mode ]%>');
-		var a = document.createElement('A');
-		a.className = 'w3-button w3-green';
-		a.href = 'javascript:void(0)';
-		a.addEventListener('click', function(e) {
+	reset_filters: function() {
+		if ($.fn.dataTable.ext.search.length > 1) {
 			$.fn.dataTable.ext.search.pop();
+		}
 
-			// reset select filters
-			this.table.columns().every(function() {
-				var select = this.footer().querySelector('SELECT');
-				if (select) {
-					select.value = '';
-					$(select).trigger('change');
-				}
-				let addr = location.href.replace(/[&;?]?(job|type)=[^&;]+/, '');
-				history.replaceState({}, '', addr);
-			})
+		// reset select filters
+		this.table.columns().every(function() {
+			let addr = location.href.replace(/[&;?]?(job|type)=[^&;]+/, '');
+			history.replaceState({}, '', addr);
+		})
 
-			this.table.columns().search('').draw();
-			container.style.display = 'none';
-		}.bind(this));
-		var img = document.createElement('I');
-		img.className = 'fas fa-sync-alt';
-		a.appendChild(img);
-		a.appendChild(label);
-		container.appendChild(a);
+		this.table.columns().draw();
 	},
-	set_filters: function() {
-		var type = get_url_param('type');
+	set_filters: function(type) {
+		const ptype = get_url_param('type');;
+		type = type || ptype;
 		var search_func;
 		switch (type) {
 			case 'ok':
@@ -677,15 +675,16 @@ var oJobHistoryList = {
 				};
 			break;
 		}
-		var container = document.getElementById(this.ids.table_mode);
 		if (search_func) {
 			$.fn.dataTable.ext.search.push(search_func);
-			this.table.columns().search('').draw();
+			if (ptype) {
+				// if type parameter passed in the URL query string, reset all filters (@see search(''))
+				this.table.columns().search('').draw();
+			} else {
+				this.table.columns().draw();
+			}
+			this.set_filter_select(type);
 			this.set_job_filter();
-			this.set_mode(type);
-			container.style.display = 'inline-block';
-		} else {
-			container.style.display = 'none';
 		}
 	},
 	set_job_filter: function() {
@@ -696,6 +695,16 @@ var oJobHistoryList = {
 			select.value = job;
 			$(select).trigger('change');
 		}
+	},
+	set_filter_select: function(type) {
+		const select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		select.value = type;
+	},
+	set_predefined_filters() {
+		const predefined = document.getElementById(this.ids.table_predefined_filters);
+		const body = document.getElementById(this.ids.table_predefined_filters_body);
+		predefined.appendChild(body);
+		body.style.display = 'block';
 	},
 	set_adv_filters: function() {
 		let container = document.getElementById(this.ids.table_adv_filters);
@@ -723,29 +732,29 @@ var oJobHistoryList = {
 		let validate_date = function() {
 			let from_stamp = iso_date_to_timestamp(from.value);
 			let to_stamp = iso_date_to_timestamp(to.value);
-			if (from_stamp > to_stamp) {
+			if (to.value && from_stamp > to_stamp) {
 				alert('<%[ Wrong time range. ]%>');
 			}
 		};
 		$.fn.dataTable.ext.search.push(search_func);
 		$(from).on('change', function(e) {
 			validate_date();
-			this.table.columns().search('').draw();
+			this.table.columns().draw();
 			this.set_job_filter();
 		}.bind(this));
 		$(to).on('change', function(e) {
 			validate_date();
-			this.table.columns().search('').draw();
+			this.table.columns().draw();
 			this.set_job_filter();
 		}.bind(this));
 		value_type.addEventListener('change', function() {
-			this.table.columns().search('').draw();
+			this.table.columns().draw();
 			this.set_job_filter();
 		}.bind(this));
 		var clear_btn = document.getElementById(this.ids.table_adv_filters_clear);
 		clear_btn.addEventListener('click', function() {
 			from.value = to.value = '';
-			this.table.columns().search('').draw();
+			this.table.columns().draw();
 		}.bind(this));
 		container.appendChild(body);
 		body.style.display = 'block';

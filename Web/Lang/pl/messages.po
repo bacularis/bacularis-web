@@ -3399,22 +3399,16 @@ msgstr "Konfiguruj konsolę"
 msgid "Mode:"
 msgstr "Tryb:"
 
-msgid "Reset table mode"
-msgstr "Resetuj tryb tabeli"
+msgid "Jobs finished successfully"
+msgstr "Zadania zakończone pomyślnie"
 
-msgid "Jobs terminated normally"
-msgstr "Zadania zakończone normalnie"
+msgid "Jobs finished with warnings"
+msgstr "Zadania zakończone z ostrzeżeniami"
 
-msgid "Jobs with warning"
-msgstr "Zadania z ostrzeżeniami"
-
-msgid "Jobs finished with error"
+msgid "Jobs finished with errors"
 msgstr "Zadania zakończone z błędem"
 
-msgid "Jobs running"
-msgstr "Zadania uruchomione"
-
-msgid "Jobs canceled"
+msgid "Jobs cancelled"
 msgstr "Zadania anulowane"
 
 msgid "Copy"

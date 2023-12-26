@@ -3405,22 +3405,16 @@ msgstr "콘솔 설정"
 msgid "Mode:"
 msgstr "모드:"
 
-msgid "Reset table mode"
-msgstr "테이블 모드 재설정"
-
-msgid "Jobs terminated normally"
+msgid "Jobs finished successfully"
 msgstr "작업이 정상적으로 종료되었음"
 
-msgid "Jobs with warning"
+msgid "Jobs finished with warnings"
 msgstr "경고가 있는 작업"
 
-msgid "Jobs finished with error"
+msgid "Jobs finished with errors"
 msgstr "작업이 오류로 종료되었음"
 
-msgid "Jobs running"
-msgstr "작업 실행중"
-
-msgid "Jobs canceled"
+msgid "Jobs cancelled"
 msgstr "작업이 취소됨"
 
 msgid "Copy"

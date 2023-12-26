@@ -3399,22 +3399,16 @@ msgstr "Настройка консоли"
 msgid "Mode:"
 msgstr "Режим:"
 
-msgid "Reset table mode"
-msgstr "Сбросить режим таблицы"
-
-msgid "Jobs terminated normally"
+msgid "Jobs finished successfully"
 msgstr "Задания завершены нормально"
 
-msgid "Jobs with warning"
+msgid "Jobs finished with warnings"
 msgstr "Задания с предупреждением"
 
-msgid "Jobs finished with error"
+msgid "Jobs finished with errors"
 msgstr "Задания завершены с ошибкой"
 
-msgid "Jobs running"
-msgstr "Задания выполняются"
-
-msgid "Jobs canceled"
+msgid "Jobs cancelled"
 msgstr "Отменённые задания"
 
 msgid "Copy"

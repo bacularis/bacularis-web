@@ -3399,22 +3399,16 @@ msgstr "Configurer la console"
 msgid "Mode:"
 msgstr "Mode :"
 
-msgid "Reset table mode"
-msgstr "Réinitialiser le mode table"
-
-msgid "Jobs terminated normally"
+msgid "Jobs finished successfully"
 msgstr "Jobs terminés normalement"
 
-msgid "Jobs with warning"
+msgid "Jobs finished with warnings"
 msgstr "Jobs avec des avertissements"
 
-msgid "Jobs finished with error"
+msgid "Jobs finished with errors"
 msgstr "Jobs terminés avec des erreurs"
 
-msgid "Jobs running"
-msgstr "Jobs en cours"
-
-msgid "Jobs canceled"
+msgid "Jobs cancelled"
 msgstr "Jobs annulés"
 
 msgid "Copy"
