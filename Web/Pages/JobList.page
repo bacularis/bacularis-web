@@ -138,8 +138,8 @@
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<div id="table_predefined_filters_body" class="w3-margin-left" style="display: none;">
-			<div id="table_predefined_filters_fields" class="w3-left" style="width: 250px;">
+		<div id="table_predefined_filters_body" class="w3-margin-left" style="display: none; height: 38px; width: 290px;">
+			<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px">
 				<select id="table_predefined_filters_value_type" style="width: 250px;">
 					<option value=""><%[ All jobs ]%></option>
 					<option value="running"><%[ Running jobs ]%></option>
@@ -149,10 +149,11 @@
 					<option value="cancel"><%[ Jobs cancelled ]%></option>
 				</select>
 			</div>
+			<!-- this item belongs to table_adv_filters. Placed here for better displaying -->
+			<a href="javascript:void(0)" class="w3-show-block" style="line-height: 38px;" onclick="$('#table_adv_filters_fields').slideToggle('fast');" title="<%[ Advanced filters ]%>"><i class="fa-solid fa-filter"></i></a>
 		</div>
-		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none; height: 38px;">
-			<a href="javascript:void(0)" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px" onclick="$('#table_adv_filters_fields').slideToggle('fast');" title="<%[ Advanced filters ]%>"><i class="fa-solid fa-filter"></i></a>
-			<div id="table_adv_filters_fields" class="w3-left" style="width: 500px; display: none;">
+		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none;">
+			<div id="table_adv_filters_fields" class="w3-left" style="width: 500px; text-align: left; display: none;">
 				<select id="table_adv_filters_value_type">
 					<option value="schedtime_epoch">Scheduled time</option>
 					<option value="starttime_epoch" selected>Start time</option>
@@ -702,6 +703,7 @@ var oJobHistoryList = {
 	},
 	set_predefined_filters() {
 		const predefined = document.getElementById(this.ids.table_predefined_filters);
+		predefined.className = 'dt-buttons';
 		const body = document.getElementById(this.ids.table_predefined_filters_body);
 		predefined.appendChild(body);
 		body.style.display = 'block';
