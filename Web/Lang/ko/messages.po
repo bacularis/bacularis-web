@@ -5147,3 +5147,9 @@ msgstr "Log"
 
 msgid "Latest"
 msgstr "Latest"
+
+msgid "Copy to clipboard"
+msgstr "Copy to clipboard"
+
+msgid "Save log in file"
+msgstr "Save log in file"

@@ -82,7 +82,7 @@ class JobLog extends Portlets
 		$log = implode(PHP_EOL, $log);
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'oJobLogWindow.set_log',
-			[$log]
+			[$log, $joblog]
 		);
 	}
 
