@@ -138,7 +138,7 @@
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<div id="table_predefined_filters_body" class="w3-margin-left" style="display: none; height: 38px; width: 290px;">
+		<div id="table_predefined_filters_body" style="display: none; height: 38px; width: 290px;">
 			<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px">
 				<select id="table_predefined_filters_value_type" style="width: 250px;">
 					<option value=""><%[ All jobs ]%></option>
