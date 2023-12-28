@@ -5153,3 +5153,6 @@ msgstr "Copy to clipboard"
 
 msgid "Save log in file"
 msgstr "Save log in file"
+
+msgid "Job summary"
+msgstr "Job summary"

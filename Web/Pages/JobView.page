@@ -114,19 +114,25 @@
 					</div>
 				</div>
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output', 'job_log');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
-					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
+					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
 						<%[ Running job status ]%>
 						<i id="status_running_job_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
 				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');"<%=!$this->allow_report_summary ? ' style="display: none"' : ''%>>
+					<div id="job_report_summary_subtab_text" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
+						<%[ Job summary ]%>
+						<i id="job_report_summary_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
+					</div>
+				</a>
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');">
-					<div id="joblog_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding">
+					<div id="joblog_subtab_text" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
 						<%[ Raw job log ]%>
 						<i id="joblog_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
 				</a>
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('jobfiles_subtab_text', 'jobfiles_list', 'job_log'); load_job_list_files();"<%=!$this->allow_list_files_mode ? ' style="display: none"' : ''%>>
-					<div id="jobfiles_subtab_text" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding"><%[ Job files ]%></div>
+					<div id="jobfiles_subtab_text" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding"><%[ Job files ]%></div>
 				</a>
 			</div>
 			<div id="status_running_job_graphical_output" class="subtab_item" style="display: none">
@@ -217,7 +223,7 @@ var oRunningJobStatus = {
 	},
 	update: function(data) {
 		this.set_data(data);
-		if (this.is_status_supported() === false) {
+		if (this.data.is_running && this.is_status_supported() === false) {
 			return;
 		}
 		var el, val;
@@ -236,9 +242,7 @@ var oRunningJobStatus = {
 			$('#' + this.ids.refresh_interval).parent().hide();
 			var graphical_container = document.getElementById(this.ids.graphical_container);
 			graphical_container.style.display = 'none';
-			if (document.getElementById('jobfiles_list').style.display == 'none') {
-				W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
-			}
+			W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');
 		}
 	},
 	add_running_job: function(job, full_refresh) {
@@ -490,7 +494,7 @@ $(function() {
 				</script>
 			</div>
 			<com:TConditional
-				Condition="$this->allow_graph_mode"
+				Condition="$this->allow_graph_mode && !$this->allow_report_summary"
 			>
 				<prop:FalseTemplate>
 					<script>
@@ -500,6 +504,208 @@ $(function() {
 					</script>
 				</prop:FalseTemplate>
 			</com:TConditional>
+			<div id="job_report_summary" class="subtab_item" style="display: none">
+				<div class="w3-row w3-padding w3-margin-bottom">
+					<div class="w3-card w3-quarter w3-padding w3-margin-right w3-margin-top details_card_long">
+						<h4><i class="fa-solid fa-heart-pulse"></i> <%[ Status ]%></h4>
+						<table style="width: 90%">
+							<tr>
+								<td><%[ Type ]%></td>
+								<td><strong id="job_report_summary_type"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Level ]%></td>
+								<td><strong id="job_report_summary_level"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Job status ]%></td>
+								<td><strong id="job_report_summary_jobstatus"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Job errors ]%></td>
+								<td><strong id="job_report_summary_joberrors"></strong></td>
+							</tr>
+						</table>
+					</div>
+					<div class="w3-card w3-quarter w3-padding w3-margin-right w3-margin-top details_card_long">
+						<h4><i class="fa-solid fa-copy"></i> <%[ Files ]%></h4>
+						<table style="width: 90%">
+							<tr>
+								<td><%[ Client ]%></td>
+								<td><strong id="job_report_summary_client"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ FileSet ]%></td>
+								<td><strong id="job_report_summary_fileset"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Job files ]%></td>
+								<td><strong id="job_report_summary_jobfiles"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Size ]%></td>
+								<td><strong id="job_report_summary_size"></strong></td>
+							</tr>
+						</table>
+					</div>
+					<div class="w3-card w3-quarter w3-padding w3-margin-right w3-margin-top details_card_long">
+						<h4><i class="fa-solid fa-database"></i> <%[ Storage ]%></h4>
+						<table style="width: 90%">
+							<tr>
+								<td><%[ Pool ]%></td>
+								<td><strong id="job_report_summary_pool"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Vol. count ]%></td>
+								<td><strong id="job_report_summary_volcount"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ First vol. ]%></td>
+								<td><strong id="job_report_summary_firstvol"></strong></td>
+							</tr>
+						</table>
+					</div>
+					<div class="w3-card w3-quarter w3-padding w3-margin-right w3-margin-top details_card_long">
+						<h4><i class="fa-solid fa-stopwatch-20"></i> <%[ Time ]%></h4>
+						<table style="width: 90%">
+							<tr>
+								<td><%[ Duration ]%></td>
+								<td><strong id="job_report_summary_duration"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Scheduled time ]%></td>
+								<td><strong id="job_report_summary_schedtime"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ Start time ]%></td>
+								<td><strong id="job_report_summary_starttime"></strong></td>
+							</tr>
+							<tr>
+								<td><%[ End time ]%></td>
+								<td><strong id="job_report_summary_endtime"></strong></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<com:TConditional
+				Condition="$this->allow_report_summary"
+			>
+				<prop:TrueTemplate>
+					<script>
+						$(function() {
+							W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');
+						});
+					</script>
+				</prop:TrueTemplate>
+			</com:TConditional>
+			<script>
+var oJobReportSummary = {
+	fields: {
+		type: {
+			prop_fn: (data) => data.type,
+			format_fn: JobType.get_type.bind(JobType)
+		},
+		level: {
+			prop_fn: (data) => {
+				return (['R', 'D'].indexOf(data.type) === -1 ? JobLevel.get_level(data.level) : '-');
+			}
+		},
+		jobstatus: {
+			prop_fn: (data) => data.jobstatus,
+			format_fn: function(data) {
+				return JobStatus.get_icon(data);
+			}
+		},
+		joberrors: {
+			prop_fn: (data) => data.joberrors,
+			format_fn: (data) => {
+				const el = document.createElement('SPAN');
+				if (data == 0) {
+					el.classList.add('w3-text-green');
+				} else {
+					el.classList.add('w3-text-red');
+				}
+				el.textContent = data;
+				return el;
+			}
+		},
+		client: {
+			prop_fn: (data) => (data.client || '-')
+		},
+		fileset: {
+			prop_fn: (data) => (data.fileset || '-')
+		},
+		jobfiles: {
+			prop_fn: (data) => data.jobfiles
+		},
+		size: {
+			prop_fn: (data) => data.jobbytes,
+			format_fn: (data) => {
+				let size = '';
+				if (/^\d+$/.test(data)) {
+					size = Units.get_formatted_size(data);
+				}
+				return size;
+			}
+		},
+		pool: {
+			prop_fn: (data) => (data.pool || '-')
+		},
+		volcount: {
+			prop_fn: (data) => data.volcount
+		},
+		firstvol: {
+			prop_fn: (data) => (data.firstvol || '-'),
+		},
+		duration: {
+			prop_fn: (data) => {
+				let duration = 0;
+				if (data.starttime_epoch && data.endtime_epoch) {
+					duration = data.endtime_epoch - data.starttime_epoch;
+				}
+				return duration;
+			},
+			format_fn: Units.format_time_duration.bind(Units)
+		},
+		schedtime: {
+			prop_fn: (data) => data.schedtime_epoch,
+			format_fn: Units.format_date.bind(Units)
+		},
+		starttime: {
+			prop_fn: (data) => data.starttime_epoch,
+			format_fn: Units.format_date.bind(Units)
+		},
+		endtime: {
+			prop_fn: (data) => data.endtime_epoch,
+			format_fn: Units.format_date.bind(Units)
+		}
+	},
+	init: function() {
+		const data = <%=json_encode($this->jobdata)%>;
+		this.update(data);
+	},
+	update(data) {
+		let el, val;
+		const self = oJobReportSummary;
+		for (const field in self.fields) {
+			el = document.getElementById('job_report_summary_' + field);
+			val = self.fields[field].prop_fn(data);
+			if (typeof(self.fields[field].format_fn) == 'function') {
+				val = self.fields[field].format_fn(val);
+			}
+			if (val instanceof HTMLElement) {
+				el.innerHTML = val.outerHTML;
+			} else {
+				el.textContent = val;
+			}
+		}
+	}
+};
+$(function() {
+	oJobReportSummary.init();
+});
+			</script>
 			<div id="joblog_text_output" class="subtab_item" style="display: none">
 				<div class="w3-right w3-margin-top w3-margin-right" title="<%[ Refresh job log ]%>">
 					<a href="javascript:void(0)"class="w3-margin-bottom raw" onclick="job_callback_func(true);"><%[ Refresh log ]%> &nbsp;<i class="fa fa-sync"></i></a>
@@ -521,17 +727,6 @@ $(function() {
 					ID="FileList"
 				/>
 			</div>
-			<com:TConditional
-				Condition="$this->allow_list_files_mode"
-			>
-				<prop:TrueTemplate>
-					<script>
-						$(function() {
-							W3SubTabs.open('joblog_subtab_text', 'joblog_text_output', 'job_log');
-						});
-					</script>
-				</prop:TrueTemplate>
-			</com:TConditional>
 		</div>
 		<com:TCallback
 			ID="RefreshJobLog"

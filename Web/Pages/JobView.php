@@ -57,7 +57,9 @@ class JobView extends BaculumWebPage
 	public const SORT_ASC = 0;
 	public const SORT_DESC = 1;
 
+	public $jobdata = [];
 	public $is_running = false;
+	public $allow_report_summary = false;
 	public $allow_graph_mode = false;
 	public $allow_list_files_mode = false;
 	private $no_graph_mode_types = ['M', 'D', 'C', 'c', 'g'];
@@ -70,6 +72,7 @@ class JobView extends BaculumWebPage
 	{
 		parent::onPreInit($param);
 		$job_name = '';
+		$jobdata = [];
 		if ($this->Request->contains('jobid')) {
 			$jobid = (int) ($this->Request['jobid']);
 			$jobdata = $this->getModule('api')->get(
@@ -91,6 +94,7 @@ class JobView extends BaculumWebPage
 			$this->setJobLevel($jobdata->level);
 			$this->setClientId($jobdata->clientid);
 			$this->is_running = $this->getModule('misc')->isJobRunning($jobdata->jobstatus);
+			$this->allow_report_summary = !$this->is_running;
 			$this->allow_graph_mode = ($this->is_running && !in_array($jobdata->type, $this->no_graph_mode_types));
 			$this->allow_list_files_mode = (!$this->is_running && in_array($jobdata->type, $this->list_files_types));
 			if ($jobdata->type === 'V') {
@@ -108,6 +112,13 @@ class JobView extends BaculumWebPage
 			$job_name = $this->Request['job'];
 		}
 		$this->setJobName($job_name);
+		$this->jobdata = $jobdata;
+		if ($this->IsCallBack) {
+			$this->getCallbackClient()->callClientFunction(
+				'oJobReportSummary.update',
+				[$jobdata]
+			);
+		}
 	}
 
 	public function onInit($param)
@@ -147,14 +158,21 @@ class JobView extends BaculumWebPage
 		$tabs = [
 			'joblog_subtab_text' => true,
 			'status_running_job_subtab_graphical' => false,
-			'jobfiles_subtab_text' => false
+			'jobfiles_subtab_text' => false,
+			'job_report_summary_subtab_text' => false
 		];
 		if ($this->allow_graph_mode) {
 			$tabs['status_running_job_subtab_graphical'] = true;
 		} elseif ($this->allow_list_files_mode) {
 			$tabs['jobfiles_subtab_text'] = true;
 		}
-		$this->getCallbackClient()->callClientFunction('init_graphical_running_job_status', [$running_job_status, $tabs]);
+		if ($this->allow_report_summary) {
+			$tabs['job_report_summary_subtab_text'] = true;
+		}
+		$this->getCallbackClient()->callClientFunction(
+			'init_graphical_running_job_status',
+			[$running_job_status, $tabs]
+		);
 	}
 
 	public function getRunningJobStatus($clientid)
