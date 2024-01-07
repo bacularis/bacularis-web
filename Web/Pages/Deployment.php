@@ -20,6 +20,7 @@ use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\OSProfileConfig;
 use Bacularis\Web\Modules\SSH;
+use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Common\Modules\AuditLog;
 
 /**
@@ -71,6 +72,17 @@ class Deployment extends BaculumWebPage
 		$this->getCallbackClient()->callClientFunction('oAPIHosts.load_api_host_list_cb', [
 			$attributes
 		]);
+	}
+	/**
+	 * Set API host list control.
+	 */
+	private function setAPIHostGroupsControl()
+	{
+		$hgc = $this->getModule('host_group_config')->getConfig();
+		$host_groups = array_keys($hgc);
+		natcasesort($host_groups);
+		$this->DeployAPIHostGroups->DataSource = array_combine($host_groups, $host_groups);
+		$this->DeployAPIHostGroups->dataBind();
 	}
 
 	/**
@@ -805,6 +817,7 @@ class Deployment extends BaculumWebPage
 	 */
 	public function loadDeployAPIHostWindow($sender, $param)
 	{
+		$this->setAPIHostGroupsControl();
 	}
 
 	private function deployAPICopyStep($file)
@@ -1256,6 +1269,9 @@ class Deployment extends BaculumWebPage
 		if ($ret) {
 			// Automatically assign new host to user who deployed this host
 			$this->assignNewAPIHostToUser($api_host_name);
+
+			// Assign to selected API host groups
+			$this->assignNewAPIHostToAPIGroups($api_host_name);
 		}
 	}
 
@@ -1275,6 +1291,41 @@ class Deployment extends BaculumWebPage
 			}
 			$user['api_hosts'][] = $host;
 			$user_config->setUserConfig($username, $user);
+		}
+	}
+
+	private function assignNewAPIHostToAPIGroups($host)
+	{
+		if (!$this->DeployAPIHostUseHostGroups->Checked) {
+			// No use API groups checkebox checked, no assigning
+			return;
+		}
+
+		$ahg = $this->getModule('host_group_config');
+		$selected_indices = $this->DeployAPIHostGroups->getSelectedIndices();
+		foreach ($selected_indices as $indice) {
+			for ($i = 0; $i < $this->DeployAPIHostGroups->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$host_group = $this->DeployAPIHostGroups->Items[$i]->Value;
+					$config = $ahg->getHostGroupConfig($host_group);
+					if (!in_array($host, $config['api_hosts'])) {
+						$config['api_hosts'][] = $host;
+					}
+					if ($ahg->setHostGroupConfig($host_group, $config)) {
+						$this->getModule('audit')->audit(
+							AuditLog::TYPE_INFO,
+							AuditLog::CATEGORY_APPLICATION,
+							"Newly deployed API host assigned to API group. API host: {$host},  host group: {$host_group}"
+						);
+					} else {
+						$this->getModule('audit')->audit(
+							AuditLog::TYPE_ERROR,
+							AuditLog::CATEGORY_APPLICATION,
+							"Error while assigning newly deployed API host to API group. API host: {$host},  host group: {$host_group}"
+						);
+					}
+				}
+			}
 		}
 	}
 

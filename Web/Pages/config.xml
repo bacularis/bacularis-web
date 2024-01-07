@@ -9,6 +9,7 @@
 		<!-- config modules -->
 		<module id="web_config" class="Bacularis\Web\Modules\WebConfig" />
 		<module id="host_config" class="Bacularis\Web\Modules\HostConfig" />
+		<module id="host_group_config" class="Bacularis\Web\Modules\HostGroupConfig" />
 		<module id="user_config" class="Bacularis\Web\Modules\WebUserConfig" />
 		<module id="role_config" class="Bacularis\Web\Modules\WebRoleConfig" />
 		<module id="ssh_config" class="Bacularis\Web\Modules\SSHConfig" />

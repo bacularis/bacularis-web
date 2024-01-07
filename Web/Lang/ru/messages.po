@@ -5150,3 +5150,45 @@ msgstr "Save log in file"
 
 msgid "Job summary"
 msgstr "Job summary"
+
+msgid "Host groups"
+msgstr "Host groups"
+
+msgid "API host method"
+msgstr "API host method"
+
+msgid "API host groups"
+msgstr "API host groups"
+
+msgid "Add new API host group"
+msgstr "Add new API host group"
+
+msgid "API group name"
+msgstr "API group name"
+
+msgid "Edit API host group"
+msgstr "Edit API host group"
+
+msgid "Add API host group"
+msgstr "Add API host group"
+
+msgid "API host group:"
+msgstr "API host group:"
+
+msgid "API host group with the given name already exists."
+msgstr "API host group with the given name already exists."
+
+msgid "API host groups:"
+msgstr "API host groups:"
+
+msgid "Use API hosts"
+msgstr "Use API hosts"
+
+msgid "Use API host groups"
+msgstr "Use API host groups"
+
+msgid "The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host."
+msgstr "The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host."
+
+msgid "Assign to API host groups:"
+msgstr "Assign to API host groups:"

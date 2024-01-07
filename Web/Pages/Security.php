@@ -39,10 +39,12 @@ use Bacularis\Common\Modules\Ldap;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\HostConfig;
+use Bacularis\Web\Modules\HostGroupConfig;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\WebConfig;
 use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Web\Portlets\BaculaConfigResources;
 
 /**
@@ -100,6 +102,7 @@ class Security extends BaculumWebPage
 		$this->initAuthForm();
 		$this->initUserWindow();
 		$this->initRoleWindow();
+		$this->initAPIHostGroupWindow();
 		$this->setBasicAuthConfig();
 	}
 
@@ -192,6 +195,10 @@ class Security extends BaculumWebPage
 		// set API hosts
 		$this->setAPIHosts($this->UserAPIHosts, null, false);
 
+		// set API host groups
+		$this->setAPIHostGroups($this->UserAPIHostGroups);
+		$this->setAPIHostGroups($this->APIHostGroups);
+
 		// set roles
 		$this->setRoles($this->UserRoles);
 	}
@@ -241,6 +248,24 @@ class Security extends BaculumWebPage
 	}
 
 	/**
+	 * Set API host group list control.
+	 *
+	 * @param object $control control which contains API host group list
+	 * @param mixed $def_val default value or null if no default value to set
+	 * @param mixed $add_blank_item
+	 */
+	private function setAPIHostGroups($control, $def_val = null)
+	{
+		$api_host_groups = array_keys($this->getModule('host_group_config')->getConfig());
+		natcasesort($api_host_groups);
+		$control->DataSource = array_combine($api_host_groups, $api_host_groups);
+		if ($def_val) {
+			$control->SelectedValue = $def_val;
+		}
+		$control->dataBind();
+	}
+
+	/**
 	 * Set and load user list.
 	 *
 	 * @param TCallback $sender sender object
@@ -265,6 +290,7 @@ class Security extends BaculumWebPage
 	public function loadUserWindow($sender, $param)
 	{
 		//$this->getModule('user_config')->importBasicUsers();
+		$cb = $this->getCallbackClient();
 		$username = $param->getCallbackParameter();
 		$config = $this->getModule('user_config')->getUserConfig($username);
 		if (count($config) > 0) {
@@ -294,15 +320,37 @@ class Security extends BaculumWebPage
 			}
 
 			$this->UserAPIHosts->setSelectedIndices($selected_indices);
+
+			$selected_indices = [];
+			$api_host_groups = $config['api_host_groups'];
+			for ($i = 0; $i < $this->UserAPIHostGroups->getItemCount(); $i++) {
+				if (in_array($this->UserAPIHostGroups->Items[$i]->Value, $api_host_groups)) {
+					$selected_indices[] = $i;
+				}
+			}
+
+			$this->UserAPIHostGroups->setSelectedIndices($selected_indices);
+
+			if ($config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
+				$this->UserAPIHostsOpt->Checked = true;
+				$this->UserAPIHostGroupsOpt->Checked = false;
+				$cb->show('user_window_api_hosts');
+				$cb->hide('user_window_api_host_groups');
+			} elseif ($config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
+				$this->UserAPIHostsOpt->Checked = false;
+				$this->UserAPIHostGroupsOpt->Checked = true;
+				$cb->hide('user_window_api_hosts');
+				$cb->show('user_window_api_host_groups');
+			}
 			$this->UserIps->Text = $config['ips'];
 			$this->UserEnabled->Checked = ($config['enabled'] == 1);
 		}
 
 		// It is done both for new user and for edit user
 		if ($this->isManageUsersAvail()) {
-			$this->getCallbackClient()->show('user_window_password');
+			$cb->show('user_window_password');
 		} else {
-			$this->getCallbackClient()->hide('user_window_password');
+			$cb->hide('user_window_password');
 		}
 	}
 
@@ -348,6 +396,12 @@ class Security extends BaculumWebPage
 		}
 		$config['roles'] = implode(',', $roles);
 
+		$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOSTS;
+		if ($this->UserAPIHostsOpt->Checked) {
+			$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOSTS;
+		} elseif ($this->UserAPIHostGroupsOpt->Checked) {
+			$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOST_GROUPS;
+		}
 		// set API hosts config values
 		$selected_indices = $this->UserAPIHosts->getSelectedIndices();
 		$api_hosts = [];
@@ -359,6 +413,19 @@ class Security extends BaculumWebPage
 			}
 		}
 		$config['api_hosts'] = $api_hosts;
+
+		// set API host groups config values
+		$selected_indices = $this->UserAPIHostGroups->getSelectedIndices();
+		$api_host_groups = [];
+		foreach ($selected_indices as $indice) {
+			for ($i = 0; $i < $this->UserAPIHostGroups->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$api_host_groups[] = $this->UserAPIHostGroups->Items[$i]->Value;
+				}
+			}
+		}
+		$config['api_host_groups'] = $api_host_groups;
+
 		$config['ips'] = $this->trimIps($this->UserIps->Text);
 		$config['enabled'] = $this->UserEnabled->Checked ? 1 : 0;
 		$result = $this->getModule('user_config')->setUserConfig($username, $config);
@@ -681,6 +748,9 @@ class Security extends BaculumWebPage
 
 			// set API hosts
 			$this->setAPIHosts($this->GetUsersDefaultAPIHosts, HostConfig::MAIN_CATALOG_HOST, false);
+
+			// set API host groups
+			$this->setAPIHostGroups($this->GetUsersDefaultAPIHostGroups);
 		}
 
 		$params = $this->getBasicParams();
@@ -869,6 +939,9 @@ class Security extends BaculumWebPage
 
 			// set API hosts
 			$this->setAPIHosts($this->GetUsersDefaultAPIHosts, HostConfig::MAIN_CATALOG_HOST, false);
+
+			// set API host groups
+			$this->setAPIHostGroups($this->GetUsersDefaultAPIHostGroups);
 		}
 
 		$ldap = $this->getModule('ldap');
@@ -1159,25 +1232,45 @@ class Security extends BaculumWebPage
 		}
 		$roles = implode(',', $role_list);
 
-		// Get default API hosts for imported users
-		$selected_indices = $this->GetUsersDefaultAPIHosts->getSelectedIndices();
-		$api_host_list = [];
-		foreach ($selected_indices as $indice) {
-			for ($i = 0; $i < $this->GetUsersDefaultAPIHosts->getItemCount(); $i++) {
-				if ($i === $indice) {
-					$api_host_list[] = $this->GetUsersDefaultAPIHosts->Items[$i]->Value;
+		$api_hosts = [];
+		$api_host_groups = [];
+		$api_hosts_method = WebUserConfig::API_HOST_METHOD_HOSTS;
+		if ($this->GetUsersAPIHostsOpt->Checked) {
+			$api_hosts_method = WebUserConfig::API_HOST_METHOD_HOSTS;
+
+			// Get default API hosts for imported users
+			$selected_indices = $this->GetUsersDefaultAPIHosts->getSelectedIndices();
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->GetUsersDefaultAPIHosts->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$api_hosts[] = $this->GetUsersDefaultAPIHosts->Items[$i]->Value;
+					}
+				}
+			}
+		} elseif ($this->GetUsersAPIHostGroupsOpt->Checked) {
+			$api_hosts_method = WebUserConfig::API_HOST_METHOD_HOST_GROUPS;
+
+			// Get default API host groups config values
+			$selected_indices = $this->GetUsersDefaultAPIHostGroups->getSelectedIndices();
+			$api_host_groups = [];
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->GetUsersDefaultAPIHostGroups->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$api_host_groups[] = $this->GetUsersDefaultAPIHostGroups->Items[$i]->Value;
+					}
 				}
 			}
 		}
-		$api_hosts = implode(',', $api_host_list);
 
 		// Get default IP address restrictions for imported users
 		$ips = $this->trimIps($this->GetUsersDefaultIps->Text);
 
 		// fill missing default values
-		$add_def_user_params = function (&$user, $idx) use ($roles, $api_hosts, $ips) {
+		$add_def_user_params = function (&$user, $idx) use ($roles, $api_hosts_method, $api_hosts, $api_host_groups, $ips) {
 			$user['roles'] = $roles;
+			$user['api_hosts_method'] = $api_hosts_method;
 			$user['api_hosts'] = $api_hosts;
+			$user['api_host_groups'] = $api_host_groups;
 			$user['ips'] = $ips;
 			$user['enabled'] = '1';
 		};
@@ -1968,6 +2061,41 @@ class Security extends BaculumWebPage
 		$this->APIHostConfigSupportNo->Display = ($is_config === false) ? 'Dynamic' : 'None';
 	}
 
+	private function assignNewAPIHostToAPIGroups($host)
+	{
+		if (!$this->APIHostUseHostGroups->Checked) {
+			// No use API groups checkebox checked, no assigning
+			return;
+		}
+
+		$ahg = $this->getModule('host_group_config');
+		$selected_indices = $this->APIHostGroups->getSelectedIndices();
+		foreach ($selected_indices as $indice) {
+			for ($i = 0; $i < $this->APIHostGroups->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$host_group = $this->APIHostGroups->Items[$i]->Value;
+					$config = $ahg->getHostGroupConfig($host_group);
+					if (!in_array($host, $config['api_hosts'])) {
+						$config['api_hosts'][] = $host;
+					}
+					if ($ahg->setHostGroupConfig($host_group, $config)) {
+						$this->getModule('audit')->audit(
+							AuditLog::TYPE_INFO,
+							AuditLog::CATEGORY_APPLICATION,
+							"Newly created API host assigned to API group. API host: {$host},  host group: {$host_group}"
+						);
+					} else {
+						$this->getModule('audit')->audit(
+							AuditLog::TYPE_ERROR,
+							AuditLog::CATEGORY_APPLICATION,
+							"Error while assigning newly created API host to API group. API host: {$host},  host group: {$host_group}"
+						);
+					}
+				}
+			}
+		}
+	}
+
 	public function saveAPIHost($sender, $param)
 	{
 		$cfg_host = [
@@ -2008,6 +2136,8 @@ class Security extends BaculumWebPage
 
 		if ($result === true) {
 			if (!$host_exists) {
+				$this->assignNewAPIHostToAPIGroups($host_name);
+				$this->setAPIHostGroupList(null, null);
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
 					AuditLog::CATEGORY_APPLICATION,
@@ -2024,6 +2154,9 @@ class Security extends BaculumWebPage
 
 		// refresh user window
 		$this->initUserWindow();
+
+		// refresh API host group window
+		$this->initAPIHostGroupWindow();
 	}
 
 	/**
@@ -2058,6 +2191,10 @@ class Security extends BaculumWebPage
 		}
 
 		$this->setAPIHostList(null, null);
+		$this->setAPIHostGroupList(null, null);
+
+		// refresh API host group window
+		$this->initAPIHostGroupWindow();
 	}
 
 	/**
@@ -2098,5 +2235,152 @@ class Security extends BaculumWebPage
 			$ips = implode(',', $ips);
 		}
 		return $ips;
+	}
+
+	/**
+	 * Initialize values in API host group modal window.
+	 *
+	 */
+	public function initAPIHostGroupWindow()
+	{
+		// set API hosts
+		$this->setAPIHosts($this->APIHostGroupAPIHosts, null, false);
+	}
+
+	/**
+	 * Set and load API host groups list.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setAPIHostGroupList($sender, $param)
+	{
+		$api_host_groups = $this->getModule('host_group_config')->getConfig();
+		$shortnames = array_keys($api_host_groups);
+		$attributes = array_values($api_host_groups);
+		for ($i = 0; $i < count($attributes); $i++) {
+			$attributes[$i]['name'] = $shortnames[$i];
+			$attributes[$i]['api_hosts_str'] = implode(',', $attributes[$i]['api_hosts']);
+		}
+
+		$this->getCallbackClient()->callClientFunction('oAPIHostGroups.load_api_host_group_list_cb', [
+			$attributes
+		]);
+	}
+
+	/**
+	 * Load data in API host group modal window.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function loadAPIHostGroupWindow($sender, $param)
+	{
+		$name = $param->getCallbackParameter();
+
+		// prepare API host group config
+		$hgc = $this->getModule('host_group_config');
+		$config = $hgc->getHostGroupConfig($name);
+
+		if (count($config) > 0) {
+			$this->APIHostGroupName->Text = $name;
+			$this->APIHostGroupDescription->Text = $config['description'];
+
+			$selected_indices = [];
+			$group_hosts = $config['api_hosts'];
+			for ($i = 0; $i < $this->APIHostGroupAPIHosts->getItemCount(); $i++) {
+				if (in_array($this->APIHostGroupAPIHosts->Items[$i]->Value, $group_hosts)) {
+					$selected_indices[] = $i;
+				}
+			}
+			$this->APIHostGroupAPIHosts->setSelectedIndices($selected_indices);
+		}
+
+	}
+
+	/**
+	 * Save API host group.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function saveAPIHostGroup($sender, $param)
+	{
+		$hgc = $this->getModule('host_group_config');
+		$host_group_name = trim($this->APIHostGroupName->Text);
+		$host_exists = $hgc->isHostGroupConfig($host_group_name);
+		$cfg_group = [];
+		$cfg_group['name'] = $host_group_name;
+		$cfg_group['description'] = $this->APIHostGroupDescription->Text;
+
+		$host_group_win_type = $this->APIHostGroupWindowType->Value;
+		$this->getCallbackClient()->hide('api_host_group_window_group_exists');
+		if ($host_group_win_type === self::TYPE_ADD_WINDOW) {
+			if ($host_exists) {
+				$this->getCallbackClient()->show('api_host_group_window_group_exists');
+				return;
+			}
+		}
+
+		// set API hosts config value
+		$selected_indices = $this->APIHostGroupAPIHosts->getSelectedIndices();
+		$api_hosts = [];
+		foreach ($selected_indices as $indice) {
+			for ($i = 0; $i < $this->APIHostGroupAPIHosts->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$api_hosts[] = $this->APIHostGroupAPIHosts->Items[$i]->Value;
+				}
+			}
+		}
+		$cfg_group['api_hosts'] = $api_hosts;
+
+		$config[$host_group_name] = $cfg_group;
+		$result = $hgc->setHostGroupConfig($host_group_name, $cfg_group);
+		$this->setAPIHostGroupList(null, null);
+		$this->getCallbackClient()->hide('api_host_group_window');
+
+		if ($result === true) {
+			if (!$host_exists) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Create API host group. Name: $host_group_name"
+				);
+			} else {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Save API host group. Name: $host_group_name"
+				);
+			}
+		}
+
+		// refresh API host group window
+		$this->initAPIHostGroupWindow();
+	}
+
+	/**
+	 * Remove API host group action.
+	 * Here is possible to remove one API host group or many.
+	 * This action is linked with table bulk actions.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function removeAPIHostGroups($sender, $param)
+	{
+		$names = explode('|', $param->getCallbackParameter());
+		$hgc = $this->getModule('host_group_config');
+		$result = $hgc->removeHostGroupsConfig($names);
+		if ($result === true) {
+			for ($i = 0; $i < count($names); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove API host group. Name: {$names[$i]}"
+				);
+			}
+		}
+		$this->setAPIHostGroupList(null, null);
 	}
 }

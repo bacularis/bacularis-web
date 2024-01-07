@@ -335,6 +335,41 @@ var oRoles = {
 					<h2><%[ Assign API hosts ]%></h2>
 					<p><%[ In this step you can create and assign API host accounts to users. These accounts are defined connections to the hosts with Bacula resources. You can have many API host connections to the same local or remote API host. You can assign one or more API hosts to one user. ]%></p>
 					<div class="w3-row directive_field">
+						<div class="w3-col w3-third">&nbsp;</div>
+						<div class="w3-half">
+							<com:TActiveRadioButton
+								ID="APIHostsOpt"
+								GroupName="SelectAPIHosts"
+								Checked="true"
+								CssClass="w3-radio"
+								Attributes.onclick="$('#api_host_groups').hide();$('#api_hosts').show(); $('#add_api_host_btn').show(); $('#add_api_host_group_btn').hide();"
+							/>
+							<com:TLabel
+								ForControl="APIHostsOpt"
+								CssClass="normal w3-radio"
+								Style="vertical-align: super"
+								Text="<%[ Use API hosts ]%>"
+							/>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third">&nbsp;</div>
+						<div class="w3-half">
+							<com:TActiveRadioButton
+								ID="APIHostGroupsOpt"
+								GroupName="SelectAPIHosts"
+								CssClass="w3-radio"
+								Attributes.onclick="$('#api_hosts').hide();$('#api_host_groups').show(); $('#add_api_host_btn').hide(); $('#add_api_host_group_btn').show();"
+							/>
+							<com:TLabel
+								ForControl="APIHostGroupsOpt"
+								CssClass="normal w3-radio"
+								Style="vertical-align: super"
+								Text="<%[ Use API host groups ]%>"
+							/>
+						</div>
+					</div>
+					<div id="api_hosts" class="w3-row directive_field" style="display: <%=$this->APIHostsOpt->Checked ? 'block': 'none'%>">
 						<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHosts" Text="<%[ API host: ]%>"/></div>
 						<div class="w3-col" style="width: 400px">
 							<com:TActiveListBox
@@ -349,12 +384,45 @@ var oRoles = {
 								ControlToValidate="UserAPIHosts"
 								ErrorMessage="<%[ Field required. ]%>"
 								ControlCssClass="field_invalid"
+								OnValidate="checkAPIHostsValidator"
 								Display="Dynamic"
-							/>
+							>
+								<prop:ClientSide.OnValidate>
+									const radio = document.getElementById('<%=$this->APIHostsOpt->ClientID%>');
+									sender.enabled = radio.checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
 							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
-					<span><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
+					<div id="api_host_groups" class="w3-row directive_field" style="display: <%=$this->APIHostGroupsOpt->Checked ? 'block': 'none'%>">
+						<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostGroups" Text="<%[ API host groups: ]%>"/></div>
+						<div class="w3-col" style="width: 400px">
+							<com:TActiveListBox
+								ID="UserAPIHostGroups"
+								SelectionMode="Multiple"
+								Rows="10"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewUserDirective"
+								ControlToValidate="UserAPIHostGroups"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								OnValidate="checkAPIHostGroupsValidator"
+								Display="Dynamic"
+							>
+								<prop:ClientSide.OnValidate>
+									const radio = document.getElementById('<%=$this->APIHostGroupsOpt->ClientID%>');
+									sender.enabled = radio.checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<span id="add_api_host_btn" style="display: <%=$this->APIHostsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
+					<span id="add_api_host_group_btn" style="display: <%=$this->APIHostGroupsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHostGroups.open_new_api_host_group_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host group ]%></a></span>
 					<div id="new_api_host_window" class="w3-modal">
 						<div class="w3-modal-content w3-animate-top w3-card-4">
 							<header class="w3-container w3-green">
@@ -405,6 +473,91 @@ var oRoles = {
 							</div>
 						</div>
 					</div>
+					<div id="new_api_host_group_window" class="w3-modal">
+						<div class="w3-modal-content w3-animate-top w3-card-4">
+							<header class="w3-container w3-green">
+								<span onclick="document.getElementById('new_api_host_group_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+								<h2><%[ Add API host group ]%></h2>
+							</header>
+							<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+								<span id="api_host_group_window_group_exists" class="error" style="display: none"><ul><li><%[ API host group with the given name already exists. ]%></li></ul></span>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="NewAPIHostGroupName" Text="<%[ API host group: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="NewAPIHostGroupName"
+											AutoPostBack="false"
+											MaxLength="100"
+											CssClass="w3-input w3-border"
+											Attributes.onkeypress="oAPIHostGroups.on_new_api_host_group_send(event);"
+										/>
+										<com:TRequiredFieldValidator
+											ValidationGroup="NewAPIHostGroupGroup"
+											ControlToValidate="NewAPIHostGroupName"
+											ErrorMessage="<%[ Field required. ]%>"
+											ControlCssClass="field_invalid"
+											Display="Dynamic"
+										/>
+										<com:TRegularExpressionValidator
+											ValidationGroup="NewAPIHostGroupGroup"
+											RegularExpression="<%=HostGroupConfig::HOST_GROUP_PATTERN%>"
+											ControlToValidate="NewAPIHostGroupName"
+											ErrorMessage="<%[ Invalid value. ]%>"
+											ControlCssClass="field_invalid"
+											Display="Dynamic"
+										/>
+									</div> &nbsp;<i id="api_host_group_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="NewAPIHostGroupDescription" Text="<%[ Description: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="NewAPIHostGroupDescription"
+											TextMode="MultiLine"
+											Rows="3"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="NewAPIHostGroupAPIHosts" Text="<%[ API hosts: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveListBox
+											ID="NewAPIHostGroupAPIHosts"
+											SelectionMode="Multiple"
+											Rows="6"
+											CssClass="w3-select w3-border"
+											AutoPostBack="false"
+											Attributes.onkeypress="oAPIHostGroups.on_new_api_host_group_send(event);"
+										/>
+										<com:TRequiredFieldValidator
+											ValidationGroup="NewAPIHostGroupGroup"
+											ControlToValidate="NewAPIHostGroupAPIHosts"
+											ErrorMessage="<%[ Field required. ]%>"
+											ControlCssClass="field_invalid"
+											Display="Dynamic"
+										/>
+										<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+									</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+								</div>
+							</div>
+							<footer class="w3-container w3-center">
+								<button type="button" class="w3-button w3-red" onclick="document.getElementById('new_api_host_group_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+								<com:TActiveLinkButton
+									ID="NewAPIHostGroupAction"
+									ValidationGroup="NewAPIHostGroupGroup"
+									CausesValidation="true"
+									OnCallback="createAPIHostGroup"
+									CssClass="w3-button w3-section w3-green w3-padding"
+								>
+									<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+								</com:TActiveLinkButton>
+							</footer>
+							<com:TActiveLabel ID="NewAPIHostGroupError" CssClass="w3-text-red" Display="None" />
+						</div>
+					</div>
 				</div>
 			</div>
 			<com:TCallback ID="LoadAddAPIHostWindow" OnCallback="TemplateControl.loadAdminAPIHosts" />
@@ -435,6 +588,40 @@ var oAPIHosts = {
 		var x = e.which || e.keyCode;
 		if (x === 13) {
 			$('#' + this.ids.new_api_host_btn).click();
+		}
+	}
+};
+var oAPIHostGroups = {
+	ids: {
+		new_api_host_group_window: 'new_api_host_group_window',
+		new_api_host_group_name: '<%=$this->NewAPIHostGroupName->ClientID%>',
+		new_api_host_group_desc: '<%=$this->NewAPIHostGroupDescription->ClientID%>',
+		new_api_host_group_list: '<%=$this->NewAPIHostGroupAPIHosts->ClientID%>',
+		new_api_host_group_btn: '<%=$this->NewAPIHostGroupAction->ClientID%>'
+	},
+	open_new_api_host_group_window: function() {
+		this.clear_new_api_host_group_window();
+		this.show_new_api_host_group_window(true);
+		const name = document.getElementById(this.ids.new_api_host_group_name);
+		name.focus();
+	},
+	show_new_api_host_group_window: function(show) {
+		const win = document.getElementById(this.ids.new_api_host_group_window);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_new_api_host_group_window: function() {
+		[
+			this.ids.new_api_host_group_name,
+			this.ids.new_api_host_group_desc,
+			this.ids.new_api_host_group_list
+		].forEach((el) => {
+			document.getElementById(el).value = '';
+		});
+	},
+	on_new_api_host_group_send: function(e) {
+		var x = e.which || e.keyCode;
+		if (x === 13) {
+			$('#' + this.ids.new_api_host_group_btn).click();
 		}
 	}
 };

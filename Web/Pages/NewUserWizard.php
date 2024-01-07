@@ -19,6 +19,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * New user wizard page.
@@ -62,6 +63,7 @@ class NewUserWizard extends BaculumWebPage
 			}
 			case 2: {
 				$this->setAPIHosts();
+				$this->setAPIHostGroups();
 				break;
 			}
 			case 3: {
@@ -190,13 +192,90 @@ class NewUserWizard extends BaculumWebPage
 	}
 
 	/**
+	 * Set API host group list - generic method.
+	 *
+	 * @param object $control control object
+	 * @param null|mixed $selected_value
+	 */
+	private function setAPIHostGroupControl($control, $selected_value = null)
+	{
+		// get existing selection (if any)
+		$selected = $this->getMultiSelectValues($control);
+
+		$host_group_config = $this->getModule('host_group_config')->getConfig();
+		$api_host_groups_orig = array_keys($host_group_config);
+		natcasesort($api_host_groups_orig);
+		$api_host_groups = array_values($api_host_groups_orig);
+
+		// Update indices because there can be indice shift (added new indice(s))
+		$selected_indices = [];
+		for ($i = 0; $i < count($api_host_groups); $i++) {
+			if (in_array($api_host_groups[$i], $selected) || $api_host_groups[$i] === $selected_value) {
+				$selected_indices[] = $i;
+			}
+		}
+
+		$control->DataSource = array_combine($api_host_groups, $api_host_groups);
+		if (count($selected_indices) > 0) {
+			try {
+				$control->setSelectedIndices($selected_indices);
+			} catch (TNotSupportedException $e) {
+				// for single value TDropDownList the SelectedIndices is read-only
+				try {
+					$control->setSelectedValue($selected_value);
+				} catch (Exception $e) {
+				}
+			}
+		}
+		$control->dataBind();
+	}
+
+	/**
+	 * Special treating API hosts validator that needs
+	 * to be enabled/disabled depending on selected option.
+	 *
+	 * @param mixed $sender
+	 * @param mixed $param
+	 */
+	public function checkAPIHostsValidator($sender, $param)
+	{
+		$sender->enabled = $this->APIHostsOpt->Checked;
+	}
+
+	/**
+	 * Special treating API host groups validator that needs
+	 * to be enabled/disabled depending on selected option.
+	 *
+	 * @param mixed $sender
+	 * @param mixed $param
+	 */
+	public function checkAPIHostGroupsValidator($sender, $param)
+	{
+		$sender->enabled = $this->APIHostGroupsOpt->Checked;
+	}
+
+	/**
 	 * Set API host list control.
 	 *
 	 * @param string $selected_value selected value
 	 */
 	private function setAPIHosts($selected_value = null)
 	{
+		// Set API hosts in main API host list
 		$this->setAPIHostControl($this->UserAPIHosts, $selected_value);
+
+		// Set API hosts in API new host group window
+		$this->setAPIHostControl($this->NewAPIHostGroupAPIHosts, $selected_value);
+	}
+
+	/**
+	 * Set API host group list control.
+	 *
+	 * @param string $selected_value selected value
+	 */
+	private function setAPIHostGroups($selected_value = null)
+	{
+		$this->setAPIHostGroupControl($this->UserAPIHostGroups, $selected_value);
 	}
 
 	/**
@@ -313,6 +392,62 @@ class NewUserWizard extends BaculumWebPage
 		}
 	}
 
+	/**
+	 * Create API host group.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function createAPIHostGroup($sender, $param)
+	{
+		$hgc = $this->getModule('host_group_config');
+		$host_group_name = trim($this->NewAPIHostGroupName->Text);
+		$host_exists = $hgc->isHostGroupConfig($host_group_name);
+		$cfg_group = [];
+		$cfg_group['name'] = $host_group_name;
+		$cfg_group['description'] = $this->NewAPIHostGroupDescription->Text;
+
+		if ($host_exists) {
+			$this->getCallbackClient()->show('api_host_group_window_group_exists');
+			return;
+		}
+
+		// set API hosts config value
+		$selected_indices = $this->NewAPIHostGroupAPIHosts->getSelectedIndices();
+		$api_hosts = [];
+		foreach ($selected_indices as $indice) {
+			for ($i = 0; $i < $this->NewAPIHostGroupAPIHosts->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$api_hosts[] = $this->NewAPIHostGroupAPIHosts->Items[$i]->Value;
+				}
+			}
+		}
+		$cfg_group['api_hosts'] = $api_hosts;
+
+		$config[$host_group_name] = $cfg_group;
+		$result = $hgc->setHostGroupConfig($host_group_name, $cfg_group);
+		$this->getCallbackClient()->hide('new_api_host_group_window');
+
+		if ($result === true) {
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Create API host group. Name: $host_group_name"
+			);
+			$this->setAPIHostGroups($host_group_name);
+		} else {
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_APPLICATION,
+				"Error while creating API host group. Name: $host_group_name"
+			);
+			$this->getCallbackClient()->update(
+				$this->NewAPIHostGroupError,
+				$result->output
+			);
+			$this->NewAPIHostGroupError->Display = 'Dynamic';
+		}
+	}
 
 	/**
 	 * Set resource API host list control.
@@ -337,6 +472,7 @@ class NewUserWizard extends BaculumWebPage
 	private function getAPIHostsWithConsoles()
 	{
 		$host_config = $this->getModule('host_config')->getConfig();
+		$ahg = $this->getModule('host_group_config');
 		$basic_users_result = $this->getModule('api')->get(['basic', 'users']);
 		if ($basic_users_result->error !== 0) {
 			return;
@@ -349,37 +485,59 @@ class NewUserWizard extends BaculumWebPage
 		}
 		$oauth2_clients = $oauth2_clients_result->output;
 
-		$selected_indices = $this->UserAPIHosts->getSelectedIndices();
-		$api_hosts = [];
-		foreach ($selected_indices as $indice) {
-			for ($i = 0; $i < $this->UserAPIHosts->getItemCount(); $i++) {
-				if ($i === $indice) {
-					$host = $this->UserAPIHosts->Items[$i]->Value;
-					if (!key_exists($host, $host_config)) {
-						continue;
+		$hosts = [];
+		$groups = [];
+		if ($this->APIHostsOpt->Checked) {
+			$selected_indices = $this->UserAPIHosts->getSelectedIndices();
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->UserAPIHosts->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$hosts[] = $this->UserAPIHosts->Items[$i]->Value;
 					}
-					$console = false;
-					if ($host_config[$host]['auth_type'] == 'basic') {
-						for ($j = 0; $j < count($basic_users); $j++) {
-							if ($host_config[$host]['login'] === $basic_users[$j]->username) {
-								$console = !empty($basic_users[$j]->bconsole_cfg_path);
-								break;
-							}
-						}
-					} elseif ($host_config[$host]['auth_type'] == 'oauth2') {
-						for ($j = 0; $j < count($oauth2_clients); $j++) {
-							if ($host_config[$host]['client_id'] === $oauth2_clients[$j]->client_id) {
-								$console = !empty($oauth2_clients[$j]->bconsole_cfg_path);
-								break;
-							}
-						}
-					}
-					$api_hosts[] = [
-						'api_host' => $host,
-						'console' => $console
-					];
 				}
 			}
+		} elseif ($this->APIHostGroupsOpt->Checked) {
+			$selected_indices = $this->UserAPIHostGroups->getSelectedIndices();
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->UserAPIHostGroups->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$groups[] = $this->UserAPIHostGroups->Items[$i]->Value;
+					}
+				}
+			}
+			$hosts = $ahg->getAPIHostsByGroups($groups);
+		}
+
+		// the same API host can be in many API groups, so consider only unique API hosts
+		$hosts = array_unique($hosts);
+		// reindexing after making unique
+		$hosts = array_values($hosts);
+
+		$api_hosts = [];
+		for ($i = 0; $i < count($hosts); $i++) {
+			if (!key_exists($hosts[$i], $host_config)) {
+				continue;
+			}
+			$console = false;
+			if ($host_config[$hosts[$i]]['auth_type'] == 'basic') {
+				for ($j = 0; $j < count($basic_users); $j++) {
+					if ($host_config[$hosts[$i]]['login'] === $basic_users[$j]->username) {
+						$console = !empty($basic_users[$j]->bconsole_cfg_path);
+						break;
+					}
+				}
+			} elseif ($host_config[$hosts[$i]]['auth_type'] == 'oauth2') {
+				for ($j = 0; $j < count($oauth2_clients); $j++) {
+					if ($host_config[$hosts[$i]]['client_id'] === $oauth2_clients[$j]->client_id) {
+						$console = !empty($oauth2_clients[$j]->bconsole_cfg_path);
+						break;
+					}
+				}
+			}
+			$api_hosts[] = [
+				'api_host' => $hosts[$i],
+				'console' => $console
+			];
 		}
 		return $api_hosts;
 	}
@@ -728,6 +886,13 @@ class NewUserWizard extends BaculumWebPage
 		// set API hosts config values
 		$api_hosts = $this->getMultiSelectValues($this->UserAPIHosts);
 		$config['api_hosts'] = $api_hosts;
+		$api_host_groups = $this->getMultiSelectValues($this->UserAPIHostGroups);
+		$config['api_host_groups'] = $api_host_groups;
+		if ($this->APIHostsOpt->Checked) {
+			$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOSTS;
+		} elseif ($this->APIHostGroupsOpt->Checked) {
+			$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOST_GROUPS;
+		}
 		$config['ips'] = '';
 		$config['enabled'] = 1;
 		$result = $this->getModule('user_config')->setUserConfig($username, $config);

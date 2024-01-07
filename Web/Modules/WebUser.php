@@ -32,6 +32,7 @@ namespace Bacularis\Web\Modules;
 use Prado\Prado;
 use Prado\Security\TUser;
 use Prado\TPropertyValue;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Web user module.
@@ -47,6 +48,7 @@ class WebUser extends TUser
 	public const LONG_NAME = 'LongName';
 	public const EMAIL = 'Email';
 	public const DESCRIPTION = 'Description';
+	public const API_HOST_METHOD = 'ApiHostMethod';
 	public const API_HOSTS = 'ApiHosts';
 	public const DEFAULT_API_HOST = 'DefaultApiHost';
 	public const IPS = 'Ips';
@@ -80,6 +82,7 @@ class WebUser extends TUser
 		$application = $this->getManager()->getApplication();
 		$user_config = $application->getModule('user_config')->getUserConfig($username);
 		$web_config = $application->getModule('web_config')->getConfig();
+		$host_groups = $application->getModule('host_group_config');
 
 		if (count($user_config) > 0) {
 			// User exists in Baculum Web users database
@@ -88,7 +91,13 @@ class WebUser extends TUser
 			$user->setLongName($user_config['long_name']);
 			$user->setEmail($user_config['email']);
 			$user->setRoles($user_config['roles']);
-			$user->setAPIHosts($user_config['api_hosts']);
+			$user->setAPIHostMethod($user_config['api_hosts_method']);
+			if ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
+				$user->setAPIHosts($user_config['api_hosts']);
+			} elseif ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
+				$api_hosts = $host_groups->getAPIHostsByGroups($user_config['api_host_groups']);
+				$user->setAPIHosts($api_hosts);
+			}
 			$user->setIps($user_config['ips']);
 			$user->setEnabled($user_config['enabled']);
 		} elseif (isset($web_config['security']['def_access'])) {
@@ -216,6 +225,29 @@ class WebUser extends TUser
 			}
 			$this->setCurrentState('Roles', $roles, []);
 		}
+	}
+
+	/**
+	 * API host method setter.
+	 *
+	 * @param string $method API host method
+	 */
+	public function setAPIHostMethod($method)
+	{
+		$this->setCurrentState(self::API_HOST_METHOD, $method);
+	}
+
+	/**
+	 * API host method getter.
+	 *
+	 * @return string API host method
+	 */
+	public function getAPIHostMethod()
+	{
+		return $this->getCurrentState(
+			self::API_HOST_METHOD,
+			WebUserConfig::API_HOST_METHOD_HOSTS
+		);
 	}
 
 	/**

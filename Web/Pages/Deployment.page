@@ -45,6 +45,7 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 <com:TCallback ID="APIHostList" OnCallback="TemplateControl.setAPIHostList" />
+<com:TCallback ID="LoadDeployAPIHost" OnCallback="TemplateControl.loadDeployAPIHostWindow" />
 <com:TCallback ID="LoadAPIHost" OnCallback="TemplateControl.loadAPIHostWindow" />
 <com:TCallback ID="RemoveAPIHostsAction" OnCallback="TemplateControl.removeAPIHosts" />
 <script>
@@ -343,6 +344,8 @@ var oAPIHosts = {
 		oAPIHostList.init();
 	},
 	load_deploy_api_host_window: function(name) {
+		var cb = <%=$this->LoadDeployAPIHost->ActiveControl->Javascript%>;
+		cb.dispatch();
 		const api_host_field_name = document.getElementById('<%=$this->DeployAPIHostHostname->ClientID%>');
 		document.getElementById('deploy_api_host_window').style.display = 'block';
 		api_host_field_name.focus();
@@ -990,6 +993,42 @@ var oDeployAPIHost = {
 								Display="None"
 							/>
 						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostUseHostGroups" Text="<%[ Assign to API host groups: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveCheckBox
+								ID="DeployAPIHostUseHostGroups"
+								AutoPostBack="false"
+								CssClass="w3-check"
+								Attributes.onclick="const hg = $('#deploy_api_host_api_host_group'); this.checked ? hg.show() : hg.hide();"
+							/>
+						</div>
+					</div>
+					<div id="deploy_api_host_api_host_group" class="w3-row directive_field" style="display: none">
+						<div class="w3-col w3-third"><com:TLabel ForControl="DeployAPIHostGroups" Text="<%[ API host groups: ]%>"/></div>
+						<div class="w3-col" style="width: 400px">
+							<com:TActiveListBox
+								ID="DeployAPIHostGroups"
+								SelectionMode="Multiple"
+								Rows="6"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="DeployAPIHostGroup"
+								ControlToValidate="DeployAPIHostGroups"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							>
+								<prop:ClientSide.OnValidate>
+									const radio = document.getElementById('<%=$this->DeployAPIHostUseHostGroups->ClientID%>');
+									sender.enabled = radio.checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
 					<div id="run_deploy_api_log_container" class="w3-container" style="display: none;">
 						<a href="javascript:void(0)" onclick="W3SubTabs.open('deploy_api_subtab_result', 'deploy_api_graphical_results', 'run_deploy_api_log_container');">

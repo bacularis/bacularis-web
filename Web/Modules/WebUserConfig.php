@@ -66,6 +66,13 @@ class WebUserConfig extends ConfigFileModule
 	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
+	 * API host methods.
+	 * It determines if are used API hosts or API host groups.
+	 */
+	public const API_HOST_METHOD_HOSTS = 'hosts';
+	public const API_HOST_METHOD_HOST_GROUPS = 'host_groups';
+
+	/**
 	 * Stores web user config content.
 	 */
 	private $config;
@@ -112,6 +119,13 @@ class WebUserConfig extends ConfigFileModule
 				}
 			} else {
 				$user_config['api_hosts'] = [];
+			}
+			if (!key_exists('api_hosts_method', $user_config)) {
+				// default is 'hosts' method for backward compatibility
+				$user_config['api_hosts_method'] = self::API_HOST_METHOD_HOSTS;
+			}
+			if (!key_exists('api_host_groups', $user_config)) {
+				$user_config['api_host_groups'] = [];
 			}
 			$config[$username] = $user_config;
 		}
