@@ -34,6 +34,8 @@ use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Common\Modules\AuthOAuth2;
+use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Ldap;
 use Bacularis\Common\Modules\Logging;
@@ -230,12 +232,18 @@ class Security extends BaculumWebPage
 	 *
 	 * @param object $control control which contains API host list
 	 * @param mixed $def_val default value or null if no default value to set
-	 * @param bool determines if add first blank item
-	 * @param mixed $add_blank_item
+	 * @param bool $add_blank_item determines if add first blank item
+	 * @param array $sel_api_hosts defines selected list of API hosts to set. If not set, all API hosts are taken
 	 */
-	private function setAPIHosts($control, $def_val = null, $add_blank_item = true)
+	private function setAPIHosts($control, $def_val = null, $add_blank_item = true, $sel_api_hosts = [])
 	{
-		$api_hosts = array_keys($this->getModule('host_config')->getConfig());
+		$api_hosts = [];
+		if (count($sel_api_hosts) > 0) {
+			$api_hosts = $sel_api_hosts;
+		} else {
+			$host_config = $this->getModule('host_config')->getConfig();
+			$api_hosts = array_keys($host_config);
+		}
 		if ($add_blank_item) {
 			array_unshift($api_hosts, '');
 		}
@@ -2238,6 +2246,318 @@ class Security extends BaculumWebPage
 	}
 
 	/**
+	 * Load user window with API hosts and API host groups access settings.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function loadUserAPIHostResourceAccessWindow($sender, $param)
+	{
+		$username = $this->UserAPIHostResourceAccessName->Value;
+
+		$user_config = $this->getModule('user_config')->getUserConfig($username);
+		if (count($user_config) > 0) {
+			$api_hosts = [];
+			if ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
+				$api_hosts = $user_config['api_hosts'];
+			} elseif ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
+				$host_groups = $this->getModule('host_group_config');
+				$api_hosts = $host_groups->getAPIHostsByGroups($user_config['api_host_groups']);
+			}
+			if (count($api_hosts) == 1 && $api_hosts[0] === HostConfig::MAIN_CATALOG_HOST) {
+				$host_config = $this->getModule('host_config')->getConfig();
+				$api_hosts = array_keys($host_config);
+			}
+			// strip main API host
+			$cbf = function ($host) {
+				return ($host !== HostConfig::MAIN_CATALOG_HOST);
+			};
+			$api_hosts = array_filter($api_hosts, $cbf);
+			$this->setAPIHosts($this->UserAPIHostList, null, true, $api_hosts);
+		}
+	}
+
+	/**
+	 * Set user window with API hosts and API host groups access settings.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setUserAPIHostResourceAccessWindow($sender, $param)
+	{
+		$api_host = $this->UserAPIHostList->getSelectedValue();
+		$this->setAPIHostJobs(
+			$this->UserAPIHostResourceAccessJobs,
+			$api_host,
+			'user_access_window_error'
+		);
+		$this->setUserAPIHostConsole($api_host);
+	}
+
+	/**
+	 * Set user API host console.
+	 *
+	 * @param string $api_host API host name
+	 * @param bool $set_state determine if state (all/selected resources) should be changed
+	 */
+	private function setUserAPIHostConsole($api_host, $set_state = true)
+	{
+		$console = $this->isAPIHostConsole($api_host);
+		$cb = $this->getCallbackClient();
+		$cb->hide('user_access_window_console');
+		if (!empty($console)) {
+			$cb->show('user_access_window_select_jobs');
+			$cb->show('user_access_window_console');
+			if ($set_state) {
+				$this->UserAPIHostResourceAccessSelectedResources->Checked = true;
+			}
+		} else {
+			if ($set_state) {
+				$cb->hide('user_access_window_select_jobs');
+				$this->UserAPIHostResourceAccessAllResources->Checked = true;
+			}
+		}
+	}
+
+	/**
+	 * Unassign console from API host.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function unassignUserAPIHostConsole($sender, $param)
+	{
+		$api_host = $param->getCallbackParameter();
+		$success = $this->unassignAPIHostConsoleInternal($api_host);
+		if ($success) {
+			$this->setAPIHostJobs(
+				$this->UserAPIHostResourceAccessJobs,
+				$api_host,
+				'user_access_window_error'
+			);
+			$this->setUserAPIHostConsole($api_host, false);
+			$cb = $this->getCallbackClient();
+			$cb->hide('user_access_window_console');
+		}
+	}
+
+	/**
+	 * Save user window with API hosts and API host groups.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function saveUserAPIHostResourceAccess($sender, $param)
+	{
+		$api_host = $this->UserAPIHostList->getSelectedValue();
+		if ($this->UserAPIHostResourceAccessAllResources->Checked) {
+			$state = $this->setResourceConsole(
+				$api_host,
+				'',
+				'user_access_window_error'
+			);
+			if ($state) {
+				$this->setAPIHostJobs(
+					$this->UserAPIHostResourceAccessJobs,
+					$api_host,
+					'user_access_window_error'
+				);
+				$this->setUserAPIHostConsole($api_host);
+			}
+		} elseif ($this->UserAPIHostResourceAccessSelectedResources->Checked) {
+			$selected_indices = $this->UserAPIHostResourceAccessJobs->getSelectedIndices();
+			$jobs = [];
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->UserAPIHostResourceAccessJobs->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$jobs[] = $this->UserAPIHostResourceAccessJobs->Items[$i]->Value;
+					}
+				}
+			}
+			$console = $this->setJobResourceAccess($api_host, $jobs);
+			if ($console) {
+				$state = $this->setResourceConsole(
+					$api_host,
+					$console,
+					'user_access_window_error'
+				);
+				if ($state) {
+					$this->setAPIHostJobs(
+						$this->UserAPIHostResourceAccessJobs,
+						$api_host,
+						'user_access_window_error'
+					);
+				}
+				$this->setUserAPIHostConsole($api_host);
+			}
+		}
+	}
+
+	/**
+	 * Load API host set resource access window.
+	 *
+	 * @param TActiveDropDownList $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function loadAPIHostResourceAccessWindow($sender, $param)
+	{
+		$api_host = $param->getCallbackParameter();
+		$this->setAPIHostJobs(
+			$this->APIHostResourceAccessJobs,
+			$api_host,
+			'api_host_access_window_error'
+		);
+		$this->setAPIHostConsole($api_host);
+	}
+
+	/**
+	 * Save window with API hosts.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function saveAPIHostResourceAccess($sender, $param)
+	{
+		$api_host = $this->APIHostResourceAccessName->Value;
+		$cb = $this->getCallbackClient();
+		if ($this->APIHostResourceAccessAllResources->Checked) {
+			$state = $this->setResourceConsole(
+				$api_host,
+				'',
+				'api_host_access_window_error'
+			);
+			if ($state) {
+				$this->setAPIHostJobs(
+					$this->APIHostResourceAccessJobs,
+					$api_host,
+					'api_host_access_window_error'
+				);
+				$this->setAPIHostConsole($api_host);
+				$cb->hide('api_host_access_window');
+			}
+		} elseif ($this->APIHostResourceAccessSelectedResources->Checked) {
+			$selected_indices = $this->APIHostResourceAccessJobs->getSelectedIndices();
+			$jobs = [];
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->APIHostResourceAccessJobs->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$jobs[] = $this->APIHostResourceAccessJobs->Items[$i]->Value;
+					}
+				}
+			}
+			$console = $this->setJobResourceAccess($api_host, $jobs);
+			if ($console) {
+				$state = $this->setResourceConsole(
+					$api_host,
+					$console,
+					'api_host_access_window_error'
+				);
+				if ($state) {
+					$this->setAPIHostJobs(
+						$this->APIHostResourceAccessJobs,
+						$api_host,
+						'api_host_access_window_error'
+					);
+					$this->setAPIHostConsole($api_host);
+					$cb->hide('api_host_access_window');
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if Bacula Console ACL is assigned to given API host.
+	 *
+	 * @param string $api_host API host name
+	 * @return bool true if console is set, otherwise false
+	 */
+	private function isAPIHostConsole($api_host)
+	{
+		$console = false;
+		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
+		if (count($host_config) == 0) {
+			// API host does not exist
+			return $console;
+		}
+
+		if ($host_config['auth_type'] === AuthBasic::NAME) {
+			$basic_users_result = $this->getModule('api')->get(
+				['basic', 'users', $host_config['login']],
+				$api_host
+			);
+			if ($basic_users_result->error !== 0) {
+				return $console;
+			}
+			$console = !empty($basic_users_result->output->bconsole_cfg_path);
+		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
+			$oauth2_client_result = $this->getModule('api')->get(
+				['oauth2', 'clients', $host_config['client_id']],
+				$api_host
+			);
+
+			$oa2 = new OAuth2Record();
+			$oa2::deleteByPk($api_host);
+
+			if ($oauth2_client_result->error !== 0) {
+				return $console;
+			}
+			$console = !empty($oauth2_client_result->output->bconsole_cfg_path);
+		}
+		return $console;
+	}
+
+	/**
+	 * Set API host job list control.
+	 *
+	 * @param object $control control to set jobs
+	 * @param string $api_host API host name
+	 * @param string $error_el_id error element identifier
+	 */
+	private function setAPIHostJobs($control, $api_host, $error_el_id)
+	{
+		$cb = $this->getCallbackClient();
+		$result = $this->getModule('api')->get(['jobs', 'resnames'], $api_host);
+		if ($result->error === 0) {
+			$res = array_values((array) $result->output);
+			$jobs = array_shift($res);
+			$control->DataSource = array_combine($jobs, $jobs);
+			$control->dataBind();
+			$cb->hide($error_el_id);
+		} else {
+			$emsg = 'Error while loading API host resources. Please check connection with this API host. ErrorCode: %d, ErrorMsg: %s';
+			$emsg = sprintf($emsg, $result->error, $result->output);
+			$cb->update(
+				$error_el_id,
+				$emsg
+			);
+			$cb->show($error_el_id);
+		}
+	}
+
+	/**
+	 * Set API host console.
+	 *
+	 * @param string $api_host API host name
+	 * @param bool $set_state determine if state (all/selected resources) should be changed
+	 */
+	private function setAPIHostConsole($api_host, $set_state = true)
+	{
+		$console = $this->isAPIHostConsole($api_host);
+		$cb = $this->getCallbackClient();
+		if (!empty($console)) {
+			$cb->show('api_host_access_window_select_jobs');
+			$cb->show('api_host_access_window_console');
+			if ($set_state) {
+				$this->APIHostResourceAccessSelectedResources->Checked = true;
+			}
+		} else {
+			if ($set_state) {
+				$this->APIHostResourceAccessAllResources->Checked = true;
+			}
+		}
+	}
+
+	/**
 	 * Initialize values in API host group modal window.
 	 *
 	 */
@@ -2266,6 +2586,265 @@ class Security extends BaculumWebPage
 		$this->getCallbackClient()->callClientFunction('oAPIHostGroups.load_api_host_group_list_cb', [
 			$attributes
 		]);
+	}
+
+	/**
+	 * Set resource access for given jobs.
+	 * Create console with the jobs and all dependent resources (Clients, Filesets...etc)
+	 *
+	 * @param string $api_host api host name
+	 * @param array $jobs job names
+	 * @return string console name or empty string on error
+	 */
+	private function setJobResourceAccess($api_host, $jobs)
+	{
+		$result = $this->getModule('api')->get([
+			'config',
+			'dir',
+			'Job',
+			'?apply_jobdefs=1'
+		], $api_host);
+
+		$cb = $this->getCallbackClient();
+		if ($result->error !== 0) {
+			$cb->update(
+				'api_host_access_window_error',
+				$result->output
+			);
+			$cb->show('api_host_access_window_error');
+			return '';
+		}
+
+		$acls = [
+			'Name' => 'Console - ' . $api_host,
+			'Password' => $this->getModule('crypto')->getRandomString(40),
+			'JobAcl' => [],
+			'ClientAcl' => [],
+			'StorageAcl' => [],
+			'FilesetAcl' => [],
+			'PoolAcl' => [],
+			'ScheduleAcl' => [],
+			'CatalogAcl' => ['*all*'],
+			'WhereAcl' => ['*all*'],
+			'CommandAcl' => JobInfo::COMMAND_ACL_USED_BY_WEB
+		];
+		for ($i = 0; $i < count($jobs); $i++) {
+			for ($j = 0; $j < count($result->output); $j++) {
+				if ($result->output[$j]->Job->Name === $jobs[$i]) {
+					// job
+					$acls['JobAcl'][] = $result->output[$j]->Job->Name;
+					// client
+					if (!in_array($result->output[$j]->Job->Client, $acls['ClientAcl'])) {
+						$acls['ClientAcl'][] = $result->output[$j]->Job->Client;
+					}
+					// storage
+					$acls['StorageAcl'] = array_merge($acls['StorageAcl'], $result->output[$j]->Job->Storage);
+					$acls['StorageAcl'] = array_unique($acls['StorageAcl']);
+					// fileset
+					if (!in_array($result->output[$j]->Job->Fileset, $acls['FilesetAcl'])) {
+						$acls['FilesetAcl'][] = $result->output[$j]->Job->Fileset;
+					}
+					// pool
+					if (!in_array($result->output[$j]->Job->Pool, $acls['PoolAcl'])) {
+						$acls['PoolAcl'][] = $result->output[$j]->Job->Pool;
+					}
+					// schedule
+					if (property_exists($result->output[$j]->Job, 'Schedule') && !in_array($result->output[$j]->Job->Schedule, $acls['ScheduleAcl'])) {
+						$acls['ScheduleAcl'][] = $result->output[$j]->Job->Schedule;
+					}
+					break;
+				}
+			}
+		}
+
+		$result = $this->getModule('api')->set([
+			'config',
+			'dir',
+			'Console',
+			$acls['Name']
+		], [
+			'config' => json_encode($acls)
+		], $api_host);
+
+		if ($result->error === 0) {
+			$this->getModule('api')->set(['console'], ['reload']);
+		} else {
+			$cb->update(
+				'api_host_access_window_error',
+				$result->output
+			);
+			$cb->show('api_host_access_window_error');
+			return '';
+		}
+		return $acls['Name'];
+	}
+
+	/**
+	 * Set resource access  with Consoles for given API host.
+	 * If console is not given, full access is set.
+	 *
+	 * @param string $api_host API host name
+	 * @param string $console console name
+	 * @param string $error_el_id error message container element identifier
+	 * @return bool console setting state, true for success, otherwise false
+	 */
+	private function setResourceConsole($api_host, $console = '', $error_el_id = '')
+	{
+		$state = false;
+		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
+		$cb = $this->getCallbackClient();
+		if (count($host_config) == 0) {
+			$cb->update(
+				$error_el_id,
+				"API host $api_host does not exist"
+			);
+			$cb->show($error_el_id);
+			return $state;
+		}
+
+		$result = $this->getModule('api')->get(['directors'], $api_host);
+		if ($result->error !== 0) {
+			$cb->update(
+				$error_el_id,
+				$result->output
+			);
+			$cb->show($error_el_id);
+			return $state;
+		}
+		$director = $result->output[0];
+		if ($host_config['auth_type'] === AuthBasic::NAME) {
+			$username = $host_config['login'];
+			$config = [
+				'username' => $username,
+				'bconsole_cfg_path' => ''
+			];
+			if (!empty($console) && !empty($director)) {
+				$config['console'] = $console;
+				$config['director'] = $director;
+			}
+			$result = $this->getModule('api')->set([
+				'basic',
+				'users',
+				$username
+			], $config, $api_host);
+			if ($result->error === 0) {
+				$state = true;
+			} else {
+				$cb->update(
+					$error_el_id,
+					$result->output
+				);
+				$cb->show($error_el_id);
+				return $state;
+			}
+		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
+			$client_id = $host_config['client_id'];
+			$config = [
+				'client_id' => $client_id,
+				'bconsole_cfg_path' => ''
+			];
+			if (!empty($console) && !empty($director)) {
+				$config['console'] = $console;
+				$config['director'] = $director;
+			}
+			$result = $this->getModule('api')->set([
+				'oauth2',
+				'clients',
+				$client_id
+			], $config, $api_host);
+
+			$oa2 = new OAuth2Record();
+			$oa2::deleteByPk($api_host);
+
+			if ($result->error === 0) {
+				$state = true;
+			} else {
+				$cb->update(
+					$error_el_id,
+					$result->output
+				);
+				$cb->show($error_el_id);
+				return $state;
+			}
+		}
+		return $state;
+	}
+
+	/**
+	 * Unassign console from API host.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function unassignAPIHostConsole($sender, $param)
+	{
+		$api_host = $param->getCallbackParameter();
+		$success = $this->unassignAPIHostConsoleInternal($api_host);
+		if ($success) {
+			$this->setAPIHostJobs(
+				$this->APIHostResourceAccessJobs,
+				$api_host,
+				'api_host_access_window_error'
+			);
+			$this->setAPIHostConsole($api_host, false);
+			$cb = $this->getCallbackClient();
+			$cb->hide('api_host_access_window_console');
+		}
+	}
+
+	/**
+	 * Unassign console from API host (internal);
+	 *
+	 * @param string $api_host API host name
+	 * @return bool true if console unassigned successfully, otherwise false
+	 */
+	private function unassignAPIHostConsoleInternal($api_host)
+	{
+		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
+		if (count($host_config) == 0) {
+			// API host does not exist
+			return;
+		}
+
+		$state = false;
+		if ($host_config['auth_type'] === AuthBasic::NAME) {
+			$basic_users_result = $this->getModule('api')->get(
+				['basic', 'users', $host_config['login']],
+				$api_host
+			);
+			if ($basic_users_result->error !== 0) {
+				return $state;
+			}
+			$basic_users_result->output->bconsole_cfg_path = '';
+
+			$basic_users_result = $this->getModule('api')->set(
+				['basic', 'users', $host_config['login']],
+				(array) $basic_users_result->output,
+				$api_host
+			);
+			$state = ($basic_users_result->error === 0);
+		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
+			$oauth2_client_result = $this->getModule('api')->get(
+				['oauth2', 'clients', $host_config['client_id']],
+				$api_host
+			);
+			if ($oauth2_client_result->error !== 0) {
+				return $state;
+			}
+			$oauth2_client_result->output->bconsole_cfg_path = '';
+
+			$oauth2_client_result = $this->getModule('api')->set(
+				['oauth2', 'clients', $host_config['client_id']],
+				(array) $oauth2_client_result->output,
+				$api_host
+			);
+
+			$oa2 = new OAuth2Record();
+			$oa2::deleteByPk($api_host);
+
+			$state = ($oauth2_client_result->error === 0);
+		}
+		return $state;
 	}
 
 	/**
@@ -2355,6 +2934,9 @@ class Security extends BaculumWebPage
 			}
 		}
 
+		// refresh user window
+		$this->initUserWindow();
+
 		// refresh API host group window
 		$this->initAPIHostGroupWindow();
 	}
@@ -2382,5 +2964,151 @@ class Security extends BaculumWebPage
 			}
 		}
 		$this->setAPIHostGroupList(null, null);
+
+		// refresh user window
+		$this->initUserWindow();
+	}
+
+
+	/**
+	 * Load API host groups access settings window.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function loadAPIHostGroupAPIHostResourceAccessWindow($sender, $param)
+	{
+		$host_group = $this->APIHostGroupAPIHostResourceAccessName->Value;
+		$ahg = $this->getModule('host_group_config');
+		$is_host_group = $ahg->isHostGroupConfig($host_group);
+		if ($is_host_group) {
+			$api_hosts = $ahg->getAPIHostsByGroups([$host_group]);
+			if (count($api_hosts) == 1 && $api_hosts[0] === HostConfig::MAIN_CATALOG_HOST) {
+				$host_config = $this->getModule('host_config')->getConfig();
+				$api_hosts = array_keys($host_config);
+			}
+			// strip main API host
+			$cbf = function ($host) {
+				return ($host !== HostConfig::MAIN_CATALOG_HOST);
+			};
+			$api_hosts = array_filter($api_hosts, $cbf);
+			$this->setAPIHosts($this->APIHostGroupAPIHostList, null, true, $api_hosts);
+		}
+	}
+
+	/**
+	 * Set API host groups access settings window.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setAPIHostGroupAPIHostResourceAccessWindow($sender, $param)
+	{
+		$api_host = $this->APIHostGroupAPIHostList->getSelectedValue();
+		$this->setAPIHostJobs(
+			$this->APIHostGroupAPIHostResourceAccessJobs,
+			$api_host,
+			'api_host_group_access_window_error'
+		);
+		$this->setAPIHostGroupAPIHostConsole($api_host);
+	}
+
+	/**
+	 * Set user API host console.
+	 *
+	 * @param string $api_host API host name
+	 * @param bool $set_state determine if state (all/selected resources) should be changed
+	 */
+	private function setAPIHostGroupAPIHostConsole($api_host, $set_state = true)
+	{
+		$console = $this->isAPIHostConsole($api_host);
+		$cb = $this->getCallbackClient();
+		$cb->hide('api_host_group_access_window_console');
+		if (!empty($console)) {
+			$cb->show('api_host_group_access_window_select_jobs');
+			$cb->show('api_host_group_access_window_console');
+			if ($set_state) {
+				$this->APIHostGroupAPIHostResourceAccessSelectedResources->Checked = true;
+			}
+		} else {
+			if ($set_state) {
+				$cb->hide('api_host_group_access_window_select_jobs');
+				$this->APIHostGroupAPIHostResourceAccessAllResources->Checked = true;
+			}
+		}
+	}
+
+	/**
+	 * Unassign console from API host.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function unassignAPIHostGroupAPIHostConsole($sender, $param)
+	{
+		$api_host = $param->getCallbackParameter();
+		$success = $this->unassignAPIHostConsoleInternal($api_host);
+		if ($success) {
+			$this->setAPIHostJobs(
+				$this->APIHostGroupAPIHostResourceAccessJobs,
+				$api_host,
+				'api_host_group_access_window_error'
+			);
+			$this->setAPIHostGroupAPIHostConsole($api_host, false);
+			$cb = $this->getCallbackClient();
+			$cb->hide('api_host_group_access_window_console');
+		}
+	}
+
+	/**
+	 * Save API host groups access settings window.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function saveAPIHostGroupAPIHostResourceAccess($sender, $param)
+	{
+		$api_host = $this->APIHostGroupAPIHostList->getSelectedValue();
+		if ($this->APIHostGroupAPIHostResourceAccessAllResources->Checked) {
+			$state = $this->setResourceConsole(
+				$api_host,
+				'',
+				'api_host_group_access_window_error'
+			);
+			if ($state) {
+				$this->setAPIHostJobs(
+					$this->APIHostGroupAPIHostResourceAccessJobs,
+					$api_host,
+					'api_host_group_access_window_error'
+				);
+				$this->setAPIHostConsole($api_host);
+			}
+		} elseif ($this->APIHostGroupAPIHostResourceAccessSelectedResources->Checked) {
+			$selected_indices = $this->APIHostGroupAPIHostResourceAccessJobs->getSelectedIndices();
+			$jobs = [];
+			foreach ($selected_indices as $indice) {
+				for ($i = 0; $i < $this->APIHostGroupAPIHostResourceAccessJobs->getItemCount(); $i++) {
+					if ($i === $indice) {
+						$jobs[] = $this->APIHostGroupAPIHostResourceAccessJobs->Items[$i]->Value;
+					}
+				}
+			}
+			$console = $this->setJobResourceAccess($api_host, $jobs);
+			if ($console) {
+				$state = $this->setResourceConsole(
+					$api_host,
+					$console,
+					'api_host_group_access_window_error'
+				);
+				if ($state) {
+					$this->setAPIHostJobs(
+						$this->APIHostGroupAPIHostResourceAccessJobs,
+						$api_host,
+						'api_host_group_access_window_error'
+					);
+				}
+				$this->setAPIHostGroupAPIHostConsole($api_host);
+			}
+		}
 	}
 }

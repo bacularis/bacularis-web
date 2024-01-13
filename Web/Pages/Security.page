@@ -1257,6 +1257,24 @@ var oUserList = {
 				{
 					data: 'username',
 					render: function (data, type, row) {
+						let btns = '';
+
+						// Set access button
+						const span = document.createElement('SPAN');
+						const access_btn = document.createElement('BUTTON');
+						access_btn.className = 'w3-button w3-green';
+						access_btn.type = 'button';
+						const i = document.createElement('I');
+						i.className = 'fas fa-edit';
+						const label = document.createTextNode(' <%[ Set access ]%>');
+						access_btn.appendChild(i);
+						access_btn.innerHTML += '&nbsp';
+						access_btn.appendChild(label);
+						access_btn.setAttribute('onclick', 'oUsers.load_user_access_window("' + data + '")');
+						span.appendChild(access_btn);
+						span.style.marginRight = '5px';
+						btns += span.outerHTML;
+
 						var btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
 						btn_edit.type = 'button';
@@ -1268,7 +1286,9 @@ var oUserList = {
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
 						btn_edit.setAttribute('onclick', 'oUsers.load_user_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btns += btn_edit.outerHTML;
+
+						return btns;
 					}
 				}
 			],
@@ -1283,7 +1303,7 @@ var oUserList = {
 				targets: 0
 			},
 			{
-				className: 'action_col',
+				className: 'action_col_long',
 				orderable: false,
 				targets: [ 11 ]
 			},
@@ -1424,6 +1444,36 @@ var oUsers = {
 	},
 	save_user_cb: function() {
 		document.getElementById('user_window').style.display = 'none';
+	},
+	load_user_access_window: function(name) {
+		this.clear_access_window();
+		document.getElementById('<%=$this->UserAPIHostResourceAccessName->ClientID%>').value = name;
+		const cb = <%=$this->LoadUserAPIHostResourceAccess->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		document.getElementById('user_access_window_title').textContent = name;
+		document.getElementById('user_access_window').style.display = 'block';
+	},
+	clear_access_window: function() {
+		// empty fields
+		[
+			'<%=$this->UserAPIHostResourceAccessJobs->ClientID%>'
+		].forEach((id) => {
+			$('#' + id).empty();
+		});
+
+		// reset radio buttons
+		document.getElementById('<%=$this->UserAPIHostResourceAccessAllResources->ClientID%>').checked = true;
+		document.getElementById('user_access_window_error').style.display = 'none';
+		document.getElementById('user_access_window_console').style.display = 'none';
+		document.getElementById('user_access_window_select_jobs').style.display = 'none';
+		document.getElementById('user_access_window_select_access').style.display = 'none';
+	},
+	unassign_console: function() {
+		const api_host = document.getElementById('<%=$this->UserAPIHostList->ClientID%>').value;
+		const cb = <%=$this->UnassignUserAPIHostConsole->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(api_host);
+		cb.dispatch();
 	}
 }
 
@@ -1672,6 +1722,112 @@ $(function() {
 				</footer>
 			</div>
 			<com:TActiveHiddenField ID="UserWindowType" />
+		</div>
+		<div id="user_access_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('user_access_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2><span id="user_access_window_title"></span> - <%[ Set user API host access to resources ]%> &nbsp;<i id="get_api_host_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostList" Text="<%[ API host: ]%>"/></div>
+						<div class="w3-half w3-show-inline-block">
+							<com:TActiveDropDownList
+								ID="UserAPIHostList"
+								CssClass="w3-select w3-border"
+								OnCallback="setUserAPIHostResourceAccessWindow"
+								Attributes.onclick=""
+							>
+								<prop:ClientSide.OnLoading>
+									document.getElementById('get_api_host_loader').style.visibility = 'visible';
+									const sa = document.getElementById('user_access_window_select_access');
+									sa.style.display = 'none';
+								</prop:ClientSide.OnLoading>
+								<prop:ClientSide.OnComplete>
+									document.getElementById('get_api_host_loader').style.visibility = 'hidden';
+									const el = document.getElementById('<%=$this->UserAPIHostList->ClientID%>');
+									const sa = document.getElementById('user_access_window_select_access');
+									const err = document.getElementById('user_access_window_error');
+									if (err.style.display == 'none') {
+										sa.style.display =  el.value ? 'block' : 'none';
+									} else {
+										sa.style.display = 'none';
+									}
+								</prop:ClientSide.OnComplete>
+							</com:TActiveDropDownList>
+						</div>
+					</div>
+					<div id="user_access_window_select_access" style="display: none">
+						<div class="w3-row directive_field">
+							<p><com:TActiveRadioButton
+								ID="UserAPIHostResourceAccessAllResources"
+								GroupName="APIHostResourceAccess"
+								CssClass="w3-radio"
+								Attributes.onclick="$('#user_access_window_select_jobs').slideUp();"
+								Checked="true"
+								/> <label for="<%=$this->UserAPIHostResourceAccessAllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
+							<p><com:TActiveRadioButton
+								ID="UserAPIHostResourceAccessSelectedResources"
+								GroupName="APIHostResourceAccess"
+								CssClass="w3-radio"
+								Attributes.onclick="$('#user_access_window_select_jobs').slideDown();"
+								/> <label for="<%=$this->UserAPIHostResourceAccessSelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
+						</div>
+						<div id="user_access_window_select_jobs" class="w3-row directive_field" style="display: none">
+							<div id="user_access_window_console" class="w3-section" style="display: none"><%[ Bacula Console ACL ]%>: <strong><%[ Assigned ]%></strong> ( <a href="javascript:void(0)" onclick="oUsers.unassign_console();"><%[ unassign ]%></a> )</div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostResourceAccessJobs" Text="<%[ API host jobs: ]%>"/></div>
+							<div class="w3-twothird">
+								<com:TActiveListBox
+									ID="UserAPIHostResourceAccessJobs"
+									SelectionMode="Multiple"
+									Rows="10"
+									CssClass="w3-select w3-border"
+									ValidationGroup="UserAPIHostResourceAccessGroup"
+									AutoPostBack="false"
+								/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+								<com:TRequiredFieldValidator
+									ControlCssClass="field_invalid"
+									Display="Dynamic"
+									ControlToValidate="APIHostResourceAccessJobs"
+									ValidationGroup="UserAPIHostResourceAccessGroup"
+									ErrorMessage="<%[ Field required. ]%>"
+								>
+									<prop:ClientSide.OnValidate>
+										const radio = document.getElementById('<%=$this->APIHostResourceAccessSelectedResources->ClientID%>');
+										sender.enabled = radio.checked;
+									</prop:ClientSide.OnValidate>
+								</com:TRequiredFieldValidator>
+
+								<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+							</div>
+						</div>
+					</div>
+					<div id="user_access_window_error" class="w3-red" style="display: none"></div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('user_access_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<com:TActiveLinkButton
+						ID="UserAPIHostResourceAccessSave"
+						ValidationGroup="UserAPIHostResourceAccessGroup"
+						CausesValidation="true"
+						OnCallback="saveUserAPIHostResourceAccess"
+						CssClass="w3-button w3-section w3-green w3-padding"
+					>
+						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+					</com:TActiveLinkButton>
+				</footer>
+				<com:TActiveHiddenField ID="UserAPIHostResourceAccessName" />
+			</div>
+			<com:TCallback ID="LoadUserAPIHostResourceAccess" OnCallback="TemplateControl.loadUserAPIHostResourceAccessWindow">
+				<prop:ClientSide.OnLoading>
+					document.getElementById('get_api_host_loader').style.visibility = 'visible';
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.OnComplete>
+					document.getElementById('get_api_host_loader').style.visibility = 'hidden';
+				</prop:ClientSide.OnComplete>
+			</com:TCallback>
+			<com:TCallback ID="UnassignUserAPIHostConsole" OnCallback="TemplateControl.unassignUserAPIHostConsole" />
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="role_list" style="display: none;">
@@ -3353,6 +3509,27 @@ var oAPIHostList = {
 				{
 					data: 'name',
 					render: function (data, type, row) {
+						let btns = '';
+
+						// Set access button
+						if (data !== 'Main') {
+							const span = document.createElement('SPAN');
+							const access_btn = document.createElement('BUTTON');
+							access_btn.className = 'w3-button w3-green';
+							access_btn.type = 'button';
+							const i = document.createElement('I');
+							i.className = 'fas fa-edit';
+							const label = document.createTextNode(' <%[ Set access ]%>');
+							access_btn.appendChild(i);
+							access_btn.innerHTML += '&nbsp';
+							access_btn.appendChild(label);
+							access_btn.setAttribute('onclick', 'oAPIHosts.load_access_window("' + data + '")');
+							span.appendChild(access_btn);
+							span.style.marginRight = '5px';
+							btns += span.outerHTML;
+						}
+
+						// Edit button
 						var btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
 						btn_edit.type = 'button';
@@ -3364,7 +3541,9 @@ var oAPIHostList = {
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
 						btn_edit.setAttribute('onclick', 'oAPIHosts.load_api_host_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btns += btn_edit.outerHTML;
+
+						return btns;
 					}
 				}
 			],
@@ -3379,7 +3558,7 @@ var oAPIHostList = {
 				targets: 0
 			},
 			{
-				className: 'action_col',
+				className: 'action_col_long',
 				orderable: false,
 				targets: [ 6 ]
 			},
@@ -3504,6 +3683,35 @@ var oAPIHosts = {
 	},
 	save_api_host_cb: function() {
 		document.getElementById('api_host_window').style.display = 'none';
+	},
+	load_access_window: function(name) {
+		this.clear_access_window();
+		document.getElementById('api_host_access_window_console').style.display = 'none';
+		const cb = <%=$this->LoadAPIHostResourceAccess->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		document.getElementById('api_host_access_window_title').textContent = name;
+		document.getElementById('api_host_access_window').style.display = 'block';
+		document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value = name;
+	},
+	clear_access_window: function() {
+		// empty fields
+		[
+			'<%=$this->APIHostResourceAccessJobs->ClientID%>'
+		].forEach((id) => {
+			$('#' + id).empty();
+		});
+
+		// reset radio buttons
+		document.getElementById('<%=$this->APIHostResourceAccessAllResources->ClientID%>').checked = true;
+		document.getElementById('api_host_access_window_select_jobs').style.display = 'none';
+		document.getElementById('api_host_access_window_error').style.display = 'none';
+	},
+	unassign_console: function() {
+		const api_host = document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value;
+		const cb = <%=$this->UnassignAPIHostConsole->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(api_host);
+		cb.dispatch();
 	}
 }
 
@@ -3905,6 +4113,85 @@ $(function() {
 </script>
 		<com:TActiveHiddenField ID="APIHostWindowType" />
 	</div>
+	<div id="api_host_access_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('api_host_access_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2><span id="api_host_access_window_title"></span> - <%[ Set API host access to resources ]%> &nbsp;<i id="get_api_host_window_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<div class="w3-row directive_field">
+					<p><com:TActiveRadioButton
+						ID="APIHostResourceAccessAllResources"
+						GroupName="APIHostResourceAccess"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#api_host_access_window_select_jobs').slideUp();"
+						Checked="true"
+						/> <label for="<%=$this->APIHostResourceAccessAllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
+					<p><com:TActiveRadioButton
+						ID="APIHostResourceAccessSelectedResources"
+						GroupName="APIHostResourceAccess"
+						CssClass="w3-radio"
+						Attributes.onclick="$('#api_host_access_window_select_jobs').slideDown();"
+						/> <label for="<%=$this->APIHostResourceAccessSelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
+				</div>
+				<div id="api_host_access_window_error" class="w3-red" style="display: none"></div>
+				<div id="api_host_access_window_select_jobs" class="w3-row directive_field" style="display: none">
+					<div id="api_host_access_window_console" class="w3-section" style="display: none"><%[ Bacula Console ACL ]%>: <strong><%[ Assigned ]%></strong> ( <a href="javascript:void(0)" onclick="oAPIHosts.unassign_console();"><%[ unassign ]%></a> )</div>
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostResourceAccessJobs" Text="<%[ API host jobs: ]%>"/></div>
+					<div class="w3-twothird">
+						<com:TActiveListBox
+							ID="APIHostResourceAccessJobs"
+							SelectionMode="Multiple"
+							Rows="10"
+							CssClass="w3-select w3-border"
+							ValidationGroup="APIHostResourceAccessGroup"
+							AutoPostBack="false"
+						/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+						<com:TRequiredFieldValidator
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+							ControlToValidate="APIHostResourceAccessJobs"
+							ValidationGroup="APIHostResourceAccessGroup"
+							ErrorMessage="<%[ Field required. ]%>"
+						>
+							<prop:ClientSide.OnValidate>
+								const radio = document.getElementById('<%=$this->APIHostResourceAccessSelectedResources->ClientID%>');
+								sender.enabled = radio.checked;
+							</prop:ClientSide.OnValidate>
+						</com:TRequiredFieldValidator>
+
+						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center">
+				<button type="button" class="w3-button w3-red" onclick="document.getElementById('api_host_access_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ID="APIHostResourceAccessSave"
+					ValidationGroup="APIHostResourceAccessGroup"
+					CausesValidation="true"
+					OnCallback="saveAPIHostResourceAccess"
+					CssClass="w3-button w3-section w3-green w3-padding"
+				>
+					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+			<com:TActiveHiddenField ID="APIHostResourceAccessName" />
+		</div>
+		<com:TCallback
+			ID="LoadAPIHostResourceAccess"
+			OnCallback="TemplateControl.loadAPIHostResourceAccessWindow"
+		>
+			<prop:ClientSide.OnLoading>
+				document.getElementById('get_api_host_window_loader').style.visibility = 'visible';
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				document.getElementById('get_api_host_window_loader').style.visibility = 'hidden';
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<com:TCallback ID="UnassignAPIHostConsole" OnCallback="TemplateControl.unassignAPIHostConsole" />
+	</div>
 	<div class="w3-container tab_item" id="api_host_group_list" style="display: none">
 		<p class="w3-hide-small"><%[ The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host. ]%></p>
 		<div class="w3-panel">
@@ -4000,6 +4287,25 @@ var oAPIHostGroupList = {
 				{
 					data: 'name',
 					render: function (data, type, row) {
+						let btns = '';
+
+						// Set access button
+						const span = document.createElement('SPAN');
+						const access_btn = document.createElement('BUTTON');
+						access_btn.className = 'w3-button w3-green';
+						access_btn.type = 'button';
+						const i = document.createElement('I');
+						i.className = 'fas fa-edit';
+						const label = document.createTextNode(' <%[ Set access ]%>');
+						access_btn.appendChild(i);
+						access_btn.innerHTML += '&nbsp';
+						access_btn.appendChild(label);
+						access_btn.setAttribute('onclick', 'oAPIHostGroups.load_access_window("' + data + '")');
+						span.appendChild(access_btn);
+						span.style.marginRight = '5px';
+						btns += span.outerHTML;
+
+						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
 						btn_edit.type = 'button';
@@ -4011,7 +4317,9 @@ var oAPIHostGroupList = {
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
 						btn_edit.setAttribute('onclick', 'oAPIHostGroups.load_api_host_group_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btns += btn_edit.outerHTML;
+
+						return btns;
 					}
 				}
 			],
@@ -4026,7 +4334,7 @@ var oAPIHostGroupList = {
 				targets: 0
 			},
 			{
-				className: 'action_col',
+				className: 'action_col_long',
 				orderable: false,
 				targets: [ 4 ]
 			},
@@ -4119,6 +4427,36 @@ var oAPIHostGroups = {
 	},
 	save_api_host_group_cb: function() {
 		document.getElementById('api_host_group_window').style.display = 'none';
+	},
+	load_access_window: function(name) {
+		this.clear_access_window();
+		document.getElementById('<%=$this->APIHostGroupAPIHostResourceAccessName->ClientID%>').value = name;
+		const cb = <%=$this->LoadAPIHostGroupAPIHostResourceAccess->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		document.getElementById('api_host_group_access_window_title').textContent = name;
+		document.getElementById('api_host_group_access_window').style.display = 'block';
+	},
+	clear_access_window: function() {
+		// empty fields
+		[
+			'<%=$this->APIHostGroupAPIHostResourceAccessJobs->ClientID%>'
+		].forEach((id) => {
+			$('#' + id).empty();
+		});
+
+		// reset radio buttons
+		document.getElementById('<%=$this->APIHostGroupAPIHostResourceAccessAllResources->ClientID%>').checked = true;
+		document.getElementById('api_host_group_access_window_error').style.display = 'none';
+		document.getElementById('api_host_group_access_window_console').style.display = 'none';
+		document.getElementById('api_host_group_access_window_select_jobs').style.display = 'none';
+		document.getElementById('api_host_group_access_window_select_access').style.display = 'none';
+	},
+	unassign_console: function() {
+		const api_host = document.getElementById('<%=$this->APIHostGroupAPIHostList->ClientID%>').value;
+		const cb = <%=$this->UnassignAPIHostGroupAPIHostConsole->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(api_host);
+		cb.dispatch();
 	}
 }
 
@@ -4210,5 +4548,111 @@ $(function() {
 			</footer>
 		</div>
 		<com:TActiveHiddenField ID="APIHostGroupWindowType" />
+	</div>
+	<div id="api_host_group_access_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('api_host_group_access_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2><span id="api_host_group_access_window_title"></span> - <%[ Set API host group access to resources ]%> &nbsp;<i id="get_api_host_group_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostGroupAPIHostList" Text="<%[ API host: ]%>"/></div>
+					<div class="w3-half w3-show-inline-block">
+						<com:TActiveDropDownList
+							ID="APIHostGroupAPIHostList"
+							CssClass="w3-select w3-border"
+							OnCallback="setAPIHostGroupAPIHostResourceAccessWindow"
+							Attributes.onclick=""
+						>
+							<prop:ClientSide.OnLoading>
+								document.getElementById('get_api_host_group_loader').style.visibility = 'visible';
+								const sa = document.getElementById('api_host_group_access_window_select_access');
+								sa.style.display = 'none';
+							</prop:ClientSide.OnLoading>
+							<prop:ClientSide.OnComplete>
+								document.getElementById('get_api_host_group_loader').style.visibility = 'hidden';
+								const el = document.getElementById('<%=$this->APIHostGroupAPIHostList->ClientID%>');
+								const sa = document.getElementById('api_host_group_access_window_select_access');
+								const err = document.getElementById('api_host_group_access_window_error');
+								if (err.style.display == 'none') {
+									sa.style.display =  el.value ? 'block' : 'none';
+								} else {
+									sa.style.display = 'none';
+								}
+							</prop:ClientSide.OnComplete>
+						</com:TActiveDropDownList>
+					</div>
+				</div>
+				<div id="api_host_group_access_window_select_access" style="display: none">
+					<div class="w3-row directive_field">
+						<p><com:TActiveRadioButton
+							ID="APIHostGroupAPIHostResourceAccessAllResources"
+							GroupName="APIHostResourceAccess"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#api_host_group_access_window_select_jobs').slideUp();"
+							Checked="true"
+							/> <label for="<%=$this->APIHostGroupAPIHostResourceAccessAllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
+						<p><com:TActiveRadioButton
+							ID="APIHostGroupAPIHostResourceAccessSelectedResources"
+							GroupName="APIHostResourceAccess"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#api_host_group_access_window_select_jobs').slideDown();"
+							/> <label for="<%=$this->APIHostGroupAPIHostResourceAccessSelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
+					</div>
+					<div id="api_host_group_access_window_select_jobs" class="w3-row directive_field" style="display: none">
+						<div id="api_host_group_access_window_console" class="w3-section" style="display: none"><%[ Bacula Console ACL ]%>: <strong><%[ Assigned ]%></strong> ( <a href="javascript:void(0)" onclick="oAPIHostGroups.unassign_console();"><%[ unassign ]%></a> )</div>
+						<div class="w3-col w3-third"><com:TLabel ForControl="APIHostGroupAPIHostResourceAccessJobs" Text="<%[ API host jobs: ]%>"/></div>
+						<div class="w3-twothird">
+							<com:TActiveListBox
+								ID="APIHostGroupAPIHostResourceAccessJobs"
+								SelectionMode="Multiple"
+								Rows="10"
+								CssClass="w3-select w3-border"
+								ValidationGroup="APIHostGroupAPIHostResourceAccessGroup"
+								AutoPostBack="false"
+							/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+							<com:TRequiredFieldValidator
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+								ControlToValidate="APIHostResourceAccessJobs"
+								ValidationGroup="APIHostGroupAPIHostResourceAccessGroup"
+								ErrorMessage="<%[ Field required. ]%>"
+							>
+								<prop:ClientSide.OnValidate>
+									const radio = document.getElementById('<%=$this->APIHostResourceAccessSelectedResources->ClientID%>');
+									sender.enabled = radio.checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
+
+							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						</div>
+					</div>
+				</div>
+				<div id="api_host_group_access_window_error" class="w3-red" style="display: none"></div>
+			</div>
+			<footer class="w3-container w3-center">
+				<button type="button" class="w3-button w3-red" onclick="document.getElementById('api_host_group_access_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ID="APIHostGroupAPIHostResourceAccessSave"
+					ValidationGroup="APIHostGroupAPIHostResourceAccessGroup"
+					CausesValidation="true"
+					OnCallback="saveAPIHostGroupAPIHostResourceAccess"
+					CssClass="w3-button w3-section w3-green w3-padding"
+				>
+					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+			<com:TActiveHiddenField ID="APIHostGroupAPIHostResourceAccessName" />
+		</div>
+		<com:TCallback ID="LoadAPIHostGroupAPIHostResourceAccess" OnCallback="TemplateControl.loadAPIHostGroupAPIHostResourceAccessWindow">
+			<prop:ClientSide.OnLoading>
+				document.getElementById('get_api_host_group_loader').style.visibility = 'visible';
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				document.getElementById('get_api_host_group_loader').style.visibility = 'hidden';
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<com:TCallback ID="UnassignAPIHostGroupAPIHostConsole" OnCallback="TemplateControl.unassignAPIHostGroupAPIHostConsole" />
 	</div>
 </com:TContent>

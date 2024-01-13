@@ -5256,3 +5256,21 @@ msgstr "The API host groups are named sets of API hosts which can be used to ass
 
 msgid "Assign to API host groups:"
 msgstr "Assign to API host groups:"
+
+msgid "Bacula Console ACL"
+msgstr "Bacula Console ACL"
+
+msgid "Assigned"
+msgstr "Assigned"
+
+msgid "unassign"
+msgstr "unassign"
+
+msgid "Set API host access to resources"
+msgstr "Set API host access to resources"
+
+msgid "Set user API host access to resources"
+msgstr "Set user API host access to resources"
+
+msgid "Set API host group access to resources"
+msgstr "Set API host group access to resources"
