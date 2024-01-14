@@ -1,10 +1,10 @@
 
-This is a new function. We added a new job summary page, new pre-defined filters
-to the main job table and also we added two new buttons: to download job log
-and to copy job log to clipboard.
+This is a new feature release. We introduced two significant changes:
+the API host groups and easier to configure Bacula resource access.
+We hope that these two new functions will much improve the user and
+resource management in Bacularis.
 
 Changes:
- - Add job summary report tab to job view page
- - Add copying job log to clipboard and add saving job log to file
- - Improve displaying job table filters
- - Add predefined filters to job table
+ - New API host groups feature
+ - New much easier way of setting access to selected Bacula resources
+   per API host, per API host group and per user
