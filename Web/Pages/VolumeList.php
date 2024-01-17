@@ -39,7 +39,8 @@ class VolumeList extends BaculumWebPage
 {
 	public const USE_CACHE = false;
 
-	public $volumes;
+	public $volumes = [];
+	public $pools = [];
 
 	public function onInit($param)
 	{
@@ -48,16 +49,41 @@ class VolumeList extends BaculumWebPage
 			return;
 		}
 		$this->volumes = $this->getVolumes();
+		$this->pools = $this->getPools();
 	}
 
 	public function getVolumes()
 	{
-		return $this->getModule('api')->get(
+		$volumes = $this->getModule('api')->get(
 			['volumes'],
 			null,
 			true,
 			self::USE_CACHE
-		)->output;
+		);
+		$ret = [];
+		if ($volumes->error === 0) {
+			$ret = $volumes->output;
+		}
+		return $ret;
+	}
+
+	public function getPools()
+	{
+		$pools = $this->getModule('api')->get(
+			['pools'],
+			null,
+			true,
+			self::USE_CACHE
+		);
+		$ret = [];
+		if ($pools->error === 0) {
+			$ret = $pools->output;
+			$cb = function ($a, $b) {
+				return strnatcasecmp($a->name, $b->name);
+			};
+			usort($ret, $cb);
+		}
+		return $ret;
 	}
 
 	/**

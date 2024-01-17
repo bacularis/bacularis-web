@@ -5274,3 +5274,6 @@ msgstr "Set user API host access to resources"
 
 msgid "Set API host group access to resources"
 msgstr "Set API host group access to resources"
+
+msgid "All pools"
+msgstr "All pools"

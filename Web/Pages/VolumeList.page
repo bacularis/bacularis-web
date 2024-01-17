@@ -138,6 +138,13 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
+	<div id="table_predefined_filters_body" style="display: none; height: 38px; width: 290px;">
+		<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px">
+			<select id="table_predefined_filters_value_type" style="width: 250px;">
+				<option value=""><%[ All pools ]%></option>
+			</select>
+		</div>
+	</div>
 <script type="text/javascript">
 var oVolumeList = {
 	table: null,
@@ -174,7 +181,9 @@ var oVolumeList = {
 	ids: {
 		volume_list: 'volume_list',
 		volume_list_body: 'volume_list_body',
-		table_mode: 'table_mode'
+		table_predefined_filters: 'table_predefined_filters',
+		table_predefined_filters_body: 'table_predefined_filters_body',
+		table_predefined_filters_value_type: 'table_predefined_filters_value_type',
 	},
 	init: function(data) {
 		if (this.table) {
@@ -186,6 +195,7 @@ var oVolumeList = {
 			this.set_table(data);
 			this.set_bulk_actions();
 			this.set_events();
+			this.set_predefined_filters();
 			this.set_filters();
 		}
 	},
@@ -202,12 +212,20 @@ var oVolumeList = {
 				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
 			}.bind(this));
 		}.bind(this));
+		const filters_select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		filters_select.addEventListener('change', (e) => {
+			this.reset_filters();
+			const pool = filters_select.value;
+			if (pool) {
+				this.set_filters({pool: pool});
+			}
+		});
 	},
 	set_table: function(data) {
 		this.table = $('#' + this.ids.volume_list).DataTable({
 			data: data,
 			deferRender: true,
-			dom: 'lB<"table_toolbar"><"#table_mode">frtip',
+			dom: 'lB<"table_toolbar"><"#table_predefined_filters">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
@@ -519,7 +537,7 @@ var oVolumeList = {
 				blurable: false
 			},
 			order: [3, 'asc'],
-			initComplete: function () {
+			drawCallback: function () {
 				this.api().columns([2, 3, 6, 10, 13]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
@@ -559,63 +577,51 @@ var oVolumeList = {
 			ok: '<%[ OK ]%>'
 		});
 	},
-	set_mode: function(pool, volstatus) {
-		let mode_txt = '<%[ Pool: %pool, Vol. status: %volstatus ]%>';
-		mode_txt = mode_txt.replace('%pool', pool);
-		mode_txt = mode_txt.replace('%volstatus', volstatus);
-		var container = document.getElementById(this.ids.table_mode);
-		container.className = 'dt-buttons';
-		var mode = document.createTextNode(' <%[ Mode: ]%> ' + mode_txt + ' ');
-		container.appendChild(mode);
-		var label = document.createTextNode(' <%[ Reset table mode ]%>');
-		var a = document.createElement('A');
-		a.className = 'w3-button w3-green';
-		a.href = 'javascript:void(0)';
-		a.addEventListener('click', function(e) {
-			// pop pool and volstatus filter
-			$.fn.dataTable.ext.search.pop();
-
-			// reset select filters
-			this.table.columns().every(function() {
-				var select = this.footer().querySelector('SELECT');
-				if (select) {
-					select.value = '';
-					$(select).trigger('change');
-				}
-				let addr = location.href.replace(/[&;?]?(pool|volstatus)=[^&;]+/, '');
-				history.replaceState({}, '', addr);
-			})
-
-			this.table.columns().search('').draw();
-			container.style.display = 'none';
-		}.bind(this));
-		var img = document.createElement('I');
-		img.className = 'fas fa-sync-alt';
-		a.appendChild(img);
-		a.appendChild(label);
-		container.appendChild(a);
-	},
-	set_filters: function() {
-		const pool = get_url_param('pool');
-		const volstatus = get_url_param('volstatus');
+	set_filters: function(params) {
+		const ppool = get_url_param('pool');
+		const pool = (params && params.hasOwnProperty('pool')) ? params.pool : ppool;
+		const volstatus = (params && params.hasOwnProperty('volstatus')) ? params.volstatus : get_url_param('volstatus');
 		let search_func;
 		if (pool) {
-			search_func = function(settings, search_data, index, row_data, counter) {
-				var filter_pool = search_data[5];
-				return (pool == filter_pool);
+			search_func = (settings, search_data, index, row_data, counter) => {
+				if (settings.nTable.id == this.ids.volume_list) {
+					var filter_pool = search_data[5];
+					return (pool == filter_pool);
+				} else {
+					return true;
+				}
 			};
 		}
-		var container = document.getElementById(this.ids.table_mode);
 		if (search_func) {
 			$.fn.dataTable.ext.search.push(search_func);
-			this.table.columns().search('').draw();
+			if (ppool) {
+				// if type parameter passed in the URL query string, reset all filters (@see search(''))
+				this.table.columns().search('').draw();
+			} else {
+				this.table.columns().draw();
+			}
 			this.set_volstatus_filter();
-			this.set_mode(pool, volstatus);
-			container.style.display = 'inline-block';
+			this.set_filter_select(pool);
 		} else {
 			this.set_volstatus_filter(true);
-			container.style.display = 'none';
 		}
+	},
+	set_predefined_filters() {
+		const select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		const pools = <%=json_encode($this->pools)%>;
+		let option, label;
+		for (let i = 0; i < pools.length; i++) {
+			option = document.createElement('OPTION');
+			option.value = pools[i].name;
+			label = document.createTextNode(pools[i].name);
+			option.appendChild(label);
+			select.appendChild(option);
+		}
+		const predefined = document.getElementById(this.ids.table_predefined_filters);
+		predefined.className = 'dt-buttons';
+		const body = document.getElementById(this.ids.table_predefined_filters_body);
+		predefined.appendChild(body);
+		body.style.display = 'block';
 	},
 	set_volstatus_filter: function(reset) {
 		const volstatus = get_url_param('volstatus');
@@ -626,19 +632,20 @@ var oVolumeList = {
 			$(select).trigger('change');
 		}
 	},
+	set_filter_select: function(type) {
+		const select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		select.value = type;
+	},
 	reset_filters: function() {
-		// reset table filters
-		var page = this.table.page();
-		this.table.search('').columns().search('').draw();
-		this.table.page(page).draw(false);
+		if ($.fn.dataTable.ext.search.length > 0) {
+			$.fn.dataTable.ext.search.pop();
+		}
 
-		// reset select values (table engine does not do it automatically)
-		this.table.columns().every(function() {
-			var select = this.footer().querySelector('th > select');
-			if (select) {
-				select.value = '';
-			}
-		});
+		// reset address bar
+		let addr = location.href.replace(/[&;?]?(pool|volstatus)=[^&;]+/g, '');
+		history.replaceState({}, '', addr);
+
+		this.table.columns().draw();
 	}
 };
 oVolumeList.init(<%=json_encode($this->volumes)%>);
