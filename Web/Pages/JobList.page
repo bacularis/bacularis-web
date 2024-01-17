@@ -954,7 +954,7 @@ const oJobList = {
 							}
 						}
 						if (ljob) {
-							ret = this.render_last_job(ljob.starttime_epoch, type);
+							ret = this.render_last_job(ljob.schedtime_epoch, type);
 						}
 						return ret;
 					},
@@ -973,7 +973,7 @@ const oJobList = {
 							}
 						}
 						if (ljob) {
-							ret = this.render_last_job(ljob.starttime_epoch, type);
+							ret = this.render_last_job(ljob.schedtime_epoch, type);
 						}
 						return ret;
 					},
@@ -1067,10 +1067,10 @@ const oJobList = {
 	set_weather: function() {
 		this.job_weather = Weather.get_job_weather(oData.terminated_jobs, 5);
 	},
-	render_last_job: function(starttime_epoch, type) {
+	render_last_job: function(schedtime_epoch, type) {
 		const empty = '-';
 		let ret = empty;
-		const ts = starttime_epoch * 1000;
+		const ts = schedtime_epoch * 1000;
 		const d = new Date();
 		const tz = d.getTimezoneOffset() * 60 * 1000;
 		const now = d.getTime() - tz;
