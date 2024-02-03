@@ -5203,3 +5203,6 @@ msgstr "Set API host group access to resources"
 
 msgid "All pools"
 msgstr "All pools"
+
+msgid "Default API host groups for imported users:"
+msgstr "Default API host groups for imported users:"
