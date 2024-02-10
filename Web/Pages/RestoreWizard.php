@@ -211,7 +211,7 @@ class RestoreWizard extends BaculumWebPage
 		if ($param->CurrentStepIndex === 0) {
 			$this->loadBackupsForClient();
 			$this->loadGroupBackupToRestore();
-			$this->loadGroupFileSetToRestore();
+			$this->loadGroupBackupFileSets(null, null);
 			$this->loadRestoreClients();
 			if ($this->BackupClient->DataChanged) {
 				// remove previous restore jobid only if user changed client selection
@@ -451,19 +451,56 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	public function loadGroupBackupToRestore()
 	{
-		$jobs = $this->getModule('api')->get(['jobs'])->output;
-		$jobs = $this->getModule('misc')->objectToArray($jobs);
-		$clientid = (int) ($this->BackupClient->SelectedValue);
-		$job_group = [];
-		for ($i = 0; $i < count($jobs); $i++) {
-			if ($this->isJobToRestore($jobs[$i]) && $jobs[$i]['clientid'] === $clientid) {
-				$job_group[$jobs[$i]['name']] = $jobs[$i]['name'];
+		$jobs = $this->getModule('api')->get(['jobs']);
+		$job_group = ['' => ''];
+		if ($jobs->error === 0) {
+			$jobs = $this->getModule('misc')->objectToArray($jobs->output);
+			$clientid = (int) ($this->BackupClient->SelectedValue);
+			for ($i = 0; $i < count($jobs); $i++) {
+				if ($this->isJobToRestore($jobs[$i]) && $jobs[$i]['clientid'] === $clientid) {
+					$job_group[$jobs[$i]['name']] = $jobs[$i]['name'];
+				}
 			}
 		}
 		asort($job_group);
 
 		$this->GroupBackupToRestore->DataSource = $job_group;
 		$this->GroupBackupToRestore->dataBind();
+	}
+
+	/**
+	 * Load filesets by selected job in group recent backups.
+	 *
+	 * @param TActiveDropDownList $sender sender object
+	 * @param TCallbackEventParameter $param param object
+	 */
+	public function loadGroupBackupFileSets($sender, $param)
+	{
+		$job = $this->GroupBackupToRestore->SelectedValue;
+		if (empty($job)) {
+			// no job, no fileset
+			$this->GroupBackupFileSet->DataSource = [];
+			$this->GroupBackupFileSet->dataBind();
+			return;
+		}
+		$params = [
+			'job' => $job
+		];
+		$query = '?' . http_build_query($params);
+		$filesets = $this->getModule('api')->get([
+			'filesets',
+			$query
+		]);
+		$fileset_group = ['' => ''];
+		if ($filesets->error === 0) {
+			for ($i = 0; $i < count($filesets->output); $i++) {
+				$fileset_group[$filesets->output[$i]->filesetid] = $filesets->output[$i]->fileset . ' (' . $filesets->output[$i]->createtime . ')';
+			}
+		}
+		asort($fileset_group);
+
+		$this->GroupBackupFileSet->DataSource = $fileset_group;
+		$this->GroupBackupFileSet->dataBind();
 	}
 
 	/**

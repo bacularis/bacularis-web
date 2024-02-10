@@ -558,17 +558,18 @@ $(function() {
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><com:TLabel ForControl="GroupBackupToRestore" Text="<%[ Backup to restore: ]%>" /></div>
 						<div class="w3-col w3-third">
-							<com:TDropDownList
+							<com:TActiveDropDownList
 								ID="GroupBackupToRestore"
 								CssClass="w3-select w3-border"
 								CausesValidation="false"
+								OnCallback="loadGroupBackupFileSets"
 							/>
 						</div>
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><com:TLabel ForControl="GroupBackupFileSet" Text="<%[ FileSet resource: ]%>" /></div>
 						<div class="w3-col w3-third">
-							<com:TDropDownList
+							<com:TActiveDropDownList
 								ID="GroupBackupFileSet"
 								CssClass="w3-select w3-border"
 								CausesValidation="false"
