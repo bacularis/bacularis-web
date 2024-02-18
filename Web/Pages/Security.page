@@ -1759,6 +1759,7 @@ $(function() {
 						</div>
 					</div>
 					<div id="user_access_window_select_access" style="display: none">
+						<h3><%[ Resource access ]%></h3>
 						<div class="w3-row directive_field">
 							<p><com:TActiveRadioButton
 								ID="UserAPIHostResourceAccessAllResources"
@@ -1802,6 +1803,11 @@ $(function() {
 								<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 							</div>
 						</div>
+						<h3><%[ Resource permissions ]%></h3>
+						<p class="italic"><%[ By default, all resources have read-write permissions. ]%></p>
+						<com:Bacularis.Common.Portlets.BaculaResourcePermissions
+							ID="UserAPIHostResourcePermissions"
+						/>
 					</div>
 					<div id="user_access_window_error" class="w3-red" style="display: none"></div>
 				</div>
@@ -1813,6 +1819,7 @@ $(function() {
 						CausesValidation="true"
 						OnCallback="saveUserAPIHostResourceAccess"
 						CssClass="w3-button w3-section w3-green w3-padding"
+						Attributes.onclick="<%=$this->UserAPIHostResourcePermissions->ClientID%>ResourcePermissions.save_user_props();"
 					>
 						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 					</com:TActiveLinkButton>
@@ -4120,6 +4127,7 @@ $(function() {
 				<h2><span id="api_host_access_window_title"></span> - <%[ Set API host access to resources ]%> &nbsp;<i id="get_api_host_window_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i></h2>
 			</header>
 			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<h3><%[ Resource access ]%></h3>
 				<div class="w3-row directive_field">
 					<p><com:TActiveRadioButton
 						ID="APIHostResourceAccessAllResources"
@@ -4164,6 +4172,11 @@ $(function() {
 						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 					</div>
 				</div>
+				<h3><%[ Resource permissions ]%></h3>
+				<p class="italic"><%[ By default, all resources have read-write permissions. ]%></p>
+				<com:Bacularis.Common.Portlets.BaculaResourcePermissions
+					ID="APIHostResourcePermissions"
+				/>
 			</div>
 			<footer class="w3-container w3-center">
 				<button type="button" class="w3-button w3-red" onclick="document.getElementById('api_host_access_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
@@ -4173,6 +4186,7 @@ $(function() {
 					CausesValidation="true"
 					OnCallback="saveAPIHostResourceAccess"
 					CssClass="w3-button w3-section w3-green w3-padding"
+					Attributes.onclick="<%=$this->APIHostResourcePermissions->ClientID%>ResourcePermissions.save_user_props();"
 				>
 					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>
@@ -4585,6 +4599,7 @@ $(function() {
 					</div>
 				</div>
 				<div id="api_host_group_access_window_select_access" style="display: none">
+					<h3><%[ Resource access ]%></h3>
 					<div class="w3-row directive_field">
 						<p><com:TActiveRadioButton
 							ID="APIHostGroupAPIHostResourceAccessAllResources"
@@ -4628,6 +4643,11 @@ $(function() {
 							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div>
 					</div>
+					<h3><%[ Resource permissions ]%></h3>
+					<p class="italic"><%[ By default, all resources have read-write permissions. ]%></p>
+					<com:Bacularis.Common.Portlets.BaculaResourcePermissions
+						ID="APIHostGroupResourcePermissions"
+					/>
 				</div>
 				<div id="api_host_group_access_window_error" class="w3-red" style="display: none"></div>
 			</div>
@@ -4639,6 +4659,7 @@ $(function() {
 					CausesValidation="true"
 					OnCallback="saveAPIHostGroupAPIHostResourceAccess"
 					CssClass="w3-button w3-section w3-green w3-padding"
+					Attributes.onclick="<%=$this->APIHostGroupResourcePermissions->ClientID%>ResourcePermissions.save_user_props();"
 				>
 					<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>

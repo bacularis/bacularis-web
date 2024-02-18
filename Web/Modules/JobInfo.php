@@ -61,7 +61,8 @@ class JobInfo extends WebModule
 		'estimate',
 		'run',
 		'delete',
-		'cancel'
+		'cancel',
+		'reload'
 	];
 
 	public const DEFAULT_MAX_JOBS = 10000;

@@ -2292,6 +2292,11 @@ class Security extends BaculumWebPage
 			'user_access_window_error'
 		);
 		$this->setUserAPIHostConsole($api_host);
+		$this->setAPIHostResourcePermissions(
+			$this->UserAPIHostResourcePermissions,
+			$api_host,
+			'user_access_window_error'
+		);
 	}
 
 	/**
@@ -2391,6 +2396,11 @@ class Security extends BaculumWebPage
 				$this->setUserAPIHostConsole($api_host);
 			}
 		}
+		$this->saveAPIHostResourcePermissions(
+			$this->UserAPIHostResourcePermissions,
+			$api_host,
+			'user_access_window_error'
+		);
 	}
 
 	/**
@@ -2408,6 +2418,11 @@ class Security extends BaculumWebPage
 			'api_host_access_window_error'
 		);
 		$this->setAPIHostConsole($api_host);
+		$this->setAPIHostResourcePermissions(
+			$this->APIHostResourcePermissions,
+			$api_host,
+			'api_host_access_window_error'
+		);
 	}
 
 	/**
@@ -2463,6 +2478,11 @@ class Security extends BaculumWebPage
 				}
 			}
 		}
+		$this->saveAPIHostResourcePermissions(
+			$this->APIHostResourcePermissions,
+			$api_host,
+			'api_host_access_window_error'
+		);
 	}
 
 	/**
@@ -2522,6 +2542,9 @@ class Security extends BaculumWebPage
 			$jobs = array_shift($res);
 			$control->DataSource = array_combine($jobs, $jobs);
 			$control->dataBind();
+			if ($this->isAPIHostConsole($api_host)) {
+				$control->setSelectedValues($jobs);
+			}
 			$cb->hide($error_el_id);
 		} else {
 			$emsg = 'Error while loading API host resources. Please check connection with this API host. ErrorCode: %d, ErrorMsg: %s';
@@ -2529,6 +2552,139 @@ class Security extends BaculumWebPage
 			$cb->update(
 				$error_el_id,
 				$emsg
+			);
+			$cb->show($error_el_id);
+		}
+	}
+
+	/**
+	 * Set API host resource permissions control.
+	 *
+	 * @param object $control control to set permissions
+	 * @param string $api_host API host name
+	 * @param string $error_el_id error element identifier
+	 */
+	private function setAPIHostResourcePermissions($control, $api_host, $error_el_id)
+	{
+		$state = false;
+		$cb = $this->getCallbackClient();
+		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
+		if (count($host_config) == 0) {
+			$cb->update(
+				$error_el_id,
+				"API host $api_host does not exist"
+			);
+			$cb->show($error_el_id);
+			return $state;
+		}
+		$result = null;
+		if ($host_config['auth_type'] === AuthBasic::NAME) {
+			$username = $host_config['login'];
+			$result = $this->getModule('api')->get([
+				'basic',
+				'users',
+				$username
+			]);
+			if ($result->error === 0) {
+				$state = true;
+			} else {
+				$cb->update(
+					$error_el_id,
+					$result->output
+				);
+				$cb->show($error_el_id);
+				return $state;
+			}
+		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
+			$client_id = $host_config['client_id'];
+			$result = $this->getModule('api')->get([
+				'oauth2',
+				'clients',
+				$client_id
+			]);
+			if ($result->error === 0) {
+				$state = true;
+			} else {
+				$cb->update(
+					$error_el_id,
+					$result->output
+				);
+				$cb->show($error_el_id);
+				return $state;
+			}
+		}
+		if ($state) {
+			$misc = $this->getModule('misc');
+			$items = $misc->objectToArray($result->output);
+			$items = $misc->prepareResourcePermissionsConfig($items);
+			$cb->callClientFunction(
+				$control->ClientID . 'ResourcePermissions.set_user_props',
+				[$items]
+			);
+		}
+	}
+
+	/**
+	 * Save API host resource permissions.
+	 *
+	 * @param object $control control to set permissions
+	 * @param string $api_host API host name
+	 * @param string $error_el_id error element identifier
+	 */
+	private function saveAPIHostResourcePermissions($control, $api_host, $error_el_id)
+	{
+		$cb = $this->getCallbackClient();
+		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
+		if (count($host_config) == 0) {
+			$cb->update(
+				$error_el_id,
+				"API host $api_host does not exist"
+			);
+			$cb->show($error_el_id);
+			return;
+		}
+		$result = null;
+		if ($host_config['auth_type'] === AuthBasic::NAME) {
+			$username = $host_config['login'];
+			$result = $this->getModule('api')->get([
+				'basic',
+				'users',
+				$username
+			]);
+			if ($result->error === 0) {
+				$config = [
+					...(array) $result->output,
+					...$control->getPermissions()
+				];
+				$result = $this->getModule('api')->set([
+					'basic',
+					'users',
+					$username
+				], $config);
+			}
+		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
+			$client_id = $host_config['client_id'];
+			$result = $this->getModule('api')->get([
+				'oauth2',
+				'clients',
+				$client_id
+			]);
+			if ($result->error === 0) {
+				$config = [
+					...(array) $result->output,
+					...$control->getPermissions()
+				];
+				$result = $this->getModule('api')->set([
+					'oauth2',
+					'clients',
+					$client_id
+				], $config);
+			}
+		}
+		if (is_object($result) && $result->error !== 0) {
+			$cb->update(
+				$error_el_id,
+				$result->output
 			);
 			$cb->show($error_el_id);
 		}
@@ -3011,6 +3167,11 @@ class Security extends BaculumWebPage
 			'api_host_group_access_window_error'
 		);
 		$this->setAPIHostGroupAPIHostConsole($api_host);
+		$this->setAPIHostResourcePermissions(
+			$this->APIHostGroupResourcePermissions,
+			$api_host,
+			'api_host_group_access_window_error'
+		);
 	}
 
 	/**
@@ -3110,5 +3271,10 @@ class Security extends BaculumWebPage
 				$this->setAPIHostGroupAPIHostConsole($api_host);
 			}
 		}
+		$this->saveAPIHostResourcePermissions(
+			$this->APIHostGroupResourcePermissions,
+			$api_host,
+			'api_host_group_access_window_error'
+		);
 	}
 }

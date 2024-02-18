@@ -5280,3 +5280,51 @@ msgstr "All pools"
 
 msgid "Default API host groups for imported users:"
 msgstr "Default API host groups for imported users:"
+
+msgid "Director resource permissions"
+msgstr "Director resource permissions"
+
+msgid "Storage resource permissions"
+msgstr "Storage resource permissions"
+
+msgid "Client resource permissions"
+msgstr "Client resource permissions"
+
+msgid "Bconsole resource permissions"
+msgstr "Bconsole resource permissions"
+
+msgid "Resource"
+msgstr "Resource"
+
+msgid "Read-Only"
+msgstr "Read-Only"
+
+msgid "Read-Write"
+msgstr "Read-Write"
+
+msgid "read only"
+msgstr "read only"
+
+msgid "read write"
+msgstr "read write"
+
+msgid "Preview"
+msgstr "Preview"
+
+msgid "no access"
+msgstr "no access"
+
+msgid "All read-only"
+msgstr "All read-only"
+
+msgid "All read-write"
+msgstr "All read-write"
+
+msgid "All no access"
+msgstr "All no access"
+
+msgid "Resource permissions"
+msgstr "Resource permissions"
+
+msgid "By default, all resources have read-write permissions."
+msgstr "By default, all resources have read-write permissions."

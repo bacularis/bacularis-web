@@ -90,4 +90,5 @@
 		</div>
 	</com:TActivePanel>
 	<div id="bcd_loader_<%=$this->ClientID%>" class="config_loader"><i class="fas fa-sync-alt fa-spin fa-9x w3-text-green"></i></div>
+	<div id="bcd_error_<%=$this->ClientID%>" class="w3-text-red"></div>
 </div>

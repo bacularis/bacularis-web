@@ -29,11 +29,14 @@
 
 namespace Bacularis\Web\Portlets;
 
+use StdClass;
 use Prado\Prado;
 use Prado\TPropertyValue;
 use Prado\Web\UI\TCommandEventParameter;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Web\Modules\BWebException;
 
 /**
  * Bacula config directives control.
@@ -100,8 +103,13 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$default_params = ['config'];
 		$params = array_merge($default_params, $parameters);
 		$result = $this->Application->getModule('api')->get($params, $host, false);
-		$config = [];
-		if (is_object($result) && $result->error === 0 && (is_object($result->output) || is_array($result->output))) {
+		$config = new StdClass();
+		if ($result->error !== 0) {
+			throw new BWebException(
+				$result->output,
+				$result->error
+			);
+		} elseif ($result->error === 0 && (is_object($result->output) || is_array($result->output))) {
 			$config = $result->output;
 		}
 		return $config;
@@ -130,16 +138,30 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 		$directives = [];
-		$config = new \StdClass();
+		$config = new StdClass();
 		$predefined = false;
 		$load_values = $this->getLoadValues();
 		if ($load_values) {
-			$config = $this->getConfigData($host, [
-				$component_type,
-				$resource_type,
-				$resource_name
-			]);
+			$error = false;
+			try {
+				$config = $this->getConfigData($host, [
+					$component_type,
+					$resource_type,
+					$resource_name
+				]);
+			} catch (BWebException $e) {
+				$error = true;
+				if ($this->getPage()->IsCallBack) {
+					$this->getPage()->getCallbackClient()->update('bcd_error_' . $this->ClientID, $e->getMessage());
+				}
+			}
 			if (empty($component_name) || empty($resource_type) || empty($resource_name)) {
+				$error = true;
+			}
+			if ($error) {
+				if ($this->getPage()->IsCallBack) {
+					$this->getPage()->getCallbackClient()->hide('bcd_loader_' . $this->ClientID);
+				}
 				$this->ConfigDirectives->Display = 'None';
 				return;
 			}
@@ -152,13 +174,20 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$predefined = true;
 		}
 
-		$parent_directives = new \StdClass();
+		$parent_directives = new StdClass();
 		if ($resource_type === 'Job' && isset($config->JobDefs)) {
-			$parent_directives = $this->getConfigData($host, [
-				$component_type,
-				'JobDefs',
-				$config->JobDefs
-			]);
+			try {
+				$parent_directives = $this->getConfigData($host, [
+					$component_type,
+					'JobDefs',
+					$config->JobDefs
+				]);
+			} catch (BWebException $e) {
+				if (!$this->getPage()->IsCallback) {
+					die($e->getMessage());
+				}
+				return;
+			}
 		}
 		$data_desc = $this->Application->getModule('data_desc');
 		$resource_desc = $data_desc->getDescription($component_type, $resource_type);
@@ -250,7 +279,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				array_push($directives, $directive);
 			}
 		}
-		$config = $this->getConfigData($host, [$component_type]);
+		try {
+			$config = $this->getConfigData($host, [$component_type]);
+		} catch (BWebException $e) {
+			if (!$this->getPage()->IsCallback) {
+				die($e->getMessage());
+			}
+			return;
+		}
 		for ($i = 0; $i < count($config); $i++) {
 			$resource_type = $this->getConfigResourceType($config[$i]);
 			$resource_name = property_exists($config[$i]->{$resource_type}, 'Name') ? $config[$i]->{$resource_type}->Name : '';
@@ -476,6 +512,13 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->onSave(null);
 	}
 
+	public function resetErrorFields()
+	{
+		$this->SaveDirectiveOk->Display = 'None';
+		$this->SaveDirectiveError->Display = 'None';
+		$this->SaveDirectiveErrMsg->Text = '';
+	}
+
 	public function setShowAllDirectives($show_all_directives)
 	{
 		$this->DirectiveSetting->AllDirectives->Checked = $show_all_directives;
@@ -544,7 +587,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$host = null;
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
-		$config = $this->getConfigData($host, [$component_type]);
+		try {
+			$config = $this->getConfigData($host, [$component_type]);
+		} catch (BWebException $e) {
+			if (!$this->getPage()->IsCallback) {
+				die($e->getMessage());
+			}
+			return;
+		}
 		$deps = $this->getModule('data_deps')->checkDependencies(
 			$component_type,
 			$resource_type,
@@ -712,7 +762,14 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			return true;
 		}
 
-		$config = $this->getConfigData($host, [$component_type]);
+		try {
+			$config = $this->getConfigData($host, [$component_type]);
+		} catch (BWebException $e) {
+			if (!$this->getPage()->IsCallback) {
+				die($e->getMessage());
+			}
+			return;
+		}
 		$deps = $this->getModule('data_deps')->checkDependencies(
 			$component_type,
 			$resource_type,

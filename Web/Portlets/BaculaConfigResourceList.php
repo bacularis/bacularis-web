@@ -65,10 +65,11 @@ class BaculaConfigResourceList extends Portlets
 		$this->ResourceListColumnsRepeater->dataBind();
 	}
 
-	public function showError($show)
+	public function showError($show, $errmsg = '')
 	{
 		$cbc = $this->getPage()->getCallbackClient();
 		if ($show) {
+			$cbc->update($this->ClientID . '_error_msg', $errmsg);
 			$cbc->hide($this->ClientID . '_container');
 			$cbc->show($this->ClientID . '_error_msg');
 		} else {
@@ -109,6 +110,8 @@ class BaculaConfigResourceList extends Portlets
 				'oBaculaConfigResourceList' . $this->ClientID . '.init',
 				[$directives]
 			);
+		} else {
+			$this->showError(true, $config->output);
 		}
 		$this->ResourceConfig->unloadDirectives();
 	}
@@ -145,6 +148,7 @@ class BaculaConfigResourceList extends Portlets
 		$this->ResourceConfig->setComponentType($component_type);
 		$this->ResourceConfig->setComponentName($component_name);
 		$this->ResourceConfig->setResourceType($resource_type);
+		$this->ResourceConfig->resetErrorFields();
 		$this->ResourceConfig->IsDirectiveCreated = false;
 		$this->ResourceConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 	}
