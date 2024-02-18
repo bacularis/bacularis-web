@@ -1,10 +1,13 @@
 
-This is a new feature release. We introduced two significant changes:
-the API host groups and easier to configure Bacula resource access.
-We hope that these two new functions will much improve the user and
-resource management in Bacularis.
+This is a new feature and bug fix release. We added capability to set read-only,
+read-write and no access permissions per Bacula configuration resource for
+users, hosts and host groups. It makes Bacularis granular permission control
+even more powerful and attractive. Besides of that we added a pool filter to
+the volume list and fixed a couple of bugs reported by Community.
 
 Changes:
- - New API host groups feature
- - New much easier way of setting access to selected Bacula resources
-   per API host, per API host group and per user
+ - Add Bacula resource permission settings
+ - In restore wizard list only filesets used by selected job
+ - Update translation files
+ - Add pool filter to volume list
+ - Fix last successful/failed job column for copy jobs on job list page
