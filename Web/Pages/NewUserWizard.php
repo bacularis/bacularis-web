@@ -794,8 +794,7 @@ class NewUserWizard extends BaculumWebPage
 			if ($host_config[$api_host]['auth_type'] === 'basic') {
 				$username = $host_config[$api_host]['login'];
 				$config = [
-					'username' => $username,
-					'password' => ''
+					'username' => $username
 				];
 				if (!empty($console) && !empty($director)) {
 					$config['console'] = $console;
