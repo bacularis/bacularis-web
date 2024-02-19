@@ -2652,10 +2652,9 @@ class Security extends BaculumWebPage
 				$username
 			]);
 			if ($result->error === 0) {
-				$config = [
-					...(array) $result->output,
-					...$control->getPermissions()
-				];
+				$perms = $control->getPermissions();
+				$user = (array) $result->output;
+				$config = array_merge($user, $perms);
 				$result = $this->getModule('api')->set([
 					'basic',
 					'users',
@@ -2670,10 +2669,9 @@ class Security extends BaculumWebPage
 				$client_id
 			]);
 			if ($result->error === 0) {
-				$config = [
-					...(array) $result->output,
-					...$control->getPermissions()
-				];
+				$perms = $control->getPermissions();
+				$user = (array) $result->output;
+				$config = array_merge($user, $perms);
 				$result = $this->getModule('api')->set([
 					'oauth2',
 					'clients',
