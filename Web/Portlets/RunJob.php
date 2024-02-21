@@ -132,7 +132,7 @@ class RunJob extends Portlets
 				return;
 			}
 		}
-		$this->Level->dataSource = $this->getModule('misc')->getJobLevels();
+		$this->Level->DataSource = $this->getModule('misc')->getJobLevels();
 		$is_verify_option = false;
 		$is_accurate = true;
 		if (is_object($jobdata) && property_exists($jobdata, 'level')) {
@@ -151,7 +151,7 @@ class RunJob extends Portlets
 		foreach ($this->verify_options as $value => $text) {
 			$verify_values[$value] = Prado::localize($text);
 		}
-		$this->JobToVerifyOptions->dataSource = $verify_values;
+		$this->JobToVerifyOptions->DataSource = $verify_values;
 		$this->JobToVerifyOptions->dataBind();
 
 		$jobTasks = $this->getModule('api')->get(['jobs', 'resnames'], null, true, self::USE_CACHE)->output;
@@ -159,8 +159,9 @@ class RunJob extends Portlets
 		foreach ($jobTasks as $director => $tasks) {
 			$jobsAllDirs = array_merge($jobsAllDirs, $tasks);
 		}
+		natcasesort($jobsAllDirs);
 
-		$this->JobToVerifyJobName->dataSource = array_combine($jobsAllDirs, $jobsAllDirs);
+		$this->JobToVerifyJobName->DataSource = array_combine($jobsAllDirs, $jobsAllDirs);
 		if (key_exists('job', $job_info) && key_exists('jobtoverify', $job_info['job'])) {
 			$this->JobToVerifyJobName->SelectedValue = $job_info['job']['jobtoverify'];
 		}
@@ -174,7 +175,8 @@ class RunJob extends Portlets
 			}
 			$client_list[$client->clientid] = $client->name;
 		}
-		$this->Client->dataSource = $client_list;
+		natcasesort($client_list);
+		$this->Client->DataSource = $client_list;
 		if (is_object($jobdata)) {
 			$this->Client->SelectedValue = $jobdata->clientid;
 		}
@@ -201,7 +203,8 @@ class RunJob extends Portlets
 				}
 			}
 		}
-		$this->FileSet->dataSource = array_combine($fileset_list, $fileset_list);
+		natcasesort($fileset_list);
+		$this->FileSet->DataSource = array_combine($fileset_list, $fileset_list);
 		$this->FileSet->SelectedValue = $selected_fileset;
 		$this->FileSet->dataBind();
 
@@ -213,7 +216,8 @@ class RunJob extends Portlets
 			}
 			$pool_list[$pool->poolid] = $pool->name;
 		}
-		$this->Pool->dataSource = $pool_list;
+		natcasesort($pool_list);
+		$this->Pool->DataSource = $pool_list;
 		if (is_object($jobdata)) {
 			$this->Pool->SelectedValue = $jobdata->poolid;
 		}
@@ -236,7 +240,8 @@ class RunJob extends Portlets
 			}
 			$storage_list[$storage->storageid] = $storage->name;
 		}
-		$this->Storage->dataSource = $storage_list;
+		natcasesort($storage_list);
+		$this->Storage->DataSource = $storage_list;
 		if (is_object($jobdata) && property_exists($jobdata, 'storageid')) {
 			$this->Storage->SelectedValue = $jobdata->storageid;
 		}
