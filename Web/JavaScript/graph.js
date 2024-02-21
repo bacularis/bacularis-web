@@ -289,12 +289,16 @@ var GraphClass = jQuery.klass({
 		return job_objs;
 	},
 	set_job_list: function() {
-		var job_list = {};
+		const job_list = {};
 		for (var i = 0; i < this.jobs_all.length; i++) {
 			job_list[this.jobs_all[i].job.name] = 1;
 		}
+		const jobs = Object.keys(job_list);
+		jobs.sort(function (a, b) {
+			return a.toLowerCase().localeCompare(b.toLowerCase());
+		});
 		var job_filter = document.getElementById(this.ids.job_filter);
-		for (var job in job_list) {
+		for (const job of jobs) {
 			var opt = document.createElement('OPTION');
 			var label = document.createTextNode(job);
 			opt.value = job;

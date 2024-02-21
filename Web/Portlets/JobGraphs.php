@@ -54,12 +54,17 @@ class JobGraphs extends Portlets
 	public function setClients()
 	{
 		$result = $this->getModule('api')->get(['clients']);
-		$clients = ['@' => Prado::localize('select client')];
-		foreach ($result->output as $key => $client) {
-			$clients[$client->clientid] = $client->name;
+		if ($result->error === 0) {
+			uasort($result->output, function ($a, $b) {
+				return strnatcasecmp($a->name, $b->name);
+			});
+			$clients = ['@' => Prado::localize('select client')];
+			foreach ($result->output as $key => $client) {
+				$clients[$client->clientid] = $client->name;
+			}
+			$this->Clients->dataSource = $clients;
+			$this->Clients->dataBind();
 		}
-		$this->Clients->dataSource = $clients;
-		$this->Clients->dataBind();
 	}
 
 	/**
