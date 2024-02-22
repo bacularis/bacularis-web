@@ -119,7 +119,7 @@
 						<i id="status_running_job_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
 				</a>
-				<a href="javascript:void(0)" onclick="W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');"<%=!$this->allow_report_summary ? ' style="display: none"' : ''%>>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_log');"<%=!$this->allow_report_summary ? ' style="display: none"' : ''%>>
 					<div id="job_report_summary_subtab_text" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
 						<%[ Job summary ]%>
 						<i id="job_report_summary_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
@@ -242,7 +242,7 @@ var oRunningJobStatus = {
 			$('#' + this.ids.refresh_interval).parent().hide();
 			var graphical_container = document.getElementById(this.ids.graphical_container);
 			graphical_container.style.display = 'none';
-			W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');
+			W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_log');
 		}
 	},
 	add_running_job: function(job, full_refresh) {
@@ -594,7 +594,7 @@ $(function() {
 				<prop:TrueTemplate>
 					<script>
 						$(function() {
-							W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_report');
+							W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_log');
 						});
 					</script>
 				</prop:TrueTemplate>
