@@ -190,13 +190,13 @@
 					<div class="w3-col w3-half" id="estimate_job_bytes">-</div>
 				</div>
 			</div>
-			<div id="estimate_job_raw_output" class="subtab_item w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+			<div id="estimate_job_raw_output" class="subtab_item w3-panel w3-card" style="display: none; max-height: 200px; overflow-x: auto;">
 				<div class="w3-code">
 					<pre><com:TActiveLabel ID="RunJobLog" /></pre>
 				</div>
 			</div>
 		</div>
-		<div id="run_job_raw_output_container" class="w3-panel w3-card w3-light-grey" style="display: none; max-height: 200px; overflow-x: auto;">
+		<div id="run_job_raw_output_container" class="w3-panel w3-card" style="display: none; max-height: 200px; overflow-x: auto;">
 			<div class="w3-code">
 				<pre><span id="run_job_raw_output"></span></pre>
 			</div>
