@@ -5264,3 +5264,6 @@ msgstr "Resource permissions"
 
 msgid "By default, all resources have read-write permissions."
 msgstr "By default, all resources have read-write permissions."
+
+msgid "Define paths to the verify job FileSet"
+msgstr "Define paths to the verify job FileSet"
