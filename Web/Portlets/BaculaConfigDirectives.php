@@ -295,6 +295,13 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			}
 			array_push($this->resource_names[$resource_type], $resource_name);
 		}
+
+		// resources ready, so sort them
+		$restypes = array_keys($this->resource_names);
+		for ($i = 0; $i < count($restypes); $i++) {
+			sort($this->resource_names[$restypes[$i]], SORT_NATURAL | SORT_FLAG_CASE);
+		}
+
 		$this->setResourceNames($this->resource_names);
 		$this->RepeaterDirectives->DataSource = $directives;
 		$this->RepeaterDirectives->dataBind();

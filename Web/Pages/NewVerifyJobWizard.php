@@ -95,7 +95,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($jobdefs->output); $i++) {
 				$jobdefs_list[] = $jobdefs->output[$i]->JobDefs->Name;
 			}
-			asort($jobdefs_list);
+			sort($jobdefs_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->JobDefs->setData($jobdefs_list);
 			$this->JobDefs->createDirective();
 		}
@@ -191,7 +191,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($clients->output); $i++) {
 				$client_list[] = $clients->output[$i]->Client->Name;
 			}
-			sort($client_list);
+			sort($client_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$jobdefs = $this->getJobDefs();
 			$client = $this->getClient();
 			$is_in_jobdefs = key_exists('Client', $jobdefs);
@@ -226,7 +226,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($clients->output); $i++) {
 				$client_list[] = $clients->output[$i]->Client->Name;
 			}
-			sort($client_list);
+			sort($client_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$jobdefs = $this->getJobDefs();
 			$client = $this->getClient();
 			$is_in_jobdefs = key_exists('Client', $jobdefs);
@@ -257,7 +257,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($storages); $i++) {
 			$storage_list[] = $storages[$i]->Storage->Name;
 		}
-		asort($storage_list);
+		sort($storage_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Storage->setData($storage_list);
 		$jobdefs = $this->getJobDefs();
 		if (is_null($this->Storage->getDirectiveValue())) {
@@ -293,7 +293,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 					$job_list[] = $jobs->output[$i]->Job->Name;
 				}
 			}
-			sort($job_list);
+			sort($job_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->VerifyJob->setData($job_list);
 			$jobdefs = $this->getJobDefs();
 			if (is_null($this->VerifyJob->getDirectiveValue())) {
@@ -421,7 +421,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($messages->output); $i++) {
 				$message_list[] = $messages->output[$i]->Messages->Name;
 			}
-			sort($message_list);
+			sort($message_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->Messages->setData($message_list);
 			$jobdefs = $this->getJobDefs();
 			if (is_null($this->Messages->getDirectiveValue())) {
@@ -455,7 +455,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($schedules->output); $i++) {
 				$schedule_list[] = $schedules->output[$i]->Schedule->Name;
 			}
-			asort($schedule_list);
+			sort($schedule_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->Schedule->setData($schedule_list);
 			$jobdefs = $this->getJobDefs();
 			if (is_null($this->Schedule->getDirectiveValue())) {
@@ -478,7 +478,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($pools); $i++) {
 			$pool_list[] = $pools[$i]->Pool->Name;
 		}
-		asort($pool_list);
+		sort($pool_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Pool->setData($pool_list);
 		$jobdefs = $this->getJobDefs();
 		if (is_null($this->Pool->getDirectiveValue())) {

@@ -97,7 +97,7 @@ class NewResource extends BaculumWebPage
 		if ($this->Request->contains('component_type') && $this->Request->contains('resource_type')) {
 			$component_type = $this->Request['component_type'];
 			$resource_type = $this->Request['resource_type'];
-			$resources = ['' => ''];
+			$resources_start = ['' => ''];
 			$params = [
 				'config',
 				$component_type,
@@ -109,7 +109,9 @@ class NewResource extends BaculumWebPage
 					$r = $res->output[$i]->{$resource_type}->Name;
 					$resources[$r] = $r;
 				}
+				natcasesort($resources);
 			}
+			$resources = array_merge($resources_start, $resources);
 			$this->ResourcesToCopy->DataSource = $resources;
 			$this->ResourcesToCopy->dataBind();
 		}

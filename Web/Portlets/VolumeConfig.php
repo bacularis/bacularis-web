@@ -104,10 +104,13 @@ class VolumeConfig extends Portlets
 		$this->Recycle->Checked = ($volume->recycle === 1);
 		$this->Enabled->Checked = ($volume->enabled === 1);
 		$this->InChanger->Checked = ($volume->inchanger === 1);
-		$pools = $this->Application->getModule('api')->get(['pools'])->output;
+		$pools = $this->Application->getModule('api')->get(['pools']);
 		$pool_list = [];
-		foreach ($pools as $pool) {
-			$pool_list[$pool->poolid] = $pool->name;
+		if ($pools->error === 0) {
+			foreach ($pools->output as $pool) {
+				$pool_list[$pool->poolid] = $pool->name;
+			}
+			natcasesort($pool_list);
 		}
 		$this->Pool->dataSource = $pool_list;
 		$this->Pool->SelectedValue = $volume->poolid;

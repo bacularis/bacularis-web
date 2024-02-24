@@ -52,6 +52,7 @@ class LabelVolume extends Portlets
 			foreach ($storages->output as $storage) {
 				$storage_list[$storage->storageid] = $storage->name;
 			}
+			natcasesort($storage_list);
 		}
 		$this->StorageLabel->DataSource = $storage_list;
 		if ($this->Storage) {
@@ -68,6 +69,7 @@ class LabelVolume extends Portlets
 			foreach ($pools->output as $pool) {
 				$pool_list[$pool->poolid] = $pool->name;
 			}
+			natcasesort($pool_list);
 		}
 		$this->PoolLabel->dataSource = $pool_list;
 		if ($this->Pool) {

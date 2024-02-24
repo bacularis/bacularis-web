@@ -51,6 +51,7 @@ class UpdateSlots extends Portlets
 			foreach ($storages->output as $storage) {
 				$storage_list[$storage->storageid] = $storage->name;
 			}
+			natcasesort($storage_list);
 		}
 		$this->StorageUpdate->DataSource = $storage_list;
 		if ($this->Storage) {

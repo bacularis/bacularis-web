@@ -166,9 +166,9 @@ class NewBackupJobWizard extends BaculumWebPage
 		$client_list = [];
 		$clients = $this->getModule('api')->get(['clients'])->output;
 		for ($i = 0; $i < count($clients); $i++) {
-			$client_list[$clients[$i]->name] = $clients[$i]->name;
+			$client_list[] = $clients[$i]->name;
 		}
-		asort($client_list);
+		sort($client_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Client->setData($client_list);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Client', $jobdefs) && is_null($this->Client->getDirectiveValue())) {
@@ -197,7 +197,7 @@ class NewBackupJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($filesets); $i++) {
 			$fileset_list[] = $filesets[$i]->Fileset->Name;
 		}
-		asort($fileset_list);
+		sort($fileset_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Fileset->setData($fileset_list);
 		$this->Fileset->createDirective();
 	}
@@ -261,7 +261,7 @@ class NewBackupJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($storages); $i++) {
 			$storage_list[] = $storages[$i]->Storage->Name;
 		}
-		asort($storage_list);
+		sort($storage_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Storage->setData($storage_list);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Storage', $jobdefs) && is_array($jobdefs['Storage']) && count($jobdefs['Storage']) == 1 && is_null($this->Storage->getDirectiveValue())) {
@@ -318,7 +318,7 @@ class NewBackupJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($pools); $i++) {
 			$pool_list[] = $pools[$i]->Pool->Name;
 		}
-		asort($pool_list);
+		sort($pool_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Pool->setData($pool_list);
 		$this->Pool->createDirective();
 		return $pool_list;
@@ -395,7 +395,7 @@ class NewBackupJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($messages); $i++) {
 			$message_list[] = $messages[$i]->Messages->Name;
 		}
-		asort($message_list);
+		sort($message_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Messages->setData($message_list);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists('Messages', $jobdefs)) {
@@ -425,7 +425,7 @@ class NewBackupJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($schedules); $i++) {
 			$schedule_list[] = $schedules[$i]->Schedule->Name;
 		}
-		asort($schedule_list);
+		sort($schedule_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->Schedule->setData($schedule_list);
 		$this->Schedule->createDirective();
 	}
@@ -483,7 +483,7 @@ class NewBackupJobWizard extends BaculumWebPage
 	 */
 	public function wizardStop($sender, $param)
 	{
-		$this->goToDefaultPage();
+		$this->goToPage('JobList');
 	}
 
 	/**

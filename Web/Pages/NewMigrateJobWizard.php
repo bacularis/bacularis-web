@@ -144,7 +144,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($jobdefs->output); $i++) {
 				$jobdefs_list[] = $jobdefs->output[$i]->JobDefs->Name;
 			}
-			asort($jobdefs_list);
+			sort($jobdefs_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->JobDefs->setData($jobdefs_list);
 			$this->JobDefs->createDirective();
 		}
@@ -205,7 +205,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 		for ($i = 0; $i < count($pools); $i++) {
 			$pool_list[] = $pools[$i]->Pool->Name;
 		}
-		asort($pool_list);
+		sort($pool_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$control->setData($pool_list);
 		$jobdefs = $this->getJobDefs();
 		if (key_exists($name, $jobdefs) && is_null($control->getDirectiveValue())) {
@@ -379,7 +379,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($storages->output); $i++) {
 				$storage_list[] = $storages->output[$i]->Storage->Name;
 			}
-			sort($storage_list);
+			sort($storage_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$control->setData($storage_list);
 			$jobdefs = $this->getJobDefs();
 			if (key_exists('Storage', $jobdefs) && is_array($jobdefs['Storage']) && count($jobdefs['Storage']) == 1 && is_null($control->getDirectiveValue())) {
@@ -462,7 +462,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			}
 		}
 		if (count($job_list) > 0) {
-			sort($job_list);
+			sort($job_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->getCallbackClient()->callClientFunction('show_storage_warning', [
 				$values->storage,
 				$values->pool,
@@ -487,7 +487,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($messages->output); $i++) {
 				$message_list[] = $messages->output[$i]->Messages->Name;
 			}
-			sort($message_list);
+			sort($message_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->Messages->setData($message_list);
 			$jobdefs = $this->getJobDefs();
 			if (key_exists('Messages', $jobdefs)) {
@@ -513,7 +513,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($schedules->output); $i++) {
 				$schedule_list[] = $schedules->output[$i]->Schedule->Name;
 			}
-			asort($schedule_list);
+			sort($schedule_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->Schedule->setData($schedule_list);
 			$jobdefs = $this->getJobDefs();
 			if (key_exists('Schedule', $jobdefs)) {
@@ -558,7 +558,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($clients->output); $i++) {
 				$client_list[] = $clients->output[$i]->Client->Name;
 			}
-			sort($client_list);
+			sort($client_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->Client->setData($client_list);
 			$jobdefs = $this->getJobDefs();
 			if (key_exists('Client', $jobdefs) && is_array($jobdefs['Client']) && is_null($this->Client->getDirectiveValue())) {
@@ -585,7 +585,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 			for ($i = 0; $i < count($filesets->output); $i++) {
 				$fileset_list[] = $filesets->output[$i]->Fileset->Name;
 			}
-			sort($fileset_list);
+			sort($fileset_list, SORT_NATURAL | SORT_FLAG_CASE);
 			$this->FileSet->setData($fileset_list);
 			$jobdefs = $this->getJobDefs();
 			if (key_exists('Fileset', $jobdefs) && is_array($jobdefs['Fileset']) && is_null($this->Fileset->getDirectiveValue())) {
@@ -766,7 +766,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 	 */
 	public function wizardStop($sender, $param)
 	{
-		$this->goToDefaultPage();
+		$this->goToPage('JobList');
 	}
 
 	/**

@@ -162,7 +162,7 @@ class BaculaConfigResourceList extends Portlets
 	{
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
-		$resources = ['' => ''];
+		$resources_start = ['' => ''];
 		$params = [
 			'config',
 			$component_type,
@@ -174,7 +174,9 @@ class BaculaConfigResourceList extends Portlets
 				$r = $res->output[$i]->{$resource_type}->Name;
 				$resources[$r] = $r;
 			}
+			natcasesort($resources);
 		}
+		$resources = array_merge($resources_start, $resources);
 		$this->ResourcesToCopy->DataSource = $resources;
 		$this->ResourcesToCopy->dataBind();
 	}

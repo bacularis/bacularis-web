@@ -250,6 +250,7 @@ class Deployment extends BaculumWebPage
 		$config = $this->getModule('osprofile_config')->getConfig();
 		$profiles = array_values($config);
 		$names = array_keys($config);
+		sort($names, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->getCallbackClient()->callClientFunction('oOSProfiles.load_osprofile_list_cb', [
 			$profiles
 		]);

@@ -143,6 +143,7 @@ class StatusSchedule extends Portlets
 			for ($i = 0; $i < count($result->output); $i++) {
 				$clients[] = $result->output[$i]->name;
 			}
+			sort($clients, SORT_NATURAL | SORT_FLAG_CASE);
 		}
 		return $clients;
 	}
@@ -153,6 +154,7 @@ class StatusSchedule extends Portlets
 		$result = $this->getModule('api')->get(['schedules', 'resnames']);
 		if ($result->error === 0) {
 			$schedules = $result->output;
+			sort($schedules, SORT_NATURAL | SORT_FLAG_CASE);
 			array_unshift($schedules, '');
 		}
 		return $schedules;
