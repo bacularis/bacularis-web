@@ -42,6 +42,7 @@ class VolumeView extends BaculumWebPage
 
 	public const MEDIAID = 'MediaId';
 	public const VOLUME_NAME = 'VolumeName';
+	private const VOLSTATUS_ERROR = ['Error'];
 
 	public $jobs_on_volume;
 
@@ -164,6 +165,9 @@ class VolumeView extends BaculumWebPage
 		$this->OFirstWritten->Text = $volume->firstwritten ?: '-';
 		$this->OLastWritten->Text = $volume->lastwritten ?: '-';
 		$this->OVolStatus->Text = $volume->volstatus;
+		if (in_array($volume->volstatus, self::VOLSTATUS_ERROR)) {
+			$this->OVolStatus->CssClass = 'w3-text-red';
+		}
 		$this->OWhenExpire->Text = $volume->whenexpire;
 		$this->OVolErrors->Text = $volume->volerrors;
 		$this->OVolMounts->Text = $volume->volmounts;
