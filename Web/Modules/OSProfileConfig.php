@@ -282,6 +282,12 @@ class OSProfileConfig extends ConfigFileModule
 				'jsontools_bsdjson_path' => '/usr/lib/bacula/bsdjson',
 				'jsontools_bfdjson_path' => '/usr/lib/bacula/bfdjson',
 				'jsontools_bbconsjson_path' => '/usr/lib/bacula/bbconsjson',
+			],
+			'Ubuntu 20.04 Focal' => [
+				'jsontools_bdirjson_path' => '/usr/lib/bacula/bdirjson',
+				'jsontools_bsdjson_path' => '/usr/lib/bacula/bsdjson',
+				'jsontools_bfdjson_path' => '/usr/lib/bacula/bfdjson',
+				'jsontools_bbconsjson_path' => '/usr/lib/bacula/bbconsjson',
 			]
 		]
 	];
