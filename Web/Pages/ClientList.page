@@ -6,37 +6,40 @@
 			<b><i class="fa fa-desktop"></i> <%[ Client list ]%></b>
 		</h5>
 	</header>
-	<div class="w3-margin-left w3-margin-bottom">
-		<button type="button" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Client'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add client ]%></button>
-	</div>
 	<div class="w3-container">
-		<table id="client_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
-			<thead>
-				<tr>
-					<th></th>
-					<th>ClientId</th>
-					<th><%[ Name ]%></th>
-					<th><%[ Uname ]%></th>
-					<th><%[ AutoPrune ]%></th>
-					<th><%[ Job retention ]%></th>
-					<th><%[ File retention ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</thead>
-			<tbody id="client_list_body"></tbody>
-			<tfoot>
-				<tr>
-					<th></th>
-					<th>ClientId</th>
-					<th><%[ Name ]%></th>
-					<th><%[ Uname ]%></th>
-					<th><%[ AutoPrune ]%></th>
-					<th><%[ Job retention ]%></th>
-					<th><%[ File retention ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</tfoot>
-		</table>
+		<div>
+			<button type="button" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Client'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add client ]%></button>
+		</div>
+		<com:Bacularis.Web.Portlets.TabViews ID="ClientViews" />
+		<div class="w3-container">
+			<table id="client_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th>ClientId</th>
+						<th><%[ Name ]%></th>
+						<th><%[ Uname ]%></th>
+						<th><%[ AutoPrune ]%></th>
+						<th><%[ Job retention ]%></th>
+						<th><%[ File retention ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</thead>
+				<tbody id="client_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th>ClientId</th>
+						<th><%[ Name ]%></th>
+						<th><%[ Uname ]%></th>
+						<th><%[ AutoPrune ]%></th>
+						<th><%[ Job retention ]%></th>
+						<th><%[ File retention ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 	</div>
 <script type="text/javascript">
 var oClientList = {
@@ -47,12 +50,18 @@ var oClientList = {
 	opts: {
 		uname_len: 40
 	},
-	init: function() {
+	init: function(data) {
+		this.data = data;
 		this.set_table();
 	},
+	refresh: function(data) {
+		const page = this.table.page();
+		this.table.clear().rows.add(data).draw();
+		this.table.page(page).draw(false);
+	},
 	set_table: function() {
-		var table = $('#' + this.ids.client_list).DataTable({
-			data: oData.clients,
+		this.table = $('#' + this.ids.client_list).DataTable({
+			data: this.data,
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
@@ -141,7 +150,7 @@ var oClientList = {
 				targets: [ 1, 4, 5, 6, 7 ]
 			}],
 			order: [2, 'asc'],
-			initComplete: function () {
+			drawCallback: function () {
 				this.api().columns([2, 3, 4, 5, 6]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
@@ -189,9 +198,22 @@ var oClientList = {
 		});
 	}
 };
+function get_client_list_data() {
+	return oData.clients;
+}
+function update_client_list_table(data, init) {
+	if (init) {
+		oClientList.refresh(data);
+	} else {
+		oClientList.init(data);
+	}
+}
+
 MonitorParams = {clients: null};
 $(function() {
-	MonitorCalls.push(function() { oClientList.init(); });
+	MonitorCalls.push(function() {
+		<%=$this->ClientViews->ClientID%>_TabViews.tabs.apply_filters();
+	});
 });
 </script>
 </com:TContent>
