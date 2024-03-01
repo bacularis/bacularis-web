@@ -415,7 +415,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 						$directives[$directive_name] = array_merge($directives[$directive_name], $directive_value[$directive_name]);
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveFileSet') {
 						if (key_exists('Exclude', $directive_value) && count($directive_value['Exclude']) > 0) {
-							$directives['Exclude'] = [$directive_value['Exclude']];
+							if ($data_mode) {
+								$directives['Exclude'] = $directive_value['Exclude'];
+							} else {
+								$directives['Exclude'] = [$directive_value['Exclude']];
+							}
 						}
 						$directives[$directive_name] = $directive_value[$directive_name];
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveSchedule') {
