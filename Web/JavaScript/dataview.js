@@ -270,6 +270,7 @@ class DataViewTabs extends DataViewBase {
 				this.add_resource_value(prop, item[prop]);
 			}
 		});
+		this.prepare_resources();
 		this.prop.update_func(data, init);
 		W3SubTabs.open(this.ids.main, null, this.ids.container);
 	}
@@ -331,6 +332,13 @@ class DataViewTabs extends DataViewBase {
 		if (this.resources[prop].indexOf(value) === -1 && typeof(value) == 'string') {
 			// prepare unique resources
 			this.resources[prop].push(value);
+		}
+	}
+	prepare_resources() {
+		for (const prop in this.resources) {
+			this.resources[prop].sort(function (a, b) {
+				return a.toLowerCase().localeCompare(b.toLowerCase());
+			});
 		}
 	}
 }
@@ -530,7 +538,6 @@ class DataViewForm extends DataViewBase {
 				el.classList.add('w3-select', 'w3-border', 'value');
 				const res = this.prop.dvobj.tabs.resources;
 				if (res.hasOwnProperty(prop)) {
-					res[prop].sort();
 					let val_len = res[prop].length;
 					let option, label, txt, part;
 					const formatter = this.prop.desc.hasOwnProperty(prop) && this.prop.desc[prop].hasOwnProperty('formatter') ? this.prop.desc[prop].formatter : null;
