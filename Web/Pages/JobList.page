@@ -36,6 +36,7 @@
 
 	<!-- Job History List -->
 	<div class="w3-container tab_item" id="job_history">
+		<com:Bacularis.Web.Portlets.TabViews ID="JobViews" />
 		<div class="w3-container">
 			<table id="job_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 				<thead>
@@ -287,8 +288,8 @@ var oJobHistoryList = {
 	},
 	data: [],
 	table: null,
-	init: function() {
-		this.data = oData.jobs;
+	init: function(data) {
+		this.data = data;
 		if (this.table) {
 			update_job_table(this.table, this.data);
 		} else {
@@ -299,6 +300,11 @@ var oJobHistoryList = {
 			this.set_adv_filters(); // adv filter MUST be set before other filters
 			this.set_filters();
 		}
+	},
+	refresh: function(data) {
+		const page = this.table.page();
+		this.table.clear().rows.add(data).draw();
+		this.table.page(page).draw(false);
 	},
 	set_events: function() {
 		document.getElementById(this.ids.job_list).addEventListener('click', function(e) {
@@ -760,11 +766,24 @@ var oJobHistoryList = {
 		}.bind(this));
 		container.appendChild(body);
 		body.style.display = 'block';
-	}
+	},
 };
+function get_job_history_data() {
+	return oData.jobs;
+}
+function update_job_history_table(data, init) {
+	if (init) {
+		oJobHistoryList.refresh(data);
+	} else {
+		oJobHistoryList.init(data);
+	}
+}
+
 MonitorParams = {jobs: null};
 $(function() {
-	MonitorCallsInterval.push(function() { oJobHistoryList.init(); });
+	MonitorCallsInterval.push(() => {
+		<%=$this->JobViews->ClientID%>_TabViews.tabs.apply_filters();
+	});
 });
 
 /**
@@ -1089,7 +1108,7 @@ const oJobList = {
 			ret = tdiff || empty;
 		}
 		return ret;
-	},
+	}
 };
 </script>
 	</div>

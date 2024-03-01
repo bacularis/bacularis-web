@@ -5273,3 +5273,39 @@ msgstr "By default, all resources have read-write permissions."
 
 msgid "Define paths to the verify job FileSet"
 msgstr "Define paths to the verify job FileSet"
+
+msgid "Main view"
+msgstr "Main view"
+
+msgid "Add data view"
+msgstr "Add data view"
+
+msgid "View name"
+msgstr "View name"
+
+msgid "View description"
+msgstr "View description"
+
+msgid "My view 123"
+msgstr "My view 123"
+
+msgid "This is My view 123 description."
+msgstr "This is My view 123 description."
+
+msgid "Between conditions with different properties is used AND operator."
+msgstr "Between conditions with different properties is used AND operator."
+
+msgid "Between conditions with the same property is used OR operator."
+msgstr "Between conditions with the same property is used OR operator."
+
+msgid "Example 1"
+msgstr "Example 1"
+
+msgid "Example 2"
+msgstr "Example 2"
+
+msgid "Example 3"
+msgstr "Example 3"
+
+msgid "Edit data view"
+msgstr "Edit data view"

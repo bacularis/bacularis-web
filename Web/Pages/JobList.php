@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Job list page.
@@ -68,6 +69,33 @@ class JobList extends BaculumWebPage
 			}
 		}
 		$this->jobs = $jobs;
+		$this->setDataViews();
+	}
+
+	private function setDataViews()
+	{
+		$job_view_desc = [
+			'jobid' => ['type' => 'number', 'name' => Prado::localize('JobId')],
+			'name' => ['type' => 'string', 'name' => Prado::localize('Name')],
+			'type' => ['type' => 'string', 'name' => Prado::localize('Type'), 'formatter' => 'JobType.get_type'],
+			'level' => ['type' => 'string', 'name' => Prado::localize('Level'), 'formatter' => 'JobLevel.get_level'],
+			'jobstatus' => ['type' => 'string', 'name' => Prado::localize('Job status'), 'formatter' => 'JobStatus.get_desc'],
+			'client' => ['type' => 'string', 'name' => Prado::localize('Client')],
+			'fileset' => ['type' => 'string', 'name' => Prado::localize('FileSet')],
+			'pool' => ['type' => 'string', 'name' => Prado::localize('Pool')],
+			'schedtime' => ['type' => 'isodatetime', 'name' => Prado::localize('Scheduled time')],
+			'starttime' => ['type' => 'isodatetime', 'name' => Prado::localize('Start time')],
+			'endtime' => ['type' => 'isodatetime', 'name' => Prado::localize('End time')],
+			'realendtime' => ['type' => 'isodatetime', 'name' => Prado::localize('Real end time')],
+			'jobbytes' => ['type' => 'number', 'name' => Prado::localize('Size')],
+			'jobfiles' => ['type' => 'number', 'name' => Prado::localize('Files')],
+			'joberrors' => ['type' => 'number', 'name' => Prado::localize('Job errors')],
+			'volcount' => ['type' => 'number', 'name' => Prado::localize('Vol. count')]
+		];
+		$this->JobViews->setViewName('job_history');
+		$this->JobViews->setViewDataFunction('get_job_history_data');
+		$this->JobViews->setUpdateViewFunction('update_job_history_table');
+		$this->JobViews->setDescription($job_view_desc);
 	}
 
 	public function loadRunJobModal($sender, $param)
