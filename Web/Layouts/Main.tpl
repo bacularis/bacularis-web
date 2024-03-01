@@ -22,6 +22,7 @@
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/graph.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/statistics.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../JavaScript/dataview.js %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-dt/css/jquery.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-responsive-dt/css/responsive.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />

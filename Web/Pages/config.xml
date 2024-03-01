@@ -15,6 +15,7 @@
 		<module id="ssh_config" class="Bacularis\Web\Modules\SSHConfig" />
 		<module id="ssh_key" class="Bacularis\Web\Modules\SSHKey" />
 		<module id="osprofile_config" class="Bacularis\Web\Modules\OSProfileConfig" />
+		<module id="dataview_config" class="Bacularis\Web\Modules\DataViewConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
