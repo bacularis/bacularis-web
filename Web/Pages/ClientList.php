@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Client list page.
@@ -50,7 +51,8 @@ class ClientList extends BaculumWebPage
 		$client_view_desc = [
 			'name' => ['type' => 'string', 'name' => Prado::localize('Name')],
 			'uname' => ['type' => 'string', 'name' => Prado::localize('Uname')],
-			'clientid' => ['type' => 'number', 'name' => 'ClientId']
+			'clientid' => ['type' => 'number', 'name' => 'ClientId'],
+			'autoprune' => ['type' => 'boolean', 'name' => Prado::localize('AutoPrune')]
 		];
 		$this->ClientViews->setViewName('client_list');
 		$this->ClientViews->setViewDataFunction('get_client_list_data');
