@@ -63,7 +63,6 @@ class VolumeList extends BaculumWebPage
 			'pool' => ['type' => 'string', 'name' => Prado::localize('Pool')],
 			'scratchpool' => ['type' => 'string', 'name' => Prado::localize('Scratch pool')],
 			'recyclepool' => ['type' => 'string', 'name' => Prado::localize('Recycle pool')],
-			'pool' => ['type' => 'string', 'name' => Prado::localize('Pool')],
 			'storage' => ['type' => 'string', 'name' => Prado::localize('Storage')],
 			'slot' => ['type' => 'number', 'name' => Prado::localize('Slot')],
 			'inchanger' => ['type' => 'boolean', 'name' => Prado::localize('InChanger')],

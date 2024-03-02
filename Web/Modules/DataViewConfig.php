@@ -131,7 +131,7 @@ class DataViewConfig extends ConfigFileModule
 		$config = $this->getConfig();
 		if (isset($config[$username][$view][$item])) {
 			unset($config[$username][$view][$item]);
-			$ret =$this->setConfig($config);
+			$ret = $this->setConfig($config);
 		}
 		return $ret;
 	}

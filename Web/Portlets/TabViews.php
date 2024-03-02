@@ -23,7 +23,6 @@ namespace Bacularis\Web\Portlets;
  */
 class TabViews extends Portlets
 {
-
 	private const DATA_VIEW_NAME = 'DataViewName';
 	private const DATA_VIEW_DESC = 'DataViewDesc';
 	private const VIEW_DATA_FUNCTION = 'ViewDataFunction';
