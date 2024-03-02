@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Storage list page.
@@ -51,5 +52,19 @@ class StorageList extends BaculumWebPage
 		if ($result->error === 0) {
 			$this->storages = $result->output;
 		}
+		$this->setDataViews();
+	}
+
+	private function setDataViews()
+	{
+		$storage_view_desc = [
+			'name' => ['type' => 'string', 'name' => Prado::localize('Name')],
+			'autochanger' => ['type' => 'boolean', 'name' => Prado::localize('Autochanger')],
+			'storageid' => ['type' => 'number', 'name' => 'StorageId']
+		];
+		$this->StorageViews->setViewName('storage_list');
+		$this->StorageViews->setViewDataFunction('get_storage_list_data');
+		$this->StorageViews->setUpdateViewFunction('update_storage_list_table');
+		$this->StorageViews->setDescription($storage_view_desc);
 	}
 }
