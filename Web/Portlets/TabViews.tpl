@@ -34,8 +34,8 @@
 			<div id="<%=$this->ClientID%>_form_view_help"class="directive_help" style="display: none">
 				<dd><%[ Between conditions with different properties is used AND operator. ]%> <%[ Between conditions with the same property is used OR operator.]%></dd>
 				<ul>
-					<li><strong><%[ Example 1 ]%></strong>: type == Backup AND level == Full AND Name == ABC</li>
-					<li><strong><%[ Example 2 ]%></strong>: type == Backup OR type == Restore OR Type == Copy</li>
+					<li><strong><%[ Example 1 ]%></strong>: type == Backup AND level == Full AND name == ABC</li>
+					<li><strong><%[ Example 2 ]%></strong>: type == Backup OR type == Restore OR type == Copy</li>
 					<li><strong><%[ Example 3 ]%></strong>: type == Backup AND (level == Full OR level == Incremental)</li>
 				</ul>
 			</div>
