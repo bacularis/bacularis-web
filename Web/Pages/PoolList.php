@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Pool list page.
@@ -37,4 +38,28 @@ use Bacularis\Web\Modules\BaculumWebPage;
  */
 class PoolList extends BaculumWebPage
 {
+	public function onInit($param)
+	{
+		parent::onInit($param);
+		if ($this->IsPostBack || $this->IsCallBack) {
+			return;
+		}
+		$this->setDataViews();
+	}
+
+	private function setDataViews()
+	{
+		$pool_view_desc = [
+			'name' => ['type' => 'string', 'name' => Prado::localize('Name')],
+			'numvols' => ['type' => 'number', 'name' => Prado::localize('No. vols')],
+			'maxvols' => ['type' => 'number', 'name' => Prado::localize('Max. vols')],
+			'poolid' => ['type' => 'number', 'name' => 'PoolId'],
+			'autoprune' => ['type' => 'boolean', 'name' => Prado::localize('AutoPrune')],
+			'recycle' => ['type' => 'boolean', 'name' => Prado::localize('Recycle')]
+		];
+		$this->PoolViews->setViewName('pool_list');
+		$this->PoolViews->setViewDataFunction('get_pool_list_data');
+		$this->PoolViews->setUpdateViewFunction('update_pool_list_table');
+		$this->PoolViews->setDescription($pool_view_desc);
+	}
 }

@@ -6,8 +6,11 @@
 			<b><i class="fa fa-tape"></i> <%[ Pool list ]%></b>
 		</h5>
 	</header>
-	<div class="w3-margin-left w3-margin-bottom">
-		<button type="button" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Pool'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add pool ]%></button>
+	<div class="w3-container">
+		<div class="w3-margin-bottom">
+			<button type="button" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Pool'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add pool ]%></button>
+		</div>
+		<com:Bacularis.Web.Portlets.TabViews ID="PoolViews" />
 	</div>
 	<div class="w3-container">
 		<table id="pool_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
@@ -46,12 +49,19 @@ var oPoolList = {
 		pool_list: 'pool_list',
 		pool_list_body: 'pool_list_body'
 	},
-	init: function() {
+	table: null,
+	init: function(data) {
+		this.data = data;
 		this.set_table();
 	},
+	refresh: function(data) {
+		const page = this.table.page();
+		this.table.clear().rows.add(data).draw();
+		this.table.page(page).draw(false);
+	},
 	set_table: function() {
-		var table = $('#' + this.ids.pool_list).DataTable({
-			data: oData.pools,
+		this.table = $('#' + this.ids.pool_list).DataTable({
+			data: this.data,
 			deferRender: true,
 			dom: 'lBfrtip',
 			stateSave: true,
@@ -135,7 +145,7 @@ var oPoolList = {
 				targets: [ 1, 3, 4, 6, 7, 8 ]
 			}],
 			order: [2, 'asc'],
-			initComplete: function () {
+			drawCallback: function () {
 				this.api().columns([2, 3, 4, 5, 6, 7]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
@@ -180,9 +190,21 @@ var oPoolList = {
 		});
 	}
 };
+function get_pool_list_data() {
+	return oData.pools;
+}
+function update_pool_list_table(data, init) {
+	if (init) {
+		oPoolList.refresh(data);
+	} else {
+		oPoolList.init(data);
+	}
+}
 MonitorParams = {pools: null};
 $(function() {
-	MonitorCalls.push(function() { oPoolList.init(); });
+	MonitorCalls.push(function() {
+		<%=$this->PoolViews->ClientID%>_TabViews.tabs.apply_filters();
+	});
 });
 </script>
 </com:TContent>
