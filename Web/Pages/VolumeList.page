@@ -7,10 +7,11 @@
 		</h5>
 	</header>
 	<div class="w3-container tab_item">
-		<div class="w3-section">
+		<div class="w3-margin-bottom">
 			<com:Bacularis.Web.Portlets.LabelVolume />
 			<com:Bacularis.Web.Portlets.UpdateSlots />
 		</div>
+		<com:Bacularis.Web.Portlets.TabViews ID="VolumeViews" />
 		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -186,21 +187,22 @@ var oVolumeList = {
 		table_predefined_filters_value_type: 'table_predefined_filters_value_type',
 	},
 	init: function(data) {
+		this.data = data;
 		if (this.table) {
-			var page = this.table.page();
-			this.table.clear().rows.add(data).draw();
-			this.table.page(page).draw(false);
-			this.table_toolbar.style.display = 'none';
+			this.refresh(this.data);
 		} else {
-			this.set_table(data);
+			this.set_table();
 			this.set_bulk_actions();
 			this.set_events();
 			this.set_predefined_filters();
 			this.set_filters();
 		}
 	},
-	update: function(data) {
-		oVolumeList.init(data);
+	refresh: function(data) {
+		const page = this.table.page();
+		this.table.clear().rows.add(data).draw();
+		this.table.page(page).draw(false);
+		this.table_toolbar.style.display = 'none';
 	},
 	update_volumes: function() {
 		const cb = <%=$this->UpdateVolumes->ActiveControl->Javascript%>;
@@ -223,7 +225,7 @@ var oVolumeList = {
 	},
 	set_table: function(data) {
 		this.table = $('#' + this.ids.volume_list).DataTable({
-			data: data,
+			data: this.data,
 			deferRender: true,
 			dom: 'lB<"table_toolbar"><"#table_predefined_filters">frtip',
 			stateSave: true,
@@ -648,7 +650,25 @@ var oVolumeList = {
 		this.table.columns().draw();
 	}
 };
-oVolumeList.init(<%=json_encode($this->volumes)%>);
+oVolumeData = [];
+function set_volume_list_data(data) {
+	oVolumeData = data;
+	<%=$this->VolumeViews->ClientID%>_TabViews.tabs.apply_filters();
+}
+function get_volume_list_data() {
+	return oVolumeData;
+}
+function update_volume_list_table(data, init) {
+	if (init) {
+		oVolumeList.refresh(data);
+	} else {
+		oVolumeList.init(data);
+	}
+}
+$(function() {
+	const volumes = <%=json_encode($this->volumes)%>;
+	set_volume_list_data(volumes);
+});
 /**
  * Defne bulk actions output id here because expression tags (< % = % >) cannot
  * be defined in the TCallback ClientSide properties.

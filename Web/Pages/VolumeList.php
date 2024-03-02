@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Volume list page.
@@ -50,6 +51,41 @@ class VolumeList extends BaculumWebPage
 		}
 		$this->volumes = $this->getVolumes();
 		$this->pools = $this->getPools();
+		$this->setDataViews();
+	}
+
+	private function setDataViews()
+	{
+		$volume_view_desc = [
+			'volumename' => ['type' => 'string', 'name' => Prado::localize('Name')],
+			'volstatus' => ['type' => 'string', 'name' => Prado::localize('Vol. status')],
+			'mediatype' => ['type' => 'string', 'name' => 'MediaType'],
+			'pool' => ['type' => 'string', 'name' => Prado::localize('Pool')],
+			'scratchpool' => ['type' => 'string', 'name' => Prado::localize('Scratch pool')],
+			'recyclepool' => ['type' => 'string', 'name' => Prado::localize('Recycle pool')],
+			'pool' => ['type' => 'string', 'name' => Prado::localize('Pool')],
+			'storage' => ['type' => 'string', 'name' => Prado::localize('Storage')],
+			'slot' => ['type' => 'number', 'name' => Prado::localize('Slot')],
+			'inchanger' => ['type' => 'boolean', 'name' => Prado::localize('InChanger')],
+			'firstwritten' => ['type' => 'isodatetime', 'name' => Prado::localize('First written')],
+			'lastwritten' => ['type' => 'isodatetime', 'name' => Prado::localize('Last written')],
+			'volerrors' => ['type' => 'number', 'name' => Prado::localize('Vol. errors')],
+			'volbytes' => ['type' => 'number', 'name' => Prado::localize('Vol. bytes')],
+			'voljobs' => ['type' => 'number', 'name' => Prado::localize('Vol. jobs')],
+			'volfiles' => ['type' => 'number', 'name' => Prado::localize('Vol. files')],
+			'volblocks' => ['type' => 'number', 'name' => Prado::localize('Vol. blocks')],
+			'volmounts' => ['type' => 'number', 'name' => Prado::localize('Vol. mounts')],
+			'maxvoljobs' => ['type' => 'number', 'name' => Prado::localize('Max. vol. jobs')],
+			'maxvolbytes' => ['type' => 'number', 'name' => Prado::localize('Max. vol. bytes')],
+			'maxvolfiles' => ['type' => 'number', 'name' => Prado::localize('Max. vol. files')],
+			'recycle' => ['type' => 'boolean', 'name' => Prado::localize('Recycle')],
+			'enabled' => ['type' => 'boolean', 'name' => Prado::localize('Enabled')],
+			'mediaid' => ['type' => 'number', 'name' => 'MediaId']
+		];
+		$this->VolumeViews->setViewName('volume_list');
+		$this->VolumeViews->setViewDataFunction('get_volume_list_data');
+		$this->VolumeViews->setUpdateViewFunction('update_volume_list_table');
+		$this->VolumeViews->setDescription($volume_view_desc);
 	}
 
 	public function getVolumes()
@@ -171,6 +207,6 @@ class VolumeList extends BaculumWebPage
 	public function updateVolumes($sender, $param)
 	{
 		$volumes = $this->getVolumes();
-		$this->getCallbackClient()->callClientFunction('oVolumeList.update', [$volumes]);
+		$this->getCallbackClient()->callClientFunction('set_volume_list_data', [$volumes]);
 	}
 }
