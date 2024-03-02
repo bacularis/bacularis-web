@@ -86,6 +86,17 @@ class StringType extends BaseType {
 	}
 }
 
+class BooleanType extends BaseType {
+	constructor(prop) {
+		super();
+		this.prop = prop;
+		this.operators = {
+			'==': {name: 'equal', fn: this.equal, field: 'yesno'},
+			'!=': {name: 'not equal', fn: this.notequal, field: 'yesno'}
+		};
+	}
+}
+
 class NumberType extends BaseType {
 	constructor(prop) {
 		super();
@@ -149,6 +160,8 @@ class DataViewBase {
 	get_type_class(type) {
 		let cls;
 		switch (type) {
+			case 'boolean': cls = BooleanType;
+				break;
 			case 'string': cls = StringType;
 				break;
 			case 'number': cls = NumberType;
@@ -566,6 +579,18 @@ class DataViewForm extends DataViewBase {
 				el = document.createElement('INPUT');
 				el.classList.add('w3-input', 'w3-border', 'value');
 				el.setAttribute('disabled', 'disabled');
+			} else if (field == 'yesno') {
+				el = document.createElement('SELECT');
+				el.classList.add('w3-select', 'w3-border', 'value');
+				let option, label;
+				const vals = ['No', 'Yes'];
+				for (let i = 0; i < vals.length; i++) {
+					option = document.createElement('OPTION');
+					option.value = i;
+					label = document.createTextNode(vals[i]);
+					option.appendChild(label);
+					el.appendChild(option);
+				}
 			} else if (field == 'calendar_iso') {
 				const date_format = 'yy-mm-dd 0:00:00';
 				el = document.createElement('INPUT')
