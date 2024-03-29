@@ -168,6 +168,7 @@ class BaculaConfigResourceList extends Portlets
 			$component_type,
 			$resource_type
 		];
+		$resources = [];
 		$res = $this->getModule('api')->get($params);
 		if ($res->error === 0) {
 			for ($i = 0; $i < count($res->output); $i++) {
