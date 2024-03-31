@@ -48,6 +48,11 @@
 			ID="CompActions"
 			BigButtons="true"
 		/>
+		<com:Bacularis.Web.Portlets.NetworkTest
+			ID="NetworkTestClient"
+			Client="<%=$this->getClientName()%>"
+		/>
+		<button type="button" onclick="oNetworkTest<%=$this->NetworkTestClient->ClientID%>.show(true);" class="w3-button w3-green w3-margin-bottom"><i class="fa-solid fa-network-wired"></i>&nbsp;<%[ Network test ]%></button>
 		<i id="status_client_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super; margin-left: 6px;"></i> <span id="status_client_error" class="w3-text-red" style="display: none"></span>
 		<div id="show_client_container">
 			<div class="w3-row" style="display: flex; flex-wrap: wrap;">

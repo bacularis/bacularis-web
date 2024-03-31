@@ -5367,3 +5367,24 @@ msgstr "Example 3"
 
 msgid "Edit data view"
 msgstr "Edit data view"
+
+msgid "Start test"
+msgstr "Start test"
+
+msgid "Network test"
+msgstr "Network test"
+
+msgid "Packets"
+msgstr "Packets"
+
+msgid "Round-trip time (RTT)"
+msgstr "Round-trip time (RTT)"
+
+msgid "Minimum time"
+msgstr "Minimum time"
+
+msgid "Maximum time"
+msgstr "Maximum time"
+
+msgid "Data size to transfer"
+msgstr "Data size to transfer"
