@@ -31,7 +31,7 @@ class NetworkTest extends Portlets
 	/**
 	 * Default bytes to send in test.
 	 */
-	public const DEFAULT_BYTES = '100000000';
+	public const DEFAULT_BYTES = '50000000';
 
 	/**
 	 * Output parser patterns.
