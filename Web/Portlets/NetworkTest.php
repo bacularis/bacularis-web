@@ -36,8 +36,8 @@ class NetworkTest extends Portlets
 	/**
 	 * Output parser patterns.
 	 */
-	private const FD_TO_SD_PATTERN = '/^(?P<error_code>\d+)\s+(?P<status>\w+)\s+FD\s+wrote\s+bytes=(?P<bytes>\d+)\s+to\s+SD\s+duration=(?P<duration>[\d\w]+)\s+write_speed=(?P<write_speed>[\d\w\.\/\s]+)$/i';
-	private const SD_TO_FD_PATTERN = '/^(?P<error_code>\d+)\s+(?P<status>\w+)\s+FD\s+read\s+bytes=(?P<bytes>\d+)\s+from\s+SD\s+duration=(?P<duration>[\d\w]+)\s+read_speed=(?P<read_speed>[\d\w\.\/\s]+)$/i';
+	private const FD_TO_SD_PATTERN = '/^(?P<error_code>\d+)\s+(?P<status>\w+)(?:\s+FD\s+wrote)?\s+bytes=(?P<bytes>\d+)(?:\s+to\s+SD)?\s+duration=(?P<duration>[\d\w]+)\s+write_speed=(?P<write_speed>[\d\w\.\/\s]+)$/i';
+	private const SD_TO_FD_PATTERN = '/^(?P<error_code>\d+)\s+(?P<status>\w+)(?:\s+FD\s+read)?\s+bytes=(?P<bytes>\d+)(?:\s+from\s+SD)?\s+duration=(?P<duration>[\d\w]+)\s+read_speed=(?P<read_speed>[\d\w\.\/\s]+)$/i';
 	private const STAT_PATTERN = '/^(?P<error_code>\d+)\s+(?P<status>\w+)\s+packets=(?P<packets>\d+)\s+duration=(?P<duration>[\d\w]+)\s+rtt=(?P<rtt>[\d\w\.]+)\s+min=(?P<min>[\d\w\.]+)\s+max=(?P<max>[\d\w\.]+)$/';
 
 	public function onPreRender($param): void
