@@ -271,7 +271,8 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 20.04 Focal' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ focal main',
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
 			'Ubuntu 23.04 Lunar' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ lunar main',
-			'Ubuntu 23.10 Mantic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ mantic main'
+			'Ubuntu 23.10 Mantic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ mantic main',
+			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main'
 		]
 	];
 
