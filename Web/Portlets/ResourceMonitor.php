@@ -29,6 +29,8 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Web\Modules\WebConfig;
+
 /**
  * Resource monitor.
  *
@@ -47,6 +49,8 @@ class ResourceMonitor extends Portlets
 			// set job age for job status summary graph
 			if (isset($web_config['baculum']['job_age_on_job_status_graph'])) {
 				$this->job_age_on_job_status_graph = $web_config['baculum']['job_age_on_job_status_graph'];
+			} else {
+				$this->job_age_on_job_status_graph = WebConfig::DEF_JOB_AGE_ON_JOB_STATUS_GRAPH;
 			}
 		}
 	}

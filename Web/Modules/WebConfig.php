@@ -95,7 +95,7 @@ class WebConfig extends ConfigFileModule
 	/**
 	 * Default job age on job status graph.
 	 */
-	public const DEF_JOB_AGE_ON_JOB_STATUS_GRAPH = 0;
+	public const DEF_JOB_AGE_ON_JOB_STATUS_GRAPH = 1209600; // 14 days
 
 	/**
 	 * Default audit log enabled value.
