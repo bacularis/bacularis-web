@@ -1,5 +1,6 @@
-<div class="w3-panel">
+<div class="w3-margin-top">
 	<div style="display: inline-block; clear: right; margin-right: 5px;" class="w3-left">
+		<div class="w3-left" style="display: inline-block">
 		<com:TActiveTextBox
 			ID="FileListSearch"
 			CssClass="w3-input w3-border"
@@ -10,6 +11,30 @@
 		<button type="button" class="w3-button w3-dark-grey" onclick="find_job_list_items();"><i class="fas fa-search"></i> &nbsp;<%[ Find ]%></button>
 		<button type="button" class="w3-button w3-dark-grey" onclick="clear_job_list_items();" title="<%[ Clear ]%>"><i class="fas fa-times"></i></button>
 		<i id="jobfiles_loading" class="fa fa-sync w3-spin w3-margin-left" style="display: none;"></i>
+		</div>
+		<div style="clear: left"></div>
+		<div class="w3-section w3-left" style="display: inline-block">
+			<com:TActiveDropDownList
+				ID="FileListOrderBy"
+				CssClass="w3-select w3-border"
+				Style="width: 130px;"
+				ClientSide.OnComplete="load_job_list_files();"
+			>
+				<com:TListItem Value="none" Text="Select order by" />
+				<com:TListItem Value="file" Text="File" />
+				<com:TListItem Value="size" Text="Size" />
+				<com:TListItem Value="mtime" Text="MTIME" />
+			</com:TActiveDropDownList>
+			<com:TActiveDropDownList
+				ID="FileListOrderType"
+				CssClass="w3-select w3-border"
+				style="width: 100px;"
+				ClientSide.OnComplete="load_job_list_files();"
+			>
+				<com:TListItem Value="asc" Text="Ascending" />
+				<com:TListItem Value="desc" Text="Descending" />
+			</com:TActiveDropDownList>
+		</div>
 	</div>
 	<button type="button" class="w3-button w3-dark-grey w3-right" onclick="load_job_list_files();"><i class="fa fa-check"></i> &nbsp;<%[ Apply ]%></button>
 	<div style="display: inline-block;" class="w3-right w3-margin-right">
@@ -23,13 +48,14 @@
 			<com:TListItem Value="all" Text="<%[ all ]%>" />
 		</com:TActiveDropDownList>
 	</div>
-	<div class="w3-right w3-margin-top" style="width: 100%">
+	<div style="clear: right"></div>
+	<div class="w3-right w3-margin-top">
 		<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-left" onclick="get_job_list_files(1);"><%[ Next ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
 		<button type="button" class="w3-button w3-dark-grey w3-right" onclick="get_job_list_files(-1);"><i class="fa fa-arrow-left"></i> &nbsp;<%[ Previous ]%></button>
 		<span class="w3-right w3-margin-right" style="line-height: 38px"><%[ Item count: ]%> <com:TActiveLabel ID="FileListCount" /></span>
 	</div>
 </div>
-<div class="w3-container">
+<div>
 	<div id="job_list_files_no_result" class="w3-panel w3-center" style="display: none"><strong><%[ No item result ]%></strong></div>
 	<com:TActiveRepeater ID="FileList">
 		<prop:HeaderTemplate>

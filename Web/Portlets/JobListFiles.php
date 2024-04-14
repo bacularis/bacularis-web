@@ -57,6 +57,10 @@ class JobListFiles extends Portlets
 			'offset' => (int) ($this->FileListOffset->Text),
 			'limit' => (int) ($this->FileListLimit->Text)
 		];
+		if ($this->FileListOrderBy->SelectedValue != 'none') {
+			$params['order_by'] = $this->FileListOrderBy->SelectedValue;
+			$params['order_type'] = $this->FileListOrderType->SelectedValue;
+		}
 		if (!empty($this->FileListType->SelectedValue)) {
 			$params['type'] = $this->FileListType->SelectedValue;
 		}
