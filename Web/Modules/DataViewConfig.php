@@ -38,7 +38,7 @@ class DataViewConfig extends ConfigFileModule
 	/**
 	 * Allowed characters pattern for the view name.
 	 */
-	public const VIEW_PATTERN = '[\p{L}\p{N}\p{Z}\-\'\\/\\(\\)\\{\\}:.#~_,+!$]{1,100}';
+	public const VIEW_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\/\\(\\)\\{\\}:.#~_,+!$]{1,100}';
 
 	/**
 	 * Stores user data view config.
