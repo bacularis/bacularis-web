@@ -1,16 +1,16 @@
 <div class="w3-margin-top">
 	<div style="display: inline-block; clear: right; margin-right: 5px;" class="w3-left">
 		<div class="w3-left" style="display: inline-block">
-		<com:TActiveTextBox
-			ID="FileListSearch"
-			CssClass="w3-input w3-border"
-			Style="width: 200px; display: inline-block;"
-			Attributes.placeholder="<%[ Find file or directory ]%>"
-			Attributes.onkeyup="var keycode = event.keyCode || event.which; if (keycode === 13) { find_job_list_items(); }"
-		/>
-		<button type="button" class="w3-button w3-dark-grey" onclick="find_job_list_items();"><i class="fas fa-search"></i> &nbsp;<%[ Find ]%></button>
-		<button type="button" class="w3-button w3-dark-grey" onclick="clear_job_list_items();" title="<%[ Clear ]%>"><i class="fas fa-times"></i></button>
-		<i id="jobfiles_loading" class="fa fa-sync w3-spin w3-margin-left" style="display: none;"></i>
+			<com:TActiveTextBox
+				ID="FileListSearch"
+				CssClass="w3-input w3-border"
+				Style="width: 200px; display: inline-block;"
+				Attributes.placeholder="<%[ Find file or directory ]%>"
+				Attributes.onkeyup="var keycode = event.keyCode || event.which; if (keycode === 13) { find_job_list_items(); }"
+			/>
+			<button type="button" class="w3-button w3-dark-grey" onclick="find_job_list_items();"><i class="fas fa-search"></i> &nbsp;<%[ Find ]%></button>
+			<button type="button" class="w3-button w3-dark-grey" onclick="clear_job_list_items();" title="<%[ Clear ]%>"><i class="fas fa-times"></i></button>
+			<i id="jobfiles_loading" class="fa fa-sync w3-spin w3-margin-left" style="display: none;"></i>
 		</div>
 		<div style="clear: left"></div>
 		<div class="w3-section w3-left" style="display: inline-block">
@@ -34,6 +34,7 @@
 				<com:TListItem Value="asc" Text="Ascending" />
 				<com:TListItem Value="desc" Text="Descending" />
 			</com:TActiveDropDownList>
+			<com:Bacularis.Web.Portlets.JobTopFiles JobId="<%=$this->getJobId()%>" />
 		</div>
 	</div>
 	<button type="button" class="w3-button w3-dark-grey w3-right" onclick="load_job_list_files();"><i class="fa fa-check"></i> &nbsp;<%[ Apply ]%></button>

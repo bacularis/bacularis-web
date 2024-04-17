@@ -5324,3 +5324,21 @@ msgstr "Maximum time"
 
 msgid "Data size to transfer"
 msgstr "Data size to transfer"
+
+msgid "Select top 10 criteria"
+msgstr "Select top 10 criteria"
+
+msgid "Show 10 largest files"
+msgstr "Show 10 largest files"
+
+msgid "Show 10 smallest files"
+msgstr "Show 10 smallest files"
+
+msgid "Show 10 most recent files (MTIME)"
+msgstr "Show 10 most recent files (MTIME)"
+
+msgid "Show 10 oldest files (MTIME)"
+msgstr "Show 10 oldest files (MTIME)"
+
+msgid "Job top 10 files"
+msgstr "Job top 10 files"
