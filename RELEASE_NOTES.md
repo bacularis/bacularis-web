@@ -1,9 +1,18 @@
 
-This is new function and bug fix release. We added a new function to perform
-network test between the file daemon and the storage daemon. Besides that
-we did a fix for the configuration part of Bacula.
+This is minor new feature and bug fix release. We introduced a couple of
+improvements for using backup file list function like finding the largest
+or the newest files in backup. Besides that we added a new deployment
+OS profiles for Ubuntu 24.04 Noble and Fedora 40.
+
+On the bug fixes side, we fixed bugs reported by the Community.
 
 Changes:
- - Add function to test network between file daemon and storage daemon
- - Fix adding first config resource if there is no existing resource given type
+ - Add control to display top 10 largest/smallest/recent/oldest backup files
+ - Add sorting capability by file, size and mtime columns in backup file list
+ - Add deployment OS profile for Fedora 40
+ - Add deployment OS profile for Ubuntu 24.04 Noble
+ - Change default job age for job size and files graph
+ - Fix validation for data view name
+ - Fix network test support for Bacula 9.6
+ - Fix displaying text in running jobs bar on Firefox
 
