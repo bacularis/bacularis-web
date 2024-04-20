@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-07-22 15:26\n"
+"PO-Revision-Date: 2024-04-20 14:08\n"
 "Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
@@ -3406,7 +3406,7 @@ msgid "Jobs finished with warnings"
 msgstr "Zadania zakończone z ostrzeżeniami"
 
 msgid "Jobs finished with errors"
-msgstr "Zadania zakończone z błędem"
+msgstr "Zadania zakończone błędami"
 
 msgid "Jobs cancelled"
 msgstr "Zadania anulowane"
@@ -5127,219 +5127,219 @@ msgstr "Przygotuj zasoby dla nowego zadania backupu."
 msgid "Quick edit"
 msgstr "Szybka edycja"
 
-
 msgid "Prev job"
-msgstr "Prev job"
+msgstr "Poprzednie zadanie"
 
 msgid "Next job"
-msgstr "Next job"
+msgstr "Następne zadanie"
 
 msgid "Volume job list"
-msgstr "Volume job list"
+msgstr "Lista zadań wolumenu"
 
 msgid "Log"
 msgstr "Log"
 
 msgid "Latest"
-msgstr "Latest"
+msgstr "Najnowsze"
 
 msgid "Copy to clipboard"
-msgstr "Copy to clipboard"
+msgstr "Skopiuj do schowka"
 
 msgid "Save log in file"
-msgstr "Save log in file"
+msgstr "Zapisz logi w pliku"
 
 msgid "Job summary"
-msgstr "Job summary"
+msgstr "Podsumowanie zadania"
 
 msgid "Host groups"
-msgstr "Host groups"
+msgstr "Grupy hostów"
 
 msgid "API host method"
-msgstr "API host method"
+msgstr "Metoda hosta API"
 
 msgid "API host groups"
-msgstr "API host groups"
+msgstr "Grupy hostów API"
 
 msgid "Add new API host group"
-msgstr "Add new API host group"
+msgstr "Dodaj nową grupę hostów API"
 
 msgid "API group name"
-msgstr "API group name"
+msgstr "Nazwa grupy API"
 
 msgid "Edit API host group"
-msgstr "Edit API host group"
+msgstr "Edytuj grupę hostów API"
 
 msgid "Add API host group"
-msgstr "Add API host group"
+msgstr "Dodaj grupę hostów API"
 
 msgid "API host group:"
-msgstr "API host group:"
+msgstr "Grupa hostów API:"
 
 msgid "API host group with the given name already exists."
-msgstr "API host group with the given name already exists."
+msgstr "Grupa hostów API o podanej nazwie już istnieje."
 
 msgid "API host groups:"
-msgstr "API host groups:"
+msgstr "Grupy hostów API:"
 
 msgid "Use API hosts"
-msgstr "Use API hosts"
+msgstr "Użyj hostów API"
 
 msgid "Use API host groups"
-msgstr "Use API host groups"
+msgstr "Użyj grup hostów API"
 
 msgid "The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host."
-msgstr "The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host."
+msgstr "Grupy hostów API są nazwanymi zbiorami hostów API, które mogą być przypisywane użytkownikom zamiast przydzielania im pojedynczych hostów API. Funkcja grupy API jest bardziej elastycznym rozwiązaniem niż przypisywanie hostów API bezpośrednio i może być przydatna w środowiskach, w których użytkownicy mają dostęp do więcej niż jednego hosta API."
 
 msgid "Assign to API host groups:"
-msgstr "Assign to API host groups:"
+msgstr "Przypisz do grup hostów API:"
 
 msgid "Bacula Console ACL"
-msgstr "Bacula Console ACL"
+msgstr "Konsola Bacula ACL"
 
 msgid "Assigned"
-msgstr "Assigned"
+msgstr "Przypisany"
 
 msgid "unassign"
-msgstr "unassign"
+msgstr "cofnij przypisanie"
 
 msgid "Set API host access to resources"
-msgstr "Set API host access to resources"
+msgstr "Ustaw dostęp hosta API do zasobów"
 
 msgid "Set user API host access to resources"
-msgstr "Set user API host access to resources"
+msgstr "Ustaw dostęp użytkownika API hosta do zasobów"
 
 msgid "Set API host group access to resources"
-msgstr "Set API host group access to resources"
+msgstr "Ustaw dostęp grupy hostów API do zasobów"
 
 msgid "All pools"
-msgstr "All pools"
+msgstr "Wszystkie pule"
 
 msgid "Default API host groups for imported users:"
-msgstr "Default API host groups for imported users:"
+msgstr "Domyślne grupy hostów API dla zaimportowanych użytkowników:"
 
 msgid "Director resource permissions"
-msgstr "Director resource permissions"
+msgstr "Uprawnienia do zasobów zarządcy"
 
 msgid "Storage resource permissions"
-msgstr "Storage resource permissions"
+msgstr "Uprawnienia do zasobów magazynu danych"
 
 msgid "Client resource permissions"
-msgstr "Client resource permissions"
+msgstr "Uprawnienia do zasobów klienta"
 
 msgid "Bconsole resource permissions"
-msgstr "Bconsole resource permissions"
+msgstr "Uprawienia do zasobów bconsole"
 
 msgid "Resource"
-msgstr "Resource"
+msgstr "Zasób"
 
 msgid "Read-Only"
-msgstr "Read-Only"
+msgstr "Tylko do odczytu"
 
 msgid "Read-Write"
-msgstr "Read-Write"
+msgstr "Odczyt & Zapis"
 
 msgid "read only"
-msgstr "read only"
+msgstr "tylko do odczytu"
 
 msgid "read write"
-msgstr "read write"
+msgstr "odczyt/zapis"
 
 msgid "Preview"
-msgstr "Preview"
+msgstr "Podgląd"
 
 msgid "no access"
-msgstr "no access"
+msgstr "brak dostępu"
 
 msgid "All read-only"
-msgstr "All read-only"
+msgstr "Wszystkie tylko do odczytu"
 
 msgid "All read-write"
-msgstr "All read-write"
+msgstr "Wszystkie do odczytu/zapisu"
 
 msgid "All no access"
-msgstr "All no access"
+msgstr "Wszystkie brak dostępu"
 
 msgid "Resource permissions"
-msgstr "Resource permissions"
+msgstr "Uprawnienia zasobów"
 
 msgid "By default, all resources have read-write permissions."
-msgstr "By default, all resources have read-write permissions."
+msgstr "Domyślnie wszystkie zasoby mają uprawnienia do odczytu i zapisu."
 
 msgid "Define paths to the verify job FileSet"
-msgstr "Define paths to the verify job FileSet"
+msgstr "Zdefiniuj ścieżki do FileSet zadania weryfikacji"
 
 msgid "Main view"
-msgstr "Main view"
+msgstr "Główny widok"
 
 msgid "Add data view"
-msgstr "Add data view"
+msgstr "Dodaj widok danych"
 
 msgid "View name"
-msgstr "View name"
+msgstr "Nazwa widoku"
 
 msgid "View description"
-msgstr "View description"
+msgstr "Opis widoku"
 
 msgid "My view 123"
-msgstr "My view 123"
+msgstr "Mój widok 123"
 
 msgid "This is My view 123 description."
-msgstr "This is My view 123 description."
+msgstr "Taki jest opis mojego widoku 123."
 
 msgid "Between conditions with different properties is used AND operator."
-msgstr "Between conditions with different properties is used AND operator."
+msgstr "Pomiędzy warunkami z różnymi właściwościami jest używany operator AND."
 
 msgid "Between conditions with the same property is used OR operator."
-msgstr "Between conditions with the same property is used OR operator."
+msgstr "Pomiędzy warunkami z tymi samymi właściwościami jest używany operator OR."
 
 msgid "Example 1"
-msgstr "Example 1"
+msgstr "Przykład 1"
 
 msgid "Example 2"
-msgstr "Example 2"
+msgstr "Przykład 2"
 
 msgid "Example 3"
-msgstr "Example 3"
+msgstr "Przykład 3"
 
 msgid "Edit data view"
-msgstr "Edit data view"
+msgstr "Edytuj widok danych"
 
 msgid "Start test"
-msgstr "Start test"
+msgstr "Rozpocznij test"
 
 msgid "Network test"
-msgstr "Network test"
+msgstr "Test sieci"
 
 msgid "Packets"
-msgstr "Packets"
+msgstr "Pakiety"
 
 msgid "Round-trip time (RTT)"
-msgstr "Round-trip time (RTT)"
+msgstr "Czas RTT (round-trip time)"
 
 msgid "Minimum time"
-msgstr "Minimum time"
+msgstr "Minimalny czas"
 
 msgid "Maximum time"
-msgstr "Maximum time"
+msgstr "Maksymalny czas"
 
 msgid "Data size to transfer"
-msgstr "Data size to transfer"
+msgstr "Rozmiar danych do przetransferowania"
 
 msgid "Select top 10 criteria"
-msgstr "Select top 10 criteria"
+msgstr "Wybierz kryteria top 10 zadań"
 
 msgid "Show 10 largest files"
-msgstr "Show 10 largest files"
+msgstr "Pokaż 10 największych plików"
 
 msgid "Show 10 smallest files"
-msgstr "Show 10 smallest files"
+msgstr "Pokaż 10 najmniejszych plików"
 
 msgid "Show 10 most recent files (MTIME)"
-msgstr "Show 10 most recent files (MTIME)"
+msgstr "Pokaż 10 najnowszych plików (MTIME)"
 
 msgid "Show 10 oldest files (MTIME)"
-msgstr "Show 10 oldest files (MTIME)"
+msgstr "Pokaż 10 najstarszych plików (MTIME)"
 
 msgid "Job top 10 files"
-msgstr "Job top 10 files"
+msgstr "Top 10 plików zadania"
+
