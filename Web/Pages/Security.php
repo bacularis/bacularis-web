@@ -162,7 +162,6 @@ class Security extends BaculumWebPage
 				$this->LdapAuthServerLdaps->Checked = ($this->web_config['auth_ldap']['ldaps'] == 1);
 				$this->LdapAuthServerStartTLS->Checked = (key_exists('starttls', $this->web_config['auth_ldap']) && $this->web_config['auth_ldap']['starttls'] == 1);
 				$this->LdapAuthServerProtocolVersion->Text = $this->web_config['auth_ldap']['protocol_ver'];
-				$this->LdapAuthServerBaseDn->Text = $this->web_config['auth_ldap']['base_dn'];
 				if ($this->web_config['auth_ldap']['auth_method'] === Ldap::AUTH_METHOD_ANON) {
 					$this->LdapAuthMethodAnonymous->Checked = true;
 				} elseif ($this->web_config['auth_ldap']['auth_method'] === Ldap::AUTH_METHOD_SIMPLE) {
@@ -171,6 +170,7 @@ class Security extends BaculumWebPage
 				$this->LdapAuthMethodSimpleUsername->Text = $this->web_config['auth_ldap']['bind_dn'];
 				$this->LdapAuthMethodSimplePassword->Text = $this->web_config['auth_ldap']['bind_password'];
 				$this->LdapAuthServerBaseDn->Text = $this->web_config['auth_ldap']['base_dn'];
+				$this->LdapAuthServerFilters->Text = $this->web_config['auth_ldap']['filters'] ?? '';
 				$this->LdapAttributesUsername->Text = $this->web_config['auth_ldap']['user_attr'];
 				$this->LdapAttributesLongName->Text = $this->web_config['auth_ldap']['long_name_attr'];
 				$this->LdapAttributesEmail->Text = $this->web_config['auth_ldap']['email_attr'];
@@ -1081,6 +1081,7 @@ class Security extends BaculumWebPage
 		$params['starttls'] = $this->LdapAuthServerStartTLS->Checked ? 1 : 0;
 		$params['protocol_ver'] = $this->LdapAuthServerProtocolVersion->SelectedValue;
 		$params['base_dn'] = $this->LdapAuthServerBaseDn->Text;
+		$params['filters'] = $this->LdapAuthServerFilters->Text;
 		if ($this->LdapAuthMethodAnonymous->Checked) {
 			$params['auth_method'] = Ldap::AUTH_METHOD_ANON;
 		} elseif ($this->LdapAuthMethodSimple->Checked) {

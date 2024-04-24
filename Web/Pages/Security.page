@@ -516,6 +516,29 @@
 					</com:TRequiredFieldValidator>
 				</div>
 			</div>
+			<div class="w3-container w3-row directive_field">
+				<div class="w3-third w3-col">
+					<%[ Filters: ]%>
+				</div>
+				<div class="w3-twothird w3-col">
+					<com:TActiveTextBox
+						ID="LdapAuthServerFilters"
+						CssClass="w3-input w3-border w3-show-inline-block"
+						CausesValidation="false"
+						Width="90%"
+					/>
+					<i class="fa-solid fa-info-circle help_icon w3-text-green" style="display: inline-block;" onclick="const h = $(this).nextAll('div.directive_help'); var disp = h.get(0).style.display; $('div.directive_help').slideUp('fast'); if (disp == 'none') { h.slideDown('fast'); }"></i>
+					<div class="directive_help" style="display: none">
+						<p><%[ RFC 4515 compliant LDAP search filters are supported, for example: ]%></p>
+						<ul>
+							<li><small>(uid=m*)</small></li>
+							<li><small>(|(uid=gani)(uid=ma*a))</small></li>
+							<li><small>(&(objectClass=inetOrgPerson)(|(sn=masmika)(cn=gani*)))</small></li>
+							<li><small>(&(objectClass=posixAccount)(objectClass=person)(|(cn=Admin*)(cn=Super*)))</small></li>
+						</ul>
+					</div>
+				</div>
+			</div>
 			<h5><%[ Attributes ]%></h5>
 			<div class="w3-container w3-row directive_field">
 				<div class="w3-third w3-col">

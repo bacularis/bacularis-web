@@ -5343,3 +5343,6 @@ msgstr "Pokaż 10 najstarszych plików (MTIME)"
 msgid "Job top 10 files"
 msgstr "Top 10 plików zadania"
 
+
+msgid "RFC 4515 compliant LDAP search filters are supported, for example:"
+msgstr "RFC 4515 compliant LDAP search filters are supported, for example:"
