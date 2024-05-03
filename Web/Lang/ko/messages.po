@@ -5351,3 +5351,97 @@ msgstr "Job top 10 files"
 
 msgid "RFC 4515 compliant LDAP search filters are supported, for example:"
 msgstr "RFC 4515 compliant LDAP search filters are supported, for example:"
+
+msgid "Added"
+msgstr "Added"
+
+msgid "Removed"
+msgstr "Removed"
+
+msgid "Not included"
+msgstr "Not included"
+
+msgid "Select job file difference method"
+msgstr "Select job file difference method"
+
+msgid "A and B (full two jobs diff)"
+msgstr "A and B (full two jobs diff)"
+
+msgid "Since A until B (job range)"
+msgstr "Since A until B (job range)"
+
+msgid "Since B until A (job range)"
+msgstr "Since B until A (job range)"
+
+msgid "In A but not in B"
+msgstr "In A but not in B"
+
+msgid "In B but not in A"
+msgstr "In B but not in A"
+
+msgid "Show"
+msgstr "Show"
+
+msgid "Job file differences"
+msgstr "Job file differences"
+
+msgid "it displays all files from job A and all files from job B to compare and show the difference between them."
+msgstr "it displays all files from job A and all files from job B to compare and show the difference between them."
+
+msgid "It takes into account only two selected JobIds A and B."
+msgstr "It takes into account only two selected JobIds A and B."
+
+msgid "It is a good method to see in which of the two backups files were added (new and modified files) and in which they were removed (if used the Accurate job mode)."
+msgstr "It is a good method to see in which of the two backups files were added (new and modified files) and in which they were removed (if used the Accurate job mode)."
+
+msgid "Also it displays what files have been included in A or in B, or in both."
+msgstr "Also it displays what files have been included in A or in B, or in both."
+
+msgid "it displays all files in selected JobIds range between A and B."
+msgstr "it displays all files in selected JobIds range between A and B."
+
+msgid "In this method A should be lower (older) than B."
+msgstr "In this method A should be lower (older) than B."
+
+msgid "Files are displayed as A files."
+msgstr "Files are displayed as A files."
+
+msgid "It is useful for seeing all added and removed files in multiple JobIds."
+msgstr "It is useful for seeing all added and removed files in multiple JobIds."
+
+msgid "it displays all files in selected JobIds range between B and A."
+msgstr "it displays all files in selected JobIds range between B and A."
+
+msgid "In this method B should be lower (older) than A."
+msgstr "In this method B should be lower (older) than A."
+
+msgid "Files are displayed as B files."
+msgstr "Files are displayed as B files."
+
+
+msgid "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job A but not in B."
+msgstr "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job A but not in B."
+
+msgid "It is useful to see changes included in A that do not exist in B."
+msgstr "It is useful to see changes included in A that do not exist in B."
+
+msgid "These changes exist in A and do not exist in B."
+msgstr "These changes exist in A and do not exist in B."
+
+msgid "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job B but not in A."
+msgstr "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job B but not in A."
+
+msgid "It is useful to see changes included in B that do not exist in A."
+msgstr "It is useful to see changes included in B that do not exist in A."
+
+msgid "These changes exist in B and do not exist in A."
+msgstr "These changes exist in B and do not exist in A."
+
+msgid "There are available the following job file difference methods:"
+msgstr "There are available the following job file difference methods:"
+
+msgid "The selected job file difference method requires that JobId %A (currently is %a) needs to be lower than JobId %B (currently is %b)."
+msgstr "The selected job file difference method requires that JobId %A (currently is %a) needs to be lower than JobId %B (currently is %b)."
+
+msgid "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."
+msgstr "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."

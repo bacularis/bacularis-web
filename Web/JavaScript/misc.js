@@ -305,10 +305,11 @@ var Strings = {
 	limits: {
 		label: 19
 	},
-	get_short_label: function(txt) {
-		var short_txt = txt;
-		var cut = ((this.limits.label - 2) / 2);
-		if (txt.length > this.limits.label) {
+	get_short_label: function(txt, len) {
+		const size = len || this.limits.label;
+		const cut = ((size - 2) / 2);
+		let short_txt = txt;
+		if (txt.length > size) {
 			short_txt = txt.substr(0, cut) + '..' + txt.substr(-cut);
 		}
 		return short_txt;

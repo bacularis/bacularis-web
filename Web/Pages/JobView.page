@@ -1150,10 +1150,36 @@ var oJobGraphs = {
 		/>
 	</div>
 	<div class="w3-container tab_item" id="job_history" style="display: none">
+		<div class="w3-margin-bottom">
+			<select id="job_history_job_diff_method" class="w3-select w3-border" style="width: 300px">
+				<option value=""><%[ Select job file difference method ]%></option>
+				<option value="a_and_b"><%[ A and B (full two jobs diff) ]%></option>
+				<option value="a_until_b"><%[ Since A until B (job range) ]%></option>
+				<option value="b_until_a"><%[ Since B until A (job range) ]%></option>
+				<option value="a_not_b"><%[ In A but not in B ]%></option>
+				<option value="b_not_a"><%[ In B but not in A ]%></option>
+			</select>
+			<button type="button" id="job_history_job_diff_btn" class="w3-button w3-green" onclick=""><i class="fa-solid fa-spell-check"></i> &nbsp;<%[ Show ]%></button>
+			<i class="fa-solid fa-info-circle help_icon w3-text-green" style="display: inline-block;" onclick="$('#job_history_job_diff_help').slideToggle('fast');"></i>
+			<i id="job_history_job_diff_loader" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden"></i>
+			<div id="job_history_job_diff_error" class="w3-text-red" style="display: none"></div>
+			<div id="job_history_job_diff_help" style="display: none">
+				<p><%[ There are available the following job file difference methods: ]%></p>
+				<ul>
+					<li><strong><%[ A and B (full two jobs diff) ]%></strong> - <%[ it displays all files from job A and all files from job B to compare and show the difference between them. ]%> <%[ It takes into account only two selected JobIds A and B. ]%> <%[ It is a good method to see in which of the two backups files were added (new and modified files) and in which they were removed (if used the Accurate job mode). ]%> <%[ Also it displays what files have been included in A or in B, or in both. ]%></li>
+					<li><strong><%[ Since A until B (job range) ]%></strong> - <%[ it displays all files in selected JobIds range between A and B. ]%> <%[ In this method A should be lower (older) than B. ]%> <%[ Files are displayed as A files. ]%> <%[ It is useful for seeing all added and removed files in multiple JobIds. ]%></li>
+					<li><strong><%[ Since B until A (job range) ]%></strong> - <%[ it displays all files in selected JobIds range between B and A. ]%> <%[ In this method B should be lower (older) than A. ]%> <%[ Files are displayed as B files. ]%> <%[ It is useful for seeing all added and removed files in multiple JobIds. ]%></li>
+					<li><strong><%[ In A but not in B ]%></strong> - <%[ this method takes into account only two selected JobIds A and B to display files that have been added or removed in job A but not in B. ]%> <%[ It is useful to see changes included in A that do not exist in B. ]%> <%[ These changes exist in A and do not exist in B. ]%></li>
+					<li><strong><%[ In B but not in A ]%></strong> - <%[ this method takes into account only two selected JobIds A and B to display files that have been added or removed in job B but not in A. ]%> <%[ It is useful to see changes included in B that do not exist in A. ]%>  <%[ These changes exist in B and do not exist in A. ]%></li>
+				</ul>
+			</div>
+		</div>
 		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
+					<th>A</th>
+					<th>B</th>
 					<th><%[ JobId ]%></th>
 					<th><%[ Name ]%></th>
 					<th><%[ Type ]%></th>
@@ -1192,6 +1218,8 @@ var oJobGraphs = {
 			<tfoot>
 				<tr>
 					<th></th>
+					<th>A</th>
+					<th>B</th>
 					<th><%[ JobId ]%></th>
 					<th><%[ Name ]%></th>
 					<th><%[ Type ]%></th>
@@ -1228,6 +1256,8 @@ var oJobGraphs = {
 			</tfoot>
 		</table>
 <script type="text/javascript">
+let oJobHistoryListSelectedA;
+let oJobHistoryListSelectedB;
 var oJobHistoryList = {
 	ids: {
 		job_list: 'job_history_list',
@@ -1259,6 +1289,32 @@ var oJobHistoryList = {
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'jobid',
+					render: function(data, type, row) {
+						const radio = document.createElement('INPUT');
+						radio.type = 'radio';
+						radio.name = 'start_jobid';
+						radio.setAttribute('data-value', 'start' + data);
+						radio.value = data;
+						radio.classList.add('w3-radio');
+						radio.style.top = '3px';
+						return radio.outerHTML;
+					}
+				},
+				{
+					data: 'jobid',
+					render: function(data, type, row) {
+						const radio = document.createElement('INPUT');
+						radio.type = 'radio';
+						radio.name = 'end_jobid';
+						radio.setAttribute('data-value', 'end' + data);
+						radio.value = data;
+						radio.classList.add('w3-radio');
+						radio.style.top = '3px';
+						return radio.outerHTML;
+					}
 				},
 				{data: 'jobid'},
 				{data: 'name'},
@@ -1416,19 +1472,27 @@ var oJobHistoryList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 32 ]
+				targets: [ 34 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 ]
+				targets: [ 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
 			},
 			{
 				className: "dt-body-right",
-				targets: [ 15, 16 ]
+				targets: [ 17, 18 ]
 			}],
 			order: [1, 'desc'],
-			initComplete: function () {
-				this.api().columns([3, 4, 5, 14]).every(function () {
+			drawCallback: function () {
+				$('#' + oJobHistoryList.ids.job_list_body + ' input[name="start_jobid"]').prop('checked', false);
+				$('#' + oJobHistoryList.ids.job_list_body + ' input[name="end_jobid"]').prop('checked', false);
+				if (oJobHistoryListSelectedA) {
+					$('#' + oJobHistoryList.ids.job_list_body + ' input[data-value="start' + oJobHistoryListSelectedA + '"]').prop('checked', true);
+				}
+				if (oJobHistoryListSelectedB) {
+					$('#' + oJobHistoryList.ids.job_list_body + ' input[data-value="end' + oJobHistoryListSelectedB + '"]').prop('checked', true);
+				}
+				this.api().columns([5, 6, 7, 16]).every(function () {
 					var column = this;
 					var select = $('<select><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
@@ -1440,7 +1504,7 @@ var oJobHistoryList = {
 						.search(val ? '^' + val + '$' : '', true, false)
 						.draw();
 					});
-					if (column[0][0] == 14) {
+					if (column[0][0] == 16) {
 						column.data().unique().sort().each(function (d, j) {
 							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
 								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
@@ -1462,6 +1526,14 @@ var oJobHistoryList = {
 		});
 	}
 };
+$(document).ready(function(){
+	$('#job_history').on('click', '#' + oJobHistoryList.ids.job_list_body + ' input[name="start_jobid"]', function() {
+		oJobHistoryListSelectedA = $(this).val();
+	});
+	$('#job_history').on('click', '#' + oJobHistoryList.ids.job_list_body + ' input[name="end_jobid"]', function() {
+		oJobHistoryListSelectedB = $(this).val();
+	});
+});
 MonitorParams = {
 	jobs: {
 		name: ['<%=$this->getJobName()%>']
@@ -1479,6 +1551,329 @@ $(function() {
 let fragment = get_url_fragment();
 fragment = fragment ? '#' + fragment : '';
 <%=$this->getJobId() > 0 ? "window.history.pushState({}, '', '/web/job/history/" . $this->getJobId() . "/" . $this->getJobName() . "/' + fragment)" : ''%>;
+</script>
+		<div id="job_history_job_diff_modal" class="w3-modal" style="display: none;">
+			<div class="w3-modal-content w3-animate-top w3-card-4" style="min-width: 90%;">
+				<header class="w3-container w3-green">
+					<span onclick="oJobFileDiff.show(false);" class="w3-button w3-display-topright">×</span>
+					<h2><%[ Job file differences ]%> - <span id="job_history_job_diff_modal_title"></span></h2>
+				</header>
+				<div class="w3-container w3-padding w3-container">
+					<table id="job_history_job_diff_modal_table" class="w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%; table-layout: fixed;">
+						<thead>
+							<tr class="row">
+								<th class="w3-center">A JobId</th>
+								<th class="w3-center">A</th>
+								<th class="w3-center"><%[ State ]%> A</th>
+								<th class="w3-center"><%[ State ]%> B</th>
+								<th class="w3-center">B</th>
+								<th class="w3-center">B JobId</th>
+							</tr>
+						</thead>
+						<tbody id="job_history_job_diff_modal_table_body"></tbody>
+						<tfoot>
+							<tr class="row">
+								<th class="w3-center">A JobId</th>
+								<th class="w3-center">A</th>
+								<th class="w3-center"><%[ State ]%> A</th>
+								<th class="w3-center"><%[ State ]%> B</th>
+								<th class="w3-center">B</th>
+								<th class="w3-center">B JobId</th>
+							</tr>
+						</tfoot>
+					</table>
+					<span class="w3-tag w3-small bold w3-green" style="padding: 6px; width: 100px; margin: 2px 8px;">+ Added</span><small> - file is created or modified and it is included in current JobId</small>
+					<span class="w3-tag w3-small bold w3-red" style="padding: 6px; width: 100px; margin: 2px 8px;">– Removed</span><small> - file is marked as removed in current JobId (Accurate mode is required for that) and this change is included in current JobId</small>
+					<span class="w3-tag w3-small bold w3-blue-gray" style="padding: 6px; width: 100px; margin: 2px 8px;">☓ Not included</span><small> - file is not included in current JobId</small>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-green w3-section" onclick="oJobFileDiff.show(false);"><i class="fas fa-times"></i> &nbsp;Close</button>
+				</footer>
+			</div>
+		</div>
+		<com:TCallback ID="JobFileDiff" OnCallback="jobFileDiff" />
+<script>
+var oJobFileDiff = {
+	ids: {
+		modal: 'job_history_job_diff_modal',
+		method: 'job_history_job_diff_method',
+		btn: 'job_history_job_diff_btn',
+		table: 'job_history_job_diff_modal_table',
+		title: 'job_history_job_diff_modal_title',
+		error: 'job_history_job_diff_error',
+		loader: 'job_history_job_diff_loader'
+	},
+	methods: {
+		a_and_b: 'a_and_b',
+		a_until_b: 'a_until_b',
+		b_until_a: 'b_until_a',
+		a_not_b: 'a_not_b',
+		b_not_a: 'b_not_a'
+	},
+	file_states: {
+		added: {name: 'added', label: '<%[ Added ]%>'},
+		removed: {name: 'removed', label: '<%[ Removed ]%>'},
+		not_included: {name: 'not_included', label: '<%[ Not included ]%>'}
+	},
+	file_label_size: 68,
+	init: function() {
+		this.add_events();
+	},
+	update_table: function(data) {
+		const self = oJobFileDiff;
+		self.data = data;
+		if (self.table) {
+			self.table.clear();
+			self.table.rows.add(self.data);
+			self.table.draw(false);
+		} else {
+			self.set_table();
+		}
+		// reset filters
+		self.table.columns().search('').draw();
+		self.loader(false);
+		self.show(true);
+	},
+	add_events: function() {
+		const btn = document.getElementById(this.ids.btn);
+		btn.addEventListener('click', (e) => {
+			const method = document.getElementById(this.ids.method);
+			const title = method.options[method.selectedIndex].textContent;
+			this.run_diff(method.value, title);
+		});
+	},
+	set_title: function(text) {
+		const title = document.getElementById(this.ids.title);
+		title.textContent = text;
+	},
+	show: function(show) {
+		const win = document.getElementById(this.ids.modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
+	},
+	run_diff: function(method, title) {
+		if (title) {
+			this.set_title(title);
+		}
+		const a = this.get_a();
+		const b = this.get_b();
+		if (!method || this.check_errors(a, b, method)) {
+			return;
+		}
+		const param = {
+			a: a,
+			b: b,
+			name: '<%=$this->getJobName()%>',
+			method: method
+		};
+		const cb = <%=$this->JobFileDiff->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(param);
+		cb.dispatch();
+		this.loader(true);
+	},
+	get_a: function() {
+		return oJobHistoryListSelectedA;
+	},
+	get_b: function() {
+		return oJobHistoryListSelectedB;
+	},
+	check_errors: function(a, b, method) {
+		let error = false;
+		let error_msg;
+		let msg = '<%[ The selected job file difference method requires that JobId %A (currently is %a) needs to be lower than JobId %B (currently is %b). ]%>';
+		if (a <= b && method == this.methods.b_until_a) {
+			error_msg = msg.replace('%a', b).replace('%b', a);
+			error_msg = error_msg.replace('%A', 'B').replace('%B', 'A');
+		} else if (a >= b && method == this.methods.a_until_b) {
+			error_msg = msg.replace('%a', a).replace('%b', b);
+			error_msg = error_msg.replace('%A', 'A').replace('%B', 'B');
+		}
+		const err = document.getElementById(this.ids.error);
+		if (error_msg) {
+			error = true;
+		}
+		this.set_error(error_msg);
+		return error;
+	},
+	set_error: function(emsg) {
+		const self = oJobFileDiff;
+		const err = document.getElementById(self.ids.error);
+		if (emsg) {
+			err.textContent = emsg;
+			$(err).slideDown('fast');
+		} else {
+			$(err).slideUp('fast');
+		}
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.table).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			enableNestedDataAccess: '.',
+			autoWidth: false,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					data: 'A.jobid',
+					width: '80px'
+				},
+				{
+					data: 'A.file',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display' && data) {
+							const div = document.createElement('DIV');
+							div.title = data;
+							const label_short = Strings.get_short_label(data, this.file_label_size);
+							div.textContent = label_short;
+							ret = div.outerHTML;
+						}
+						return ret;
+					},
+					width: '510px'
+				},
+				{
+					data: 'A.state',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display') {
+							const span = document.createElement('SPAN');
+							span.style.padding = '6px';
+							span.style.width = '90px';
+							span.classList.add('w3-tag', 'w3-small', 'bold');
+							if (data === this.file_states.added.name) {
+								span.classList.add('w3-green');
+								span.textContent = '+ ' + this.file_states.added.label;
+							} else if (data === this.file_states.removed.name) {
+								span.classList.add('w3-red');
+								span.textContent = '– ' + this.file_states.removed.label;
+							} else {
+								span.classList.add('w3-blue-gray');
+								span.textContent = '☓ ' + this.file_states.not_included.label;
+							}
+							ret = span.outerHTML;
+						} else if (type == 'filter' || type == 'sort') {
+							ret = data;
+						}
+						return ret;
+					},
+					width: '110px'
+				},
+				{
+					data: 'B.state',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display') {
+							const span = document.createElement('SPAN');
+							span.style.padding = '6px';
+							span.style.width = '90px';
+							span.classList.add('w3-tag', 'w3-small', 'bold');
+							if (data === this.file_states.added.name) {
+								span.classList.add('w3-green');
+								span.textContent = '+ ' + this.file_states.added.label;
+							} else if (data === this.file_states.removed.name) {
+								span.classList.add('w3-red');
+								span.textContent = '– ' + this.file_states.removed.label;
+							} else {
+								span.classList.add('w3-blue-gray');
+								span.textContent = '☓ ' + this.file_states.not_included.label;
+							}
+							ret = span.outerHTML;
+						} else if (type == 'filter' || type == 'sort') {
+							ret = data;
+						}
+						return ret;
+					},
+					width: '110px'
+				},
+				{
+					data: 'B.file',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type == 'display' && data) {
+							const div = document.createElement('DIV');
+							div.title = data;
+							const label_short = Strings.get_short_label(data, this.file_label_size);
+							div.textContent = label_short;
+							ret = div.outerHTML;
+						}
+						return ret;
+					},
+					width: '510px'
+				},
+				{
+					data: 'B.jobid',
+					width: '80px'
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [
+				{
+					targets:[ 0, 2, 3, 5 ],
+					defaultContent: '–',
+					className: "dt-center"
+				},
+				{
+					targets:[ 1, 4 ],
+					defaultContent: '<div class="w3-center">–</div>'
+				}
+			],
+			order: [2, 'desc'],
+			drawCallback: function () {
+				this.api().columns([0, 2, 3, 5]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if ([2, 3].includes(column[0][0])) {
+						let label;
+						column.data().unique().sort().each(function (d, j) {
+							label = oJobFileDiff.file_states.hasOwnProperty(d) ? oJobFileDiff.file_states[d].label : oJobFileDiff.file_states.not_included.label;
+							if (!d) {
+								d = '-';
+							}
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" title="' + d + '" selected>' + label  + '</option>');
+							} else {
+								select.append('<option value="' + d + '" title="' + d + '">' +  label + '</option>');
+							}
+						});
+					} else {
+						column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+};
+$(function() {
+	oJobFileDiff.init();
+});
 </script>
 	</div>
 	<div class="w3-container tab_item" id="job_schedules" data-btn="<%=$this->JobSchedulesBtn->ClientID%>" style="display: none">

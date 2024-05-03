@@ -30,6 +30,7 @@
 use Prado\Prado;
 use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
+use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -664,5 +665,75 @@ class JobView extends BaculumWebPage
 			$this->setJobLogOrder(self::SORT_DESC);
 		}
 		$this->refreshJobLog(null, null);
+	}
+
+	/**
+	 * Run job file difference.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackParameter $param event parameter
+	 */
+	public function jobFileDiff($sender, $param)
+	{
+		$data = $param->getCallbackParameter();
+		if (!is_object($data) || !property_exists($data, 'a') || !property_exists($data, 'b')) {
+			return;
+		}
+		$a = (int) $data->a;
+		$b = (int) $data->b;
+		$api = $this->getModule('api');
+		$result = $api->get(
+			['jobs', $data->name, $a, $b, 'diff', '?method=' . $data->method]
+		);
+		if ($result->error === 0) {
+			$data = $this->prepareJobFileData(
+				(array) $result->output,
+				$data->method
+			);
+			$this->getCallbackClient()->callClientFunction(
+				'oJobFileDiff.update_table',
+				[$data]
+			);
+		} else {
+			$emsg = $result->output;
+			if ($result->error === ConnectionError::ERROR_CONNECTION_TO_HOST_PROBLEM) {
+				$emsg = Prado::localize('Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more).');
+			}
+			$this->getCallbackClient()->callClientFunction(
+				'oJobFileDiff.set_error',
+				[$emsg]
+			);
+		}
+	}
+
+	/**
+	 * Prepare job file difference data to use in template.
+	 *
+	 * @param array $data data to prepare
+	 * @param string $method file difference method
+	 * @return array data ready to use
+	 */
+	private function prepareJobFileData(array $data, string $method): array
+	{
+		$methods_allow_multi_jobids = [
+			'a_until_b',
+			'b_until_a'
+		];
+		$is_mjobs = in_array($method, $methods_allow_multi_jobids);
+		$res = [];
+		foreach ($data as $file => $prop) {
+			$pr = [];
+			for ($i = 0; $i < count($prop); $i++) {
+				$prop[$i]->file = $file;
+				$pr[$prop[$i]->type] = $prop[$i];
+				if ($is_mjobs) {
+					$res[] = $pr;
+				}
+			}
+			if (!$is_mjobs) {
+				$res[] = $pr;
+			}
+		}
+		return $res;
 	}
 }
