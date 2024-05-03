@@ -42,7 +42,7 @@ function load_cons_res_config(resource) {
 			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="ConsoleResourcesConfig"
 				ComponentType="bcons"
-				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
+				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ], [ 'name' => 'Description', 'label' => 'Description' ]]%>"
 			/>
 		</div>
 	</div>

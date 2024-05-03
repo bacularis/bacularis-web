@@ -999,7 +999,7 @@ function load_dir_res_config(resource) {
 			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="DirectorResourcesConfig"
 				ComponentType="dir"
-				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ]]%>"
+				ResourceList="<%=[[ 'name' => 'Name', 'label' => 'Name' ], [ 'name' => 'Description', 'label' => 'Description' ]]%>"
 				OnRename="renameResource"
 			/>
 		</div>

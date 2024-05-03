@@ -102,6 +102,8 @@ class BaculaConfigResourceList extends Portlets
 				for ($j = 0; $j < count($res_list); $j++) {
 					if (property_exists($config->output[$i]->{$resource_type}, $res_list[$j]['name'])) {
 						$data[$res_list[$j]['name']] = $config->output[$i]->{$resource_type}->{$res_list[$j]['name']};
+					} else {
+						$data[$res_list[$j]['name']] = '';
 					}
 				}
 				$directives[] = $data;
