@@ -261,6 +261,38 @@ class BaculaConfigResourceList extends Portlets
 		}
 	}
 
+	public function loadResourceDeps($sender, $param)
+	{
+		$par = $param->getCallbackParameter();
+		if (!is_array($par) || count($par) !== 2) {
+			return;
+		}
+		[$resource_type, $resource_name] = $par;
+		$host = $this->getHost();
+		$component_type = $this->getComponentType();
+		$result = $this->getModule('api')->get(
+			[
+				'config',
+				$component_type
+			],
+			$host
+		);
+		$config = [];
+		if (is_object($result) && $result->error === 0 && is_array($result->output)) {
+			$config = $result->output;
+		}
+		$deps = $this->getModule('data_deps')->checkDependencies(
+			$component_type,
+			$resource_type,
+			$resource_name,
+			$config
+		);
+		$this->getPage()->getCallbackClient()->callClientFunction(
+			'oBaculaConfigResourceDeps' . $this->ClientID . '.update',
+			[$deps]
+		);
+	}
+
 	private function showRemovedResourceError($error_message)
 	{
 		$this->RemoveResourceError->Text = $error_message;

@@ -11,9 +11,10 @@
 				<th></th>
 				<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListHeaderRepeater">
 					<prop:ItemTemplate>
-						<th class="center"><%=$this->Data['label']%></th>
+						<th class="dt-center"><%=$this->Data['label']%></th>
 					</prop:ItemTemplate>
 				</com:Bacularis.Common.Portlets.BSimpleRepeater>
+				<th><%[ In use by ]%></th>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</thead>
@@ -23,14 +24,50 @@
 				<th></th>
 				<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListFooterRepeater">
 					<prop:ItemTemplate>
-						<th class="center"><%=$this->Data['label']%></th>
+						<th class="dt-center"><%=$this->Data['label']%></th>
 					</prop:ItemTemplate>
 				</com:Bacularis.Common.Portlets.BSimpleRepeater>
+				<th><%[ In use by ]%></th>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</tfoot>
 	</table>
 </div>
+<div id="<%=$this->ClientID%>_in_use_by_modal" class="w3-modal" style="display: none;">
+	<div class="w3-modal-content w3-animate-top w3-card-4" style="min-width: 60%;">
+		<header class="w3-container w3-green">
+			<span onclick="oBaculaConfigResourceDeps<%=$this->ClientID%>.show_window(false);" class="w3-button w3-display-topright">×</span>
+			<h2><%[ Resource usage ]%> - <span id="<%=$this->ClientID%>_in_use_by_modal_title"></span></h2>
+		</header>
+		<div class="w3-container w3-padding w3-container">
+			<table id="<%=$this->ClientID%>_in_use_by_table" class="w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%">
+				<thead>
+					<tr class="row">
+						<th></th>
+						<th class="w3-center"><%[ Component type ]%></th>
+						<th class="w3-center"><%[ Resource ]%></th>
+						<th class="w3-center"><%[ Resource name ]%></th>
+						<th class="w3-center"><%[ Directive ]%></th>
+					</tr>
+				</thead>
+				<tbody id="<%=$this->ClientID%>_in_use_by_table_body"></tbody>
+				<tfoot>
+					<tr class="row">
+						<th></th>
+						<th class="w3-center"><%[ Component type ]%></th>
+						<th class="w3-center"><%[ Resource ]%></th>
+						<th class="w3-center"><%[ Resource name ]%></th>
+						<th class="w3-center"><%[ Directive ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<footer class="w3-container w3-center">
+			<button type="button" class="w3-button w3-green w3-section" onclick="oBaculaConfigResourceDeps<%=$this->ClientID%>.show_window(false);"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
+		</footer>
+	</div>
+</div>
+<com:TCallback ID="ConfigResourceDeps" OnCallback="loadResourceDeps" />
 <script>
 var oBaculaConfigResourceList<%=$this->ClientID%> = {
 	ids: {
@@ -75,6 +112,18 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 						,{
 							data: 'Name',
 							render: function (data, type, row) {
+								const restype = document.getElementById('<%=$this->ResourceTypeAddLink->ClientID%>').textContent;
+								const resname = data;
+								const icon = document.createElement('I');
+								icon.classList.add('fa-solid', 'fa-arrows-turn-to-dots', 'fa-fw', 'pointer');
+								icon.setAttribute('onclick', 'oBaculaConfigResourceDeps<%=$this->ClientID%>.load_deps("' + restype + '", "' + resname + '");');
+								return icon.outerHTML;
+							},
+							width: '100px'
+						}
+						,{
+							data: 'Name',
+							render: function (data, type, row) {
 								var span = document.createElement('SPAN');
 								span.className = 'w3-right';
 
@@ -103,7 +152,8 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								span.appendChild(edit_btn);
 								span.appendChild(del_btn);
 								return span.outerHTML;
-							}
+							},
+							width: '200px'
 						}
 			],
 			responsive: {
@@ -118,13 +168,103 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 2 ]
+				targets: [ 3, 4 ]
 			}],
 			order: [1, 'asc']
 		});
 	}
 };
 //oBaculaConfigResourceList<%=$this->ClientID%>.init();
+var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
+	ids: {
+		list: '<%=$this->ClientID%>_in_use_by_table',
+		list_body: '<%=$this->ClientID%>_in_use_by_table_body',
+		win: '<%=$this->ClientID%>_in_use_by_modal',
+		title: '<%=$this->ClientID%>_in_use_by_modal_title'
+	},
+	data: [],
+	table: null,
+	load_deps: function(restype, resname) {
+		const cb = <%=$this->ConfigResourceDeps->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(
+			[restype, resname]
+		);
+		cb.dispatch();
+		const title = restype + ' "' + resname + '"';
+		this.set_title(title);
+	},
+	update: function(data) {
+		const self = oBaculaConfigResourceDeps<%=$this->ClientID%>;
+		self.data = data;
+		if (self.table) {
+			var page = self.table.page();
+			self.table.clear().rows.add(self.data).draw();
+			self.table.page(page).draw(false);
+		} else {
+			self.set_table();
+		}
+		self.show_window(true);
+		self.table.columns.adjust();
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'component_type',
+					render: (data, type, row) => {
+						return Components.get_full_name(data);
+					}
+				},
+				{
+					data: 'resource_type'
+				},
+				{
+					data: 'resource_name'
+				},
+				{
+					data: 'directive_name'
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'dt-center',
+				targets: [ 1, 2, 4 ]
+			}],
+			order: [1, 'asc']
+		});
+	},
+	show_window: function(show) {
+		const win = document.getElementById(this.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	set_title: function(text) {
+		const title = document.getElementById(this.ids.title);
+		title.textContent = text;
+	}
+};
 </script>
 <com:TCallback ID="RemoveResource" OnCallback="removeResource" />
 <div id="resource_window<%=$this->ClientID%>" class="w3-modal">

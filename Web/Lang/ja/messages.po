@@ -5503,3 +5503,15 @@ msgstr "The selected job file difference method requires that JobId %A (currentl
 
 msgid "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."
 msgstr "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."
+
+msgid "In use by"
+msgstr "In use by"
+
+msgid "Resource usage"
+msgstr "Resource usage"
+
+msgid "Resource name"
+msgstr "Resource name"
+
+msgid "Directive"
+msgstr "Directive"
