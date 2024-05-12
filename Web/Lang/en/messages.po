@@ -5441,3 +5441,15 @@ msgstr "Resource name"
 
 msgid "Directive"
 msgstr "Directive"
+
+msgid "API host to test"
+msgstr "API host to test"
+
+msgid "Test name"
+msgstr "Test name"
+
+msgid "Download results"
+msgstr "Download results"
+
+msgid "Health self test"
+msgstr "Health self test"

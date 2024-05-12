@@ -24,6 +24,9 @@
 		<a id="btn_application_settings_audit_log" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_audit_log'); if (oAppSettingsAuditLog.table) { oAppSettingsAuditLog.table.responsive.recalc(); oAppSettingsAuditLog.table.columns.adjust().draw(); }">
 			<%[ Audit log ]%>
 		</a>
+		<a id="btn_application_settings_self_test" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_self_test');">
+			<%[ Health self test ]%>
+		</a>
 	</div>
 	<!-- General options -->
 	<div class="w3-container tab_item" id="application_settings_general">
@@ -603,6 +606,225 @@ var oAppSettingsAuditLog = {
 $(function() {
 	oAppSettingsAuditLog.load_table();
 });
+		</script>
+	</div>
+	<div class="w3-container tab_item" id="application_settings_self_test" style="display: none">
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ API host to test ]%>:</div>
+			<div class="w3-quarter w3-col">
+				<com:TActiveDropDownList
+					ID="SelfTestAPIHosts"
+					CssClass="w3-select w3-border"
+				/>
+			</div>
+		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Start test ]%>:</div>
+			<div class="w3-quarter w3-col">
+				<a href="javascript:void(0)" onclick="oAppSettingsSelfTest.load_table();" class="w3-button w3-green"><i class="fa-solid fa-play"></i> &nbsp;<%[ Start test ]%></a>
+				<a href="javascript:void(0)" id="application_settings_self_test_download_results" onclick="oAppSettingsSelfTest.download_results();" class="w3-button w3-green" style="display: none"><i class="fa-solid fa-download"></i> &nbsp;<%[ Download results ]%></a>
+				<i id="application_settings_self_test_loader" class="fa fa-sync w3-spin w3-margin-left w3-margin-right" style="visibility: hidden"></i>
+				<div id="application_settings_self_test_error" class="w3-section w3-text-red" style="display: none"></div>
+			</div>
+		</div>
+		<div class="w3-container">
+			<table id="application_settings_self_test_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="display: none; width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th><%[ Category ]%></th>
+						<th><%[ Test name ]%></th>
+						<th><%[ Result ]%></th>
+						<th><%[ Description ]%></th>
+					</tr>
+				</thead>
+				<tbody id="application_settings_self_test_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th><%[ Category ]%></th>
+						<th><%[ Test name ]%></th>
+						<th><%[ Result ]%></th>
+						<th><%[ Description ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<com:TCallback ID="SelfTestStart" OnCallback="startSelfTest">
+			<prop:ClientSide.OnLoading>
+				oAppSettingsSelfTest.show_loader(true);
+				oAppSettingsSelfTest.show_error(false);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oAppSettingsSelfTest.show_loader(false);
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<script>
+var oAppSettingsSelfTest = {
+	ids: {
+		table: 'application_settings_self_test_list',
+		refresh: 'application_settings_self_test_refresh_interval',
+		loader: 'application_settings_self_test_loader',
+		result_btn: 'application_settings_self_test_download_results',
+		error: 'application_settings_self_test_error'
+	},
+	data: [],
+	test_states: {
+		info: 'info',
+		warning: 'warning',
+		error: 'error',
+		disabled: 'disabled'
+	},
+	init: function(data) {
+		const self = oAppSettingsSelfTest;
+		self.data = data;
+		if (self.table) {
+			self.table.clear();
+			self.table.rows.add(data);
+			self.table.draw(false);
+		} else {
+			self.show_table(true);
+			self.set_table();
+		}
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.table).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lBfrtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			pageLength : 25,
+			lengthMenu: [10, 25, 50, 75, 100],
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'section',
+					width: '30%'
+				},
+				{
+					data: 'name',
+					width: '20%'
+				},
+				{
+					data: 'state',
+					render: (data, type, row) => {
+						let ret = data;
+						if (type === 'display') {
+							const img = document.createElement('I');
+							img.classList.add('fa-solid', 'w3-large');
+							if (data == this.test_states.info) {
+								img.classList.add('fa-check-square', 'w3-text-green');
+								img.title = '<%[ OK ]%>';
+							} else if (data == this.test_states.warning) {
+								img.classList.add('fa-exclamation-triangle', 'w3-text-orange');
+								img.title = '<%[ Warning ]%>';
+							} else if (data == this.test_states.error) {
+								img.classList.add('fa-exclamation-circle', 'w3-text-red');
+								img.title = '<%[ Error ]%>';
+							} else if (data == this.test_states.disabled) {
+								img.classList.add('fa-square-minus', 'w3-text-gray');
+								img.title = '<%[ Disabled ]%>';
+							}
+							ret = img.outerHTML;
+						}
+						return ret;
+					},
+					width: '5%'
+				},
+				{
+					data: 'description',
+					width: '45%'
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 3 ]
+			}],
+			drawCallback: function () {
+				this.api().columns([1, 2, 3]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.data().sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	load_table: function() {
+		const cb = <%=$this->SelfTestStart->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_table_cb: function(data) {
+		oAppSettingsSelfTest.init(data);
+		oAppSettingsSelfTest.show_download_results_btn(true);
+	},
+	show_table: function(show) {
+		const table = document.getElementById(this.ids.table);
+		table.style.display = show ? 'table' : 'none';
+	},
+	test_result: function(type, value) {
+		let ret = false;
+		if (type === 'boolean') {
+			ret = data;
+		}
+		return ret;
+	},
+	show_loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
+	},
+	download_results: function() {
+		this.table.button('1').trigger()
+	},
+	show_download_results_btn: function(show) {
+		const btn = document.getElementById(this.ids.result_btn);
+		btn.style.display = show ? 'inline-block' : 'none';
+	},
+	set_error: function(errmsg) {
+		const self = oAppSettingsSelfTest;
+		const error = document.getElementById(self.ids.error);
+		error.textContent = errmsg;
+		self.show_error(true);
+		self.show_download_results_btn(false);
+	},
+	show_error: function(show) {
+		const error = document.getElementById(this.ids.error);
+		error.style.display = show ? 'block' : 'none';
+	}
+};
 		</script>
 	</div>
 </com:TContent>

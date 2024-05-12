@@ -110,6 +110,13 @@ class ApplicationSettings extends BaculumWebPage
 				$this->LogCategoryApplication->Checked = in_array(AuditLog::CATEGORY_APPLICATION, AuditLog::DEF_CATEGORIES);
 				$this->LogCategorySecurity->Checked = in_array(AuditLog::CATEGORY_SECURITY, AuditLog::DEF_CATEGORIES);
 			}
+
+			if (!$this->IsPostBack && !$this->IsCallback) {
+				$api_hosts = $this->User->getAPIHosts();
+				$this->SelfTestAPIHosts->DataSource = array_combine($api_hosts, $api_hosts);
+				$this->SelfTestAPIHosts->SelectedValue = $this->User->getDefaultAPIHost();
+				$this->SelfTestAPIHosts->dataBind();
+			}
 		}
 	}
 
@@ -205,5 +212,32 @@ class ApplicationSettings extends BaculumWebPage
 			'oAppSettingsAuditLog.init',
 			[$logs]
 		);
+	}
+
+	public function startSelfTest($sender, $param): void
+	{
+		$api_host = $this->SelfTestAPIHosts->SelectedValue;
+		$api_hosts = $this->User->getAPIHosts();
+		if (!in_array($api_host, $api_hosts)) {
+			// host not allowed for user
+			return;
+		}
+
+		$result = $this->getModule('api')->get(
+			['software', 'selftest'],
+			$api_host
+		);
+
+		if ($result->error === 0) {
+			$this->getCallbackClient()->callClientFunction(
+				'oAppSettingsSelfTest.load_table_cb',
+				[$result->output]
+			);
+		} else {
+			$this->getCallbackClient()->callClientFunction(
+				'oAppSettingsSelfTest.set_error',
+				[$result->output]
+			);
+		}
 	}
 }
