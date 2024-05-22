@@ -3203,6 +3203,13 @@
 				"Resource": "Cloud",
 				"Section": "General"
 			},
+			"SyncOnClose": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 1,
+				"FieldType": "CheckBox",
+				"Section": "General"
+			},
 			"RequiresMount": {
 				"Required": false,
 				"ValueType": "bit",
