@@ -1392,6 +1392,7 @@ class Deployment extends BaculumWebPage
 		$params = [
 			'ssh_config' => '',
 			'password' => '',
+			'password_sudo' => '',
 			'passphrase' => '',
 			'key' => '',
 			'use_sudo' => $this->DeployAPIHostUseSudo->Checked
@@ -1404,14 +1405,11 @@ class Deployment extends BaculumWebPage
 			$params['username'] = $user;
 			$params['key'] = $key;
 			$params['passphrase'] = $this->DeployAPIHostPassphrase->Text;
-			if ($params['use_sudo']) {
-				$params['password'] = $this->DeployAPIHostPassword->Text;
-			}
 		} elseif ($this->DeployAPIHostUseSSHConfig->Checked) {
 			$params['passphrase'] = $this->DeployAPIHostPassphrase->Text;
-			if ($params['use_sudo']) {
-				$params['password'] = $this->DeployAPIHostPassword->Text;
-			}
+		}
+		if ($params['use_sudo']) {
+			$params['password_sudo'] = $this->DeployAPIHostPassword->Text;
 		}
 		return $params;
 	}
