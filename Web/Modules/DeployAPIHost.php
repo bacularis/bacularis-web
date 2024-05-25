@@ -45,6 +45,15 @@ class DeployAPIHost extends WebModule
 	public const TMP_DIR = '/tmp/bacularis-deploy';
 
 	/**
+	 * Get command to test connection to destination host.
+	 * It is useful to do connection check before start deployment.
+	 */
+	public function getCheckHostConnectionCommand(): array
+	{
+		return ['ls', '/'];
+	}
+
+	/**
 	 * Get command to create temporary directory for deployment process.
 	 * To this directory are copied files before they are distributed
 	 * to destination paths.

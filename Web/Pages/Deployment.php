@@ -821,6 +821,33 @@ class Deployment extends BaculumWebPage
 		$this->setAPIHostGroupsControl();
 	}
 
+	public function checkDeployAPIHostConnection($sender, $param)
+	{
+		// First create directory for temporary files for all other steps
+		$ssh = $this->getModule('ssh');
+		$deploy_api = $this->getModule('deploy_api');
+		$host = $this->DeployAPIHostHostname->Text;
+		$params = $this->getDeployParams();
+		$cmd = $deploy_api->getCheckHostConnectionCommand();
+		if ($params['use_sudo']) {
+			array_unshift($cmd, 'sudo');
+		}
+		$ret = $ssh->execCommand(
+			$host,
+			$params,
+			$cmd
+		);
+		$this->getCallbackClient()->callClientFunction(
+			'oDeployAPIHost.check_host_connection_cb',
+			[
+				[
+					'output' => $ret['output'],
+					'success' => ($ret['exitcode'] === 0)
+				]
+			]
+		);
+	}
+
 	private function deployAPICopyStep($file)
 	{
 		$scp = $this->getModule('scp');

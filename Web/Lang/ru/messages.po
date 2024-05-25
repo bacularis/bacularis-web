@@ -5463,3 +5463,9 @@ msgstr "Download results"
 
 msgid "Health self test"
 msgstr "Health self test"
+
+msgid "Show result"
+msgstr "Show result"
+
+msgid "Hide result"
+msgstr "Hide result"

@@ -674,7 +674,13 @@ var oDeployAPIHost = {
 		log_container: 'run_deploy_api_log_container',
 		deploy_graphical_results: 'deploy_api_graphical_results',
 		deploy_raw_results: 'deploy_api_raw_results',
-		deploy_log: 'deploy_api_raw_output'
+		deploy_log: 'deploy_api_raw_output',
+		check_connection_loader: 'deploy_api_host_connection_check_loader',
+		check_connection_result_ok: 'deploy_api_host_connection_check_result_ok',
+		check_connection_result_error: 'deploy_api_host_connection_check_result_error',
+		check_connection_result_link: 'deploy_api_host_connection_check_result_link',
+		check_connection_loader_result_output: 'deploy_api_host_connection_check_result_output',
+		check_connection_loader_result_raw: 'deploy_api_host_connection_check_result_raw'
 	},
 	steps: [
 		{
@@ -806,6 +812,59 @@ var oDeployAPIHost = {
 	clear_raw_results: function() {
 		const container = document.getElementById(this.ids.deploy_log);
 		container.textContent = '';
+	},
+	clear_connection_check: function() {
+		this.show_host_connection_loader(false);
+
+		// clear state icons
+		const ok = document.getElementById(this.ids.check_connection_result_ok);
+		ok.style.display = 'none';
+		const error = document.getElementById(this.ids.check_connection_result_error);
+		error.style.display = 'none';
+
+		// clear output
+		const output = document.getElementById(this.ids.check_connection_loader_result_output);
+		output.style.display = 'none';
+		const raw = document.getElementById(this.ids.check_connection_loader_result_raw);
+		raw.textContent = '';
+		const link = document.getElementById(this.ids.check_connection_result_link);
+		link.style.display = 'none';
+		link.textContent = '<%[ Show result ]%>';
+	},
+	set_host_connection_result: function(state, result) {
+		const ok = document.getElementById(this.ids.check_connection_result_ok);
+		const error = document.getElementById(this.ids.check_connection_result_error);
+		const link = document.getElementById(this.ids.check_connection_result_link);
+		const raw = document.getElementById(this.ids.check_connection_loader_result_raw);
+		if (state) {
+			ok.style.display = 'inline-block';
+			error.style.display = 'none';
+		} else {
+			error.style.display = 'inline-block';
+			ok.style.display = 'none';
+		}
+		raw.innerHTML = result.join("<br />");
+		link.style.display = 'inline-block';
+	},
+	toggle_host_connection_result: function() {
+		const output = $('#' + this.ids.check_connection_loader_result_output);
+		const link = document.getElementById(this.ids.check_connection_result_link);
+		if (output.is(':hidden')) {
+			output.slideDown('fast');
+			link.textContent = '<%[ Hide result ]%>';
+		} else {
+			output.slideUp('fast');
+			link.textContent = '<%[ Show result ]%>';
+		}
+	},
+	show_host_connection_loader: function(show) {
+		const loader = document.getElementById(this.ids.check_connection_loader);
+		loader.style.display = show ? 'inline-block' : 'none';
+	},
+	check_host_connection_cb: function(result) {
+		const self = oDeployAPIHost;
+		self.show_host_connection_loader(false);
+		self.set_host_connection_result(result.success, result.output);
 	}
 };
 </script>
@@ -972,6 +1031,28 @@ var oDeployAPIHost = {
 									CssClass="w3-check"
 									Attributes.onclick="const key = $('#<%=$this->DeployAPIHostUseKey->ClientID%>'); const sshcfg = $('#<%=$this->DeployAPIHostUseSSHConfig->ClientID%>'); const el = $('#deploy_api_host_user_pass_auth'); if (key.is(':checked') || sshcfg.is(':checked')) { this.checked ? el.slideDown('fast') : el.slideUp('fast'); }"
 								/>
+							</div>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for=""><%[ Connection test: ]%></label></div>
+						<div class="w3-half">
+							<com:TActiveLinkButton
+								ID="DeployAPIHostConnectionCheck"
+								CssClass="w3-button w3-green w3-tiny"
+								OnCallback="checkDeployAPIHostConnection"
+								ValidationGroup="DeployAPIHostGroup"
+								CausesValidation="true"
+								ClientSide.OnLoading="oDeployAPIHost.clear_connection_check(); oDeployAPIHost.show_host_connection_loader(true);"
+							>
+								<i class="fa fa-play"></i> &nbsp; <%[ Test ]%>
+							</com:TActiveLinkButton> &nbsp;
+							<i id="deploy_api_host_connection_check_loader" class="fa-solid fa-sync w3-spin" style="display: none"></i>
+							<i id="deploy_api_host_connection_check_result_ok" class="fa-solid fa-check w3-text-green" style="display: none"></i>
+							<i id="deploy_api_host_connection_check_result_error" class="fa-solid fa-times w3-text-red" style="display: none"></i>
+							 &nbsp;<span id="deploy_api_host_connection_check_result_link" class="w3-tiny bold pointer" style="display: none" onclick="oDeployAPIHost.toggle_host_connection_result();"></span>
+							<div class="w3-code" id="deploy_api_host_connection_check_result_output" style="display: none">
+								<pre id="deploy_api_host_connection_check_result_raw"></pre>
 							</div>
 						</div>
 					</div>
