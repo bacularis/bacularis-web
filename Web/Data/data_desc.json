@@ -3242,7 +3242,8 @@
 				"ValueType": "str",
 				"DefaultValue": "No",
 				"FieldType": "ComboBox",
-				"Data": ["No", "Yes", "Strong"]
+				"Data": ["No", "Yes", "Strong"],
+				"Section": "General"
 			},
 			"RequiresMount": {
 				"Required": false,
