@@ -41,7 +41,7 @@
 			/>
 			<!-- !PAGE CONTENT! -->
 			<div class="w3-main page_main_el" id="page_main" style="margin-left: 250px; margin-top: 43px;">
-				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small w3-margin-top w3-margin-right" style="border-radius: 3px;">
+				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small w3-margin-top w3-margin-right" style="border-radius: 3px; line-height: 26px;">
 					<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running jobs: ]%> <span id="running_jobs"></span></span>
 				</span>
 				<span id="msg_envelope" class="w3-tag w3-large w3-green w3-text-white w3-right w3-padding-small w3-margin-top w3-margin-right" style="cursor: pointer; border-radius: 3px; <%=((!$this->Application->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) ? 'display: none' : '')%>" title="<%[ Display messages log window ]%>">
@@ -56,6 +56,7 @@
 						AutoPostBack="true"
 						Width="200px"
 						Height="34px"
+						Style="padding: 5px"
 					/>
 				</com:TLabel>
 				<span class="w3-right w3-padding-small w3-margin-top w3-margin-right">
