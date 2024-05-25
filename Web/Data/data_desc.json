@@ -240,7 +240,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -451,7 +451,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			}
 		},
@@ -564,7 +564,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "General"
 			},
 			"FullBackupPool": {
@@ -617,7 +617,14 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
-				"Data": ["LeastUsed", "ListedOrder"],
+				"Data": ["LeastUsed", "ListedOrder", "FreeSpace", "LastBackedUpTo", "FreeSpaceLeastUsed"],
+				"Section": "Backup"
+			},
+			"StorageGroupPolicyThreshold": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
 				"Section": "Backup"
 			},
 			"SpoolData": {
@@ -703,6 +710,13 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"CheckMalware": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
 				"Section": "Backup"
 			},
 			"AllowIncompleteJobs": {
@@ -960,7 +974,7 @@
 						"ValueType": "str",
 						"DefaultValue": 0,
 						"FieldType": "ComboBox",
-						"Data": ["Before", "After", "Always", "AfterVSS"]
+						"Data": ["Before", "After", "AtJobCompletion", "Always", "AfterVSS", "Queued"]
 					},
 					"RunsOnSuccess": {
 						"Required": false,
@@ -1385,7 +1399,7 @@
 						"ValueType": "str",
 						"DefaultValue": 0,
 						"FieldType": "ComboBox",
-						"Data": ["Gzip", "Gzip1", "Gzip2", "Gzip3", "Gzip4", "Gzip5", "Gzip6", "Gzip7", "Gzip8", "Gzip9", "Lzo"]
+						"Data": ["Gzip", "Gzip1", "Gzip2", "Gzip3", "Gzip4", "Gzip5", "Gzip6", "Gzip7", "Gzip8", "Gzip9", "Lzo", "zstd", "zstd1", "zstd10", "zstd19"]
 					},
 					"Signature": {
 						"Required": false,
@@ -1651,7 +1665,14 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
-				"Data": ["LeastUsed", "ListedOrder"],
+				"Data": ["LeastUsed", "ListedOrder", "FreeSpace", "LastBackedUpTo", "FreeSpaceLeastUsed"],
+				"Section": "General"
+			},
+			"StorageGroupPolicyThreshold": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
 				"Section": "General"
 			},
 			"Catalog": {
@@ -1798,14 +1819,6 @@
 			"NextPool": {
 				"Required": false,
 				"ValueType": "res",
-				"DefaultValue": 0,
-				"FieldType": "ComboBox",
-				"Resource": "Pool",
-				"Section": "Copy and migration"
-			},
-			"CopyPool": {
-				"Required": false,
-				"ValueType": "alist_res",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Resource": "Pool",
@@ -2096,7 +2109,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -2215,7 +2228,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "General"
 			},
 			"FullBackupPool": {
@@ -2268,7 +2281,14 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
-				"Data": ["LeastUsed", "ListedOrder"],
+				"Data": ["LeastUsed", "ListedOrder", "FreeSpace", "LastBackedUpTo", "FreeSpaceLeastUsed"],
+				"Section": "Backup"
+			},
+			"StorageGroupPolicyThreshold": {
+				"Required": false,
+				"ValueType": "size64",
+				"DefaultValue": 0,
+				"FieldType": "Size",
 				"Section": "Backup"
 			},
 			"SpoolData": {
@@ -2354,6 +2374,13 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "TextBox",
+				"Section": "Backup"
+			},
+			"CheckMalware": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
 				"Section": "Backup"
 			},
 			"AllowIncompleteJobs": {
@@ -2858,7 +2885,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -3056,7 +3083,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -3210,6 +3237,13 @@
 				"FieldType": "CheckBox",
 				"Section": "General"
 			},
+			"VolumeEncryption": {
+				"Required": false,
+				"ValueType": "str",
+				"DefaultValue": "No",
+				"FieldType": "ComboBox",
+				"Data": ["No", "Yes", "Strong"]
+			},
 			"RequiresMount": {
 				"Required": false,
 				"ValueType": "bit",
@@ -3271,6 +3305,34 @@
 				"ValueType": "bool",
 				"DefaultValue": 0,
 				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"SetVolumeAppendOnly": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"SetVolumeImmutable": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"SetVolumeReadOnly": {
+				"Required": false,
+				"ValueType": "bool",
+				"DefaultValue": 0,
+				"FieldType": "CheckBox",
+				"Section": "Disk"
+			},
+			"MinimumVolumeProtectionTime": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 2592000,
+				"FieldType": "TimePeriod",
 				"Section": "Disk"
 			},
 			"AlertCommand": {
@@ -3688,7 +3750,7 @@
 				"ValueType": "str",
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
-				"Data": ["S3", "File"],
+				"Data": ["Amazon", "S3", "File"],
 				"Section": "General"
 			},
 			"HostName": {
@@ -3922,7 +3984,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "General"
 			},
 			"Console": {
@@ -3931,6 +3993,34 @@
 				"DefaultValue": 0,
 				"FieldType": "ComboBox",
 				"Section": "General"
+			},
+			"AllowedBackupDirectories": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Limitations"
+			},
+			"ExcludedBackupDirectories": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Limitations"
+			},
+			"AllowedRestoreDirectories": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Limitations"
+			},
+			"AllowedScriptDirectories": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Limitations"
 			},
 			"TlsPskEnable": {
 				"Required": false,
@@ -3999,7 +4089,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -4092,7 +4182,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "General"
 			},
 			"CommCompression": {
@@ -4176,14 +4266,14 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Data encryption"
 			},
 			"PkiMasterKey": {
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Data encryption"
 			},
 			"TlsPskEnable": {
@@ -4404,7 +4494,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Communications encryption"
 			},
 			"TlsDhFile": {
@@ -4490,7 +4580,7 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "General"
 			},
 			"CommCompression": {
@@ -4574,14 +4664,14 @@
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Data encryption"
 			},
 			"PkiMasterKey": {
 				"Required": false,
 				"ValueType": "alist_str",
 				"DefaultValue": 0,
-				"FieldType": "TextBox",
+				"FieldType": "MultiTextBox",
 				"Section": "Data encryption"
 			},
 			"TlsPskEnable": {
