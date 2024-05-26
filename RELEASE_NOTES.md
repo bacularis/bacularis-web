@@ -12,3 +12,75 @@ Changes:
  - Fix deploying Bacularis using ssh key without passphrase together with sudo option
  - Fix displaying API host list on Firefox
 
+## New directives and new directive values
+```
+ - Director:
+   = JobDefs
+     > StorageGroupPolicy => FreeSpace, LastBackedUpTo, FreeSpaceLeastUsed
+     > StorageGroupPolicyThreshold
+     > CheckMalware
+     > Runscript => RunsWhen => AtJobCompletion, Queued
+   = Job
+     > StorageGroupPolicy => FreeSpace, LastBackedUpTo, FreeSpaceLeastUsed
+     > StorageGroupPolicyThreshold
+     > CheckMalware
+     > Runscript => RunsWhen => AtJobCompletion, Queued
+   = Fileset
+     > Include => Options => Compression => zstd, zstd1, zstd10, zstd19
+   = Pool
+     > StorageGroupPolicy => FreeSpace, LastBackedUpTo, FreeSpaceLeastUsed
+     > StorageGroupPolicyThreshold
+ - Storage:
+   = Device
+     > VolumeEncryption
+     > SetVolumeAppendOnly
+     > SetVolumeImmutable
+     > SetVolumeReadOnly
+     > MinimumVolumeProtectionTime
+   = Cloud
+     > Driver => Amazon
+ - File Daemon
+   = Director
+     > AllowedBackupDirectories
+     > ExcludedBackupDirectories
+     > AllowedRestoreDirectories
+     > AllowedScriptDirectories
+```
+
+## Changed directives from text box to multiple text box
+```
+  - Director
+    = Director
+      > TlsAllowedCn
+    = Client
+      > TlsAllowedCn
+    = Job
+      > Run
+    = Console
+      > TlsAllowedCn
+    = JobDefs
+      > Run
+  - Storage
+    = Director
+      > TlsAllowedCn
+    = Storage
+      > TlsAllowedCn
+  - File Daemon
+    = Director
+      > DisableCommand
+      > TlsAllowedCn
+    = FileDaemon
+      > DisableCommand
+      > PkiSigner
+      > PkiMasterKey
+    = Console
+      > TlsAllowedCn
+```
+
+## Removed directives
+```
+  - Director
+    = Pool
+      > CopyPool
+```
+
