@@ -20,7 +20,6 @@ use Bacularis\Web\Modules\PatternConfig;
 
 class Patterns extends BaculumWebPage
 {
-
 	public const CONFIG_WINDOW_MODE_ADD = 'add';
 	public const CONFIG_WINDOW_MODE_EDIT = 'edit';
 
@@ -55,7 +54,7 @@ class Patterns extends BaculumWebPage
 		$config = $this->getModule('conf_config')->getConfig();
 		$pattern = $this->getModule('pattern_config')->getConfig();
 		$config_vals = array_values($config);
-		$config_in_pattern_func = function($item) use ($pattern) {
+		$config_in_pattern_func = function ($item) use ($pattern) {
 			$patterns = [];
 			foreach ($pattern as $name => $props) {
 				if (in_array($item['name'], $props['configs'])) {
@@ -120,7 +119,7 @@ class Patterns extends BaculumWebPage
 			array_unshift($resources, '');
 			$misc = $this->getModule('misc');
 			$resources = array_map(
-				fn($res) => $misc->setResourceToAPIForm($res),
+				fn ($res) => $misc->setResourceToAPIForm($res),
 				$resources
 			);
 			$resource_list = array_combine($resources, $resources);
@@ -227,8 +226,8 @@ class Patterns extends BaculumWebPage
 		$config_vals = array_values($config);
 
 		// Update configs in pattern window. Add only configs with defined Name directive
-		$configs = array_filter($config_vals, fn($item) => ($item['component'] == $component && key_exists('Name', $item['config'])));
-		$names = array_map(fn($item) => $item['name'], $configs);
+		$configs = array_filter($config_vals, fn ($item) => ($item['component'] == $component && key_exists('Name', $item['config'])));
+		$names = array_map(fn ($item) => $item['name'], $configs);
 		$this->PatternConfigs->DataSource = array_combine($names, $names);
 		$this->PatternConfigs->dataBind();
 	}

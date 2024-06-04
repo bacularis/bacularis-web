@@ -721,7 +721,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 */
 	public static function getDependenciesError($deps, $resource_type, $resource_name)
 	{
-		$bold_func = fn($item) => "<strong>$item</strong>";
+		$bold_func = fn ($item) => "<strong>$item</strong>";
 		$emsg = Prado::localize('Resource %s "%s" is used in the following resources:');
 		$emsg = sprintf(
 			$emsg,
@@ -899,7 +899,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	/**
 	 * Set if display required directive property.
 	 *
-	 * @param mixed $rename
+	 * @param mixed $required
 	 */
 	public function setRequireDirectives($required)
 	{

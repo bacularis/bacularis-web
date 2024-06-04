@@ -48,8 +48,8 @@ class BulkApplyPatternsModal extends Portlets
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$pattern_vals = array_values($patterns);
-		$pattern_vals = array_filter($pattern_vals, fn($item) => $item['component'] == $component_type);
-		$names = array_map(fn($item) => $item['name'], $pattern_vals);
+		$pattern_vals = array_filter($pattern_vals, fn ($item) => $item['component'] == $component_type);
+		$names = array_map(fn ($item) => $item['name'], $pattern_vals);
 		$this->Patterns->DataSource = array_combine($names, $names);
 		$this->Patterns->dataBind();
 
@@ -180,7 +180,8 @@ class BulkApplyPatternsModal extends Portlets
 		}
 	}
 
-	private function applyPatternConfig($config, &$resource) {
+	private function applyPatternConfig($config, &$resource)
+	{
 		foreach ($config as $directive => $value) {
 			if (key_exists($directive, $resource)) {
 				// Directive exists in original config resource
@@ -226,7 +227,7 @@ class BulkApplyPatternsModal extends Portlets
 	 */
 	public function getComponentType(): string
 	{
-		return $this->getViewState(self::COMPONENT_TYPE. '');
+		return $this->getViewState(self::COMPONENT_TYPE, '');
 	}
 
 	/**

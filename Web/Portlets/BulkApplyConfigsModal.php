@@ -203,7 +203,7 @@ class BulkApplyConfigsModal extends Portlets
 	 */
 	public function getComponentType(): string
 	{
-		return $this->getViewState(self::COMPONENT_TYPE. '');
+		return $this->getViewState(self::COMPONENT_TYPE, '');
 	}
 
 	/**
