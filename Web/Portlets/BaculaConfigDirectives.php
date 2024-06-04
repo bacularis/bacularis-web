@@ -46,6 +46,7 @@ use Bacularis\Web\Modules\BWebException;
  */
 class BaculaConfigDirectives extends DirectiveListTemplate
 {
+	public const SHOW_SAVE_BUTTON = 'ShowSaveButton';
 	public const SHOW_REMOVE_BUTTON = 'ShowRemoveButton';
 	public const SHOW_CANCEL_BUTTON = 'ShowCancelButton';
 	public const SHOW_ALL_DIRECTIVES = 'ShowAllDirectives';
@@ -54,6 +55,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public const SAVE_DIRECTIVE_ACTION_OK = 'SaveDirectiveActionOk';
 	public const CANCEL_DIRECTIVE_ACTION_OK = 'CancelDirectiveActionOk';
 	public const DISABLE_RENAME = 'DisableRename';
+	public const REQUIRE_DIRECTIVES = 'RequireDirectives';
 
 	private $show_all_directives = false;
 
@@ -209,7 +211,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$required = false;
 			// @TODO: Add support for all directive properties defined in description file
 			if (is_object($directive_desc)) {
-				if (property_exists($directive_desc, 'Required')) {
+				if ($this->getRequireDirectives() && property_exists($directive_desc, 'Required')) {
 					$required = $directive_desc->Required;
 					if ($directive_name != 'Name' && property_exists($parent_directives, $directive_name)) {
 						// values can be taken from JobDefs
@@ -405,7 +407,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				if (is_array($directive_value)) {
 					if ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveMessages') {
 						if ($data_mode) {
-							$directive_value['Destinations'] = $directive_value;
+							// This is redundant message type. Not  used in data mode. Remove it.
+							unset($directives[$directive_name]);
+							$directive_value = ['Destinations' => $directive_value];
 						}
 						$directives = array_merge($directives, $directive_value);
 					} elseif ($this->directive_list_types[$i] === 'Bacularis\Web\Portlets\DirectiveRunscript') {
@@ -458,27 +462,18 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$directives = $this->getDirectiveValues();
 		$load_values = $this->getLoadValues();
 		$res_name_dir = key_exists('Name', $directives) ? $directives['Name'] : null;
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
 		$resource_name = $this->getResourceName();
 		if (!$res_name_dir && $resource_name) {
 			// In some cases with double control load Name value stays empty. Recreate it here.
 			$directives['Name'] = $res_name_dir = $resource_name;
 		}
-		if ($load_values === true && $this->getCopyMode() === false) {
-			if ($resource_name !== $res_name_dir) {
-				// RENAME RESOURCE
-				if ($this->renameResource($res_name_dir)) {
-					// set new resource name
-					$this->setResourceName($res_name_dir);
-					$resource_name = $res_name_dir;
-					$param = new TCommandEventParameter('rename', [
-						'resource_type' => $resource_type,
-						'resource_name' => $resource_name
-					]);
-					$this->onRename($param);
-				}
-			}
-		} else {
+		if (is_null($resource_name)) {
 			$resource_name = $res_name_dir;
+		}
+		if ($resource_type == 'Pool' && $resource_name !== $res_name_dir) {
+			// Rename pool is not supported because volumes will be orphaned
+			return;
 		}
 
 		$params = [
@@ -487,13 +482,53 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$resource_type,
 			$resource_name
 		];
-		$result = $this->getModule('api')->set(
-			$params,
-			['config' => json_encode($directives)],
-			$host,
-			false
-		);
-		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		$result = null;
+		if ($load_values === false || $this->getCopyMode() === true) {
+			// create a new resource
+			$result = $this->getModule('api')->create(
+				$params,
+				['config' => json_encode($directives)],
+				$host,
+				false
+			);
+		} else {
+			// update existing resource
+			$result = $this->getModule('api')->set(
+				$params,
+				['config' => json_encode($directives)],
+				$host,
+				false
+			);
+
+			if ($resource_name !== $res_name_dir) {
+				// rename resource
+				$param = new TCommandEventParameter('rename', [
+					'resource_type' => $resource_type,
+					'resource_name' => $resource_name
+				]);
+				$this->onRename($param);
+
+				if ($result->error === 0) {
+					$this->getModule('audit')->audit(
+						AuditLog::TYPE_INFO,
+						AuditLog::CATEGORY_CONFIG,
+						"Rename Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name} => {$res_name_dir}"
+					);
+				} else {
+					$emsg = 'Error while renaming resource: ' . $result->output;
+					Logging::log(
+						Logging::CATEGORY_APPLICATION,
+						$emsg
+					);
+					$this->getModule('audit')->audit(
+						AuditLog::TYPE_ERROR,
+						AuditLog::CATEGORY_CONFIG,
+						"Problem with renaming Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}"
+					);
+				}
+			}
+		}
+
 		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 		if ($result->error === 0) {
 			$this->SaveDirectiveOk->Display = 'Dynamic';
@@ -595,64 +630,50 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		if (empty($_SESSION[$component_type])) {
 			return;
 		}
-		$host = null;
+		$host = $this->getHost();
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
-		try {
-			$config = $this->getConfigData($host, [$component_type]);
-		} catch (BWebException $e) {
-			if (!$this->getPage()->IsCallback) {
-				die($e->getMessage());
-			}
-			return;
-		}
-		$deps = $this->getModule('data_deps')->checkDependencies(
+		$params = [
+			'config',
 			$component_type,
 			$resource_type,
-			$resource_name,
-			$config
+			$resource_name
+		];
+		$result = $this->getModule('api')->remove(
+			$params,
+			$host,
+			false
 		);
-		if (count($deps) === 0) {
-			// NO DEPENDENCY. Ready to remove.
-			$this->removeResourceFromConfig(
-				$config,
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
+		if ($result->error === 0) {
+			$this->getModule('api')->set(['console'], ['reload']);
+			$this->showRemovedResourceInfo(
 				$resource_type,
 				$resource_name
 			);
-			$result = $this->getModule('api')->set(
-				['config',	$component_type],
-				['config' => json_encode($config)],
-				$host,
-				false
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				sprintf($amsg, 'Remove Bacula config resource.')
 			);
-			$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
-			$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
-			if ($result->error === 0) {
-				$this->getModule('api')->set(['console'], ['reload']);
-				$this->showRemovedResourceInfo(
+		} else {
+			$error_message = '';
+			if ($result->error === BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+				$error_message = BaculaConfigDirectives::getDependenciesError(
+					json_decode($result->output, true),
 					$resource_type,
 					$resource_name
 				);
-				$this->getModule('audit')->audit(
-					AuditLog::TYPE_INFO,
-					AuditLog::CATEGORY_CONFIG,
-					sprintf($amsg, 'Remove Bacula config resource.')
-				);
 			} else {
-				$this->showRemovedResourceError($result->output);
+				$error_message = $result->output;
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_ERROR,
 					AuditLog::CATEGORY_CONFIG,
 					sprintf($amsg, 'Problem with removing Bacula config resource.')
 				);
 			}
-		} else {
-			// DEPENDENCIES EXIST. List them on the interface.
-			$this->showDependenciesError(
-				$deps,
-				$resource_type,
-				$resource_name
-			);
+			$this->showRemovedResourceError($error_message);
 		}
 	}
 
@@ -692,163 +713,41 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	}
 
 	/**
-	 * Show dependencies error message.
+	 * Get dependencies error message.
 	 *
 	 * @param array $deps list dependencies for the removing resource
 	 * @param string $resource_type resource type of the removing resource
 	 * @param string $resource_name resource name of the removing resource
 	 */
-	private function showDependenciesError($deps, $resource_type, $resource_name)
+	public static function getDependenciesError($deps, $resource_type, $resource_name)
 	{
+		$bold_func = fn($item) => "<strong>$item</strong>";
 		$emsg = Prado::localize('Resource %s "%s" is used in the following resources:');
-		$emsg = sprintf($emsg, $resource_type, $resource_name);
+		$emsg = sprintf(
+			$emsg,
+			$bold_func($resource_type),
+			$bold_func($resource_name)
+		);
 		$emsg_deps = Prado::localize('Component: %s, Resource: %s "%s", Directive: %s');
 		$dependencies = [];
 		for ($i = 0; $i < count($deps); $i++) {
 			$dependencies[] = sprintf(
 				$emsg_deps,
-				$deps[$i]['component_type'],
-				$deps[$i]['resource_type'],
-				$deps[$i]['resource_name'],
-				$deps[$i]['directive_name']
+				$bold_func($deps[$i]['component_type']),
+				$bold_func($deps[$i]['resource_type']),
+				$bold_func($deps[$i]['resource_name']),
+				$bold_func($deps[$i]['directive_name'])
 			);
 		}
 		$emsg_sum = Prado::localize('Please unassign resource %s "%s" from these resources and try again.');
-		$emsg_sum = sprintf($emsg_sum, $resource_type, $resource_name);
+		$emsg_sum = sprintf(
+			$emsg_sum,
+			$bold_func($resource_type),
+			$bold_func($resource_name)
+		);
 		$error = [$emsg, implode('<br />', $dependencies),  $emsg_sum];
 		$error_message = implode('<br /><br />', $error);
-		$this->showRemovedResourceError($error_message);
-	}
-
-	/**
-	 * Remove resource from config.
-	 * Note, passing config by reference.
-	 *
-	 * @param array $config entire config
-	 * @param string $resource_type resource type to remove
-	 * @param string $resource_name resource name to remove
-	 */
-	private function removeResourceFromConfig(&$config, $resource_type, $resource_name)
-	{
-		for ($i = 0; $i < count($config); $i++) {
-			foreach ($config[$i] as $rtype => $resource) {
-				if (!property_exists($resource, 'Name')) {
-					continue;
-				}
-				if ($rtype === $resource_type && $resource->Name === $resource_name) {
-					// remove resource
-					array_splice($config, $i, 1);
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Rename resource.
-	 * This rename method takes into account resource dependencies
-	 * and updates them as well.
-	 *
-	 * @param string $new_resource_name new resource name to set
-	 * @param mixed $resource_name_new
-	 * @return bool true on success, false on failure
-	 */
-	public function renameResource($resource_name_new)
-	{
-		$success = true;
-		$component_type = $this->getComponentType();
-		if (empty($_SESSION[$component_type])) {
-			return false;
-		}
-		$host = null;
-		$resource_type = $this->getResourceType();
-		$resource_name = $this->getResourceName();
-
-		if ($resource_type == 'Pool') {
-			/**
-			 * For Pools there is done copy resource, not rename, to allow users
-			 * re-assigning volumes from original pool to new pool and at the end
-			 * to remove original pool.
-			 */
-			return true;
-		}
-
-		try {
-			$config = $this->getConfigData($host, [$component_type]);
-		} catch (BWebException $e) {
-			if (!$this->getPage()->IsCallback) {
-				die($e->getMessage());
-			}
-			return;
-		}
-		$deps = $this->getModule('data_deps')->checkDependencies(
-			$component_type,
-			$resource_type,
-			$resource_name,
-			$config
-		);
-		$this->renameResourceInConfig(
-			$config,
-			$deps,
-			$resource_type,
-			$resource_name,
-			$resource_name_new
-		);
-		$result = $this->getModule('api')->set(
-			['config',	$component_type],
-			['config' => json_encode($config)],
-			$host,
-			false
-		);
-		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
-		if ($result->error == 0) {
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_INFO,
-				AuditLog::CATEGORY_CONFIG,
-				"Rename Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name} => {$resource_name_new}"
-			);
-		} else {
-			$success = false;
-			$emsg = 'Error while renaming resource: ' . $result->output;
-			Logging::log(
-				Logging::CATEGORY_APPLICATION,
-				$emsg
-			);
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_ERROR,
-				AuditLog::CATEGORY_CONFIG,
-				"Problem with renaming Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}"
-			);
-		}
-		return $success;
-	}
-
-	/**
-	 * Rename resource in config.
-	 * Note, passing config by reference.
-	 *
-	 * @param array $config entire config
-	 * @param string $resource_type resource type to rename
-	 * @param string $resource_name resource name to rename
-	 * @param string $resource_name_new new resource name to set
-	 * @param mixed $deps
-	 */
-	private function renameResourceInConfig(&$config, $deps, $resource_type, $resource_name, $resource_name_new)
-	{
-		for ($i = 0; $i < count($config); $i++) {
-			foreach ($config[$i] as $rtype => $resource) {
-				for ($j = 0; $j < count($deps); $j++) {
-					if ($rtype === $deps[$j]['resource_type'] && $resource->Name === $deps[$j]['resource_name']) {
-						// Change resource name in dependent resources
-						$config[$i]->{$rtype}->{$deps[$j]['directive_name']} = $resource_name_new;
-					}
-				}
-				if ($rtype === $resource_type && $resource->Name === $resource_name) {
-					// Change resource name
-					$config[$i]->{$rtype}->Name = $resource_name_new;
-				}
-			}
-		}
+		return $error_message;
 	}
 
 	/**
@@ -870,6 +769,27 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public function getShowRemoveButton()
 	{
 		return $this->getViewState(self::SHOW_REMOVE_BUTTON, true);
+	}
+
+	/**
+	 * Set if save button should be available.
+	 *
+	 * @param mixed $show
+	 */
+	public function setShowSaveButton($show)
+	{
+		$show = TPropertyValue::ensureBoolean($show);
+		$this->setViewState(self::SHOW_SAVE_BUTTON, $show);
+	}
+
+	/**
+	 * Get if save button should be available.
+	 *
+	 * @return bool true if available, otherwise false
+	 */
+	public function getShowSaveButton()
+	{
+		return $this->getViewState(self::SHOW_SAVE_BUTTON, true);
 	}
 
 	/**
@@ -955,7 +875,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->raiseEvent('OnRename', $this, $param);
 	}
 
-
 	/**
 	 * Set if name field should be disabled.
 	 *
@@ -975,5 +894,26 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public function getDisableRename()
 	{
 		return $this->getViewState(self::DISABLE_RENAME, false);
+	}
+
+	/**
+	 * Set if display required directive property.
+	 *
+	 * @param mixed $rename
+	 */
+	public function setRequireDirectives($required)
+	{
+		$required = TPropertyValue::ensureBoolean($required);
+		$this->setViewState(self::REQUIRE_DIRECTIVES, $required);
+	}
+
+	/**
+	 * Get if display required directive property.
+	 *
+	 * @return bool true if field is disabled, otherwise false
+	 */
+	public function getRequireDirectives()
+	{
+		return $this->getViewState(self::REQUIRE_DIRECTIVES, true);
 	}
 }

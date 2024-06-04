@@ -47,7 +47,6 @@ use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\WebConfig;
 use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Modules\WebUserConfig;
-use Bacularis\Web\Portlets\BaculaConfigResources;
 
 /**
  * Security page (auth methods, users, roles...).
@@ -1483,36 +1482,30 @@ class Security extends BaculumWebPage
 	public function removeConsoles($sender, $param)
 	{
 		$consoles = explode('|', $param->getCallbackParameter());
-		$res = new BaculaConfigResources();
-		$config = $res->getConfigData($this->User->getDefaultAPIHost(), 'dir');
 		for ($i = 0; $i < count($consoles); $i++) {
-			$res->removeResourceFromConfig(
-				$config,
-				'Console',
-				$consoles[$i]
+			$result = $this->getModule('api')->remove(
+				[
+					'config',
+					'dir',
+					'Console',
+					$consoles[$i]
+				],
+				$this->User->getDefaultAPIHost(),
+				false
 			);
-		}
-		$result = $this->getModule('api')->set(
-			['config', 'dir'],
-			['config' => json_encode($config)],
-			$this->User->getDefaultAPIHost(),
-			false
-		);
-
-		if ($result->error === 0) {
-			for ($i = 0; $i < count($consoles); $i++) {
+			if ($result->error === 0) {
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
 					AuditLog::CATEGORY_CONFIG,
 					"Remove Bacula config resource. Component: Director, Resource: Console, Name: {$consoles[$i]}"
 				);
+			} else {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_CONFIG,
+					"Problem with removing Bacula config resource. Component: Director, Resource: Console, Name: {$consoles[$i]}"
+				);
 			}
-		} else {
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_ERROR,
-				AuditLog::CATEGORY_CONFIG,
-				'Problem with removing Bacula config resource. Component: Director, Resource: Console'
-			);
 		}
 
 		// refresh console list

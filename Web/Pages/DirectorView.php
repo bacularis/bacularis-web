@@ -60,6 +60,8 @@ class DirectorView extends BaculumWebPage
 			$this->DirDirectorConfig->setLoadValues(true);
 			$this->DirDirectorConfig->IsDirectiveCreated = false;
 			$this->DirDirectorConfig->raiseEvent('OnDirectiveListLoad', $this, null);
+			$host = $this->User->getDefaultAPIHost();
+			$this->BulkApplyPatternsDirector->setHost($host);
 		}
 	}
 
@@ -72,6 +74,8 @@ class DirectorView extends BaculumWebPage
 			$this->DirectorResourcesConfig->setResourceType($resource_type);
 			$this->DirectorResourcesConfig->setComponentName($component_name);
 			$this->DirectorResourcesConfig->loadResourceListTable();
+			$host = $this->User->getDefaultAPIHost();
+			$this->BulkApplyPatternsDirector->setHost($host);
 		} else {
 			$this->DirectorResourcesConfig->showError(true);
 		}

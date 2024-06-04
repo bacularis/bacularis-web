@@ -30,6 +30,8 @@
 namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
+use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 
 /**
  * Bacula config resource control.
@@ -127,41 +129,49 @@ class BaculaConfigResources extends ResourceListTemplate
 			return;
 		}
 		$host = $this->getHost();
-		$config = $this->getConfigData($host, $host_params['component_type']);
-		$deps = $this->getModule('data_deps')->checkDependencies(
-			$host_params['component_type'],
-			$host_params['resource_type'],
-			$host_params['resource_name'],
-			$config
+		$component_type = $this->getComponentType();
+		$resource_type = $this->getResourceType();
+		$resource_name = $this->getResourceName();
+		$params = [
+			'config',
+			$component_type,
+			$resource_type,
+			$resource_name
+		];
+		$result = $this->getModule('api')->remove(
+			$params,
+			$host,
+			false
 		);
-		if (count($deps) === 0) {
-			// NO DEPENDENCY. Ready to remove.
-			self::removeResourceFromConfig(
-				$config,
-				$host_params['resource_type'],
-				$host_params['resource_name']
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
+		if ($result->error === 0) {
+			$this->getModule('api')->set(['console'], ['reload']);
+			$this->showRemovedResourceInfo(
+				$resource_type,
+				$resource_name
 			);
-			$result = $this->getModule('api')->set(
-				['config',	$host_params['component_type']],
-				['config' => json_encode($config)],
-				$host,
-				false
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				sprintf($amsg, 'Remove Bacula config resource.')
 			);
-			if ($result->error === 0) {
-				$this->showRemovedResourceInfo(
-					$host_params['resource_type'],
-					$host_params['resource_name']
+		} else {
+			$error_message = '';
+			if ($result->error === BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+				$error_message = BaculaConfigDirectives::getDependenciesError(
+					json_decode($result->output, true),
+					$resource_type,
+					$resource_name
 				);
 			} else {
-				$this->showRemovedResourceError($result->output);
+				$error_message = $result->output;
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_CONFIG,
+					sprintf($amsg, 'Problem with removing Bacula config resource.')
+				);
 			}
-		} else {
-			// DEPENDENCIES EXIST. List them on the interface.
-			$error_message = self::prepareDependenciesError(
-				$deps,
-				$host_params['resource_type'],
-				$host_params['resource_name']
-			);
 			$this->showRemovedResourceError($error_message);
 		}
 	}

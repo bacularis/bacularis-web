@@ -828,7 +828,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		<com:Bacularis.Web.Portlets.JobLog />
 	</div>
 
-	<!-- Job Details List -->
+	<!-- Job List -->
 	<div class="w3-container tab_item" id="job_details" style="display: none">
 		<div class="w3-container">
 			<table id="job_details_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
@@ -864,6 +864,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 					</tr>
 				</tfoot>
 			</table>
+			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 		</div>
 <script>
 const oJobList = {
@@ -883,17 +884,60 @@ const oJobList = {
 		},
 		time_ago: '<%[ %time ago ]%>'
 	},
+	data: [],
 	table: null,
+	table_toolbar: null,
+	actions: [
+		{
+			action: 'apply_configs',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
+			label: '<%[ Apply configs ]%>',
+			value: 'job',
+			before: function() {
+				const cb = () => {
+					let selected = [];
+					let sel_data = oJobList.table.rows({selected: true}).data();
+					sel_data.each(function(v, k) {
+						selected.push(v.job);
+					});
+					return selected;
+				};
+				oBulkApplyConfigsModal.set_item_cb(cb);
+				oBulkApplyConfigsModal.show_window(true);
+			}
+		}
+	],
 	job_weather: {},
-	init: function() {
-		this.set_weather();
-		this.set_table();
+	init: function(data) {
+		this.data = data;
+		if (!this.table) {
+			this.set_weather();
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	update: function(data) {
+		const tdata = data || <%=json_encode($this->jobs)%>;
+		this.init(tdata);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.job_details_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.job_details_list).DataTable({
-			data: <%=json_encode($this->jobs)%>,
+			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
@@ -1058,6 +1102,11 @@ const oJobList = {
 				className: "dt-center",
 				targets: [ 1, 2, 4, 5, 6, 7, 8, 9, 10 ]
 			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
 			order: [3, 'asc'],
 			initComplete: function () {
 				this.api().columns([3, 4, 7, 8, 9]).every(function () {
@@ -1108,9 +1157,20 @@ const oJobList = {
 			ret = tdiff || empty;
 		}
 		return ret;
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
 	}
 };
 </script>
+		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+			ID="BulkApplyConfigsJob"
+			ComponentType="dir"
+			ResourceType="Job"
+		/>
 	</div>
 	<div class="w3-container tab_item" id="job_reports" style="display: none">
 		<div class="w3-row w3-margin-bottom">
@@ -2098,7 +2158,7 @@ $(function() {
 	MonitorCalls.push(() => {
 		setTimeout(() => {
 			oJobHistoryReport = new JobHistoryReport();
-			oJobList.init();
+			oJobList.update();
 			oJobRunningOverTimeReport = new JobRunningOverTimeReport();
 		}, 1000);
 	});

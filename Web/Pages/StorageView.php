@@ -108,6 +108,7 @@ class StorageView extends BaculumWebPage
 		if ($sd_api_host) {
 			$this->CompActions->setHost($sd_api_host);
 			$this->CompActions->setComponentType('sd');
+			$this->BulkApplyPatternsStorage->setHost($sd_api_host);
 		}
 	}
 
@@ -247,6 +248,7 @@ class StorageView extends BaculumWebPage
 			$this->SDStorageDaemonConfig->setResourceName($component_name);
 			$this->SDStorageDaemonConfig->setLoadValues(true);
 			$this->SDStorageDaemonConfig->raiseEvent('OnDirectiveListLoad', $this, null);
+			$this->BulkApplyPatternsStorage->setHost($host);
 		} else {
 			$this->SDStorageDaemonConfigErr->Display = 'Dynamic';
 		}
@@ -266,6 +268,7 @@ class StorageView extends BaculumWebPage
 			$this->StorageDaemonResourcesConfig->setResourceType($resource_type);
 			$this->StorageDaemonResourcesConfig->setComponentName($component_name);
 			$this->StorageDaemonResourcesConfig->loadResourceListTable();
+			$this->BulkApplyPatternsStorage->setHost($host);
 		} else {
 			$this->StorageDaemonResourcesConfig->showError(true);
 		}

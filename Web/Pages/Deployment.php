@@ -22,6 +22,7 @@ use Bacularis\Web\Modules\OSProfileConfig;
 use Bacularis\Web\Modules\SSH;
 use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 
 /**
  * Deployment page.
@@ -1502,7 +1503,7 @@ class Deployment extends BaculumWebPage
 				$result->output[] = $ctd->output;
 			}
 			$result->error = $ctd->error;
-			if ($result->error === 0) {
+			if ($result->error === 0 || $result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
 				// for new installed components, enable them
 				$ec = $this->enableComponent($host, $component);
 				if ($ec->error === 0) {
@@ -1511,7 +1512,7 @@ class Deployment extends BaculumWebPage
 					$result->output[] = $ec->output;
 				}
 			}
-			if ($result->error === 0) {
+			if ($result->error === 0 || $result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
 				$sc = $this->startComponent($host, $component);
 				$result->output[] = $sc->output;
 			}
@@ -1588,7 +1589,7 @@ class Deployment extends BaculumWebPage
 			'Name' => $dir_name,
 			'Password' => $fd_pwd
 		];
-		$result = $api->set(
+		$result = $api->create(
 			['config', 'fd', 'Director', $dir_name],
 			['config' => json_encode($fd_dir_cfg)],
 			$host
@@ -1600,7 +1601,7 @@ class Deployment extends BaculumWebPage
 				'Password' => $fd_pwd,
 				'Catalog' => $cat_name
 			];
-			$result = $api->set(
+			$result = $api->create(
 				['config', 'dir', 'Client', $fd_name],
 				['config' => json_encode($dir_fd_cfg)]
 			);
@@ -1617,7 +1618,7 @@ class Deployment extends BaculumWebPage
 			'Name' => $dir_name,
 			'Password' => $sd_pwd
 		];
-		$result = $api->set(
+		$result = $api->create(
 			['config', 'sd', 'Director', $dir_name],
 			['config' => json_encode($sd_dir_cfg)],
 			$host
@@ -1698,7 +1699,7 @@ class Deployment extends BaculumWebPage
 
 				// Add config to Director
 				if ($add) {
-					$ret = $api->set(
+					$ret = $api->create(
 						['config', 'dir', 'Storage', $dir_sd_cfg['Name']],
 						['config' => json_encode($dir_sd_cfg)]
 					);

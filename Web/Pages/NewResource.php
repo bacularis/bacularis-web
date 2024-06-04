@@ -84,6 +84,7 @@ class NewResource extends BaculumWebPage
 				$this->NewResource->setLoadValues(true);
 				$this->NewResource->setCopyMode(true);
 			} else {
+				$this->NewResource->setResourceName(null);
 				$this->NewResource->setLoadValues(false);
 				$this->NewResource->setCopyMode(false);
 			}
@@ -122,6 +123,7 @@ class NewResource extends BaculumWebPage
 		$resource_name = $this->ResourcesToCopy->SelectedValue;
 		if (!empty($resource_name)) {
 			$this->setConfigForm($resource_name);
+			$this->NewResource->setResourceName(null);
 		}
 	}
 

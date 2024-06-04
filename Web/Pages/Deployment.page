@@ -48,6 +48,9 @@
 <com:TCallback ID="LoadDeployAPIHost" OnCallback="TemplateControl.loadDeployAPIHostWindow" />
 <com:TCallback ID="LoadAPIHost" OnCallback="TemplateControl.loadAPIHostWindow" />
 <com:TCallback ID="RemoveAPIHostsAction" OnCallback="TemplateControl.removeAPIHosts" />
+<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
+	ID="BulkApplyPatterns"
+/>
 <script>
 var oAPIHostList = {
 	ids: {
@@ -392,6 +395,12 @@ var oAPIHostCommands = {
 			}
 		}
 	},
+	components: {
+		director: {component_type: 'dir'},
+		storage: {component_type: 'sd'},
+		client: {component_type: 'fd'},
+		console: {component_type: 'bcons'}
+	},
 	commands: [],
 	load_window: function(host, command, open) {
 		if (open) {
@@ -496,10 +505,26 @@ var oAPIHostCommands = {
 				details.style.marginLeft = '8px';
 				details.style.cursor = 'pointer';
 
+				// add patterns button
+				const patterns_btn = document.createElement('BUTTON');
+				patterns_btn.type = 'button';
+				patterns_btn.classList.add('w3-green', 'w3-button', 'w3-tiny', 'w3-margin-left');
+				patterns_btn.addEventListener('click', () => {
+					const component_type = this.components[component].component_type;
+					oBulkApplyPatternsModal.set_patterns_window(result.host, component_type);
+					oBulkApplyPatternsModal.show_window(true);
+				});
+				const patterns_img = document.createElement('I');
+				patterns_img.classList.add('fa-solid', 'fa-stamp');
+				const patterns_label = document.createTextNode(' <%[ Apply patterns ]%>');
+				patterns_btn.appendChild(patterns_img);
+				patterns_btn.appendChild(patterns_label);
+
 				container.appendChild(input);
 				container.appendChild(label);
 				container.appendChild(details);
 				container.appendChild(output);
+				container.appendChild(patterns_btn);
 
 				// details (output)
 				$(element).html(container);
@@ -634,7 +659,7 @@ var oAPIHostCommands = {
 	execute_cb: function(result) {
 		oAPIHostCommands.set_raw_output(result.output);
 		const id = oAPIHostCommands.get_id(result.component, result.command);
-		if (result.error === 0) {
+		if (result.error === 0 || result.error === <%=Bacularis\Common\Modules\Errors\BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS%>) {
 			oSteps.mark_step_ok(id);
 		} else {
 			oSteps.mark_step_err(id);

@@ -113,6 +113,7 @@ class ClientView extends BaculumWebPage
 		if ($fd_api_host) {
 			$this->CompActions->setHost($fd_api_host);
 			$this->CompActions->setComponentType('fd');
+			$this->BulkApplyPatternsClient->setHost($fd_api_host);
 		}
 	}
 
@@ -190,6 +191,7 @@ class ClientView extends BaculumWebPage
 			$this->FDFileDaemonConfig->setResourceName($component_name);
 			$this->FDFileDaemonConfig->setLoadValues(true);
 			$this->FDFileDaemonConfig->raiseEvent('OnDirectiveListLoad', $this, null);
+			$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
 		} else {
 			$this->FDFileDaemonConfigErr->Display = 'Dynamic';
 		}
@@ -206,6 +208,7 @@ class ClientView extends BaculumWebPage
 			$this->FileDaemonResourcesConfig->setResourceType($resource_type);
 			$this->FileDaemonResourcesConfig->setComponentName($component_name);
 			$this->FileDaemonResourcesConfig->loadResourceListTable();
+			$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
 		} else {
 			$this->FileDaemonResourcesConfig->showError(true);
 		}

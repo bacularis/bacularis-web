@@ -60,6 +60,7 @@
 				ActiveControl.EnableUpdate="false"
 				OnCommand="SourceTemplateControl.saveResource"
 				CommandParameter="save"
+				Visible="<%=$this->ShowSaveButton%>"
 			>
 				<prop:Text>
 					<i class="fa fa-save"></i> &nbsp;<%=$this->getLoadValues() && !$this->getCopyMode() ? Prado::localize('Save') : Prado::localize('Create')%>

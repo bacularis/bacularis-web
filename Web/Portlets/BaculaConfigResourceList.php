@@ -30,6 +30,8 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 
 /**
  * Bacula config resource list control.
@@ -81,11 +83,15 @@ class BaculaConfigResourceList extends Portlets
 	public function loadResourceListTable()
 	{
 		$this->showError(false);
+		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$this->ResourceTypeAddLink->Text = $resource_type;
 		$this->ResourceTypeAddWindowTitle->Text = $resource_type;
 		$this->ResourceTypeEditWindowTitle->Text = $resource_type;
+		$this->BulkApplyConfigsJob->setHost($host);
+		$this->BulkApplyConfigsJob->setComponentType($component_type);
+		$this->BulkApplyConfigsJob->setResourceType($resource_type);
 		$config = $this->getModule('api')->get(
 			[
 				'config',
@@ -115,7 +121,9 @@ class BaculaConfigResourceList extends Portlets
 		} else {
 			$this->showError(true, $config->output);
 		}
-		$this->ResourceConfig->unloadDirectives();
+		if ($this->ResourceConfig->SaveDirectiveOk->Display == 'Dynamic') {
+			$this->ResourceConfig->unloadDirectives();
+		}
 	}
 
 	public function loadResourceWindow($sender, $param)
@@ -134,6 +142,7 @@ class BaculaConfigResourceList extends Portlets
 			$this->getPage()->getCallbackClient()->hide($copy_el_id);
 		} else {
 			// add new resource
+			$this->ResourceConfig->setResourceName(null);
 			$this->ResourceConfig->setLoadValues(false);
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'oBaculaConfigSection.show_sections',
@@ -192,6 +201,7 @@ class BaculaConfigResourceList extends Portlets
 			$this->ResourceConfig->setLoadValues(true);
 			$this->ResourceConfig->setCopyMode(true);
 			$this->ResourceConfig->raiseEvent('OnDirectiveListLoad', $this, null);
+			$this->ResourceConfig->setResourceName(null);
 		}
 	}
 
@@ -202,62 +212,44 @@ class BaculaConfigResourceList extends Portlets
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$resource_name = $param->getCallbackParameter();
-		$result = $this->getModule('api')->get(
-			[
-				'config',
-				$component_type
-			],
-			$host
-		);
-		$config = [];
-		if (is_object($result) && $result->error === 0 && is_array($result->output)) {
-			$config = $result->output;
-		}
-		$deps = $this->getModule('data_deps')->checkDependencies(
+		$params = [
+			'config',
 			$component_type,
 			$resource_type,
-			$resource_name,
-			$config
+			$resource_name
+		];
+		$result = $this->getModule('api')->remove(
+			$params,
+			$host,
+			false
 		);
-		if (count($deps) === 0) {
-			// NO DEPENDENCY. Ready to remove.
-			BaculaConfigResources::removeResourceFromConfig(
-				$config,
-				$resource_type,
-				$resource_name
-			);
-			$result = $this->getModule('api')->set(
-				['config', $component_type],
-				['config' => json_encode($config)],
-				$host,
-				false
-			);
 
-			$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
-			$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
-			if ($result->error !== 0) {
-				$this->showRemovedResourceError($result->output);
+		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
+		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
+		if ($result->error !== 0) {
+			$error_message = '';
+			if ($result->error === BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+				$error_message = BaculaConfigDirectives::getDependenciesError(
+					json_decode($result->output, true),
+					$resource_type,
+					$resource_name
+				);
+			} else {
+				$error_message = $result->output;
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_ERROR,
 					AuditLog::CATEGORY_CONFIG,
 					sprintf($amsg, 'Problem with removing Bacula config resource.')
 				);
-			} else {
-				$this->loadResourceListTable($sender, $param);
-				$this->getModule('audit')->audit(
-					AuditLog::TYPE_INFO,
-					AuditLog::CATEGORY_CONFIG,
-					sprintf($amsg, 'Remove Bacula config resource.')
-				);
 			}
-		} else {
-			// DEPENDENCIES EXIST. List them on the interface.
-			$error_message = BaculaConfigResources::prepareDependenciesError(
-				$deps,
-				$resource_type,
-				$resource_name
-			);
 			$this->showRemovedResourceError($error_message);
+		} else {
+			$this->loadResourceListTable($sender, $param);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				sprintf($amsg, 'Remove Bacula config resource.')
+			);
 		}
 	}
 
@@ -279,7 +271,7 @@ class BaculaConfigResourceList extends Portlets
 		);
 		$config = [];
 		if (is_object($result) && $result->error === 0 && is_array($result->output)) {
-			$config = $result->output;
+			$config = json_decode(json_encode($result->output), true);
 		}
 		$deps = $this->getModule('data_deps')->checkDependencies(
 			$component_type,

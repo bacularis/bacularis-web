@@ -40,6 +40,7 @@
 				</tr>
 			</tfoot>
 		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
 <script type="text/javascript">
 var oClientList = {
@@ -50,21 +51,57 @@ var oClientList = {
 	opts: {
 		uname_len: 40
 	},
+	data: [],
 	table: null,
+	table_toolbar: null,
+	actions: [
+		{
+			action: 'apply_configs',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
+			label: '<%[ Apply configs ]%>',
+			value: 'name',
+			before: function() {
+				const cb = () => {
+					let selected = [];
+					let sel_data = oClientList.table.rows({selected: true}).data();
+					sel_data.each(function(v, k) {
+						selected.push(v.name);
+					});
+					return selected;
+				};
+				oBulkApplyConfigsModal.set_item_cb(cb);
+				oBulkApplyConfigsModal.show_window(true);
+			}
+		}
+	],
 	init: function(data) {
 		this.data = data;
-		this.set_table();
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			this.refresh(data);
+		}
 	},
 	refresh: function(data) {
 		const page = this.table.page();
 		this.table.clear().rows.add(data).draw();
 		this.table.page(page).draw(false);
+		this.table_toolbar.style.display = 'none';
+	},
+	set_events: function() {
+		document.getElementById(this.ids.client_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.client_list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
@@ -150,6 +187,11 @@ var oClientList = {
 				className: "dt-center",
 				targets: [ 1, 4, 5, 6, 7 ]
 			}],
+			select: {
+				style: 'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
 			order: [2, 'asc'],
 			drawCallback: function () {
 				this.api().columns([2, 3, 4, 5, 6]).every(function () {
@@ -197,6 +239,12 @@ var oClientList = {
 				});
 			}
 		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
 	}
 };
 function get_client_list_data() {
@@ -217,4 +265,9 @@ $(function() {
 	});
 });
 </script>
+	<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+		ID="BulkApplyConfigsClient"
+		ComponentType="dir"
+		ResourceType="Client"
+	/>
 </com:TContent>

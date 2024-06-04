@@ -32,6 +32,7 @@
 			</tr>
 		</tfoot>
 	</table>
+	<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 </div>
 <div id="<%=$this->ClientID%>_in_use_by_modal" class="w3-modal" style="display: none;">
 	<div class="w3-modal-content w3-animate-top w3-card-4" style="min-width: 60%;">
@@ -76,6 +77,27 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 	},
 	data: [],
 	table: null,
+	table_toolbar: null,
+	actions: [
+		{
+			action: 'apply_configs',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
+			label: '<%[ Apply configs ]%>',
+			value: 'Name',
+			before: function() {
+				const cb = () => {
+					let selected = [];
+					let sel_data = oBaculaConfigResourceList<%=$this->ClientID%>.table.rows({selected: true}).data();
+					sel_data.each(function(v, k) {
+						selected.push(v.Name);
+					});
+					return selected;
+				};
+				oBulkApplyConfigsModal.set_item_cb(cb);
+				oBulkApplyConfigsModal.show_window(true);
+			}
+		}
+	],
 	init: function(data) {
 		var self = oBaculaConfigResourceList<%=$this->ClientID%>;
 		self.data = data;
@@ -83,15 +105,25 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			var page = self.table.page();
 			self.table.clear().rows.add(self.data).draw();
 			self.table.page(page).draw(false);
+			self.table_toolbar.style.display = 'none';
 		} else {
 			self.set_table();
+			self.set_bulk_actions();
+			self.set_events();
 		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			buttons: [
@@ -170,7 +202,18 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 				className: "dt-center",
 				targets: [ 3, 4 ]
 			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
 			order: [1, 'asc']
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
 		});
 	}
 };
@@ -224,10 +267,7 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{
-					data: 'component_type',
-					render: (data, type, row) => {
-						return Components.get_full_name(data);
-					}
+					data: 'component_type'
 				},
 				{
 					data: 'resource_type'
@@ -266,6 +306,9 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 	}
 };
 </script>
+<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+	ID="BulkApplyConfigsJob"
+/>
 <com:TCallback ID="RemoveResource" OnCallback="removeResource" />
 <div id="resource_window<%=$this->ClientID%>" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
