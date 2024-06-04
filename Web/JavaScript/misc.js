@@ -1619,6 +1619,9 @@ function get_table_toolbar(table, actions, txt) {
 	select.appendChild(option);
 	var acts = {};
 	for (var i = 0; i < actions.length; i++) {
+		if (actions[i].hasOwnProperty('enabled') && actions[i].enabled === false) {
+			continue;
+		}
 		option = document.createElement('OPTION');
 		option.value = actions[i].action,
 		label = document.createTextNode(actions[i].label);
@@ -1626,7 +1629,10 @@ function get_table_toolbar(table, actions, txt) {
 		select.appendChild(option);
 		acts[actions[i].action] = actions[i];
 	}
-	if (actions.length == 1) {
+	const acts_len = Object.keys(acts).length;
+	if (acts_len == 0) {
+		return table_toolbar;
+	} else if (acts_len == 1) {
 		select.selectedIndex = 1;
 	}
 	var btn = document.createElement('BUTTON');
