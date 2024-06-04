@@ -53,7 +53,7 @@ class BaculumAPIClient extends WebModule
 	/**
 	 * API version used by Web
 	 */
-	public const API_VERSION = 'v2';
+	public const API_VERSION = 'v3';
 
 	/**
 	 * OAuth2 authorization endpoints
