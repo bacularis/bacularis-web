@@ -50,8 +50,6 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 			$val = $control->Directive->getText();
 			if (!empty($val)) {
 				$values[] = $val;
-			} else {
-				$values[] = null;
 			}
 		}
 		if ($data_mode && count($values) === 0) {
