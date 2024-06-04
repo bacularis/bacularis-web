@@ -16,10 +16,11 @@
 		<module id="ssh_key" class="Bacularis\Web\Modules\SSHKey" />
 		<module id="osprofile_config" class="Bacularis\Web\Modules\OSProfileConfig" />
 		<module id="dataview_config" class="Bacularis\Web\Modules\DataViewConfig" />
+		<module id="conf_config" class="Bacularis\Web\Modules\ConfigConfig" />
+		<module id="pattern_config" class="Bacularis\Web\Modules\PatternConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
-		<module id="data_deps" class="Bacularis\Web\Modules\DataDependencies" />
 		<module id="doc_dir" class="Bacularis\Web\Modules\DirectiveDoc" />
 		<module id="globalization" class="TGlobalization">
 			<translation type="gettext" source="Application.Web.Lang" marker="@@" autosave="false" cache="false" DefaultCulture="en" />

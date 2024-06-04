@@ -56,6 +56,7 @@
 		<a href="<%=$this->Service->constructUrl('Graphs')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Graphs' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Graphs') ? '' : ' hide'%>"><i class="fa fa-chart-pie fa-fw"></i>  <%[ Graphs ]%></a>
 		<a href="<%=$this->Service->constructUrl('Security')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Security' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Security') ? '' : ' hide'%>"><i class="fa fa-lock fa-fw"></i>  <%[ Security ]%></a>
 		<a href="<%=$this->Service->constructUrl('Deployment')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Deployment' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Deployment') ? '' : ' hide'%>"><i class="fa-solid fa-rocket fa-fw"></i>  <%[ Deployment ]%></a>
+		<a href="<%=$this->Service->constructUrl('Patterns')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Patterns' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Patterns') ? '' : ' hide'%>"><i class="fa-solid fa-stamp fa-fw"></i>  <%[ Patterns ]%></a>
 		<a href="/panel/" class="w3-bar-item w3-button w3-padding<%=(!$this->is_api || !$this->User->isInRole(WebUserRoles::ADMIN)) ? ' hide' : ''%>" target="_blank"><i class="fas fa-exchange-alt fa-rotate-90 fa-fw"></i>  <%[ API Panel ]%></a>
 	</div>
 </nav>

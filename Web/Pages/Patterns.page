@@ -1,0 +1,870 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa-solid fa-stamp"></i> <%[ Patterns ]%></b>
+		</h5>
+	</header>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<button id="btn_configs" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'configs'); oConfigList.table.responsive.recalc();"><%[ Configs ]%></button>
+		<button id="btn_patterns" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'patterns'); oPatternList.table.responsive.recalc();"><%[ Patterns ]%></button>
+	</div>
+	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
+	<div class="w3-container tab_item" id="configs">
+		<div><%[ Configs are pieces of Bacula configuration that can be applied to existing resources. This is specially used to bulk apply the same repeatable configuration to multiple (or single) Bacula configuration resources. For example, you can create one config to apply some directives and another to apply other directives. It is possible to apply both configs on selected resources at once. Configs are used on the Bacula resource level. ]%></div>
+		<div class="w3-panel">
+			<button type="button" id="add_config_btn" class="w3-button w3-green" onclick="oConfig.load_config_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add config ]%></button>
+		</div>
+		<table id="config_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Component ]%></th>
+					<th class="w3-center"><%[ Resource ]%></th>
+					<th class="w3-center"><%[ In pattern ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="config_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Component ]%></th>
+					<th class="w3-center"><%[ Resource ]%></th>
+					<th class="w3-center"><%[ In pattern ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+	</div>
+	<com:TCallback ID="LoadConfigList" OnCallback="loadConfigList" />
+	<com:TCallback ID="RemoveConfigs" OnCallback="removeConfigs" />
+	<script>
+var oConfigList = {
+	ids: {
+		config_list: 'config_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveConfigs->ActiveControl->Javascript%>,
+			validate: function(selected) {
+				let configs_in_use = [];
+				selected.each(function(v, k) {
+					if (v.in_pattern.length > 0) {
+						configs_in_use.push(' - ' + v.name);
+					}
+				});
+				if (configs_in_use.length > 0) {
+					var emsg = '<%[ The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again. ]%>';
+					emsg = emsg.replace('%used_configs', '<hr />' + configs_in_use.join('<br />') + '<hr />');
+					oBulkActionsModal.set_error(emsg);
+					return false;
+				}
+				return true;
+			}
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function(data) {
+		this.data = data;
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	update: function() {
+		const cb = <%=$this->LoadConfigList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	update_cb: function(data) {
+		const self = oConfigList;
+		self.init(data);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.config_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.config_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{
+					data: 'description',
+					render: render_string_short
+				},
+				{
+					data: 'component',
+					render: function(data, type, row) {
+						let ret = data;
+						if (type == 'display') {
+							ret = Components.get_full_name(data);
+						}
+						return ret;
+					}
+				},
+				{data: 'resource'},
+				{
+					data: 'in_pattern',
+					render: function(data, type, row) {
+						return (data.length > 0 ? '<%[ Yes ]%>' : '<%[ No ]%>');
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						// Edit button
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oConfig.load_config_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col_long',
+				orderable: false,
+				targets: [ 6 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 3, 4, 5 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			drawCallback: function () {
+				this.api().columns([1, 3, 4, 5]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 3) { // component column
+						column.data().sort().unique().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + Components.get_full_name(d) + '</option>');
+							} else if(d) {
+								select.append('<option value="' + d + '">' + Components.get_full_name(d) + '</option>');
+							}
+						});
+					} else if (column[0][0] == 5) { // in pattern column
+						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+							if (d) {
+								if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+									select.append('<option value="' + d + '" selected>' + d + '</option>');
+								} else {
+									select.append('<option value="' + d + '">' + d + '</option>');
+								}
+							}
+						});
+					} else {
+						column.data().sort().unique().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+$(function() {
+	oConfigList.update();
+});
+	</script>
+	<div id="config_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('config_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="config_window_title_add"><%[ Add config ]%></h2>
+				<h2 id="config_window_title_edit" style="display: none"><%[ Edit config ]%> - <span id="config_window_title_edit_name"></span></h2>
+			</header>
+			<div id="config_error" class="w3-red" style="display: none"></div>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Config name ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="ConfigName"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My custom job config 123 ]%>"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="ConfigGroup"
+							Display="Dynamic"
+							ControlToValidate="ConfigName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="ConfigGroup"
+							RegularExpression="<%=ConfigConfig::NAME_PATTERN%>"
+							ControlToValidate="ConfigName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							Display="None"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Config description ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="ConfigDescription"
+							TextMode="MultiLine"
+							Rows="3"
+							AutoPostBack="false"
+							MaxLength="500"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ Custom options for hosts in Server Room 3A. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Component ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveDropDownList
+							ID="ConfigComponentName"
+							CssClass="w3-border w3-select"
+							Width="200px"
+							OnCallback="loadResourceList"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="ConfigGroup"
+							Display="Dynamic"
+							ControlToValidate="ConfigComponentName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Resource ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveDropDownList
+							ID="ConfigResourceName"
+							CssClass="w3-border w3-select"
+							Width="200px"
+							OnCallback="loadDirectiveList"
+							Attributes.onchange="oConfig.show_directives(true);"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="ConfigGroup"
+							Display="Dynamic"
+							ControlToValidate="ConfigResourceName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div id="config_directives" style="display: none">
+					<h3><%[ Configuration ]%></h3>
+					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+						ID="ConfigDirectives"
+						SaveDirectiveActionOk="save_directive_action_ok();"
+						ShowBottomButtons="false"
+						ShowSaveButton="false"
+						ShowRemoveButton="false"
+						ShowCancelButton="false"
+						ShowSectionTabs="true"
+						RequireDirectives="false"
+					/>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
+				<button type="button" class="w3-button w3-red w3-section" onclick="$('#config_window').hide();"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ValidationGroup="ConfigGroup"
+					CausesValidation="true"
+					CssClass="w3-button w3-green w3-section"
+					Attributes.onclick="oConfig.save_config();"
+				>
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+		</div>
+		<com:TActiveHiddenField ID="ConfigWindowMode" />
+	</div>
+	<com:TCallback ID="LoadConfigs" OnCallback="loadConfigs" />
+	<com:TCallback ID="SaveConfigs" OnCallback="saveConfigs" />
+	<script>
+var oConfig = {
+	ids: {
+		win: 'config_window',
+		error: 'config_error',
+		directives: 'config_directives',
+		name: '<%=$this->ConfigName->ClientID%>',
+		description: '<%=$this->ConfigDescription->ClientID%>',
+		component: '<%=$this->ConfigComponentName->ClientID%>',
+		resource: '<%=$this->ConfigResourceName->ClientID%>',
+		title_add: 'config_window_title_add',
+		title_edit: 'config_window_title_edit',
+		title_name: 'config_window_title_edit_name',
+		mode: '<%=$this->ConfigWindowMode->ClientID%>'
+	},
+	modes: {
+		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
+		edit: '<%=Patterns::CONFIG_WINDOW_MODE_EDIT%>'
+	},
+	load_config_window: function(name) {
+		this.clear_config_window();
+		let mode = this.modes.add;
+		if (name) {
+			const cb = <%=$this->LoadConfigs->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(name);
+			cb.dispatch();
+			mode = this.modes.edit;
+		}
+		this.set_title(name);
+		this.set_mode(mode);
+		this.show_config_window(true);
+	},
+	set_title: function(name) {
+		const title_add = document.getElementById(this.ids.title_add);
+		const title_edit = document.getElementById(this.ids.title_edit);
+		const tname = document.getElementById(this.ids.title_name);
+		if (name) {
+			tname.textContent = name;
+			title_add.style.display = 'none';
+			title_edit.style.display = 'block';
+		} else {
+			tname.textContent = '';
+			title_edit.style.display = 'none';
+			title_add.style.display = 'block';
+		}
+	},
+	set_mode: function(val) {
+		const mode = document.getElementById(this.ids.mode);
+		mode.value = val;
+		const name = document.getElementById(this.ids.name);
+		if (val == this.modes.edit) {
+			name.setAttribute('readonly', true);
+		} else {
+			name.removeAttribute('readonly', true);
+		}
+	},
+	show_directives: function(show) {
+		const self = oConfig;
+		const directives = document.getElementById(self.ids.directives);
+		directives.style.display = show ? 'block' : 'none'
+	},
+	show_config_window: function(show) {
+		const self = oConfig;
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_config_window: function() {
+		// text fields
+		[
+			this.ids.name,
+			this.ids.description,
+			this.ids.component
+		].forEach((id) => {
+			document.getElementById(id).value = '';
+		});
+
+		// combo boxes
+		[
+			this.ids.resource
+		].forEach((id) => {
+			$('#' + id).empty();
+		});
+		this.show_directives(false);
+		this.show_error(false);
+	},
+	save_config: function() {
+		const cb = <%=$this->SaveConfigs->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	show_error: function(show, emsg) {
+		const self = oConfig;
+		const error = document.getElementById(self.ids.error);
+		if (emsg) {
+			error.textContent = emsg;
+		}
+		error.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
+	<div class="w3-container tab_item" id="patterns" style="display: none">
+		<div><%[ Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined. ]%></div>
+		<div class="w3-panel">
+			<button type="button" id="add_pattern_btn" class="w3-button w3-green" onclick="oPattern.load_pattern_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add pattern ]%></button>
+		</div>
+		<table id="pattern_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Component ]%></th>
+					<th class="w3-center"><%[ Configs ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="config_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Component ]%></th>
+					<th class="w3-center"><%[ Configs ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+	</div>
+	<com:TCallback ID="LoadPatternList" OnCallback="loadPatternList" />
+	<com:TCallback ID="RemovePatterns" OnCallback="removePatterns" />
+	<script>
+var oPatternList = {
+	ids: {
+		pattern_list: 'pattern_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemovePatterns->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function(data) {
+		this.data = data;
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	update: function() {
+		const cb = <%=$this->LoadPatternList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	update_cb: function(data) {
+		const self = oPatternList;
+		self.init(data);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.pattern_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.pattern_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{
+					data: 'description',
+					render: render_string_short
+				},
+				{
+					data: 'component',
+					render: function(data, type, row) {
+						let ret = data;
+						if (type == 'display') {
+							ret = Components.get_full_name(data);
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'configs',
+					render: render_string_short
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						// Edit button
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oPattern.load_pattern_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col_long',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 3, 4 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			drawCallback: function () {
+				this.api().columns([1, 3]).every(function () {
+					var column = this;
+					var select = $('<select><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					if (column[0][0] == 3) { // component column
+						column.data().sort().unique().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + Components.get_full_name(d) + '</option>');
+							} else if(d) {
+								select.append('<option value="' + d + '">' + Components.get_full_name(d) + '</option>');
+							}
+						});
+					} else {
+						column.data().sort().unique().each(function(d, j) {
+							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+								select.append('<option value="' + d + '" selected>' + d + '</option>');
+							} else {
+								select.append('<option value="' + d + '">' + d + '</option>');
+							}
+						});
+					}
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+$(function() {
+	oPatternList.update();
+});
+	</script>
+	<com:TCallback ID="LoadPattern" OnCallback="loadPattern" />
+	<com:TCallback ID="SavePattern" OnCallback="savePattern" />
+	<div id="pattern_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('pattern_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="pattern_window_title_add"><%[ Add pattern ]%></h2>
+				<h2 id="pattern_window_title_edit" style="display: none"><%[ Edit pattern ]%> - <span id="pattern_window_title_edit_name"></span></h2>
+			</header>
+			<div id="pattern_error" class="w3-red" style="display: none"></div>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Pattern name ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="PatternName"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My pattern 123 ]%>"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="PatternGroup"
+							Display="Dynamic"
+							ControlToValidate="PatternName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="PatternGroup"
+							RegularExpression="<%=PatternConfig::NAME_PATTERN%>"
+							ControlToValidate="PatternName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							Display="None"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Pattern description ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="PatternDescription"
+							TextMode="MultiLine"
+							Rows="3"
+							AutoPostBack="false"
+							MaxLength="500"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My pattern 123 description. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Component ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveDropDownList
+							ID="PatternComponentName"
+							CssClass="w3-border w3-select"
+							Width="200px"
+							OnCallback="loadPatternConfigList"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="PatternGroup"
+							Display="Dynamic"
+							ControlToValidate="PatternComponentName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-half w3-small"><%[ In patterns are listed only configs with a Name directive defined. ]%></div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Configs ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveListBox
+							ID="PatternConfigs"
+							SelectionMode="Multiple"
+							CssClass="w3-border w3-select"
+							Rows="10"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+						<com:TRequiredFieldValidator
+							ValidationGroup="PatternGroup"
+							Display="Dynamic"
+							ControlToValidate="PatternConfigs"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
+				<button type="button" class="w3-button w3-red w3-section" onclick="$('#pattern_window').hide();"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ValidationGroup="PatternGroup"
+					CausesValidation="true"
+					CssClass="w3-button w3-green w3-section"
+					Attributes.onclick="oPattern.save_pattern();"
+				>
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+		</div>
+		<com:TActiveHiddenField ID="PatternWindowMode" />
+	</div>
+	<script>
+var oPattern = {
+	ids: {
+		win: 'pattern_window',
+		error: 'pattern_error',
+		name: '<%=$this->PatternName->ClientID%>',
+		description: '<%=$this->PatternDescription->ClientID%>',
+		configs: '<%=$this->PatternConfigs->ClientID%>',
+		title_add: 'pattern_window_title_add',
+		title_edit: 'pattern_window_title_edit',
+		title_name: 'pattern_window_title_edit_name',
+		mode: '<%=$this->PatternWindowMode->ClientID%>'
+	},
+	modes: {
+		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
+		edit: '<%=Patterns::CONFIG_WINDOW_MODE_EDIT%>'
+	},
+	load_pattern_window: function(name) {
+		this.clear_pattern_window();
+		let mode = this.modes.add;
+		if (name) {
+			const cb = <%=$this->LoadPattern->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(name);
+			cb.dispatch();
+			mode = this.modes.edit;
+		}
+		this.set_title(name);
+		this.set_mode(mode);
+		this.show_pattern_window(true);
+	},
+	set_title: function(name) {
+		const title_add = document.getElementById(this.ids.title_add);
+		const title_edit = document.getElementById(this.ids.title_edit);
+		const tname = document.getElementById(this.ids.title_name);
+		if (name) {
+			tname.textContent = name;
+			title_add.style.display = 'none';
+			title_edit.style.display = 'block';
+		} else {
+			tname.textContent = '';
+			title_edit.style.display = 'none';
+			title_add.style.display = 'block';
+		}
+	},
+	set_mode: function(val) {
+		const mode = document.getElementById(this.ids.mode);
+		mode.value = val;
+		const name = document.getElementById(this.ids.name);
+		if (val == this.modes.edit) {
+			name.setAttribute('readonly', true);
+		} else {
+			name.removeAttribute('readonly', true);
+		}
+	},
+	show_pattern_window: function(show) {
+		const self = oPattern;
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_pattern_window: function() {
+		// text fields
+		[
+			this.ids.name,
+			this.ids.description,
+			this.ids.configs
+		].forEach((id) => {
+			document.getElementById(id).value = '';
+		});
+		this.show_error(false);
+	},
+	save_pattern: function() {
+		const cb = <%=$this->SavePattern->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	show_error: function(show, emsg) {
+		const self = oPattern;
+		const error = document.getElementById(self.ids.error);
+		if (emsg) {
+			error.textContent = emsg;
+		}
+		error.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
+</com:TContent>

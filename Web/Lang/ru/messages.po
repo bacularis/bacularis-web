@@ -5469,3 +5469,117 @@ msgstr "Show result"
 
 msgid "Hide result"
 msgstr "Hide result"
+
+msgid "Patterns"
+msgstr "Patterns"
+
+msgid "Configs"
+msgstr "Configs"
+
+msgid "Add config"
+msgstr "Add config"
+
+msgid "Add pattern"
+msgstr "Add pattern"
+
+msgid "Config name"
+msgstr "Config name"
+
+msgid "Config description"
+msgstr "Config description"
+
+msgid "Component"
+msgstr "Component"
+
+msgid "Config with given name already exists."
+msgstr "Config with given name already exists."
+
+msgid "Pattern name"
+msgstr "Pattern name"
+
+msgid "Pattern description"
+msgstr "Pattern description"
+
+msgid "Pattern with given name already exists."
+msgstr "Pattern with given name already exists."
+
+msgid "Error while writing pattern."
+msgstr "Error while writing pattern."
+
+msgid "Error while writing config."
+msgstr "Error while writing config."
+
+msgid "In pattern"
+msgstr "In pattern"
+
+msgid "My custom job config 123"
+msgstr "My custom job config 123"
+
+msgid "Custom options for hosts in Server Room 3A."
+msgstr "Custom options for hosts in Server Room 3A."
+
+msgid "My pattern 123"
+msgstr "My pattern 123"
+
+msgid "My pattern 123 description."
+msgstr "My pattern 123 description."
+
+msgid "Edit pattern"
+msgstr "Edit pattern"
+
+msgid "Edit config"
+msgstr "Edit config"
+
+msgid "The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again."
+msgstr "The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again."
+
+msgid "Bulk apply configs"
+msgstr "Bulk apply configs"
+
+msgid "Please select config(s) to apply to selected resource(s)."
+msgstr "Please select config(s) to apply to selected resource(s)."
+
+msgid "Stop on error"
+msgstr "Stop on error"
+
+msgid "Overwrite policy"
+msgstr "Overwrite policy"
+
+msgid "Run simulation"
+msgstr "Run simulation"
+
+msgid "Do not overwrite if directives from the configs are already defined in the Bacula resource configuration. Add only new ones."
+msgstr "Do not overwrite if directives from the configs are already defined in the Bacula resource configuration. Add only new ones."
+
+msgid "Overwrite if directives from the configs are already defined in the Bacula resource configuration."
+msgstr "Overwrite if directives from the configs are already defined in the Bacula resource configuration."
+
+msgid "Apply configs"
+msgstr "Apply configs"
+
+msgid "In the selected config(s) is defined the Name resource directive. It means that in case selecting a policy for overwriting resources, process will stop because there cannot exist multiple resources the same type with the same name."
+msgstr "In the selected config(s) is defined the Name resource directive. It means that in case selecting a policy for overwriting resources, process will stop because there cannot exist multiple resources the same type with the same name."
+
+msgid "In patterns are listed only configs with a Name directive defined."
+msgstr "In patterns are listed only configs with a Name directive defined."
+
+msgid "Apply patterns"
+msgstr "Apply patterns"
+
+msgid "Bulk apply patterns"
+msgstr "Bulk apply patterns"
+
+msgid "Please select pattern(s) to apply to API host component configuration."
+msgstr "Please select pattern(s) to apply to API host component configuration."
+
+msgid "Do not overwrite the same directives if the config resource already exists in the Bacula component configuration. Add only new directives."
+msgstr "Do not overwrite the same directives if the config resource already exists in the Bacula component configuration. Add only new directives."
+
+msgid "Overwrite the same directives if the config resource already exists in the Bacula resource configuration."
+msgstr "Overwrite the same directives if the config resource already exists in the Bacula resource configuration."
+
+msgid "Configs are pieces of Bacula configuration that can be applied to existing resources. This is specially used to bulk apply the same repeatable configuration to multiple (or single) Bacula configuration resources. For example, you can create one config to apply some directives and another to apply other directives. It is possible to apply both configs on selected resources at once. Configs are used on the Bacula resource level."
+msgstr "Configs are pieces of Bacula configuration that can be applied to existing resources. This is specially used to bulk apply the same repeatable configuration to multiple (or single) Bacula configuration resources. For example, you can create one config to apply some directives and another to apply other directives. It is possible to apply both configs on selected resources at once. Configs are used on the Bacula resource level."
+
+msgid "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
+msgstr "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
