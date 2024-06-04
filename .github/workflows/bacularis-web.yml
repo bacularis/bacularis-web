@@ -36,7 +36,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Update common layer to latest
-      run: composer update bacularis/bacularis-common:dev-master
+      run: composer update "bacularis/bacularis-common:dev-master"
 
     - name: Run static code analysis
       run: composer analyse
