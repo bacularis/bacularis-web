@@ -3,7 +3,7 @@ This is fully new function release. We prepared the configs and patterns functio
 
 To maintain continuity of work in multiple Bacularis instance environments advised upgrading method to version 3.2.0 is to upgrade all Bacularis API hosts first and Bacularis Web at the end. It is because of fact that Bacularis API 3.2.0 works well with Bacularis Web lower than 3.2.0, while Bacularis Web 3.2.0 does not work with Bacularis API lower than 3.2.0.
 
-Changes:
+**Changes**
  - Implement configs and patterns function
  - New bulk actions for applying configs and patterns
  - Switch web interface to use new API version 3
