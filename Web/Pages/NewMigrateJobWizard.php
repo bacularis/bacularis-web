@@ -744,7 +744,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 				'Job',
 				$job['Name']
 			];
-			$result = $this->getModule('api')->set(
+			$result = $this->getModule('api')->create(
 				$params,
 				['config' => json_encode($job)]
 			);

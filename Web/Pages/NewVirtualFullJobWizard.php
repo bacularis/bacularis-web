@@ -744,7 +744,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 				'Schedule',
 				$schedule['Name']
 			];
-			$result = $this->getModule('api')->set(
+			$result = $this->getModule('api')->create(
 				$params,
 				['config' => json_encode($schedule)]
 			);
@@ -854,7 +854,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			'Job',
 			$job['Name']
 		];
-		$result = $this->getModule('api')->set(
+		$result = $this->getModule('api')->create(
 			$params,
 			['config' => json_encode($job)]
 		);

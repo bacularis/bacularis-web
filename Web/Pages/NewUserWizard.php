@@ -722,7 +722,7 @@ class NewUserWizard extends BaculumWebPage
 			}
 		}
 
-		$result = $this->getModule('api')->set([
+		$result = $this->getModule('api')->create([
 			'config',
 			'dir',
 			'Console',
