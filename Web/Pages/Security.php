@@ -37,6 +37,7 @@ use Prado\Web\UI\TCommandEventParameter;
 use Bacularis\Common\Modules\AuthOAuth2;
 use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Common\Modules\Ldap;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\BaculumWebPage;
@@ -2805,7 +2806,7 @@ class Security extends BaculumWebPage
 			}
 		}
 
-		$result = $this->getModule('api')->set([
+		$result = $this->getModule('api')->create([
 			'config',
 			'dir',
 			'Console',
@@ -2816,6 +2817,26 @@ class Security extends BaculumWebPage
 
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
+		} elseif ($result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
+			// Config exists, so try to update it
+			$result = $this->getModule('api')->set([
+				'config',
+				'dir',
+				'Console',
+				$acls['Name']
+			], [
+				'config' => json_encode($acls)
+			], $api_host);
+			if ($result->error === 0) {
+				$this->getModule('api')->set(['console'], ['reload']);
+			} else {
+				$cb->update(
+					'api_host_access_window_error',
+					$result->output
+				);
+				$cb->show('api_host_access_window_error');
+				return '';
+			}
 		} else {
 			$cb->update(
 				'api_host_access_window_error',
