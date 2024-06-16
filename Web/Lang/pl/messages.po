@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-20 14:08\n"
+"PO-Revision-Date: 2024-06-16 11:50\n"
 "Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
@@ -5343,244 +5343,243 @@ msgstr "Pokaż 10 najstarszych plików (MTIME)"
 msgid "Job top 10 files"
 msgstr "Top 10 plików zadania"
 
-
 msgid "RFC 4515 compliant LDAP search filters are supported, for example:"
-msgstr "RFC 4515 compliant LDAP search filters are supported, for example:"
+msgstr "Obsługiwane są filtry wyszukiwania LDAP zgodne z RFC 4515, na przykład:"
 
 msgid "Added"
-msgstr "Added"
+msgstr "Dodane"
 
 msgid "Removed"
-msgstr "Removed"
+msgstr "Usunięte"
 
 msgid "Not included"
-msgstr "Not included"
+msgstr "Nie dołączone"
 
 msgid "Select job file difference method"
-msgstr "Select job file difference method"
+msgstr "Wybierz metodę różnicy plików zadań"
 
 msgid "A and B (full two jobs diff)"
-msgstr "A and B (full two jobs diff)"
+msgstr "A i B (pełna różnica dwóch zadań)"
 
 msgid "Since A until B (job range)"
-msgstr "Since A until B (job range)"
+msgstr "Od A do B (zakres zadań)"
 
 msgid "Since B until A (job range)"
-msgstr "Since B until A (job range)"
+msgstr "Od B do A (zakres zadań)"
 
 msgid "In A but not in B"
-msgstr "In A but not in B"
+msgstr "W A ale nie w B"
 
 msgid "In B but not in A"
-msgstr "In B but not in A"
+msgstr "W B, ale nie w A"
 
 msgid "Show"
-msgstr "Show"
+msgstr "Pokaż"
 
 msgid "Job file differences"
-msgstr "Job file differences"
+msgstr "Różnice plików zadania"
 
 msgid "it displays all files from job A and all files from job B to compare and show the difference between them."
-msgstr "it displays all files from job A and all files from job B to compare and show the difference between them."
+msgstr "Wyświetla wszystkie pliki z zadania A i wszystkie pliki z zadania B do porównania i do wyświetlenia różnicy między nimi."
 
 msgid "It takes into account only two selected JobIds A and B."
-msgstr "It takes into account only two selected JobIds A and B."
+msgstr "Bierze pod uwagę wyłącznie dwa wybrane JobIds A i B."
 
 msgid "It is a good method to see in which of the two backups files were added (new and modified files) and in which they were removed (if used the Accurate job mode)."
-msgstr "It is a good method to see in which of the two backups files were added (new and modified files) and in which they were removed (if used the Accurate job mode)."
+msgstr "To jest dobra metoda do zobaczenia, które pliki dwóch backupów były dodane (nowe i zmodyfikowane pliki) i w które pliki były usunięte (jeżeli używany jest tryb dokładny — tzw. tryb Accurate)."
 
 msgid "Also it displays what files have been included in A or in B, or in both."
-msgstr "Also it displays what files have been included in A or in B, or in both."
+msgstr "Również wyświetla które pliki zostały dołączone w zadaniach A lub w B, lub w obydwu."
 
 msgid "it displays all files in selected JobIds range between A and B."
-msgstr "it displays all files in selected JobIds range between A and B."
+msgstr "wyświetla wszystkie pliki w wybranym zakresie JobIds pomiędzy A i B."
 
 msgid "In this method A should be lower (older) than B."
-msgstr "In this method A should be lower (older) than B."
+msgstr "W tej metodzie A powinien być mniejszy (starszy) niż B."
 
 msgid "Files are displayed as A files."
-msgstr "Files are displayed as A files."
+msgstr "Pliki są wyświetlane jako pliki A."
 
 msgid "It is useful for seeing all added and removed files in multiple JobIds."
-msgstr "It is useful for seeing all added and removed files in multiple JobIds."
+msgstr "Jest to pomocne do zobaczenia wszystkie dodane i usunięte pliki w wielu JobIds."
 
 msgid "it displays all files in selected JobIds range between B and A."
-msgstr "it displays all files in selected JobIds range between B and A."
+msgstr "Wyświetla wszystkie pliki w wybranym zakresie JobIds pomiędzy A i B."
 
 msgid "In this method B should be lower (older) than A."
-msgstr "In this method B should be lower (older) than A."
+msgstr "W tej metodzie B powinien być mniejszy (starszy) niż A."
 
 msgid "Files are displayed as B files."
-msgstr "Files are displayed as B files."
-
+msgstr "Pliki są wyświetlane jako pliki B."
 
 msgid "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job A but not in B."
-msgstr "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job A but not in B."
+msgstr "ta metoda bierze pod uwagę jedynie dwa wybrane JobIds A i B do wyświetlenia plików, które zostały dodane lub usunięte w zadaniu A ale nie w zadaniu B."
 
 msgid "It is useful to see changes included in A that do not exist in B."
-msgstr "It is useful to see changes included in A that do not exist in B."
+msgstr "Jest to pomocne do zobaczenia zmian dołączonych w A które nie istnieją w B."
 
 msgid "These changes exist in A and do not exist in B."
-msgstr "These changes exist in A and do not exist in B."
+msgstr "Te zmiany istnieją w A i nie istnieją w B."
 
 msgid "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job B but not in A."
-msgstr "this method takes into account only two selected JobIds A and B to display files that have been added or removed in job B but not in A."
+msgstr "ta metoda bierze pod uwagę jedynie dwa wybrane JobIds A i B do wyświetlenia plików, które zostały dodane lub usunięte w B, ale nie w A."
 
 msgid "It is useful to see changes included in B that do not exist in A."
-msgstr "It is useful to see changes included in B that do not exist in A."
+msgstr "Jest to pomocne do zobaczenia zmian dołączonych w B, które nie istnieją w A."
 
 msgid "These changes exist in B and do not exist in A."
-msgstr "These changes exist in B and do not exist in A."
+msgstr "The zmiany istnieją w B, ale nie istnieją w A."
 
 msgid "There are available the following job file difference methods:"
-msgstr "There are available the following job file difference methods:"
+msgstr "Dostępne są następujące metody różnicy plików zadań:"
 
 msgid "The selected job file difference method requires that JobId %A (currently is %a) needs to be lower than JobId %B (currently is %b)."
-msgstr "The selected job file difference method requires that JobId %A (currently is %a) needs to be lower than JobId %B (currently is %b)."
+msgstr "Wybrana metoda różnicy plików wymaga, aby JobId %A (obecnie jest to %a) był niższy niż JobId %B (obecnie jest to %b)."
 
 msgid "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."
-msgstr "Error. Please check: 1) if Bacula Director version is 11.0 or greater. This function is supported by Directors >= 11.0. 2) if you have enough memory for PHP to display many records (see memory_limit option in php.ini file) 3) if there are too many files in jobs to display (e.g. 1 million files or more)."
+msgstr "Błąd. Proszę sprawdzić: 1) czy wersja Zarządcy Bacula jest 11.0 lub większa. Ta funkcja jest wspierana przez Zarządcę Bacula w wersji >= 11.0. 2) czy masz wystarczająco pamięci przydzielonej dla PHP do wyświetlenia wielu rekordów (zobacz opcję memory_limit w pliku php.ini) 3) czy nie ma za dużo plików zadań do wyświetlnia (np. 1 milion plików lub więcej)."
 
 msgid "In use by"
-msgstr "In use by"
+msgstr "W użyciu przez"
 
 msgid "Resource usage"
-msgstr "Resource usage"
+msgstr "Użycie zasobu"
 
 msgid "Resource name"
-msgstr "Resource name"
+msgstr "Nazwa zasobu"
 
 msgid "Directive"
-msgstr "Directive"
+msgstr "Dyrektywa"
 
 msgid "API host to test"
-msgstr "API host to test"
+msgstr "Host API do testu"
 
 msgid "Test name"
-msgstr "Test name"
+msgstr "Nazwa testu"
 
 msgid "Download results"
-msgstr "Download results"
+msgstr "Wyniki pobierania"
 
 msgid "Health self test"
-msgstr "Health self test"
+msgstr "Autotest stanu zdrowia"
 
 msgid "Show result"
-msgstr "Show result"
+msgstr "Pokaż rezultat"
 
 msgid "Hide result"
-msgstr "Hide result"
+msgstr "Ukryj rezultat"
 
 msgid "Patterns"
-msgstr "Patterns"
+msgstr "Wzorce"
 
 msgid "Configs"
-msgstr "Configs"
+msgstr "Konfiguracje"
 
 msgid "Add config"
-msgstr "Add config"
+msgstr "Dodaj konfigurację"
 
 msgid "Add pattern"
-msgstr "Add pattern"
+msgstr "Dodaj wzorzec"
 
 msgid "Config name"
-msgstr "Config name"
+msgstr "Dodaj nazwę konfiguracji"
 
 msgid "Config description"
-msgstr "Config description"
+msgstr "Opis konfiguracji"
 
 msgid "Component"
-msgstr "Component"
+msgstr "Komponent"
 
 msgid "Config with given name already exists."
-msgstr "Config with given name already exists."
+msgstr "Konfiguracja z tą nazwą już istnieje."
 
 msgid "Pattern name"
-msgstr "Pattern name"
+msgstr "Nazwa wzorca"
 
 msgid "Pattern description"
-msgstr "Pattern description"
+msgstr "Opis wzorca"
 
 msgid "Pattern with given name already exists."
-msgstr "Pattern with given name already exists."
+msgstr "Wzorzec z tą nazwą już istnieje."
 
 msgid "Error while writing pattern."
-msgstr "Error while writing pattern."
+msgstr "Błąd podczas zapisywania wzorca."
 
 msgid "Error while writing config."
-msgstr "Error while writing config."
+msgstr "Błąd podczas zapisywania konfiguracji."
 
 msgid "In pattern"
-msgstr "In pattern"
+msgstr "We wzorcu"
 
 msgid "My custom job config 123"
-msgstr "My custom job config 123"
+msgstr "Moja konfiguracja zadania 123"
 
 msgid "Custom options for hosts in Server Room 3A."
-msgstr "Custom options for hosts in Server Room 3A."
+msgstr "Własne opcje dla hostów w serwerowni 3A."
 
 msgid "My pattern 123"
-msgstr "My pattern 123"
+msgstr "Mój wzorzec 123"
 
 msgid "My pattern 123 description."
-msgstr "My pattern 123 description."
+msgstr "Opis mojego wzorca 123."
 
 msgid "Edit pattern"
-msgstr "Edit pattern"
+msgstr "Edytuj wzorzec"
 
 msgid "Edit config"
-msgstr "Edit config"
+msgstr "Edytuj konfigurację"
 
 msgid "The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again."
-msgstr "The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again."
+msgstr "Następujące konfiguracje są użyte we wzorcach i nie mogą być usunięte: %used_configs Aby je usunąć, proszę wypisać te konfiguracje ze wzorców, a następnie proszę spróbować ponownie."
 
 msgid "Bulk apply configs"
-msgstr "Bulk apply configs"
+msgstr "Masowe stosowanie konfiguracji"
 
 msgid "Please select config(s) to apply to selected resource(s)."
-msgstr "Please select config(s) to apply to selected resource(s)."
+msgstr "Proszę wybrać konfiguracje do zastosowania ich w wybranych zasobach."
 
 msgid "Stop on error"
-msgstr "Stop on error"
+msgstr "Zatrzymaj w przypadku wystąpienia błędu"
 
 msgid "Overwrite policy"
-msgstr "Overwrite policy"
+msgstr "Polityka nadpisywania"
 
 msgid "Run simulation"
-msgstr "Run simulation"
+msgstr "Uruchom symulację"
 
 msgid "Do not overwrite if directives from the configs are already defined in the Bacula resource configuration. Add only new ones."
-msgstr "Do not overwrite if directives from the configs are already defined in the Bacula resource configuration. Add only new ones."
+msgstr "Nie nadpisuj, jeżeli dyrektywy z konfiguracji są już zdefiniowane w konfiguracji zasobów Bacula. Dodaj tylko nowe dyrektywy."
 
 msgid "Overwrite if directives from the configs are already defined in the Bacula resource configuration."
-msgstr "Overwrite if directives from the configs are already defined in the Bacula resource configuration."
+msgstr "Napisz, jeżeli dyrektywy z konfiguracji są już zdefiniowane w konfiguracji zasobów Bacula."
 
 msgid "Apply configs"
-msgstr "Apply configs"
+msgstr "Zastosuj konfiguracje"
 
 msgid "In the selected config(s) is defined the Name resource directive. It means that in case selecting a policy for overwriting resources, process will stop because there cannot exist multiple resources the same type with the same name."
-msgstr "In the selected config(s) is defined the Name resource directive. It means that in case selecting a policy for overwriting resources, process will stop because there cannot exist multiple resources the same type with the same name."
+msgstr "W wybranych konfiguracjach są zdefiniowane dyrektywy zasobu Name. Oznacza to, że w przypadku wybrania polityki nadpisującej zasoby, proces zatrzyma się, ponieważ nie może istnieć wiele zasobów tego samego typu z tą samą nazwą."
 
 msgid "In patterns are listed only configs with a Name directive defined."
-msgstr "In patterns are listed only configs with a Name directive defined."
+msgstr "We wzorcach są listowane jedynie konfiguracje ze zdefiniowaną dyrektywą Name."
 
 msgid "Apply patterns"
-msgstr "Apply patterns"
+msgstr "Zastosuj wzorce"
 
 msgid "Bulk apply patterns"
-msgstr "Bulk apply patterns"
+msgstr "Masowe stosowanie wzorców"
 
 msgid "Please select pattern(s) to apply to API host component configuration."
-msgstr "Please select pattern(s) to apply to API host component configuration."
+msgstr "Proszę wybrać wzorce do zastosowania do konfiguracji komponentów hosta API."
 
 msgid "Do not overwrite the same directives if the config resource already exists in the Bacula component configuration. Add only new directives."
-msgstr "Do not overwrite the same directives if the config resource already exists in the Bacula component configuration. Add only new directives."
+msgstr "Nie nadpisuj tych samych dyrektyw, jeżeli konfiguracja zasobu już istnieje w konfiguracji komponentu Bacula. Dodaj tylko nowe dyrektywy."
 
 msgid "Overwrite the same directives if the config resource already exists in the Bacula resource configuration."
-msgstr "Overwrite the same directives if the config resource already exists in the Bacula resource configuration."
+msgstr "Napisz te same dyrektywy, jeżeli konfiguracji zasobu już istnieje w konfiguracji zasobu Bacula."
 
 msgid "Configs are pieces of Bacula configuration that can be applied to existing resources. This is specially used to bulk apply the same repeatable configuration to multiple (or single) Bacula configuration resources. For example, you can create one config to apply some directives and another to apply other directives. It is possible to apply both configs on selected resources at once. Configs are used on the Bacula resource level."
-msgstr "Configs are pieces of Bacula configuration that can be applied to existing resources. This is specially used to bulk apply the same repeatable configuration to multiple (or single) Bacula configuration resources. For example, you can create one config to apply some directives and another to apply other directives. It is possible to apply both configs on selected resources at once. Configs are used on the Bacula resource level."
+msgstr "Konfiguracje są małymi kawałkami konfiguracji Bacula, które mogą być stosowane do istniejących zasobów. To jest szczególnie używane do masowego stosowania powtarzalnych części konfiguracji do wielu (lub pojedynczych) zasobów konfiguracji Bacula. Na przykład, możesz stworzyć jedną konfigurację do zastosowania pewnych dyrektyw i drugą konfigurację do stosowania innych dyrektyw. Istnieje możliwość stosowanie obydwu konfiguracji na wybranych zasobach za jednym razem. Konfiguracje są używane na poziomie zasobów Bacula."
 
 msgid "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
-msgstr "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
+msgstr "Wzorce są zbiorami konfiguracji, które mogą być używane do istniejących komponentów Bacula (Director, Storage Daemon, File Daemon). W odróżnieniu od pojedynczych konfiguracji wzorce są stosowanie do całej konfiguracji komponentów zamiast do wybranych zasobów. Konfiguracje, które są częściami wzorców, muszą zawierać kompletną konfigurację zasobu (zasób będzie dodany jako nowy) lub istniejącą konfigurację (zasób będzie zaktualizowany w komponentach). Konfiguracje przypisane do wzorców muszą mieć zdefiniowaną dyrektywę Name."
+
