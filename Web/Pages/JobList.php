@@ -29,6 +29,8 @@
 
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
+use Prado\Web\UI\ActiveControls\TCallback;
+use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 
 /**
  * Job list page.
@@ -102,6 +104,62 @@ class JobList extends BaculumWebPage
 	{
 		$this->RunJobModal->loadData();
 	}
+
+	/**
+	 * Run multiple jobs by name event handler.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function runJobs(TCallback $sender, TCallbackEventParameter $param): void
+	{
+		$result = [];
+		$jobs = explode('|', $param->getCallbackParameter());
+		for ($i = 0; $i < count($jobs); $i++) {
+			$ret = $this->runJob($jobs[$i]);
+			if ($ret->error !== 0) {
+				$result[] = $ret->output;
+				break;
+			}
+			$result[] = implode(PHP_EOL, $ret->output);
+		}
+		$this->getCallbackClient()->update(
+			$this->BulkActions->BulkActionsOutput,
+			implode(PHP_EOL, $result)
+		);
+	}
+
+	/**
+	 * Run single job by name.
+	 *
+	 * @param string $name job name to run
+	 * @return StdClass run job result object
+	 */
+	public function runJob(string $name): object
+	{
+		$params = ['name' => $name];
+		$result = $this->getModule('api')->create(
+			['jobs', 'run'],
+			$params
+		);
+		if ($result->error === 0) {
+			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
+			if (!is_numeric($started_jobid)) {
+				$errmsg = implode('<br />', $result->output);
+				$this->getPage()->getCallbackClient()->callClientFunction(
+					'show_error',
+					[$errmsg, $result->error]
+				);
+			}
+		} else {
+			$this->getPage()->getCallbackClient()->callClientFunction(
+				'show_error',
+				[$result->output, $result->error]
+			);
+		}
+		return $result;
+	}
+
 
 	/**
 	 * Run job again event handler.

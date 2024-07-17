@@ -33,6 +33,8 @@
 			<%[ Reports ]%>
 		</a>
 	</div>
+	<!-- Global bulk action modal -->
+	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 
 	<!-- Job History List -->
 	<div class="w3-container tab_item" id="job_history">
@@ -824,7 +826,6 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 		<com:Bacularis.Web.Portlets.JobLog />
 	</div>
 
@@ -904,6 +905,15 @@ const oJobList = {
 				};
 				oBulkApplyConfigsModal.set_item_cb(cb);
 				oBulkApplyConfigsModal.show_window(true);
+			}
+		},
+		{
+			action: 'run',
+			label: '<%[ Run ]%>',
+			value: 'job',
+			callback: <%=$this->RunJobsAction->ActiveControl->Javascript%>,
+			before: function() {
+				oBulkActionsModal.show_output(true);
 			}
 		}
 	],
@@ -1166,6 +1176,16 @@ const oJobList = {
 	}
 };
 </script>
+		<com:TCallback ID="RunJobsAction" OnCallback="runJobs">
+			<prop:ClientSide.OnLoading>
+				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.show_loader(true);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oBulkActionsModal.show_loader(false);
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
 		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
 			ID="BulkApplyConfigsJob"
 			ComponentType="dir"
