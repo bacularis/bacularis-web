@@ -1169,8 +1169,8 @@ msgstr "Please enter API login."
 msgid "Please enter API password."
 msgstr "Please enter API password."
 
-msgid "Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance."
-msgstr "Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance."
+msgid "Bacularis web interface requires to add at least one Bacularis API instance with shared Catalog access. Please add API instance."
+msgstr "Bacularis web interface requires to add at least one Bacularis API instance with shared Catalog access. Please add API instance."
 
 msgid "Save with name:"
 msgstr "Save with name:"

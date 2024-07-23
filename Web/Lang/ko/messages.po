@@ -1185,8 +1185,8 @@ msgstr "API 로그인을 입력하십시오."
 msgid "Please enter API password."
 msgstr "API 암호를 입력하십시오."
 
-msgid "Baculum web interface requires to add at least one Baculum API instance with shared Catalog access. Please add API instance."
-msgstr "Baculum 웹 인터페이스는 공유 카탈로그 접근 할 수 있는 적어도 하나 개의 Baculum의 API 인스턴스를 추가해야 합니다. API 인스턴스를 추가하십시오."
+msgid "Bacularis web interface requires to add at least one Bacularis API instance with shared Catalog access. Please add API instance."
+msgstr "Bacularis 웹 인터페이스는 공유 카탈로그 접근 할 수 있는 적어도 하나 개의 Bacularis의 API 인스턴스를 추가해야 합니다. API 인스턴스를 추가하십시오."
 
 msgid "Save with name:"
 msgstr "이름으로 저장 :"

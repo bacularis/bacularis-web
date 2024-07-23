@@ -204,10 +204,10 @@ msgid "Baculum needs access to bconsole by the web server."
 msgstr "Baculum needs access to bconsole by the web server."
 
 msgid ""
-"Baculum web interface requires to add at least one Baculum API instance with "
+"Bacularis web interface requires to add at least one Bacularis API instance with "
 "shared Catalog access. Please add API instance."
 msgstr ""
-"Baculum webを使用するためにはBaculum APIがインストールされたサーバーと通信できる必要があります。"
+"Bacularis webを使用するためにはBacularis APIがインストールされたサーバーと通信できる必要があります。"
 "最低1台以上のAPIサーバを登録してください。"
 
 msgid "Bconsole access"
