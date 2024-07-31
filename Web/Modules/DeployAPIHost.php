@@ -380,7 +380,7 @@ bconfig_cfg_path = \"\"
 	{
 		$pwd = $this->getModule('crypto')->getHashedPassword($osprofile['bacularis_admin_pwd']);
 		$creds = [$osprofile['bacularis_admin_user'], $pwd];
-		$fbody = implode(':', $creds);
+		$fbody = implode(':', $creds) . PHP_EOL;
 		$dst_file = [];
 		if ($type == 'API') {
 			$dst_file = $this->getUserAPIPwdFile();
