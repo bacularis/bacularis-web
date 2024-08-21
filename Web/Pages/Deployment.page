@@ -359,6 +359,7 @@ var oAPIHostCommands = {
 	ids: {
 		window: 'api_host_command_window',
 		window_title: 'api_host_command_window_title',
+		command_catalog: 'api_host_command_catalog',
 		command_director: 'api_host_command_director',
 		command_storage: 'api_host_command_storage',
 		command_client: 'api_host_command_client',
@@ -396,10 +397,11 @@ var oAPIHostCommands = {
 		}
 	},
 	components: {
-		director: {component_type: 'dir'},
-		storage: {component_type: 'sd'},
-		client: {component_type: 'fd'},
-		console: {component_type: 'bcons'}
+		catalog: {component_type: 'cat', component_name: 'catalog'},
+		director: {component_type: 'dir', component_name: 'director'},
+		storage: {component_type: 'sd', component_name: 'storage'},
+		client: {component_type: 'fd', component_name: 'client'},
+		console: {component_type: 'bcons', component_name: 'console'}
 	},
 	commands: [],
 	load_window: function(host, command, open) {
@@ -466,6 +468,7 @@ var oAPIHostCommands = {
 		container.appendChild(loading);
 		container.appendChild(info);
 		const ids = '#' + [
+			this.ids.command_catalog,
 			this.ids.command_director,
 			this.ids.command_storage,
 			this.ids.command_client,
@@ -524,7 +527,9 @@ var oAPIHostCommands = {
 				container.appendChild(label);
 				container.appendChild(details);
 				container.appendChild(output);
-				container.appendChild(patterns_btn);
+				if (component != this.components.catalog.component_name) {
+					container.appendChild(patterns_btn);
+				}
 
 				// details (output)
 				$(element).html(container);
@@ -1178,6 +1183,14 @@ var oDeployAPIHost = {
 					<div class="info_msg info_msg_upgrade w3-margin-left" style="display: none"></div>
 					<div class="info_msg info_msg_remove w3-margin-left" style="display: none"></div>
 					<h3 class="w3-margin-left"><%[ Components ]%></h3>
+					<div class="w3-container" style="min-height: 45px;">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><%[ Catalog: ]%></div>
+							<div class="w3-rest">
+								<div id="api_host_command_catalog" class="w3-show-inline-block"></div>
+							</div>
+						</div>
+					</div>
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Director: ]%></div>
@@ -1837,6 +1850,18 @@ var oOSProfiles = {
 			'<%=$this->OSProfilePackagesBacularisStart->ClientID%>',
 			'<%=$this->OSProfilePackagesBacularisEnable->ClientID%>',
 
+			'<%=$this->OSProfilePackagesCatInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesCatUpgrade->ClientID%>',
+			'<%=$this->OSProfilePackagesCatRemove->ClientID%>',
+			'<%=$this->OSProfilePackagesPreCatInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreCatUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPreCatRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostCatInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostCatUpgradeCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostCatRemoveCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesCatInfo->ClientID%>',
+			'<%=$this->OSProfilePackagesCatEnable->ClientID%>',
+
 			'<%=$this->OSProfilePackagesDirInstall->ClientID%>',
 			'<%=$this->OSProfilePackagesDirUpgrade->ClientID%>',
 			'<%=$this->OSProfilePackagesDirRemove->ClientID%>',
@@ -2312,6 +2337,133 @@ $(function() {
 											CssClass="w3-input w3-border"
 										/>
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Catalog commands ]%></a>
+					<div id="osprofile_window_catalog_options" style="display: none">
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInstall" Text="<%[ Catalog installation command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesCatInstall"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatUpgrade" Text="<%[ Catalog upgrade command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesCatUpgrade"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatRemove" Text="<%[ Catalog removal command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesCatRemove"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInfo" Text="<%[ Catalog info command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesCatInfo"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatEnable" Text="<%[ Catalog enable command: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveTextBox
+									ID="OSProfilePackagesCatEnable"
+									AutoPostBack="false"
+									MaxLength="500"
+									CssClass="w3-input w3-border"
+								/>
+							</div>
+						</div>
+						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+						<div id="osprofile_window_catalog_advanced_options" style="display: none">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatInstallCmd" Text="<%[ Catalog pre-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreCatInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatUpgradeCmd" Text="<%[ Catalog pre-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreCatUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatRemoveCmd" Text="<%[ Catalog pre-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPreCatRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatInstallCmd" Text="<%[ Catalog post-install command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostCatInstallCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatUpgradeCmd" Text="<%[ Catalog post-upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostCatUpgradeCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatRemoveCmd" Text="<%[ Catalog post-remove command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesPostCatRemoveCmd"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
 								</div>
 							</div>
 						</div>

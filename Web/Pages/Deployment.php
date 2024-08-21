@@ -342,8 +342,20 @@ class Deployment extends BaculumWebPage
 		$this->OSProfilePackagesPostBacularisUpgradeCmd->Text = $config['packages_bacularis_post_upgrade_cmd'];
 		$this->OSProfilePackagesPostBacularisRemoveCmd->Text = $config['packages_bacularis_post_remove_cmd'];
 
+		// Catalog commands
+		$this->OSProfilePackagesCatInstall->Text = $config['packages_cat_install'];
+		$this->OSProfilePackagesCatUpgrade->Text = $config['packages_cat_upgrade'];
+		$this->OSProfilePackagesCatRemove->Text = $config['packages_cat_remove'];
+		$this->OSProfilePackagesCatInfo->Text = $config['packages_cat_info'];
+		$this->OSProfilePackagesCatEnable->Text = $config['packages_cat_enable'];
+		$this->OSProfilePackagesPreCatInstallCmd->Text = $config['packages_cat_pre_install_cmd'];
+		$this->OSProfilePackagesPreCatUpgradeCmd->Text = $config['packages_cat_pre_upgrade_cmd'];
+		$this->OSProfilePackagesPreCatRemoveCmd->Text = $config['packages_cat_pre_remove_cmd'];
+		$this->OSProfilePackagesPostCatInstallCmd->Text = $config['packages_cat_post_install_cmd'];
+		$this->OSProfilePackagesPostCatUpgradeCmd->Text = $config['packages_cat_post_upgrade_cmd'];
+		$this->OSProfilePackagesPostCatRemoveCmd->Text = $config['packages_cat_post_remove_cmd'];
+
 		// Director commands
-		$this->OSProfilePackagesUseSudo->Checked = $config['packages_use_sudo'] == 1;
 		$this->OSProfilePackagesDirInstall->Text = $config['packages_dir_install'];
 		$this->OSProfilePackagesDirUpgrade->Text = $config['packages_dir_upgrade'];
 		$this->OSProfilePackagesDirRemove->Text = $config['packages_dir_remove'];
@@ -464,6 +476,17 @@ class Deployment extends BaculumWebPage
 		$config['packages_bacularis_post_install_cmd'] = $this->OSProfilePackagesPostBacularisInstallCmd->Text;
 		$config['packages_bacularis_post_upgrade_cmd'] = $this->OSProfilePackagesPostBacularisUpgradeCmd->Text;
 		$config['packages_bacularis_post_remove_cmd'] = $this->OSProfilePackagesPostBacularisRemoveCmd->Text;
+		$config['packages_cat_install'] = $this->OSProfilePackagesCatInstall->Text;
+		$config['packages_cat_upgrade'] = $this->OSProfilePackagesCatUpgrade->Text;
+		$config['packages_cat_remove'] = $this->OSProfilePackagesCatRemove->Text;
+		$config['packages_cat_info'] = $this->OSProfilePackagesCatInfo->Text;
+		$config['packages_cat_enable'] = $this->OSProfilePackagesCatEnable->Text;
+		$config['packages_cat_pre_install_cmd'] = $this->OSProfilePackagesPreCatInstallCmd->Text;
+		$config['packages_cat_pre_upgrade_cmd'] = $this->OSProfilePackagesPreCatUpgradeCmd->Text;
+		$config['packages_cat_pre_remove_cmd'] = $this->OSProfilePackagesPreCatRemoveCmd->Text;
+		$config['packages_cat_post_install_cmd'] = $this->OSProfilePackagesPostCatInstallCmd->Text;
+		$config['packages_cat_post_upgrade_cmd'] = $this->OSProfilePackagesPostCatUpgradeCmd->Text;
+		$config['packages_cat_post_remove_cmd'] = $this->OSProfilePackagesPostCatRemoveCmd->Text;
 		$config['packages_dir_install'] = $this->OSProfilePackagesDirInstall->Text;
 		$config['packages_dir_upgrade'] = $this->OSProfilePackagesDirUpgrade->Text;
 		$config['packages_dir_remove'] = $this->OSProfilePackagesDirRemove->Text;
@@ -1469,7 +1492,7 @@ class Deployment extends BaculumWebPage
 	{
 		[$host, $command] = $param->getCallbackParameter();
 		$ret = [];
-		$components = ['director', 'storage', 'client', 'console'];
+		$components = ['catalog', 'director', 'storage', 'client', 'console'];
 		for ($i = 0; $i < count($components); $i++) {
 			$result = $this->getModule('api')->get(
 				['software', $components[$i], 'info'],

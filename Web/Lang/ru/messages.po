@@ -5583,3 +5583,42 @@ msgstr "Configs are pieces of Bacula configuration that can be applied to existi
 
 msgid "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
 msgstr "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
+
+msgid "Catalog commands"
+msgstr "Catalog commands"
+
+msgid "Catalog installation command:"
+msgstr "Catalog installation command:"
+
+msgid "Catalog upgrade command:"
+msgstr "Catalog upgrade command:"
+
+msgid "Catalog removal command:"
+msgstr "Catalog removal command:"
+
+msgid "Catalog info command:"
+msgstr "Catalog info command:"
+
+msgid "Catalog enable command:"
+msgstr "Catalog enable command:"
+
+msgid "Catalog pre-install command:"
+msgstr "Catalog pre-install command:"
+
+msgid "Catalog pre-upgrade command:"
+msgstr "Catalog pre-upgrade command:"
+
+msgid "Catalog pre-remove command:"
+msgstr "Catalog pre-remove command:"
+
+msgid "Catalog post-install command:"
+msgstr "Catalog post-install command:"
+
+msgid "Catalog post-upgrade command:"
+msgstr "Catalog post-upgrade command:"
+
+msgid "Catalog post-remove command:"
+msgstr "Catalog post-remove command:"
+
+msgid "Catalog:"
+msgstr "Catalog:"

@@ -222,13 +222,13 @@ deb-src [signed-by=$key] $entry
 
 		foreach ($osprofile as $key => $value) {
 			$cmd = '';
-			if ($osprofile['packages_use_sudo'] === '1' && preg_match('/^packages_(dir|sd|fd|bcons)(_(pre|post))?_(install|upgrade|remove|info|enable)(_cmd)?$/', $key) === 1) {
+			if ($osprofile['packages_use_sudo'] === '1' && preg_match('/^packages_(cat|dir|sd|fd|bcons)(_(pre|post))?_(install|upgrade|remove|info|enable)(_cmd)?$/', $key) === 1) {
 				$cmd = $value;
 			} elseif ($osprofile['bconsole_use_sudo'] === '1' && $key == 'bconsole_bin_path') {
 				$cmd = $value;
 			} elseif ($osprofile['jsontools_use_sudo'] === '1' && preg_match('/^jsontools_b(dir|sd|fd|bcons)json_path$/', $key) === 1) {
 				$cmd = $value;
-			} elseif ($osprofile['actions_use_sudo'] === '1' && preg_match('/^actions_(dir|sd|fd)_(start|stop|restart)$/', $key) === 1) {
+			} elseif ($osprofile['actions_use_sudo'] === '1' && preg_match('/^actions_(cat|dir|sd|fd)_(start|stop|restart)$/', $key) === 1) {
 				$cmd = $value;
 			}
 			if (!empty($cmd)) {
@@ -271,7 +271,7 @@ deb-src [signed-by=$key] $entry
 	{
 		$packages = $db = $bconsole = $jsontools = $actions = [];
 		foreach ($osprofile as $key => $value) {
-			if (preg_match('/^packages_(?P<key>(dir|sd|fd|bcons|use)(_(pre|post))?_(install|upgrade|remove|info|enable|sudo)(_cmd)?)$/', $key, $match) === 1) {
+			if (preg_match('/^packages_(?P<key>(cat|dir|sd|fd|bcons|use)(_(pre|post))?_(install|upgrade|remove|info|enable|sudo)(_cmd)?)$/', $key, $match) === 1) {
 				$packages[$match['key']] = $value;
 			} elseif (preg_match('/^db_(?P<key>\w+)$/', $key, $match) === 1) {
 				$db[$match['key']] = $value;
@@ -306,7 +306,7 @@ deb-src [signed-by=$key] $entry
 			$jsontools['enabled'] = 0;
 		}
 
-		if (!empty($actions['dir_start']) || !empty($actions['fd_start']) || !empty($actions['sd_start'])) {
+		if (!empty($actions['cat_start']) || !empty($actions['dir_start']) || !empty($actions['fd_start']) || !empty($actions['sd_start'])) {
 			$actions['enabled'] = 1;
 		} else {
 			$actions['enabled'] = 0;
