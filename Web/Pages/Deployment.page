@@ -9,6 +9,7 @@
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<button id="btn_api_hosts" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'api_hosts'); if (oAPIHostList.table) { oAPIHostList.table.responsive.recalc(); }"><%[ Hosts ]%></button>
 		<button id="btn_os_profiles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'os_profiles'); if (oOSProfileList.table) { oOSProfileList.table.responsive.recalc(); } "><%[ OS profiles ]%></button>
+		<button id="btn_repo_auth" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'repo_auth'); if (oRepoAuthList.table) { oRepoAuthList.table.responsive.recalc(); } "><%[ Repo auths ]%></button>
 		<button id="btn_ssh_configs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_configs'); if (oSSHConfigList.table) { oSSHConfigList.table.responsive.recalc(); }"><%[ SSH configs ]%></button>
 		<button id="btn_ssh_keys" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_keys'); if (oSSHKeyList.table) { oSSHKeyList.table.responsive.recalc(); }"><%[ SSH keys ]%></button>
 	</div>
@@ -1843,6 +1844,7 @@ var oOSProfiles = {
 			'<%=$this->OSProfileRepositoryType->ClientID%>',
 			'<%=$this->OSProfileBacularisRepositoryAddr->ClientID%>',
 			'<%=$this->OSProfileBacularisRepositoryKey->ClientID%>',
+			'<%=$this->OSProfileBacularisRepositoryAuth->ClientID%>',
 			'<%=$this->OSProfileBacularisAdminUser->ClientID%>',
 			'<%=$this->OSProfileBacularisAdminPwd->ClientID%>',
 			'<%=$this->OSProfileBaculaRepositoryAddr->ClientID%>',
@@ -1961,6 +1963,12 @@ var oOSProfiles = {
 			'<%=$this->OSProfileActionsUseSudo->ClientID%>'
 		].forEach(function(id) {
 			document.getElementById(id).checked = false;
+		});
+
+		[
+			'<%=$this->OSProfileBacularisRepositoryAuthDef->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).checked = true;
 		});
 	},
 	load_osprofile_list: function() {
@@ -2094,6 +2102,30 @@ $(function() {
 									MaxLength="500"
 									CssClass="w3-input w3-border"
 								/>
+							</div>
+						</div>
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuthDef" Text="<%[ Use default Bacularis repository auth: ]%>"/></div>
+							<div class="w3-half">
+								<com:TActiveCheckBox
+									ID="OSProfileBacularisRepositoryAuthDef"
+									AutoPostBack="false"
+									CssClass="w3-check w3-border"
+									Checked="true"
+									Attributes.onclick="$('#osprofile_window_bacularis_repo_auth').toggle('fast');"
+								/>
+							</div>
+						</div>
+						<div id="osprofile_window_bacularis_repo_auth" style="display: <%=$this->OSProfileBacularisRepositoryAuthDef->Checked ? 'none' : 'block'%>">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuth" Text="<%[ Repo auth: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveDropDownList
+										ID="OSProfileBacularisRepositoryAuth"
+										AutoPostBack="false"
+										CssClass="w3-select w3-border"
+									/>
+								</div>
 							</div>
 						</div>
 						<div class="w3-row directive_field">
@@ -3328,6 +3360,394 @@ $(function() {
 			<com:TActiveHiddenField ID="OSProfileWindowType" />
 		</div>
 	</div>
+
+
+
+	<div class="w3-container tab_item" id="repo_auth" style="display: none">
+		<div class="w3-panel">
+			<button type="button" id="add_repo_auth_btn" class="w3-button w3-green" onclick="oRepoAuths.load_repo_auth_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new repo auth ]%></button>
+		</div>
+		<table id="repo_auth_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Repo auth name ]%></th>
+					<th class="w3-center"><%[ Auth type ]%></th>
+					<th class="w3-center"><%[ Username ]%></th>
+					<th class="w3-center"><%[ Default ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="repo_auth_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Repo auth name ]%></th>
+					<th class="w3-center"><%[ Auth type ]%></th>
+					<th class="w3-center"><%[ Username ]%></th>
+					<th class="w3-center"><%[ Default ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+<com:TCallback ID="RepoAuthList" OnCallback="TemplateControl.setRepoAuthList" />
+<com:TCallback ID="LoadRepoAuth" OnCallback="TemplateControl.loadRepoAuthWindow" />
+<com:TCallback ID="RemoveRepoAuthsAction" OnCallback="TemplateControl.removeRepoAuths" />
+<script>
+var oRepoAuthList = {
+	ids: {
+		repo_auth_list: 'repo_auth_list_table',
+		repo_auth_list_body: 'repo_auth_list_body'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveRepoAuthsAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oRepoAuthList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.repo_auth_list).addEventListener('click', function(e) {
+			$(function() {
+				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.repo_auth_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			dom: 'lB<"table_toolbar">frtip',
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			buttons: [
+				'copy', 'csv', 'colvis'
+			],
+			columns: [
+				{
+					className: 'details-control',
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{data: 'auth_type'},
+				{data: 'username'},
+				{
+					data: 'default',
+					render: function(data, type, row) {
+						let ret;
+						if (type == 'display') {
+							ret = '';
+							if (data == 1) {
+								const check = document.createElement('I');
+								check.className = 'fas fa-check';
+								ret = check.outerHTML;
+							}
+						} else {
+							ret = data;
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa-solid fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oRepoAuths.load_repo_auth_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column'
+				}
+			},
+			columnDefs: [{
+				className: 'control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child)',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oRepoAuthList.set_filters(this.api());
+			}
+		});
+	},
+	set_filters: function(api) {
+		api.columns([1, 2, 3]).every(function () {
+			const column = this;
+			const select = $('<select><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				const val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+					select.append('<option value="' + d + '" selected>' + d + '</option>');
+				} else if(d) {
+					select.append('<option value="' + d + '">' + d + '</option>');
+				}
+			});
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Actions ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+
+var oRepoAuths = {
+	load_repo_auth_window: function(name) {
+		const title_add = document.getElementById('repo_auth_window_title_add');
+		const title_edit = document.getElementById('repo_auth_window_title_edit');
+		const repo_auth_field_name = document.getElementById('<%=$this->RepoAuthName->ClientID%>');
+		const repo_auth_default = document.getElementById('<%=$this->RepoAuthDefault->ClientID%>');
+		const repo_auth_field_req = document.getElementById('repo_auth_window_required');
+		const repo_auth_win_type = document.getElementById('<%=$this->RepoAuthWindowType->ClientID%>');
+		if (name) {
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			repo_auth_field_name.setAttribute('readonly', '');
+			repo_auth_field_req.style.display = 'none';
+			repo_auth_win_type.value = 'edit';
+		} else {
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			this.clear_repo_auth_window();
+			if (repo_auth_field_name.hasAttribute('readonly')) {
+				repo_auth_field_name.removeAttribute('readonly');
+			}
+			repo_auth_field_req.style.display = 'inline';
+			repo_auth_win_type.value = 'add';
+			repo_auth_default.checked = !this.is_default();
+		}
+		document.getElementById('repo_auth_window').style.display = 'block';
+		repo_auth_field_name.focus();
+		const cb = <%=$this->LoadRepoAuth->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+	},
+	is_default: function() {
+		let def = false;
+		for (let i = 0; i < oRepoAuthList.data.length; i++) {
+			if (oRepoAuthList.data[i].default == 1) {
+				def = true;
+				break;
+			}
+		}
+		return def;
+	},
+	clear_repo_auth_window: function() {
+		[
+			'<%=$this->RepoAuthName->ClientID%>',
+			'<%=$this->RepoAuthUsername->ClientID%>',
+			'<%=$this->RepoAuthPassword->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+
+		[
+			'<%=$this->RepoAuthDefault->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).checked = false;
+		});
+	},
+	load_repo_auth_list: function() {
+		const cb = <%=$this->RepoAuthList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_repo_auth_list_cb: function(list) {
+		oRepoAuthList.data = list;
+		oRepoAuthList.init();
+	},
+	save_repo_auth_cb: function() {
+		document.getElementById('repo_auth_window').style.display = 'none';
+	}
+};
+$(function() {
+	oRepoAuths.load_repo_auth_list();
+});
+</script>
+		<div id="repo_auth_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="document.getElementById('repo_auth_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+					<h2 id="repo_auth_window_title_add" style="display: none"><%[ Add repo auth ]%></h2>
+					<h2 id="repo_auth_window_title_edit" style="display: none"><%[ Edit repo auth ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<com:TValidationSummary
+						CssClass="field_invalid-summary"
+						ValidationGroup="RepoAuthGroup"
+						AutoUpdate="true"
+						Display="Dynamic"
+						/>
+					<span id="repo_auth_window_repo_authname_exists" class="error" style="display: none"><ul><li><%[ Repo auth with the given name already exists. ]%></li></ul></span>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RepoAuthName" Text="<%[ Repository authentication name: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="RepoAuthName"
+								AutoPostBack="false"
+								MaxLength="100"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RepoAuthGroup"
+								ControlToValidate="RepoAuthName"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="RepoAuthGroup"
+								RegularExpression="<%=RepoAuthConfig::REPO_AUTH_NAME_PATTERN%>"
+								ControlToValidate="RepoAuthName"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i id="repo_auth_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RepoAuthType" Text="<%[ Authentication type: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveDropDownList
+								ID="RepoAuthType"
+								AutoPostBack="false"
+								CssClass="w3-select w3-border"
+								Width="50%"
+							>
+								<com:TListItem Value="basic" Text="Basic" />
+							</com:TActiveDropDownList>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RepoAuthUsername" Text="<%[ Username: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="RepoAuthUsername"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RepoAuthGroup"
+								ControlToValidate="RepoAuthUsername"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RepoAuthPassword" Text="<%[ Password: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveTextBox
+								ID="RepoAuthPassword"
+								TextMode="Password"
+								AutoPostBack="false"
+								MaxLength="500"
+								CssClass="w3-input w3-border"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RepoAuthGroup"
+								ControlToValidate="RepoAuthPassword"
+								ErrorMessage="<%[ Field cannot be empty. ]%>"
+								ControlCssClass="field_invalid"
+								Display="None"
+							/>
+						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req w3-margin-right"></i>
+						<a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->RepoAuthPassword->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>" style="vertical-align: sub"><i class="fa fa-eye"></i></a>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RepoAuthDefault" Text="<%[ Default: ]%>"/></div>
+						<div class="w3-half">
+							<com:TActiveCheckBox
+								ID="RepoAuthDefault"
+								AutoPostBack="false"
+								CssClass="w3-check w3-border"
+							/>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center">
+					<button type="button" class="w3-button w3-red" onclick="document.getElementById('repo_auth_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<com:TActiveLinkButton
+						ID="RepoAuthSave"
+						ValidationGroup="RepoAuthGroup"
+						CausesValidation="true"
+						OnCallback="saveRepoAuth"
+						CssClass="w3-button w3-section w3-green w3-padding"
+					>
+						<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+					</com:TActiveLinkButton>
+				</footer>
+			</div>
+			<com:TActiveHiddenField ID="RepoAuthWindowType" />
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
 	<div class="w3-container tab_item" id="ssh_configs" style="display: none">
 		<div class="w3-panel">
 			<button type="button" id="add_ssh_config_btn" class="w3-button w3-green" onclick="oSSHConfigs.load_ssh_config_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH config ]%></button>

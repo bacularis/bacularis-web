@@ -41,7 +41,7 @@ class OSProfileConfig extends ConfigFileModule
 	 */
 	public const CONFIG_FILE_FORMAT = 'ini';
 
-	private const BACULARIS_REPOSITORY_ADDR = 'https://pkgs.bacularis.app';
+	private const BACULARIS_REPOSITORY_ADDR = 'https://packages.bacularis.app';
 
 	private const BACULARIS_REPOSITORY_KEY = self::BACULARIS_REPOSITORY_ADDR . '/bacularis.pub';
 

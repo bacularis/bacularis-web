@@ -39,6 +39,11 @@ class DeployAPIHost extends WebModule
 	public const DEB_REPOSITORY_DIR = '/etc/apt/sources.list.d';
 
 	/**
+	 * DEB package repository authentication include directory.
+	 */
+	public const DEB_REPOSITORY_AUTH_DIR = '/etc/apt/auth.conf.d';
+
+	/**
 	 * Temporary directory to store files copied by SCP command before
 	 * they are copied to destination places.
 	 */
@@ -84,15 +89,16 @@ class DeployAPIHost extends WebModule
 	 * @param string $name repository file name
 	 * @param string $entry repository entry to put in repository file
 	 * @param string $key repository key to put in repository file
+	 * @param string $repo_auth repo auth name
 	 * @return array source and destination file parameters
 	 */
-	public function prepareRepositoryFile($type, $name, $entry, $key)
+	public function prepareRepositoryFile($type, $name, $entry, $key, $repo_auth)
 	{
 		$repo = '';
 		$rfile = '';
 		switch ($type) {
 			case 'rpm': {
-				$repo = $this->getRPMRepositoryEntry($name, $entry, $key);
+				$repo = $this->getRPMRepositoryEntry($name, $entry, $key, $repo_auth);
 				$rfile = implode('/', [self::RPM_REPOSITORY_DIR, $name . '.repo']);
 				break;
 			}
@@ -119,7 +125,7 @@ class DeployAPIHost extends WebModule
 		return [
 			'src_file' => $src_file,
 			'dst_file' => $dst_file,
-			'perm' => '644',
+			'perm' => '640',
 			'user' => 'root',
 			'group' => 'root'
 		];
@@ -131,16 +137,35 @@ class DeployAPIHost extends WebModule
 	 * @param string $name repository file name
 	 * @param string $entry repository entry to put in repository file
 	 * @param string $key repository key to put in repository file
+	 * @param string $repo_auth repo auth name
 	 * @return string string ready to use repository file content
 	 */
-	private function getRPMRepositoryEntry($name, $entry, $key)
+	private function getRPMRepositoryEntry($name, $entry, $key, $repo_auth)
 	{
+		$auth = '';
+		$repoauth_config = $this->getModule('repoauth_config');
+		if (!empty($repo_auth)) {
+			$auth = $repoauth_config->getRepoAuthConfig($repo_auth);
+		} else {
+			$auth = $repoauth_config->getDefaultRepoAuthConfig();
+		}
+		$user_pass = '';
+		if (!empty($auth)) {
+			$user_pass = sprintf(
+'username=%s
+password=%s
+',
+$auth['username'],
+$auth['password']
+			);
+		}
 		return "[$name]
 name=$name repository
 baseurl=$entry
 gpgcheck=1
 gpgkey=$key
 enabled=1
+$user_pass
 ";
 	}
 
@@ -157,6 +182,27 @@ enabled=1
 		return "deb [signed-by=$key] $entry
 deb-src [signed-by=$key] $entry
 ";
+	}
+
+	public function prepareDEBRepositoryAuthFile(string $repo_url, array $repo_auth): array
+	{
+		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
+		$dst_file = implode('/', [self::DEB_REPOSITORY_AUTH_DIR, 'bacularis-app.conf']);
+		$src_file = implode(DIRECTORY_SEPARATOR, [$dir, basename($dst_file)]);
+		$repo = "machine $repo_url login {$repo_auth['username']} password {$repo_auth['password']}";
+		if (file_put_contents($src_file, $repo) === false) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				'Cannot create DEB repository auth file ' . $src_file
+			);
+		}
+		return [
+			'src_file' => $src_file,
+			'dst_file' => $dst_file,
+			'perm' => '600',
+			'user' => 'root',
+			'group' => 'root'
+		];
 	}
 
 	/**

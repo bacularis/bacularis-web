@@ -5686,3 +5686,42 @@ msgstr "Catalog post-remove command:"
 
 msgid "Catalog:"
 msgstr "Catalog:"
+
+msgid "Repo auth with the given name already exists."
+msgstr "Repo auth with the given name already exists."
+
+msgid "Repo auths"
+msgstr "Repo auths"
+
+msgid "Add new repo auth"
+msgstr "Add new repo auth"
+
+msgid "Repo auth name"
+msgstr "Repo auth name"
+
+msgid "Auth type"
+msgstr "Auth type"
+
+msgid "Default"
+msgstr "Default"
+
+msgid "Repository authentication name:"
+msgstr "Repository authentication name:"
+
+msgid "Authentication type:"
+msgstr "Authentication type:"
+
+msgid "Default:"
+msgstr "Default:"
+
+msgid "Add repo auth"
+msgstr "Add repo auth"
+
+msgid "Edit repo auth"
+msgstr "Edit repo auth"
+
+msgid "Use default Bacularis repository auth:"
+msgstr "Use default Bacularis repository auth:"
+
+msgid "Repo auth:"
+msgstr "Repo auth:"

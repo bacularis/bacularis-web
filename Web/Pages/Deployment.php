@@ -313,6 +313,13 @@ class Deployment extends BaculumWebPage
 		$this->OSProfileRepositoryType->Text = $config['repository_type'];
 		$this->OSProfileBacularisRepositoryAddr->Text = $config['bacularis_repository_addr'];
 		$this->OSProfileBacularisRepositoryKey->Text = $config['bacularis_repository_key'];
+		$this->OSProfileBacularisRepositoryAuth->SelectedValue = $config['bacularis_repository_auth'] ?? '';
+		$this->OSProfileBacularisRepositoryAuthDef->Checked = empty($config['bacularis_repository_auth']);
+		if ($this->OSProfileBacularisRepositoryAuthDef->Checked) {
+			$this->getCallbackClient()->hide('osprofile_window_bacularis_repo_auth');
+		} else {
+			$this->getCallbackClient()->show('osprofile_window_bacularis_repo_auth');
+		}
 		$this->OSProfileBacularisAdminUser->Text = $config['bacularis_admin_user'];
 		$this->OSProfileBacularisAdminPwd->Text = $config['bacularis_admin_pwd'];
 		$this->OSProfileBacularisUseHTTPS->Checked = $config['bacularis_use_https'] == 1;
@@ -343,17 +350,17 @@ class Deployment extends BaculumWebPage
 		$this->OSProfilePackagesPostBacularisRemoveCmd->Text = $config['packages_bacularis_post_remove_cmd'];
 
 		// Catalog commands
-		$this->OSProfilePackagesCatInstall->Text = $config['packages_cat_install'];
-		$this->OSProfilePackagesCatUpgrade->Text = $config['packages_cat_upgrade'];
-		$this->OSProfilePackagesCatRemove->Text = $config['packages_cat_remove'];
-		$this->OSProfilePackagesCatInfo->Text = $config['packages_cat_info'];
-		$this->OSProfilePackagesCatEnable->Text = $config['packages_cat_enable'];
-		$this->OSProfilePackagesPreCatInstallCmd->Text = $config['packages_cat_pre_install_cmd'];
-		$this->OSProfilePackagesPreCatUpgradeCmd->Text = $config['packages_cat_pre_upgrade_cmd'];
-		$this->OSProfilePackagesPreCatRemoveCmd->Text = $config['packages_cat_pre_remove_cmd'];
-		$this->OSProfilePackagesPostCatInstallCmd->Text = $config['packages_cat_post_install_cmd'];
-		$this->OSProfilePackagesPostCatUpgradeCmd->Text = $config['packages_cat_post_upgrade_cmd'];
-		$this->OSProfilePackagesPostCatRemoveCmd->Text = $config['packages_cat_post_remove_cmd'];
+		$this->OSProfilePackagesCatInstall->Text = $config['packages_cat_install'] ?? '';
+		$this->OSProfilePackagesCatUpgrade->Text = $config['packages_cat_upgrade'] ?? '';
+		$this->OSProfilePackagesCatRemove->Text = $config['packages_cat_remove'] ?? '';
+		$this->OSProfilePackagesCatInfo->Text = $config['packages_cat_info'] ?? '';
+		$this->OSProfilePackagesCatEnable->Text = $config['packages_cat_enable'] ?? '';
+		$this->OSProfilePackagesPreCatInstallCmd->Text = $config['packages_cat_pre_install_cmd'] ?? '';
+		$this->OSProfilePackagesPreCatUpgradeCmd->Text = $config['packages_cat_pre_upgrade_cmd'] ?? '';
+		$this->OSProfilePackagesPreCatRemoveCmd->Text = $config['packages_cat_pre_remove_cmd'] ?? '';
+		$this->OSProfilePackagesPostCatInstallCmd->Text = $config['packages_cat_post_install_cmd'] ?? '';
+		$this->OSProfilePackagesPostCatUpgradeCmd->Text = $config['packages_cat_post_upgrade_cmd'] ?? '';
+		$this->OSProfilePackagesPostCatRemoveCmd->Text = $config['packages_cat_post_remove_cmd'] ?? '';
 
 		// Director commands
 		$this->OSProfilePackagesDirInstall->Text = $config['packages_dir_install'];
@@ -563,6 +570,11 @@ class Deployment extends BaculumWebPage
 		$config['repository_type'] = $this->OSProfileRepositoryType->SelectedValue;
 		$config['bacularis_repository_key'] = $this->OSProfileBacularisRepositoryKey->Text;
 		$config['bacularis_repository_addr'] = $this->OSProfileBacularisRepositoryAddr->Text;
+		if ($this->OSProfileBacularisRepositoryAuthDef->Checked) {
+			$config['bacularis_repository_auth'] = '';
+		} else {
+			$config['bacularis_repository_auth'] = $this->OSProfileBacularisRepositoryAuth->SelectedValue;
+		}
 		$config['bacula_use_system_repo'] = $this->OSProfileBaculaUseSystemRepo->Checked ? '1' : '0';
 		$config['bacula_repository_key'] = $this->OSProfileBaculaRepositoryKey->Text;
 		$config['bacula_repository_addr'] = $this->OSProfileBaculaRepositoryAddr->Text;
@@ -621,11 +633,146 @@ class Deployment extends BaculumWebPage
 	}
 
 	/**
+	 * Set and load repo auth list.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setRepoAuthList($sender, $param)
+	{
+		$config = $this->getModule('repoauth_config')->getConfig();
+		foreach ($config as $name => $cfg) {
+			$config[$name]['name'] = $name;
+		}
+		$this->getCallbackClient()->callClientFunction('oRepoAuths.load_repo_auth_list_cb', [
+			array_values($config)
+		]);
+
+		// Update repo auth list in OS profile window
+		$repo_auths = array_keys($config);
+		$this->OSProfileBacularisRepositoryAuth->DataSource = array_combine($repo_auths, $repo_auths);
+		$this->OSProfileBacularisRepositoryAuth->dataBind();
+	}
+
+	/**
+	 * Load data in repo auth window.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function loadRepoAuthWindow($sender, $param)
+	{
+		$name = $param->getCallbackParameter();
+		if ($this->RepoAuthWindowType->Value === self::TYPE_EDIT_WINDOW) {
+			$repo_auth = $this->getModule('repoauth_config');
+			$config = $repo_auth->getRepoAuthConfig($name);
+			if (count($config) > 0) {
+				// It is done only for existing ssh config
+				$this->RepoAuthName->Text = $name;
+				$this->RepoAuthType->SelectedValue = $config['auth_type'];
+				$this->RepoAuthUsername->Text = $config['username'];
+				$this->RepoAuthPassword->Text = $config['password'];
+				$this->RepoAuthDefault->Checked = ($config['default'] == 1);
+			}
+		}
+		$this->getCallbackClient()->hide('repo_auth_window_repo_authname_exists');
+	}
+
+	/**
+	 * Save repo auth.
+	 * It works both for new repo auths and for edited repo auths.
+	 * Saves values from modal popup.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function saveRepoAuth($sender, $param)
+	{
+		$repo_auth_win_type = $this->RepoAuthWindowType->Value;
+		$name = $this->RepoAuthName->Text;
+		$repo_auth = $this->getModule('repoauth_config');
+		$config = $repo_auth->getRepoAuthConfig($name);
+		$this->getCallbackClient()->hide('repo_auth_window_repo_authname_exists');
+		if ($repo_auth_win_type === self::TYPE_ADD_WINDOW) {
+			if (count($config) > 0) {
+				$this->getCallbackClient()->show('repo_auth_window_repo_authname_exists');
+				return;
+			}
+		}
+
+		$config['auth_type'] = $this->RepoAuthType->SelectedValue;
+		$config['username'] = $this->RepoAuthUsername->Text;
+		$config['password'] = $this->RepoAuthPassword->Text;
+		$config['default'] = $this->RepoAuthDefault->Checked ? '1' : '0';
+
+		$result = $repo_auth->setRepoAuthConfig($name, $config);
+		if ($result === true) {
+			$amsg = '';
+			if ($repo_auth_win_type == self::TYPE_ADD_WINDOW) {
+				$amsg = "Create repo auth. Config: $name";
+			} elseif ($repo_auth_win_type == self::TYPE_EDIT_WINDOW) {
+				$amsg = "Save repo auth. Config: $name";
+			}
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$amsg
+			);
+		}
+		$this->getCallbackClient()->callClientFunction('oRepoAuths.save_repo_auth_cb');
+
+		$this->setRepoAuthList(null, null);
+	}
+
+	/**
+	 * Remove repo auth action.
+	 * Here is possible to remove one config or many.
+	 * This action is linked with table bulk actions.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function removeRepoAuths($sender, $param)
+	{
+		$names = explode('|', $param->getCallbackParameter());
+		$repo_auth = $this->getModule('repoauth_config');
+		$result = true;
+		for ($i = 0; $i < count($names); $i++) {
+			$success = $repo_auth->removeRepoAuthConfig($names[$i]);
+			if (!$success) {
+				$result = false;
+				break;
+			}
+		}
+		if ($result === true) {
+			// Repo auths removed. Now remove it from all dependent OS profiles.
+			$osprofile_config = $this->getModule('osprofile_config');
+			$osprofiles = $osprofile_config->getConfig(null, false);
+			foreach ($osprofiles as $pname => $pval) {
+				if (isset($pval['bacularis_repository_auth']) && in_array($pval['bacularis_repository_auth'], $names)) {
+					$osprofiles[$pname]['bacularis_repository_auth'] = '';
+				}
+			}
+			$osprofile_config->setConfig($osprofiles);
+
+			for ($i = 0; $i < count($names); $i++) {
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_APPLICATION,
+					"Remove repo auth. repo auth name: {$names[$i]}"
+				);
+			}
+		}
+
+		// refresh repo auth list
+		$this->setRepoAuthList(null, null);
+	}
+
+	/**
 	 * Set and load SSH config list.
 	 *
 	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter callback parameter
-	 * @param mixed $param
+	 * @param TCallbackEventParameter $param callback parameter
 	 */
 	public function setSSHConfigList($sender, $param)
 	{
@@ -1003,13 +1150,37 @@ class Deployment extends BaculumWebPage
 			}
 			if ($ret['exitcode'] === 0) {
 				// Prepare and copy repository file
+				$repository_auth = $osprofile['bacularis_repository_auth'] ?? '';
 				$file = $deploy_api->prepareRepositoryFile(
 					$osprofile['repository_type'],
 					'Bacularis',
 					$osprofile['bacularis_repository_addr'],
-					$br_key
+					$br_key,
+					$repository_auth
 				);
 				$ret = $this->deployAPICopyStep($file);
+				if ($osprofile['repository_type'] == 'deb') {
+					$repo_auth = [];
+					$repoauth_config = $this->getModule('repoauth_config');
+					if (!empty($repository_auth)) {
+						$repo_auth = $repoauth_config->getRepoAuthConfig($repository_auth);
+					} else {
+						$repo_auth = $repoauth_config->getDefaultRepoAuthConfig();
+					}
+					if (count($repo_auth) > 0) {
+						$repo_info = explode(' ', $osprofile['bacularis_repository_addr']);
+						$repo_url = array_shift($repo_info);
+						$file = $deploy_api->prepareDEBRepositoryAuthFile(
+							$repo_url,
+							$repo_auth
+						);
+						$result = $this->deployAPICopyStep($file);
+						if ($result['exitcode'] !== 0) {
+							$ret['exitcode'] = $result['exitcode'];
+						}
+						$ret['output'] = array_merge($ret['output'], $result['output']);
+					}
+				}
 
 				$this->displayRawOutput(null, $ret['output']);
 			}
