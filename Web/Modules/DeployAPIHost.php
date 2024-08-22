@@ -152,11 +152,11 @@ class DeployAPIHost extends WebModule
 		$user_pass = '';
 		if (!empty($auth)) {
 			$user_pass = sprintf(
-'username=%s
+				'username=%s
 password=%s
 ',
-$auth['username'],
-$auth['password']
+				$auth['username'],
+				$auth['password']
 			);
 		}
 		return "[$name]
