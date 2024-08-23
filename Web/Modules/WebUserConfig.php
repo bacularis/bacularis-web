@@ -202,6 +202,30 @@ class WebUserConfig extends ConfigFileModule
 		return array_merge($req_prop, $prop);
 	}
 
+	/**
+	 * Unassign given API hosts from all user accounts.
+	 *
+	 * @param array $hosts API host list to unassign
+	 * @return bool true if hosts unassigned successfully, otherwise false
+	 */
+	public function unassignAPIHosts(array $hosts)
+	{
+		$config = $this->getConfig();
+		for ($i = 0; $i < count($hosts); $i++) {
+			foreach ($config as $username => $conf) {
+				$new_api_hosts = [];
+				for ($j = 0; $j < count($conf['api_hosts']); $j++) {
+					if ($hosts[$i] === $conf['api_hosts'][$j]) {
+						continue;
+					}
+					$new_api_hosts[] = $conf['api_hosts'][$j];
+				}
+				$config[$username]['api_hosts'] = $new_api_hosts;
+			}
+		}
+		return $this->setConfig($config);
+	}
+
 
 	/**
 	 * Import basic auth users to web user config.

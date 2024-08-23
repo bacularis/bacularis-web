@@ -2184,6 +2184,8 @@ class Security extends BaculumWebPage
 		}
 		$result = $hc->setConfig($cfg);
 		if ($result === true) {
+			$uc = $this->getModule('user_config');
+			$uc->unassignAPIHosts($names);
 			for ($i = 0; $i < count($names); $i++) {
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
