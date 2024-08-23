@@ -19,6 +19,7 @@ bugs reported by the Community.
  - Add Bacula catalog deployment capability and support in OS profiles
  - Add bulk run job action to job list
  - Add repo auth module
+ - Fix unassign removed API hosts from users
  - Fix missing end-of-line character in user file provided on deploying
  - Fix typo error in web config wizard
  - Update Polish translations
