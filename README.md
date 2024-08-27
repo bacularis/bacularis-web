@@ -3,10 +3,10 @@
 Bacularis Web is the main component of the Bacula web interface.
 
 
-[![Latest Stable Version](http://poser.pugx.org/bacularis/bacularis-web/v)](https://packagist.org/packages/bacularis/bacularis-web)
-[![Total Downloads](http://poser.pugx.org/bacularis/bacularis-web/downloads)](https://packagist.org/packages/bacularis/bacularis-web)
-[![License](http://poser.pugx.org/bacularis/bacularis-web/license)](https://packagist.org/packages/bacularis/bacularis-web)
-[![PHP Version Require](http://poser.pugx.org/bacularis/bacularis-web/require/php)](https://packagist.org/packages/bacularis/bacularis-web)
+![GitHub Release](https://img.shields.io/github/v/release/bacularis/bacularis-web)
+![Packagist Downloads](https://img.shields.io/packagist/dt/bacularis/bacularis-web)
+![Packagist License](https://img.shields.io/packagist/l/bacularis/bacularis-web)
+![Packagist Dependency Version](https://img.shields.io/packagist/dependency-v/bacularis/bacularis-web/PHP)
 
 # Bacularis - The Bacula web interface
 
