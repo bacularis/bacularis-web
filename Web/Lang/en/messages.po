@@ -5651,3 +5651,99 @@ msgstr "Use default Bacularis repository auth:"
 
 msgid "Repo auth:"
 msgstr "Repo auth:"
+
+msgid "Step 1 - new storage basic params"
+msgstr "Step 1 - new storage basic params"
+
+msgid "New file storage wizard"
+msgstr "New file storage wizard"
+
+msgid "This wizard enables you to create in easy way a new file storage."
+msgstr "This wizard enables you to create in easy way a new file storage."
+
+msgid "Basic information"
+msgstr "Basic information"
+
+msgid "Storage description"
+msgstr "Storage description"
+
+msgid "Storage daemon API host"
+msgstr "Storage daemon API host"
+
+msgid "What storage type would you like to create?"
+msgstr "What storage type would you like to create?"
+
+msgid "Single file device storage"
+msgstr "Single file device storage"
+
+msgid "Multi-device file storage (Autochanger)"
+msgstr "Multi-device file storage (Autochanger)"
+
+msgid "Step 2 - new storage parameters"
+msgstr "Step 2 - new storage parameters"
+
+msgid "Where should storage store backup data?"
+msgstr "Where should storage store backup data?"
+
+msgid "Directory path for data volumes"
+msgstr "Directory path for data volumes"
+
+msgid "What is storage media type?"
+msgstr "What is storage media type?"
+
+msgid "Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ."
+msgstr "Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ."
+
+msgid "Step 3 - summary"
+msgstr "Step 3 - summary"
+
+msgid "Storage type"
+msgstr "Storage type"
+
+msgid "Data volume directory"
+msgstr "Data volume directory"
+
+msgid "Single storage"
+msgstr "Single storage"
+
+msgid "How many devices should storage have?"
+msgstr "How many devices should storage have?"
+
+msgid "Number of backup/restore devices"
+msgstr "Number of backup/restore devices"
+
+msgid "Number of restore reserved devices"
+msgstr "Number of restore reserved devices"
+
+msgid "Multi-device autochanger storage"
+msgstr "Multi-device autochanger storage"
+
+msgid "Create storage"
+msgstr "Create storage"
+
+msgid "Storage daemon restart needed"
+msgstr "Storage daemon restart needed"
+
+msgid "To apply new changes, you need to restart the storage daemon."
+msgstr "To apply new changes, you need to restart the storage daemon."
+
+msgid "Do you want to restart it now?"
+msgstr "Do you want to restart it now?"
+
+msgid "Yes, restart it now"
+msgstr "Yes, restart it now"
+
+msgid "No, I will restart it later"
+msgstr "No, I will restart it later"
+
+msgid "Error while creating storage"
+msgstr "Error while creating storage"
+
+msgid "Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them."
+msgstr "Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them."
+
+msgid "Done!"
+msgstr "Done!"
+
+msgid "Add file storage"
+msgstr "Add file storage"

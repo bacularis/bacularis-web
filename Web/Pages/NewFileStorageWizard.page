@@ -1,0 +1,386 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewStorageWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 33%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 33%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-database w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Storage" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 34%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa-solid fa-paper-plane"></i> &nbsp;<%[ Create storage ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - new storage basic params ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New file storage wizard ]%></h2>
+					<p><%[ This wizard enables you to create in easy way a new file storage. ]%></p>
+				</div>
+				<h4><%[ Basic information ]%></h4>
+				<div class="w3-section">
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="StorageName"
+						DirectiveName="Name"
+						Label="<%[ Storage name ]%>"
+						ValidationGroup="NewStorageDirective"
+						Required="true"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="StorageDescription"
+						DirectiveName="Description"
+						Label="<%[ Storage description ]%>"
+						ValidationGroup="NewStorageDirective"
+						Required="false"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:TPanel ID="APIHostContainer" CssClass="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Storage daemon API host ]%>:</div>
+						<div class="w3-threequarter">
+							<com:TDropDownList
+								ID="StorageAPIHost"
+								CssClass="w3-select w3-border"
+								ValidationGroup="NewStorageDirective"
+								Width="400px"
+							/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageAPIHost"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</com:TPanel>
+				</div>
+				<h4><%[ What storage type would you like to create? ]%></h4>
+				<div class="w3-section">
+					<div class="w3-margin-left">
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeSingle" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->StorageTypeSingle->ClientID%>"><%[ Single file device storage ]%></label></p>
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeAutochanger" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->StorageTypeAutochanger->ClientID%>"><%[ Multi-device file storage (Autochanger) ]%></label></p>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - new storage parameters ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<com:TPanel ID="StorageAutochanger" Visible="<%=$this->StorageTypeAutochanger->Checked%>">
+					<h4><%[ How many devices should storage have? ]%></h4>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Number of backup/restore devices ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageNumberOfBackupRestoreDevices"
+								CssClass="w3-input w3-border"
+								Width="100px"
+								Text="5"
+							/>
+							<com:TCompareValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfBackupRestoreDevices"
+								ValueToCompare="0"
+								DataType="Integer"
+								Operator="GreaterThan"
+								Text="<%[ Value must be positive integer. ]%>"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfBackupRestoreDevices"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</div>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-third"><%[ Number of restore reserved devices ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageNumberOfRestoreDevices"
+								CssClass="w3-input w3-border"
+								Width="100px"
+								Text="1"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfRestoreDevices"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</div>
+				</com:TPanel>
+				<h4><%[ Where should storage store backup data? ]%></h4>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Directory path for data volumes ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageDataVolumeDir"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="ex: /mnt/my-storage"
+							Width="400px"
+						/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageDataVolumeDir"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row w3-margin-bottom">
+					<h4><%[ What is storage media type? ]%></h4>
+					<div class="w3-third"><%[ Media type ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageMediaType"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Width="400px"
+							Text="File"
+						/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+						 <i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).nextAll('div.directive_help').slideToggle('fast');"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageMediaType"
+							Text="<%[ Field required. ]%>"
+						/>
+						<div class="directive_help" style="display: none">
+							<%[ Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ. ]%>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - summary ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage name ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageName->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Description ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageDescription->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Storage ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage type ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeSingle->Checked ? 'block' : 'none'%>"><%[ Single storage ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>"><%[ Multi-device autochanger storage ]%></div>
+					</div>
+					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Number of backup/restore devices ]%></div>
+							<div class="w3-threequarter bold"><%=$this->StorageNumberOfBackupRestoreDevices->Text ?: '-'%></div>
+						</div>
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Number of restore reserved devices ]%></div>
+							<div class="w3-threequarter bold"><%=$this->StorageNumberOfRestoreDevices->Text ?: '-'%></div>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Data volume directory ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageDataVolumeDir->Text ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Media type ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+					</div>
+				</fieldset>
+			</div>
+			<div id="restart_storage_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+					<span onclick="$('#restart_storage_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Storage daemon restart needed ]%></h2>
+					<p><%[ To apply new changes, you need to restart the storage daemon. ]%></p>
+					<p><%[ Do you want to restart it now? ]%></p>
+					<div id="storage_running_jobs_warning" class="w3-panel w3-orange w3-padding w3-text-white" style="display: none"></div>
+					<div class="w3-center">
+						<button type="button" class="w3-button w3-green" onclick="$('#restart_storage_modal').hide(); window.location.href='<%=$this->Service->constructUrl('StorageList')%>';"><i class="fa fa-times"></i> &nbsp;<%[ No, I will restart it later ]%></button>
+						<com:TActiveLinkButton
+							ID="RestartSd"
+							CssClass="w3-button w3-green w3-margin-left"
+							OnClick="restartStorage"
+							ClientSide.OnLoading="oNewFileStorageStep3.show_storage_restart_loader(true);"
+						>
+							<i class="fa fa-sync-alt"></i>  &nbsp;<%[ Yes, restart it now ]%>
+						</com:TActiveLinkButton>
+						<i id="storage_restart_loader" class="fa-solid fa-sync-alt fa-spin" style="visibility: hidden"></i>
+						<div id="storage_restart_result_ok" class="w3-panel w3-green w3-padding" style="display: none"><%[ Done! ]%></div>
+						<div id="storage_restart_result_err" class="w3-panel w3-red w3-padding" style="display: none"></div>
+					</div>
+				</div>
+			</div>
+			<div id="storage_create_error_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+					<span onclick="$('#storage_create_error_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Error while creating storage ]%></h2>
+					<div id="storage_create_errors" class="w3-panel w3-red" style="display: none"></div>
+					<div class="w3-center">
+						<button type="button" class="w3-button w3-red" onclick="$('#storage_create_error_modal').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					</div>
+				</div>
+			</div>
+			<script>
+var oNewFileStorageStep3 = {
+	ids: {
+		restart_storage_modal: 'restart_storage_modal',
+		storage_create_error_modal: 'storage_create_error_modal',
+		running_jobs_warn: 'storage_running_jobs_warning',
+		storage_create_errors: 'storage_create_errors',
+		restart_loader: 'storage_restart_loader',
+		restart_result_ok: 'storage_restart_result_ok',
+		restart_result_err: 'storage_restart_result_err'
+	},
+	txt: {
+		running_jobs: "<%[ Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them. ]%>"
+	},
+	set_restart_storage_window: function(address, job_no) {
+		if (job_no > 0) {
+			const warn = document.getElementById(this.ids.running_jobs_warn);
+			warn.textContent = this.txt.running_jobs.replace('%address', address).replace('%job_no', job_no);
+			warn.style.display = 'block';
+		}
+		this.show_restart_storage_window(true);
+	},
+	set_storage_create_error_window: function(errors) {
+		const err = document.getElementById(this.ids.storage_create_errors);
+		err.innerHTML = errors;
+		err.style.display = 'block';
+		this.show_storage_create_error_window(true);
+	},
+	show_restart_storage_window: function(show) {
+		const win = document.getElementById(this.ids.restart_storage_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_create_error_window: function(show) {
+		const win = document.getElementById(this.ids.storage_create_error_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_restart_loader: function(show) {
+		const loader = document.getElementById(this.ids.restart_loader);
+		loader.style.visibility = show ? 'visible': 'hidden';
+	},
+	set_restart_result: function(success, error, output) {
+		const self = oNewFileStorageStep3;
+		self.show_storage_restart_loader(false);
+		const ok_msg = document.getElementById(self.ids.restart_result_ok);
+		const error_msg = document.getElementById(self.ids.restart_result_err);
+		if (success) {
+			ok_msg.style.display = 'block';
+			error_msg.style.display = 'none';
+			window.location.href = '<%=$this->Service->constructUrl('StorageList')%>';
+		}  else {
+			error_msg.textContent = 'Error: ' + error + ': ' + output;
+			error_msg.style.display = 'block';
+			ok_msg.style.display = 'none';
+		}
+	}
+}
+<%=isset($this->storage_created) && $this->storage_created === true ? 'oNewFileStorageStep3.set_restart_storage_window("' . $this->storage_address . '", '. $this->storage_running_jobs_no . ');' : ''%>
+<%=isset($this->storage_created) && $this->storage_created === false ? 'oNewFileStorageStep3.set_storage_create_error_window("' . $this->storage_create_errors . '");' : ''%>
+			</script>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>
