@@ -1462,6 +1462,12 @@ class Deployment extends BaculumWebPage
 			[$step_id, $url]
 		);
 
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_APPLICATION,
+			"New API has been deployed to host: {$host}"
+		);
+
 		// It is last step. Add new API host to host config
 		$this->saveAPIHost(
 			$host,

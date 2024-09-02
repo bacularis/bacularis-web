@@ -14,6 +14,7 @@
  */
 
 use Prado\Prado;
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\ConfigConfig;
 use Bacularis\Web\Modules\PatternConfig;
@@ -194,6 +195,12 @@ class Patterns extends BaculumWebPage
 
 			// update config list
 			$this->loadConfigList(null, null);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Save config. Name: {$name}"
+			);
 		} else {
 			$cb->callClientFunction(
 				'oConfig.show_error',
@@ -201,6 +208,11 @@ class Patterns extends BaculumWebPage
 					true,
 					Prado::localize('Error while writing config.')
 				]
+			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Error while saving config. Name: {$name}"
 			);
 		}
 	}
@@ -246,6 +258,12 @@ class Patterns extends BaculumWebPage
 
 		// update config list
 		$this->loadConfigList(null, null);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_CONFIG,
+			"Remove configs. Name: {$names}"
+		);
 	}
 
 	public function loadPattern($sender, $param)
@@ -338,6 +356,12 @@ class Patterns extends BaculumWebPage
 
 			// update config list
 			$this->loadConfigList(null, null);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Save pattern. Name: {$name}"
+			);
 		} else {
 			$cb->callClientFunction(
 				'oPattern.show_error',
@@ -345,6 +369,12 @@ class Patterns extends BaculumWebPage
 					true,
 					Prado::localize('Error while writing pattern.')
 				]
+			);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Error while saving pattern. Name: {$name}"
 			);
 		}
 	}
@@ -366,5 +396,11 @@ class Patterns extends BaculumWebPage
 
 		// update config list
 		$this->loadConfigList(null, null);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_CONFIG,
+			"Remove patterns. Name: {$names}"
+		);
 	}
 }

@@ -129,6 +129,12 @@ class ApplicationSettings extends BaculumWebPage
 			$web_config = $this->getModule('web_config');
 			$web_config->setConfig($this->web_config);
 			$web_config->setLanguage($this->Language->SelectedValue);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Save application general settings"
+			);
 		}
 	}
 
@@ -151,6 +157,12 @@ class ApplicationSettings extends BaculumWebPage
 			$this->web_config['baculum']['date_time_format'] = $this->DateTimeFormat->Text;
 			$this->web_config['baculum']['job_age_on_job_status_graph'] = $this->JobAgeOnJobStatusGraph->getValue();
 			$this->getModule('web_config')->setConfig($this->web_config);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Save application display settings"
+			);
 		}
 	}
 
@@ -159,6 +171,12 @@ class ApplicationSettings extends BaculumWebPage
 		if (count($this->web_config) > 0) {
 			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
 			$this->getModule('web_config')->setConfig($this->web_config);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Save application features settings"
+			);
 		}
 	}
 
@@ -233,10 +251,20 @@ class ApplicationSettings extends BaculumWebPage
 				'oAppSettingsSelfTest.load_table_cb',
 				[$result->output]
 			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Run application self test"
+			);
 		} else {
 			$this->getCallbackClient()->callClientFunction(
 				'oAppSettingsSelfTest.set_error',
 				[$result->output]
+			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_APPLICATION,
+				"Error while running application self test"
 			);
 		}
 	}

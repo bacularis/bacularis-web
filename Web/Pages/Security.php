@@ -2398,6 +2398,12 @@ class Security extends BaculumWebPage
 			$api_host,
 			'user_access_window_error'
 		);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_SECURITY,
+			"Save user API host access to resources. API host: $api_host"
+		);
 	}
 
 	/**
@@ -2479,6 +2485,12 @@ class Security extends BaculumWebPage
 			$this->APIHostResourcePermissions,
 			$api_host,
 			'api_host_access_window_error'
+		);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_SECURITY,
+			"Save API host access to resources. API host: $api_host"
 		);
 	}
 
@@ -3290,6 +3302,12 @@ class Security extends BaculumWebPage
 			$this->APIHostGroupResourcePermissions,
 			$api_host,
 			'api_host_group_access_window_error'
+		);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_SECURITY,
+			"Save API host group access to resources. API host: $api_host"
 		);
 	}
 }

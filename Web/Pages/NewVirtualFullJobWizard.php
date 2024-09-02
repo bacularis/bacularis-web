@@ -13,6 +13,7 @@
  * terms pursuant to its AGPLv3 Section 7.
  */
 
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Web\Javascripts\TJavaScript;
@@ -860,10 +861,20 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		);
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Create new virtual full backup job. Name: {$job['Name']}"
+			);
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'Dynamic';
 			$this->CreateResourceErrMsg->Text = $result->output;
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Error while creating new virtual full backup job. Name: {$job['Name']}, Error: {$result->error}, Output: {$result->output}"
+			);
 		}
 	}
 
