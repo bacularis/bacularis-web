@@ -85,7 +85,7 @@ class NewFileStorageWizard extends BaculumWebPage
 		array_unshift($api_hosts, '');
 
 		$this->StorageAPIHost->DataSource = array_combine($api_hosts, $api_hosts);
-		if  (count($api_hosts) === 2) {
+		if (count($api_hosts) === 2) {
 			$this->StorageAPIHost->setSelectedValue($api_hosts[1]);
 			$this->APIHostContainer->Display = 'None';
 		} else {
@@ -123,7 +123,8 @@ class NewFileStorageWizard extends BaculumWebPage
 		$api = $this->getModule('api');
 		$result = $api->get(
 			['config', 'sd', 'Director', $_SESSION['dir']],
-			$api_host
+			$api_host,
+			false
 		);
 		$sd_password = '';
 		if ($result->error == 0) {
@@ -134,7 +135,8 @@ class NewFileStorageWizard extends BaculumWebPage
 		$api = $this->getModule('api');
 		$result = $api->get(
 			['config', 'sd', 'Storage'],
-			$api_host
+			$api_host,
+			false
 		);
 		$sd_port = 0;
 		if ($result->error == 0) {
