@@ -254,7 +254,7 @@ class ApplicationSettings extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_INFO,
 				AuditLog::CATEGORY_APPLICATION,
-				"Run application self test"
+				"Run application self test for host {$api_host}"
 			);
 		} else {
 			$this->getCallbackClient()->callClientFunction(
@@ -264,7 +264,7 @@ class ApplicationSettings extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_ERROR,
 				AuditLog::CATEGORY_APPLICATION,
-				"Error while running application self test"
+				"Error while running application self test for host {$api_host}"
 			);
 		}
 	}
