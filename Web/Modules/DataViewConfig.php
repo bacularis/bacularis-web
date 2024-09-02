@@ -107,7 +107,7 @@ class DataViewConfig extends ConfigFileModule
 	public function setDataViewConfig(string $username, array $view_config): bool
 	{
 		$config = $this->getConfig();
-		foreach($view_config as $view => $data) {
+		foreach ($view_config as $view => $data) {
 			foreach ($data as $name => $value) {
 				$vw = http_build_query($value);
 				$view_config[$view][$name] = $vw;

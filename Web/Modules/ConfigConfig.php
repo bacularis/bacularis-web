@@ -55,7 +55,7 @@ class ConfigConfig extends ConfigFileModule
 		if (is_null($this->config)) {
 			$this->config = $this->readConfig(self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
 			if (is_array($this->config)) {
-				foreach($this->config as $key => $value) {
+				foreach ($this->config as $key => $value) {
 					$value['name'] = $key;
 					if (key_exists('config', $value)) {
 						$value['config'] = json_decode($value['config'], true);
@@ -76,7 +76,7 @@ class ConfigConfig extends ConfigFileModule
 	public function setConfig(array $config): bool
 	{
 		if (is_array($config)) {
-			foreach($config as $key => $value) {
+			foreach ($config as $key => $value) {
 				if (key_exists('config', $value)) {
 					$value['config'] = json_encode($value['config']);
 				}

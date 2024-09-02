@@ -55,7 +55,7 @@ class PatternConfig extends ConfigFileModule
 		if (is_null($this->config)) {
 			$this->config = $this->readConfig(self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
 			if (is_array($this->config)) {
-				foreach($this->config as $key => $value) {
+				foreach ($this->config as $key => $value) {
 					$value['name'] = $key;
 					$this->config[$key] = $value;
 				}

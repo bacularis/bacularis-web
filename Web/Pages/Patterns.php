@@ -308,7 +308,7 @@ class Patterns extends BaculumWebPage
 		$component = $this->PatternComponentName->getSelectedValue();
 		$pattern_configs = $this->PatternConfigs->getSelectedIndices();
 		$configs = [];
-		foreach($pattern_configs as $indice) {
+		foreach ($pattern_configs as $indice) {
 			for ($i = 0; $i < $this->PatternConfigs->getItemCount(); $i++) {
 				if ($i === $indice) {
 					$configs[] = $this->PatternConfigs->Items[$i]->Value;
