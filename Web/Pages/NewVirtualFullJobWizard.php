@@ -855,10 +855,20 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			'Job',
 			$job['Name']
 		];
-		$result = $this->getModule('api')->create(
-			$params,
-			['config' => json_encode($job)]
-		);
+
+		$result = (object) ['error' => -1, 'output' => ''];
+		if ($this->WhatToDoWithVirtualFullNewJob->Checked) {
+			$result = $this->getModule('api')->create(
+				$params,
+				['config' => json_encode($job)]
+			);
+		} elseif ($this->WhatToDoWithVirtualFullExistingJob->Checked) {
+
+			$result = $this->getModule('api')->set(
+				$params,
+				['config' => json_encode($job)]
+			);
+		}
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
 			$this->getModule('audit')->audit(
