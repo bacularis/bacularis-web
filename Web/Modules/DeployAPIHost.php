@@ -92,7 +92,7 @@ class DeployAPIHost extends WebModule
 	 * @param string $repo_auth repo auth name
 	 * @return array source and destination file parameters
 	 */
-	public function prepareRepositoryFile($type, $name, $entry, $key, $repo_auth)
+	public function prepareRepositoryFile($type, $name, $entry, $key, $repo_auth = '')
 	{
 		$repo = '';
 		$rfile = '';
