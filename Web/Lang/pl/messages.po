@@ -59,8 +59,8 @@ msgstr "Krok 4 - Dostęp Baculuma do konsoli bconsole"
 msgid "Step 5 - authorization params to Baculum"
 msgstr "Krok 5 - parametry autoryzacji do Baculuma"
 
-msgid "Step 6 - Finish"
-msgstr "Krok 6 - Koniec"
+msgid "Step 5 - Finish"
+msgstr "Krok 5 - Koniec"
 
 msgid "Save"
 msgstr "Zapisz"
@@ -476,8 +476,8 @@ msgstr "Przywrócenie do katalogu:"
 msgid "Step 4 - select destination for restore"
 msgstr "Krok 4 - wybierz cel do przywrócenia danych"
 
-msgid "Step 5 - options for restore"
-msgstr "Krok 5 - opcje dla przywracania"
+msgid "Step 4 - options for restore"
+msgstr "Krok 4 - opcje dla przywracania"
 
 msgid "Replace files:"
 msgstr "Zastępowanie plików:"
@@ -5757,3 +5757,36 @@ msgstr "Done!"
 
 msgid "Add file storage"
 msgstr "Add file storage"
+
+msgid "Plugin settings"
+msgstr "Plugin settings"
+
+msgid "Installed plugins"
+msgstr "Installed plugins"
+
+msgid "Add plugin settings"
+msgstr "Add plugin settings"
+
+msgid "Plugin name"
+msgstr "Plugin name"
+
+msgid "Plugin"
+msgstr "Plugin"
+
+msgid "Select plugin"
+msgstr "Select plugin"
+
+msgid "Edit plugin settings"
+msgstr "Edit plugin settings"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Plugin settings with the given name already exists."
+msgstr "Plugin settings with the given name already exists."
+
+msgid "Where to restore"
+msgstr "Where to restore"
+
+msgid "File options"
+msgstr "File options"

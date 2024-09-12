@@ -59,8 +59,8 @@ msgstr "4 단계 - bconsole에 접근할 Baculum"
 msgid "Step 5 - authorization params to Baculum"
 msgstr "5 단계 - Baculum에 인증 매개변수"
 
-msgid "Step 6 - Finish"
-msgstr "6 단계 - 완료"
+msgid "Step 5 - Finish"
+msgstr "5 단계 - 완료"
 
 msgid "Save"
 msgstr "저장"
@@ -476,8 +476,8 @@ msgstr "디렉토리로 복원:"
 msgid "Step 4 - select destination for restore"
 msgstr "4 단계 - 복원 대상 선택"
 
-msgid "Step 5 - options for restore"
-msgstr "5 단계 - 복원에 대한 옵션"
+msgid "Step 4 - options for restore"
+msgstr "4 단계 - 복원에 대한 옵션"
 
 msgid "Replace files:"
 msgstr "파일 교체 :"
@@ -5763,3 +5763,36 @@ msgstr "Done!"
 
 msgid "Add file storage"
 msgstr "Add file storage"
+
+msgid "Plugin settings"
+msgstr "Plugin settings"
+
+msgid "Installed plugins"
+msgstr "Installed plugins"
+
+msgid "Add plugin settings"
+msgstr "Add plugin settings"
+
+msgid "Plugin name"
+msgstr "Plugin name"
+
+msgid "Plugin"
+msgstr "Plugin"
+
+msgid "Select plugin"
+msgstr "Select plugin"
+
+msgid "Edit plugin settings"
+msgstr "Edit plugin settings"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Plugin settings with the given name already exists."
+msgstr "Plugin settings with the given name already exists."
+
+msgid "Where to restore"
+msgstr "Where to restore"
+
+msgid "File options"
+msgstr "File options"

@@ -17,6 +17,7 @@ namespace Bacularis\Web\Modules;
 
 use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Web\Modules\PluginConfig;
 
 class WebAuditLog extends AuditLog
 {
@@ -36,5 +37,48 @@ class WebAuditLog extends AuditLog
 			self::LOG_FILE_PATH,
 			self::LOG_FILE_EXT
 		);
+	}
+
+	/**
+	 * Process audit log.
+	 *
+	 * @param string $type message type (INFO, WARNING, ERROR)
+	 * @param string $category message category (Config, Action, Application, Security)
+	 * @param string $action message body
+	 */
+	public function audit($type, $category, $action)
+	{
+		// Write audit log
+		parent::audit($type, $category, $action);
+
+		// Run notification plugins
+		$this->runNotificationPlugins($type, $category, $action);
+	}
+
+	/**
+	 * Direct message to installed, configured and enabled notification plugins.
+	 *
+	 * @param string $type message type (INFO, WARNING, ERROR)
+	 * @param string $category message category (Config, Action, Application, Security)
+	 * @param string $action message body
+	 */
+	private function runNotificationPlugins(string $type, string $category, string $action): void
+	{
+		$plugin_config = $this->getModule('plugin_config');
+		$plugins = $plugin_config->getPlugins(PluginConfig::PLUGIN_TYPE_NOTIFICATION);
+		$settings = $plugin_config->getConfig();
+		foreach ($plugins as $name => $params) {
+			foreach ($settings as $setting => $props) {
+				if ($props['plugin'] != $name) {
+					continue;
+				}
+				if ($props['enabled'] != 1) {
+					// not enabled, skip it
+					continue;
+				}
+				$obj = Prado::createComponent($name, $props);
+				$obj->execute($type, $category, $action);
+			}
+		}
 	}
 }

@@ -21,6 +21,9 @@
 		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features');">
 			<%[ Features ]%>
 		</a>
+		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); oPluginListSettings.table.responsive.recalc();">
+			<%[ Plugins ]%>
+		</a>
 		<a id="btn_application_settings_audit_log" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_audit_log'); if (oAppSettingsAuditLog.table) { oAppSettingsAuditLog.table.responsive.recalc(); oAppSettingsAuditLog.table.columns.adjust().draw(); }">
 			<%[ Audit log ]%>
 		</a>
@@ -272,6 +275,10 @@
 			</com:TActiveLinkButton>
 			<i id="save_settings_display_loader" class="fa fa-sync w3-spin" style="display: none"></i>
 		</div>
+	</div>
+	<!-- Plugins -->
+	<div class="w3-container tab_item" id="application_settings_plugins" style="display: none">
+		<com:Bacularis.Web.Portlets.PluginList />
 	</div>
 	<!-- Features -->
 	<div class="w3-container tab_item" id="application_settings_features" style="display: none">

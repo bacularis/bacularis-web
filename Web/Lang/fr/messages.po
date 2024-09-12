@@ -59,8 +59,8 @@ msgstr "Quatrième étape - Accès à bconsole pour baculum"
 msgid "Step 5 - authorization params to Baculum"
 msgstr "Cinquième étape - Paramètres d'autorisation pour Baculum"
 
-msgid "Step 6 - Finish"
-msgstr "Sixième étape - Terminer"
+msgid "Step 5 - Finish"
+msgstr "Cinquième étape - Terminer"
 
 msgid "Save"
 msgstr "Enregistrer"
@@ -476,8 +476,8 @@ msgstr "Restaurer dans le répertoire :"
 msgid "Step 4 - select destination for restore"
 msgstr "Étape 4 - sélectionnez la destination pour la restauration"
 
-msgid "Step 5 - options for restore"
-msgstr "Étape 5 - options de restauration"
+msgid "Step 4 - options for restore"
+msgstr "Étape 4 - options de restauration"
 
 msgid "Replace files:"
 msgstr "Remplacer les fichiers :"
@@ -5758,3 +5758,36 @@ msgstr "Done!"
 
 msgid "Add file storage"
 msgstr "Add file storage"
+
+msgid "Plugin settings"
+msgstr "Plugin settings"
+
+msgid "Installed plugins"
+msgstr "Installed plugins"
+
+msgid "Add plugin settings"
+msgstr "Add plugin settings"
+
+msgid "Plugin name"
+msgstr "Plugin name"
+
+msgid "Plugin"
+msgstr "Plugin"
+
+msgid "Select plugin"
+msgstr "Select plugin"
+
+msgid "Edit plugin settings"
+msgstr "Edit plugin settings"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Plugin settings with the given name already exists."
+msgstr "Plugin settings with the given name already exists."
+
+msgid "Where to restore"
+msgstr "Where to restore"
+
+msgid "File options"
+msgstr "File options"
