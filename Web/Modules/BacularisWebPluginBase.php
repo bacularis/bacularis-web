@@ -22,8 +22,8 @@ namespace Bacularis\Web\Modules;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
  */
-class BacularisWebPluginBase extends WebModule {
-
+class BacularisWebPluginBase extends WebModule
+{
 	/**
 	 * Stores single plugin configuration.
 	 */

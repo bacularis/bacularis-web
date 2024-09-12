@@ -30,7 +30,7 @@ class PluginConfig extends ConfigFileModule
 	/**
 	 * Settings name pattern.
 	 */
-	public const SETTINGS_NAME_PATTERN ='(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\/\\(\\)\\{\\}:.#~_,+!$]{1,100}';
+	public const SETTINGS_NAME_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\/\\(\\)\\{\\}:.#~_,+!$]{1,100}';
 
 	/**
 	 * Plugin config file path
@@ -65,7 +65,7 @@ class PluginConfig extends ConfigFileModule
 	/**
 	 * Stores plugin list.
 	 */
-	private $plugins = null;
+	private $plugins;
 
 	public function init($config)
 	{
@@ -115,7 +115,7 @@ class PluginConfig extends ConfigFileModule
 	/**
 	 * Prepare settings config to use.
 	 *
-	 * @param integer $config config reference
+	 * @param int $config config reference
 	 */
 	private function prepareConfigUse(array &$config): void
 	{
@@ -145,7 +145,7 @@ class PluginConfig extends ConfigFileModule
 	/**
 	 * Prepare settings config to save.
 	 *
-	 * @param integer $config config reference
+	 * @param int $config config reference
 	 */
 	private function prepareConfigSave(array &$config): void
 	{

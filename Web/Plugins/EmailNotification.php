@@ -162,14 +162,14 @@ class EmailNotification extends BacularisWebPluginBase implements IBacularisNoti
 		$address = $_SERVER['REMOTE_ADDR'];
 		$date = date('Y-m-d H:i:s');
 		$title = substr($content, 0, self::MAX_TITLE_SIZE);
-		$text = str_replace('%service', 'Bacularis',  $text);
-		$text = str_replace('%user', $user,  $text);
-		$text = str_replace('%type', $type,  $text);
-		$text = str_replace('%category', $category,  $text);
-		$text = str_replace('%address', $address,  $text);
-		$text = str_replace('%date', $date,  $text);
-		$text = str_replace('%title', $title,  $text);
-		$text = str_replace('%content', $content,  $text);
+		$text = str_replace('%service', 'Bacularis', $text);
+		$text = str_replace('%user', $user, $text);
+		$text = str_replace('%type', $type, $text);
+		$text = str_replace('%category', $category, $text);
+		$text = str_replace('%address', $address, $text);
+		$text = str_replace('%date', $date, $text);
+		$text = str_replace('%title', $title, $text);
+		$text = str_replace('%content', $content, $text);
 	}
 
 	/**

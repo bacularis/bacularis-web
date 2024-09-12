@@ -40,7 +40,7 @@ class PluginList extends Portlets
 	 * Plugin settings list loader.
 	 *
 	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter callback parameter object
+	 * @param TCallbackEventParameter $param callback parameter object
 	 */
 	public function loadPluginSettingsList($sender, $param)
 	{
@@ -57,7 +57,7 @@ class PluginList extends Portlets
 	 * Plugin list loader.
 	 *
 	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter callback parameter object
+	 * @param TCallbackEventParameter $param callback parameter object
 	 */
 	public function loadPluginPluginsList($sender, $param)
 	{
@@ -100,7 +100,7 @@ class PluginList extends Portlets
 	 * Save plugin settings.
 	 *
 	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter callback parameter object
+	 * @param TCallbackEventParameter $param callback parameter object
 	 */
 	public function savePluginSettingsForm($sender, $param)
 	{
@@ -155,7 +155,7 @@ class PluginList extends Portlets
 	 * Remove plugin settings.
 	 *
 	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter callback parameter object
+	 * @param TCallbackEventParameter $param callback parameter object
 	 */
 	public function removePluginSettings($sender, $param)
 	{
