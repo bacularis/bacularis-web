@@ -13,46 +13,37 @@
 		OnCompleteButtonClick="wizardCompleted"
 		>
 		<prop:HeaderTemplate>
-			<div class="w3-half w3-hide-small">
-				<div class="w3-third w3-padding-16">
+			<div class="w3-hide-small">
+				<div class="w3-col w3-padding-16" style="width: 20%">
 					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-desktop w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
 						<h4><com:TTranslate Text="Client" /></h4>
 					</div>
 				</div>
-				<div class="w3-third w3-padding-16">
+				<div class="w3-col w3-padding-16" style="width: 20%">
 					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
 						<h4><com:TTranslate Text="Backup" /></h4>
 					</div>
 				</div>
-				<div class="w3-third w3-padding-16">
+				<div class="w3-col w3-padding-16" style="width: 20%">
 					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-copy w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
 						<h4><com:TTranslate Text="Files" /></h4>
 					</div>
 				</div>
-			</div>
-			<div class="w3-half w3-hide-small">
-				<div class="w3-third w3-padding-16">
+				<div class="w3-col w3-padding-16" style="width: 20%">
 					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3  ? 'w3-light-green' : 'w3-green')%>">
-						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
-						<div class="w3-clear"></div>
-						<h4><com:TTranslate Text="Where" /></h4>
-					</div>
-				</div>
-				<div class="w3-third w3-padding-16">
-					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-clipboard-list w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
 						<h4><com:TTranslate Text="Options" /></h4>
 					</div>
 				</div>
-				<div class="w3-third w3-padding-16">
-					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 5 ? 'w3-light-green' : 'w3-green')%>">
+				<div class="w3-col w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
 						<h4><com:TTranslate Text="Run" /></h4>
@@ -1443,8 +1434,9 @@ $(function() {
 				Formatters.set_formatters();
 			</script>
 		</com:TWizardStep>
-		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - select destination for restore ]%>" StepType="Auto">
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - options for restore ]%>" StepType="Auto">
 			<div class="w3-half" style="margin: auto; float: none">
+				<h4><%[ Where to restore ]%></h4>
 				<div class="w3-section w3-row">
 					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreClient" Text="<%[ Restore to client: ]%>" /></div>
 					<div class="w3-col w3-third">
@@ -1452,41 +1444,16 @@ $(function() {
 					</div>
 				</div>
 				<div class="w3-section w3-row">
-					<div class="w3-col w3-third"><com:TLabel ForControl="RestorePath" Text="<%[ Restore to directory: ]%>" /></div>
-					<div class="w3-col w3-third"><com:TTextBox ID="RestorePath" CssClass="w3-input w3-border" Text="/tmp/restore" /></div>
-				</div>
-				<hr style="w3-margin" />
-				<p><%[ During restore there will be used following volumes: ]%></p>
-				<com:TRepeater ID="RestoreVolumes">
-					<prop:HeaderTemplate>
-						<table class="w3-table w3-striped w3-border w3-hoverable w3-margin-bottom" style="width: 100%">
-							<thead>
-								<tr>
-									<th><%[ In Changer ]%></th>
-									<th><%[ Volume ]%></th>
-								</tr>
-							</thead>
-					</prop:HeaderTemplate>
-					<prop:ItemTemplate>
-							<tr>
-								<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
-								<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
-							</tr>
-					</prop:ItemTemplate>
-					<prop:FooterTemplate>
-						</table>
-					</prop:FooterTemplate>
-				</com:TRepeater>
-			</div>
-		</com:TWizardStep>
-		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - options for restore ]%>" StepType="Auto">
-			<div class="w3-half" style="margin: auto; float: none">
-				<div class="w3-section w3-row">
 					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreJob" Text="<%[ Restore job: ]%>" /></div>
 					<div class="w3-col w3-third">
-						<com:TDropDownList ID="RestoreJob" CssClass="w3-select w3-border" CausesValidation="false" />
+						<com:TActiveDropDownList ID="RestoreJob" CssClass="w3-select w3-border" CausesValidation="false" OnCallback="setWherePath" />
 					</div>
 				</div>
+				<div class="w3-section w3-row">
+					<div class="w3-col w3-third"><com:TLabel ForControl="RestorePath" Text="<%[ Restore to directory: ]%>" /></div>
+					<div class="w3-col w3-third"><com:TActiveTextBox ID="RestorePath" CssClass="w3-input w3-border" Text="/tmp/restore" /></div>
+				</div>
+				<h4><%[ File options ]%></h4>
 				<div class="w3-section w3-row">
 					<div class="w3-col w3-third"><com:TLabel ForControl="ReplaceFiles" Text="<%[ Replace files: ]%>" /></div>
 					<div class="w3-col w3-third">
@@ -1534,6 +1501,28 @@ $(function() {
 						</div>
 					</div>
 				</div>
+				<h4><%[ Volumes ]%></h4>
+				<p><%[ During restore there will be used following volumes: ]%></p>
+				<com:TRepeater ID="RestoreVolumes">
+					<prop:HeaderTemplate>
+						<table class="w3-table w3-striped w3-border w3-hoverable w3-margin-bottom" style="width: 100%">
+							<thead>
+								<tr>
+									<th><%[ In Changer ]%></th>
+									<th><%[ Volume ]%></th>
+								</tr>
+							</thead>
+					</prop:HeaderTemplate>
+					<prop:ItemTemplate>
+							<tr>
+								<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
+								<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
+							</tr>
+					</prop:ItemTemplate>
+					<prop:FooterTemplate>
+						</table>
+					</prop:FooterTemplate>
+				</com:TRepeater>
 			</div>
 			<script type="text/javascript">
 				function switch_file_relocation_mode(opt) {
@@ -1562,7 +1551,7 @@ $(function() {
 				}
 			</script>
 		</com:TWizardStep>
-		<com:TWizardStep ID="Step6" Title="<%[ Step 6 - Finish ]%>" StepType="Finish">
+		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - Finish ]%>" StepType="Finish">
 			<div class="w3-half" style="margin: auto; float: none">
 				<fieldset>
 					<legend><%[ Source parameters ]%></legend>

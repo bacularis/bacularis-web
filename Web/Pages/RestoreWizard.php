@@ -229,11 +229,10 @@ class RestoreWizard extends BaculumWebPage
 			$this->goToPath();
 		} elseif ($param->CurrentStepIndex === 2) {
 			$this->loadRequiredVolumes();
-		} elseif ($param->CurrentStepIndex === 3) {
 			if ($this->Session->contains('file_relocation')) {
 				$this->file_relocation_opt = $this->Session['file_relocation'];
 			}
-		} elseif ($param->CurrentStepIndex === 4) {
+		} elseif ($param->CurrentStepIndex === 3) {
 			if ($this->Request->contains('file_relocation')) {
 				$this->Session->add(
 					'file_relocation',
@@ -260,7 +259,7 @@ class RestoreWizard extends BaculumWebPage
 			$this->loadSelectedFiles(null, null);
 			$this->loadFileVersions(null, null);
 			$this->goToPath();
-		} elseif ($param->CurrentStepIndex === 5) {
+		} elseif ($param->CurrentStepIndex === 4) {
 			$this->file_relocation_opt = $this->Session['file_relocation'];
 		}
 	}
@@ -1165,7 +1164,31 @@ class RestoreWizard extends BaculumWebPage
 			$jobs = array_merge($jobs, $restore_jobs);
 		}
 		$this->RestoreJob->DataSource = array_combine($jobs, $jobs);
+		if (count($jobs) > 0) {
+			$this->RestoreJob->SelectedValue = $jobs[0];
+		}
 		$this->RestoreJob->dataBind();
+	}
+
+	public function setWherePath($sender, $param)
+	{
+		$restore_job = $this->RestoreJob->SelectedValue;
+		if (empty($restore_job)) {
+			return;
+		}
+		$params = [
+			'name' => $restore_job,
+			'output' => 'json'
+		];
+		$query = '?' . http_build_query($params);
+		$result = $this->getModule('api')->get(
+			['jobs', 'show', $query]
+		);
+		$where = '/tmp/restore';
+		if ($result->error == 0 && isset($result->output->where)) {
+			$where = $result->output->where;
+		}
+		$this->RestorePath->Text = $where;
 	}
 
 	private function loadRequiredVolumes()
@@ -1212,6 +1235,7 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->remove('files_versions');
 		$this->Session->remove('files_restore');
 		$this->loadRestoreJobs();
+		$this->setWherePath(null, null);
 		$this->Session->remove('restore_path');
 		$this->Session->remove('restore_pathid');
 		$this->Session->remove('restore_job');
