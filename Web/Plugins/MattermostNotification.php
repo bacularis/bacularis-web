@@ -18,12 +18,12 @@ use Bacularis\Web\Modules\BacularisWebPluginBase;
 use Prado\Prado;
 
 /**
- * The MatterMost notification plugin module.
+ * The Mattermost notification plugin module.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Plugin
  */
-class MatterMostNotification extends BacularisWebPluginBase implements IBacularisNotificationPlugin
+class MattermostNotification extends BacularisWebPluginBase implements IBacularisNotificationPlugin
 {
 	/**
 	 * Maximum characters number in title.
@@ -37,7 +37,7 @@ class MatterMostNotification extends BacularisWebPluginBase implements IBaculari
 	 */
 	public static function getName(): string
 	{
-		return 'MatterMost notification';
+		return 'Mattermost notification';
 	}
 
 	/**
