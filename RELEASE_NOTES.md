@@ -1,26 +1,28 @@
 
-This is a new major Bacularis release. It provides in the install wizard a new
-capability to install and configure complete Bacula environment to work with
-Bacularis. It means that to install Bacularis first time having the Bacula
-environment is no longer required. This function can be specially useful for
-new users that don't know Bacula and they would like to try Bacula in easy way.
-At start Bacularis wizard supports nineteen various Linux distributions and versions.
-This move is a first step in organized by the Bacularis Project a global action
-named "Bacula for Everybody!" which main goal is to popularize using Bacula. More
-information about it you can find on the Bacularis.app website.
+This is a new function and bug fix release. We continue the action "Bacula for
+Everybody!" for making first contact with Bacula easier for new users and this
+time we prepared a new file storage wizard. It enables to create both single
+storage devices and multi-device autochangers as well.
 
-In addition, we have added some new functions and improvements such as bulk run job
-action in the job list, the repository auth configuration on deployment page or
-a new deployment function to deploy the catalog database. At the end we fixed some
-bugs reported by the Community.
+Second significant change is support for plugins. This is a friendly plugin
+interface to easily extend Bacularis for new functions. The first step in this
+feature is support for the web interface plugins. To prepare a plugin you will
+need a bit of knowledge about PHP language and object-oriented programming. If
+you are not strong PHP programmer, don't worry, it is really simple interface
+to create new plugins. We also prepared two first plugins: for e-mail
+notifications and for Mattermost notifications.
+
+Finally, we would like to thank the entire Community for bug reports, ideas and
+for being active. With your involvement we can much more.
 
 **Changes**
- - Add repository auth configuration on deployment page
- - Add Bacula catalog deployment capability and support in OS profiles
- - Add bulk run job action to job list
- - Add repo auth module
- - Fix unassign removed API hosts from users
- - Fix missing end-of-line character in user file provided on deploying
- - Fix typo error in web config wizard
- - Update Polish translations
+ - Add new file storage wizard
+ - Add support for plugins
+ - Add e-mail notification plugin
+ - Add Mattermost notification plugin
+ - Simplify restore wizard and use restore path from restore job
+ - Add audit logging to new functions
+ - Fix virtualfull job wizard for using existing jobs
+ - Fix using custom Bacula package repository in OS profile
+ - Move new storage wizard error messages to error window
 
