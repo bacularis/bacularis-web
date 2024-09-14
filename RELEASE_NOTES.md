@@ -23,6 +23,7 @@ for being active. With your involvement we can much more.
  - Simplify restore wizard and use restore path from restore job
  - Add audit logging to new functions
  - Fix setting job properties in run job window
+ - Fix auto-switching job summary tab on job view page
  - Fix virtualfull job wizard for using existing jobs
  - Fix using custom Bacula package repository in OS profile
  - Move new storage wizard error messages to error window
