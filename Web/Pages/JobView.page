@@ -222,6 +222,7 @@ var oRunningJobStatus = {
 		}
 	},
 	update: function(data) {
+		const first_run = (Object.keys(this.data).length == 0);
 		this.set_data(data);
 		if (this.data.is_running && this.is_status_supported() === false) {
 			return;
@@ -242,7 +243,10 @@ var oRunningJobStatus = {
 			$('#' + this.ids.refresh_interval).parent().hide();
 			var graphical_container = document.getElementById(this.ids.graphical_container);
 			graphical_container.style.display = 'none';
-			W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_log');
+			if (!first_run || (!W3SubTabs.is_open('joblog_text_output') && !W3SubTabs.is_open('jobfiles_list'))) {
+				// direct to job summary only if job was in previous refresh running or if no other tab is opened
+				W3SubTabs.open('job_report_summary_subtab_text', 'job_report_summary', 'job_log');
+			}
 		}
 	},
 	add_running_job: function(job, full_refresh) {
