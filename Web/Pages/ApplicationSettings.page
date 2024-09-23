@@ -278,7 +278,7 @@
 	</div>
 	<!-- Plugins -->
 	<div class="w3-container tab_item" id="application_settings_plugins" style="display: none">
-		<com:Bacularis.Web.Portlets.PluginList />
+		<com:Bacularis.Common.Portlets.PluginList />
 	</div>
 	<!-- Features -->
 	<div class="w3-container tab_item" id="application_settings_features" style="display: none">
