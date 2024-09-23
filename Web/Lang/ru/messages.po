@@ -5790,3 +5790,6 @@ msgstr "Where to restore"
 
 msgid "File options"
 msgstr "File options"
+
+msgid "Total"
+msgstr "Total"

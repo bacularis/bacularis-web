@@ -62,7 +62,7 @@
 				<div class="w3-right">
 					<h4 id="jobs_total_bytes">-</h4>
 				</div>
-				<h5><%[ Total bytes ]%></h5>
+				<h5><%[ Total ]%></h5>
 				<div class="w3-text">
 					<p class="w3-small"><%[ Total files: ]%><strong><span id="jobs_total_files"></span></strong></p>
 					<p class="w3-small"><%[ Database type: ]%> <strong><span id="database_type"></span></strong>&nbsp;<%[ Database size: ]%> <strong><span id="database_size"></span></strong></p>
