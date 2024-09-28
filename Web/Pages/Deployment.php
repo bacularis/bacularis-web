@@ -634,6 +634,48 @@ class Deployment extends BaculumWebPage
 		$this->setOSProfileList(null, null);
 	}
 
+	public function adaptOSProfileToBaculaOrgRepo($sender, $param)
+	{
+		$repo_type = $this->OSProfileRepositoryType->getSelectedValue();
+		$this->OSProfileBaculaRepositoryAddr->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['bacula_repository_addr'];
+		$this->OSProfileBaculaRepositoryKey->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['bacula_repository_key'];
+		$this->OSProfilePackagesCatInstall->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_cat_install'];
+		$this->OSProfilePackagesPostCatInstallCmd->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_cat_post_install_cmd'];
+		$this->OSProfilePackagesDirInstall->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_install'];
+		$this->OSProfilePackagesDirUpgrade->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_upgrade'];
+		$this->OSProfilePackagesDirRemove->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_remove'];
+		$this->OSProfilePackagesDirInfo->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_info'];
+		$this->OSProfilePackagesDirEnable->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_enable'];
+		$this->OSProfilePackagesPostDirInstallCmd->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_dir_post_install_cmd'];
+		$this->OSProfilePackagesSdInstall->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_install'];
+		$this->OSProfilePackagesSdUpgrade->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_upgrade'];
+		$this->OSProfilePackagesSdRemove->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_remove'];
+		$this->OSProfilePackagesSdInfo->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_info'];
+		$this->OSProfilePackagesSdEnable->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_enable'];
+		$this->OSProfilePackagesPostSdInstallCmd->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_sd_post_install_cmd'];
+		$this->OSProfilePackagesFdInstall->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_install'];
+		$this->OSProfilePackagesFdUpgrade->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_upgrade'];
+		$this->OSProfilePackagesFdRemove->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_remove'];
+		$this->OSProfilePackagesFdInfo->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_info'];
+		$this->OSProfilePackagesFdEnable->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_enable'];
+		$this->OSProfilePackagesPostFdInstallCmd->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_fd_post_install_cmd'];
+		$this->OSProfilePackagesBconsInstall->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_bcons_install'];
+		$this->OSProfilePackagesBconsUpgrade->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_bcons_upgrade'];
+		$this->OSProfilePackagesBconsRemove->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_bcons_remove'];
+		$this->OSProfilePackagesBconsInfo->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_bcons_info'];
+		$this->OSProfilePackagesPostBconsInstallCmd->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['packages_bcons_post_install_cmd'];
+		$this->OSProfileBconsoleBin->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['bconsole_bin_path'];
+		$this->OSProfileBconsoleCfg->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['bconsole_cfg_path'];
+		$this->OSProfileJSONToolsBDirJSONPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_bdirjson_path'];
+		$this->OSProfileJSONToolsDirCfgPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_dir_cfg_path'];
+		$this->OSProfileJSONToolsBSdJSONPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_bsdjson_path'];
+		$this->OSProfileJSONToolsSdCfgPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_sd_cfg_path'];
+		$this->OSProfileJSONToolsBFdJSONPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_bfdjson_path'];
+		$this->OSProfileJSONToolsFdCfgPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_fd_cfg_path'];
+		$this->OSProfileJSONToolsBBconsJSONPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_bbconsjson_path'];
+		$this->OSProfileJSONToolsBconsCfgPath->Text = OSProfileConfig::BACULA_ORG_REPOSITORY[$repo_type]['jsontools_bcons_cfg_path'];
+	}
+
 	/**
 	 * Set and load repo auth list.
 	 *

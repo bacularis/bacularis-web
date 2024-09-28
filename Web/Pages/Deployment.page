@@ -2142,6 +2142,18 @@ $(function() {
 						</div>
 						<div id="osprofile_window_bacula_repo_options" style="display: <%=$this->OSProfileBaculaUseSystemRepo->Checked ? 'none' : 'block'%>">
 							<div class="w3-row directive_field">
+								<div class="w3-col w3-third">&nbsp;</div>
+								<div class="w3-half">
+									<com:TActiveLinkButton
+										ID="OSProfileBaculaRepositoryAdaptToBaculaOrg"
+										CssClass="w3-small"
+										OnCallback="adaptOSProfileToBaculaOrgRepo"
+									>
+										<i class="fa-solid fa-sliders"></i> &nbsp;<%[ Adapt OS profile to use Bacula packages from bacula.org repos ]%>
+									</com:TActiveLinkButton>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
 								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryAddr" Text="<%[ Bacula repository URL (or entry): ]%>"/></div>
 								<div class="w3-half">
 									<com:TActiveTextBox
@@ -2373,8 +2385,8 @@ $(function() {
 							</div>
 						</div>
 					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Catalog commands ]%></a>
-					<div id="osprofile_window_catalog_options" style="display: none">
+					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_command_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Catalog commands ]%></a>
+					<div id="osprofile_window_catalog_command_options" style="display: none">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInstall" Text="<%[ Catalog installation command: ]%>"/></div>
 							<div class="w3-half">

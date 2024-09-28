@@ -5794,3 +5794,6 @@ msgstr "File options"
 
 msgid "Total"
 msgstr "Total"
+
+msgid "Adapt OS profile to use Bacula packages from bacula.org repos"
+msgstr "Adapt OS profile to use Bacula packages from bacula.org repos"
