@@ -1861,6 +1861,9 @@ $(function() {
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="role_list" style="display: none;">
+		<p class="w3-hide-small">
+			<%[ Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles. ]%>
+		</p>
 		<div class="w3-panel">
 			<button type="button" id="add_role_btn" class="w3-button w3-green" onclick="oRoles.load_role_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a>
 		</div>

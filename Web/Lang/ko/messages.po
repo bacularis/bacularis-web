@@ -5802,3 +5802,18 @@ msgstr "Total"
 
 msgid "Adapt OS profile to use Bacula packages from bacula.org repos"
 msgstr "Adapt OS profile to use Bacula packages from bacula.org repos"
+
+msgid "The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected."
+msgstr "The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected."
+
+msgid "The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used."
+msgstr "The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used."
+
+msgid "The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window."
+msgstr "The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window."
+
+msgid "The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far."
+msgstr "The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far."
+
+msgid "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."
+msgstr "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."

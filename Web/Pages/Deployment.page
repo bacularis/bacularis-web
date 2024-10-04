@@ -1604,6 +1604,9 @@ var oDeployAPIHost = {
 
 
 	<div class="w3-container tab_item" id="os_profiles" style="display: none">
+		<p class="w3-hide-small">
+			<%[ The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far. ]%>
+		</p>
 		<div class="w3-panel">
 			<button type="button" id="add_os_profile_btn" class="w3-button w3-green" onclick="oOSProfiles.load_osprofile_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OS profile ]%></button>
 		</div>
@@ -3372,10 +3375,10 @@ $(function() {
 			<com:TActiveHiddenField ID="OSProfileWindowType" />
 		</div>
 	</div>
-
-
-
 	<div class="w3-container tab_item" id="repo_auth" style="display: none">
+		<p class="w3-hide-small">
+			<%[ The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected. ]%>
+		</p>
 		<div class="w3-panel">
 			<button type="button" id="add_repo_auth_btn" class="w3-button w3-green" onclick="oRepoAuths.load_repo_auth_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new repo auth ]%></button>
 		</div>
@@ -3749,18 +3752,10 @@ $(function() {
 			<com:TActiveHiddenField ID="RepoAuthWindowType" />
 		</div>
 	</div>
-
-
-
-
-
-
-
-
-
-
-
 	<div class="w3-container tab_item" id="ssh_configs" style="display: none">
+		<p class="w3-hide-small">
+			<%[ The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used. ]%>
+		</p>
 		<div class="w3-panel">
 			<button type="button" id="add_ssh_config_btn" class="w3-button w3-green" onclick="oSSHConfigs.load_ssh_config_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH config ]%></button>
 		</div>
@@ -4076,6 +4071,9 @@ $(function() {
 		</div>
 	</div>
 	<div class="w3-container tab_item" id="ssh_keys" style="display: none">
+		<p class="w3-hide-small">
+			<%[ The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window. ]%>
+		</p>
 		<div class="w3-panel">
 			<button type="button" id="add_ssh_key_btn" class="w3-button w3-green" onclick="oSSHKeys.load_ssh_key_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH key ]%></button>
 		</div>
