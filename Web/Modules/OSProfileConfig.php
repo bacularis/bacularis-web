@@ -435,7 +435,8 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
 			'Ubuntu 23.04 Lunar' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ lunar main',
 			'Ubuntu 23.10 Mantic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ mantic main',
-			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main'
+			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main',
+			'Ubuntu 24.10 Oracular' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ oracular main'
 		]
 	];
 
