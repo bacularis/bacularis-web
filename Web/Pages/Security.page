@@ -1755,7 +1755,7 @@ $(function() {
 				<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 					<div class="w3-row directive_field">
 						<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostList" Text="<%[ API host: ]%>"/></div>
-						<div class="w3-half w3-show-inline-block">
+						<div class="w3-twothird w3-show-inline-block">
 							<com:TActiveDropDownList
 								ID="UserAPIHostList"
 								CssClass="w3-select w3-border"
@@ -1779,6 +1779,19 @@ $(function() {
 									}
 								</prop:ClientSide.OnComplete>
 							</com:TActiveDropDownList>
+							<i class="fas fa-info-circle help_icon w3-text-green" onclick="$('#help_user_api_hosts').slideToggle('fast');"></i>
+							&nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+							<br />
+							<com:TRequiredFieldValidator
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+								ControlToValidate="UserAPIHostList"
+								ValidationGroup="UserAPIHostResourceAccessGroup"
+								ErrorMessage="<%[ Field required. ]%>"
+							/>
+							<div id="help_user_api_hosts" class="directive_help" style="display: none">
+								<%[ Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited. ]%>
+							</div>
 						</div>
 					</div>
 					<div id="user_access_window_select_access" style="display: none">
@@ -4598,7 +4611,7 @@ $(function() {
 			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostGroupAPIHostList" Text="<%[ API host: ]%>"/></div>
-					<div class="w3-half w3-show-inline-block">
+					<div class="w3-twothird w3-show-inline-block">
 						<com:TActiveDropDownList
 							ID="APIHostGroupAPIHostList"
 							CssClass="w3-select w3-border"
@@ -4622,6 +4635,19 @@ $(function() {
 								}
 							</prop:ClientSide.OnComplete>
 						</com:TActiveDropDownList>
+						<i class="fas fa-info-circle help_icon w3-text-green" onclick="$('#help_group_api_hosts').slideToggle('fast');"></i>
+						&nbsp;<i class="fa fa-asterisk w3-text-red opt_req" style="vertical-align: top"></i>
+						<br />
+						<com:TRequiredFieldValidator
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+							ControlToValidate="APIHostGroupAPIHostList"
+							ValidationGroup="APIHostGroupAPIHostResourceAccessGroup"
+							ErrorMessage="<%[ Field required. ]%>"
+						/>
+						<div id="help_group_api_hosts" class="directive_help" style="display: none">
+							<%[ Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited. ]%>
+						</div>
 					</div>
 				</div>
 				<div id="api_host_group_access_window_select_access" style="display: none">

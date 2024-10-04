@@ -233,12 +233,12 @@ class Security extends BaculumWebPage
 	 * @param object $control control which contains API host list
 	 * @param mixed $def_val default value or null if no default value to set
 	 * @param bool $add_blank_item determines if add first blank item
-	 * @param array $sel_api_hosts defines selected list of API hosts to set. If not set, all API hosts are taken
+	 * @param null|array $sel_api_hosts defines selected list of API hosts to set. If not set, all API hosts are taken
 	 */
-	private function setAPIHosts($control, $def_val = null, $add_blank_item = true, $sel_api_hosts = [])
+	private function setAPIHosts($control, $def_val = null, $add_blank_item = true, $sel_api_hosts = null)
 	{
 		$api_hosts = [];
-		if (count($sel_api_hosts) > 0) {
+		if (is_array($sel_api_hosts)) {
 			$api_hosts = $sel_api_hosts;
 		} else {
 			$host_config = $this->getModule('host_config')->getConfig();
@@ -2260,10 +2260,6 @@ class Security extends BaculumWebPage
 			} elseif ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
 				$host_groups = $this->getModule('host_group_config');
 				$api_hosts = $host_groups->getAPIHostsByGroups($user_config['api_host_groups']);
-			}
-			if (count($api_hosts) == 1 && $api_hosts[0] === HostConfig::MAIN_CATALOG_HOST) {
-				$host_config = $this->getModule('host_config')->getConfig();
-				$api_hosts = array_keys($host_config);
 			}
 			// strip main API host
 			$cbf = function ($host) {

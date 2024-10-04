@@ -5801,3 +5801,6 @@ msgstr "The OS profiles define the Bacularis and Bacula install and configuratio
 
 msgid "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."
 msgstr "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."
+
+msgid "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
+msgstr "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
