@@ -180,6 +180,7 @@ class NewFileStorageWizard extends BaculumWebPage
 				$api_host,
 				$name,
 				$storage_desc,
+				$i,
 				$data_vol_dir,
 				$media_type,
 				$ro,
@@ -237,7 +238,7 @@ class NewFileStorageWizard extends BaculumWebPage
 		}
 	}
 
-	private function createDevice(string $api_host, string $name, string $desc, string $data_vol_dir, string $media_type, bool $ro = false, bool $autochanger = false): object
+	private function createDevice(string $api_host, string $name, string $desc, int $drive_index, string $data_vol_dir, string $media_type, bool $ro = false, bool $autochanger = false): object
 	{
 		$api = $this->getModule('api');
 		$params = [
@@ -249,7 +250,8 @@ class NewFileStorageWizard extends BaculumWebPage
 		$config = [
 			'Name' => $name,
 			'ArchiveDevice' => $data_vol_dir,
-			'MediaType' => $media_type
+			'MediaType' => $media_type,
+			'DriveIndex' => $drive_index
 		];
 		if ($desc) {
 			$config['Description'] = $desc;
