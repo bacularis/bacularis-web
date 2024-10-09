@@ -11,6 +11,7 @@
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['sd']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $_SESSION['sd'], 'resource_type' => 'Device'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add device ]%></button>
 		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['sd']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $_SESSION['sd'], 'resource_type' => 'Autochanger'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add autochanger ]%></button>
 		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewFileStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add file storage ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewCloudStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add cloud storage ]%></button>
 		<com:Bacularis.Web.Portlets.TabViews ID="StorageViews" />
 	</div>
 	<div class="w3-container">

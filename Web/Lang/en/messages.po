@@ -5804,3 +5804,84 @@ msgstr "Roles define the Bacularis resources to which users can have access. Rol
 
 msgid "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
 msgstr "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
+
+msgid "Add cloud storage"
+msgstr "Add cloud storage"
+
+msgid "New cloud storage wizard"
+msgstr "New cloud storage wizard"
+
+msgid "This wizard enables you to create in easy way a new cloud storage."
+msgstr "This wizard enables you to create in easy way a new cloud storage."
+
+msgid "Storage daemon name"
+msgstr "Storage daemon name"
+
+msgid "Step 3 - cloud parameters"
+msgstr "Step 3 - cloud parameters"
+
+msgid "What is your cloud type?"
+msgstr "What is your cloud type?"
+
+msgid "NOTE: The Amazon driver replaces the deprecated S3 driver."
+msgstr "NOTE: The Amazon driver replaces the deprecated S3 driver."
+
+msgid "Driver"
+msgstr "Driver"
+
+msgid "What are connection parameters of your cloud?"
+msgstr "What are connection parameters of your cloud?"
+
+msgid "Bucket name"
+msgstr "Bucket name"
+
+msgid "Access key"
+msgstr "Access key"
+
+msgid "Secret key"
+msgstr "Secret key"
+
+msgid "Region"
+msgstr "Region"
+
+msgid "When would you like to send data to cloud?"
+msgstr "When would you like to send data to cloud?"
+
+msgid "Manual"
+msgstr "Manual"
+
+msgid "I upload volumes to cloud manually by bconsole 'cloud' command"
+msgstr "I upload volumes to cloud manually by bconsole 'cloud' command"
+
+msgid "Bacula storage daemon sends each volume part to cloud when it is complete"
+msgstr "Bacula storage daemon sends each volume part to cloud when it is complete"
+
+msgid "Bacula storage daemon sends all volume parts that have not been previously uploaded at the end of the job"
+msgstr "Bacula storage daemon sends all volume parts that have not been previously uploaded at the end of the job"
+
+msgid "Uri style"
+msgstr "Uri style"
+
+msgid "Truncate cache"
+msgstr "Truncate cache"
+
+msgid "Cloud"
+msgstr "Cloud"
+
+msgid "Cloud driver"
+msgstr "Cloud driver"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "The storage daemon configuration capability on API host '%s' is configured but not work correctly. Please check the bsdjson configuration on that API host. Error: %s."
+msgstr "The storage daemon configuration capability on API host '%s' is configured but not work correctly. Please check the bsdjson configuration on that API host. Error: %s."
+
+msgid "Blob endpoint"
+msgstr "Blob endpoint"
+
+msgid "Before using this wizard the cloud storage plugin has to be installed."
+msgstr "Before using this wizard the cloud storage plugin has to be installed."
+
+msgid "Step 4 - summary"
+msgstr "Step 4 - summary"

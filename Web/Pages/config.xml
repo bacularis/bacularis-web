@@ -41,6 +41,7 @@
 		<module id="users" class="Bacularis\Web\Modules\WebUserManager" UserClass="Bacularis\Web\Modules\WebUser" />
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
+		<module id="storage_tools" class="Bacularis\Web\Modules\StorageTools" />
 		<module id="messages_log" class="Bacularis\Web\Modules\MessagesLog" />
 		<!-- remote management modules -->
 		<module id="ssh" class="Bacularis\Web\Modules\SSH" />

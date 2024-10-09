@@ -1,0 +1,649 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewStorageWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 25%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 25%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-database w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Storage" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 25%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-cloud-arrow-up w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Cloud" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 25%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 3 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa-solid fa-paper-plane"></i> &nbsp;<%[ Create storage ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - new storage basic params ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New cloud storage wizard ]%></h2>
+					<p><%[ This wizard enables you to create in easy way a new cloud storage. ]%></p>
+					<p><%[ Before using this wizard the cloud storage plugin has to be installed. ]%></p>
+				</div>
+				<h4><%[ Basic information ]%></h4>
+				<div class="w3-section">
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="StorageName"
+						DirectiveName="Name"
+						Label="<%[ Storage name ]%>"
+						ValidationGroup="NewStorageDirective"
+						Required="true"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<com:Bacularis.Web.Portlets.DirectiveTextBox
+						ID="StorageDescription"
+						DirectiveName="Description"
+						Label="<%[ Storage description ]%>"
+						ValidationGroup="NewStorageDirective"
+						Required="false"
+						Show="true"
+						ShowResetButton="false"
+						ShowRemoveButton="false"
+						/>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Storage daemon API host ]%>:</div>
+						<div class="w3-threequarter">
+							<com:TActiveDropDownList
+								ID="StorageAPIHost"
+								CssClass="w3-select w3-border"
+								ValidationGroup="NewStorageDirective"
+								Width="400px"
+								OnCallback="checkCloudPlugins"
+								CausesValidation="false"
+								ClientSide.OnLoading="document.getElementById('api_host_storage_loader').style.visibility = 'visible';"
+								ClientSide.OnComplete="document.getElementById('api_host_storage_loader').style.visibility = 'hidden';"
+							/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageAPIHost"
+								Text="<%[ Field required. ]%>"
+								Display="Dynamic"
+							/> &nbsp;<i id="api_host_storage_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i>
+						</div>
+					</div>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Storage daemon name ]%>:</div>
+						<div id="api_host_storage_daemon_name" class="w3-threequarter bold">-</div>
+					</div>
+					<div class="w3-row w3-margin-bottom">
+						<div id="api_host_storage_error" class="w3-red" style="display: none"></div>
+					</div>
+				</div>
+				<h4><%[ What storage type would you like to create? ]%></h4>
+				<div class="w3-section">
+					<div class="w3-margin-left">
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeSingle" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->StorageTypeSingle->ClientID%>"><%[ Single file device storage ]%></label></p>
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeAutochanger" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->StorageTypeAutochanger->ClientID%>"><%[ Multi-device file storage (Autochanger) ]%></label></p>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - new storage parameters ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<com:TPanel ID="StorageAutochanger" Visible="<%=$this->StorageTypeAutochanger->Checked%>">
+					<h4><%[ How many devices should storage have? ]%></h4>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Number of backup/restore devices ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageNumberOfBackupRestoreDevices"
+								CssClass="w3-input w3-border"
+								Width="100px"
+								Text="5"
+							/>
+							<com:TCompareValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfBackupRestoreDevices"
+								ValueToCompare="0"
+								DataType="Integer"
+								Operator="GreaterThan"
+								Text="<%[ Value must be positive integer. ]%>"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfBackupRestoreDevices"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</div>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-third"><%[ Number of restore reserved devices ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageNumberOfRestoreDevices"
+								CssClass="w3-input w3-border"
+								Width="100px"
+								Text="1"
+							/>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageNumberOfRestoreDevices"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</div>
+				</com:TPanel>
+				<h4><%[ Where should storage store backup data? ]%></h4>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Directory path for data volumes ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageDataVolumeDir"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="ex: /mnt/my-storage"
+							Width="400px"
+						/> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageDataVolumeDir"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row w3-margin-bottom">
+					<h4><%[ What is storage media type? ]%></h4>
+					<div class="w3-third"><%[ Media type ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageMediaType"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Width="400px"
+							Text="File"
+						/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+						 <i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).nextAll('div.directive_help').slideToggle('fast');"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageMediaType"
+							Text="<%[ Field required. ]%>"
+						/>
+						<div class="directive_help" style="display: none">
+							<%[ Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ. ]%>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - cloud parameters ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h4><%[ What is your cloud type? ]%></h4>
+				<div class="w3-row w3-section">
+					<div class="w3-margin-bottom"><%[ NOTE: The Amazon driver replaces the deprecated S3 driver. ]%></div>
+					<div class="w3-third"><%[ Driver ]%>:</div>
+					<div class="w3-twothird">
+						<com:TDropDownList
+							ID="StorageCloudDriver"
+							CssClass="w3-border w3-select"
+							Width="200px"
+						>
+							<com:TListItem Value="" Text="" />
+							<com:TListItem Value="Amazon" Text="Amazon" />
+							<com:TListItem Value="S3" Text="S3" />
+							<com:TListItem Value="File" Text="File" />
+						</com:TDropDownList> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageCloudDriver"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<h4><%[ What are connection parameters of your cloud? ]%></h4>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Hostname ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageCloudHostName"
+							CssClass="w3-border w3-input w3-show-inline-block"
+							Width="400px"
+							Attributes.placeholder="ex: s3.amazonaws.com"
+						/> &nbsp;<i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageCloudHostName"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Bucket name ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageCloudBucket"
+							CssClass="w3-border w3-input w3-show-inline-block"
+							Width="400px"
+							Attributes.placeholder="ex: my-existing-bucket-name"
+						/> &nbsp;<i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageCloudBucket"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Access key ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageCloudAccessKey"
+							CssClass="w3-border w3-input w3-show-inline-block"
+							Width="400px"
+							Attributes.placeholder="ex: AIRAY341ZKBOKCUTVV7A"
+						/> &nbsp;<i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageCloudAccessKey"
+							Text="<%[ Field required. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Secret key ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageCloudSecretKey"
+							TextMode="Password"
+							PersistPassword="true"
+							CssClass="w3-border w3-input w3-show-inline-block"
+							Width="400px"
+							Attributes.placeholder="ex: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+						/> &nbsp;<i class="fa fa-asterisk w3-text-red directive_required"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageCloudSecretKey"
+							Text="<%[ Field required. ]%>"
+							Display="Dynamic"
+						/>
+						&nbsp; <a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->StorageCloudSecretKey->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>"><i class="fa fa-eye opt_req" style="display: inline-block"></i></a>
+					</div>
+				</div>
+				<div class="w3-row w3-section">
+					<div class="w3-third"><%[ Region ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageCloudRegion"
+							CssClass="w3-border w3-input w3-show-inline-block"
+							Width="400px"
+							Attributes.placeholder="ex: eu-central-1"
+						/>
+					</div>
+				</div>
+				<h4><%[ When would you like to send data to cloud? ]%></h4>
+				<div class="w3-row w3-section">
+					<div>
+						<com:TRadioButton
+							ID="StorageCloudUploadManual"
+							GroupName="StorageCloudUploadGroup"
+							CssClass="w3-radio"
+							Checked="true"
+						/>
+						<label for="<%=$this->StorageCloudUploadManual->ClientID%>">
+							&nbsp;<strong><%[ Manual ]%></strong> - <%[ I upload volumes to cloud manually by bconsole 'cloud' command ]%>
+						</label>
+					</div>
+					<div>
+						<com:TRadioButton
+							ID="StorageCloudUploadEachPart"
+							GroupName="StorageCloudUploadGroup"
+							CssClass="w3-radio"
+						/>
+						<label for="<%=$this->StorageCloudUploadEachPart->ClientID%>">
+							&nbsp;<strong>EachPart</strong> - <%[ Bacula storage daemon sends each volume part to cloud when it is complete ]%>
+						</label>
+					</div>
+					<div>
+						<com:TRadioButton
+							ID="StorageCloudUploadAtEndOfJob"
+							GroupName="StorageCloudUploadGroup"
+							CssClass="w3-radio"
+						/>
+						<label for="<%=$this->StorageCloudUploadAtEndOfJob->ClientID%>">
+							&nbsp;<strong>AtEndOfJob</strong> - <%[ Bacula storage daemon sends all volume parts that have not been previously uploaded at the end of the job ]%>
+						</label>
+					</div>
+				</div>
+				<i class="fas fa-wrench"></i> &nbsp;<a href="javascript:void(0)" onclick="$('#storage_cloud_advanced_options').toggle('fast');"><%[ Advanced options ]%></a>
+				<div id="storage_cloud_advanced_options" style="display: none">
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Protocol ]%>:</div>
+						<div class="w3-twothird">
+							<com:TDropDownList
+								ID="StorageCloudProtocol"
+								CssClass="w3-border w3-select"
+								Width="200px"
+							>
+								<com:TListItem Value="HTTPS" Text="HTTPS" />
+								<com:TListItem Value="HTTP" Text="HTTP" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Uri style ]%>:</div>
+						<div class="w3-twothird">
+							<com:TDropDownList
+								ID="StorageCloudUriStyle"
+								CssClass="w3-border w3-select"
+								Width="200px"
+							>
+								<com:TListItem Value="VirtualHost" Text="VirtualHost" />
+								<com:TListItem Value="Path" Text="Path" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Truncate cache ]%>:</div>
+						<div class="w3-twothird">
+							<com:TDropDownList
+								ID="StorageCloudTruncateCache"
+								CssClass="w3-border w3-select"
+								Width="200px"
+							>
+								<com:TListItem Value="No" Text="No" />
+								<com:TListItem Value="AfterUpload" Text="AfterUpload" />
+								<com:TListItem Value="AtEndOfJob" Text="AtEndOfJob" />
+							</com:TDropDownList>
+						</div>
+					</div>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Blob endpoint ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageCloudBlobEndpoint"
+								CssClass="w3-border w3-input w3-show-inline-block"
+								Width="400px"
+								Attributes.placeholder="ex: http://192.168.10.200:9000"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - summary ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage name ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageName->getDirectiveValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Description ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageDescription->getDirectiveValue() ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Storage ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage type ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeSingle->Checked ? 'block' : 'none'%>"><%[ Single storage ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>"><%[ Multi-device autochanger storage ]%></div>
+					</div>
+					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Number of backup/restore devices ]%></div>
+							<div class="w3-threequarter bold"><%=$this->StorageNumberOfBackupRestoreDevices->Text ?: '-'%></div>
+						</div>
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Number of restore reserved devices ]%></div>
+							<div class="w3-threequarter bold"><%=$this->StorageNumberOfRestoreDevices->Text ?: '-'%></div>
+						</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Data volume directory ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageDataVolumeDir->Text ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Media type ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Cloud ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Cloud driver ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudDriver->getSelectedValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Hostname ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudHostName->Text%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Bucket name ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudBucket->Text%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Access key ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudAccessKey->Text%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Secret key ]%></div>
+						<div class="w3-threequarter bold"><%=preg_replace('/./', '*', $this->StorageCloudSecretKey->Text)%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Region ]%></div>
+						<div class="w3-threequarter bold"><%=($this->StorageCloudRegion->Text ?: '-')%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Upload ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageCloudUploadManual->Checked ? 'block' : 'none'%>">Manual</div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageCloudUploadEachPart->Checked ? 'block' : 'none'%>">EachPart</div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageCloudUploadAtEndOfJob->Checked ? 'block' : 'none'%>">AtEndOfJob</div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Protocol ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudProtocol->getSelectedValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Uri style ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudUriStyle->getSelectedValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Truncate cache ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudTruncateCache->getSelectedValue()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Blob endpoint ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageCloudBlobEndpoint->Text ?: '-'%></div>
+					</div>
+				</fieldset>
+			</div>
+			<div id="restart_storage_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+					<span onclick="$('#restart_storage_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Storage daemon restart needed ]%></h2>
+					<p><%[ To apply new changes, you need to restart the storage daemon. ]%></p>
+					<p><%[ Do you want to restart it now? ]%></p>
+					<div id="storage_running_jobs_warning" class="w3-panel w3-orange w3-padding w3-text-white" style="display: none"></div>
+					<div class="w3-center">
+						<button type="button" class="w3-button w3-green" onclick="$('#restart_storage_modal').hide(); window.location.href='<%=$this->Service->constructUrl('StorageList')%>';"><i class="fa fa-times"></i> &nbsp;<%[ No, I will restart it later ]%></button>
+						<com:TActiveLinkButton
+							ID="RestartSd"
+							CssClass="w3-button w3-green w3-margin-left"
+							OnClick="restartStorage"
+							ClientSide.OnLoading="oNewCloudStorageStep4.show_storage_restart_loader(true);"
+						>
+							<i class="fa fa-sync-alt"></i>  &nbsp;<%[ Yes, restart it now ]%>
+						</com:TActiveLinkButton>
+						<i id="storage_restart_loader" class="fa-solid fa-sync-alt fa-spin" style="visibility: hidden"></i>
+						<div id="storage_restart_result_ok" class="w3-panel w3-green w3-padding" style="display: none"><%[ Done! ]%></div>
+						<div id="storage_restart_result_err" class="w3-panel w3-red w3-padding" style="display: none"></div>
+					</div>
+				</div>
+			</div>
+			<div id="storage_create_error_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+					<span onclick="$('#storage_create_error_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Error while creating storage ]%></h2>
+					<div id="storage_create_errors" class="w3-panel w3-red" style="display: none"></div>
+					<div class="w3-center">
+						<button type="button" class="w3-button w3-red" onclick="$('#storage_create_error_modal').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					</div>
+				</div>
+			</div>
+			<script>
+var oNewCloudStorageStep4 = {
+	ids: {
+		restart_storage_modal: 'restart_storage_modal',
+		storage_create_error_modal: 'storage_create_error_modal',
+		running_jobs_warn: 'storage_running_jobs_warning',
+		storage_create_errors: 'storage_create_errors',
+		restart_loader: 'storage_restart_loader',
+		restart_result_ok: 'storage_restart_result_ok',
+		restart_result_err: 'storage_restart_result_err'
+	},
+	txt: {
+		running_jobs: "<%[ Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them. ]%>"
+	},
+	set_restart_storage_window: function(address, job_no) {
+		if (job_no > 0) {
+			const warn = document.getElementById(this.ids.running_jobs_warn);
+			warn.textContent = this.txt.running_jobs.replace('%address', address).replace('%job_no', job_no);
+			warn.style.display = 'block';
+		}
+		this.show_restart_storage_window(true);
+	},
+	set_storage_create_error_window: function(errors) {
+		const err = document.getElementById(this.ids.storage_create_errors);
+		err.innerHTML = errors;
+		err.style.display = 'block';
+		this.show_storage_create_error_window(true);
+	},
+	show_restart_storage_window: function(show) {
+		const win = document.getElementById(this.ids.restart_storage_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_create_error_window: function(show) {
+		const win = document.getElementById(this.ids.storage_create_error_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_restart_loader: function(show) {
+		const loader = document.getElementById(this.ids.restart_loader);
+		loader.style.visibility = show ? 'visible': 'hidden';
+	},
+	set_restart_result: function(success, error, output) {
+		const self = oNewCloudStorageStep4;
+		self.show_storage_restart_loader(false);
+		const ok_msg = document.getElementById(self.ids.restart_result_ok);
+		const error_msg = document.getElementById(self.ids.restart_result_err);
+		if (success) {
+			ok_msg.style.display = 'block';
+			error_msg.style.display = 'none';
+			window.location.href = '<%=$this->Service->constructUrl('StorageList')%>';
+		}  else {
+			error_msg.textContent = 'Error: ' + error + ': ' + output;
+			error_msg.style.display = 'block';
+			ok_msg.style.display = 'none';
+		}
+	}
+};
+<%=isset($this->storage_created) && $this->storage_created === true ? 'oNewCloudStorageStep4.set_restart_storage_window("' . $this->storage_address . '", '. $this->storage_running_jobs_no . ');' : ''%>
+<%=isset($this->storage_created) && $this->storage_created === false ? 'oNewCloudStorageStep4.set_storage_create_error_window("' . $this->storage_create_errors . '");' : ''%>
+			</script>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>
