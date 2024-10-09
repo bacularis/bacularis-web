@@ -225,7 +225,8 @@
 						</div>
 					</div>
 				</com:TPanel>
-				<h4><%[ Where should storage store backup data? ]%></h4>
+				<h4><%[ Where should storage store local backup data (local cache)? ]%></h4>
+				<p><%[ In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud. ]%></p>
 				<div class="w3-row w3-section">
 					<div class="w3-third"><%[ Directory path for data volumes ]%>:</div>
 					<div class="w3-twothird">

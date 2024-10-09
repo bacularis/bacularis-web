@@ -5959,3 +5959,9 @@ msgstr "Before using this wizard the cloud storage plugin has to be installed."
 
 msgid "Step 4 - summary"
 msgstr "Step 4 - summary"
+
+msgid "Where should storage store local backup data (local cache)?"
+msgstr "Where should storage store local backup data (local cache)?"
+
+msgid "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
+msgstr "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
