@@ -16,6 +16,12 @@
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
 
+/**
+ * New file storage wizard page.
+ *
+ * @author Marcin Haba <marcin.haba@bacula.pl>
+ * @category Page
+ */
 class NewFileStorageWizard extends BaculumWebPage
 {
 	public $storage_created;
@@ -119,45 +125,22 @@ class NewFileStorageWizard extends BaculumWebPage
 			return false;
 		}
 
+		$storage_tools = $this->getModule('storage_tools');
+
 		// Get SD password
-		$api = $this->getModule('api');
-		$result = $api->get(
-			['config', 'sd', 'Director', $_SESSION['dir']],
-			$api_host,
-			false
-		);
-		$sd_password = '';
-		if ($result->error == 0) {
-			$sd_password = $result->output->Password;
-		}
+		$sd_password = $storage_tools->getSdPassword($api_host, $_SESSION['dir']);
 
 		// Get SD port
-		$api = $this->getModule('api');
-		$result = $api->get(
-			['config', 'sd', 'Storage'],
-			$api_host,
-			false
-		);
-		$sd_port = 0;
-		if ($result->error == 0) {
-			$sd_port = (int) ($result->output[0]->Storage->SdPort ?? 9103);
-		}
+		$sd_port = $storage_tools->getSdPort($api_host);
 
 		$host_config = $this->getModule('host_config');
 		$host_params = $host_config->getHostConfig($api_host);
 		$sd_address = $this->storage_address = $host_params['address'] ?? '';
 		if ($sd_address) {
-			$storage_id = $this->getStorageIdByAddress($sd_address);
+			$storage_id = $storage_tools->getStorageIdByAddress($sd_address);
 			if ($storage_id > 0) {
-				$this->storage_running_jobs_no = $this->getRunningJobNumber($storage_id);
+				$this->storage_running_jobs_no = $storage_tools->getRunningJobNumber($storage_id);
 			}
-		}
-
-		$storage = [
-			'Name' => $storage_name,
-		];
-		if ($storage_desc) {
-			$storage['Description'] = $storage_desc;
 		}
 
 		$output = '';
@@ -176,15 +159,19 @@ class NewFileStorageWizard extends BaculumWebPage
 			}
 			$ro = (($i + 1) > $backup_restore_dev_no);
 			$autochanger = ($storage_type == self::STORAGE_TYPE_AUTOCHANGER);
-			$result = $this->createDevice(
+			$dev_directives = [
+				'Name' => $name,
+				'Description' => $storage_desc,
+				'DriveIndex' => $i,
+				'ArchiveDevice' => $data_vol_dir,
+				'MediaType' => $media_type,
+				'ReadOnly' => $ro,
+				'Autochanger' => $autochanger
+			];
+			$result = $storage_tools->createDevice(
 				$api_host,
-				$name,
-				$storage_desc,
-				$i,
-				$data_vol_dir,
-				$media_type,
-				$ro,
-				$autochanger
+				$dev_directives,
+				self::DEF_DEVICE_DIRECTIVES
 			);
 			$output = $result->output;
 			$error = $result->error;
@@ -199,141 +186,56 @@ class NewFileStorageWizard extends BaculumWebPage
 			if ($storage_type == self::STORAGE_TYPE_AUTOCHANGER) {
 				// create autochanger
 				$autochanger = true;
-				$result = $this->createAutochanger(
+				$ach_directives = [
+					'Name' => $storage_name,
+					'Device' => $devices
+				];
+				$result = $storage_tools->createAutochanger(
 					$api_host,
-					$storage_name,
-					'',
-					$devices
+					$ach_directives,
+					self::DEF_AUTOCHANGER_DIRECTIVES
 				);
 				$output = $result->output;
 				$error = $result->error;
 			}
 			if ($error == 0) {
 				// create storage
-				$result = $this->createStorage(
-					$storage_name,
-					$storage_desc,
-					$sd_address,
-					$sd_port,
-					$sd_password,
-					$storage_name,
-					$media_type,
-					$autochanger
-				);
+				$stor_directives = [
+					'Name' => $storage_name,
+					'Description' => $storage_desc,
+					'Address' => $sd_address,
+					'SdPort' => $sd_port,
+					'Password' => $sd_password,
+					'Device' => $storage_name,
+					'MediaType' => $media_type
+				];
+				$def_directives = [];
+				if ($autochanger) {
+					$stor_directives['Autochanger'] = $autochanger;
+					$def_directives = self::DEF_AUTOCHANGER_STORAGE_DIRECTIVES;
+				} else {
+					$def_directives = self::DEF_SINGLE_STORAGE_DIRECTIVES;
+				}
+				$result = $storage_tools->createStorage($stor_directives, $def_directives);
 				$output = $result->output;
 				$error = $result->error;
 				if ($error != 0) {
+					$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 					$errors[] = "Error: {$error}: $output";
 				}
 			} else {
+				$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 				$errors[] = "Error: {$error}: $output";
 			}
 		}
 		if ($error == 0) {
+			$api = $this->getModule('api');
 			$api->set(['console'], ['reload']);
 			$this->storage_created = true;
 		} else {
 			$this->storage_created = false;
 			$this->storage_create_errors = implode('<br /><br />', $errors);
 		}
-	}
-
-	private function createDevice(string $api_host, string $name, string $desc, int $drive_index, string $data_vol_dir, string $media_type, bool $ro = false, bool $autochanger = false): object
-	{
-		$api = $this->getModule('api');
-		$params = [
-			'config',
-			'sd',
-			'Device',
-			$name
-		];
-		$config = [
-			'Name' => $name,
-			'ArchiveDevice' => $data_vol_dir,
-			'MediaType' => $media_type,
-			'DriveIndex' => $drive_index
-		];
-		if ($desc) {
-			$config['Description'] = $desc;
-		}
-		if ($ro) {
-			$config['ReadOnly'] = true;
-		}
-		if ($autochanger) {
-			$config['Autochanger'] = true;
-		}
-		$config = array_merge(self::DEF_DEVICE_DIRECTIVES, $config);
-		$result = $api->create(
-			$params,
-			['config' => json_encode($config)],
-			$api_host,
-			false
-		);
-		return $result;
-	}
-
-	public function createAutochanger(string $api_host, string $name, string $desc, array $devices): object
-	{
-		$api = $this->getModule('api');
-		$params = [
-			'config',
-			'sd',
-			'Autochanger',
-			$name
-		];
-		$config = [
-			'Name' => $name,
-			'Device' => $devices
-		];
-		if ($desc) {
-			$config['Description'] = $desc;
-		}
-		$config = array_merge(self::DEF_AUTOCHANGER_DIRECTIVES, $config);
-		$result = $api->create(
-			$params,
-			['config' => json_encode($config)],
-			$api_host,
-			false
-		);
-		return $result;
-	}
-
-	public function createStorage(string $name, string $desc, string $address, int $port, string $pwd, string $device, string $media_type, bool $ach = false): object
-	{
-		$api = $this->getModule('api');
-		$params = [
-			'config',
-			'dir',
-			'Storage',
-			$name
-		];
-		$config = [
-			'Name' => $name,
-			'Address' => $address,
-			'SdPort' => $port,
-			'Password' => $pwd,
-			'Device' => $device,
-			'MediaType' => $media_type
-		];
-		if ($port > 0) {
-			$config['SdPort'] = $port;
-		}
-		if ($desc) {
-			$config['Description'] = $desc;
-		}
-		if ($ach) {
-			$config['Autochanger'] = $name;
-			$config = array_merge(self::DEF_AUTOCHANGER_STORAGE_DIRECTIVES, $config);
-		} else {
-			$config = array_merge(self::DEF_SINGLE_STORAGE_DIRECTIVES, $config);
-		}
-		$result = $api->create(
-			$params,
-			['config' => json_encode($config)],
-			null,
-			false
-		);
-		return $result;
 	}
 
 	public function restartStorage($sender, $param)
@@ -366,65 +268,6 @@ class NewFileStorageWizard extends BaculumWebPage
 				[false, $result->error, $result->output]
 			);
 		}
-	}
-
-	private function getStorageIdByAddress(string $sd_address): int
-	{
-		$api = $this->getModule('api');
-		$params = [
-			'config',
-			'dir',
-			'Storage'
-		];
-		$storage_name = '';
-		$result = $api->get($params);
-		if ($result->error == 0) {
-			for ($i = 0; $i < count($result->output); $i++) {
-				$addr = $result->output[$i]->Storage->Address ?? '';
-				if ($addr === $sd_address) {
-					$storage_name = $result->output[$i]->Storage->Name;
-					break;
-				}
-			}
-		}
-		$storage_id = 0;
-		if ($storage_name) {
-			$query_params = [
-				'name' => $storage_name
-			];
-			$query = '?' . http_build_query($query_params);
-			$params = [
-				'storages',
-				$query
-			];
-			$result = $api->get($params);
-			if ($result->error == 0) {
-				$storage_id = $result->output[0]->storageid ?? 0;
-			}
-		}
-		return $storage_id;
-	}
-
-	private function getRunningJobNumber(int $storage_id): int
-	{
-		$api = $this->getModule('api');
-		$query_params = [
-			'output' => 'json',
-			'type' => 'header'
-		];
-		$query = '?' . http_build_query($query_params);
-		$params = [
-			'storages',
-			$storage_id,
-			'status',
-			$query
-		];
-		$running_job_nb = 0;
-		$result = $api->get($params);
-		if ($result->error == 0) {
-			$running_job_nb = $result->output->jobs_running ?? 0;
-		}
-		return $running_job_nb;
 	}
 
 	/**
