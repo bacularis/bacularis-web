@@ -16,6 +16,12 @@
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
 
+/**
+ * New cloud storage wizard page.
+ *
+ * @author Marcin Haba <marcin.haba@bacula.pl>
+ * @category Page
+ */
 class NewCloudStorageWizard extends BaculumWebPage
 {
 	public $storage_created;
