@@ -12,7 +12,7 @@ access to the 'Main' host that always should stay the full access host.
 On the packages side, we are ready to support the Ubuntu 24.10 Oracular Oriole.
 Packages for this Ubuntu version are ready starting from this Bacularis 4.3.0.
 
-Changes:
+**Changes**
  - Add new cloud storage wizard
  - Add OS profile for Ubuntu 24.10 Oracular Oriole
  - Add descriptions to functions on deployment and security pages
