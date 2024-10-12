@@ -5965,3 +5965,9 @@ msgstr "Where should storage store local backup data (local cache)?"
 
 msgid "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
 msgstr "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
+
+msgid "Single cloud device storage"
+msgstr "Single cloud device storage"
+
+msgid "Multi-device cloud storage (Autochanger)"
+msgstr "Multi-device cloud storage (Autochanger)"

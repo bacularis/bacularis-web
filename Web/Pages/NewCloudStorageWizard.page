@@ -174,8 +174,8 @@
 				<h4><%[ What storage type would you like to create? ]%></h4>
 				<div class="w3-section">
 					<div class="w3-margin-left">
-						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeSingle" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->StorageTypeSingle->ClientID%>"><%[ Single file device storage ]%></label></p>
-						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeAutochanger" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->StorageTypeAutochanger->ClientID%>"><%[ Multi-device file storage (Autochanger) ]%></label></p>
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeSingle" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->StorageTypeSingle->ClientID%>"><%[ Single cloud device storage ]%></label></p>
+						<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeAutochanger" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->StorageTypeAutochanger->ClientID%>"><%[ Multi-device cloud storage (Autochanger) ]%></label></p>
 					</div>
 				</div>
 			</div>
