@@ -157,7 +157,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					$this->getPage()->getCallbackClient()->update('bcd_error_' . $this->ClientID, $e->getMessage());
 				}
 			}
-			if (empty($component_name) || empty($resource_type) || empty($resource_name)) {
+			// NOTE: for copy mode the resource name is empty
+			if (empty($component_name) || empty($resource_type) || (empty($resource_name) && !$copy_mode)) {
 				$error = true;
 			}
 			if ($error) {
