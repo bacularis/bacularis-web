@@ -647,7 +647,7 @@ var oJobHistoryList = {
 		this.table.columns().draw();
 	},
 	set_filters: function(type) {
-		const ptype = get_url_param('type');;
+		const ptype = get_url_param('type');
 		type = type || ptype;
 		var search_func;
 		switch (type) {
@@ -685,7 +685,13 @@ var oJobHistoryList = {
 			break;
 		}
 		if (search_func) {
-			$.fn.dataTable.ext.search.push(search_func);
+			const search_func_all = (settings, search_data, index, row_data, counter) => {
+				if (settings.nTable.id !== this.ids.job_list) {
+					return true;
+				}
+				return search_func(settings, search_data, index, row_data, counter);
+			};
+			$.fn.dataTable.ext.search.push(search_func_all);
 			if (ptype) {
 				// if type parameter passed in the URL query string, reset all filters (@see search(''))
 				this.table.columns().search('').draw();
