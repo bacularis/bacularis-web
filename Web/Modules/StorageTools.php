@@ -45,7 +45,7 @@ class StorageTools extends WebModule
 		);
 		$sd_password = '';
 		if ($result->error == 0) {
-			$sd_password = $result->output->Password;
+			$sd_password = $result->output->Password ?? '';
 		}
 		return $sd_password;
 	}
@@ -187,6 +187,53 @@ class StorageTools extends WebModule
 	}
 
 	/**
+	 * Add device to Bacularis config.
+	 *
+	 * @param string $api_host API host
+	 * @param array $props device properties
+	 *
+	 * @return object with output and error code
+	 */
+	public function addBacularisDevice(string $api_host, array $props): object
+	{
+		$api = $this->getModule('api');
+		$params = [
+			'devices',
+			$props['name']
+		];
+		$config = [
+			'type' => $props['type'],
+			'device' => $props['device']
+		];
+
+		if (key_exists('index', $props)) {
+			$config['index'] = $props['index'];
+		}
+		if (key_exists('command', $props)) {
+			$config['command'] = $props['command'];
+		}
+		if (key_exists('use_sudo', $props)) {
+			$config['use_sudo'] = $props['use_sudo'];
+		}
+		if (key_exists('sudo_user', $props)) {
+			$config['sudo_user'] = $props['sudo_user'];
+		}
+		if (key_exists('sudo_group', $props)) {
+			$config['sudo_group'] = $props['sudo_group'];
+		}
+		if (key_exists('drives', $props)) {
+			$config['drives'] = $props['drives'];
+		}
+		$result = $api->create(
+			$params,
+			$config,
+			$api_host,
+			false
+		);
+		return $result;
+	}
+
+	/**
 	 * Get storage catalog identifier by storage address.
 	 *
 	 * @param string $sd_address storage daemon address
@@ -255,5 +302,63 @@ class StorageTools extends WebModule
 			$running_job_nb = $result->output->jobs_running ?? 0;
 		}
 		return $running_job_nb;
+	}
+
+	/**
+	 * Get autochanger configuration.
+	 *
+	 * @param string $api_host SD API host
+	 * @param string $ach_name autochanger name
+	 * @return array autochanger config or empty array on error
+	 */
+	public function getAutochangerConfig(string $api_host, string $ach_name): array
+	{
+		$config = [];
+		$api = $this->getModule('api');
+		$params = [
+			'config',
+			'sd',
+			'Autochanger',
+			$ach_name
+		];
+		$result = $api->get(
+			$params,
+			$api_host,
+			true,
+			true
+		);
+		if ($result->error === 0) {
+			$config = (array) $result->output;
+		}
+		return $config;
+	}
+
+	/**
+	 * Get device configuration.
+	 *
+	 * @param string $api_host SD API host
+	 * @param string $dev_name device name
+	 * @return array device config or empty array on error
+	 */
+	public function getDeviceConfig(string $api_host, string $dev_name): array
+	{
+		$config = [];
+		$api = $this->getModule('api');
+		$params = [
+			'config',
+			'sd',
+			'Device',
+			$dev_name
+		];
+		$result = $api->get(
+			$params,
+			$api_host,
+			true,
+			true
+		);
+		if ($result->error === 0) {
+			$config = (array) $result->output;
+		}
+		return $config;
 	}
 }

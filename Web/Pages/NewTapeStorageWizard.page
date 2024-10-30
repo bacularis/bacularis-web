@@ -1,0 +1,583 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewStorageWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 33%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="General" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 33%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-database w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Storage" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 34%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa-solid fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Summary" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					ID="PreviousStepBtn"
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewStorageDirective"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fas fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fas fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa-solid fa-paper-plane"></i> &nbsp;<%[ Create storage ]%>
+				</com:TLinkButton>
+			</div>
+			</div>
+		</prop:FinishNavigationTemplate>
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - new storage basic params ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<div>
+					<h2><%[ New tape storage wizard ]%></h2>
+					<p><%[ This wizard enables you to create in easy way a new tape storage. ]%></p>
+				</div>
+				<div class="w3-row w3-margin-bottom">
+					<div class="w3-quarter"><%[ Storage daemon API host ]%>:</div>
+					<div class="w3-threequarter">
+						<com:TActiveDropDownList
+							ID="StorageAPIHost"
+							CssClass="w3-select w3-border"
+							ValidationGroup="NewStorageDirective"
+							Width="400px"
+							OnCallback="checkAPIHosts"
+							CausesValidation="false"
+							ClientSide.OnLoading="document.getElementById('api_host_storage_loader').style.visibility = 'visible';"
+							ClientSide.OnComplete="document.getElementById('api_host_storage_loader').style.visibility = 'hidden';"
+						/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageAPIHost"
+							Text="<%[ Field required. ]%>"
+							Display="Dynamic"
+						/> &nbsp;<i id="api_host_storage_loader" class="fa fa-sync w3-spin" style="visibility: hidden;"></i>
+					</div>
+				</div>
+				<div class="w3-row w3-margin-bottom">
+					<div class="w3-quarter"><%[ Storage daemon name ]%>:</div>
+					<div id="api_host_storage_daemon_name" class="w3-threequarter bold">-</div>
+				</div>
+				<div class="w3-row w3-margin-bottom">
+					<div id="api_host_storage_error" class="w3-red w3-padding" style="display: none"></div>
+				</div>
+				<h4><%[ Do you already have tape storage configured in Bacula? ]%></h4>
+				<div class="w3-section" style="margin-bottom: 32px !important;">
+					<div class="w3-margin-left">
+						<com:TCustomValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageInBacula"
+							ClientValidationFunction="new_storage_in_bacula"
+							OnServerValidate="storageConfiguredValidator"
+							Text="<%[ Please select one of the options. ]%>"
+							Display="Dynamic"
+						/>
+						<script>
+function new_storage_in_bacula(sender, parameter) {
+	const in_bacula = document.getElementById('<%=$this->StorageInBacula->ClientID%>');
+	const not_in_bacula = document.getElementById('<%=$this->StorageNotInBacula->ClientID%>');
+	return (in_bacula.checked || not_in_bacula.checked);
+}
+						</script>
+						<p><com:TRadioButton
+							GroupName="StorageInstallation"
+							ID="StorageInBacula"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#storage_in_bacula').show(); $('#storage_not_in_bacula').hide();"
+						/> &nbsp;<label for="<%=$this->StorageInBacula->ClientID%>"><%[ Yes, I already have it configured in Bacula. I want to add it to Bacularis. ]%></label></p>
+						<p><com:TRadioButton
+							GroupName="StorageInstallation"
+							ID="StorageNotInBacula"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#storage_not_in_bacula').show(); $('#storage_in_bacula').hide();"
+						/> &nbsp;<label for="<%=$this->StorageNotInBacula->ClientID%>"><%[ No, I do not have it configured yet. I want to add it to Bacula and to Bacularis. ]%></label></p>
+					</div>
+				</div>
+				<div id="storage_in_bacula" class="w3-margin-top" style="display: <%=$this->StorageInBacula->Checked ? 'block' : 'none'%>">
+					<h4><%[ Which tape storage would you like to add to Bacularis? ]%></h4>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Tape autochangers ]%>:</div>
+						<div class="w3-threequarter">
+							<com:TActiveDropDownList
+								ID="StorageTapeAutochangers"
+								CssClass="w3-select w3-border"
+								Width="400px"
+							/>
+						</div>
+					</div>
+				</div>
+				<div id="storage_not_in_bacula" class="w3-margin-top" style="display: <%=$this->StorageNotInBacula->Checked ? 'block' : 'none'%>">
+					<h4><%[ Basic information ]%></h4>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Storage name ]%>:</div>
+						<div class="w3-threequarter">
+							<com:TActiveTextBox
+								ID="StorageName"
+								CssClass="w3-select w3-border"
+								Width="400px"
+							/> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageName"
+								OnValidate="checkNewStorageValidation"
+								Text="<%[ Field required. ]%>"
+							>
+								<prop:ClientSide.OnValidate>
+									const radio = document.getElementById('<%=$this->StorageNotInBacula->ClientID%>');
+									sender.enabled = radio.checked;
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
+
+						</div>
+					</div>
+					<div class="w3-row w3-margin-bottom">
+						<div class="w3-quarter"><%[ Storage description ]%>:</div>
+						<div class="w3-threequarter">
+							<com:TActiveTextBox
+								ID="StorageDescription"
+								CssClass="w3-select w3-border"
+								Width="400px"
+							/>
+						</div>
+					</div>
+					<h4><%[ What storage type would you like to create? ]%></h4>
+					<div class="w3-section">
+						<div class="w3-margin-left">
+							<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeSingle" CssClass="w3-radio" Checked="true" /> &nbsp;<label for="<%=$this->StorageTypeSingle->ClientID%>"><%[ Single tape device storage (tape drive) ]%></label></p>
+							<p><com:TRadioButton GroupName="StorageType" ID="StorageTypeAutochanger" CssClass="w3-radio" /> &nbsp;<label for="<%=$this->StorageTypeAutochanger->ClientID%>"><%[ Single-drive or multi-drive tape storage with changer (autochanger) ]%></label></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - new storage parameters ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<com:TPanel ID="StorageAutochanger" Visible="<%=$this->StorageTypeAutochanger->Checked || $this->StorageInBacula->Checked%>">
+					<h4><%[ What changer does your tape device have? ]%></h4>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Changer device file ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="AutochangerFile"
+								CssClass="w3-input w3-border"
+								Width="400px"
+								Attributes.placeholder="Ex: /dev/sg5"
+								ReadOnly="<%=$this->StorageInBacula->Checked%>"
+							/>
+						</div>
+					</div>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Changer command ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="AutochangerCommand"
+								CssClass="w3-input w3-border"
+								Width="500px"
+								Attributes.placeholder="Ex: /etc/bacula/scripts/mtx-changer %c %o %S %a %d"
+								ReadOnly="<%=$this->StorageInBacula->Checked%>"
+							/>
+						</div>
+					</div>
+					<h4><%[ What tape drives does your tape device have? ]%></h4>
+					<com:TActiveRepeater
+						ID="BackupRestoreDevicesRepeater"
+						OnItemDataBound="backupRestoreDeviceDataBound"
+					>
+						<prop:ItemTemplate>
+							<div class="w3-card-2 w3-padding w3-margin-bottom">
+								<h5><%[ Drive ]%> <%=($this->ItemIndex+1)%> <i class="fa-solid fa-square-xmark w3-right w3-text-red w3-right pointer" onclick="oNewTapeStorageStep2.remove_tape_drive(<%=$this->ItemIndex%>);" title="<%[ Delete ]%>" style="display: <%=$this->TemplateControl->StorageInBacula->Checked ? 'none' : 'inline-block'%>"></i></h5>
+								<div class="w3-row w3-section">
+									<div class="w3-third"><%[ Tape drive device file ]%>:</div>
+									<div class="w3-twothird">
+										<com:TTextBox
+											ID="TapeDriveFile"
+											CssClass="w3-input w3-border tape_drive_file"
+											Width="400px"
+											Text="<%=$this->Data['drive_file']%>"
+											Attributes.placeholder="Ex: /dev/nst0"
+											ReadOnly="<%=$this->TemplateControl->StorageInBacula->Checked%>"
+										/>
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-third"><%[ Drive index ]%>:</div>
+									<div class="w3-twothird">
+										<com:TTextBox
+											ID="TapeDriveIndex"
+											CssClass="w3-input w3-border"
+											Width="50px"
+											Text="<%=$this->Data['drive_index']%>"
+											ReadOnly="<%=$this->TemplateControl->StorageInBacula->Checked%>"
+										/>
+									</div>
+								</div>
+								<div class="w3-row w3-section">
+									<div class="w3-third"><%[ Drive type ]%>:</div>
+									<div class="w3-twothird">
+										<com:TDropDownList
+											ID="TapeDriveType"
+											CssClass="w3-select w3-border"
+											Width="200px"
+											SelectedValue="<%=$this->Data['drive_type']%>"
+											Enabled="<%=!$this->TemplateControl->StorageInBacula->Checked%>"
+										>
+											<com:TListItem Value="BR" Text="<%[ Backup/Restore device ]%>" />
+											<com:TListItem Value="RO" Text="<%[ Restore only device ]%>" />
+										</com:TDropDownList>
+									</div>
+								</div>
+							</div>
+						</prop:ItemTemplate>
+					</com:TActiveRepeater>
+					<div class="w3-row w3-section">
+						<div class="w3-third">
+							<com:TActiveLinkButton
+								ID="TapeDriveAddNewDrive"
+								CssClass="w3-button w3-green"
+								OnCallback="addNewTapeDrive"
+								Visible="<%=$this->StorageNotInBacula->Checked%>"
+								ClientSide.OnComplete="$('#<%=$this->StorageAutochanger->ClientID%>').find('input.tape_drive_file:last-of-type').focus();"
+							>
+								<i class="fa-solid fa-plus"></i> &nbsp;<%[ Add tape drive ]%>
+							</com:TActiveLinkButton>
+						</div>
+					</div>
+				</com:TPanel>
+				<com:TPanel ID="StorageTapeDrive" Visible="<%=$this->StorageTypeSingle->Checked && !$this->StorageInBacula->Checked%>">
+					<h4><%[ What is tape drive file path in system? ]%></h4>
+					<div class="w3-row w3-section">
+						<div class="w3-third"><%[ Tape drive device file ]%>:</div>
+						<div class="w3-twothird">
+							<com:TTextBox
+								ID="StorageSingleTapeDrive"
+								CssClass="w3-input w3-border w3-show-inline-block"
+								Attributes.placeholder="ex: /dev/nst0"
+								Width="400px"
+							/> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="StorageSingleTapeDrive"
+								Text="<%[ Field required. ]%>"
+							/>
+						</div>
+					</div>
+				</com:TPanel>
+				<div class="w3-row w3-margin-bottom">
+					<h4><%[ What is storage media type? ]%></h4>
+					<div class="w3-third"><%[ Media type ]%>:</div>
+					<div class="w3-twothird">
+						<com:TTextBox
+							ID="StorageMediaType"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Width="400px"
+							Text="Tape"
+							ReadOnly="<%=$this->StorageInBacula->Checked%>"
+						/> <i class="fa fa-asterisk w3-text-red directive_required" style="visibility: visible;"></i>
+						 <i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).nextAll('div.directive_help').slideToggle('fast');"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewStorageDirective"
+							ControlToValidate="StorageMediaType"
+							Text="<%[ Field required. ]%>"
+						/>
+						<div class="directive_help" style="display: none">
+							<%[ Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ. ]%>
+						</div>
+					</div>
+				</div>
+			</div>
+			<com:TCallback
+				ID="RemoveTapeDrive"
+				OnCallback="removeTapeDrive"
+			/>
+			<script>
+const oNewTapeStorageStep2 = {
+	remove_tape_drive: function(index) {
+		const cb = <%=$this->RemoveTapeDrive->ActiveControl->Javascript%>;
+		cb.setCallbackParameter({'index': index});
+		cb.dispatch();
+	}
+};
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - summary ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<fieldset>
+					<legend><%[ General ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage name ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageName->Text%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Description ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageDescription->Text ?: '-'%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Storage ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Storage type ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeSingle->Checked && !$this->StorageInBacula->Checked ? 'block' : 'none'%>"><%[ Single storage ]%></div>
+						<div class="w3-threequarter bold" style="display: <%=$this->StorageTypeAutochanger->Checked || $this->StorageInBacula->Checked ? 'block' : 'none'%>"><%[ Multi-device autochanger storage ]%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Media type ]%></div>
+						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+					</div>
+					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Changer device file ]%>:</div>
+							<div class="w3-threequarter bold"><%=$this->AutochangerFile->Text ?: '-'%></div>
+						</div>
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Changer command ]%>:</div>
+							<div class="w3-threequarter bold"><%=$this->AutochangerCommand->Text ?: '-'%></div>
+						</div>
+						<com:TRepeater
+							ID="BackupRestoreDevicesSummaryRepeater"
+							Visible="<%=$this->StorageTypeAutochanger->Checked%>"
+						>
+							<prop:ItemTemplate>
+								<h5><%[ Drive ]%> <%=$this->ItemIndex%></h5>
+								<div class="w3-container w3-padding-small">
+									<div class="w3-quarter"><%[ Tape drive device file ]%></div>
+									<div class="w3-threequarter bold"><%=$this->Data['drive_file']%></div>
+								</div>
+								<div class="w3-container w3-padding-small">
+									<div class="w3-quarter"><%[ Drive index ]%></div>
+									<div class="w3-threequarter bold"><%=$this->Data['drive_index']%></div>
+								</div>
+								<div class="w3-container w3-padding-small">
+									<div class="w3-quarter"><%[ Drive type ]%></div>
+									<div class="w3-threequarter bold" style="display: <%=$this->Data['drive_type'] == NewTapeStorageWizard::TYPE_TAPE_DRIVE_BACKUP_RESTORE ? 'block' : 'none'%>"><%[ Backup/Restore device ]%></div>
+									<div class="w3-threequarter bold" style="display: <%=$this->Data['drive_type'] == NewTapeStorageWizard::TYPE_TAPE_DRIVE_RESTORE_ONLY ? 'block' : 'none'%>"><%[ Restore only device ]%></div>
+								</div>
+							</prop:ItemTemplate>
+						</com:TRepeater>
+					</div>
+					<div style="display: <%=$this->StorageTypeSingle->Checked && $this->StorageNotInBacula->Checked ? 'block' : 'none'%>">
+						<h5><%[ Drive ]%></h5>
+						<div class="w3-container w3-padding-small">
+							<div class="w3-quarter"><%[ Tape drive device file ]%></div>
+							<div class="w3-threequarter bold"><%=$this->StorageSingleTapeDrive->Text ?: '-'%></div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+			<div id="restart_storage_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:800px">
+					<span onclick="$('#restart_storage_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Storage daemon actions needed ]%></h2>
+					<com:TPanel Visible="<%=$this->StorageTypeAutochanger->Checked || $this->StorageInBacula->Checked%>">
+						<h4><%[ TO DO ]%>: <%[ Add to the storage daemon host the following sudo entries below. ]%></h4>
+						<p><%[ Please copy appropriate sudo configuration and put it to a sudoers.d file for example /etc/sudoers.d/bacularis-app ]%></p>
+						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others) ]%>:</p>
+						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo1');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
+<pre class="w3-code" id="restart_storage_sudo1">
+Defaults:apache !requiretty
+apache ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
+</pre>
+						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others) ]%>:</p>
+						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo2');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
+<pre class="w3-code" id="restart_storage_sudo2">
+Defaults:www-data !requiretty
+www-data ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
+</pre>
+						<small><%[ NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel. ]%></small>
+					</com:TPanel>
+					<com:TPanel Visible="<%=$this->StorageNotInBacula->Checked%>">
+						<h4><%[ TO DO ]%>: <%[ To apply new changes, you need to restart the storage daemon. ]%></h4>
+						<p><%[ Do you want to restart it now? ]%></p>
+						<div id="storage_running_jobs_warning" class="w3-panel w3-orange w3-padding w3-text-white" style="display: none"></div>
+						<div class="w3-center">
+							<button type="button" class="w3-button w3-green" onclick="$('#restart_storage_modal').hide(); window.location.href='<%=$this->Service->constructUrl('StorageList')%>';"><i class="fa fa-times"></i> &nbsp;<%[ No, I will restart it later ]%></button>
+							<com:TActiveLinkButton
+								ID="RestartSd"
+								CssClass="w3-button w3-green w3-margin-left"
+								OnClick="restartStorage"
+								ClientSide.OnLoading="oNewTapeStorageStep3.show_storage_restart_loader(true);"
+							>
+								<i class="fa fa-sync-alt"></i>  &nbsp;<%[ Yes, restart it now ]%>
+							</com:TActiveLinkButton>
+							<i id="storage_restart_loader" class="fa-solid fa-sync-alt fa-spin" style="visibility: hidden"></i>
+							<div id="storage_restart_result_ok" class="w3-panel w3-green w3-padding" style="display: none"><%[ Done! ]%></div>
+							<div id="storage_restart_result_err" class="w3-panel w3-red w3-padding" style="display: none"></div>
+						</div>
+					</com:TPanel>
+					<com:TPanel Visible="<%=$this->StorageInBacula->Checked%>">
+						<div class="w3-center w3-margin-top">
+							<button type="button" class="w3-button w3-green" onclick="$('#sudo_settings_storage_modal').hide(); window.location.href='<%=$this->Service->constructUrl('StorageList')%>';"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></button>
+						</div>
+					</com:TPanel>
+				</div>
+			</div>
+			<div id="storage_create_error_modal" class="w3-modal" style="display: none">
+				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
+					<span onclick="$('#storage_create_error_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
+					<h2><%[ Error while creating storage ]%></h2>
+					<div id="storage_create_errors" class="w3-panel w3-red" style="display: none"></div>
+					<div class="w3-center">
+						<button type="button" class="w3-button w3-red" onclick="$('#storage_create_error_modal').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					</div>
+				</div>
+			</div>
+			<script>
+var oNewTapeStorageStep3 = {
+	ids: {
+		restart_storage_modal: 'restart_storage_modal',
+		storage_create_error_modal: 'storage_create_error_modal',
+		running_jobs_warn: 'storage_running_jobs_warning',
+		storage_create_errors: 'storage_create_errors',
+		restart_loader: 'storage_restart_loader',
+		restart_result_ok: 'storage_restart_result_ok',
+		restart_result_err: 'storage_restart_result_err'
+	},
+	txt: {
+		running_jobs: "<%[ Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them. ]%>"
+	},
+	copy: function(el, id) {
+		// copy
+		const cel = document.getElementById(id);
+		copy_to_clipboard(cel.innerHTML);
+
+		// show copy status
+		const img = el.firstChild;
+		img.classList.remove('fa-copy');
+		img.classList.add('fa-check');
+		setTimeout(() => {
+			img.classList.remove('fa-check');
+			img.classList.add('fa-copy');
+		}, 1400);
+	},
+	set_restart_storage_window: function(address, job_no) {
+		if (job_no > 0) {
+			const warn = document.getElementById(this.ids.running_jobs_warn);
+			if (warn) {
+				warn.textContent = this.txt.running_jobs.replace('%address', address).replace('%job_no', job_no);
+				warn.style.display = 'block';
+			}
+		}
+		this.show_restart_storage_window(true);
+	},
+	set_storage_create_error_window: function(errors) {
+		const err = document.getElementById(this.ids.storage_create_errors);
+		err.innerHTML = errors;
+		err.style.display = 'block';
+		this.show_storage_create_error_window(true);
+	},
+	show_restart_storage_window: function(show) {
+		const win = document.getElementById(this.ids.restart_storage_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_create_error_window: function(show) {
+		const win = document.getElementById(this.ids.storage_create_error_modal);
+		win.style.display = show ? 'block' : 'none';
+	},
+	show_storage_restart_loader: function(show) {
+		const loader = document.getElementById(this.ids.restart_loader);
+		loader.style.visibility = show ? 'visible': 'hidden';
+	},
+	set_restart_result: function(success, error, output) {
+		const self = oNewTapeStorageStep3;
+		self.show_storage_restart_loader(false);
+		const ok_msg = document.getElementById(self.ids.restart_result_ok);
+		const error_msg = document.getElementById(self.ids.restart_result_err);
+		if (success) {
+			ok_msg.style.display = 'block';
+			error_msg.style.display = 'none';
+			window.location.href = '<%=$this->Service->constructUrl('StorageList')%>';
+		}  else {
+			error_msg.textContent = 'Error: ' + error + ': ' + output;
+			error_msg.style.display = 'block';
+			ok_msg.style.display = 'none';
+		}
+	}
+};
+<%=isset($this->storage_created) && $this->storage_created === true ? 'oNewTapeStorageStep3.set_restart_storage_window("' . $this->storage_address . '", '. $this->storage_running_jobs_no . ');' : ''%>
+<%=isset($this->storage_created) && $this->storage_created === false ? 'oNewTapeStorageStep3.set_storage_create_error_window("' . $this->storage_create_errors . '");' : ''%>
+			</script>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>

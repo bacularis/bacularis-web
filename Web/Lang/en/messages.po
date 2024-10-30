@@ -5897,3 +5897,90 @@ msgstr "Single cloud device storage"
 
 msgid "Multi-device cloud storage (Autochanger)"
 msgstr "Multi-device cloud storage (Autochanger)"
+
+msgid "Please select one of the options."
+msgstr "Please select one of the options."
+
+msgid "New tape storage wizard"
+msgstr "New tape storage wizard"
+
+msgid "This wizard enables you to create in easy way a new tape storage."
+msgstr "This wizard enables you to create in easy way a new tape storage."
+
+msgid "Do you already have tape storage configured in Bacula?"
+msgstr "Do you already have tape storage configured in Bacula?"
+
+msgid "Yes, I already have it configured in Bacula. I want to add it to Bacularis."
+msgstr "Yes, I already have it configured in Bacula. I want to add it to Bacularis."
+
+msgid "No, I do not have it configured yet. I want to add it to Bacula and to Bacularis."
+msgstr "No, I do not have it configured yet. I want to add it to Bacula and to Bacularis."
+
+msgid "What changer does your tape device have?"
+msgstr "What changer does your tape device have?"
+
+msgid "Single tape device storage (tape drive)"
+msgstr "Single tape device storage (tape drive)"
+
+msgid "Single-drive or multi-drive tape storage with changer (autochanger)"
+msgstr "Single-drive or multi-drive tape storage with changer (autochanger)"
+
+msgid "What tape drives does your tape device have?"
+msgstr "What tape drives does your tape device have?"
+
+msgid "Changer device file"
+msgstr "Changer device file"
+
+msgid "Changer command"
+msgstr "Changer command"
+
+msgid "Tape drive device file"
+msgstr "Tape drive device file"
+
+msgid "Add tape drive"
+msgstr "Add tape drive"
+
+msgid "Backup/Restore device"
+msgstr "Backup/Restore device"
+
+msgid "Restore only device"
+msgstr "Restore only device"
+
+msgid "Drive type"
+msgstr "Drive type"
+
+msgid "What is tape drive file path in system?"
+msgstr "What is tape drive file path in system?"
+
+msgid "Add tape storage"
+msgstr "Add tape storage"
+
+msgid "Storage daemon actions needed"
+msgstr "Storage daemon actions needed"
+
+msgid "Add to the storage daemon host the following sudo entries below."
+msgstr "Add to the storage daemon host the following sudo entries below."
+
+msgid "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others)"
+msgstr "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others)"
+
+msgid "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others)"
+msgstr "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others)"
+
+msgid "NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel."
+msgstr "NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel."
+
+msgid "Please copy appropriate sudo configuration and put it to a sudoers.d file for example /etc/sudoers.d/bacularis-app"
+msgstr "Please copy appropriate sudo configuration and put it to a sudoers.d file for example /etc/sudoers.d/bacularis-app"
+
+msgid "Which tape storage would you like to add to Bacularis?"
+msgstr "Which tape storage would you like to add to Bacularis?"
+
+msgid "Tape autochangers"
+msgstr "Tape autochangers"
+
+msgid "Administrator action needed"
+msgstr "Administrator action needed"
+
+msgid "TO DO"
+msgstr "TO DO"
