@@ -180,7 +180,6 @@ $user_pass
 	private function getDEBRepositoryEntry($name, $entry, $key)
 	{
 		return "deb [signed-by=$key] $entry
-deb-src [signed-by=$key] $entry
 ";
 	}
 
