@@ -160,7 +160,7 @@ class SSH extends WebModule
 
 		$remote_cmd = '';
 		if (count($command) > 0) {
-			$remote_cmd = implode(' ', $command);
+			$remote_cmd = 'LANG=C ' . implode(' ', $command);
 		}
 
 		$dest = $address;
