@@ -56,11 +56,13 @@ class NewFileSetFileOptMenu extends DirectiveListTemplate
 		$configs = $plugin_config->getConfig();
 		$config_list = array_filter($configs, fn ($item) => key_exists($item['plugin'], $this->plugins));
 		$config_list = array_keys($config_list);
+		sort($config_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$config_vals = array_combine($config_list, $config_list);
 		$this->PluginSettingList->DataSource = array_merge($config_none, $config_vals);
 		$this->PluginSettingList->dataBind();
 
 		$plugin_list = array_keys($this->plugins);
+		sort($plugin_list, SORT_NATURAL | SORT_FLAG_CASE);
 		array_unshift($plugin_list, '');
 		$this->PluginPluginList->DataSource = array_combine($plugin_list, $plugin_list);
 		$this->PluginPluginList->dataBind();
