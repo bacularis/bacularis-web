@@ -87,6 +87,7 @@
 					CommandName="NextStep"
 					CssClass="w3-button w3-green"
 					Display="<%=($this->getPage()->RestoreWizard->ActiveStepIndex != 1) ? 'Dynamic' : 'None'%>"
+					Attributes.onclick="return (typeof(restore_wizard_next_action) == 'function' ? restore_wizard_next_action() : true)"
 				>
 					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
 				</com:TLinkButton>
@@ -1437,67 +1438,103 @@ $(function() {
 		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - options for restore ]%>" StepType="Auto">
 			<div class="w3-half" style="margin: auto; float: none">
 				<h4><%[ Where to restore ]%></h4>
-				<div class="w3-section w3-row">
+				<div class="w3-section w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreClient" Text="<%[ Restore to client: ]%>" /></div>
-					<div class="w3-col w3-third">
+					<div class="w3-col w3-half">
 						<com:TDropDownList ID="RestoreClient" CssClass="w3-select w3-border" CausesValidation="false" />
 					</div>
 				</div>
-				<div class="w3-section w3-row">
+				<div class="w3-section w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreJob" Text="<%[ Restore job: ]%>" /></div>
-					<div class="w3-col w3-third">
+					<div class="w3-col w3-half">
 						<com:TActiveDropDownList ID="RestoreJob" CssClass="w3-select w3-border" CausesValidation="false" OnCallback="setWherePath" />
 					</div>
 				</div>
-				<div class="w3-section w3-row">
-					<div class="w3-col w3-third"><com:TLabel ForControl="RestorePath" Text="<%[ Restore to directory: ]%>" /></div>
-					<div class="w3-col w3-third"><com:TActiveTextBox ID="RestorePath" CssClass="w3-input w3-border" Text="/tmp/restore" /></div>
-				</div>
-				<h4><%[ File options ]%></h4>
-				<div class="w3-section w3-row">
-					<div class="w3-col w3-third"><com:TLabel ForControl="ReplaceFiles" Text="<%[ Replace files: ]%>" /></div>
-					<div class="w3-col w3-third">
-						<com:TDropDownList ID="ReplaceFiles" CssClass="w3-select w3-border" CausesValidation="false">
-							<com:TListItem Value="never" Text="<%[ do not replace files ]%>" />
-							<com:TListItem Value="ifolder" Text="<%[ if files from restore are older]%>" />
-							<com:TListItem Value="ifnewer" Text="<%[ if files from restore are newer]%>" />
-							<com:TListItem Value="always" Text="<%[ always replace files ]%>" />
-						</com:TDropDownList>
+				<div class="w3-section w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third"><%[ Restore destination ]%>:</div>
+					<div class="w3-col w3-half">
+						<com:TRadioButton
+							ID="RestoreToDirectory"
+							GroupName="RestoreDestination"
+							CssClass="w3-radio"
+							Attributes.onchange="set_where_to_restore(true);"
+							Checked="true"
+						/> 
+						<label for="<%=$this->RestoreToDirectory->ClientID%>"><%[ Restore to a given directory ]%></label>
+						&nbsp; <i id="restore_path_loader" class="fa-solid fa-sync w3-spin" style="display: none"></i>
+						<br />
+						<com:TRadioButton
+							ID="RestoreToOriginalLocation"
+							GroupName="RestoreDestination"
+							CssClass="w3-radio"
+							Attributes.onchange="set_where_to_restore(true);"
+						/> 
+						<label for="<%=$this->RestoreToOriginalLocation->ClientID%>"><%[ Restore to original location ]%></label>
 					</div>
 				</div>
-				<div class="w3-section w3-row w3-margin-bottom">
-					<div class="w3-col w3-third"><%[ File relocation option:  ]%></div>
-					<div class="w3-col w3-third">
-						<input type="radio" name="file_relocation" id="file_relocation_1" value="1" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_1"><%[ Do not relocate files ]%></label><br />
-						<input type="radio" name="file_relocation" id="file_relocation_2" value="2" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_2"><%[ Relocate files with prefix and/or suffix ]%></label><br />
-						<input type="radio" name="file_relocation" id="file_relocation_3" value="3" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_3"><%[ Relocate files with regular expression ]%></label>
-					</div>
-				</div>
-				<div id="file_relocation_prefix_suffix" style="display: none">
+				<div id="restore_plugin_options" style="display: <%=$this->RestoreToOriginalLocation->Checked && count($this->Session['plugin_info']) > 0 ? 'block': 'none'%>">
+					<h4><%[ Plugin options ]%></h4>
 					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreStripPrefix" Text="<%[ Strip prefix: ]%>" /></div>
-						<div class="w3-col w3-third">
-							<com:TTextBox ID="RestoreStripPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+						<div id="restore_plugin_options_form"></div>
+					</div>
+				</div>
+				<div id="restore_file_options" style="display: <%=($this->RestoreToDirectory->Checked || count($this->Session['plugin_info']) == 0) ? 'block': 'none'%>">
+					<div class="w3-section w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="RestorePath" Text="<%[ Restore to directory: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TActiveTextBox
+								ID="RestorePath"
+								CssClass="w3-input w3-border w3-show-inline-block"
+								Text="/tmp/restore"
+							/>
 						</div>
 					</div>
-					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddPrefix" Text="<%[ Add prefix: ]%>" /></div>
-						<div class="w3-col w3-third">
-							<com:TTextBox ID="RestoreAddPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+					<h4><%[ File options ]%></h4>
+					<div class="w3-section w3-row directive_field">
+						<div class="w3-col w3-third"><com:TLabel ForControl="ReplaceFiles" Text="<%[ Replace files: ]%>" /></div>
+						<div class="w3-col w3-half">
+							<com:TDropDownList ID="ReplaceFiles" CssClass="w3-select w3-border" CausesValidation="false">
+								<com:TListItem Value="never" Text="<%[ do not replace files ]%>" />
+								<com:TListItem Value="ifolder" Text="<%[ if files from restore are older]%>" />
+								<com:TListItem Value="ifnewer" Text="<%[ if files from restore are newer]%>" />
+								<com:TListItem Value="always" Text="<%[ always replace files ]%>" />
+							</com:TDropDownList>
 						</div>
 					</div>
-					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddSuffix" Text="<%[ Add suffix: ]%>" /></div>
-						<div class="w3-col w3-third">
-							<com:TTextBox ID="RestoreAddSuffix" CssClass="w3-input w3-border" CausesValidation="false" />
+					<div class="w3-section w3-row directive_field w3-margin-bottom">
+						<div class="w3-col w3-third"><%[ File relocation option:  ]%></div>
+						<div class="w3-col w3-half">
+							<input type="radio" name="file_relocation" id="file_relocation_1" value="1" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_1"><%[ Do not relocate files ]%></label><br />
+							<input type="radio" name="file_relocation" id="file_relocation_2" value="2" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_2"><%[ Relocate files with prefix and/or suffix ]%></label><br />
+							<input type="radio" name="file_relocation" id="file_relocation_3" value="3" class="w3-radio" onclick="switch_file_relocation_mode(this.value)" /> <label for="file_relocation_3"><%[ Relocate files with regular expression ]%></label>
 						</div>
 					</div>
-				</div>
-				<div id="file_relocation_regex_where" style="display: none">
-					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><com:TLabel ForControl="RestoreRegexWhere" Text="<%[ RegexWhere: ]%>" /></div>
-						<div class="w3-col w3-third">
-							<com:TTextBox ID="RestoreRegexWhere" CssClass="w3-input w3-border" CausesValidation="false" />
+					<div id="file_relocation_prefix_suffix" style="display: none">
+						<div class="w3-section w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RestoreStripPrefix" Text="<%[ Strip prefix: ]%>" /></div>
+							<div class="w3-col w3-half">
+								<com:TTextBox ID="RestoreStripPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+							</div>
+						</div>
+						<div class="w3-section w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddPrefix" Text="<%[ Add prefix: ]%>" /></div>
+							<div class="w3-col w3-half">
+								<com:TTextBox ID="RestoreAddPrefix" CssClass="w3-input w3-border" CausesValidation="false" />
+							</div>
+						</div>
+						<div class="w3-section w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RestoreAddSuffix" Text="<%[ Add suffix: ]%>" /></div>
+							<div class="w3-col w3-half">
+								<com:TTextBox ID="RestoreAddSuffix" CssClass="w3-input w3-border" CausesValidation="false" />
+							</div>
+						</div>
+					</div>
+					<div id="file_relocation_regex_where" style="display: none">
+						<div class="w3-section w3-row directive_field">
+							<div class="w3-col w3-third"><com:TLabel ForControl="RestoreRegexWhere" Text="<%[ RegexWhere: ]%>" /></div>
+							<div class="w3-col w3-half">
+								<com:TTextBox ID="RestoreRegexWhere" CssClass="w3-input w3-border" CausesValidation="false" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1524,7 +1561,36 @@ $(function() {
 					</prop:FooterTemplate>
 				</com:TRepeater>
 			</div>
+			<com:TCallback ID="SetWhereToRestore" OnCallback="setWherePath" />
+			<com:TCallback ID="SavePluginSettingsForm" OnCallback="savePluginSettingsForm" />
+			<input type="hidden" id="restore_wizard_plugin_fields" name="restore_wizard_plugin_fields" value="" />
 			<script type="text/javascript">
+				function set_where_to_restore(load_val) {
+					const is_plugin = <%=count($this->Session['plugin_info']) > 0 ? 'true': 'false'%>;
+					const to_dir = document.getElementById('<%=$this->RestoreToDirectory->ClientID%>');
+					const to_orig = document.getElementById('<%=$this->RestoreToOriginalLocation->ClientID%>');
+					const restore_path = document.getElementById('<%=$this->RestorePath->ClientID%>');
+					const restore_path_loader = document.getElementById('restore_path_loader');
+					const restore_plugin_opts = $('#restore_plugin_options');
+					const restore_file_opts = $('#restore_file_options');
+					if (to_dir.checked) {
+						if (load_val) {
+							restore_path.removeAttribute('readonly');
+							const cb = <%=$this->SetWhereToRestore->ActiveControl->Javascript%>;
+							cb.dispatch();
+							restore_path_loader.style.display = '';
+						}
+						restore_plugin_opts.slideUp('fast');
+						restore_file_opts.slideDown('fast');
+					} else if (to_orig.checked) {
+						restore_path.value = '/';
+						restore_path.setAttribute('readonly', true);
+						if (is_plugin) {
+							restore_plugin_opts.slideDown('fast');
+							restore_file_opts.slideUp('fast');
+						}
+					}
+				}
 				function switch_file_relocation_mode(opt) {
 					var prefix_suffix_opts = document.getElementById('file_relocation_prefix_suffix');
 					var regex_where_opts = document.getElementById('file_relocation_regex_where');
@@ -1549,6 +1615,37 @@ $(function() {
 				} else {
 					switch_file_relocation_mode(1); // default setting
 				}
+
+				const oPlugins = {
+					load_plugin_settings: function(data) {
+						if (data.length == 0) {
+							return;
+						}
+						oPluginForm.build_form(data.setting);
+						oPluginForm.set_form_fields(
+							data.plugin.parameters,
+							data.setting.parameters
+						);
+						set_where_to_restore();
+					}
+				};
+
+				// Plugin settings
+				oPluginForm.init({
+					ids: {
+						plugin_form: 'restore_plugin_options_form',
+						settings_name: 'restore_plugin'
+					},
+					save_cb: <%=$this->SavePluginSettingsForm->ActiveControl->Javascript%>
+				});
+
+				function restore_wizard_next_action() {
+					const fields = oPluginForm.save_form();
+					const store = document.getElementById('restore_wizard_plugin_fields');
+					store.value = JSON.stringify(fields);
+					return true;
+				}
+				oPlugins.load_plugin_settings(<%=json_encode($this->Session['plugin_info'])%>);
 			</script>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - Finish ]%>" StepType="Finish">
@@ -1596,7 +1693,9 @@ $(function() {
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Restore to path: ]%></div>
-						<div class="w3-col w3-third bold"><%=$this->RestorePath->Text%></div>
+						<div class="w3-col w3-third bold" style="display: <%=$this->RestoreToDirectory->Checked ? 'block' : 'none'%>"><%=$this->RestorePath->Text%></div>
+						<div class="w3-col w3-third bold" style="display: <%=count($this->Session['plugin_info']) == 0 && $this->RestoreToOriginalLocation->Checked ? 'block' : 'none'%>"><%[ original location ]%> - <%=$this->RestorePath->Text%></div>
+						<div class="w3-col w3-third bold" style="display: <%=count($this->Session['plugin_info']) > 0 && $this->RestoreToOriginalLocation->Checked ? 'block' : 'none'%>"><%[ original location ]%> - <%[ plugin restore options decide ]%></div>
 					</div>
 				</fieldset>
 				<fieldset>

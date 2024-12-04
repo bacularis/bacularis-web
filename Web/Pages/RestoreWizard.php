@@ -32,6 +32,7 @@ use Prado\Web\UI\WebControls\TWizard;
 use Prado\Web\UI\ActiveControls\TActiveLinkButton;
 use Prado\Web\UI\ActiveControls\TCallback;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Logging;
 
 /**
  * Restore wizard page.
@@ -228,11 +229,13 @@ class RestoreWizard extends BaculumWebPage
 			$this->loadFileVersions(null, null);
 			$this->goToPath();
 		} elseif ($param->CurrentStepIndex === 2) {
+			$this->setPluginInfo();
 			$this->loadRequiredVolumes();
 			if ($this->Session->contains('file_relocation')) {
 				$this->file_relocation_opt = $this->Session['file_relocation'];
 			}
 		} elseif ($param->CurrentStepIndex === 3) {
+			$this->savePluginSettingsForm();
 			if ($this->Request->contains('file_relocation')) {
 				$this->Session->add(
 					'file_relocation',
@@ -261,6 +264,7 @@ class RestoreWizard extends BaculumWebPage
 			$this->goToPath();
 		} elseif ($param->CurrentStepIndex === 4) {
 			$this->file_relocation_opt = $this->Session['file_relocation'];
+			$this->loadPluginSettings();
 		}
 	}
 
@@ -601,6 +605,42 @@ class RestoreWizard extends BaculumWebPage
 			$this->setBrowserFiles($elements);
 		}
 		$this->loadBrowserFiles(null, $elements);
+	}
+
+	private function setPluginInfo()
+	{
+		$jobids = $this->getElementaryBackup();
+		$q = [
+			'jobids' => $jobids,
+			'output' => 'json',
+			'path' => '/'
+		];
+		$query = '?' . http_build_query($q);
+		$bvfs_dirs = $this->getModule('api')->get(
+			['bvfs', 'lsdirs', $query]
+		);
+		$dir = '';
+		if ($bvfs_dirs->error == 0) {
+			for ($i = 0; $i < count($bvfs_dirs->output); $i++) {
+				if ($bvfs_dirs->output[$i]->type == 'dir' && strpos($bvfs_dirs->output[$i]->name, '#') !== false) {
+					$dir = $bvfs_dirs->output[$i]->name;
+					break;
+				}
+			}
+		}
+		if ($dir) {
+			$q['path'] = '/' . $dir;
+			$query = '?' . http_build_query($q);
+			$bvfs_dirs = $this->getModule('api')->get(
+				['bvfs', 'lsdirs', $query]
+			);
+			if ($bvfs_dirs->error === 0 && count($bvfs_dirs->output) === 2 && $bvfs_dirs->output[1]->type == 'dir') {
+				$name = rtrim($bvfs_dirs->output[1]->name, '/');
+				$this->loadPluginSettings($name);
+			}
+		} else {
+			$this->Session->add('plugin_info', []);
+		}
 	}
 
 	private function addExtraPropsToElements($elements)
@@ -1028,7 +1068,8 @@ class RestoreWizard extends BaculumWebPage
 		$fileids = [];
 		$dirids = [];
 		$findexes = [];
-		foreach ($this->getFilesToRestore() as $uniqid => $properties) {
+		$ftores = $this->getFilesToRestore();
+		foreach ($ftores as $uniqid => $properties) {
 			if ($properties['type'] == 'dir') {
 				$dirids[] = $properties['pathid'];
 			} elseif ($properties['type'] == 'file') {
@@ -1096,6 +1137,11 @@ class RestoreWizard extends BaculumWebPage
 		if (!key_exists('add_prefix', $restore_props)) {
 			$restore_props['where'] = $this->RestorePath->Text;
 		}
+		if ($this->RestoreToOriginalLocation->Checked && isset($this->Session['plugin_info']['plugin']['parameters'])) {
+			$where_params = json_encode($this->Session['plugin_info']['plugin']['parameters']);
+			$restore_props['where'] = '#' . base64_encode($where_params);
+		}
+
 		$restore_props['replace'] = $this->ReplaceFiles->SelectedValue;
 		$restore_props['restorejob'] = $this->RestoreJob->SelectedValue;
 		if ($is_element) {
@@ -1173,7 +1219,7 @@ class RestoreWizard extends BaculumWebPage
 	public function setWherePath($sender, $param)
 	{
 		$restore_job = $this->RestoreJob->SelectedValue;
-		if (empty($restore_job)) {
+		if (empty($restore_job) || $this->RestoreToOriginalLocation->Checked) {
 			return;
 		}
 		$params = [
@@ -1189,6 +1235,99 @@ class RestoreWizard extends BaculumWebPage
 			$where = $result->output->where;
 		}
 		$this->RestorePath->Text = $where;
+		$cb = $this->getCallbackClient();
+		$cb->hide('restore_path_loader');
+	}
+
+	public function loadPluginSettings($settings_name = null)
+	{
+		$settings_name ??= ($this->Session['plugin_info']['plugin']['name'] ?? '');
+		if (!$settings_name) {
+			return;
+		}
+		$plugin_config = $this->getModule('plugin_config');
+		$plugin = $plugin_config->getConfig($settings_name);
+		if (count($plugin) == 0) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Plugin setting '{$settings_name}' does not exist."
+			);
+			return;
+		}
+		$props = $plugin_config->getPlugins(null, $plugin['plugin']);
+		if (!key_exists($plugin['plugin'], $props)) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Plugin '{$plugin['plugin']}' is not installed."
+			);
+			return;
+		}
+		$setting = $props[$plugin['plugin']];
+		$categories = $setting['cls']::getRestoreParameterCategories();
+		$parameters = array_filter($setting['parameters'], function($item) use ($categories) {
+			if (count($item['category']) == 0) {
+				return true;
+			}
+			return (in_array($item['category'][0], $categories));
+		});
+		$setting['parameters'] = array_values($parameters);
+		$params_copy = $plugin['parameters'];
+		foreach ($params_copy as $key => $val) {
+			$found = false;
+			for ($i = 0; $i < count($setting['parameters']); $i++) {
+				if ($setting['parameters'][$i]['name'] == $key) {
+					$found = true;
+					break;
+				}
+			}
+			if (!$found) {
+				unset($plugin['parameters'][$key]);
+			}
+		}
+		$plugin_info = [
+			'plugin' => $plugin,
+			'setting' => $setting
+		];
+		$this->Session->add('plugin_info', $plugin_info);
+	}
+
+	public function savePluginSettingsForm()
+	{
+		$fields = $this->Request->contains('restore_wizard_plugin_fields') ? json_decode($this->Request['restore_wizard_plugin_fields'], true) : [];
+		if (!is_array($fields)) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Wrong plugin setting to save."
+			);
+			return false;
+		}
+		$name = $this->Session['plugin_info']['plugin']['name'] ?? '';
+		if (!$name) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Plugin setting name is not set."
+			);
+			return false;
+		}
+		$plugin_config = $this->getModule('plugin_config');
+		$settings = $plugin_config->getConfig($name);
+		if (count($settings) == 0) {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Plugin setting does not exist."
+			);
+			return false;
+		}
+		$settings['parameters'] = array_merge($settings['parameters'], $fields);
+		$result = $plugin_config->setPluginSettings($name, $settings);
+		if ($result) {
+			$this->loadPluginSettings();
+		} else {
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				"Error while saving plugin setting."
+			);
+		}
 	}
 
 	private function loadRequiredVolumes()
@@ -1240,5 +1379,6 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->remove('restore_pathid');
 		$this->Session->remove('restore_job');
 		$this->Session->remove('file_relocation');
+		$this->Session->remove('plugin_info');
 	}
 }

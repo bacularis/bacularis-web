@@ -6000,3 +6000,33 @@ msgstr "Administrator action needed"
 
 msgid "TO DO"
 msgstr "TO DO"
+
+msgid "Restore to a given directory"
+msgstr "Restore to a given directory"
+
+msgid "Restore to original location"
+msgstr "Restore to original location"
+
+msgid "Plugin options"
+msgstr "Plugin options"
+
+msgid "Restore destination"
+msgstr "Restore destination"
+
+msgid "Add blank new Plugin directive"
+msgstr "Add blank new Plugin directive"
+
+msgid "Use existing Plugin configuration"
+msgstr "Use existing Plugin configuration"
+
+msgid "Create a new plugin configuration and use it in the Plugin directive"
+msgstr "Create a new plugin configuration and use it in the Plugin directive"
+
+msgid "Select configuration"
+msgstr "Select configuration"
+
+msgid "original location"
+msgstr "original location"
+
+msgid "plugin restore options decide"
+msgstr "plugin restore options decide"
