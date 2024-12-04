@@ -1264,7 +1264,7 @@ class RestoreWizard extends BaculumWebPage
 		}
 		$setting = $props[$plugin['plugin']];
 		$categories = $setting['cls']::getRestoreParameterCategories();
-		$parameters = array_filter($setting['parameters'], function($item) use ($categories) {
+		$parameters = array_filter($setting['parameters'], function ($item) use ($categories) {
 			if (count($item['category']) == 0) {
 				return true;
 			}

@@ -52,9 +52,9 @@ class NewFileSetFileOptMenu extends DirectiveListTemplate
 		$plugin_config = $this->getModule('plugin_config');
 		$this->plugins = $plugin_config->getPlugins('backup');
 
-		$config_none =  ['none' => ' '];
+		$config_none = ['none' => ' '];
 		$configs = $plugin_config->getConfig();
-		$config_list = array_filter($configs, fn($item) => key_exists($item['plugin'], $this->plugins));
+		$config_list = array_filter($configs, fn ($item) => key_exists($item['plugin'], $this->plugins));
 		$config_list = array_keys($config_list);
 		$config_vals = array_combine($config_list, $config_list);
 		$this->PluginSettingList->DataSource = array_merge($config_none, $config_vals);
