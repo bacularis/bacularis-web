@@ -1379,6 +1379,6 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->remove('restore_pathid');
 		$this->Session->remove('restore_job');
 		$this->Session->remove('file_relocation');
-		$this->Session->remove('plugin_info');
+		$this->Session->add('plugin_info', []);
 	}
 }
