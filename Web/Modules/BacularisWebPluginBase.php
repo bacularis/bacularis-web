@@ -15,6 +15,8 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\BacularisCommonPluginBase;
+
 /**
  * Base module class for web plugins.
  * Every web plugin should extend it.
@@ -22,35 +24,6 @@ namespace Bacularis\Web\Modules;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Module
  */
-class BacularisWebPluginBase extends WebModule
+class BacularisWebPluginBase extends BacularisCommonPluginBase
 {
-	/**
-	 * Stores single plugin configuration.
-	 */
-	private $config = [];
-
-	public function __construct($config)
-	{
-		$this->setConfig($config);
-	}
-
-	/**
-	 * Get plugin configuration.
-	 *
-	 * @return array plugin configuration or empty array inf configuration does not exist
-	 */
-	protected function getConfig(): array
-	{
-		return $this->config;
-	}
-
-	/**
-	 * Set plugin configuration.
-	 *
-	 * @param array $config plugin configuration
-	 */
-	protected function setConfig(array $config): void
-	{
-		$this->config = $config;
-	}
 }
