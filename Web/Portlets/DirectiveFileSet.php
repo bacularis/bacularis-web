@@ -419,6 +419,7 @@ class DirectiveFileSet extends DirectiveListTemplate
 		$param->Item->RepeaterFileSetPlugin->DataSource = $param->Item->Data['plugin'];
 		$param->Item->RepeaterFileSetPlugin->dataBind();
 		$param->Item->FileSetFileOptMenu->setItemIndex($param->Item->getItemIndex());
+		$param->Item->FileSetFileOptMenu->raiseEvent('OnDirectiveListLoad', $this, null);
 	}
 
 	public function createFileSetIncExcElement($sender, $param)
@@ -475,7 +476,7 @@ class DirectiveFileSet extends DirectiveListTemplate
 		if (key_exists($inc_index, $data['Include']) && key_exists('Plugin', $data['Include'][$inc_index])) {
 			$plugin_index = count($data['Include'][$inc_index]['Plugin']);
 		}
-		$data['Include'][$inc_index]['Plugin'][$plugin_index] = '';
+		$data['Include'][$inc_index]['Plugin'][$plugin_index] = is_string($param) ? $param : '';
 		$this->setData($data);
 		$this->loadConfig();
 	}
