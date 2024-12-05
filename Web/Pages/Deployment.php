@@ -1186,6 +1186,14 @@ class Deployment extends BaculumWebPage
 					$ret = $this->deployAPICopyStep($file);
 					$this->displayRawOutput(null, $ret['output']);
 					$br_key = $file['dst_file'];
+
+					// After successful copying remove the key
+					$kdir = Prado::getPathOfNamespace('Bacularis.Web.Config');
+					$kfile = implode(DIRECTORY_SEPARATOR, [$kdir, DeployAPIHost::BACULARIS_REPO_PUBKEY]);
+					if (file_exists($kfile)) {
+						// unlink key file
+						unlink($kfile);
+					}
 				} else {
 					$ret['output'] = ['Error while preparing Bacularis GPG key'];
 					$ret['exitcode'] = 1;
@@ -1242,6 +1250,14 @@ class Deployment extends BaculumWebPage
 					$ret = $this->deployAPICopyStep($file);
 					$this->displayRawOutput(null, $ret['output']);
 					$br_key = $file['dst_file'];
+
+					// After successful copying remove the key
+					$kdir = Prado::getPathOfNamespace('Bacularis.Web.Config');
+					$kfile = implode(DIRECTORY_SEPARATOR, [$kdir, DeployAPIHost::BACULARIS_REPO_PUBKEY]);
+					if (file_exists($kfile)) {
+						// unlink key file
+						unlink($kfile);
+					}
 				} else {
 					$ret['output'] = ['Error while preparing Bacula GPG key'];
 					$ret['exitcode'] = 1;

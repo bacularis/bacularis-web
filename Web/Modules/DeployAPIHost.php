@@ -49,6 +49,8 @@ class DeployAPIHost extends WebModule
 	 */
 	public const TMP_DIR = '/tmp/bacularis-deploy';
 
+	public const BACULARIS_REPO_PUBKEY = 'bacularis.pub';
+
 	/**
 	 * Get command to test connection to destination host.
 	 * It is useful to do connection check before start deployment.
@@ -222,7 +224,7 @@ $user_pass
 			return false;
 		}
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
-		$file = implode(DIRECTORY_SEPARATOR, [$dir, 'bacularis.pub']);
+		$file = implode(DIRECTORY_SEPARATOR, [$dir, self::BACULARIS_REPO_PUBKEY]);
 		if (!file_put_contents($file, $key)) {
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
