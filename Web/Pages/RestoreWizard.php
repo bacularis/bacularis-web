@@ -706,7 +706,7 @@ class RestoreWizard extends BaculumWebPage
 			if (empty($jobids)) {
 				$jobids = $this->Session['restore_job']['jobid'];
 			}
-		} else {
+		} elseif ($this->GroupBackupSelection->Checked && $this->GroupBackupToRestore->SelectedValue && $this->GroupBackupFileSet->SelectedValue) {
 			$params = [
 				'clientid' => $this->BackupClient->SelectedValue,
 				'filesetid' => $this->GroupBackupFileSet->SelectedValue
@@ -721,18 +721,27 @@ class RestoreWizard extends BaculumWebPage
 				$this->GroupBackupToRestore->SelectedValue,
 				$query
 			]);
-			if (count($jobs_recent->output) > 0) {
-				$ids = $jobs_recent->output;
-				if (count($ids) > 0) {
-					$jobid = $ids[0];
-					$job = $this->getModule('api')->get(
+
+			if ($jobs_recent->error == 0) {
+				$recent_ids = $jobs_recent->output;
+				$recent_len = count($recent_ids);
+				if ($recent_len > 0) {
+					$jobid = $recent_ids[0];
+					$result = $this->getModule('api')->get(
 						['jobs', $jobid]
-					)->output;
-					if (is_object($job)) {
-						$this->setRestoreJob($jobid, $job->name, $job->type, $job->endtime, $job->jobstatus);
+					);
+					if ($result->error == 0) {
+						$job = $result->output;
+						$this->setRestoreJob(
+							$jobid,
+							$job->name,
+							$job->type,
+							$job->endtime,
+							$job->jobstatus
+						);
 					}
 				}
-				$jobids = implode(',', $ids);
+				$jobids = implode(',', $recent_ids);
 			}
 		}
 		return $jobids;
