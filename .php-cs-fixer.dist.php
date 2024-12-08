@@ -15,7 +15,7 @@ $config
 	'array_syntax' => ['syntax' => 'short'],
 	'binary_operator_spaces' => true,
 	'blank_line_after_namespace' => true,
-	'blank_line_after_opening_tag' => true,
+	'blank_line_after_opening_tag' => false,
 	'cast_spaces' => ['space' => 'single'],
 	'clean_namespace' => true,
 	'combine_nested_dirname' => true,
