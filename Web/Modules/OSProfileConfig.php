@@ -51,7 +51,7 @@ class OSProfileConfig extends ConfigFileModule
 	public const DEF_CATALOG = [
 		'rpm' => [
 			'postgresql' => [
-				'packages_cat_install' => '/usr/bin/dnf -y install postgresql-server postgresql bacula-director',
+				'packages_cat_install' => '/usr/bin/dnf -y install postgresql-server postgresql-contrib postgresql bacula-director',
 				'packages_cat_upgrade' => '/usr/bin/dnf -y update postgresql-server postgresql',
 				'packages_cat_remove' => '/usr/bin/dnf -y remove postgresql-server postgresql',
 				'packages_cat_info' => '/usr/bin/dnf list installed postgresql-server postgresql',
@@ -76,7 +76,7 @@ class OSProfileConfig extends ConfigFileModule
 		],
 		'deb' => [
 			'postgresql' => [
-				'packages_cat_install' => "/usr/bin/sh -c DEBIAN_FRONTEND=noninteractive\ /usr/bin/apt\ -y\ install\ postgresql\ postgresql-client\ dbconfig-pgsql\ bacula-director",
+				'packages_cat_install' => "/usr/bin/sh -c DEBIAN_FRONTEND=noninteractive\ /usr/bin/apt\ -y\ install\ postgresql\ postgresql-contrib\ postgresql-client\ dbconfig-pgsql\ bacula-director",
 				'packages_cat_upgrade' => '/usr/bin/apt -y install --only-upgrade postgresql postgresql-client',
 				'packages_cat_remove' => '/usr/bin/apt -y remove --purge postgresql postgresql-client',
 				'packages_cat_info' => '/usr/bin/dpkg -l postgresql postgresql-client',
