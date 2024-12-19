@@ -54,13 +54,13 @@ class JobRunscriptRenderer extends DirectiveRenderer
 		}
 		if ($this->ItemIndex % self::DIRECTIVE_COUNT === 0) {
 			$alb = new TActiveLinkButton();
-			$alb->CssClass = 'w3-button w3-red w3-right';
+			$alb->CssClass = 'w3-right';
 			$alb->attachEventHandler(
 				'OnCommand',
 				[$directive_runscript, 'removeRunscript']
 			);
 			$alb->CommandName = $this->ItemIndex / self::DIRECTIVE_COUNT;
-			$alb->Text = '<i class="fa fa-trash-alt"></i> &nbsp;' . Prado::localize('Remove');
+			$alb->Text = '<i class="fa-solid fa-square-xmark w3-text-red w3-large w3-right" title="' . Prado::localize('Remove') . '"></i>';
 			$this->addParsedObject($alb);
 		}
 	}

@@ -2,7 +2,7 @@
 <com:Bacularis.Web.Portlets.NewRunscriptMenu ID="RunscriptMenu" />
 <com:TActiveRepeater ID="RepeaterRunscriptOptions" ItemRenderer="Bacularis.Web.Portlets.JobRunscriptRenderer">
 	<prop:HeaderTemplate>
-		<div class="w3-card-4 w3-padding w3-margin-bottom directive runscript">
+		<div class="w3-card-4 w3-margin-bottom directive runscript" style="padding: 16px;">
 	</prop:HeaderTemplate>
 	<prop:FooterTemplate>
 		</div>

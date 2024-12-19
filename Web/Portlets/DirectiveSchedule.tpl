@@ -2,13 +2,13 @@
 <com:Bacularis.Web.Portlets.NewScheduleMenu ID="ScheduleMenu" />
 <com:TActiveRepeater ID="RepeaterScheduleRuns" OnItemDataBound="createRunItem">
 	<prop:ItemTemplate>
-		<div class="w3-card-4 w3-padding w3-margin-bottom directive runscript">
+		<div class="w3-card-4 w3-margin-bottom directive runscript" style="padding: 16px;">
 		<com:TActiveLinkButton
-			CssClass="w3-button w3-red w3-right"
+			CssClass="w3-right"
 			OnCommand="SourceTemplateControl.removeSchedule"
 			CommandName="<%=$this->ItemIndex%>"
 		>
-			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Remove ]%>
+			<i class="fa-solid fa-square-xmark w3-text-red w3-large w3-right" title="<%[ Remove ]%>"></i>
 		</com:TActiveLinkButton>
 			<h2 class="schedule_options"><%=$this->SourceTemplateControl->ComponentType == 'dir' ? 'Run' : ($this->SourceTemplateControl->ComponentType == 'fd' ? 'Connect' : '')%> #<%=($this->ItemIndex+1)%></h2>
 		<div>

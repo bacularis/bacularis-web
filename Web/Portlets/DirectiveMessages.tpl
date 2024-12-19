@@ -3,13 +3,13 @@
 <com:Bacularis.Web.Portlets.NewMessagesMenu ID="MessagesMenu" />
 <com:TActiveRepeater ID="RepeaterMessages" OnItemCreated="createDirectiveListElement" OnItemDataBound="loadMessageTypes">
 	<prop:ItemTemplate>
-		<div class="w3-card w3-padding directive">
+		<div class="w3-card directive" style="padding: 16px;">
 			<com:TActiveLinkButton
-				CssClass="w3-button w3-red w3-right"
+				CssClass="w3-right"
 				OnCommand="SourceTemplateControl.removeMessages"
 				CommandName="<%=$this->ItemIndex%>"
 			>
-				<i class="fa fa-trash-alt"></i> &nbsp;<%[ Remove ]%>
+				<i class="fa-solid fa-square-xmark w3-text-red w3-large w3-right" title="<%[ Remove ]%>"></i>
 			</com:TActiveLinkButton>
 			<h2><%#$this->Data['directive_name']%></h2>
 			<com:Bacularis.Web.Portlets.DirectiveTextBox />
