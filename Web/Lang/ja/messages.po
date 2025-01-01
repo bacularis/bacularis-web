@@ -6088,3 +6088,132 @@ msgstr "original location"
 
 msgid "plugin restore options decide"
 msgstr "plugin restore options decide"
+
+msgid "Installed SSL certificate"
+msgstr "Installed SSL certificate"
+
+msgid "Issuer"
+msgstr "Issuer"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "Locality"
+msgstr "Locality"
+
+msgid "Organization name"
+msgstr "Organization name"
+
+msgid "Organization unit"
+msgstr "Organization unit"
+
+msgid "Common name"
+msgstr "Common name"
+
+msgid "Validity"
+msgstr "Validity"
+
+msgid "Not before"
+msgstr "Not before"
+
+msgid "Not after"
+msgstr "Not after"
+
+msgid "Subject"
+msgstr "Subject"
+
+msgid "SSL certs"
+msgstr "SSL certs"
+
+msgid "Certificate info"
+msgstr "Certificate info"
+
+msgid "valid for"
+msgstr "valid for"
+
+msgid "Close to expire"
+msgstr "Close to expire"
+
+msgid "Expired"
+msgstr "Expired"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "The SSL certificate has been installed successfully. Please load the page using the HTTPS protocol."
+msgstr "The SSL certificate has been installed successfully. Please load the page using the HTTPS protocol."
+
+msgid "Load page using HTTPS protocol"
+msgstr "Load page using HTTPS protocol"
+
+msgid "OS environment"
+msgstr "OS environment"
+
+msgid "Operating system"
+msgstr "Operating system"
+
+msgid "Web server name"
+msgstr "Web server name"
+
+msgid "Renew SSL certificate"
+msgstr "Renew SSL certificate"
+
+msgid "Create SSL certificate"
+msgstr "Create SSL certificate"
+
+msgid "Install SSL certificate"
+msgstr "Install SSL certificate"
+
+msgid "Certificate parameters"
+msgstr "Certificate parameters"
+
+msgid "Certificate type"
+msgstr "Certificate type"
+
+msgid "Let's Encrypt certificate"
+msgstr "Let's Encrypt certificate"
+
+msgid "Self-signed certificate"
+msgstr "Self-signed certificate"
+
+msgid "Uploaded own certificate"
+msgstr "Uploaded own certificate"
+
+msgid "Common name (address, e.g. myhost.xyz)"
+msgstr "Common name (address, e.g. myhost.xyz)"
+
+msgid "Validity time (days)"
+msgstr "Validity time (days)"
+
+msgid "Additional parameters"
+msgstr "Additional parameters"
+
+msgid "Email address"
+msgstr "Email address"
+
+msgid "Country code (two letters)"
+msgstr "Country code (two letters)"
+
+msgid "State or province"
+msgstr "State or province"
+
+msgid "Locality (e.g. city)"
+msgstr "Locality (e.g. city)"
+
+msgid "Organization unit (e.g. section)"
+msgstr "Organization unit (e.g. section)"
+
+msgid "Administrator access needed"
+msgstr "Administrator access needed"
+
+msgid "System admin name"
+msgstr "System admin name"
+
+msgid "System admin password"
+msgstr "System admin password"
+
+msgid "Use sudo"
+msgstr "Use sudo"
+
+msgid "Uninstall SSL certificate"
+msgstr "Uninstall SSL certificate"
