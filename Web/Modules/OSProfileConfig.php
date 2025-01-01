@@ -463,7 +463,7 @@ class OSProfileConfig extends ConfigFileModule
 	 *
 	 * @return array pre-defined OS profile list
 	 */
-	private function getPreDefinedOSProfiles()
+	public function getPreDefinedOSProfiles()
 	{
 		$profiles = [];
 		foreach (self::DEF_BACULARIS_REPOSITORIES as $type => $repos) {
