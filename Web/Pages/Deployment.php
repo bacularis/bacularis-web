@@ -23,6 +23,8 @@ use Bacularis\Web\Modules\SSH;
 use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\SSLCertificate;
+use Bacularis\Common\Modules\WebServerConfig;
 
 /**
  * Deployment page.
@@ -1387,7 +1389,11 @@ class Deployment extends BaculumWebPage
 			$ssh = $this->getModule('ssh');
 			$host = $this->DeployAPIHostHostname->Text;
 			$params = $this->getDeployParams();
-			$cmd = $deploy_api->getPrepareHTTPSCertCommand($host, $params);
+			$cert_params = [
+				'common_name' => $host,
+				'use_sudo' => $params['use_sudo']
+			];
+			$cmd = SSLCertificate::getPrepareHTTPSCertCommand($cert_params);
 			$ret = $ssh->execCommand(
 				$host,
 				$params,
@@ -1397,7 +1403,7 @@ class Deployment extends BaculumWebPage
 
 			if ($ret['exitcode'] === 0 && strpos($osprofile['packages_bacularis_install'], 'lighttpd') !== false) {
 				// For lighttpd prepare also PEM file
-				$cmd = $deploy_api->getPrepareHTTPSPemCommand($host, $params);
+				$cmd = SSLCertificate::getPrepareHTTPSPemCommand($params);
 				$ret = $ssh->execCommand(
 					$host,
 					$params,
@@ -1410,11 +1416,11 @@ class Deployment extends BaculumWebPage
 				// Enable HTTPS in web server config
 				$cmd = '';
 				if (strpos($osprofile['packages_bacularis_install'], 'nginx') !== false) {
-					$cmd = $deploy_api->getEnableHTTPSNginxCommand($osprofile['repository_type'], $params);
+					$cmd = WebServerConfig::getEnableHTTPSNginxCommand($osprofile['repository_type'], $params);
 				} elseif (strpos($osprofile['packages_bacularis_install'], 'lighttpd') !== false) {
-					$cmd = $deploy_api->getEnableHTTPSLighttpdCommand($params);
+					$cmd = WebServerConfig::getEnableHTTPSLighttpdCommand($params);
 				} elseif (strpos($osprofile['packages_bacularis_install'], 'apache') !== false || strpos($osprofile['packages_bacularis_install'], 'httpd') !== false) {
-					$cmd = $deploy_api->getEnableHTTPSApacheCommand($osprofile['repository_type'], $params);
+					$cmd = WebServerConfig::getEnableHTTPSApacheCommand($osprofile['repository_type'], $params);
 				}
 				$ret = $ssh->execCommand(
 					$host,
