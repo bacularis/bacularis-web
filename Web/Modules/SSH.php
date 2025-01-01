@@ -161,6 +161,7 @@ class SSH extends WebModule
 		$remote_cmd = '';
 		if (count($command) > 0) {
 			$remote_cmd = 'LANG=C ' . implode(' ', $command);
+			$remote_cmd = str_replace(['"'], ['\\"'], $remote_cmd);
 		}
 
 		$dest = $address;
@@ -341,7 +342,10 @@ expect {
 lassign [wait] pid spawnid os_error_flag value
 puts "\nEXITCODE=$value"
 puts "quit"
-exit\'';
+exit\' || echo "
+EXITCODE=1
+===
+"';
 	}
 
 	/**
