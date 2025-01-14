@@ -6154,3 +6154,45 @@ msgstr "Use sudo"
 
 msgid "Uninstall SSL certificate"
 msgstr "Uninstall SSL certificate"
+
+msgid "Web server"
+msgstr "Web server"
+
+msgid "Web server port"
+msgstr "Web server port"
+
+msgid "Network options"
+msgstr "Network options"
+
+msgid "New web server settings will be automatically applied to the current main API host if this API host is local (with 'localhost' address)."
+msgstr "New web server settings will be automatically applied to the current main API host if this API host is local (with 'localhost' address)."
+
+msgid "All other existing local API hosts definitions (if exist) have to be updated manually on the [Security] -> [API hosts] page."
+msgstr "All other existing local API hosts definitions (if exist) have to be updated manually on the [Security] -> [API hosts] page."
+
+msgid "This way the local connection between Web -> API will be adapted to new settings."
+msgstr "This way the local connection between Web -> API will be adapted to new settings."
+
+msgid "Load page using new settings"
+msgstr "Load page using new settings"
+
+msgid "The web server settings have been updated successfully. Please load the page using the new settings."
+msgstr "The web server settings have been updated successfully. Please load the page using the new settings."
+
+msgid "By clicking the create SSL certificate button, you agree with"
+msgstr "By clicking the create SSL certificate button, you agree with"
+
+msgid "The SSL certificate has been uninstalled successfully. Please load the page using the HTTP protocol."
+msgstr "The SSL certificate has been uninstalled successfully. Please load the page using the HTTP protocol."
+
+msgid "Load page using HTTP protocol"
+msgstr "Load page using HTTP protocol"
+
+msgid "This certificate type can be useful if you are going to share Bacularis outside your local network."
+msgstr "This certificate type can be useful if you are going to share Bacularis outside your local network."
+
+msgid "To prepare this certificate type, there is required to have Bacularis available on publicly open TCP port 80. This is necessary to perform by the certificate provider a validation that proves your control over the domain name. This it called the HTTP-01 challenge."
+msgstr "To prepare this certificate type, there is required to have Bacularis available on publicly open TCP port 80. This is necessary to perform by the certificate provider a validation that proves your control over the domain name. This it called the HTTP-01 challenge."
+
+msgid "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."
+msgstr "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."

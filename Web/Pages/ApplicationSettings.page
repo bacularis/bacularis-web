@@ -24,6 +24,9 @@
 		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); oPluginListSettings.table.responsive.recalc();">
 			<%[ Plugins ]%>
 		</a>
+		<a id="btn_application_settings_web_server" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_web_server');">
+			<%[ Web server ]%>
+		</a>
 		<a id="btn_application_settings_certs" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_certs');">
 			<%[ SSL certs ]%>
 		</a>
@@ -283,9 +286,13 @@
 	<div class="w3-container tab_item" id="application_settings_plugins" style="display: none">
 		<com:Bacularis.Common.Portlets.PluginList />
 	</div>
+	<!-- Web server settings -->
+	<div class="w3-container tab_item" id="application_settings_web_server" style="display: none">
+		<com:Bacularis.Common.Portlets.WebServerSettings />
+	</div>
 	<!-- Certs -->
 	<div class="w3-container tab_item" id="application_settings_certs" style="display: none">
-		<com:Bacularis.Common.Portlets.Certs UpdateHostProtocol="true" />
+		<com:Bacularis.Common.Portlets.Certs UpdateHostProps="true" />
 	</div>
 	<!-- Features -->
 	<div class="w3-container tab_item" id="application_settings_features" style="display: none">
