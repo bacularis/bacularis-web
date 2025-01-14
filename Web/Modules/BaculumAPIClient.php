@@ -329,7 +329,7 @@ class BaculumAPIClient extends WebModule
 			curl_close($ch);
 			$header = substr($result, 0, $header_size);
 			$body = substr($result, $header_size);
-			$this->response_headers = Headers::parseAll($header);;
+			$this->response_headers = Headers::parseAll($header);
 			$ret = $this->preParseOutput($body, $error, $errno, $show_error);
 			if ($use_cache === true && $ret->error === 0) {
 				$this->setSessionCache($host, $params, $ret);
@@ -373,7 +373,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->response_headers = Headers::parseAll($header);;
+		$this->response_headers = Headers::parseAll($header);
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -407,7 +407,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->response_headers = Headers::parseAll($header);;
+		$this->response_headers = Headers::parseAll($header);
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -438,7 +438,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->response_headers = Headers::parseAll($header);;
+		$this->response_headers = Headers::parseAll($header);
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -635,7 +635,7 @@ class BaculumAPIClient extends WebModule
 			$header = substr($result, 0, $header_size);
 			$body = substr($result, $header_size);
 			$tokens = json_decode($body);
-			$this->response_headers = Headers::parseAll($header);;
+			$this->response_headers = Headers::parseAll($header);
 			if (is_object($tokens) && isset($tokens->access_token) && isset($tokens->refresh_token)) {
 				$auth = new OAuth2Record();
 				$auth->host = $st['host'];
