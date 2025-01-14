@@ -1390,10 +1390,9 @@ class Deployment extends BaculumWebPage
 			$host = $this->DeployAPIHostHostname->Text;
 			$params = $this->getDeployParams();
 			$cert_params = [
-				'common_name' => $host,
-				'use_sudo' => $params['use_sudo']
+				'common_name' => $host
 			];
-			$cmd = SSLCertificate::getPrepareHTTPSCertCommand($cert_params);
+			$cmd = SSLCertificate::getPrepareHTTPSCertCommand($cert_params, $params);
 			$ret = $ssh->execCommand(
 				$host,
 				$params,
