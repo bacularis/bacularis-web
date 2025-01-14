@@ -31,6 +31,7 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\Errors\BconsoleError;
 use Bacularis\Common\Modules\Errors\ConnectionError;
+use Bacularis\Common\Modules\Protocol\HTTP\Headers;
 use Bacularis\Common\Modules\Logging;
 
 /**
@@ -328,7 +329,7 @@ class BaculumAPIClient extends WebModule
 			curl_close($ch);
 			$header = substr($result, 0, $header_size);
 			$body = substr($result, $header_size);
-			$this->parseHeader($header);
+			$this->response_headers = Headers::parseAll($header);;
 			$ret = $this->preParseOutput($body, $error, $errno, $show_error);
 			if ($use_cache === true && $ret->error === 0) {
 				$this->setSessionCache($host, $params, $ret);
@@ -372,7 +373,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->parseHeader($header);
+		$this->response_headers = Headers::parseAll($header);;
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -406,7 +407,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->parseHeader($header);
+		$this->response_headers = Headers::parseAll($header);;
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -437,7 +438,7 @@ class BaculumAPIClient extends WebModule
 		curl_close($ch);
 		$header = substr($result, 0, $header_size);
 		$body = substr($result, $header_size);
-		$this->parseHeader($header);
+		$this->response_headers = Headers::parseAll($header);;
 		return $this->preParseOutput($body, $error, $errno, $show_error);
 	}
 
@@ -487,24 +488,6 @@ class BaculumAPIClient extends WebModule
 		);
 
 		return $resource;
-	}
-
-	/**
-	 * Parse and set response headers.
-	 * Note, header names are lower case.
-	 *
-	 * @param mixed $header
-	 */
-	public function parseHeader($header)
-	{
-		$headers = [];
-		$heads = explode("\r\n", $header);
-		for ($i = 0; $i < count($heads); $i++) {
-			if (preg_match('/^(?P<name>[^:]+):(?P<value>[\S\s]+)$/', $heads[$i], $match) === 1) {
-				$headers[strtolower($match['name'])] = trim($match['value']);
-			}
-		}
-		$this->response_headers = $headers;
 	}
 
 	/**
@@ -652,7 +635,7 @@ class BaculumAPIClient extends WebModule
 			$header = substr($result, 0, $header_size);
 			$body = substr($result, $header_size);
 			$tokens = json_decode($body);
-			$this->parseHeader($header);
+			$this->response_headers = Headers::parseAll($header);;
 			if (is_object($tokens) && isset($tokens->access_token) && isset($tokens->refresh_token)) {
 				$auth = new OAuth2Record();
 				$auth->host = $st['host'];
