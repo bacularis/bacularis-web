@@ -140,7 +140,6 @@ class HostConfig extends ConfigFileModule
 	 *
 	 * @access public
 	 * @param string $host host name
-	 * @param array $host config
 	 * @param array $host_config
 	 * @return bool true if host config saved successfully, otherwise false
 	 */
@@ -149,6 +148,25 @@ class HostConfig extends ConfigFileModule
 		$config = $this->getConfig();
 		$config[$host] = $host_config;
 		$result = $this->setConfig($config);
+		return $result;
+	}
+
+	/**
+	 * Update single host config.
+	 *
+	 * @access public
+	 * @param string $host host name
+	 * @param array $opts config options to update
+	 * @return bool true if host config saved successfully, otherwise false
+	 */
+	public function updateHostConfig(string $host, array $opts)
+	{
+		$result = false;
+		$config = $this->getConfig();
+		if (key_exists($host, $config)) {
+			$config[$host] = array_merge($config[$host], $opts);
+			$result = $this->setConfig($config);
+		}
 		return $result;
 	}
 
