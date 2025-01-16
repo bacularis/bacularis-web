@@ -26,7 +26,7 @@
 		<a id="btn_job_history" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); }">
 			<%[ Job history ]%>
 		</a>
-		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); if (oJobList.table) { oJobList.table.responsive.recalc(); }">
+		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); if (oJobList.table) { oJobList.table.responsive.recalc(); oJobList.table.columns.adjust().draw(); }">
 			<%[ Jobs ]%>
 		</a>
 		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc();">
