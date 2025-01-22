@@ -4089,6 +4089,14 @@ $(function() {
 							CssClass="w3-input w3-border"
 							CausesValidation="false"
 						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="APIHostGroup"
+							RegularExpression="<%=HostConfig::HOST_NAME_PATTERN%>"
+							ControlToValidate="APIHostName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
 					</div>
 				</div>
 				<div id="api_host_groups" style="display: none">

@@ -41,8 +41,6 @@ class Deployment extends BaculumWebPage
 	public const TYPE_ADD_WINDOW = 'add';
 	public const TYPE_EDIT_WINDOW = 'edit';
 
-	public const API_HOST_SHORT_NAME_PATTERN = '[a-zA-Z0-9:.\-_ ]+';
-
 	public const DEPLOY_STEPS_TXT = [
 		'add_bacularis_repo' => 'Add package repository',
 		'add_sudo' => 'Add SUDO settings',

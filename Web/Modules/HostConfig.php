@@ -52,6 +52,11 @@ class HostConfig extends ConfigFileModule
 	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
+	 * Allowed characters pattern for the API host name.
+	 */
+	public const HOST_NAME_PATTERN = '[a-zA-Z0-9:.\-_ ]+';
+
+	/**
 	 * Main host that provides Catalog
 	 */
 	public const MAIN_CATALOG_HOST = 'Main';

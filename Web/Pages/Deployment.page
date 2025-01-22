@@ -1098,7 +1098,7 @@ var oDeployAPIHost = {
 							/>
 							<com:TRegularExpressionValidator
 								ValidationGroup="DeployAPIHostGroup"
-								RegularExpression="<%=Deployment::API_HOST_SHORT_NAME_PATTERN%>"
+								RegularExpression="<%=HostConfig::HOST_NAME_PATTERN%>"
 								ControlToValidate="DeployAPIHostName"
 								ErrorMessage="<%[ Invalid value. ]%>"
 								ControlCssClass="field_invalid"
