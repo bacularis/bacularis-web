@@ -3,7 +3,12 @@
 </span>
 <div id="<%=$this->ClientID%>_container">
 	<div class="w3-container">
-		<a href="javascript:void(0)" class="w3-button w3-margin-bottom w3-green" onclick="oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add ]%> <com:TActiveLabel ID="ResourceTypeAddLink" /></a>
+		<a href="javascript:void(0)" class="w3-button w3-margin-bottom w3-green w3-left w3-margin-right" onclick="oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add ]%> <com:TActiveLabel ID="ResourceTypeAddLink" /></a>
+		<div class="w3-left w3-threequarter w3-margin-left">
+			<com:TActivePanel ID="ResourceListViews">
+				<com:Bacularis.Web.Portlets.TabViews ID="DataView" />
+			</com:TActivePanel>
+		</div>
 	</div>
 	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 		<thead>
@@ -98,6 +103,10 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			}
 		}
 	],
+	set_data: function(data) {
+		var self = oBaculaConfigResourceList<%=$this->ClientID%>;
+		self.data = data;
+	},
 	init: function(data) {
 		var self = oBaculaConfigResourceList<%=$this->ClientID%>;
 		self.data = data;
@@ -111,6 +120,11 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			self.set_bulk_actions();
 			self.set_events();
 		}
+	},
+	refresh: function(data) {
+		const page = this.table.page();
+		this.table.clear().rows.add(data).draw();
+		this.table.page(page).draw(false);
 	},
 	set_events: function() {
 		document.getElementById(this.ids.list).addEventListener('click', function(e) {
@@ -305,6 +319,27 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 		title.textContent = text;
 	}
 };
+function get_resource_list_data<%=$this->ClientID%>() {
+	return oBaculaConfigResourceList<%=$this->ClientID%>.data;
+}
+function update_resource_list_table<%=$this->ClientID%>(data, init) {
+	const obj = oBaculaConfigResourceList<%=$this->ClientID%>;
+	if (init) {
+		obj.refresh(data);
+	} else {
+		obj.init(data);
+	}
+}
+function init_tab_view<%=$this->ClientID%>() {
+	$(function() {
+		post_init_tab_view<%=$this->ClientID%>();
+	});
+}
+function post_init_tab_view<%=$this->ClientID%>() {
+	$(function() {
+		<%=$this->ClientID%>_DataView_TabViews.tabs.apply_filters();
+	});
+}
 </script>
 <com:Bacularis.Web.Portlets.BulkApplyConfigsModal
 	ID="BulkApplyConfigsJob"

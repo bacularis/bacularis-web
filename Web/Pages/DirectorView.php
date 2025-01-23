@@ -71,10 +71,11 @@ class DirectorView extends BaculumWebPage
 		$this->DirDirectorConfig->unloadDirectives();
 		$component_name = $this->getDirectorName();
 		if (!is_null($component_name) && !empty($resource_type)) {
+			$host = $this->User->getDefaultAPIHost();
+			$this->DirectorResourcesConfig->setHost($host);
 			$this->DirectorResourcesConfig->setResourceType($resource_type);
 			$this->DirectorResourcesConfig->setComponentName($component_name);
-			$this->DirectorResourcesConfig->loadResourceListTable();
-			$host = $this->User->getDefaultAPIHost();
+			$this->DirectorResourcesConfig->loadResourceListTable($sender, $param);
 			$this->BulkApplyPatternsDirector->setHost($host);
 		} else {
 			$this->DirectorResourcesConfig->showError(true);

@@ -57,8 +57,8 @@ $(function() {
 		main_id: '<%=$this->ClientID%>',
 		desc: <%=json_encode($this->getDescription())%>,
 		config: <%=json_encode($this->getConfig())%>,
-		data_func: <%=$this->getViewDataFunction()%>,
-		update_func: <%=$this->getUpdateViewFunction()%>,
+		data_func: <%=$this->getViewDataFunction() ?: 'null'%>,
+		update_func: <%=$this->getUpdateViewFunction() ?: 'null'%>,
 		save_func: <%=$this->SaveViewConfig->ActiveControl->Javascript%>,
 		remove_func: <%=$this->RemoveViewConfig->ActiveControl->Javascript%>
 	});

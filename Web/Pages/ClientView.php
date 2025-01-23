@@ -207,7 +207,7 @@ class ClientView extends BaculumWebPage
 			$this->FileDaemonResourcesConfig->setHost($this->UserAPIHosts->SelectedValue);
 			$this->FileDaemonResourcesConfig->setResourceType($resource_type);
 			$this->FileDaemonResourcesConfig->setComponentName($component_name);
-			$this->FileDaemonResourcesConfig->loadResourceListTable();
+			$this->FileDaemonResourcesConfig->loadResourceListTable($sender, $param);
 			$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
 		} else {
 			$this->FileDaemonResourcesConfig->showError(true);

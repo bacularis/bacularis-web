@@ -43,10 +43,8 @@ class ConsoleView extends BaculumWebPage
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
 		}
-		/**
-		 * NOTE: component name is not used here, set only for compatibility
-		 * with BaculaConfigDirectives.
-		 */
+		$host = $this->User->getDefaultAPIHost();
+		$this->ConsoleResourcesConfig->setHost($host);
 		$this->ConsoleResourcesConfig->setComponentName($_SESSION['director']);
 	}
 
@@ -55,7 +53,7 @@ class ConsoleView extends BaculumWebPage
 		$resource_type = $param->getCallbackParameter();
 		if (!empty($resource_type)) {
 			$this->ConsoleResourcesConfig->setResourceType($resource_type);
-			$this->ConsoleResourcesConfig->loadResourceListTable();
+			$this->ConsoleResourcesConfig->loadResourceListTable($sender, $param);
 		} else {
 			$this->ConsoleResourcesConfig->showError(true);
 		}

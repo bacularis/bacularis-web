@@ -32,6 +32,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
+use Prado\Prado;
 
 /**
  * Bacula config resource list control.
@@ -80,18 +81,42 @@ class BaculaConfigResourceList extends Portlets
 		}
 	}
 
-	public function loadResourceListTable()
+	public function loadResourceListTable($sender, $param)
 	{
 		$this->showError(false);
 		$host = $this->getHost();
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
+
+		// prepare buttons and windows
 		$this->ResourceTypeAddLink->Text = $resource_type;
 		$this->ResourceTypeAddWindowTitle->Text = $resource_type;
 		$this->ResourceTypeEditWindowTitle->Text = $resource_type;
+
+		// config bulk actions
 		$this->BulkApplyConfigsJob->setHost($host);
 		$this->BulkApplyConfigsJob->setComponentType($component_type);
 		$this->BulkApplyConfigsJob->setResourceType($resource_type);
+
+		// data view
+		$view_name = sprintf('config_resource_list_%s_%s_%s', $host, $component_type, $resource_type);
+		$resource_view_desc = [
+			'Name' => ['type' => 'string', 'name' => Prado::localize('Name')],
+			'Description' => ['type' => 'string', 'name' => Prado::localize('Description')]
+		];
+		$tab_view = $this->ResourceListViews->findControl('DataView');
+		$tab_view->setViewName($view_name);
+		$tab_view->setViewDataFunction('get_resource_list_data' . $this->ClientID);
+		$tab_view->setUpdateViewFunction('update_resource_list_table' . $this->ClientID);
+		$tab_view->setDescription($resource_view_desc);
+		$this->ResourceListViews->getControls()->add($tab_view);
+		$writer = $this->getResponse()->createHtmlWriter(null);
+		$this->ResourceListViews->render($writer);
+		$cb = $this->getPage()->getCallbackClient();
+		$fn = 'init_tab_view' . $this->ClientID;
+		$cb->callClientFunction($fn);
+
+		// resource list data
 		$config = $this->getModule('api')->get(
 			[
 				'config',
@@ -115,7 +140,7 @@ class BaculaConfigResourceList extends Portlets
 				$directives[] = $data;
 			}
 			$this->getPage()->getCallbackClient()->callClientFunction(
-				'oBaculaConfigResourceList' . $this->ClientID . '.init',
+				'oBaculaConfigResourceList' . $this->ClientID . '.set_data',
 				[$directives]
 			);
 		} else {

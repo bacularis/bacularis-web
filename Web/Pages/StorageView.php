@@ -267,7 +267,7 @@ class StorageView extends BaculumWebPage
 			$this->StorageDaemonResourcesConfig->setHost($host);
 			$this->StorageDaemonResourcesConfig->setResourceType($resource_type);
 			$this->StorageDaemonResourcesConfig->setComponentName($component_name);
-			$this->StorageDaemonResourcesConfig->loadResourceListTable();
+			$this->StorageDaemonResourcesConfig->loadResourceListTable($sender, $param);
 			$this->BulkApplyPatternsStorage->setHost($host);
 		} else {
 			$this->StorageDaemonResourcesConfig->showError(true);
