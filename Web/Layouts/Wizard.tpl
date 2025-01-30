@@ -32,8 +32,11 @@
 			<!-- Top container -->
 				<com:TContentPlaceHolder ID="Wizard" />
 		</com:TForm>
-	<script type="text/javascript">
-		Formatters.set_formatters();
-	</script>
+<script>
+	Formatters.set_formatters();
+	$(function() {
+		set_custom_search_field();
+	});
+</script>
 	</body>
 </html>

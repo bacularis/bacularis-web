@@ -88,6 +88,7 @@ $(function() {
 	if (is_small) {
 		W3SideBar.close();
 	}
+	set_custom_search_field();
 });
 </script>
 	</body>

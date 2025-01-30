@@ -1752,6 +1752,20 @@ function set_page_title_value(value) {
 	}
 }
 
+// Prepare search fields that supports clear button on non-webkit type web browsers
+function set_custom_search_field(try_no) {
+	if (typeof(try_no) == 'undefined') {
+		try_no = 60;
+	}
+	if (jQuery.active > 0 && try_no > 0) {
+		setTimeout(() => set_custom_search_field(--try_no), 500);
+	} else {
+		$('input[type="search"]').wrap('<span class="search_clear"></span>').after($('<span>x</span>').click(function() {
+			$(this).prev('input').val('').trigger('keyup').focus();
+		}));
+	}
+}
+
 $(function() {
 	set_custom_events();
 	set_sbbr_compatibility();
