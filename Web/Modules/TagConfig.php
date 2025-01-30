@@ -160,7 +160,7 @@ class TagConfig extends ConfigFileModule
 	{
 		$tag_config = [];
 		$config = $this->getConfig();
-		if (key_exists($username, $config)) {
+		if (isset($config[$username][self::TAG_VIEW_NAME])) {
 			$tag_config = $config[$username][self::TAG_VIEW_NAME];
 		}
 		if (is_array($tag_config)) {
@@ -211,7 +211,7 @@ class TagConfig extends ConfigFileModule
 			$vw = http_build_query($value);
 			$tag_config[$tag] = $vw;
 		}
-		if (!key_exists($username, $config)) {
+		if (!isset($config[$username][self::TAG_VIEW_NAME])) {
 			$config[$username] = [
 				self::TAG_VIEW_NAME => []
 			];
