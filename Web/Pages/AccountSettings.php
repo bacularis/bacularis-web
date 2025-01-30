@@ -68,6 +68,8 @@ class AccountSettings extends BaculumWebPage
 		}
 
 		$this->Username->Text = $username;
+
+		$this->TagManager->setUsername($username);
 	}
 
 	/**

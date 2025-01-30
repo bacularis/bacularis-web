@@ -14,6 +14,9 @@
 		<a id="btn_account_settings_auth" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'account_settings_auth');">
 			<%[ Security ]%>
 		</a>
+		<a id="btn_account_settings_tags" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'account_settings_tags'); if (oTagManagerList.table) { oTagManagerList.table.responsive.recalc(); }">
+			<%[ Tags ]%>
+		</a>
 	</div>
 	<!-- General options -->
 	<div class="w3-container tab_item" id="account_settings_general">
@@ -289,5 +292,11 @@ var oAccountSettings2FA = {
 };
 oAccountSettings2FA.init();
 		</script>
+	</div>
+	<div class="w3-container tab_item" id="account_settings_tags" style="display: none">
+		<h5><i class="fa-solid fa-tag"></i> <%[ Local user tags ]%></h5>
+		<com:Bacularis.Web.Portlets.TagManager
+			ID="TagManager"
+		/>
 	</div>
 </com:TContent>
