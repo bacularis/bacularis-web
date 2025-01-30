@@ -86,7 +86,7 @@ class TagConfig extends ConfigFileModule
 	 */
 	public const TAG_COLORS = [
 		'red' => ['name' => 'red', 'bg' => '#f44336', 'fg' => 'white'],                 // red
-		'pink'  => ['name' => 'pink', 'bg' => '#e91e63', 'fg' => 'white'],              // pink
+		'pink' => ['name' => 'pink', 'bg' => '#e91e63', 'fg' => 'white'],               // pink
 		'purple' => ['name' => 'purple', 'bg' => '#9c27b0', 'fg' => 'white'],           // purple
 		'deep-purple' => ['name' => 'deep-purple', 'bg' => '#673ab7', 'fg' => 'white'], // deep-purple
 		'indigo' => ['name' => 'indigo', 'bg' => '#3f51b5', 'fg' => 'white'],           // indigo
@@ -153,7 +153,7 @@ class TagConfig extends ConfigFileModule
 	 *
 	 * @param string $username
 	 * @param string $tag tag name
-	 * @param boolean $add_global if true, to results are added also global tags
+	 * @param bool $add_global if true, to results are added also global tags
 	 * @return array user tags config
 	 */
 	public function getTagConfig(string $username, string $tag = '', bool $add_global = false): array

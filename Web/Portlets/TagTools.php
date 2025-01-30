@@ -31,7 +31,7 @@ class TagTools extends Portlets
 	private const DATA_VIEW_NAME = 'DataViewName';
 
 	public $tags = [];
-	public $tag_assign= [];
+	public $tag_assign = [];
 	public $palette = [];
 
 	public $enable_global_tags;
@@ -135,8 +135,8 @@ class TagTools extends Portlets
 	/**
 	 * Create a new tag.
 	 *
-	 * @param TCallback sender object
-	 * @param TCallbackEventParameter callback param
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback param
 	 */
 	public function createTag($sender, $param): void
 	{
@@ -189,8 +189,8 @@ class TagTools extends Portlets
 	/**
 	 * Assign tag(s) to element.
 	 *
-	 * @param TCallback sender object
-	 * @param TCallbackEventParameter callback param
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback param
 	 */
 	public function assignTag($sender, $param): void
 	{
@@ -250,8 +250,8 @@ class TagTools extends Portlets
 	/**
 	 * Unassign tag from element.
 	 *
-	 * @param TCallback sender object
-	 * @param TCallbackEventParameter callback param
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback param
 	 */
 	public function unassignTag($sender, $param): void
 	{

@@ -78,7 +78,7 @@ class TagAssignConfig extends ConfigFileModule
 	 *
 	 * @param string $username user name
 	 * @param string $view view name
-	 * @param boolean $add_global if true, to results are added also global tags
+	 * @param bool $add_global if true, to results are added also global tags
 	 * @return array tag assignment config
 	 */
 	public function getTagAssignConfig(string $username, string $view, bool $add_global = false): array
@@ -89,7 +89,7 @@ class TagAssignConfig extends ConfigFileModule
 			$tag_config = $config[$username];
 		}
 		if (is_array($tag_config)) {
-			foreach($tag_config as $view => $data) {
+			foreach ($tag_config as $view => $data) {
 				foreach ($data as $id => $value) {
 					parse_str($value, $result);
 					$tag_config[$view][$id] = $result;
