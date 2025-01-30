@@ -18,6 +18,9 @@
 		<a id="btn_application_settings_display" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_display');">
 			<%[ Display options ]%>
 		</a>
+		<a id="btn_application_settings_tags" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_tags'); if (oTagManagerList.table) { oTagManagerList.table.responsive.recalc(); }">
+			<%[ Tags ]%>
+		</a>
 		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features');">
 			<%[ Features ]%>
 		</a>
@@ -281,6 +284,46 @@
 			</com:TActiveLinkButton>
 			<i id="save_settings_display_loader" class="fa fa-sync w3-spin" style="display: none"></i>
 		</div>
+	</div>
+	<!-- Tags -->
+	<div class="w3-container tab_item" id="application_settings_tags" style="display: none">
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Enable global tags ]%>:</div>
+			<div class="w3-quarter w3-col">
+				<com:TCheckBox
+					ID="EnableGlobalTags"
+					CssClass="w3-check"
+				/>
+				<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+				<div class="directive_help" style="display: none">
+					<dd><%[ Global tags are tags available for all users. Because every user can create and assign them, you may want to consider enabling this feature if Bacularis users collaborate with each other and want to have shared tags. In environments where users do not collaborate or do not know each other, it is recommended to disable this option. ]%></dd>
+				</div>
+			</div>
+		</div>
+		<div class="w3-center">
+			<com:TActiveLinkButton
+				CssClass="w3-button w3-green"
+				CausesValidation="true"
+				ValidationGroup="AppSettingTags"
+				OnClick="saveTags"
+			>
+				<prop:ClientSide.OnLoading>
+					document.getElementById('save_settings_tags_loader').style.display = '';
+				</prop:ClientSide.OnLoading>
+				<prop:ClientSide.OnComplete>
+					setTimeout(function() {
+						document.getElementById('save_settings_tags_loader').style.display = 'none';
+					}, 300);
+				</prop:ClientSide.OnComplete>
+				<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
+			</com:TActiveLinkButton>
+			<i id="save_settings_tags_loader" class="fa fa-sync w3-spin" style="display: none"></i>
+		</div>
+
+		<h5><i class="fa-solid fa-tag"></i> <%[ Global tags ]%></h5>
+		<com:Bacularis.Web.Portlets.TagManager
+			ID="TagManager"
+		/>
 	</div>
 	<!-- Plugins -->
 	<div class="w3-container tab_item" id="application_settings_plugins" style="display: none">

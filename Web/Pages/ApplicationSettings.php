@@ -30,6 +30,7 @@
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
+use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\WebConfig;
 
 /**
@@ -85,6 +86,9 @@ class ApplicationSettings extends BaculumWebPage
 			}
 			$this->JobAgeOnJobStatusGraph->createDirective();
 
+			// Tags
+			$this->EnableGlobalTags->Checked = (bool) ($this->web_config['baculum']['enable_global_tags'] ?? TagConfig::DEF_GLOBAL_TAG_ENABLED);
+
 			$this->EnableAuditLog->Checked = (bool) ($this->web_config['baculum']['enable_audit_log'] ?? AuditLog::DEF_ENABLED);
 			$this->AuditLogMaxLines->Text = $this->web_config['baculum']['audit_log_max_lines'] ?? AuditLog::DEF_MAX_LINES;
 			if (key_exists('audit_log_types', $this->web_config['baculum']) && is_array($this->web_config['baculum']['audit_log_types'])) {
@@ -118,6 +122,7 @@ class ApplicationSettings extends BaculumWebPage
 				$this->SelfTestAPIHosts->dataBind();
 			}
 		}
+		$this->TagManager->setUsername(TagConfig::GLOBAL_SECTION);
 	}
 
 
@@ -176,6 +181,20 @@ class ApplicationSettings extends BaculumWebPage
 				AuditLog::TYPE_INFO,
 				AuditLog::CATEGORY_APPLICATION,
 				"Save application features settings"
+			);
+		}
+	}
+
+	public function saveTags($sender, $param)
+	{
+		if (count($this->web_config) > 0) {
+			$this->web_config['baculum']['enable_global_tags'] = ($this->EnableGlobalTags->Checked === true) ? 1 : 0;
+			$this->getModule('web_config')->setConfig($this->web_config);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				"Save application tag settings"
 			);
 		}
 	}
