@@ -245,7 +245,7 @@ class TagAssignConfig extends ConfigFileModule
 					continue;
 				}
 				$idx = array_search($tag, $result['tag']);
-				if ($idx === -1) {
+				if ($idx === false) {
 					// tag is not assigned in this view
 					continue;
 				}
