@@ -15,6 +15,8 @@
 		<module id="ssh_key" class="Bacularis\Web\Modules\SSHKey" />
 		<module id="osprofile_config" class="Bacularis\Web\Modules\OSProfileConfig" />
 		<module id="dataview_config" class="Bacularis\Web\Modules\DataViewConfig" />
+		<module id="tag_config" class="Bacularis\Web\Modules\TagConfig" />
+		<module id="tag_assign_config" class="Bacularis\Web\Modules\TagAssignConfig" />
 		<module id="conf_config" class="Bacularis\Web\Modules\ConfigConfig" />
 		<module id="pattern_config" class="Bacularis\Web\Modules\PatternConfig" />
 		<module id="repoauth_config" class="Bacularis\Web\Modules\RepoAuthConfig" />

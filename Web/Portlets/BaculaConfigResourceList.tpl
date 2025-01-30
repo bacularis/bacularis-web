@@ -1,6 +1,8 @@
 <span id="<%=$this->ClientID%>_error_msg" class="w3-text-red" style="display: none">
 	<%[ There was a problem with loading the resource configuration. Please check if selected API host is working and if it provides access to the resource configuration. ]%>
 </span>
+<!-- Tag tools -->
+<com:Bacularis.Web.Portlets.TagTools ID="TagToolsResourceList" ViewName="config_resource_list" />
 <div id="<%=$this->ClientID%>_container">
 	<div class="w3-container">
 		<a href="javascript:void(0)" class="w3-button w3-margin-bottom w3-green w3-left w3-margin-right" onclick="oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add ]%> <com:TActiveLabel ID="ResourceTypeAddLink" /></a>
@@ -10,7 +12,7 @@
 			</com:TActivePanel>
 		</div>
 	</div>
-	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%; table-layout: fixed;">
 		<thead>
 			<tr>
 				<th></th>
@@ -20,6 +22,7 @@
 					</prop:ItemTemplate>
 				</com:Bacularis.Common.Portlets.BSimpleRepeater>
 				<th><%[ In use by ]%></th>
+				<th><%[ Tag ]%></th>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</thead>
@@ -33,6 +36,7 @@
 					</prop:ItemTemplate>
 				</com:Bacularis.Common.Portlets.BSimpleRepeater>
 				<th><%[ In use by ]%></th>
+				<th><%[ Tag ]%></th>
 				<th><%[ Actions ]%></th>
 			</tr>
 		</tfoot>
@@ -137,6 +141,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 		this.table = $('#' + this.ids.list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -166,8 +171,21 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								return icon.outerHTML;
 							},
 							width: '100px'
-						}
-						,{
+						},
+						{
+							data: 'Name',
+							render: (data, type, row) => {
+								const host = '<%=$this->getHost() ?: HostConfig::MAIN_CATALOG_HOST%>';
+								const comptype = '<%=$this->getComponentType()%>';
+								const restype = document.getElementById('<%=$this->ResourceTypeAddLink->ClientID%>').textContent;
+								const resname = data;
+								const id = host + '_' + comptype + '_' + restype;
+								const tt_obj = oTagTools_<%=$this->TagToolsResourceList->ClientID%>;
+								const table = 'oBaculaConfigResourceList<%=$this->ClientID%>.table';
+								return render_tags(type, id, data, tt_obj, table);
+							}
+						},
+						{
 							data: 'Name',
 							render: function (data, type, row) {
 								var span = document.createElement('SPAN');
@@ -214,11 +232,12 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4 ]
-			}],
+				targets: [ 3, 4, 5 ]
+			}
+			],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2)):not(:nth-last-child(3))',
 				blurable: false
 			},
 			order: [1, 'asc']

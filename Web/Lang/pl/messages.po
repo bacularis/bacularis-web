@@ -6195,3 +6195,87 @@ msgstr "To prepare this certificate type, there is required to have Bacularis av
 
 msgid "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."
 msgstr "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."
+
+msgid "Tag"
+msgstr "Tag"
+
+msgid "Assign"
+msgstr "Assign"
+
+msgid "Please select existing tags or create new ones."
+msgstr "Please select existing tags or create new ones."
+
+msgid "Assign tag"
+msgstr "Assign tag"
+
+msgid "Selected tags"
+msgstr "Selected tags"
+
+msgid "Add tag(s)"
+msgstr "Add tag(s)"
+
+msgid "Click here to set tags"
+msgstr "Click here to set tags"
+
+msgid "Create a new tag"
+msgstr "Create a new tag"
+
+msgid "Color"
+msgstr "Color"
+
+msgid "Severity"
+msgstr "Severity"
+
+msgid "Select severity"
+msgstr "Select severity"
+
+msgid "Accessibility"
+msgstr "Accessibility"
+
+msgid "Local tag - available only for you"
+msgstr "Local tag - available only for you"
+
+msgid "Global tag - available for everybody"
+msgstr "Global tag - available for everybody"
+
+msgid "Tag already exists."
+msgstr "Tag already exists."
+
+msgid "Please select tag to assign."
+msgstr "Please select tag to assign."
+
+msgid "Please type new tag name."
+msgstr "Please type new tag name."
+
+msgid "Type a tag name."
+msgstr "Type a tag name."
+
+msgid "local tag"
+msgstr "local tag"
+
+msgid "global tag"
+msgstr "global tag"
+
+msgid "severity"
+msgstr "severity"
+
+msgid "All tags"
+msgstr "All tags"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Edit tag"
+msgstr "Edit tag"
+
+msgid "Local user tags"
+msgstr "Local user tags"
+
+msgid "Global tags"
+msgstr "Global tags"
+
+msgid "Global tags are tags available for all users. Because every user can create and assign them, you may want to consider enabling this feature if Bacularis users collaborate with each other and want to have shared tags. In environments where users do not collaborate or do not know each other, it is recommended to disable this option."
+msgstr "Global tags are tags available for all users. Because every user can create and assign them, you may want to consider enabling this feature if Bacularis users collaborate with each other and want to have shared tags. In environments where users do not collaborate or do not know each other, it is recommended to disable this option."
+
+msgid "Enable global tags"
+msgstr "Enable global tags"

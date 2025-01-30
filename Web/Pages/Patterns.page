@@ -16,6 +16,8 @@
 		<div class="w3-panel">
 			<button type="button" id="add_config_btn" class="w3-button w3-green" onclick="oConfig.load_config_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add config ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsConfigList" ViewName="config_list" />
 		<table id="config_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -25,6 +27,7 @@
 					<th class="w3-center"><%[ Component ]%></th>
 					<th class="w3-center"><%[ Resource ]%></th>
 					<th class="w3-center"><%[ In pattern ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -37,6 +40,7 @@
 					<th class="w3-center"><%[ Component ]%></th>
 					<th class="w3-center"><%[ Resource ]%></th>
 					<th class="w3-center"><%[ In pattern ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -108,6 +112,7 @@ var oConfigList = {
 		this.table = $('#' + this.ids.config_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -145,6 +150,15 @@ var oConfigList = {
 				},
 				{
 					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsConfigList->ClientID%>;
+						const table = 'oConfigList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
 					render: function (data, type, row) {
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
@@ -175,15 +189,15 @@ var oConfigList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 6 ]
+				targets: [ 7 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4, 5 ]
+				targets: [ 3, 4, 5, 6 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
@@ -471,6 +485,8 @@ var oConfig = {
 		<div class="w3-panel">
 			<button type="button" id="add_pattern_btn" class="w3-button w3-green" onclick="oPattern.load_pattern_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add pattern ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsPatternList" ViewName="pattern_list" />
 		<table id="pattern_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -479,6 +495,7 @@ var oConfig = {
 					<th class="w3-center"><%[ Description ]%></th>
 					<th class="w3-center"><%[ Component ]%></th>
 					<th class="w3-center"><%[ Configs ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -490,6 +507,7 @@ var oConfig = {
 					<th class="w3-center"><%[ Description ]%></th>
 					<th class="w3-center"><%[ Component ]%></th>
 					<th class="w3-center"><%[ Configs ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -546,6 +564,7 @@ var oPatternList = {
 		this.table = $('#' + this.ids.pattern_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -580,6 +599,15 @@ var oPatternList = {
 				},
 				{
 					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsPatternList->ClientID%>;
+						const table = 'oPatternList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
 					render: function (data, type, row) {
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
@@ -610,15 +638,15 @@ var oPatternList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 5 ]
+				targets: [ 6 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4 ]
+				targets: [ 3, 4, 5 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],

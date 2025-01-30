@@ -15,6 +15,8 @@
 		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewCloudStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add cloud storage ]%></button>
 		<com:Bacularis.Web.Portlets.TabViews ID="StorageViews" />
 	</div>
+	<!-- Tag tools -->
+	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsStorageList" ViewName="storage_list" />
 	<div class="w3-container">
 		<table id="storage_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
@@ -23,6 +25,7 @@
 					<th>StorageId</th>
 					<th><%[ Name ]%></th>
 					<th><%[ Autochanger ]%></th>
+					<th><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Actions ]%></th>
 				</tr>
 			</thead>
@@ -33,6 +36,7 @@
 					<th>StorageId</th>
 					<th><%[ Name ]%></th>
 					<th><%[ Autochanger ]%></th>
+					<th><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Actions ]%></th>
 				</tr>
 			</tfoot>
@@ -95,6 +99,7 @@ var oStorageList = {
 		this.table = $('#' + this.ids.storage_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -114,6 +119,15 @@ var oStorageList = {
 					data: 'autochanger',
 					render: function(data, type, row) {
 						return ((data === 1) ? '<%[ Yes ]%>' : '<%[ No ]%>');
+					}
+				},
+				{
+					data: 'storageid',
+					render: (data, type, row) => {
+						const id = 'storageid';
+						const tt_obj = oTagTools_<%=$this->TagToolsStorageList->ClientID%>;
+						const table = 'oStorageList.table';
+						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
@@ -159,11 +173,11 @@ var oStorageList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3, 4 ]
+				targets: [ 1, 3, 4, 5 ]
 			}],
 			select: {
 				style: 'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],

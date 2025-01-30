@@ -55,7 +55,7 @@ class BaculumWebPage extends BaculumPage
 	 */
 	public const LOGIN_FAILED_DELAY = 5;
 
-	protected $web_config = [];
+	public $web_config = [];
 
 	public function onPreInit($param)
 	{

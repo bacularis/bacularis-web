@@ -400,7 +400,21 @@ var Formatters = {
 			}
 		}
 	}
-}
+};
+
+const Tag = {
+	severity: [
+		'trivial',
+		'minor',
+		'moderate',
+		'major',
+		'critical'
+	],
+	get_severity_desc: function(severity) {
+		const idx = parseInt(severity, 10) - 1;
+		return (this.severity[idx] || 0);
+	}
+};
 
 function date_time_to_ts(datetime) {
 	var d = datetime;
@@ -547,6 +561,44 @@ function render_string_short(data, type, row) {
 		ret = span.outerHTML;
 	} else {
 		ret = data;
+	}
+	return ret;
+}
+
+function render_tags(type, id, value, tag_obj, table) {
+	let ret;
+	if (type == 'display') {
+		const tags = tag_obj.get_tags(id, value);
+		const container = document.createElement('DIV');
+		container.classList.add('pointer');
+		const add_btn = document.createElement('I');
+		add_btn.classList.add('fa-solid', 'fa-tag', 'w3-left', 'w3-large');
+		add_btn.style.marginLeft = '20px';
+		add_btn.style.padding = '5px 2px';
+		add_btn.setAttribute('onclick', tag_obj.oname + '.open("' + id + '", "' + value + '", ' + table + ');');
+		container.appendChild(add_btn);
+		let tag, rm, label;
+		for (const sel of tags) {
+			tag = document.createElement('DIV');
+			tag.classList.add('w3-left');
+			tag.setAttribute('onclick', table + '.search("#' + sel.tag + '").draw();');
+			tag.title = 'Click on tag to filter'
+			rm = document.createElement('I');
+			rm.classList.add('fa-solid', 'fa-times');
+			rm.setAttribute('onclick', tag_obj.oname + '.unassign("' + id + '", "' + value + '", "' + sel.tag + '", this, ' + table + '); event.stopPropagation();');
+			tag.appendChild(rm);
+			tag.classList.add('btag_table');
+			tag.style.color = sel.color_vals.fg;
+			tag.style.backgroundColor = sel.color_vals.bg;
+			label = document.createTextNode(sel.tag);
+			tag.appendChild(label);
+			container.appendChild(tag);
+		}
+		ret = container.outerHTML;
+	} else if (type == 'sort') {
+		ret = tag_obj.get_tags_sort(id, value);
+	} else {
+		ret = tag_obj.get_tags_search(id, value);
 	}
 	return ret;
 }

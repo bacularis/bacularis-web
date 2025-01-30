@@ -1122,6 +1122,8 @@ oLdapUserSecurity.init();
 			<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new user ]%></button>
 			<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsUserList" ViewName="user_list" />
 		<table id="user_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -1136,6 +1138,7 @@ oLdapUserSecurity.init();
 					<th class="w3-center"><%[ API host groups ]%></th>
 					<th class="w3-center"><%[ IP address restrictions ]%></th>
 					<th class="w3-center"><%[ Enabled ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -1153,6 +1156,7 @@ oLdapUserSecurity.init();
 					<th class="w3-center"><%[ API host groups ]%></th>
 					<th class="w3-center"><%[ IP address restrictions ]%></th>
 					<th class="w3-center"><%[ Enabled ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -1202,6 +1206,7 @@ var oUserList = {
 		this.table = $('#' + this.ids.user_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -1279,6 +1284,15 @@ var oUserList = {
 				},
 				{
 					data: 'username',
+					render: (data, type, row) => {
+						const id = 'username';
+						const tt_obj = oTagTools_<%=$this->TagToolsUserList->ClientID%>;
+						const table = 'oUserList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'username',
 					render: function (data, type, row) {
 						let btns = '';
 
@@ -1328,15 +1342,15 @@ var oUserList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 11 ]
+				targets: [ 12 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 5, 6, 7, 8, 10, 11 ]
+				targets: [ 5, 6, 7, 8, 10, 11, 12 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
@@ -1873,6 +1887,8 @@ $(function() {
 			<com:TCallback ID="UnassignUserAPIHostConsole" OnCallback="TemplateControl.unassignUserAPIHostConsole" />
 		</div>
 	</div>
+	<!-- Tag tools -->
+	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsRoleList" ViewName="role_list" />
 	<div class="w3-container tab_item" id="role_list" style="display: none;">
 		<p class="w3-hide-small">
 			<%[ Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles. ]%>
@@ -1890,6 +1906,7 @@ $(function() {
 					<th class="w3-center"># <%[ Users ]%></th>
 					<th class="w3-center"><%[ Resources ]%></th>
 					<th class="w3-center"><%[ Enabled ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -1903,6 +1920,7 @@ $(function() {
 					<th class="w3-center"># <%[ Users ]%></th>
 					<th class="w3-center"><%[ Resources ]%></th>
 					<th class="w3-center"><%[ Enabled ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -1977,6 +1995,7 @@ var oRoleList = {
 		this.table = $('#' + this.ids.role_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -2035,6 +2054,15 @@ var oRoleList = {
 				},
 				{
 					data: 'role',
+					render: (data, type, row) => {
+						const id = 'role';
+						const tt_obj = oTagTools_<%=$this->TagToolsRoleList->ClientID%>;
+						const table = 'oRoleList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'role',
 					render: function (data, type, row) {
 						var btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -2064,15 +2092,15 @@ var oRoleList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 7 ]
+				targets: [ 8 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 2, 3, 4, 5, 6, 7 ]
+				targets: [ 2, 3, 4, 5, 6, 7, 8 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
@@ -2313,6 +2341,8 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		<div class="w3-panel">
 			<button type="button" id="add_console_btn" class="w3-button w3-green" onclick="oConsoles.load_console_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new console ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsConsoleList" ViewName="config_resource_list" />
 		<table id="console_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -2333,6 +2363,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 					<th class="w3-center">BackupClientACL</th>
 					<th class="w3-center">RestoreClientACL</th>
 					<th class="w3-center">DirectoryACL</th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -2356,6 +2387,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 					<th class="w3-center">BackupClientACL</th>
 					<th class="w3-center">RestoreClientACL</th>
 					<th class="w3-center">DirectoryACL</th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -2403,6 +2435,7 @@ var oConsoleList = {
 		this.table = $('#' + this.ids.console_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -2488,6 +2521,15 @@ var oConsoleList = {
 				},
 				{
 					data: 'Name',
+					render: (data, type, row) => {
+						const id = '<%=$this->User->getDefaultAPIHost()%>_dir_Console';
+						const tt_obj = oTagTools_<%=$this->TagToolsConsoleList->ClientID%>;
+						const table = 'oConsoleList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'Name',
 					render: function (data, type, row) {
 						var btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -2517,15 +2559,15 @@ var oConsoleList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 17 ]
+				targets: [ 18 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+				targets: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc']
@@ -3454,6 +3496,8 @@ $(function() {
 		<div class="w3-panel">
 			<button type="button" id="add_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_api_host_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostList" ViewName="api_host_list" />
 		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -3463,6 +3507,7 @@ $(function() {
 					<th class="w3-center">IP address/hostname</th>
 					<th class="w3-center">Port</th>
 					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -3475,6 +3520,7 @@ $(function() {
 					<th class="w3-center">IP address/hostname</th>
 					<th class="w3-center">Port</th>
 					<th class="w3-center">Access method</th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -3523,6 +3569,7 @@ var oAPIHostList = {
 		this.table = $('#' + this.ids.api_host_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -3550,6 +3597,15 @@ var oAPIHostList = {
 							at = 'OAuth2';
 						}
 						return at;
+					}
+				},
+				{
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostList->ClientID%>;
+						const table = 'oAPIHostList.table';
+						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
@@ -3606,15 +3662,15 @@ var oAPIHostList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 6 ]
+				targets: [ 7 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 2, 3, 4, 5 ]
+				targets: [ 2, 3, 4, 5, 6 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
@@ -4258,6 +4314,8 @@ $(function() {
 		<div class="w3-panel">
 			<button type="button" id="add_api_host_group_btn" class="w3-button w3-green" onclick="oAPIHostGroups.load_api_host_group_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host group ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostGroupList" ViewName="api_host_group_list" />
 		<table id="api_host_group_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -4265,6 +4323,7 @@ $(function() {
 					<th><%[ API group name ]%></th>
 					<th class="w3-center"># <%[ API hosts ]%></th>
 					<th class="w3-center"><%[ API hosts ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -4275,6 +4334,7 @@ $(function() {
 					<th><%[ API group name ]%></th>
 					<th class="w3-center"># <%[ API hosts ]%></th>
 					<th class="w3-center"><%[ API hosts ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -4323,6 +4383,7 @@ var oAPIHostGroupList = {
 		this.table = $('#' + this.ids.api_host_group_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -4344,6 +4405,15 @@ var oAPIHostGroupList = {
 				{
 					data: 'api_hosts_str',
 					render: render_string_short
+				},
+				{
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostGroupList->ClientID%>;
+						const table = 'oAPIHostGroupList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
 				},
 				{
 					data: 'name',
@@ -4397,15 +4467,15 @@ var oAPIHostGroupList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 4 ]
+				targets: [ 5 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 2, 3 ]
+				targets: [ 2, 3, 4 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],

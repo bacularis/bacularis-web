@@ -1178,6 +1178,8 @@ var oJobGraphs = {
 				</ul>
 			</div>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsJobViewJobHistory" ViewName="job_history" />
 		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
@@ -1215,6 +1217,7 @@ var oJobGraphs = {
 					<th class="w3-center"><%[ File table ]%></th>
 					<th class="w3-center"><%[ First vol. ]%></th>
 					<th class="w3-center"><%[ Vol. count ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -1255,6 +1258,7 @@ var oJobGraphs = {
 					<th class="w3-center"><%[ File table ]%></th>
 					<th class="w3-center"><%[ First vol. ]%></th>
 					<th class="w3-center"><%[ Vol. count ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -1281,6 +1285,7 @@ var oJobHistoryList = {
 		this.table = $('#' + this.ids.job_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lBfrtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -1450,6 +1455,15 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'jobid',
+					render: (data, type, row) => {
+						const id = 'jobid';
+						const tt_obj = oTagTools_<%=$this->TagToolsJobViewJobHistory->ClientID%>;
+						const table = 'oJobHistoryList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'jobid',
 					render: function (data, type, row) {
 						var btn = document.createElement('BUTTON');
 						btn.className = 'w3-button w3-green';
@@ -1476,11 +1490,11 @@ var oJobHistoryList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 34 ]
+				targets: [ 35 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
+				targets: [ 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ]
 			},
 			{
 				className: "dt-body-right",

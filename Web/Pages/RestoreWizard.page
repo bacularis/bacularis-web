@@ -171,6 +171,8 @@
 					<span  title="<%[ With this option are searched files with names equal provided filename, otherwise there are searched files with names containing provided filename like *filename*. ]%>" style="margin-right: 10px"><input type="checkbox" class="w3-check" id="restore_wizard_find_strict" value="1" /> <span class="text"><%[ match exact filename ]%></span></span>
 					<span title="<%[ With the given path, the results narrow down to the files in the path only. ]%>"><span class="text"><%[ Path (optional): ]%></span><input type="text" class="w3-text" id="restore_wizard_find_using_path" /> &nbsp;<i id="restore_wizard_find_job_by_filename_loader" class="fas fa-sync fa-spin" style="visibility: hidden;"></i>
 				</div>
+				<!-- Tag tools -->
+				<com:Bacularis.Web.Portlets.TagTools ID="TagToolsRestoreListJobHistory" ViewName="job_history" />
 				<table id="job_to_restore_list" style="width: 100%">
 					<thead>
 						<tr>
@@ -185,6 +187,7 @@
 							<th><%[ Files ]%></th>
 							<th><%[ Start time ]%></th>
 							<th><%[ End time ]%></th>
+							<th><%[ Tag ]%></th>
 							<th><%[ Select ]%></th>
 						</tr>
 					</thead>
@@ -202,6 +205,7 @@
 							<th><%[ Files ]%></th>
 							<th><%[ Start time ]%></th>
 							<th><%[ End time ]%></th>
+							<th><%[ Tag ]%></th>
 							<th><%[ Select ]%></th>
 						</tr>
 					</tfoot>
@@ -355,6 +359,7 @@ var oJobsToRestoreList = {
 		this.table = $('#' + this.ids.job_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"#' + this.ids.filters + '">frtip',
 			buttons: [
 				'copy', 'csv', 'colvis'
@@ -460,6 +465,15 @@ var oJobsToRestoreList = {
 				},
 				{
 					data: 'jobid',
+					render: (data, type, row) => {
+						const id = 'jobid';
+						const tt_obj = oTagTools_<%=$this->TagToolsRestoreListJobHistory->ClientID%>;
+						const table = 'oJobsToRestoreList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'jobid',
 					render: function (data, type, row) {
 						var ret;
 						if (type == 'display') {
@@ -492,7 +506,7 @@ var oJobsToRestoreList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 4, 5, 6, 8, 9, 10, 11 ]
+				targets: [ 1, 4, 5, 6, 8, 9, 10, 11, 12 ]
 			},
 			{
 				className: "dt-body-right",

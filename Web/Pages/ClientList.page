@@ -12,6 +12,8 @@
 		</div>
 		<com:Bacularis.Web.Portlets.TabViews ID="ClientViews" />
 	</div>
+	<!-- Tag tools -->
+	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsClientList" ViewName="client_list" />
 	<div class="w3-container">
 		<table id="client_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
@@ -23,6 +25,7 @@
 					<th><%[ AutoPrune ]%></th>
 					<th><%[ Job retention ]%></th>
 					<th><%[ File retention ]%></th>
+					<th><%[ Tag ]%></th>
 					<th><%[ Actions ]%></th>
 				</tr>
 			</thead>
@@ -36,6 +39,7 @@
 					<th><%[ AutoPrune ]%></th>
 					<th><%[ Job retention ]%></th>
 					<th><%[ File retention ]%></th>
+					<th><%[ Tag ]%></th>
 					<th><%[ Actions ]%></th>
 				</tr>
 			</tfoot>
@@ -101,6 +105,7 @@ var oClientList = {
 		this.table = $('#' + this.ids.client_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -145,6 +150,15 @@ var oClientList = {
 				},
 				{
 					data: 'clientid',
+					render: (data, type, row) => {
+						const id = 'clientid';
+						const tt_obj = oTagTools_<%=$this->TagToolsClientList->ClientID%>;
+						const table = 'oClientList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'clientid',
 					render: function (data, type, row) {
 						let btns = '';
 						let i;
@@ -185,11 +199,11 @@ var oClientList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 4, 5, 6, 7 ]
+				targets: [ 1, 4, 5, 6, 7, 8 ]
 			}],
 			select: {
 				style: 'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [2, 'asc'],

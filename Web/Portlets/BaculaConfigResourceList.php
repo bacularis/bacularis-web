@@ -32,6 +32,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
+use Bacularis\Web\Modules\HostConfig;
 use Prado\Prado;
 
 /**

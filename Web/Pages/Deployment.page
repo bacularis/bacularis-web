@@ -17,6 +17,8 @@
 		<div class="w3-panel">
 			<button type="button" id="deploy_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_deploy_api_host_window()"><i class="fa-solid fa-rocket"></i> &nbsp;<%[ Deploy API host ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostList" ViewName="api_host_list" />
 		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -27,6 +29,7 @@
 					<th class="w3-center"><%[ Port ]%></th>
 					<th class="w3-center"><%[ Access method ]%></th>
 					<th class="w3-center"><%[ Link ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -40,6 +43,7 @@
 					<th class="w3-center"><%[ Port ]%></th>
 					<th class="w3-center"><%[ Access method ]%></th>
 					<th class="w3-center"><%[ Link ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -92,6 +96,7 @@ var oAPIHostList = {
 		this.table = $('#' + this.ids.api_host_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -131,6 +136,15 @@ var oAPIHostList = {
 						a.classList.add('w3-block', 'w3-center');
 						a.appendChild(label);
 						return a.outerHTML;
+					}
+				},
+				{
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostList->ClientID%>;
+						const table = 'oAPIHostList.table';
+						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
@@ -212,19 +226,19 @@ var oAPIHostList = {
 			},
 			{
 				className: 'action_col',
-				targets: [ 7 ]
+				targets: [ 8 ]
 			},
 			{
 				orderable: false,
-				targets: [ 6, 7 ]
+				targets: [ 6, 8 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 2, 3, 4, 5 ]
+				targets: [ 2, 3, 4, 5, 7 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
@@ -1610,6 +1624,8 @@ var oDeployAPIHost = {
 		<div class="w3-panel">
 			<button type="button" id="add_os_profile_btn" class="w3-button w3-green" onclick="oOSProfiles.load_osprofile_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OS profile ]%></button>
 		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsOSProfileList" ViewName="os_profile_list" />
 		<table id="osprofile_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
@@ -1618,6 +1634,7 @@ var oDeployAPIHost = {
 					<th class="w3-center"><%[ Description ]%></th>
 					<th class="w3-center"><%[ Repository type ]%></th>
 					<th class="w3-center"><%[ Pre-defined ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
@@ -1629,6 +1646,7 @@ var oDeployAPIHost = {
 					<th class="w3-center"><%[ Description ]%></th>
 					<th class="w3-center"><%[ Repository type ]%></th>
 					<th class="w3-center"><%[ Pre-defined ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</tfoot>
@@ -1678,6 +1696,7 @@ var oOSProfileList = {
 		this.table = $('#' + this.ids.osprofile_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			dom: 'lB<"table_toolbar">frtip',
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
@@ -1714,6 +1733,15 @@ var oOSProfileList = {
 				},
 				{
 					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsOSProfileList->ClientID%>;
+						const table = 'oOSProfileList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
 					render: function (data, type, row) {
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -1743,15 +1771,15 @@ var oOSProfileList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 5 ]
+				targets: [ 6 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4, 5 ]
+				targets: [ 3, 4, 5, 6 ]
 			}],
 			select: {
 				style:    'os',
-				selector: 'td:not(:last-child):not(:first-child)',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
 				blurable: false
 			},
 			order: [1, 'asc'],
