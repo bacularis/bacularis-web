@@ -6280,3 +6280,6 @@ msgstr "Global tags are tags available for all users. Because every user can cre
 
 msgid "Enable global tags"
 msgstr "Enable global tags"
+
+msgid "Select action"
+msgstr "Select action"
