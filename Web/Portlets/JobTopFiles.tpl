@@ -24,7 +24,7 @@
 			<h2 id="job_top_files_modal_title"></h2>
 		</header>
 		<div class="w3-container w3-padding w3-container">
-			<table id="job_top_files_table" class="w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%">
+			<table id="job_top_files_table" class="display w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%">
 				<thead>
 					<tr class="row">
 						<th></th>
@@ -87,15 +87,29 @@ var oJobTopFiles<%=$this->ClientID%> = {
 		this.table = $('#' + this.ids.file_list).DataTable({
 			data: data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -142,12 +156,13 @@ var oJobTopFiles<%=$this->ClientID%> = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [
 				{
-					className: 'control',
+					className: 'dtr-control',
 					orderable: false,
 					targets: 0
 				},
@@ -159,7 +174,7 @@ var oJobTopFiles<%=$this->ClientID%> = {
 			drawCallback: function () {
 				this.api().columns([2, 3]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

@@ -663,7 +663,7 @@
 					<h2 id="get_users_table_title"></h2>
 				</header>
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
-					<table id="get_users_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%;">
+					<table id="get_users_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%;">
 						<thead>
 							<tr>
 								<th><%[ Username ]%></th>
@@ -963,10 +963,25 @@ var oUserSecurity = {
 		this.table = $('#' + this.ids.get_users).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			columns: [
 				{data: 'username'},
 				{
@@ -984,7 +999,8 @@ var oUserSecurity = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
@@ -1124,7 +1140,7 @@ oLdapUserSecurity.init();
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsUserList" ViewName="user_list" />
-		<table id="user_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="user_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1198,7 +1214,10 @@ var oUserList = {
 	set_events: function() {
 		document.getElementById(this.ids.user_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -1207,15 +1226,34 @@ var oUserList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -1331,11 +1369,12 @@ var oUserList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -1362,7 +1401,7 @@ var oUserList = {
 	set_filters: function(api) {
 		api.columns([5, 6, 7, 8, 10]).every(function () {
 			var column = this;
-			var select = $('<select style="max-width: 200px"><option value=""></option></select>')
+			var select = $('<select class="dt-select" style="max-width: 200px"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
 			.on('change', function () {
 				var val = dtEscapeRegex(
@@ -1419,7 +1458,7 @@ var oUserList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -1896,7 +1935,7 @@ $(function() {
 		<div class="w3-panel">
 			<button type="button" id="add_role_btn" class="w3-button w3-green" onclick="oRoles.load_role_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a>
 		</div>
-		<table id="role_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="role_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1987,7 +2026,10 @@ var oRoleList = {
 	set_events: function() {
 		document.getElementById(this.ids.role_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -1996,15 +2038,34 @@ var oRoleList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -2081,11 +2142,12 @@ var oRoleList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -2112,7 +2174,7 @@ var oRoleList = {
 	set_filters: function(api) {
 		api.columns([6]).every(function () {
 			var column = this;
-			var select = $('<select><option value=""></option></select>')
+			var select = $('<select class="dt-select"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
 			.on('change', function () {
 				var val = dtEscapeRegex(
@@ -2141,7 +2203,7 @@ var oRoleList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -2343,7 +2405,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsConsoleList" ViewName="config_resource_list" />
-		<table id="console_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="console_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -2427,7 +2489,10 @@ var oConsoleList = {
 	set_events: function() {
 		document.getElementById(this.ids.console_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -2436,15 +2501,34 @@ var oConsoleList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -2548,11 +2632,12 @@ var oConsoleList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -2575,7 +2660,7 @@ var oConsoleList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -2661,7 +2746,7 @@ $(function() {
 		<div id="api_basic_user_btn" class="w3-panel">
 			<button type="button" id="add_api_basic_user_btn" class="w3-button w3-green" onclick="oAPIBasicUsers.load_api_basic_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API basic user ]%></button>
 		</div>
-		<table id="api_basic_user_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="api_basic_user_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -2715,7 +2800,10 @@ var oAPIBasicUserList = {
 	set_events: function() {
 		document.getElementById(this.ids.api_basic_user_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -2723,15 +2811,34 @@ var oAPIBasicUserList = {
 		this.table = $('#' + this.ids.api_basic_user_list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -2776,11 +2883,12 @@ var oAPIBasicUserList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -2803,7 +2911,7 @@ var oAPIBasicUserList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -3072,7 +3180,7 @@ $(function() {
 		<div id="oauth2_client_btn" class="w3-panel">
 			<button type="button" id="add_oauth2_client_btn" class="w3-button w3-green" onclick="oOAuth2Clients.load_oauth2_client_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OAuth2 client ]%></button>
 		</div>
-		<table id="oauth2_client_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="oauth2_client_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -3132,7 +3240,10 @@ var oOAuth2ClientList = {
 	set_events: function() {
 		document.getElementById(this.ids.oauth2_client_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -3140,15 +3251,34 @@ var oOAuth2ClientList = {
 		this.table = $('#' + this.ids.oauth2_client_list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -3200,11 +3330,12 @@ var oOAuth2ClientList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -3227,7 +3358,7 @@ var oOAuth2ClientList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -3498,7 +3629,7 @@ $(function() {
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostList" ViewName="api_host_list" />
-		<table id="api_host_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="api_host_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -3561,7 +3692,10 @@ var oAPIHostList = {
 	set_events: function() {
 		document.getElementById(this.ids.api_host_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -3570,15 +3704,34 @@ var oAPIHostList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -3651,11 +3804,12 @@ var oAPIHostList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -3682,7 +3836,7 @@ var oAPIHostList = {
 	set_filters: function(api) {
 		api.columns([2, 3, 4, 5]).every(function () {
 			var column = this;
-			var select = $('<select><option value=""></option></select>')
+			var select = $('<select class="dt-select"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
 			.on('change', function () {
 				var val = dtEscapeRegex(
@@ -3703,7 +3857,7 @@ var oAPIHostList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -4316,7 +4470,7 @@ $(function() {
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostGroupList" ViewName="api_host_group_list" />
-		<table id="api_host_group_list_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="api_host_group_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -4375,7 +4529,10 @@ var oAPIHostGroupList = {
 	set_events: function() {
 		document.getElementById(this.ids.api_host_group_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -4384,15 +4541,34 @@ var oAPIHostGroupList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -4456,11 +4632,12 @@ var oAPIHostGroupList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -4487,7 +4664,7 @@ var oAPIHostGroupList = {
 	set_filters: function(api) {
 		api.columns([2]).every(function () {
 			const column = this;
-			const select = $('<select><option value=""></option></select>')
+			const select = $('<select class="dt-select"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
 			.on('change', function () {
 				const val = dtEscapeRegex(
@@ -4508,7 +4685,7 @@ var oAPIHostGroupList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}

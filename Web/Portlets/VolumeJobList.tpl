@@ -1,5 +1,5 @@
 <div id="volume_job_list">
-	<table id="jobs_on_volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+	<table id="jobs_on_volume_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 		<thead>
 			<tr>
 				<th></th>
@@ -105,15 +105,29 @@ var oJobsOnVolumeList = {
 		this.table = $('#' + this.ids.jobs_on_volume_list).DataTable({
 			data: data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -263,11 +277,12 @@ var oJobsOnVolumeList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -283,7 +298,7 @@ var oJobsOnVolumeList = {
 			drawCallback: function () {
 				this.api().columns([2, 3, 4, 14]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

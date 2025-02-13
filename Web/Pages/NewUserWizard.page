@@ -649,7 +649,7 @@ var oAPIHostGroups = {
 
 					<!-- API host table -->
 					<div id="new_user_step4_api_host_table_container" style="display: <%=$this->SelectedResources->Checked ? 'block' : 'none'%>">
-						<table id="new_user_step4_api_host_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+						<table id="new_user_step4_api_host_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 							<thead>
 								<tr>
 									<th></th>
@@ -702,15 +702,29 @@ var oAPIHostList = {
 		this.table = $('#' + this.ids.api_host_list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -766,11 +780,12 @@ var oAPIHostList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},

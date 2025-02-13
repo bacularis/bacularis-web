@@ -14,7 +14,7 @@
 			<com:Bacularis.Web.Portlets.UpdateSlots />
 		</div>
 		<com:Bacularis.Web.Portlets.TabViews ID="VolumeViews" />
-		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+		<table id="volume_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -143,9 +143,9 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
-	<div id="table_predefined_filters_body" style="display: none; height: 38px; width: 290px;">
+	<div id="table_predefined_filters_body" class="dt-buttons" style="display: none; height: 38px; width: 290px;">
 		<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px">
-			<select id="table_predefined_filters_value_type" style="width: 250px;">
+			<select id="table_predefined_filters_value_type" class="dt-select" style="width: 250px;">
 				<option value=""><%[ All pools ]%></option>
 			</select>
 		</div>
@@ -215,7 +215,10 @@ var oVolumeList = {
 	set_events: function() {
 		document.getElementById(this.ids.volume_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 		const filters_select = document.getElementById(this.ids.table_predefined_filters_value_type);
@@ -232,15 +235,39 @@ var oVolumeList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar"><"#table_predefined_filters">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					},
+					{
+						div: {
+							id: 'table_predefined_filters'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -526,11 +553,12 @@ var oVolumeList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -556,7 +584,7 @@ var oVolumeList = {
 			drawCallback: function () {
 				this.api().columns([2, 3, 6, 10, 13]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -589,7 +617,7 @@ var oVolumeList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	},

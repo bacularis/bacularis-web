@@ -1180,7 +1180,7 @@ var oJobGraphs = {
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsJobViewJobHistory" ViewName="job_history" />
-		<table id="job_history_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+		<table id="job_history_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -1286,15 +1286,29 @@ var oJobHistoryList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -1479,11 +1493,12 @@ var oJobHistoryList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -1512,7 +1527,7 @@ var oJobHistoryList = {
 				}
 				this.api().columns([5, 6, 7, 16]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -1577,7 +1592,7 @@ fragment = fragment ? '#' + fragment : '';
 					<h2><%[ Job file differences ]%> - <span id="job_history_job_diff_modal_title"></span></h2>
 				</header>
 				<div class="w3-container w3-padding w3-container">
-					<table id="job_history_job_diff_modal_table" class="w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%; table-layout: fixed;">
+					<table id="job_history_job_diff_modal_table" class="display w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%; table-layout: fixed;">
 						<thead>
 							<tr class="row">
 								<th class="w3-center">A JobId</th>
@@ -1730,18 +1745,33 @@ var oJobFileDiff = {
 		this.table = $('#' + this.ids.table).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			enableNestedDataAccess: '.',
 			autoWidth: false,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
 					data: 'A.jobid',
-					width: '80px'
+					width: '100px'
 				},
 				{
 					data: 'A.file',
@@ -1765,7 +1795,7 @@ var oJobFileDiff = {
 						if (type == 'display') {
 							const span = document.createElement('SPAN');
 							span.style.padding = '6px';
-							span.style.width = '90px';
+							span.style.width = '110px';
 							span.classList.add('w3-tag', 'w3-small', 'bold');
 							if (data === this.file_states.added.name) {
 								span.classList.add('w3-green');
@@ -1783,7 +1813,7 @@ var oJobFileDiff = {
 						}
 						return ret;
 					},
-					width: '110px'
+					width: '130px'
 				},
 				{
 					data: 'B.state',
@@ -1792,7 +1822,7 @@ var oJobFileDiff = {
 						if (type == 'display') {
 							const span = document.createElement('SPAN');
 							span.style.padding = '6px';
-							span.style.width = '90px';
+							span.style.width = '110px';
 							span.classList.add('w3-tag', 'w3-small', 'bold');
 							if (data === this.file_states.added.name) {
 								span.classList.add('w3-green');
@@ -1810,7 +1840,7 @@ var oJobFileDiff = {
 						}
 						return ret;
 					},
-					width: '110px'
+					width: '130px'
 				},
 				{
 					data: 'B.file',
@@ -1829,12 +1859,13 @@ var oJobFileDiff = {
 				},
 				{
 					data: 'B.jobid',
-					width: '80px'
+					width: '100px'
 				}
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [
@@ -1852,7 +1883,7 @@ var oJobFileDiff = {
 			drawCallback: function () {
 				this.api().columns([0, 2, 3, 5]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

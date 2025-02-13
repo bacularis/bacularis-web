@@ -1,5 +1,5 @@
 <div id="tag_manager">
-	<table id="tag_manager_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+	<table id="tag_manager_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 		<thead>
 			<tr>
 				<th></th>
@@ -221,15 +221,29 @@ oTagManagerList = {
 		this.table = $('#' + this.ids.tag_manager_list).DataTable({
 			data: data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -242,7 +256,7 @@ oTagManagerList = {
 						if (type == 'display') {
 							const container = document.createElement('DIV');
 							container.style.width = '140px';
-							container.style.height = '18px';
+							container.style.height = '26px';
 							container.style.margin = '0 auto';
 							container.style.fontSize = '13px';
 							container.classList.add('btag');
@@ -299,12 +313,13 @@ oTagManagerList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [
 				{
-					className: 'control',
+					className: 'dtr-control',
 					orderable: false,
 					targets: 0
 				},
@@ -317,7 +332,7 @@ oTagManagerList = {
 			drawCallback: function () {
 				this.api().columns([1, 2, 3]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

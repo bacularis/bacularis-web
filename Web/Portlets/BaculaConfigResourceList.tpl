@@ -12,7 +12,7 @@
 			</com:TActivePanel>
 		</div>
 	</div>
-	<table id="<%=$this->ClientID%>_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%; table-layout: fixed;">
+	<table id="<%=$this->ClientID%>_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%; table-layout: fixed;">
 		<thead>
 			<tr>
 				<th></th>
@@ -50,7 +50,7 @@
 			<h2><%[ Resource usage ]%> - <span id="<%=$this->ClientID%>_in_use_by_modal_title"></span></h2>
 		</header>
 		<div class="w3-container w3-padding w3-container">
-			<table id="<%=$this->ClientID%>_in_use_by_table" class="w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%">
+			<table id="<%=$this->ClientID%>_in_use_by_table" class="display w3-table w3-striped w3-margin-bottom dataTable dtr-column" style="width: 100%">
 				<thead>
 					<tr class="row">
 						<th></th>
@@ -133,7 +133,10 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 	set_events: function() {
 		document.getElementById(this.ids.list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -142,15 +145,34 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 						{
-							className: 'details-control',
 							orderable: false,
 							data: null,
 							defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -170,7 +192,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								icon.setAttribute('onclick', 'oBaculaConfigResourceDeps<%=$this->ClientID%>.load_deps("' + restype + '", "' + resname + '");');
 								return icon.outerHTML;
 							},
-							width: '100px'
+							width: '110px'
 						},
 						{
 							data: 'Name',
@@ -222,11 +244,12 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -245,7 +268,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -286,15 +309,29 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 		this.table = $('#' + this.ids.list).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -314,11 +351,12 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},

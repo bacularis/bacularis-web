@@ -481,7 +481,7 @@
 			</div>
 		</div>
 		<div class="w3-container">
-			<table id="application_settings_audit_log_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+			<table id="application_settings_audit_log_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -553,17 +553,31 @@ var oAppSettingsAuditLog = {
 		this.table = $('#' + this.ids.table).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			pageLength : 25,
 			lengthMenu: [10, 25, 50, 75, 100],
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -617,11 +631,12 @@ var oAppSettingsAuditLog = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -633,7 +648,7 @@ var oAppSettingsAuditLog = {
 			initComplete: function () {
 				this.api().columns([1, 2, 4, 5]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -692,7 +707,7 @@ $(function() {
 			</div>
 		</div>
 		<div class="w3-container">
-			<table id="application_settings_self_test_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="display: none; width: 100%">
+			<table id="application_settings_self_test_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="display: none; width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -755,17 +770,31 @@ var oAppSettingsSelfTest = {
 		this.table = $('#' + this.ids.table).DataTable({
 			data: this.data,
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			pageLength : 25,
 			lengthMenu: [10, 25, 50, 75, 100],
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -811,11 +840,12 @@ var oAppSettingsSelfTest = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -826,7 +856,7 @@ var oAppSettingsSelfTest = {
 			drawCallback: function () {
 				this.api().columns([1, 2, 3]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

@@ -43,7 +43,7 @@
 	<div class="w3-container tab_item" id="job_history">
 		<com:Bacularis.Web.Portlets.TabViews ID="JobViews" />
 		<div class="w3-container">
-			<table id="job_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<table id="job_list" class="display nowrap w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -146,9 +146,9 @@
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<div id="table_predefined_filters_body" style="display: none; height: 38px; width: 290px;">
-			<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-left w3-margin-right" style="line-height: 38px">
-				<select id="table_predefined_filters_value_type" style="width: 250px;">
+		<div id="table_predefined_filters_body" style="display: none; width: 290px;">
+			<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-margin-right">
+				<select id="table_predefined_filters_value_type" class="dt-select" style="width: 250px;">
 					<option value=""><%[ All jobs ]%></option>
 					<option value="running"><%[ Running jobs ]%></option>
 					<option value="ok"><%[ Jobs finished successfully ]%></option>
@@ -158,11 +158,11 @@
 				</select>
 			</div>
 			<!-- this item belongs to table_adv_filters. Placed here for better displaying -->
-			<a href="javascript:void(0)" class="w3-show-block" style="line-height: 38px;" onclick="$('#table_adv_filters_fields').slideToggle('fast');" title="<%[ Advanced filters ]%>"><i class="fa-solid fa-filter"></i></a>
+			<a href="javascript:void(0)" onclick="$('#table_adv_filters_fields').slideToggle('fast');" title="<%[ Advanced filters ]%>"><i class="fa-solid fa-filter"></i></a>
 		</div>
 		<div id="table_adv_filters_body" class="w3-margin-left" style="display: none;">
-			<div id="table_adv_filters_fields" class="w3-left" style="width: 500px; text-align: left; display: none;">
-				<select id="table_adv_filters_value_type">
+			<div id="table_adv_filters_fields" class="w3-left" style="width: 505px; text-align: left; display: none;">
+				<select id="table_adv_filters_value_type" class="dt-select">
 					<option value="schedtime_epoch">Scheduled time</option>
 					<option value="starttime_epoch" selected>Start time</option>
 					<option value="endtime_epoch">End time</option>
@@ -172,18 +172,18 @@
 					ID="TableAdvFiltersDateFrom"
 					CssClass="w3-input w3-border w3-show-inline-block"
 					DateFormat="yyyy-MM-dd"
-					Style="width: 100px"
+					Style="width: 100px; height: 36px;"
 					Attributes.placeholder="<%[ From ]%>"
 				/>
 				<com:TDatePicker
 					ID="TableAdvFiltersDateTo"
 					CssClass="w3-input w3-border w3-show-inline-block"
 					DateFormat="yyyy-MM-dd"
-					Style="width: 100px"
+					Style="width: 100px; height: 36px;"
 					Attributes.placeholder="<%[ To ]%>"
 				/>
 				&nbsp;<i class="fas fa-times w3-margin-right" id="table_adv_filters_clear" style="cursor: pointer"></i>
-				<select id="table_adv_filters_tag_severity" style="width: 105px;">
+				<select id="table_adv_filters_tag_severity" class="dt-select" style="width: 105px;">
 					<option value=""><%[ All tags ]%></option>
 					<option value="%critical">Critical</option>
 					<option value="%major">Major</option>
@@ -325,7 +325,10 @@ var oJobHistoryList = {
 	set_events: function() {
 		document.getElementById(this.ids.job_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 		var el = $('#' + this.ids.job_list);
@@ -349,15 +352,44 @@ var oJobHistoryList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar"><"#table_predefined_filters"><"#table_adv_filters">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					},
+					{
+						div: {
+							id: 'table_predefined_filters'
+						}
+					},
+					{
+						div: {
+							id: 'table_adv_filters'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -585,11 +617,12 @@ var oJobHistoryList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -619,7 +652,7 @@ var oJobHistoryList = {
 			drawCallback: function () {
 				this.api().columns([2, 3, 4, 5, 15]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -652,7 +685,7 @@ var oJobHistoryList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	},
@@ -868,7 +901,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 	<!-- Job List -->
 	<div class="w3-container tab_item" id="job_details" style="display: none">
 		<div class="w3-container">
-			<table id="job_details_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+			<table id="job_details_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -977,7 +1010,10 @@ const oJobList = {
 	set_events: function() {
 		document.getElementById(this.ids.job_details_list).addEventListener('click', function(e) {
 			$(function() {
-				this.table_toolbar.style.display = this.table.rows({selected: true}).data().length > 0 ? '' : 'none';
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
 			}.bind(this));
 		}.bind(this));
 	},
@@ -986,15 +1022,34 @@ const oJobList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lB<"table_toolbar">frtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -1148,11 +1203,12 @@ const oJobList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -1169,7 +1225,7 @@ const oJobList = {
 			initComplete: function () {
 				this.api().columns([3, 4, 7, 8, 9]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -1218,7 +1274,7 @@ const oJobList = {
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-			actions: '<%[ Actions ]%>',
+			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
 	}
@@ -1274,7 +1330,7 @@ const oJobList = {
 				</span>
 			</div>
 			<div id="job_history_report" class="w3-container" style="display: none">
-				<table id="job_history_report_table" class="w3-table w3-striped w3-hoverable w3-margin-bottom small_padding" style="width: 100%">
+				<table id="job_history_report_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom small_padding" style="width: 100%">
 					<thead id="job_history_report_header"></thead>
 					<tbody id="job_history_report_body"></tbody>
 					<tfoot id="job_history_report_footer"></tfoot>
@@ -1290,7 +1346,7 @@ const oJobList = {
 						</header>
 						<div class="w3-container w3-margin-left w3-margin-right">
 							<h4 id="job_history_report_details_date"></h4>
-							<table id="job_history_report_details_table" class="w3-table w3-striped w3-margin-bottom" style="width: 100%">
+							<table id="job_history_report_details_table" class="display w3-table w3-striped w3-margin-bottom" style="width: 100%">
 								<thead>
 									<tr>
 										<th><%[ Job log ]%></th>
@@ -1471,20 +1527,37 @@ class JobHistoryReportDetails {
 	}
 	get_table_defs() {
 		const defs = {
-			dom: 'lBfrtip',
-			buttons: [
-				{
-					extend: 'copy',
-					exportOptions: {orthogonal: 'export'}
-				},
-				{
-					extend: 'csv',
-					exportOptions: {orthogonal: 'export'}
-				}
-			],
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: [
+							{
+								extend: 'copy',
+								exportOptions: {orthogonal: 'export'}
+							},
+							{
+								extend: 'csv',
+								exportOptions: {orthogonal: 'export'}
+							},
+							'colvis'
+						]
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -1515,11 +1588,12 @@ class JobHistoryReportDetails {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},{
@@ -1530,7 +1604,7 @@ class JobHistoryReportDetails {
 			initComplete: function () {
 				this.api().columns([4]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -1901,24 +1975,40 @@ class JobHistoryReport {
 	get_table_defs() {
 		const defs = {
 			deferRender: true,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: [
+							{
+								extend: 'copy',
+								exportOptions: {orthogonal: 'export'}
+							},
+							{
+								extend: 'csv',
+								exportOptions: {orthogonal: 'export'}
+							},
+							'colvis'
+						]
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			autoWidth: true,
-			buttons: [
-				{
-					extend: 'copy',
-					exportOptions: {orthogonal: 'export'}
-				},
-				{
-					extend: 'csv',
-					exportOptions: {orthogonal: 'export'}
-				},
-				'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -1940,11 +2030,12 @@ class JobHistoryReport {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			}],
@@ -1952,7 +2043,7 @@ class JobHistoryReport {
 			initComplete: function () {
 				this.api().columns([1]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

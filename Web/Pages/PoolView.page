@@ -228,7 +228,7 @@ ThemeMode.add_cb(() => {
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsPoolViewVolumeList" ViewName="volume_list" />
 	<div class="w3-container tab_item" id="volumes_in_pool" style="display: none">
-		<table id="volume_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+		<table id="volume_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>
@@ -388,15 +388,44 @@ var oVolumeList = {
 			data: oVolumes,
 			deferRender: true,
 			autoWidth: false,
-			dom: 'lBfrtip',
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					},
+					{
+						div: {
+							id: 'table_predefined_filters'
+						}
+					},
+					{
+						div: {
+							id: 'table_adv_filters'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			buttons: [
-				'copy', 'csv', 'colvis'
-			],
 			columns: [
 				{
-					className: 'details-control',
 					orderable: false,
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
@@ -658,11 +687,12 @@ var oVolumeList = {
 			],
 			responsive: {
 				details: {
-					type: 'column'
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
 			columnDefs: [{
-				className: 'control',
+				className: 'dtr-control',
 				orderable: false,
 				targets: 0
 			},
@@ -678,7 +708,7 @@ var oVolumeList = {
 			initComplete: function () {
 				this.api().columns([2, 3, 6, 10, 13]).every(function () {
 					var column = this;
-					var select = $('<select><option value=""></option></select>')
+					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(

@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<div class="w3-threequarter">
-				<table id="last_jobs_list" class="w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+				<table id="last_jobs_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 					<thead>
 						<tr>
 							<th></th>

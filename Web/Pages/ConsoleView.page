@@ -10,7 +10,7 @@
 		<a id="btn_console_web" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'console_web');"<%=!$this->getModule('users')->isPageAllowed($this->User, 'Console') ? ' style="display: none"': ''%>>
 			<%[ Console ]%>
 		</a>
-		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config');"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config'); if (oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table) {oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table.responsive.recalc(); }"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
 			<%[ Configure console ]%>
 		</a>
 	</div>

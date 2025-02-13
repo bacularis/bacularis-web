@@ -17,7 +17,7 @@
 			<com:TActiveDropDownList
 				ID="FileListOrderBy"
 				CssClass="w3-select w3-border"
-				Style="width: 130px;"
+				Style="width: 146px;"
 				ClientSide.OnComplete="load_job_list_files();"
 			>
 				<com:TListItem Value="none" Text="Select order by" />
@@ -28,7 +28,7 @@
 			<com:TActiveDropDownList
 				ID="FileListOrderType"
 				CssClass="w3-select w3-border"
-				style="width: 100px;"
+				style="width: 116px;"
 				ClientSide.OnComplete="load_job_list_files();"
 			>
 				<com:TListItem Value="asc" Text="Ascending" />
@@ -67,7 +67,7 @@
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">UID</th>
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">GID</th>
 						<th class="w3-center w3-hide-small" style="width: 40px">Size</th>
-						<th class="w3-center w3-hide-small" style="width: 135px">MTIME</th>
+						<th class="w3-center w3-hide-small" style="width: 155px">MTIME</th>
 						<th class="w3-center"><%[ File ]%></th>
 						<th class="w3-center w3-hide-small" style="width: 50px"><%[ State ]%></th>
 					</tr>
