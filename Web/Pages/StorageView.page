@@ -1058,17 +1058,19 @@ var oGraphicalStorageStatus = {
 			}
 
 			var val1 = 0;
-			var val2 = parseInt(total_space_gb/100*20, 10);
-			var val3 = parseInt(total_space_gb/100*40, 10);
-			var val4 = parseInt(total_space_gb/100*60, 10);
-			var val5 = parseInt(total_space_gb/100*80, 10);
+			var val2 = (total_space_gb / 100) * 20;
+			var val3 = (total_space_gb / 100) * 40;
+			var val4 = (total_space_gb / 100) * 60;
+			var val5 = (total_space_gb / 100) * 80;
 			var val6 = total_space_gb;
 			var curr_opts = {
 				staticLabels: {
 					labels: [val1, val2, val3, val4, val5, val6]  // Print labels at these values
 				},
 				staticZones: [
-					{strokeStyle: "#30B32D", min: 0, max: val4}, // Green
+					{strokeStyle: "#30B32D", min: val1, max: val2}, // Green
+					{strokeStyle: "#30B32D", min: val2, max: val3}, // Green
+					{strokeStyle: "#30B32D", min: val3, max: val4}, // Green
 					{strokeStyle: "#FFDD00", min: val4, max: val5}, // Yellow
 					{strokeStyle: "#F03E3E", min: val5, max: val6}  // Red
 				]
@@ -1521,17 +1523,19 @@ var oGraphicalStorageStatus = {
 		}
 
 		var val1 = 0;
-		var val2 = parseInt(max_value_kbps/100*20, 10);
-		var val3 = parseInt(max_value_kbps/100*40, 10);
-		var val4 = parseInt(max_value_kbps/100*60, 10);
-		var val5 = parseInt(max_value_kbps/100*80, 10);
+		var val2 = (max_value_kbps / 100) * 20;
+		var val3 = (max_value_kbps / 100) * 40;
+		var val4 = (max_value_kbps / 100) * 60;
+		var val5 = (max_value_kbps / 100) * 80;
 		var val6 = max_value_kbps;
 		var options = {
 			staticLabels: {
 				labels: [val1, val2, val3, val4, val5, val6]  // Print labels at these values
 			},
 			staticZones: [
-				{strokeStyle: "#30B32D", min: 0, max: val4}, // Green
+				{strokeStyle: "#30B32D", min: val1, max: val2}, // Green
+				{strokeStyle: "#30B32D", min: val2, max: val3}, // Green
+				{strokeStyle: "#30B32D", min: val3, max: val4}, // Green
 				{strokeStyle: "#FFDD00", min: val4, max: val5}, // Yellow
 				{strokeStyle: "#F03E3E", min: val5, max: val6}  // Red
 			],
