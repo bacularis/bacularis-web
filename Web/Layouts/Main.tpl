@@ -16,7 +16,7 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/buttons.colVis.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-select/js/dataTables.select.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/flotr2/flotr2.js %> />
-			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/gaugejs/dist/gauge.min.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/valuatum--gauge.js/dist/gauge.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />

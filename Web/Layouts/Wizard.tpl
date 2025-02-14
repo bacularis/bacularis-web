@@ -21,11 +21,11 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />
-			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/opentip/downloads/opentip-jquery.min.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-dt/css/dataTables.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-responsive-dt/css/responsive.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />
-			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/opentip/css/opentip.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />

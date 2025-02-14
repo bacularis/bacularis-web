@@ -1,7 +1,7 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
-	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/bower-asset/opentip/downloads/opentip-jquery.min.js %> />
-	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/bower-asset/opentip/css/opentip.css %> />
+	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
 	<header class="w3-container">
 		<h5>
