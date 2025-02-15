@@ -1515,7 +1515,7 @@ var oJobHistoryList = {
 				className: "dt-body-right",
 				targets: [ 17, 18 ]
 			}],
-			order: [1, 'desc'],
+			order: [3, 'desc'],
 			drawCallback: function () {
 				$('#' + oJobHistoryList.ids.job_list_body + ' input[name="start_jobid"]').prop('checked', false);
 				$('#' + oJobHistoryList.ids.job_list_body + ' input[name="end_jobid"]').prop('checked', false);
