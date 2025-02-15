@@ -1340,7 +1340,7 @@ var oUserList = {
 						access_btn.className = 'w3-button w3-green';
 						access_btn.type = 'button';
 						const i = document.createElement('I');
-						i.className = 'fas fa-edit';
+						i.className = 'fa-solid fa-shield';
 						const label = document.createTextNode(' <%[ Set access ]%>');
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
@@ -3773,7 +3773,7 @@ var oAPIHostList = {
 							access_btn.className = 'w3-button w3-green';
 							access_btn.type = 'button';
 							const i = document.createElement('I');
-							i.className = 'fas fa-edit';
+							i.className = 'fa-solid fa-shield';
 							const label = document.createTextNode(' <%[ Set access ]%>');
 							access_btn.appendChild(i);
 							access_btn.innerHTML += '&nbsp';
@@ -4602,7 +4602,7 @@ var oAPIHostGroupList = {
 						access_btn.className = 'w3-button w3-green';
 						access_btn.type = 'button';
 						const i = document.createElement('I');
-						i.className = 'fas fa-edit';
+						i.className = 'fa-solid fa-shield';
 						const label = document.createTextNode(' <%[ Set access ]%>');
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
