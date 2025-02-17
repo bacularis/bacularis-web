@@ -19,7 +19,6 @@ use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\TagAssignConfig;
-use Prado\Web\UI\TPage;
 
 /**
  * Tag tools control.
