@@ -32,10 +32,10 @@
 							<com:TActiveRepeater ID="TagList">
 								<prop:ItemTemplate>
 									<div class="w3-row">
-										<div class="pointer w3-tag btag" style="width: 290px; color: <%=@TagConfig::TAG_COLORS[$this->Data['color']]['fg']%>; background-color: <%=@TagConfig::TAG_COLORS[$this->Data['color']]['bg']%>;" data-tag="<%=$this->Data['tag']%>" onclick="oTagTools_<%=$this->TemplateControl->ClientID%>.mark_selected('<%=$this->Data['tag']%>');">
-											<%=$this->Data['tag']%>
-											<span class="w3-right w3-small" style="cursor: help" title="<%=(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? Prado::localize('global tag') : Prado::localize('local tag')) . ', ' . Prado::localize('severity') . ': ' . TagConfig::TAG_SEVERITY[$this->Data['severity']]['name'])%>">
-												<%=(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? 'G' : 'L') . $this->Data['severity'])%>
+										<div class="pointer w3-tag btag" style="width: 290px; color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['fg']%>; background-color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['bg']%>;" data-tag="<%#$this->Data['tag']%>" onclick="oTagTools_<%#$this->TemplateControl->ClientID%>.mark_selected('<%#$this->Data['tag']%>');">
+											<%#$this->Data['tag']%>
+											<span class="w3-right w3-small" style="cursor: help" title="<%#(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? Prado::localize('global tag') : Prado::localize('local tag')) . ', ' . Prado::localize('severity') . ': ' . TagConfig::TAG_SEVERITY[$this->Data['severity']]['name'])%>">
+												<%#(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? 'G' : 'L') . $this->Data['severity'])%>
 											</span>
 										</div>
 									</div>
@@ -54,7 +54,7 @@
 					<div id="tag_tools_colors_<%=$this->ClientiD%>" class="w3-padding">
 						<com:TRepeater ID="TagColors">
 							<prop:ItemTemplate>
-								<div class="w3-left pointer" style="width: 50px; height: 30px; margin: 4px; background-color: <%=$this->Data['bg']%>;" data-name="<%=$this->Data['name']%>"></div>
+								<div class="w3-left pointer" style="width: 50px; height: 30px; margin: 4px; background-color: <%#$this->Data['bg']%>;" data-name="<%#$this->Data['name']%>"></div>
 							</prop:ItemTemplate>
 						</com:TRepeater>
 					</div>
@@ -68,7 +68,7 @@
 						<select id="tag_tools_severity_level_<%=$this->ClientID%>" class="w3-select w3-border" style="width: 200px;">
 							<com:TRepeater ID="TagSeverity">
 								<prop:ItemTemplate>
-									<option value="<%=$this->Data['value']%>"><%=$this->Data['name']%></option>
+									<option value="<%#$this->Data['value']%>"><%#$this->Data['name']%></option>
 								</prop:ItemTemplate>
 							</com:TRepeater>
 						</select>

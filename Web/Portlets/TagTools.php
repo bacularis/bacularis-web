@@ -19,6 +19,7 @@ use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\TagAssignConfig;
+use Prado\Web\UI\TPage;
 
 /**
  * Tag tools control.
@@ -30,6 +31,8 @@ class TagTools extends Portlets
 {
 	private const DATA_VIEW_NAME = 'DataViewName';
 
+	private const ACTIONS = ['CreateTag', 'AssignTag', 'UnassignTag'];
+
 	public $tags = [];
 	public $tag_assign = [];
 	public $palette = [];
@@ -39,6 +42,15 @@ class TagTools extends Portlets
 	public function onLoad($param)
 	{
 		parent::onLoad($param);
+
+		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallBack) {
+			$cbet = $this->getPage()->getCallbackEventTarget()->ID ?? '';
+			if (!in_array($cbet, self::ACTIONS)) {
+				return;
+			}
+		}
+
+
 		$wc = $this->getPage()->web_config['baculum'] ?? [];
 		if (key_exists('enable_global_tags', $wc)) {
 			$this->enable_global_tags = ($wc['enable_global_tags'] == 1);
