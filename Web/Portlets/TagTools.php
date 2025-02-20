@@ -42,13 +42,12 @@ class TagTools extends Portlets
 	{
 		parent::onLoad($param);
 
-		if ($this->getPage()->IsPostBack || $this->getPage()->IsCallBack) {
+		if ($this->getPage()->IsCallBack) {
 			$cbet = $this->getPage()->getCallbackEventTarget()->ID ?? '';
 			if (!in_array($cbet, self::ACTIONS)) {
 				return;
 			}
 		}
-
 
 		$wc = $this->getPage()->web_config['baculum'] ?? [];
 		if (key_exists('enable_global_tags', $wc)) {
