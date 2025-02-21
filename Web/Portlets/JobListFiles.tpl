@@ -88,6 +88,10 @@
 			</table>
 		</prop:FooterTemplate>
 	</com:TActiveRepeater>
+	<div class="w3-right w3-margin-bottom">
+		<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-left" onclick="get_job_list_files(1);"><%[ Next ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+		<button type="button" class="w3-button w3-dark-grey w3-right" onclick="get_job_list_files(-1);"><i class="fa fa-arrow-left"></i> &nbsp;<%[ Previous ]%></button>
+	</div>
 </div>
 <com:TCallback
 	ID="LoadJobFileList"
