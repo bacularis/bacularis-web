@@ -501,6 +501,7 @@ var oJobsToRestoreList = {
 							radio.name = 'backup_to_restore';
 							radio.value = [data, row.name, row.type, row.endtime, row.jobstatus].join('|');
 							radio.className = 'w3-radio';
+							radio.style.top = '3px';
 							if ('<%=$this->Session->contains('restore_job') ? $this->Session['restore_job']['jobid'] : ''%>' == data) {
 								radio.setAttribute('checked', 'checked');
 							}
