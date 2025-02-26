@@ -277,6 +277,7 @@
 							ID="StorageCloudDriver"
 							CssClass="w3-border w3-select"
 							Width="200px"
+							Attributes.onchange="oNewCloudStorageStep3.show_non_aws_info();"
 						>
 							<com:TListItem Value="" Text="" />
 							<com:TListItem Value="Amazon" Text="Amazon" />
@@ -289,6 +290,7 @@
 							Text="<%[ Field required. ]%>"
 						/>
 					</div>
+					<span id="non_aws_s3_info" class="w3-margin-top" style="display: none"><strong><%[ NOTE ]%></strong>: <%[ If you use non-AWS S3 cloud storage, please don't forget to set the BlobEndpoint directive in the advanced options below. ]%></span>
 				</div>
 				<h4><%[ What are connection parameters of your cloud? ]%></h4>
 				<div class="w3-row w3-section">
@@ -459,6 +461,22 @@
 					</div>
 				</div>
 			</div>
+			<script>
+var oNewCloudStorageStep3 = {
+	ids: {
+		cloud_driver: '<%=$this->StorageCloudDriver->ClientID%>',
+		non_aws_s3_info: 'non_aws_s3_info'
+	},
+	show_non_aws_info: function() {
+		const info = document.getElementById(this.ids.non_aws_s3_info);
+		const cd = document.getElementById(this.ids.cloud_driver);
+		info.style.display = (cd.value == 'Amazon') ? 'inline-block' : 'none';
+	}
+};
+$(function() {
+	oNewCloudStorageStep3.show_non_aws_info();
+});
+			</script>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step4" Title="<%[ Step 4 - summary ]%>" StepType="Auto">
 			<div class="w3-half" style="float: none; margin: auto">

@@ -6282,3 +6282,9 @@ msgstr "Enable global tags"
 
 msgid "Select action"
 msgstr "Select action"
+
+msgid "If you use non-AWS S3 cloud storage, please don't forget to set the BlobEndpoint directive in the advanced options below."
+msgstr "If you use non-AWS S3 cloud storage, please don't forget to set the BlobEndpoint directive in the advanced options below."
+
+msgid "NOTE"
+msgstr "NOTE"
