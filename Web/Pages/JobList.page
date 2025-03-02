@@ -128,7 +128,7 @@
 			</table>
 			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 		</div>
-		<com:TCallback ID="RunJobCb" OnCallback="runJobAgain">
+		<com:TCallback ID="ReRunJobCb" OnCallback="runJobAgain">
 			<prop:ClientSide.OnLoading>
 				show_btn_loader(sender.options.CallbackParameter);
 			</prop:ClientSide.OnLoading>
@@ -193,9 +193,9 @@
 				</select>
 			</div>
 		</div>
-<script type="text/javascript">
-function get_run_job_callback() {
-	return <%=$this->RunJobCb->ActiveControl->Javascript%>;
+<script>
+function get_rerun_job_callback() {
+	return <%=$this->ReRunJobCb->ActiveControl->Javascript%>;
 }
 function get_cancel_job_callback() {
 	return <%=$this->CancelJobCb->ActiveControl->Javascript%>;
@@ -568,7 +568,7 @@ var oJobHistoryList = {
 							i.className = 'fa fa-play';
 							run_job.appendChild(i);
 							run_job.setAttribute('data-btn-id', data);
-							run_job.setAttribute('onclick', 'var rjc = get_run_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
+							run_job.setAttribute('onclick', 'var rjc = get_rerun_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
 							container.appendChild(run_job);
 						} else {
 							// cancel job button
@@ -939,6 +939,9 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 		</div>
 <script>
+function get_run_job_callback() {
+	return <%=$this->RunJobAction->ActiveControl->Javascript%>;
+}
 const oJobList = {
 	ids: {
 		job_details_list: 'job_details_list',
@@ -1172,16 +1175,27 @@ const oJobList = {
 					data: 'job',
 					render: function(data, type, row) {
 						let btns = '';
-						let i;
+						let img;
+						// Run job button
+						const run_job = document.createElement('BUTTON');
+						run_job.className = 'w3-button w3-tiny w3-green';
+						run_job.type = 'button';
+						img = document.createElement('I');
+						run_job.title = '<%[ Run job ]%>';
+						img.className = 'fa fa-play';
+						run_job.appendChild(img);
+						run_job.setAttribute('data-btn-id', data);
+						run_job.setAttribute('onclick', 'const rjc = get_run_job_callback(); rjc.setCallbackParameter("' + data + '"); rjc.dispatch();');
+						btns += (run_job.outerHTML + ' ');
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
 							quick_edit.className = 'w3-button w3-green';
 							quick_edit.type = 'button';
 							quick_edit.title = '<%[ Quick edit ]%>';
-							i = document.createElement('I');
-							i.className = 'fa fa-edit';
-							quick_edit.appendChild(i);
+							img = document.createElement('I');
+							img.className = 'fa fa-edit';
+							quick_edit.appendChild(img);
 							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + data + "')");
 							btns += (quick_edit.outerHTML + ' ');
 						}
@@ -1191,9 +1205,9 @@ const oJobList = {
 						details.className = 'w3-button w3-green';
 						details.type = 'button';
 						details.title = '<%[ Details ]%>';
-						i = document.createElement('I');
-						i.className = 'fa fa-list-ul';
-						details.appendChild(i);
+						img = document.createElement('I');
+						img.className = 'fa fa-list-ul';
+						details.appendChild(img);
 						details.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
 						btns += details.outerHTML;
 
@@ -1280,6 +1294,18 @@ const oJobList = {
 	}
 };
 </script>
+		<com:TCallback ID="RunJobAction" OnCallback="runJobs">
+			<prop:ClientSide.OnLoading>
+				show_btn_loader(sender.options.CallbackParameter);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				hide_btn_loader(sender.options.CallbackParameter);
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+			<prop:ClientSide.OnException>
+				hide_btn_loader(sender.options.CallbackParameter);
+			</prop:ClientSide.OnException>
+		</com:TCallback>
 		<com:TCallback ID="RunJobsAction" OnCallback="runJobs">
 			<prop:ClientSide.OnLoading>
 				oBulkActionsModal.clear_output(bulk_actions_output_id);
