@@ -53,11 +53,13 @@ class QuickResourceEdit extends Portlets implements IActiveControl
 	public function open()
 	{
 		$component_type = $this->getComponentType();
-		if (!empty($_SESSION[$component_type])) {
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt($component_type);
+		if ($component_name) {
 			$resource_type = $this->getResourceType();
 			$resource_name = $this->getResourceName();
 			$this->QuickResourceEditDirectives->setComponentType($component_type);
-			$this->QuickResourceEditDirectives->setComponentName($_SESSION[$component_type]);
+			$this->QuickResourceEditDirectives->setComponentName($component_name);
 			$this->QuickResourceEditDirectives->setResourceType($resource_type);
 			$this->QuickResourceEditDirectives->setResourceName($resource_name);
 			$this->QuickResourceEditDirectives->setLoadValues(true);

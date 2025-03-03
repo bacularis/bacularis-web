@@ -627,8 +627,10 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			// removing resource available only by callback
 			return;
 		}
+		$sess = $this->getApplication()->getSession();
 		$component_type = $this->getComponentType();
-		if (empty($_SESSION[$component_type])) {
+		$component_name = $sess->itemAt($component_type);
+		if (!$component_name) {
 			return;
 		}
 		$host = $this->getHost();

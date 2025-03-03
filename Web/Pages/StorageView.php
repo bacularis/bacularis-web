@@ -226,8 +226,10 @@ class StorageView extends BaculumWebPage
 	public function setStorage($sender, $param)
 	{
 		$this->SDStorageDaemonConfig->unloadDirectives();
-		if (!empty($_SESSION['dir'])) {
-			$this->DIRStorageConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->DIRStorageConfig->setComponentName($component_name);
 			$this->DIRStorageConfig->setResourceName($this->getStorageName());
 			$this->DIRStorageConfig->setLoadValues(true);
 			$this->DIRStorageConfig->raiseEvent('OnDirectiveListLoad', $this, null);

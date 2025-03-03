@@ -148,17 +148,6 @@ class BaculumAPIClient extends WebModule
 	}
 
 	/**
-	 * Initializes API module (framework module constructor)
-	 *
-	 * @access public
-	 * @param TXmlElement $config API module configuration
-	 */
-	public function init($config)
-	{
-		$this->initSessionCache();
-	}
-
-	/**
 	 * Get URI to use by internal API client's request.
 	 *
 	 * @access private
@@ -282,14 +271,20 @@ class BaculumAPIClient extends WebModule
 	private function addSpecialParams(&$uri)
 	{
 		// add special session params
+		$sess = $this->getApplication()->getSession();
 		for ($i = 0; $i < count($this->session_params); $i++) {
-			if (array_key_exists($this->session_params[$i], $_SESSION)) {
-				// add params separator
-				$uri .= (preg_match('/\?/', $uri) === 1 ? '&' : '?');
-				$params = [$this->session_params[$i], $_SESSION[$this->session_params[$i]]];
-				// add session param
-				$uri .= $this->prepareUrlParams($params, '=');
+			if (!$sess->contains($this->session_params[$i])) {
+				// param value not in session, skip it
+				continue;
 			}
+			// add params separator
+			$uri .= (preg_match('/\?/', $uri) === 1 ? '&' : '?');
+			$params = [
+				$this->session_params[$i],
+				$sess->itemAt($this->session_params[$i])
+			];
+			// add session param
+			$uri .= $this->prepareUrlParams($params, '=');
 		}
 	}
 
@@ -303,39 +298,28 @@ class BaculumAPIClient extends WebModule
 	 * @param bool $use_cache if true then try to use session cache, if false then always use fresh data
 	 * @return object stdClass with request result as two properties: 'output' and 'error'
 	 */
-	public function get(array $params, $host = null, $show_error = true, $use_cache = false)
+	public function get(array $params, $host = null, $show_error = true, $use_cache = false) // DO NOT REMOVE $use_cache param. To use in the future
 	{
-		$cached = null;
 		$ret = null;
 		if (is_null($host)) {
 			$host = $this->User->getDefaultAPIHost();
 		}
-		if ($use_cache === true) {
-			$cached = $this->getSessionCache($host, $params);
-		}
-		if (!is_null($cached)) {
-			$ret = $cached;
-		} else {
-			$host_cfg = $this->getHostParams($host);
-			$uri = $this->getURIResource($host, $params);
-			$ch = $this->getConnection($host_cfg);
-			curl_setopt($ch, CURLOPT_URL, $uri);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getAPIHeaders($host, $host_cfg));
-			curl_setopt($ch, CURLOPT_ENCODING, '');
-			$result = curl_exec($ch);
-			$error = curl_error($ch);
-			$errno = curl_errno($ch);
-			$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-			curl_close($ch);
-			$header = substr($result, 0, $header_size);
-			$body = substr($result, $header_size);
-			$this->response_headers = Headers::parseAll($header);
-			$ret = $this->preParseOutput($body, $error, $errno, $show_error);
-			if ($use_cache === true && $ret->error === 0) {
-				$this->setSessionCache($host, $params, $ret);
-			}
-			$this->doPostRequestAction($ret);
-		}
+		$host_cfg = $this->getHostParams($host);
+		$uri = $this->getURIResource($host, $params);
+		$ch = $this->getConnection($host_cfg);
+		curl_setopt($ch, CURLOPT_URL, $uri);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getAPIHeaders($host, $host_cfg));
+		curl_setopt($ch, CURLOPT_ENCODING, '');
+		$result = curl_exec($ch);
+		$error = curl_error($ch);
+		$errno = curl_errno($ch);
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		curl_close($ch);
+		$header = substr($result, 0, $header_size);
+		$body = substr($result, $header_size);
+		$this->response_headers = Headers::parseAll($header);
+		$ret = $this->preParseOutput($body, $error, $errno, $show_error);
+		$this->doPostRequestAction($ret);
 		return $ret;
 	}
 
@@ -506,82 +490,10 @@ class BaculumAPIClient extends WebModule
 			 * user changes director to different. This way session variables
 			 * will be reseted for new director.
 			 */
-			$_SESSION['is_user_vars'] = false;
+			$sess = $this->getApplication()->getSession();
+			$sess->open();
+			$sess->add('is_user_vars', false);
 		}
-	}
-
-	/**
-	 * Initialize session cache.
-	 *
-	 * @access public
-	 * @param bool $force if true then cache is force initialized
-	 */
-	public function initSessionCache($force = false)
-	{
-		if (!isset($_SESSION) || !array_key_exists('cache', $_SESSION) || !is_array($_SESSION['cache']) || $force === true) {
-			$_SESSION['cache'] = [];
-		}
-	}
-
-	/**
-	 * Get session cache value by params.
-	 *
-	 * @access private
-	 * @param string $host host name
-	 * @param array $params command parameters as numeric array
-	 * @return mixed if cache exists then returned is cached data, otherwise null
-	 */
-	private function getSessionCache($host, array $params)
-	{
-		$cached = null;
-		$key = $this->getSessionKey($host, $params);
-		if ($this->isSessionValue($key)) {
-			$cached = $_SESSION['cache'][$key];
-		}
-		return $cached;
-	}
-
-	/**
-	 * Save data to session cache.
-	 *
-	 * @access private
-	 * @param string $host host name
-	 * @param array $params command parameters as numeric array
-	 * @param mixed $value value to save in cache
-	 */
-	private function setSessionCache($host, array $params, $value)
-	{
-		$key = $this->getSessionKey($host, $params);
-		$_SESSION['cache'][$key] = $value;
-	}
-
-	/**
-	 * Get session key by command parameters.
-	 *
-	 * @access private
-	 * @param string $host host name
-	 * @param array $params command parameters as numeric array
-	 * @return string session key for given command
-	 */
-	private function getSessionKey($host, array $params)
-	{
-		array_unshift($params, $host);
-		$key = implode(';', $params);
-		$key = base64_encode($key);
-		return $key;
-	}
-
-	/**
-	 * Check if session key exists in session cache.
-	 *
-	 * @access private
-	 * @param string $key session key
-	 * @return bool true if session key exists, otherwise false
-	 */
-	private function isSessionValue($key)
-	{
-		$is_value = array_key_exists($key, $_SESSION['cache']);
-		return $is_value;
 	}
 
 	private function authToHost($host, $host_cfg)

@@ -515,7 +515,7 @@ var oVolumeList = {
 					render: function(data, type, row) {
 						let btns = '';
 						let i;
-						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
 							quick_edit.className = 'w3-button w3-green';

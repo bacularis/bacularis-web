@@ -598,8 +598,10 @@ class NewUserWizard extends BaculumWebPage
 	 */
 	private function setAPIHostCustomConsole($api_host)
 	{
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
 		$this->ConsoleConfig->setHost($api_host);
-		$this->ConsoleConfig->setComponentName($_SESSION['dir']);
+		$this->ConsoleConfig->setComponentName($component_name);
 		$this->ConsoleConfig->setLoadValues(false);
 		$this->ConsoleConfig->IsDirectiveCreated = false;
 		$this->ConsoleConfig->raiseEvent('OnDirectiveListLoad', $this, null);

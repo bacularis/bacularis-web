@@ -14,7 +14,7 @@
 	>
 		<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
 	</com:TActiveLinkButton>
-	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$_SESSION['director']%>" />
+	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$this->getApplication()->getSession()->itemAt('director')%>" />
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<com:TLinkButton
 		CssClass="w3-button w3-green w3-margin-left"
@@ -39,7 +39,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'job_config');"
 			Text="<%[ Configure job ]%>"
-			Visible="<%=!empty($_SESSION['dir'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnCallback="loadJobConfig"
 		/>
 		<com:TActiveLinkButton
@@ -47,7 +47,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config');"
 			Text="<%[ Configure fileset ]%>"
-			Visible="<%=!empty($_SESSION['dir'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnCallback="loadFileSetConfig"
 		/>
 		<com:TActiveLinkButton
@@ -55,7 +55,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config');"
 			Text="<%[ Configure schedule ]%>"
-			Visible="<%=!empty($_SESSION['dir'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnCallback="loadScheduleConfig"
 		/>
 		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc();"><%[ Job history ]%></button>

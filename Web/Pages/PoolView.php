@@ -76,8 +76,10 @@ class PoolView extends BaculumWebPage
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
 		}
-		if (!empty($_SESSION['dir'])) {
-			$this->PoolConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->PoolConfig->setComponentName($component_name);
 			$this->PoolConfig->setResourceName($this->getPoolName());
 			$this->PoolConfig->setLoadValues(true);
 			$this->PoolConfig->raiseEvent('OnDirectiveListLoad', $this, null);

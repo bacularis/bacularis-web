@@ -17,7 +17,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'client_config');"
 			Text="<%[ Configure client ]%>"
-			Visible="<%=!empty($_SESSION['dir'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnClick="setDIRClientConfig"
 		/>
 		<a id="btn_filedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_fd_filedaemon_config(); W3Tabs.open(this.id, 'filedaemon_config');">

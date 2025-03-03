@@ -395,8 +395,10 @@ class WebConfig extends ConfigFileModule
 	public function getLanguage()
 	{
 		$language = null;
-		if (isset($_SESSION['language']) && !empty($_SESSION['language'])) {
-			$language = $_SESSION['language'];
+		$sess = $this->getApplication()->getSession();
+		$lang = $sess->itemAt('language');
+		if ($lang) {
+			$language = $lang;
 		} else {
 			$config = $this->getConfig();
 			if (isset($config['baculum']) && key_exists('lang', $config['baculum'])) {
@@ -405,7 +407,7 @@ class WebConfig extends ConfigFileModule
 			if (is_null($language)) {
 				$language = self::DEF_LANG;
 			}
-			$_SESSION['language'] = $language;
+			$this->setLanguage($language);
 		}
 		return $language;
 	}
@@ -418,6 +420,8 @@ class WebConfig extends ConfigFileModule
 	 */
 	public function setLanguage($lang)
 	{
-		$_SESSION['language'] = $lang;
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+		$sess->add('language', $lang);
 	}
 }

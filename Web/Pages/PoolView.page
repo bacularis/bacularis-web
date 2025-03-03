@@ -13,7 +13,7 @@
 		<button id="btn_pool_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'pool_actions');"><%[ Actions ]%></button>
 		<button id="btn_pool_graphs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_graphs'); oPoolVolumeStatus.init();"><%[ Graphs ]%></button>
 		<button id="btn_volumes_in_pool" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'volumes_in_pool');oVolumeList.table.responsive.recalc();"><%[ Volumes in pool ]%></button>
-		<button id="btn_pool_config" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_config'); return false;" style="display: <%=!empty($_SESSION['dir']) ? 'inline-block' : 'none'%>"><%[ Configure pool ]%></button>
+		<button id="btn_pool_config" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'pool_config'); return false;" style="display: <%=$this->getApplication()->getSession()->itemAt('dir') ? 'inline-block' : 'none'%>"><%[ Configure pool ]%></button>
 	</div>
 	<script>
 const oVolumes = <%=json_encode($this->volumes_in_pool)%>;

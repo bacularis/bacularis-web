@@ -43,9 +43,11 @@ class ConsoleView extends BaculumWebPage
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
 		}
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
 		$host = $this->User->getDefaultAPIHost();
 		$this->ConsoleResourcesConfig->setHost($host);
-		$this->ConsoleResourcesConfig->setComponentName($_SESSION['director']);
+		$this->ConsoleResourcesConfig->setComponentName($component_name);
 	}
 
 	public function loadConsoleResourcesConfig($sender, $param)

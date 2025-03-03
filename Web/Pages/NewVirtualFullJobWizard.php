@@ -267,8 +267,10 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		if ($this->IsCallBack) {
 			return;
 		}
-		if (!empty($_SESSION['dir'])) {
-			$this->FilesetConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->FilesetConfig->setComponentName($component_name);
 			$this->FilesetConfig->setLoadValues(false);
 			$this->FilesetConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 		}
@@ -283,8 +285,10 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		if ($this->IsCallBack) {
 			return;
 		}
-		if (!empty($_SESSION['dir'])) {
-			$this->PoolConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->PoolConfig->setComponentName($component_name);
 			$this->PoolConfig->setLoadValues(false);
 			$this->PoolConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 		}
@@ -676,8 +680,10 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	 */
 	public function loadScheduleNewConfig()
 	{
-		if (!empty($_SESSION['dir'])) {
-			$this->ScheduleConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->ScheduleConfig->setComponentName($component_name);
 			$this->ScheduleConfig->setLoadValues(false);
 			$this->ScheduleConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 		}

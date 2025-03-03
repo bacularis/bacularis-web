@@ -156,17 +156,18 @@ class Deployment extends BaculumWebPage
 		// Console test
 		OAuth2Record::deleteByPk($host);
 		$api->setHostParams($host, $host_params);
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
 		$director = null;
-		if (array_key_exists('director', $_SESSION)) {
+		if ($sess->contains('director')) {
 			// Current director can't be passed to new remote host.
-			$director = $_SESSION['director'];
-			unset($_SESSION['director']);
+			$director = $sess->remove('director');
 		}
 
 		$console = $api->set(['console'], ['version'], $host, false);
 		if (!is_null($director)) {
 			// Revert director setting if any
-			$_SESSION['director'] = $director;
+			$sess->add('director', $director);
 		}
 
 		// Config test

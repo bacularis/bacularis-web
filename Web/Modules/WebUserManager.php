@@ -245,6 +245,12 @@ class WebUserManager extends WebModule implements IUserManager
 	public function doAuthentication($application)
 	{
 		if ($this->getModule('web_config')->isAuthMethodBasic() && $application->getUser()->IsGuest) {
+			/**
+			 * Open session to be able to log in.
+			 */
+			$sess = $this->getApplication()->getSession();
+			$sess->open();
+
 			// If basic user is not logged it, try to log in here
 			$username = $_SERVER['PHP_AUTH_USER'] ?? null;
 			$password = $_SERVER['PHP_AUTH_PW'] ?? null;
@@ -389,7 +395,6 @@ class WebUserManager extends WebModule implements IUserManager
 	public function doAuthorizationComplete($application)
 	{
 		$service = $this->Application->getService();
-		$auth = $this->getModule('auth');
 		$page = $service->getRequestedPagePath();
 		if (($service instanceof TPageService) && $page === $this->getAuthorizedFlag()) {
 			$this->setAuthorizedFlag(null);

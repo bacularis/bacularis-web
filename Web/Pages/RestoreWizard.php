@@ -174,6 +174,7 @@ class RestoreWizard extends BaculumWebPage
 
 	private function setRestoreJob($jobid, $name, $type, $endtime, $jobstatus)
 	{
+		$this->Session->open();
 		$this->Session->add(
 			'restore_job',
 			[
@@ -216,6 +217,7 @@ class RestoreWizard extends BaculumWebPage
 			$this->loadRestoreClients();
 			if ($this->BackupClient->DataChanged) {
 				// remove previous restore jobid only if user changed client selection
+				$this->Session->open();
 				$this->Session->remove('restore_job');
 			}
 		} elseif ($param->CurrentStepIndex === 1) {
@@ -237,6 +239,7 @@ class RestoreWizard extends BaculumWebPage
 		} elseif ($param->CurrentStepIndex === 3) {
 			$this->savePluginSettingsForm();
 			if ($this->Request->contains('file_relocation')) {
+				$this->Session->open();
 				$this->Session->add(
 					'file_relocation',
 					$this->Request['file_relocation']
@@ -593,6 +596,7 @@ class RestoreWizard extends BaculumWebPage
 			}
 			if ($this->Session->contains('restore_pathid')) {
 				// clear pathid in session as it is used only for browser element request time.
+				$this->Session->open();
 				$this->Session->remove('restore_pathid');
 			}
 		}
@@ -639,6 +643,7 @@ class RestoreWizard extends BaculumWebPage
 				$this->loadPluginSettings($name);
 			}
 		} else {
+			$this->Session->open();
 			$this->Session->add('plugin_info', []);
 		}
 	}
@@ -790,12 +795,14 @@ class RestoreWizard extends BaculumWebPage
 			if ($path == $this->browser_up_dir['name']) {
 				$rp = $this->Session['restore_path'];
 				array_pop($rp);
+				$this->Session->open();
 				$this->Session->add('restore_path', $rp);
 			} elseif ($path == $this->browser_root_dir['name']) {
 				$this->setRestorePath();
 			} else {
 				$rp = $this->Session['restore_path'];
 				array_push($rp, $path);
+				$this->Session->open();
 				$this->Session->add('restore_path', $rp);
 			}
 		}
@@ -980,6 +987,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	private function setFileVersions($versions = [])
 	{
+		$this->Session->open();
 		$this->Session->add('files_versions', $versions);
 	}
 
@@ -991,6 +999,7 @@ class RestoreWizard extends BaculumWebPage
 	private function setBrowserFiles($files = [])
 	{
 		if ($this->FileBrowserTypeFlat->Checked) {
+			$this->Session->open();
 			$this->Session->add('files_browser', $files);
 		}
 	}
@@ -1002,6 +1011,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	private function setRestorePath($path = [])
 	{
+		$this->Session->open();
 		$this->Session->add('restore_path', $path);
 	}
 
@@ -1012,6 +1022,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	private function setRestorePathId($pathid)
 	{
+		$this->Session->open();
 		$this->Session->add('restore_pathid', $pathid);
 	}
 
@@ -1028,6 +1039,7 @@ class RestoreWizard extends BaculumWebPage
 		} elseif ($file_prop['name'] != $this->browser_root_dir['name'] && $file_prop['name'] != $this->browser_up_dir['name']) {
 			$fr = $this->Session['files_restore'];
 			$fr[$uniqid] = $file_prop;
+			$this->Session->open();
 			$this->Session->add('files_restore', $fr);
 		}
 	}
@@ -1063,6 +1075,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	public function setFilesToRestore($files = [])
 	{
+		$this->Session->open();
 		$this->Session->add('files_restore', $files);
 	}
 
@@ -1128,7 +1141,8 @@ class RestoreWizard extends BaculumWebPage
 		$ret = new stdClass();
 		$restore_props = [];
 		$restore_props['client'] = $this->RestoreClient->SelectedItem->Text;
-		if ($_SESSION['file_relocation'] == 2) {
+		$sess = $this->getApplication()->getSession();
+		if ($sess->itemAt('file_relocation') == 2) {
 			if (!empty($this->RestoreStripPrefix->Text)) {
 				$restore_props['strip_prefix'] = $this->RestoreStripPrefix->Text;
 			}
@@ -1138,7 +1152,7 @@ class RestoreWizard extends BaculumWebPage
 			if (!empty($this->RestoreAddSuffix->Text)) {
 				$restore_props['add_suffix'] = $this->RestoreAddSuffix->Text;
 			}
-		} elseif ($_SESSION['file_relocation'] == 3) {
+		} elseif ($sess->itemAt('file_relocation') == 3) {
 			if (!empty($this->RestoreRegexWhere->Text)) {
 				$restore_props['regex_where'] = $this->RestoreRegexWhere->Text;
 			}
@@ -1297,6 +1311,7 @@ class RestoreWizard extends BaculumWebPage
 			'plugin' => $plugin,
 			'setting' => $setting
 		];
+		$this->Session->open();
 		$this->Session->add('plugin_info', $plugin_info);
 	}
 
@@ -1376,6 +1391,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	private function resetWizard()
 	{
+		$this->Session->open();
 		$this->setBrowserFiles();
 		$this->setFileVersions();
 		$this->setFilesToRestore();

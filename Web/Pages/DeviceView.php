@@ -133,7 +133,9 @@ class DeviceView extends BaculumWebPage
 
 	public function setDevice($sender, $param)
 	{
-		$this->DeviceConfig->setComponentName($_SESSION['sd']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('sd');
+		$this->DeviceConfig->setComponentName($component_name);
 		$this->DeviceConfig->setResourceName($this->getDeviceName());
 		$this->DeviceConfig->setLoadValues(true);
 		$this->DeviceConfig->raiseEvent('OnDirectiveListLoad', $this, null);

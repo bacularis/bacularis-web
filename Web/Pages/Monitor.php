@@ -72,9 +72,6 @@ class Monitor extends BaculumWebPage
 			'error' => ['error' => 0, 'output' => '']
 		];
 
-		// Initialize session cache to have clear session for Monitor
-		$this->getModule('api')->initSessionCache(true);
-
 		$web_config = $this->getModule('web_config')->getConfig();
 		$job_limit = JobInfo::DEFAULT_MAX_JOBS;
 		$job_age = WebConfig::DEF_JOB_AGE_ON_JOB_STATUS_GRAPH;

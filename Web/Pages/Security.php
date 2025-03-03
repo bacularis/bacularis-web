@@ -1466,8 +1466,10 @@ class Security extends BaculumWebPage
 			$this->ConsoleConfig->setLoadValues(false);
 			$this->getCallbackClient()->callClientFunction('oBaculaConfigSection.show_sections', [true]);
 		}
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
 		$this->ConsoleConfig->setHost($this->User->getDefaultAPIHost());
-		$this->ConsoleConfig->setComponentName($_SESSION['dir']);
+		$this->ConsoleConfig->setComponentName($component_name);
 		$this->ConsoleConfig->IsDirectiveCreated = false;
 		$this->ConsoleConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 	}
@@ -2016,17 +2018,18 @@ class Security extends BaculumWebPage
 		// Console test
 		OAuth2Record::deleteByPk($host);
 		$api->setHostParams($host, $host_params);
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
 		$director = null;
-		if (array_key_exists('director', $_SESSION)) {
+		if ($sess->contains('director')) {
 			// Current director can't be passed to new remote host.
-			$director = $_SESSION['director'];
-			unset($_SESSION['director']);
+			$director = $sess->remove('director');
 		}
 
 		$console = $api->set(['console'], ['version'], $host, false);
 		if (!is_null($director)) {
 			// Revert director setting if any
-			$_SESSION['director'] = $director;
+			$sess->add('director', $director);
 		}
 
 		// Config test

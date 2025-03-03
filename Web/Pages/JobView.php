@@ -590,8 +590,10 @@ class JobView extends BaculumWebPage
 
 	public function loadJobConfig($sender, $param)
 	{
-		if (!empty($_SESSION['dir'])) {
-			$this->JobConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->JobConfig->setComponentName($component_name);
 			$this->JobConfig->setResourceName($this->getJobName());
 			$this->JobConfig->setLoadValues(true);
 			$this->JobConfig->raiseEvent('OnDirectiveListLoad', $this, null);
@@ -602,10 +604,12 @@ class JobView extends BaculumWebPage
 
 	public function loadFileSetConfig($sender, $param)
 	{
-		if (!empty($_SESSION['dir'])) {
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
 			$job_info = $this->getJobInfo();
 			if (key_exists('fileset', $job_info)) {
-				$this->FileSetConfig->setComponentName($_SESSION['dir']);
+				$this->FileSetConfig->setComponentName($component_name);
 				$this->FileSetConfig->setResourceName($job_info['fileset']['name']);
 				$this->FileSetConfig->setLoadValues(true);
 				$this->FileSetConfig->raiseEvent('OnDirectiveListLoad', $this, null);
@@ -617,10 +621,12 @@ class JobView extends BaculumWebPage
 
 	public function loadScheduleConfig($sender, $param)
 	{
-		if (!empty($_SESSION['dir'])) {
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
 			$job_info = $this->getJobInfo();
 			if (key_exists('schedule', $job_info)) {
-				$this->ScheduleConfig->setComponentName($_SESSION['dir']);
+				$this->ScheduleConfig->setComponentName($component_name);
 				$this->ScheduleConfig->setResourceName($job_info['schedule']['name']);
 				$this->ScheduleConfig->setLoadValues(true);
 				$this->ScheduleConfig->raiseEvent('OnDirectiveListLoad', $this, null);

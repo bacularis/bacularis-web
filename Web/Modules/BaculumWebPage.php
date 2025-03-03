@@ -80,12 +80,19 @@ class BaculumWebPage extends BaculumPage
 			// without API host selected we can't continue
 			return;
 		}
+		if ($this->IsCallBack) {
+			/**
+			 * We disable writing to session for all callbacks.
+			 */
+			$sess = $this->getApplication()->getSession();
+			$sess->close();
+		}
 
 		Logging::$debug_enabled = (isset($this->web_config['baculum']['debug']) && $this->web_config['baculum']['debug'] == 1);
 		if (!$this->IsPostBack && !$this->IsCallBack) {
 			$this->postInitActions();
-			$this->getModule('api')->initSessionCache(true);
-			if ($this->User->getIsGuest() === false && (!key_exists('is_user_vars', $_SESSION) || $_SESSION['is_user_vars'] === false)) {
+			$sess = $this->getApplication()->getSession();
+			if ($this->User->getIsGuest() === false && (!$sess->contains('is_user_vars') || $sess->itemAt('is_user_vars') === false)) {
 				$this->resetSessionUserVars(); // reset is required for init session vars
 				$this->setSessionUserVars();
 			}
@@ -143,9 +150,10 @@ class BaculumWebPage extends BaculumPage
 	{
 		// Set director
 		$directors = $this->getModule('api')->get(['directors'], null, false);
-		if ($directors->error === 0 && count($directors->output) > 0 &&
-			   (!key_exists('director', $_SESSION) || $directors->output[0] != $_SESSION['director'])) {
-			$_SESSION['director'] = $directors->output[0];
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+		if ($directors->error === 0 && count($directors->output) > 0 && (!$sess->contains('director') || $directors->output[0] != $sess->itemAt('director'))) {
+			$sess->add('director', $directors->output[0]);
 		}
 		// Set config main component names
 		$config = $this->getModule('api')->get(['config'], null, false);
@@ -153,17 +161,23 @@ class BaculumWebPage extends BaculumPage
 			for ($i = 0; $i < count($config->output); $i++) {
 				$component = (array) $config->output[$i];
 				if (key_exists('component_type', $component) && key_exists('component_name', $component)) {
-					$_SESSION[$component['component_type']] = $component['component_name'];
+					$sess->add($component['component_type'], $component['component_name']);
 				}
 			}
 		}
-		$_SESSION['is_user_vars'] = true;
+		$sess->add('is_user_vars', true);
 	}
 
 	public function resetSessionUserVars()
 	{
-		$_SESSION['is_user_vars'] = false;
-		$_SESSION['director'] = $_SESSION['dir'] = $_SESSION['sd'] = $_SESSION['fd'] = $_SESSION['bcons'] = '';
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+		$sess->add('is_user_vars', false);
+		$sess->add('director', '');
+		$sess->add('dir', '');
+		$sess->add('sd', '');
+		$sess->add('fd', '');
+		$sess->add('bcons', '');
 	}
 
 	/**

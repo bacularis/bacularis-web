@@ -304,6 +304,8 @@ class WebUser extends TUser
 	{
 		$this->setState(self::DEFAULT_API_HOST, $api_host);
 		$application = $this->getManager()->getApplication();
+		$sess = $application->getSession();
+		$sess->open();
 		$application->getModule('auth')->updateSessionUser($this);
 	}
 

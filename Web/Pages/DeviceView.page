@@ -14,7 +14,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'configure_device');"
 			Text="<%[ Configure device ]%>"
-			Visible="<%=!empty($_SESSION['sd'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('sd') ? true : false)%>"
 			OnClick="setDevice"
 		/>
 	</div>

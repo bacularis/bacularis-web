@@ -8,7 +8,7 @@
 	</header>
 	<div class="w3-container">
 		<div class="w3-margin-bottom">
-			<button type="button" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Pool'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add pool ]%></button>
+			<button type="button" class="w3-button w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Pool'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add pool ]%></button>
 		</div>
 		<com:Bacularis.Web.Portlets.TabViews ID="PoolViews" />
 	</div>
@@ -177,7 +177,7 @@ var oPoolList = {
 					render: function (data, type, row) {
 						let btns = '';
 						let i;
-						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
 							quick_edit.className = 'w3-button w3-green';

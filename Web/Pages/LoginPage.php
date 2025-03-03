@@ -108,6 +108,12 @@ class LoginPage extends BaculumWebPage
 			$username = $_SERVER['PHP_AUTH_USER'];
 		}
 
+		/**
+		 * Open session to be able to log in.
+		 */
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+
 		$valid = $this->getModule('users')->validateUser($username, $password);
 		if ($valid === true) {
 			// Pre-login successful
@@ -168,6 +174,13 @@ class LoginPage extends BaculumWebPage
 		if (count($user) === 0 || !key_exists('mfa', $user) || !key_exists('totp_secret', $user)) {
 			return false;
 		}
+
+		/**
+		 * Open session to be able to log in.
+		 */
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+
 		$this->mfa = true;
 		$secret = $this->getModule('base32')->decode($user['totp_secret']);
 		$token = $this->Auth2FAToken->Text;
@@ -221,6 +234,12 @@ class LoginPage extends BaculumWebPage
 	 */
 	public function logout($sender, $param)
 	{
+		/**
+		 * Open session to be able to log out.
+		 */
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+
 		$this->getModule('auth')->logout();
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			/**

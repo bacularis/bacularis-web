@@ -120,8 +120,10 @@ class ClientView extends BaculumWebPage
 	public function setDIRClientConfig($sender, $param)
 	{
 		$this->FDFileDaemonConfig->unloadDirectives();
-		if (!empty($_SESSION['dir'])) {
-			$this->DIRClientConfig->setComponentName($_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt('dir');
+		if ($component_name) {
+			$this->DIRClientConfig->setComponentName($component_name);
 			$this->DIRClientConfig->setResourceName($this->getClientName());
 			$this->DIRClientConfig->setLoadValues(true);
 			$this->DIRClientConfig->raiseEvent('OnDirectiveListLoad', $this, null);

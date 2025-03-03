@@ -7,12 +7,12 @@
 		</h5>
 	</header>
 	<div class="w3-margin-left">
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $_SESSION['dir'], 'resource_type' => 'Job'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVerifyJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New verify job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVirtualFullJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New virtual full job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Job'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVerifyJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New verify job ]%></button>
+		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVirtualFullJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New virtual full job ]%></button>
 		<com:TActiveLinkButton
 			CssClass="w3-button w3-margin-bottom w3-green"
 			OnClick="loadRunJobModal"
@@ -586,7 +586,7 @@ var oJobHistoryList = {
 						var space = document.createTextNode(' ');
 						container.appendChild(space);
 
-						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
 							quick_edit.className = 'w3-button w3-green';
@@ -1187,7 +1187,7 @@ const oJobList = {
 						run_job.setAttribute('data-btn-id', data);
 						run_job.setAttribute('onclick', 'const rjc = get_run_job_callback(); rjc.setCallbackParameter("' + data + '"); rjc.dispatch();');
 						btns += (run_job.outerHTML + ' ');
-						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || empty($_SESSION['dir']) ? 'false' : 'true'%>) {
+						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
 							quick_edit.className = 'w3-button w3-green';

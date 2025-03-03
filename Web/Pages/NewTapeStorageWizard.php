@@ -517,7 +517,9 @@ class NewTapeStorageWizard extends BaculumWebPage
 		$storage_tools = $this->getModule('storage_tools');
 
 		// Get SD password
-		$sd_password = $storage_tools->getSdPassword($api_host, $_SESSION['dir']);
+		$sess = $this->getApplication()->getSession();
+		$director_name = $sess->itemAt('dir');
+		$sd_password = $storage_tools->getSdPassword($api_host, $director_name);
 
 		// Get SD port
 		$sd_port = $storage_tools->getSdPort($api_host);

@@ -16,7 +16,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'storage_config');"
 			Text="<%[ Configure storage ]%>"
-			Visible="<%=!empty($_SESSION['sd'])%>"
+			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnClick="setStorage"
 		/>
 		<a id="btn_storage_daemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'storage_daemon_config');">

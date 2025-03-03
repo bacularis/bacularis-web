@@ -10,7 +10,7 @@
 		<button id="btn_user_security" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'user_security');"><%[ Settings ]%></button>
 		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc();"><%[ Users ]%></button>
 		<button id="btn_role_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'role_list'); oRoleList.table.responsive.recalc();"><%[ Roles ]%></button>
-		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc();"><%[ Console ACLs ]%></button>
+		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc();"><%[ Console ACLs ]%></button>
 		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc();"><%[ API basic users ]%></button>
 		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc();"><%[ API OAuth2 clients ]%></button>
 		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc();"><%[ API hosts ]%></button>
@@ -1136,7 +1136,7 @@ oLdapUserSecurity.init();
 	<div class="w3-container tab_item" id="user_list" style="display: none">
 		<div class="w3-panel">
 			<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new user ]%></button>
-			<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=empty($_SESSION['dir']) ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
+			<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsUserList" ViewName="user_list" />

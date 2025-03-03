@@ -10,7 +10,7 @@
 		<a id="btn_console_web" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'console_web');"<%=!$this->getModule('users')->isPageAllowed($this->User, 'Console') ? ' style="display: none"': ''%>>
 			<%[ Console ]%>
 		</a>
-		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config'); if (oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table) {oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table.responsive.recalc(); }"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+		<a id="btn_console_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_cons_res_config('Director'); W3Tabs.open(this.id, 'console_config'); if (oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table) {oBaculaConfigResourceList<%=$this->ConsoleResourcesConfig->ClientID%>.table.responsive.recalc(); }"<%=!$this->getApplication()->getSession()->itemAt('bcons') ? ' style="display: none"': ''%>>
 			<%[ Configure console ]%>
 		</a>
 	</div>
@@ -20,7 +20,7 @@
 			Visible="<%=$this->getModule('users')->isPageAllowed($this->User, 'Console')%>"
 		/>
 	</div>
-	<p class="info"<%=!empty($_SESSION['bcons']) ? ' style="display: none"': ''%>><%[ To use the console page please configure bbconsjson binary file path on the API side. ]%></p>
+	<p class="info"<%=$this->getApplication()->getSession()->itemAt('bcons') ? ' style="display: none"': ''%>><%[ To use the console page please configure bbconsjson binary file path on the API side. ]%></p>
 	<div class="w3-container tab_item" id="console_config" style="display: none">
 		<com:TCallback ID="LoadConsoleResourcesConfig" OnCallback="loadConsoleResourcesConfig" />
 		<script>
@@ -38,7 +38,7 @@ function load_cons_res_config(resource) {
 				<div id="console_console_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding">Console</div>
 			</a>
 		</div>
-		<div id="console_resources_config_form" class="subtab_item"<%=empty($_SESSION['bcons']) ? ' style="display: none"': ''%>>
+		<div id="console_resources_config_form" class="subtab_item"<%=!$this->getApplication()->getSession()->itemAt('bcons') ? ' style="display: none"': ''%>>
 			<com:Bacularis.Web.Portlets.BaculaConfigResourceList
 				ID="ConsoleResourcesConfig"
 				ComponentType="bcons"
@@ -48,7 +48,7 @@ function load_cons_res_config(resource) {
 	</div>
 <script>
 $(function() {
-	<%=!empty($_SESSION['bcons']) ? 'load_cons_res_config("Director");': ''%>
+	<%=$this->getApplication()->getSession()->itemAt('bcons') ? 'load_cons_res_config("Director");': ''%>
 });
 </script>
 </com:TContent>
