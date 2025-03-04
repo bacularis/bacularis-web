@@ -221,6 +221,10 @@ oTagManagerList = {
 		this.table = $('#' + this.ids.tag_manager_list).DataTable({
 			data: data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

@@ -11,7 +11,7 @@
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('ClientList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_client_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_actions');"><%[ Actions ]%></button>
-		<button id="btn_client_jobs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_jobs'); oJobForClientList.table.responsive.recalc();"><%[ Client jobs ]%></button>
+		<button id="btn_client_jobs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_jobs'); oJobForClientList.table.responsive.recalc(); set_page_tables([oJobForClientList, oBaculaConfigResourceList<%=$this->FileDaemonResourcesConfig->ClientID%>]);"><%[ Client jobs ]%></button>
 		<com:TActiveLinkButton
 			ID="ClientConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
@@ -690,6 +690,10 @@ var oJobForClientList = {
 		this.table = $('#' + this.ids.job_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

@@ -15,6 +15,7 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/buttons.html5.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/buttons.colVis.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-select/js/dataTables.select.min.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/flotr2/flotr2.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/valuatum--gauge.js/dist/gauge.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
@@ -26,11 +27,12 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-dt/css/dataTables.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-responsive-dt/css/responsive.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />
 			<!-- Top container -->
-			<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+			<div id="main_top_bar" class="w3-bar w3-top w3-black w3-large" style="z-index: 5">
 				<button type="button" class="w3-bar-item w3-button w3-hover-none w3-hover-text-light-grey" onclick="W3SideBar.open();"><i class="fa fa-bars"></i>  Menu</button>
 				<img class="w3-bar-item w3-right" src="<%~ ../../../../../Common/Images/logo.png %>" alt="" style="margin-top: 3px" />
 			</div>

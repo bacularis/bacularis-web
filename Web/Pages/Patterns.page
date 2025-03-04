@@ -7,8 +7,8 @@
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_configs" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'configs'); oConfigList.table.responsive.recalc();"><%[ Configs ]%></button>
-		<button id="btn_patterns" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'patterns'); oPatternList.table.responsive.recalc();"><%[ Patterns ]%></button>
+		<button id="btn_configs" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'configs'); oConfigList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList]);"><%[ Configs ]%></button>
+		<button id="btn_patterns" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'patterns'); oPatternList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList]);"><%[ Patterns ]%></button>
 	</div>
 	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 	<div class="w3-container tab_item" id="configs">
@@ -116,6 +116,10 @@ var oConfigList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -591,6 +595,10 @@ var oPatternList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

@@ -133,6 +133,10 @@ var oJobScheduleList = {
 		this.table = $('#' + this.ids.schedule_list).DataTable({
 			data: this.get_data(),
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

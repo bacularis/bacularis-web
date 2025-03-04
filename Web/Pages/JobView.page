@@ -58,13 +58,13 @@
 			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnCallback="loadScheduleConfig"
 		/>
-		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc();"><%[ Job history ]%></button>
+		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList]);"><%[ Job history ]%></button>
 		<com:TActiveLinkButton
 			ID="JobSchedulesBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
 			Text="<%[ Job schedules ]%>"
 			OnCallback="loadSchedules"
-			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules');"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList]);"
 		/>
 	</div>
 
@@ -1286,6 +1286,10 @@ var oJobHistoryList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

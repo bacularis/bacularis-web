@@ -7,11 +7,11 @@
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_api_hosts" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'api_hosts'); if (oAPIHostList.table) { oAPIHostList.table.responsive.recalc(); }"><%[ Hosts ]%></button>
-		<button id="btn_os_profiles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'os_profiles'); if (oOSProfileList.table) { oOSProfileList.table.responsive.recalc(); } "><%[ OS profiles ]%></button>
-		<button id="btn_repo_auth" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'repo_auth'); if (oRepoAuthList.table) { oRepoAuthList.table.responsive.recalc(); } "><%[ Repo auths ]%></button>
-		<button id="btn_ssh_configs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_configs'); if (oSSHConfigList.table) { oSSHConfigList.table.responsive.recalc(); }"><%[ SSH configs ]%></button>
-		<button id="btn_ssh_keys" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_keys'); if (oSSHKeyList.table) { oSSHKeyList.table.responsive.recalc(); }"><%[ SSH keys ]%></button>
+		<button id="btn_api_hosts" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'api_hosts'); if (oAPIHostList.table) { oAPIHostList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); }"><%[ Hosts ]%></button>
+		<button id="btn_os_profiles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'os_profiles'); if (oOSProfileList.table) { oOSProfileList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); } "><%[ OS profiles ]%></button>
+		<button id="btn_repo_auth" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'repo_auth'); if (oRepoAuthList.table) { oRepoAuthList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); } "><%[ Repo auths ]%></button>
+		<button id="btn_ssh_configs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_configs'); if (oSSHConfigList.table) { oSSHConfigList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); }"><%[ SSH configs ]%></button>
+		<button id="btn_ssh_keys" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'ssh_keys'); if (oSSHKeyList.table) { oSSHKeyList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); }"><%[ SSH keys ]%></button>
 	</div>
 	<div class="w3-container tab_item" id="api_hosts">
 		<div class="w3-panel">
@@ -100,6 +100,10 @@ var oAPIHostList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -1723,6 +1727,10 @@ var oOSProfileList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -3527,6 +3535,10 @@ var oRepoAuthList = {
 		this.table = $('#' + this.ids.repo_auth_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -3927,6 +3939,10 @@ var oSSHConfigList = {
 		this.table = $('#' + this.ids.ssh_config_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -4261,6 +4277,10 @@ var oSSHKeyList = {
 		this.table = $('#' + this.ids.ssh_key_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

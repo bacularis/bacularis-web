@@ -7,14 +7,14 @@
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_user_security" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'user_security');"><%[ Settings ]%></button>
-		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc();"><%[ Users ]%></button>
-		<button id="btn_role_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'role_list'); oRoleList.table.responsive.recalc();"><%[ Roles ]%></button>
-		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc();"><%[ Console ACLs ]%></button>
-		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc();"><%[ API basic users ]%></button>
-		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc();"><%[ API OAuth2 clients ]%></button>
-		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc();"><%[ API hosts ]%></button>
-		<button id="btn_api_host_group_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_group_list'); oAPIHostGroupList.table.responsive.recalc();"><%[ API host groups ]%></button>
+		<button id="btn_user_security" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'user_security'); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ Settings ]%></button>
+		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ Users ]%></button>
+		<button id="btn_role_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'role_list'); oRoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ Roles ]%></button>
+		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ Console ACLs ]%></button>
+		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ API basic users ]%></button>
+		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ API OAuth2 clients ]%></button>
+		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ API hosts ]%></button>
+		<button id="btn_api_host_group_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_group_list'); oAPIHostGroupList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList]);"><%[ API host groups ]%></button>
 	</div>
 
 	<div class="w3-container tab_item" id="user_security">
@@ -1226,6 +1226,10 @@ var oUserList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -2038,6 +2042,10 @@ var oRoleList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -2501,6 +2509,10 @@ var oConsoleList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -2811,6 +2823,10 @@ var oAPIBasicUserList = {
 		this.table = $('#' + this.ids.api_basic_user_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -3251,6 +3267,10 @@ var oOAuth2ClientList = {
 		this.table = $('#' + this.ids.oauth2_client_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -3704,6 +3724,10 @@ var oAPIHostList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -4541,6 +4565,10 @@ var oAPIHostGroupList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

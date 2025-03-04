@@ -360,6 +360,9 @@ var oJobsToRestoreList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true
+			},
 			layout: {
 				topStart: [
 					{

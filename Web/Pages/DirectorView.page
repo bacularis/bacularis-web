@@ -9,10 +9,10 @@
 	<h3 class="view_header"><%[ Director: ]%> <%=$this->getDirectorName()%></h3>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<button id="btn_director_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'director_actions');"><%[ Actions ]%></button>
-		<a id="btn_director_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_director_config(); W3Tabs.open(this.id, 'director_config');"<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' style="display: none"': ''%>>
+		<a id="btn_director_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_director_config(); W3Tabs.open(this.id, 'director_config'); set_page_tables([oBaculaConfigResourceList<%=$this->DirectorResourcesConfig->ClientID%>, oJobScheduleList]);"<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' style="display: none"': ''%>>
 			<%[ Configure director ]%>
 		</a>
-		<button id="btn_director_schedule_status" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'director_schedule_status'); oJobScheduleList.table.responsive.recalc();"><%[ Schedule status ]%></button>
+		<button id="btn_director_schedule_status" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'director_schedule_status'); oJobScheduleList.table.responsive.recalc(); set_page_tables([oBaculaConfigResourceList<%=$this->DirectorResourcesConfig->ClientID%>, oJobScheduleList]);"><%[ Schedule status ]%></button>
 	</div>
 	<div class="w3-container tab_item" id="director_actions">
 		<com:TActiveLinkButton

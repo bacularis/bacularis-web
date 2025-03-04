@@ -23,16 +23,17 @@
 	</div>
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<a id="btn_job_history" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); }">
+		<a id="btn_job_history" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'job_history'); if (oJobHistoryList.table) { oJobHistoryList.table.responsive.recalc(); oJobHistoryList.table.fixedHeader.adjust(); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]); }">
 			<%[ Job history ]%>
 		</a>
-		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); if (oJobList.table) { oJobList.table.responsive.recalc(); oJobList.table.columns.adjust().draw(); }">
+		<a id="btn_job_details" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_details'); if (oJobList.table) { oJobList.table.responsive.recalc(); oJobList.table.fixedHeader.adjust(); oJobList.table.columns.adjust().draw(); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]); }">
 			<%[ Jobs ]%>
 		</a>
-		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc();">
+		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc(); oJobHistoryReport.table.fixedHeader.adjust(); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]);">
 			<%[ Reports ]%>
 		</a>
 	</div>
+
 	<!-- Global bulk action modal -->
 	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 
@@ -352,6 +353,10 @@ var oJobHistoryList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -1025,6 +1030,10 @@ const oJobList = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -2001,6 +2010,10 @@ class JobHistoryReport {
 	get_table_defs() {
 		const defs = {
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

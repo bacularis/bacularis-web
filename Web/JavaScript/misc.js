@@ -826,6 +826,10 @@ var oLastJobsList = {
 			bInfo: false,
 			paging: false,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

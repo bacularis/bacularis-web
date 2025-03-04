@@ -19,13 +19,13 @@
 			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnClick="setStorage"
 		/>
-		<a id="btn_storage_daemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'storage_daemon_config');">
+		<a id="btn_storage_daemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_sd_storagedaemon_config(); W3Tabs.open(this.id, 'storage_daemon_config'); set_page_tables([oBaculaConfigResourceList<%=$this->StorageDaemonResourcesConfig->ClientID%>, oDriveList, oSlotList]);">
 			<%[ Configure storage daemon ]%>
 		</a>
 		<com:TActiveLinkButton
 			ID="ManageAutochangerBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'manage_autochanger');"
+			Attributes.onclick="W3Tabs.open(this.id, 'manage_autochanger'); set_page_tables([oBaculaConfigResourceList<%=$this->StorageDaemonResourcesConfig->ClientID%>, oDriveList, oSlotList]);"
 			Text="<%[ Manage autochanger ]%>"
 			Visible="<%=$this->getIsAutochanger()%>"
 			OnCallback="loadAutochanger"
@@ -1778,6 +1778,10 @@ var oDriveList = {
 		this.table = $('#' + this.ids.drive_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
@@ -2055,6 +2059,10 @@ var oSlotList = {
 			data: this.data,
 			pageLength: 100,
 			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{

@@ -18,6 +18,7 @@
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/dataTables.buttons.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/buttons.html5.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons/js/buttons.colVis.min.js %> />
+			<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../../../../../Common/JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/misc.js %> />
 			<com:BClientScript ScriptUrl=<%~ ../JavaScript/bacula-config.js %> />
@@ -25,6 +26,7 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-dt/css/dataTables.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-responsive-dt/css/responsive.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />

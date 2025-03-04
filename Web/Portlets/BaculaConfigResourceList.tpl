@@ -145,6 +145,10 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 			data: this.data,
 			deferRender: true,
 			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
 			layout: {
 				topStart: [
 					{
