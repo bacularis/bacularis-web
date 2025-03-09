@@ -1054,7 +1054,8 @@ class RestoreWizard extends BaculumWebPage
 		if (key_exists($uniqid, $this->Session['files_restore'])) {
 			$fr = $this->Session['files_restore'];
 			unset($fr[$uniqid]);
-			$this->Session['files_restore'] = $fr;
+			$this->Session->open();
+			$this->Session->add('files_restore', $fr);
 		}
 	}
 
