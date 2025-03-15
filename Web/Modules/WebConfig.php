@@ -149,11 +149,13 @@ class WebConfig extends ConfigFileModule
 	 */
 	public function init($config)
 	{
-		// add event handler to set page language
-		$this->Application->attachEventHandler(
-			'onPreRunService',
-			[$this, 'setCulture']
-		);
+		if ($this->Application->Service->getID() === 'web') {
+			// add event handler to set page language
+			$this->Application->attachEventHandler(
+				'onPreRunService',
+				[$this, 'setCulture']
+			);
+		}
 	}
 
 	/**
