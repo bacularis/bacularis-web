@@ -317,26 +317,30 @@ var oRunningJobStatus = {
 		// Average job speed - part 1
 		var ave_speed = Units.format_speed(job.bytes_sec, null, true, true);
 		var ave_job_speed = ave_speed.value.toFixed(1) + ' ' + ave_speed.format;
-		//this.add_job_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+		let ave_speed_gauge;
 
-		// Average job speed - part 2
-		var ave_speed_container = document.createElement('DIV');
-		ave_speed_container.className = this.css.gauge_container;
-		ave_speed_container.style.height = '100px';
-		ave_speed_container.style.width = '200px';
-		var ave_speed_label = document.createElement('SPAN');
-		ave_speed_label.className = this.css.gauge_label;
-		ave_speed_label.textContent = ave_job_speed;
-		ave_speed_label.style.top = '-20px';
-		ave_speed_label.style.left = '69px';
-		var ave_speed_gauge = document.createElement('CANVAS');
-		ave_speed_gauge.style.height = '100px';
-		ave_speed_gauge.style.width = '200px';
-		ave_speed_gauge.setAttribute('rel', 'ave_speed');
-		ave_speed_gauge.className = this.css.gauge;
-		ave_speed_container.appendChild(ave_speed_gauge);
-		ave_speed_container.appendChild(ave_speed_label);
-		this.add_job_row(table, '<%[ Average speed: ]%>', ave_speed_container);
+		if (job.jobfiles == 0 && job.jobbytes == 0 && job.bytes_sec == 0) {
+			this.add_job_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+		} else {
+			// Average job speed - part 2
+			const ave_speed_container = document.createElement('DIV');
+			ave_speed_container.className = this.css.gauge_container;
+			ave_speed_container.style.height = '100px';
+			ave_speed_container.style.width = '200px';
+			const ave_speed_label = document.createElement('SPAN');
+			ave_speed_label.className = this.css.gauge_label;
+			ave_speed_label.textContent = ave_job_speed;
+			ave_speed_label.style.top = '-20px';
+			ave_speed_label.style.left = '69px';
+			ave_speed_gauge = document.createElement('CANVAS');
+			ave_speed_gauge.style.height = '100px';
+			ave_speed_gauge.style.width = '200px';
+			ave_speed_gauge.setAttribute('rel', 'ave_speed');
+			ave_speed_gauge.className = this.css.gauge;
+			ave_speed_container.appendChild(ave_speed_gauge);
+			ave_speed_container.appendChild(ave_speed_label);
+			this.add_job_row(table, '<%[ Average speed: ]%>', ave_speed_container);
+		}
 
 		// Processing file
 		if (job.hasOwnProperty('processing_file') && job.processing_file) {
@@ -467,6 +471,9 @@ var oRunningJobStatus = {
 
 		const open = t.childNodes.length == 0;
 		$(() => {
+			if (job.jobfiles == 0 && job.jobbytes == 0 && job.bytes_sec == 0) {
+				return;
+			}
 			this.set_job_gauge(job.bytes_sec, ave_speed_gauge, open);
 		});
 	},
