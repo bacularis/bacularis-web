@@ -18,7 +18,9 @@ var Units = {
 			{short: 'kb/s', long: 'kB/s', value: 1000},
 			{short: 'k/s', long: 'KiB/s', value: 1024},
 			{short: 'mb/s', long: 'MB/s', value: 1000},
-			{short: 'm/s', long: 'MiB/s', value: 1024}
+			{short: 'm/s', long: 'MiB/s', value: 1024},
+			{short: 'gb/s', long: 'GB/s', value: 1000},
+			{short: 'g/s', long: 'GiB/s', value: 1024}
 		],
 		time: [
 			{long: 'second', value: 1, full: 1},

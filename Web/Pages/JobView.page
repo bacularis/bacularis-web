@@ -114,7 +114,7 @@
 					</div>
 				</div>
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('status_running_job_subtab_graphical', 'status_running_job_graphical_output', 'job_log');"<%=!$this->allow_graph_mode ? ' style="display: none"' : ''%>>
-					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
+					<div id="status_running_job_subtab_graphical" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-border-red w3-padding" onclick="oRunningJobStatus.update_gauge();">
 						<%[ Running job status ]%>
 						<i id="status_running_job_loading" class="fa fa-sync w3-spin w3-right" style="display: none; vertical-align: super;"></i>
 					</div>
@@ -177,6 +177,51 @@ var oRunningJobStatus = {
 		show: {
 			maxjobs: 'status_client_maxjobs',
 			enabled: 'status_client_enabled'
+		}
+	},
+	css: {
+		gauge: 'gauge',
+		gauge_label: 'gauge_label',
+		gauge_container: 'gauge_container'
+	},
+	gauges: {
+		speed: {
+			angle: -0.2, // The span of the gauge arc
+			lineWidth: 0.2, // The line thickness
+			radiusScale: 1, // Relative radius
+			pointer: {
+				length: 0.6, // // Relative to gauge radius
+				strokeWidth: 0.035, // The thickness
+				color: (ThemeMode.is_dark() ? 'white' : 'black') // Fill color
+			},
+			limitMax: false,     // If false, max value increases automatically if value > maxValue
+			limitMin: false,     // If true, the min value of the gauge will be fixed
+			colorStart: '#6FADCF',
+			colorStop: '#8FC0DA',
+			strokeColor: '#E0E0E0',
+			generateGradient: true,
+			highDpiSupport: true,     // High resolution support
+			renderTicks: {
+				divisions: 5,
+				divWidth: 1.1,
+				divLength: 0.7,
+				divColor: '#333333',
+				subDivisions: 3,
+				subLength: 0.5,
+				subWidth: 0.6,
+				subColor: '#666666'
+			},
+			staticLabels: {
+				font: "10px sans-serif",  // Specifies font
+				color: "#000000",  // Optional: Label text color
+				fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+			}
+		}
+	},
+	gauges_data: {
+		speed: {
+			maxValue: 0,
+			maxValueFormat: 'B'
 		}
 	},
 	init: function() {
@@ -269,10 +314,29 @@ var oRunningJobStatus = {
 		// Job files
 		this.add_job_row(table, '<%[ Job files: ]%>', job.jobfiles);
 
-		// Average job speed
+		// Average job speed - part 1
 		var ave_speed = Units.format_speed(job.bytes_sec, null, true, true);
-		var ave_job_speed = ave_speed.value.toFixed(2) + ' ' + ave_speed.format;
-		this.add_job_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+		var ave_job_speed = ave_speed.value.toFixed(1) + ' ' + ave_speed.format;
+		//this.add_job_row(table, '<%[ Average speed: ]%>', ave_job_speed);
+
+		// Average job speed - part 2
+		var ave_speed_container = document.createElement('DIV');
+		ave_speed_container.className = this.css.gauge_container;
+		ave_speed_container.style.height = '100px';
+		ave_speed_container.style.width = '200px';
+		var ave_speed_label = document.createElement('SPAN');
+		ave_speed_label.className = this.css.gauge_label;
+		ave_speed_label.textContent = ave_job_speed;
+		ave_speed_label.style.top = '-20px';
+		ave_speed_label.style.left = '69px';
+		var ave_speed_gauge = document.createElement('CANVAS');
+		ave_speed_gauge.style.height = '100px';
+		ave_speed_gauge.style.width = '200px';
+		ave_speed_gauge.setAttribute('rel', 'ave_speed');
+		ave_speed_gauge.className = this.css.gauge;
+		ave_speed_container.appendChild(ave_speed_gauge);
+		ave_speed_container.appendChild(ave_speed_label);
+		this.add_job_row(table, '<%[ Average speed: ]%>', ave_speed_container);
 
 		// Processing file
 		if (job.hasOwnProperty('processing_file') && job.processing_file) {
@@ -400,6 +464,11 @@ var oRunningJobStatus = {
 		var running_job_el = document.getElementById(this.ids.running_job);
 		var t = running_job_el.querySelector('table');
 		running_job_el.replaceChild(table, t);
+
+		const open = t.childNodes.length == 0;
+		$(() => {
+			this.set_job_gauge(job.bytes_sec, ave_speed_gauge, open);
+		});
 	},
 	add_job_row: function(table, key, value) {
 		var tr = document.createElement('TR');
@@ -471,6 +540,55 @@ var oRunningJobStatus = {
 		} else {
 			oRunningJobStatus.show_warning(false);
 		}
+	},
+	set_job_gauge: function(value, gauge, open) {
+		value = parseFloat(value);
+		let val = Units.format_speed(value, null, true, true);
+
+		const jump = Math.ceil((val.value / 100) * 20);
+		const val1 = 0;
+		const val2 = jump;
+		const val3 = jump * 2;
+		const val4 = jump * 3;
+		const val5 = jump * 4;
+		const val6 = jump * 5;
+
+		this.gauges_data.speed.currValue = val.value;
+		if (val6 > this.gauges_data.speed.maxValue || val.format != this.gauges_data.speed.maxValueFormat) {
+			this.gauges_data.speed.maxValue = val6;
+			this.gauges_data.speed.maxValueFormat = val.format;
+
+			this.gauges_data.speed.staticLabels = {
+				labels: [val1, val2, val3, val4, val5, val6]  // Print labels at these values
+			};
+			this.gauges_data.speed.staticZones = [
+				{strokeStyle: "#30B32D", min: val1, max: val2}, // Green
+				{strokeStyle: "#30B32D", min: val2, max: val3}, // Green
+				{strokeStyle: "#30B32D", min: val3, max: val4}, // Green
+				{strokeStyle: "#FFDD00", min: val4, max: val5}, // Yellow
+				{strokeStyle: "#F03E3E", min: val5, max: val6}  // Red
+			];
+			if (this.gauges_data.speed.maxValue < 5 || jump <= 1) {
+				this.gauges_data.speed.staticLabels.fractionDigits = 1;
+			}
+			this.gauges_data.speed = $.extend(true, {}, this.gauges.speed, this.gauges_data.speed);
+		}
+		this.gauges_data.speed.animationSpeed = (open ? 80 : 1);
+
+		this.set_gauge(gauge, val.value);
+	},
+	set_gauge: function(gauge, value) {
+		let gg = new Gauge(gauge).setOptions(this.gauges_data.speed); // create gauge
+		gg.maxValue = this.gauges_data.speed.maxValue; // set max gauge value
+		gg.setMinValue(0);  // Prefer setter over gauge.minValue = 0
+		gg.animationSpeed = this.gauges_data.speed.animationSpeed; // set animation speed
+		gg.set(value); // set actual value
+	},
+	update_gauge: function() {
+		$(() => {
+			const gauge = document.querySelector('canvas[rel="ave_speed"]');
+			this.set_gauge(gauge, this.gauges_data.speed.currValue);
+		});
 	}
 }
 
