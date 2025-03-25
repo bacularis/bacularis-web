@@ -393,6 +393,10 @@ oAccountSettingsTOTP2FA.init();
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
 					<h4><%[ FIDO U2F two-factor authentication ]%></h4>
 					<p><%[ The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key. ]%></p>
+					<div id="fidou2f_no_https_warning_keys" class="w3-panel w3-orange" style="display: none;">
+						<h3><%[ Warning ]%></h3>
+						<p><%[ The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate. ]%></p>
+					</div>
 				</div>
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
 					<div id="fidou2f_security_key_list">
@@ -468,7 +472,8 @@ var oAccountSettingsFIDOU2F = {
 		key_props_window: 'account_settings_fidou2f_edit_key_modal',
 		key_name: '<%=$this->FIDOU2FKeyName->ClientID%>',
 		key_id: '<%=$this->FIDOU2FKeylId->ClientID%>',
-		no_https_warning: 'fidou2f_no_https_warning'
+		no_https_warning: 'fidou2f_no_https_warning',
+		no_https_warning_keys: 'fidou2f_no_https_warning_keys'
 	},
 	init: function(data) {
 		if (this.table) {
@@ -687,9 +692,15 @@ var oAccountSettingsFIDOU2F = {
 		let show =  (window.location.protocol != 'https:' && tfm == '<%=WebUserConfig::MFA_TYPE_FIDOU2F%>');
 		const warning = document.getElementById(this.ids.no_https_warning);
 		warning.style.display = show ? 'block' : 'none';
+	},
+	show_no_https_warning_keys: function() {
+		let show =  (window.location.protocol != 'https:');
+		const warning = document.getElementById(this.ids.no_https_warning_keys);
+		warning.style.display = show ? 'block' : 'none';
 	}
 };
 oAccountSettingsFIDOU2F.show_no_https_warning();
+oAccountSettingsFIDOU2F.show_no_https_warning_keys();
 		</script>
 	</div>
 
