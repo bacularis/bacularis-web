@@ -1,24 +1,33 @@
 
-This is new function and bug fix release. We have set the table headers as fixed. This means
-that from now when scrolling through long tables, the table headers are visible all the time.
-This helps to orient in the table columns regardless of the web browser scroll position.
-Additionally, we added run job button to enable starting jobs on job list table.
+We are glad to announce a new major Bacularis release 5.0.0. Changes in this
+version are mainly related to modern security functions and to installation
+process.
 
-On the bug fixes side, we fixed several important bugs. Some fixes improve overall application
-performance. Of particular note is the fix for page timeout in some cases.
+On the security side we added support for logging in with U2F hardware keys.
+The security keys are used in the second factor of the authentication.
+We reorganized the account settings page to provide better interface for
+managing 2FA methods. Now users can choose which 2FA method they want to use
+and they can easily switch between: time-based authenticators (TOTP) and
+security keys (U2F).
 
-We have also added changes reported by the Community. Thank you for your activity and these
-reports. Every comment or remark counts.
+For the installation process, we prepared changes in the install wizard. This
+is for helping new Bacularis users and also new Bacula users in first contact
+with Bacula-related software. This is important for us to encourage users to
+try Bacula. We try to do it in various way and making Bacularis functions
+easier is one of them.
+
+Besides new functions and improvements, new Bacularis 5.0.0 is also the bugfix
+release. Specially worth to mention is a fix to restore using copy jobs reported
+by the Community and also fixes to the install wizard.
 
 **Bacularis Web changes**
 
- * Add fixed table header
- * Add run job button to start jobs in the job table
- * Add info to set BlobEndpoint directive for non-AWS S3 cloud storage
- * Add previous/next buttons at the bottom of backup file list table
- * Fix page requests hang in some cases that could cause page timeout
- * Fix job log button in job history report window
- * Fix loading tags
- * Fix tags in restore wizard
- * Fix radio button style in tables
+ * Add FIDO U2F/CTAP1 hardware key support for two-factor login
+ * Add graphical average speed gauge in running job status
+ * Enable restore from copy job for selected job restore method
+ * Show warning message on try using FIDO U2F method without HTTPS connection
+ * Disable opened session if not needed
+ * Hide average job speed gauge in specific cases
+ * Fix culture settings for web module
+ * Fix remove file/dir selection in restore wizard
 
