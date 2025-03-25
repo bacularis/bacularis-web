@@ -582,7 +582,9 @@ var oRunningJobStatus = {
 		}
 		this.gauges_data.speed.animationSpeed = (open ? 80 : 1);
 
-		this.set_gauge(gauge, val.value);
+		if (val.value > 0) {
+			this.set_gauge(gauge, val.value);
+		}
 	},
 	set_gauge: function(gauge, value) {
 		let gg = new Gauge(gauge).setOptions(this.gauges_data.speed); // create gauge
