@@ -55,6 +55,10 @@ class Monitor extends BaculumWebPage
 		if ($this->authenticate() === false) {
 			exit();
 		}
+
+		// Monitor does not use session
+		$sess = $this->getApplication()->getSession();
+		$sess->close();
 	}
 
 	public function onInit($param)
