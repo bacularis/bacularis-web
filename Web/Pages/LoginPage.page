@@ -80,6 +80,7 @@
 			</div>
 		</div>
 	</div>
+	<com:Bacularis.Web.Portlets.ErrorMessageBox />
 	<com:TCallback ID="LoginFIDOU2F" OnCallback="loginFIDOU2F" />
 <script>
 	if (ThemeMode.is_dark()) {

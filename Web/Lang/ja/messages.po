@@ -6409,3 +6409,6 @@ msgstr "Key properties"
 
 msgid "Set a friendly name for your key to make it easier to recognize."
 msgstr "Set a friendly name for your key to make it easier to recognize."
+
+msgid "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."
+msgstr "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."

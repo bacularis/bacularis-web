@@ -148,6 +148,10 @@
 	<div class="w3-container tab_item" id="account_settings_auth" style="display: none">
 		<h3><%[ Multi-factor authentication ]%></h3>
 		<p><%[ The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). ]%></p>
+		<div id="fidou2f_no_https_warning" class="w3-panel w3-orange" style="width: 1100px; display: none;">
+			<h3><%[ Warning ]%></h3>
+			<p><%[ The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate. ]%></p>
+		</div>
 		<div class="w3-container w3-row w3-padding">
 			<div class="w3-quarter w3-col"><label for="<%=$this->TwoFactorMethod->ClientID%>"><%[ Two-factor authentication method ]%>:</label></div>
 			<div class="w3-quarter">
@@ -156,10 +160,11 @@
 					CssClass="w3-select w3-border"
 					Width="200px"
 					AutoPostBack="false"
+					Attributes.onchange="oAccountSettingsFIDOU2F.show_no_https_warning();"
 				>
-					<com:TListItem Value="none" Text="Disabled" />
-					<com:TListItem ID="TOTPItem" Value="totp" Text="TOTP 2FA" />
-					<com:TListItem ID="FIDOU2FItem" Value="fidou2f" Text="FIDO U2F" />
+					<com:TListItem Value="<%=WebUserConfig::MFA_TYPE_NONE%>" Text="Disabled" />
+					<com:TListItem ID="TOTPItem" Value="<%=WebUserConfig::MFA_TYPE_TOTP%>" Text="TOTP 2FA" />
+					<com:TListItem ID="FIDOU2FItem" Value="<%=WebUserConfig::MFA_TYPE_FIDOU2F%>" Text="FIDO U2F" />
 				</com:TActiveDropDownList>
 			</div>
 		</div>
@@ -294,6 +299,10 @@ var oAccountSettingsMFA = {
 			}
 			break;
 		}
+	},
+	get_two_factor_method: function() {
+		const tfm = document.getElementById(this.ids.mfa);
+		return tfm.value;
 	}
 };
 oAccountSettingsMFA.update_mfa_selection('<%=WebUserConfig::MFA_TYPE_TOTP%>', 'TOTP 2FA', <%=$this->isTOTP2FAConfigured() ? 'true' : 'false'%>);
@@ -458,7 +467,8 @@ var oAccountSettingsFIDOU2F = {
 		list_table: 'fidou2f_key_list',
 		key_props_window: 'account_settings_fidou2f_edit_key_modal',
 		key_name: '<%=$this->FIDOU2FKeyName->ClientID%>',
-		key_id: '<%=$this->FIDOU2FKeylId->ClientID%>'
+		key_id: '<%=$this->FIDOU2FKeylId->ClientID%>',
+		no_https_warning: 'fidou2f_no_https_warning'
 	},
 	init: function(data) {
 		if (this.table) {
@@ -671,8 +681,15 @@ var oAccountSettingsFIDOU2F = {
 	show_key_window: function(show) {
 		const win = document.getElementById(oAccountSettingsFIDOU2F.ids.key_props_window);
 		win.style.display = show ? 'block' : 'none';
+	},
+	show_no_https_warning: function() {
+		const tfm = oAccountSettingsMFA.get_two_factor_method();
+		let show =  (window.location.protocol != 'https:' && tfm == '<%=WebUserConfig::MFA_TYPE_FIDOU2F%>');
+		const warning = document.getElementById(this.ids.no_https_warning);
+		warning.style.display = show ? 'block' : 'none';
 	}
 };
+oAccountSettingsFIDOU2F.show_no_https_warning();
 		</script>
 	</div>
 
