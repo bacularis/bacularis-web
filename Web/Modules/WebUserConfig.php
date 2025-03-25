@@ -73,6 +73,13 @@ class WebUserConfig extends ConfigFileModule
 	public const API_HOST_METHOD_HOST_GROUPS = 'host_groups';
 
 	/**
+	 * Multi-factor authentication types.
+	 */
+	public const MFA_TYPE_NONE = 'none';
+	public const MFA_TYPE_TOTP = 'totp';
+	public const MFA_TYPE_FIDOU2F = 'fidou2f';
+
+	/**
 	 * Stores web user config content.
 	 */
 	private $config;
@@ -190,6 +197,32 @@ class WebUserConfig extends ConfigFileModule
 	}
 
 	/**
+	 * Update single user config.
+	 *
+	 * @param string $username user name
+	 * @param array $user_config user configuration part to update
+	 * @return bool true if config saved successfully, otherwise false
+	 */
+	public function updateUserConfig($username, array $user_config): bool
+	{
+		$config = $this->getUserConfig($username);
+		if (count($config) == 0) {
+			return false;
+		}
+		foreach ($user_config as $key => $value) {
+			if (key_exists($key, $config) && is_array($config[$key])) {
+				$config[$key] = array_merge(
+					$config[$key],
+					$value
+				);
+			} else {
+				$config[$key] = $value;
+			}
+		}
+		return $this->setUserConfig($username, $config);
+	}
+
+	/**
 	 * Get user config properties.
 	 * If custom properties provided, they are merged with required properties.
 	 *
@@ -225,7 +258,6 @@ class WebUserConfig extends ConfigFileModule
 		}
 		return $this->setConfig($config);
 	}
-
 
 	/**
 	 * Import basic auth users to web user config.

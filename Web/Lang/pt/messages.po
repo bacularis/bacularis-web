@@ -4303,11 +4303,11 @@ msgstr "After starting the job, go to the running job status"
 msgid "Account settings"
 msgstr "Account settings"
 
-msgid "Enable 2FA"
-msgstr "Enable 2FA"
+msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor)."
+msgstr "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor)."
 
-msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
-msgstr "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+msgid "The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
+msgstr "The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
 
 msgid "2FA settings"
 msgstr "2FA settings"
@@ -6289,3 +6289,60 @@ msgstr "If you use non-AWS S3 cloud storage, please don't forget to set the Blob
 
 msgid "NOTE"
 msgstr "NOTE"
+
+msgid "Multi-factor authentication"
+msgstr "Multi-factor authentication"
+
+msgid "Configure TOTP 2FA"
+msgstr "Configure TOTP 2FA"
+
+msgid "TOTP 2FA is configured."
+msgstr "TOTP 2FA is configured."
+
+msgid "Disable TOTP 2FA"
+msgstr "Disable TOTP 2FA"
+
+msgid "FIDO U2F hardware keys"
+msgstr "FIDO U2F hardware keys"
+
+msgid "The second factor uses the U2F security hardware keys."
+msgstr "The second factor uses the U2F security hardware keys."
+
+msgid "Configure U2F keys"
+msgstr "Configure U2F keys"
+
+msgid "FIDO U2F two-factor authentication"
+msgstr "FIDO U2F two-factor authentication"
+
+msgid "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
+msgstr "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
+
+msgid "Add new security key"
+msgstr "Add new security key"
+
+msgid "Are you sure you want to remove key '%key_name'?"
+msgstr "Are you sure you want to remove key '%key_name'?"
+
+msgid "Last used"
+msgstr "Last used"
+
+msgid "Enable TOTP 2FA"
+msgstr "Enable TOTP 2FA"
+
+msgid "Two-factor authentication method"
+msgstr "Two-factor authentication method"
+
+msgid "unconfigured"
+msgstr "unconfigured"
+
+msgid "FIDO U2F settings"
+msgstr "FIDO U2F settings"
+
+msgid "TOTP 2FA settings"
+msgstr "TOTP 2FA settings"
+
+msgid "Key properties"
+msgstr "Key properties"
+
+msgid "Set a friendly name for your key to make it easier to recognize."
+msgstr "Set a friendly name for your key to make it easier to recognize."

@@ -15,7 +15,10 @@
 
 use Prado\Prado;
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Protocol\WebAuthn\Base as WebAuthnBase;
+use Bacularis\Common\Modules\Protocol\WebAuthn\Register as WebAuthnRegister;
 use Bacularis\Web\Modules\WebConfig;
+use Bacularis\Web\Modules\WebUserConfig;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -35,14 +38,16 @@ class AccountSettings extends BaculumWebPage
 	{
 		parent::onInit($param);
 		$username = $this->User->getUsername();
-		self::$user = $this->getModule('user_config')->getUserConfig($username);
+		$user_config = $this->getModule('user_config');
+		self::$user = $user_config->getUserConfig($username);
 
 		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
-			$this->Auth2FAEnable->Enabled = false;
+			$this->AuthTOTP2FAConfigure->getAttributes()->add('onclick', 'return false;');
+			$this->AuthTOTP2FAConfigure->setStyle('cursor: not-allowed;');
 			$this->Auth2FADisabledMsg->Display = 'Dynamic';
 		}
 
-		if ($this->IsPostBack || $this->IsCallback) {
+		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
 		$this->UserLongName->Text = self::$user['long_name'];
@@ -56,8 +61,16 @@ class AccountSettings extends BaculumWebPage
 			$this->ComparePasswordValidator->Visible = false;
 		}
 
-		if (key_exists('mfa', self::$user) && self::$user['mfa'] === 'totp') {
-			$this->Auth2FAEnable->Checked = true;
+		if ($this->isTOTP2FAConfigured()) {
+			$this->EnableTOTP2FA->Display = 'None';
+			$this->ConfigureTOTP2FA->Display = 'None';
+			$this->ConfigureReadyTOTP2FA->Display = 'Dynamic';
+			$this->DisableTOTP2FA->Display = 'Dynamic';
+		} else {
+			$this->DisableTOTP2FA->Display = 'None';
+			$this->EnableTOTP2FA->Display = 'Dynamic';
+			$this->ConfigureTOTP2FA->Display = 'Dynamic';
+			$this->ConfigureReadyTOTP2FA->Display = 'None';
 		}
 
 		if (count(self::$user) == 0) {
@@ -70,6 +83,81 @@ class AccountSettings extends BaculumWebPage
 		$this->Username->Text = $username;
 
 		$this->TagManager->setUsername($username);
+		$this->loadTwoFactorMethod();
+	}
+
+	/**
+	 * TOTP 2FA configured status.
+	 *
+	 * @return true if TOTP 2FA is configured, false otherwise
+	 */
+	public function isTOTP2FAConfigured(): bool
+	{
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$user = $user_config->getUserConfig($username);
+		return (key_exists('totp_secret', $user)
+			&& !empty($user['totp_secret']));
+	}
+
+	/**
+	 * FIDO U2F configured status.
+	 *
+	 * @return true if FIDO U2F is configured, false otherwise
+	 */
+	public function isFIDOU2FConfigured(): bool
+	{
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$user = $user_config->getUserConfig($username);
+		return (key_exists('fidou2f_credentials', $user)
+			&& is_array($user['fidou2f_credentials'])
+			&& count($user['fidou2f_credentials']) > 0);
+	}
+
+	/**
+	 * Set up two-factor authentication checkbox.
+	 */
+	private function loadTwoFactorMethod()
+	{
+		$this->TwoFactorMethod->SelectedValue = self::$user['mfa'] ?? '';
+		if (!$this->IsCallBack) {
+			return;
+		}
+		$cb = $this->getCallbackClient();
+
+		// TOTP 2FA item setting
+		$val = WebUserConfig::MFA_TYPE_TOTP;
+		$text = 'TOTP 2FA';
+		$enabled = $this->isTOTP2FAConfigured();
+		$cb->callClientFunction(
+			'oAccountSettingsMFA.update_mfa_selection',
+			[$val, $text, $enabled]
+		);
+
+		// FIDO U2F item setting
+		$val = WebUserConfig::MFA_TYPE_FIDOU2F;
+		$text = 'FIDO U2F';
+		$enabled = $this->isFIDOU2FConfigured();
+		$cb->callClientFunction(
+			'oAccountSettingsMFA.update_mfa_selection',
+			[$val, $text, $enabled]
+		);
+	}
+
+	/**
+	 * Save two-factor authentication method.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function saveTwoFactorMethod($sender, $param)
+	{
+		$mfa = $this->TwoFactorMethod->SelectedValue;
+		$config = ['mfa' => $mfa];
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$user_config->updateUserConfig($username, $config);
 	}
 
 	/**
@@ -87,7 +175,8 @@ class AccountSettings extends BaculumWebPage
 		// Save user config
 
 		$username = $this->User->getUsername();
-		$ret = $this->getModule('user_config')->setUserConfig($username, self::$user);
+		$user_config = $this->getModule('user_config');
+		$ret = $user_config->setUserConfig($username, self::$user);
 		if ($ret !== true) {
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
@@ -136,53 +225,59 @@ class AccountSettings extends BaculumWebPage
 	}
 
 	/**
-	 * Show window to configure 2FA.
+	 * Show window to configure TOTP 2FA.
 	 *
 	 * @param TCallback $sender sender object
 	 * @param TCallbackEventParameter $param parameters
 	 */
-	public function show2FAWindow($sender, $param)
+	public function showTOTP2FAWindow($sender, $param)
 	{
 		$totp_params = $this->getTotpParams();
 		$this->getCallbackClient()->callClientFunction(
-			'oAccountSettings2FA.generate_qrcode',
+			'oAccountSettingsTOTP2FA.generate_qrcode',
 			[$totp_params['url']]
 		);
 		$this->getCallbackClient()->callClientFunction(
-			'oAccountSettings2FA.set_code',
+			'oAccountSettingsTOTP2FA.set_code',
 			[$totp_params['secret']]
 		);
-		$this->Auth2FASecret->Value = $totp_params['secret'];
+		$this->AuthTOTP2FASecret->Value = $totp_params['secret'];
 	}
 
 	/**
-	 * Enable two-factor authentication (2FA).
+	 * Enable TOTP two-factor authentication (TOTP 2FA).
 	 *
 	 * @param TActiveLinkButton $sender sender object
 	 * @param TCallbackEventParameter $param parameters
 	 */
-	public function enable2FA($sender, $param)
+	public function enableTOTP2FA($sender, $param)
 	{
-		$secret = $this->getModule('base32')->decode($this->Auth2FASecret->Value);
-		$token = $this->Auth2FAToken->Text;
+		$cb = $this->getCallbackClient();
+		$secret = $this->getModule('base32')->decode($this->AuthTOTP2FASecret->Value);
+		$token = $this->AuthTOTP2FAToken->Text;
 		$valid = $this->getModule('totp')->validateToken($secret, $token);
-		$this->Auth2FAEnable->Checked = false;
 		if ($valid === true) {
 			// token valid
 			$username = $this->User->getUsername();
-			self::$user['mfa'] = 'totp';
-			self::$user['totp_secret'] = $this->Auth2FASecret->Value;
-			$this->getModule('user_config')->setUserConfig($username, self::$user);
-			$this->getCallbackClient()->callClientFunction(
-				'oAccountSettings2FA.show',
-				[false]
-			);
-			$this->Auth2FAEnable->Checked = true;
+			if (self::$user['mfa'] == WebUserConfig::MFA_TYPE_NONE) {
+				self::$user['mfa'] = WebUserConfig::MFA_TYPE_TOTP;
+			}
+			self::$user['totp_secret'] = $this->AuthTOTP2FASecret->Value;
+			$user_config = $this->getModule('user_config');
+			$user_config->setUserConfig($username, self::$user);
+
+			$this->EnableTOTP2FA->Display = 'None';
+			$this->DisableTOTP2FA->Display = 'Dynamic';
+			$cb->slideUp($this->ConfigureTOTP2FA);
+			$cb->slideDown($this->ConfigureReadyTOTP2FA);
+			$cb->hide('account_settings_add_2fa_error');
+
+			$this->loadTwoFactorMethod();
 		} else {
 			// token invalid
 			$emsg = Prado::localize('Invalid authentication code. Please try again.');
-			$this->getCallbackClient()->update('account_settings_add_2fa_error', $emsg);
-			$this->getCallbackClient()->show('account_settings_add_2fa_error');
+			$cb->update('account_settings_add_2fa_error', $emsg);
+			$cb->show('account_settings_add_2fa_error');
 		}
 	}
 
@@ -192,13 +287,25 @@ class AccountSettings extends BaculumWebPage
 	 * @param TActiveCheckBox $sender sender object
 	 * @param TCallbackEventParameter $param parameters
 	 */
-	public function disable2FA($sender, $param)
+	public function disableTOTP2FA($sender, $param)
 	{
+		$cb = $this->getCallbackClient();
 		$username = $this->User->getUsername();
-		unset(self::$user['mfa']);
+		if (self::$user['mfa'] == WebUserConfig::MFA_TYPE_TOTP) {
+			self::$user['mfa'] = WebUserConfig::MFA_TYPE_NONE;
+		}
 		unset(self::$user['totp_secret']);
-		$this->getModule('user_config')->setUserConfig($username, self::$user);
-		$this->Auth2FAEnable->Checked = false;
+		$user_config = $this->getModule('user_config');
+		$user_config->setUserConfig($username, self::$user);
+
+		$this->DisableTOTP2FA->Display = 'None';
+		$this->EnableTOTP2FA->Display = 'Dynamic';
+
+		$cb->slideUp($this->ConfigureReadyTOTP2FA);
+		$cb->slideDown($this->ConfigureTOTP2FA);
+		$cb->hide('account_settings_add_2fa_error');
+
+		$this->loadTwoFactorMethod();
 	}
 
 	/**
@@ -215,5 +322,230 @@ class AccountSettings extends BaculumWebPage
 			$secret
 		);
 		return ['url' => $url, 'secret' => $secret];
+	}
+
+	/**
+	 * Load table with U2F keys.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function loadU2FKeys($sender, $param): void
+	{
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$config = $user_config->getUserConfig($username);
+		$fidou2f_creds = $config['fidou2f_credentials'] ?? [];
+		$creds = [];
+		foreach ($fidou2f_creds as $credential_id => $value) {
+			parse_str($value, $props);
+			$creds[] = [
+				'key_name' => ($props['name'] ?? ''),
+				'last_used' => ($props['last_used'] ?? ''),
+				'added' => ($props['added'] ?? ''),
+				'credential_id' => $credential_id
+			];
+		}
+		$cb = $this->getCallbackClient();
+		$cb->callClientFunction(
+			'oAccountSettingsFIDOU2F.update',
+			[$creds]
+		);
+	}
+
+	/**
+	 * Edit U2F key properties.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function editU2FKey($sender, $param): void
+	{
+		$credential_id = $param->getCallbackParameter();
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$config = $user_config->getUserConfig($username);
+		if (key_exists('fidou2f_credentials', $config) && key_exists($credential_id, $config['fidou2f_credentials'])) {
+			parse_str($config['fidou2f_credentials'][$credential_id], $props);
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oAccountSettingsFIDOU2F.edit_key_cb',
+				[$props['name']]
+			);
+		}
+	}
+
+	/**
+	 * Save U2F key properties.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function saveU2FKey($sender, $param)
+	{
+		$credential_id = $this->FIDOU2FKeylId->Value;
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$config = $user_config->getUserConfig($username);
+		if (!key_exists('fidou2f_credentials', $config) || !key_exists($credential_id, $config['fidou2f_credentials'])) {
+			return;
+		}
+
+		// Update key properties
+		parse_str($config['fidou2f_credentials'][$credential_id], $props);
+		$props['name'] = $this->FIDOU2FKeyName->Text;
+		$data = [
+			'fidou2f_credentials' => [
+				$credential_id => http_build_query($props)
+			]
+		];
+		$user_config->updateUserConfig($username, $data);
+
+		$this->loadU2FKeys($sender, $param);
+		$cb = $this->getCallbackClient();
+		$cb->callClientFunction(
+			'oAccountSettingsFIDOU2F.show_key_window',
+			[false]
+		);
+	}
+
+	/**
+	 * Get new U2F key parameters (challenge, credentialid...).
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function getNewU2FKeyParams($sender, $param): void
+	{
+		$u2f_register = $this->getModule('u2f_register');
+
+		// Get user
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$user_config = $user_config->getUserConfig($username);
+
+		// Origin info
+		$url = $this->getRequest()->getUrl();
+		$origin = $url->getHost();
+
+		// Get data required for registration
+		$params = $u2f_register->getRegistrationData($user_config, $origin);
+
+		// Set session data
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+		$sess->add('fidou2f_challenge', $params['publicKey']['challenge']);
+		$sess->close();
+
+		$cb = $this->getCallbackClient();
+		$cb->callClientFunction(
+			'oAccountSettingsFIDOU2F.add_key_cb',
+			[$params]
+		);
+	}
+
+	/**
+	 * Create new U2F credentials.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function createU2FCreds($sender, $param)
+	{
+		$data_obj = $param->getCallbackParameter();
+		$data_json = json_encode($data_obj);
+		$data_arr = json_decode($data_json, true);
+		if (!$this->validateU2FCreds($data_arr)) {
+			// Validation error. Stop.
+			return false;
+		}
+		$username = $this->User->getUsername();
+		$u2f_register = $this->getModule('u2f_register');
+		$credential_id = $u2f_register->createCredential(
+			$username,
+			$data_arr
+		);
+
+		if ($credential_id) {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oAccountSettingsFIDOU2F.edit_key',
+				[$credential_id]
+			);
+		}
+
+		$this->loadU2FKeys($sender, $param);
+		$this->loadTwoFactorMethod();
+	}
+
+	/**
+	 * Remove U2F credential.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function removeU2FCreds($sender, $param)
+	{
+		$credential_id = $param->getCallbackParameter();
+		$username = $this->User->getUsername();
+		$user_config = $this->getModule('user_config');
+		$config = $user_config->getUserConfig($username);
+		if (key_exists('fidou2f_credentials', $config) && key_exists($credential_id, $config['fidou2f_credentials'])) {
+			unset($config['fidou2f_credentials'][$credential_id]);
+			if (count($config['fidou2f_credentials']) == 0) {
+				unset($config['fidou2f_credentials']);
+				$config['mfa'] = WebUserConfig::MFA_TYPE_NONE;
+			}
+
+			$username = $this->User->getUsername();
+			$user_config->setUserConfig($username, $config);
+			self::$user = $config;
+		}
+
+		$this->loadTwoFactorMethod();
+		$this->loadU2FKeys($sender, $param);
+	}
+
+	/**
+	 * Validate U2F credentials.
+	 *
+	 * @param array $data registration data
+	 * @return bool true on success, false otherwise
+	 */
+	private function validateU2FCreds(array $data): bool
+	{
+		// Prepare origin info
+		$url = $this->getRequest()->getUrl();
+		$origin = $url->getScheme() . '://' . $url->getHost();
+		$port = $url->getPort();
+		if (!in_array($port, [80, 443])) {
+			$origin .= ':' . $port;
+		}
+
+		// Relying party identifier to validate
+		$rp_id = $url->getHost();
+
+		// Remembered challenge
+		$sess = $this->getApplication()->getSession();
+		$challenge = $sess->itemAt('fidou2f_challenge');
+		$sess->remove('fidou2f_challenge');
+		$sess->close();
+
+		$u2f_register = $this->getModule('u2f_register');
+		$result = $u2f_register->validateRegistration(
+			$data,
+			$origin,
+			$rp_id,
+			$challenge
+		);
+
+		if (!$result['valid']) {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oFIDOU2F.error',
+				[$result['error']]
+			);
+		}
+		return $result['valid'];
 	}
 }

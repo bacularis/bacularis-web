@@ -38,7 +38,7 @@
 			</p>
 		</com:TPanel>
 	</div>
-	<div id="login_2fa_modal" class="w3-modal" style="display: <%=$this->mfa ? 'block' : 'none'%>">
+	<div id="login_2fa_modal" class="w3-modal" style="display: <%=$this->mfa === WebUserConfig::MFA_TYPE_TOTP ? 'block' : 'none'%>">
 		<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 800px">
 			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('login_2fa_modal').style.display = 'none';" class="w3-button w3-display-topright">×</span>
@@ -50,21 +50,21 @@
 					<div class="w3-col w3-third"><%[ Authenticator code: ]%></div>
 					<div class="w3-col w3-half">
 						<com:TActiveTextBox
-							ID="Auth2FAToken"
+							ID="AuthTOTP2FAToken"
 							CssClass="w3-input w3-border"
 							Width="100px"
 							MaxLength="6"
-							Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->Auth2FA->ClientID%>').click(); }"
+							Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->AuthTOTP2FA->ClientID%>').click(); }"
 						/>
 					</div>
 				</div>
 				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
 					<button type="button" class="w3-button w3-red" onclick="document.getElementById('login_2fa_modal').style.display = 'none';"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
 					<com:TActiveLinkButton
-						ID="Auth2FA"
+						ID="AuthTOTP2FA"
 						CssClass="w3-button w3-green"
 						CausesValidation="false"
-						OnCallback="login2FA"
+						OnCallback="loginTOTP2FA"
 					>
 						<prop:ClientSide.OnLoading>
 							document.getElementById('login_2fa_loader').style.visibility = 'visible';
@@ -80,6 +80,7 @@
 			</div>
 		</div>
 	</div>
+	<com:TCallback ID="LoginFIDOU2F" OnCallback="loginFIDOU2F" />
 <script>
 	if (ThemeMode.is_dark()) {
 		document.querySelectorAll('[rel="logo"]').forEach(function(el) {
@@ -87,8 +88,14 @@
 		});
 	}
 	document.getElementById('<%=$this->Username->ClientID%>').focus();
-	if (<%=$this->mfa ? 'true' : 'false'%> === true) {
-		document.getElementById('<%=$this->Auth2FAToken->ClientID%>').focus();
+	if (<%=$this->isTOTP2FA() ? 'true' : 'false'%> === true) {
+		document.getElementById('<%=$this->AuthTOTP2FAToken->ClientID%>').focus();
+	}
+	if (<%=$this->isFIDOU2F() ? 'true' : 'false'%> === true) {
+		oFIDOU2F.authenticate(
+			<%=json_encode($this->fidou2f_authdata)%>,
+			<%=$this->LoginFIDOU2F->ActiveControl->Javascript%>
+		);
 	}
 	var direct_to_def_page = (url) => {
 		document.location.href = url;

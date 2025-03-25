@@ -29,7 +29,9 @@
 
 use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Protocol\WebAuthn\Authenticate as WebAuthnAuth;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * User login page.
@@ -44,7 +46,9 @@ class LoginPage extends BaculumWebPage
 	 */
 	public $reload_url = '';
 
-	public $mfa = false;
+	public $mfa = '';
+
+	public $fidou2f_authdata = [];
 
 	public function onInit($param)
 	{
@@ -117,10 +121,11 @@ class LoginPage extends BaculumWebPage
 		$valid = $this->getModule('users')->validateUser($username, $password);
 		if ($valid === true) {
 			// Pre-login successful
-			$user = $this->getModule('user_config')->getUserConfig($username);
-			if (count($user) > 0 && key_exists('mfa', $user) && $user['mfa'] === 'totp') {
+			$user_config = $this->getModule('user_config');
+			$user = $user_config->getUserConfig($username);
+			if (count($user) > 0 && key_exists('mfa', $user) && !empty($user['mfa']) && $user['mfa'] !== WebUserConfig::MFA_TYPE_NONE) {
 				// The user uses 2FA, go to second step/factor
-				$this->mfa = true;
+				$this->setMFA($user);
 			} else {
 				// Login try
 				$success = $this->getModule('auth')->login($username, $password);
@@ -156,11 +161,10 @@ class LoginPage extends BaculumWebPage
 	}
 
 	/**
-	 * Log in with 2FA.
+	 * Log in with TOTP 2FA.
 	 * This action happens after successful user/password login.
-	 *
 	 */
-	public function login2FA()
+	public function loginTOTP2FA()
 	{
 		$username = $this->Username->Text;
 		$password = $this->Password->Text;
@@ -170,8 +174,9 @@ class LoginPage extends BaculumWebPage
 			$username = $_SERVER['PHP_AUTH_USER'];
 		}
 
-		$user = $this->getModule('user_config')->getUserConfig($username);
-		if (count($user) === 0 || !key_exists('mfa', $user) || !key_exists('totp_secret', $user)) {
+		$user_config = $this->getModule('user_config');
+		$user = $user_config->getUserConfig($username);
+		if (count($user) === 0 || !key_exists('mfa', $user) || $user['mfa'] !== WebUserConfig::MFA_TYPE_TOTP || !key_exists('totp_secret', $user)) {
 			return false;
 		}
 
@@ -181,9 +186,9 @@ class LoginPage extends BaculumWebPage
 		$sess = $this->getApplication()->getSession();
 		$sess->open();
 
-		$this->mfa = true;
+		$this->setMFA($user);
 		$secret = $this->getModule('base32')->decode($user['totp_secret']);
-		$token = $this->Auth2FAToken->Text;
+		$token = $this->AuthTOTP2FAToken->Text;
 		if ($this->getModule('totp')->validateToken($secret, $token) === true) {
 			// 2FA successful, do login to app
 			$success = $this->getModule('auth')->login($username, $password);
@@ -198,14 +203,14 @@ class LoginPage extends BaculumWebPage
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
 					AuditLog::CATEGORY_SECURITY,
-					"2FA auth successful . User: $username"
+					"TOTP 2FA auth successful . User: $username"
 				);
 			} else {
 				// Log in error after successful 2FA
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_WARNING,
 					AuditLog::CATEGORY_SECURITY,
-					"2FA auth failed . User: $username"
+					"TOTP 2FA auth failed . User: $username"
 				);
 				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 				$emsg = Prado::localize('Invalid username or password');
@@ -220,9 +225,122 @@ class LoginPage extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_WARNING,
 				AuditLog::CATEGORY_SECURITY,
-				"2FA auth failed . User: $username"
+				"TOTP 2FA auth failed . User: $username"
 			);
 		}
+	}
+
+	/**
+	 * Log in with FIDO U2F.
+	 * This action happens after successful user/password login.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function loginFIDOU2F($sender, $param)
+	{
+		$cb = $this->getCallbackClient();
+		$username = $this->Username->Text;
+		$password = $this->Password->Text;
+		$assertion = $param->getCallbackParameter();
+		$data = json_decode(json_encode($assertion), true);
+		$u2f_authenticate = $this->getModule('u2f_authenticate');
+
+		$user_config = $this->getModule('user_config');
+		$user = $user_config->getUserConfig($username);
+		if (count($user) === 0 || !key_exists('mfa', $user) || $user['mfa'] !== WebUserConfig::MFA_TYPE_FIDOU2F || !key_exists('fidou2f_credentials', $user)) {
+			return false;
+		}
+
+		// Validate auth data
+		$validation = $u2f_authenticate->validateAuth($data);
+		if ($validation['valid'] === false) {
+			$cb->callClientFunction(
+				'oFIDOU2F.error',
+				[$validation['error']]
+			);
+			return;
+		}
+		$result = $u2f_authenticate->authenticate(
+			$data,
+			$username
+		);
+		if ($result === true) {
+			$this->getApplication()->getSession()->open();
+			$auth = $this->getModule('auth');
+			$success = $auth->login($username, $password);
+			if ($success === true) {
+				// Log in successful
+				$def_page = $this->getDefaultPage();
+				$url = $this->Service->constructUrl($def_page);
+				$this->getCallbackClient()->callClientFunction(
+					'direct_to_def_page',
+					$url
+				);
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_SECURITY,
+					"FIDO U2F auth successful . User: $username"
+				);
+			} else {
+				// Log in error after successful 2FA
+				$this->getModule('audit')->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_SECURITY,
+					"FIDO U2F auth failed . User: $username"
+				);
+				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+				$emsg = Prado::localize('Invalid username or password');
+				$this->getCallbackClient()->update('login_2fa_error', $emsg);
+				$this->getCallbackClient()->show('login_2fa_error');
+			}
+		} else {
+			// Invalid authentication
+			$emsg = 'Invalid authentication. Please check authenticator and try again.';
+			$this->getCallbackClient()->update('login_2fa_error', $emsg);
+			$this->getCallbackClient()->show('login_2fa_error');
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_SECURITY,
+				"FIDO U2F auth failed . User: $username"
+			);
+		}
+	}
+
+	/**
+	 * Set muti-factor authentication property.
+	 *
+	 * @param string $user user account details
+	 */
+	private function setMFA(array $user): void
+	{
+		// multi-factor authentication type ('totp', 'fidou2f')
+		$this->mfa = $user['mfa'];
+
+		if ($this->isFIDOU2F()) {
+			$origin = $this->getRequest()->getUrl()->getHost();
+			$this->fidou2f_authdata = WebAuthnAuth::getAuthData($user, $origin);
+		}
+	}
+
+	/**
+	 * Get information if TOTP 2FA authentication is enabled.
+	 *
+	 * @return bool true if TOTP 2FA is configured, false otherwise
+	 */
+	public function isTOTP2FA(): bool
+	{
+		return ($this->mfa === WebUserConfig::MFA_TYPE_TOTP);
+	}
+
+	/**
+	 * Get information if FIDO U2F authentication is enabled.
+	 *
+	 * @return bool true if FIDO U2F is configured, false otherwise
+	 */
+	public function isFIDOU2F(): bool
+	{
+		return ($this->mfa === WebUserConfig::MFA_TYPE_FIDOU2F);
 	}
 
 	/**

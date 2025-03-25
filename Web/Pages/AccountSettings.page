@@ -143,62 +143,103 @@
 			<i id="account_settings_save_loader" class="fa fa-sync w3-spin" style="display: none"></i>
 		</div>
 	</div>
+
+	<!-- Security options -->
 	<div class="w3-container tab_item" id="account_settings_auth" style="display: none">
+		<h3><%[ Multi-factor authentication ]%></h3>
+		<p><%[ The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). ]%></p>
 		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><label for="<%=$this->TwoFactorMethod->ClientID%>"><%[ Two-factor authentication method ]%>:</label></div>
+			<div class="w3-quarter">
+				<com:TActiveDropDownList
+					ID="TwoFactorMethod"
+					CssClass="w3-select w3-border"
+					Width="200px"
+					AutoPostBack="false"
+				>
+					<com:TListItem Value="none" Text="Disabled" />
+					<com:TListItem ID="TOTPItem" Value="totp" Text="TOTP 2FA" />
+					<com:TListItem ID="FIDOU2FItem" Value="fidou2f" Text="FIDO U2F" />
+				</com:TActiveDropDownList>
+			</div>
+		</div>
+		<div class="w3-container w3-row w3-padding w3-center">
+			<com:TActiveLinkButton
+				ID="SaveMFA"
+				CssClass="w3-green w3-button"
+				OnClick="saveTwoFactorMethod"
+			>
+				<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
+			</com:TActiveLinkButton>
+		</div>
+		<div class="w3-container w3-row w3-padding">
+			<h5><i class="fa-solid fa-calculator"></i> &nbsp;TOTP 2FA</h5>
+			<p><%[ The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication. ]%></p>
 			<com:TPanel ID="Auth2FADisabledMsg" CssClass="w3-panel w3-pale-yellow w3-border" Display="None">
 				<h3><%[ Warning ]%></h3>
 				<p><%[ For used the HTTP Basic authentication the 2FA is not available. To use multi-factor authentication please switch Bacularis to other authentication method (ex. the local user authentication). ]%></p>
 			</com:TPanel>
-			<div class="w3-quarter w3-col"><label for="<%=$this->Auth2FAEnable->ClientID%>"><%[ Enable 2FA ]%></label></div>
-			<div class="w3-quarter w3-col">
-				<com:TActiveCheckBox
-					ID="Auth2FAEnable"
-					CssClass="w3-check"
-					Attributes.onclick="if (this.checked) { oAccountSettings2FA.show(true); this.checked = false; }"
-					OnCallback="disable2FA"
-				/>
-				<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
-				<div class="directive_help" style="display: none">
-					<dd><%[ The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor). The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication. ]%></dd>
-				</div>
-			</div>
+			<com:TActiveLinkButton
+				ID="AuthTOTP2FAConfigure"
+				CssClass="w3-green w3-button"
+				Attributes.onclick="oAccountSettingsTOTP2FA.show(true);"
+			>
+				<%[ Configure TOTP 2FA ]%>
+			</com:TActiveLinkButton>
 		</div>
-		<div id="account_settings_2fa_modal" class="w3-modal" style="display: none">
+		<div class="w3-container w3-row w3-padding">
+			<h5><i class="fa-solid fa-key"></i> &nbsp;<%[ FIDO U2F hardware keys ]%></h5>
+			<p><%[  The second factor uses the U2F security hardware keys. ]%></p>
+			<com:TActiveLinkButton
+				ID="AuthFIDOU2FConfigure"
+				CssClass="w3-green w3-button"
+				Attributes.onclick="oAccountSettingsFIDOU2F.open_window(true);"
+			>
+				<%[ Configure U2F keys ]%>
+			</com:TActiveLinkButton>
+		</div>
+		<div id="account_settings_totp2fa_modal" class="w3-modal" style="display: none">
 			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 800px">
 				<header class="w3-container w3-green">
-					<span onclick="oAccountSettings2FA.show(false);" class="w3-button w3-display-topright">×</span>
-					<h2><%[ 2FA settings ]%></h2>
+					<span onclick="oAccountSettingsTOTP2FA.show(false);" class="w3-button w3-display-topright">×</span>
+					<h2><%[ TOTP 2FA settings ]%></h2>
 				</header>
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
 					<h4><%[ TOTP two-factor authentication ]%></h4>
 					<p><%[ TOTP is an algorithm used for authentication with time-based one-time password. This authentication method generates time based one-time password. It uses an authenticator app like: Google Authenticator or other authentiactor apps. ]%></p>
-					<h5><%[ Step 1 ]%></h5>
-					<p><%[ Scan in the authenticator app the QR code ]%></p>
-					<div id="account_settings_2fa_totp_qrcode" style="width: 260px; margin: auto;"></div>
-					<p><%[ or alternatively type the code below manually to the authenticator app: ]%> <span id="account_settings_2fa_totp_code"></span> <a href="javascript:void(0)" id="account_settings_2fa_totp_show"><%[ show ]%></a></p>
-					<com:TActiveHiddenField ID="Auth2FASecret" />
-					<h5><%[ Step 2 ]%></h5>
-					<p><%[ In the field below please type currently displayed 6 digit code from the authenticator app ]%></p>
-					<div class="w3-row w3-section">
-						<div class="w3-col w3-third"><%[ Authenticator code: ]%></div>
-						<div class="w3-col w3-half">
-							<com:TActiveTextBox
-								ID="Auth2FAToken"
-								CssClass="w3-input w3-border"
-								Width="100px"
-								MaxLength="6"
-								Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->Enable2FA->ClientID%>').click(); }"
-							/>
+					<com:TActivePanel ID="ConfigureTOTP2FA">
+						<h5><%[ Step 1 ]%></h5>
+						<p><%[ Scan in the authenticator app the QR code ]%></p>
+						<div id="account_settings_totp2fa_qrcode" style="width: 260px; margin: auto;"></div>
+						<p><%[ or alternatively type the code below manually to the authenticator app: ]%> <span id="account_settings_totp2fa_code"></span> <a href="javascript:void(0)" id="account_settings_totp2fa_show"><%[ show ]%></a></p>
+						<com:TActiveHiddenField ID="AuthTOTP2FASecret" />
+						<h5><%[ Step 2 ]%></h5>
+						<p><%[ In the field below please type currently displayed 6 digit code from the authenticator app ]%></p>
+						<div class="w3-row w3-section">
+							<div class="w3-col w3-third"><%[ Authenticator code: ]%></div>
+							<div class="w3-col w3-half">
+								<com:TActiveTextBox
+									ID="AuthTOTP2FAToken"
+									CssClass="w3-input w3-border"
+									Width="100px"
+									MaxLength="6"
+									Attributes.onkeypress="if (event.key == 'Enter') { $('#<%=$this->EnableTOTP2FA->ClientID%>').click(); }"
+								/>
+							</div>
 						</div>
-					</div>
+					</com:TActivePanel>
+					<com:TActivePanel ID="ConfigureReadyTOTP2FA" Display="None">
+						<p class="w3-text-green w3-center bold"><%[ TOTP 2FA is configured. ]%></p>
+					</com:TActivePanel>
 				</div>
 				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
-					<button type="button" class="w3-button w3-red" onclick="oAccountSettings2FA.show(false);"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+					<button type="button" class="w3-button w3-green" onclick="oAccountSettingsTOTP2FA.show(false);"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
 					<com:TActiveLinkButton
-						ID="Enable2FA"
+						ID="EnableTOTP2FA"
 						CssClass="w3-button w3-green"
 						CausesValidation="false"
-						OnCallback="enable2FA"
+						OnCallback="enableTOTP2FA"
+						Display="Dynamic"
 					>
 						<prop:ClientSide.OnLoading>
 							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'visible';
@@ -206,21 +247,63 @@
 						<prop:ClientSide.OnComplete>
 							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'hidden';
 						</prop:ClientSide.OnComplete>
-						<i class="fa-solid fa-user-shield"></i> &nbsp;<%[ Enable 2FA ]%>
+						<i class="fa-solid fa-user-shield"></i> &nbsp;<%[ Enable TOTP 2FA ]%>
+					</com:TActiveLinkButton>
+					<com:TActiveLinkButton
+						ID="DisableTOTP2FA"
+						CssClass="w3-button w3-red"
+						CausesValidation="false"
+						OnCallback="disableTOTP2FA"
+						Display="None"
+					>
+						<prop:ClientSide.OnLoading>
+							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'visible';
+						</prop:ClientSide.OnLoading>
+						<prop:ClientSide.OnComplete>
+							document.getElementById('account_settings_add_2fa_loader').style.visibility = 'hidden';
+						</prop:ClientSide.OnComplete>
+						<i class="fa-solid fa-user-shield"></i> &nbsp;<%[ Disable TOTP 2FA ]%>
 					</com:TActiveLinkButton>
 					<i id="account_settings_add_2fa_loader" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden"></i>
 				</div>
 				<p id="account_settings_add_2fa_error" class="w3-center w3-text-red" style="display: none; padding: 8px 14px; margin: 0;"></p>
 			</div>
 		</div>
-		<com:TCallback ID="Auth2FALoad" OnCallback="show2FAWindow" />
+		<com:TCallback ID="Auth2FALoad" OnCallback="showTOTP2FAWindow" />
 		<script>
-var oAccountSettings2FA = {
+var oAccountSettingsMFA = {
 	ids: {
-		modal: 'account_settings_2fa_modal',
-		totp_qrcode: 'account_settings_2fa_totp_qrcode',
-		totp_code: 'account_settings_2fa_totp_code',
-		totp_show: 'account_settings_2fa_totp_show'
+		mfa: '<%=$this->TwoFactorMethod->ClientID%>'
+	},
+	txt: {
+		unconfigured: ' (<%[ unconfigured ]%>)'
+	},
+	update_mfa_selection: function(val, text, enabled) {
+		const self = oAccountSettingsMFA;
+		const mfa = document.getElementById(self.ids.mfa);
+		for (let i = 0; i < mfa.options.length; i++) {
+			if (mfa.options[i].value != val) {
+				continue;
+			}
+			if (enabled) {
+				mfa.options[i].removeAttribute('disabled');
+				mfa.options[i].textContent = text;
+			} else {
+				mfa.options[i].setAttribute('disabled', 'disabled');
+				mfa.options[i].textContent = text + self.txt.unconfigured;
+			}
+			break;
+		}
+	}
+};
+oAccountSettingsMFA.update_mfa_selection('<%=WebUserConfig::MFA_TYPE_TOTP%>', 'TOTP 2FA', <%=$this->isTOTP2FAConfigured() ? 'true' : 'false'%>);
+oAccountSettingsMFA.update_mfa_selection('<%=WebUserConfig::MFA_TYPE_FIDOU2F%>', 'FIDO U2F', <%=$this->isFIDOU2FConfigured() ? 'true' : 'false'%>);
+var oAccountSettingsTOTP2FA = {
+	ids: {
+		modal: 'account_settings_totp2fa_modal',
+		totp_qrcode: 'account_settings_totp2fa_qrcode',
+		totp_code: 'account_settings_totp2fa_code',
+		totp_show: 'account_settings_totp2fa_show'
 	},
 	qrcode: null,
 	init: function() {
@@ -238,11 +321,11 @@ var oAccountSettings2FA = {
 		});
 	},
 	show: function(show) {
-		const modal = document.getElementById(oAccountSettings2FA.ids.modal);
+		const modal = document.getElementById(oAccountSettingsTOTP2FA.ids.modal);
 		modal.style.display = show ? 'block' : 'none';
 		if (show) {
-			oAccountSettings2FA.load();
-			const token = document.getElementById('<%=$this->Auth2FAToken->ClientID%>');
+			oAccountSettingsTOTP2FA.load();
+			const token = document.getElementById('<%=$this->AuthTOTP2FAToken->ClientID%>');
 			token.value = '';
 			token.focus();
 		}
@@ -252,9 +335,9 @@ var oAccountSettings2FA = {
 		cb.dispatch();
 	},
 	generate_qrcode: function(url) {
-		oAccountSettings2FA.clear_qrcode();
-		const container = document.getElementById(oAccountSettings2FA.ids.totp_qrcode);
-		oAccountSettings2FA.qrcode = new QRCode(
+		oAccountSettingsTOTP2FA.clear_qrcode();
+		const container = document.getElementById(oAccountSettingsTOTP2FA.ids.totp_qrcode);
+		oAccountSettingsTOTP2FA.qrcode = new QRCode(
 			container,
 			url
 		);
@@ -263,17 +346,17 @@ var oAccountSettings2FA = {
 		if (this.qrcode) {
 			this.qrcode.clear();
 			this.qrcode = null;
-			const qrcode = document.getElementById(oAccountSettings2FA.ids.totp_qrcode);
+			const qrcode = document.getElementById(oAccountSettingsTOTP2FA.ids.totp_qrcode);
 			while (qrcode.firstChild) {
 				qrcode.removeChild(qrcode.firstChild);
 			}
 		}
 	},
 	set_code(code) {
-		const container = document.getElementById(oAccountSettings2FA.ids.totp_code);
+		const container = document.getElementById(oAccountSettingsTOTP2FA.ids.totp_code);
 		container.setAttribute('data-code', code);
 		container.textContent = code.replace(/./g, '*');
-		oAccountSettings2FA.show_code(false);
+		oAccountSettingsTOTP2FA.show_code(false);
 	},
 	show_code(show) {
 		const link = document.getElementById(this.ids.totp_show);
@@ -290,9 +373,310 @@ var oAccountSettings2FA = {
 		}
 	}
 };
-oAccountSettings2FA.init();
+oAccountSettingsTOTP2FA.init();
+		</script>
+		<div id="account_settings_fidou2f_list_modal" class="w3-modal" style="display: none">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 950px">
+				<header class="w3-container w3-green">
+					<span onclick="oAccountSettingsFIDOU2F.show(false);" class="w3-button w3-display-topright">×</span>
+					<h2><%[ FIDO U2F settings ]%></h2>
+				</header>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
+					<h4><%[ FIDO U2F two-factor authentication ]%></h4>
+					<p><%[ The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key. ]%></p>
+				</div>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
+					<div id="fidou2f_security_key_list">
+						<button type="button" class="w3-green w3-button w3-margin-bottom" onclick="oAccountSettingsFIDOU2F.add_key();">
+							<i class="fa-solid fa-plus"></i> &nbsp;<%[ Add new security key ]%>
+						</button>
+						<table id="fidou2f_key_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+							<thead>
+								<tr>
+									<th><%[ Key name ]%></th>
+									<th><%[ Added ]%></th>
+									<th><%[ Last used ]%></th>
+									<th><%[ Actions ]%></th>
+								</tr>
+							</thead>
+							<tbody id="fidou2f_key_list_body"></tbody>
+							<tfoot>
+								<tr>
+									<th><%[ Key name ]%></th>
+									<th><%[ Added ]%></th>
+									<th><%[ Last used ]%></th>
+									<th><%[ Actions ]%></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
+					<button type="button" class="w3-button w3-green" onclick="oAccountSettingsFIDOU2F.show(false);"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
+				</div>
+			</div>
+		</div>
+		<div id="account_settings_fidou2f_edit_key_modal" class="w3-modal" style="display: none">
+			<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 800px">
+				<header class="w3-container w3-green">
+					<span onclick="oAccountSettingsFIDOU2F.show_key_window(false);" class="w3-button w3-display-topright">×</span>
+					<h2><%[ Key properties ]%></h2>
+				</header>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
+					<p><%[ Set a friendly name for your key to make it easier to recognize. ]%></p>
+				</div>
+				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
+					<div class="w3-container w3-row w3-padding">
+						<div class="w3-quarter w3-col"><%[ Name ]%>:</div>
+						<div class="w3-quarter w3-col">
+							<com:TActiveTextBox
+								ID="FIDOU2FKeyName"
+								CssClass="w3-input w3-border"
+								Width="400px"
+							/>
+						</div>
+					</div>
+				</div>
+				<com:TActiveHiddenField ID="FIDOU2FKeylId" Value="" />
+				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
+					<button type="button" class="w3-button w3-red" onclick="oAccountSettingsFIDOU2F.show_key_window(false);"><i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-green" onclick="oAccountSettingsFIDOU2F.save_key();"><i class="fa fa-save"></i> &nbsp;<%[ Save ]%></button>
+				</div>
+			</div>
+		</div>
+		<com:TCallback ID="LoadU2FKeys" OnCallback="loadU2FKeys" />
+		<com:TCallback ID="EditU2FKey" OnCallback="editU2FKey" />
+		<com:TCallback ID="SaveU2FKey" OnCallback="saveU2FKey" />
+		<com:TCallback ID="GetNewU2FKeyParams" OnCallback="getNewU2FKeyParams" />
+		<com:TCallback ID="CreateU2FCreds" OnCallback="createU2FCreds" />
+		<com:TCallback ID="RemoveU2FCreds" OnCallback="removeU2FCreds" />
+		<script>
+var oAccountSettingsFIDOU2F = {
+	table: null,
+	ids: {
+		list_modal: 'account_settings_fidou2f_list_modal',
+		list_table: 'fidou2f_key_list',
+		key_props_window: 'account_settings_fidou2f_edit_key_modal',
+		key_name: '<%=$this->FIDOU2FKeyName->ClientID%>',
+		key_id: '<%=$this->FIDOU2FKeylId->ClientID%>'
+	},
+	init: function(data) {
+		if (this.table) {
+			var page = this.table.page();
+			this.table.clear().rows.add(data).draw();
+			this.table.page(page).draw(false);
+		} else {
+			this.add_events();
+			this.set_table(data);
+		}
+	},
+	update: function(data) {
+		oAccountSettingsFIDOU2F.init(data);
+	},
+	add_events: function() {
+		const key_name = document.getElementById(this.ids.key_name);
+		key_name.addEventListener('keypress', (e) => {
+			if (e.key == 'Enter') {
+				this.save_key();
+			}
+		});
+	},
+	show: function(show) {
+		const modal = document.getElementById(this.ids.list_modal);
+		modal.style.display = show ? 'block' : 'none';
+	},
+	load_keys: function() {
+		const cb = <%=$this->LoadU2FKeys->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	open_window() {
+		this.load_keys();
+		this.show(true);
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.list_table).DataTable({
+			data: data,
+			deferRender: true,
+			autoWidth: false,
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			columns: [
+				{data: 'key_name'},
+				{
+					data: 'added',
+					render: render_date_ts_local
+				},
+				{
+					data: 'last_used',
+					render: function (data, type, row) {
+						let ret = '-';
+						if (data > 0 && (type == 'display' || type == 'filter')) {
+							ret = render_date_ts_local(data, type, row);
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'credential_id',
+					render: function (data, type, row) {
+						const container = document.createElement('SPAN');
+
+						// Edit key button
+						const edit_btn = document.createElement('BUTTON');
+						edit_btn.className = 'w3-button w3-green';
+						edit_btn.style.marginRight = '6px';
+						edit_btn.type = 'button';
+						edit_btn.title = '<%[ Edit ]%>';
+						var i = document.createElement('I');
+						i.className = 'fa fa-edit';
+						edit_btn.setAttribute('onclick', 'oAccountSettingsFIDOU2F.edit_key("' + data + '");');
+						edit_btn.appendChild(i);
+						container.appendChild(edit_btn);
+
+						// Remove key button
+						const rm_btn = document.createElement('BUTTON');
+						rm_btn.className = 'w3-button w3-red';
+						rm_btn.type = 'button';
+						rm_btn.title = '<%[ Remove ]%>';
+						var i = document.createElement('I');
+						i.className = 'fa fa-trash-alt';
+						rm_btn.setAttribute('onclick', 'oAccountSettingsFIDOU2F.remove_u2f_creds("' + data + '", "' + row.key_name + '");');
+						rm_btn.appendChild(i);
+						container.appendChild(rm_btn);
+
+						return container.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
+				}
+			},
+			columnDefs: [{
+				className: "dt-center",
+				targets: [1, 2, 3]
+			}],
+			order: [1, 'desc'],
+			drawCallback: function () {
+				this.api().columns([0]).every(function () {
+					var column = this;
+					var select = $('<select class="dt-select"><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	add_key: function() {
+		const cb = <%=$this->GetNewU2FKeyParams->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	add_key_cb: async function(params) {
+		params.publicKey.challenge = Uint8Array.from(params.publicKey.challenge, c => c.charCodeAt(0));
+		params.publicKey.user.id = Uint8Array.from(params.publicKey.user.id, c => c.charCodeAt(0));
+		params.publicKey.excludeCredentials = params.publicKey.excludeCredentials.map((item) => {
+			return {
+				type: item.type,
+				id: Uint8Array.from(item.id, c => c.charCodeAt(0))
+			}
+		});
+		await navigator.credentials.create(params).then(function(credential) {
+			const credential_json = credential.toJSON();
+			const utf8_decoder = new TextDecoder('utf-8');
+			const id = credential.id;
+			const pub_key_ab = credential.response.getPublicKey();
+			const pub_key_alg = credential.response.getPublicKeyAlgorithm();
+			const auth_data_ab = credential.response.getAuthenticatorData();
+			const transports = credential.response.getTransports();
+			const client_data = utf8_decoder.decode(credential.response.clientDataJSON);
+			const json = {
+				id: id,
+				type: credential.type,
+				authData: new Uint8Array(auth_data_ab),
+				clientDataJSON: JSON.parse(client_data),
+				publicKey: new Uint8Array(pub_key_ab),
+				publicKeyAlgorithm: pub_key_alg,
+				transports: transports
+			};
+			oAccountSettingsFIDOU2F.create_u2f_creds(json);
+		});
+	},
+	create_u2f_creds: function(credential) {
+		const cb = <%=$this->CreateU2FCreds->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(credential);
+		cb.dispatch();
+	},
+	remove_u2f_creds: function(credential_id, key_name) {
+		const msg = "<%[ Are you sure you want to remove key '%key_name'? ]%>".replace('%key_name', key_name);;
+		if (confirm(msg)) {
+			const cb = <%=$this->RemoveU2FCreds->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(credential_id);
+			cb.dispatch();
+		}
+	},
+	edit_key: function(credential_id) {
+		const self = oAccountSettingsFIDOU2F;
+		const key_id = document.getElementById(self.ids.key_id);
+		key_id.value = credential_id;
+		const cb = <%=$this->EditU2FKey->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(credential_id);
+		cb.dispatch();
+	},
+	edit_key_cb: function(name) {
+		const self = oAccountSettingsFIDOU2F;
+		const key_name = document.getElementById(self.ids.key_name);
+		key_name.value = name;
+		self.show_key_window(true);
+		key_name.focus();
+	},
+	save_key: function() {
+		const cb = <%=$this->SaveU2FKey->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	show_key_window: function(show) {
+		const win = document.getElementById(oAccountSettingsFIDOU2F.ids.key_props_window);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
 		</script>
 	</div>
+
+	<!-- Tag options -->
 	<div class="w3-container tab_item" id="account_settings_tags" style="display: none">
 		<h5><i class="fa-solid fa-tag"></i> <%[ Local user tags ]%></h5>
 		<com:Bacularis.Web.Portlets.TagManager
