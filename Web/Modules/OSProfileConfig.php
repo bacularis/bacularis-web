@@ -420,7 +420,6 @@ class OSProfileConfig extends ConfigFileModule
 			'CentOS 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centos8/',
 			'CentOS Stream 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream8/',
 			'CentOS Stream 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream9/',
-			'Fedora 38' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora38/',
 			'Fedora 39' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora39/',
 			'Fedora 40' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora40/',
 			'Fedora 41' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora41/',
@@ -434,8 +433,6 @@ class OSProfileConfig extends ConfigFileModule
 			'Debian 12 Bookworm' => self::BACULARIS_REPOSITORY_ADDR . '/stable/debian/ bookworm main',
 			'Ubuntu 20.04 Focal' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ focal main',
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
-			'Ubuntu 23.04 Lunar' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ lunar main',
-			'Ubuntu 23.10 Mantic' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ mantic main',
 			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main',
 			'Ubuntu 24.10 Oracular' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ oracular main'
 		]
