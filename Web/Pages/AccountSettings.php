@@ -259,7 +259,7 @@ class AccountSettings extends BaculumWebPage
 		if ($valid === true) {
 			// token valid
 			$username = $this->User->getUsername();
-			if (self::$user['mfa'] == WebUserConfig::MFA_TYPE_NONE) {
+			if (!key_exists('mfa', self::$user) || self::$user['mfa'] == WebUserConfig::MFA_TYPE_NONE) {
 				self::$user['mfa'] = WebUserConfig::MFA_TYPE_TOTP;
 			}
 			self::$user['totp_secret'] = $this->AuthTOTP2FASecret->Value;
