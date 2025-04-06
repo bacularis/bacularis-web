@@ -4485,8 +4485,8 @@ msgstr "URL du dépôt Bacularis (ou entrée) :"
 msgid "Bacularis repository key URL:"
 msgstr "URL de clé de dépôt Bacularis :"
 
-msgid "Use system repository for Bacula packages:"
-msgstr "Utiliser le dépôt système pour les paquets Bacula :"
+msgid "Use system repository:"
+msgstr "Utiliser le dépôt système :"
 
 msgid "Bacula repository URL (or entry):"
 msgstr "URL du dépôt Bacula (ou entrée) :"
@@ -6349,3 +6349,9 @@ msgstr "Set a friendly name for your key to make it easier to recognize."
 
 msgid "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."
 msgstr "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."
+
+msgid "Bacularis package repository"
+msgstr "Bacularis package repository"
+
+msgid "Bacula package repository"
+msgstr "Bacula package repository"

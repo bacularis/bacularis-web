@@ -2138,345 +2138,170 @@ $(function() {
 							/>
 						</div>
 					</div>
-					<h3><%[ Repositories ]%></h3>
-					<p><%[ Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment. ]%>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileAddRepos" Text="<%[ Add repository entry to remote host: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveCheckBox
-								ID="OSProfileAddRepos"
-								AutoPostBack="false"
-								CssClass="w3-check w3-border"
-								Checked="true"
-								Attributes.onclick="$('#osprofile_window_add_repos_options').toggle('fast');"
-							/>
-						</div>
+
+
+
+					<div class="w3-row w3-margin-bottom w3-margin-top">
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('osprofile_window_repositories_btn', 'osprofile_window_repositories_config_form', 'osprofile_window');">
+							<div id="osprofile_window_repositories_btn" class="subtab_btn w3-col w3-quarter w3-bottombar w3-hover-light-grey w3-padding w3-border-red"><%[ Repositories ]%></div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('osprofile_window_access_btn', 'osprofile_window_access_config_form', 'osprofile_window');">
+							<div id="osprofile_window_access_btn" class="subtab_btn w3-col w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Access ]%></div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('osprofile_window_package_mgmt_btn', 'osprofile_window_package_mgmt_config_form', 'osprofile_window');">
+							<div id="osprofile_window_package_mgmt_btn" class="subtab_btn w3-col w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Package management ]%></div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('osprofile_window_configuration_btn', 'osprofile_window_configuration_config_form', 'osprofile_window');">
+							<div id="osprofile_window_configuration_btn" class="subtab_btn w3-col w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Configuration ]%></div>
+						 </a>
 					</div>
-					<div id="osprofile_window_add_repos_options" style="display: <%=$this->OSProfileAddRepos->Checked ? 'block' : 'none'%>">
+
+					<div id="osprofile_window_repositories_config_form" class="subtab_item w3-animate-opacity">
+						<p><%[ Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment. ]%>
+						<H3><%[ General ]%></h3>
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Repository type: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveDropDownList
-									ID="OSProfileRepositoryType"
-									AutoPostBack="false"
-									CssClass="w3-select w3-border"
-									Width="100px"
-								>
-									<com:TListItem Value="deb" Text="DEB" />
-									<com:TListItem Value="rpm" Text="RPM" />
-								</com:TActiveDropDownList>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAddr" Text="<%[ Bacularis repository URL (or entry): ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileBacularisRepositoryAddr"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryKey" Text="<%[ Bacularis repository key URL: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileBacularisRepositoryKey"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuthDef" Text="<%[ Use default Bacularis repository auth: ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileAddRepos" Text="<%[ Add repository entry to remote host: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveCheckBox
-									ID="OSProfileBacularisRepositoryAuthDef"
+									ID="OSProfileAddRepos"
 									AutoPostBack="false"
 									CssClass="w3-check w3-border"
 									Checked="true"
-									Attributes.onclick="$('#osprofile_window_bacularis_repo_auth').toggle('fast');"
+									Attributes.onclick="$('#osprofile_window_add_repos_options').toggle('fast');"
 								/>
 							</div>
 						</div>
-						<div id="osprofile_window_bacularis_repo_auth" style="display: <%=$this->OSProfileBacularisRepositoryAuthDef->Checked ? 'none' : 'block'%>">
+						<div id="osprofile_window_add_repos_options" style="display: <%=$this->OSProfileAddRepos->Checked ? 'block' : 'none'%>">
 							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuth" Text="<%[ Repo auth: ]%>"/></div>
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Repository type: ]%>"/></div>
 								<div class="w3-half">
 									<com:TActiveDropDownList
-										ID="OSProfileBacularisRepositoryAuth"
+										ID="OSProfileRepositoryType"
 										AutoPostBack="false"
 										CssClass="w3-select w3-border"
+										Width="100px"
+									>
+										<com:TListItem Value="deb" Text="DEB" />
+										<com:TListItem Value="rpm" Text="RPM" />
+									</com:TActiveDropDownList>
+								</div>
+							</div>
+							<h3><%[ Bacularis package repository ]%></h3>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAddr" Text="<%[ Bacularis repository URL (or entry): ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBacularisRepositoryAddr"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
 									/>
 								</div>
 							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryKey" Text="<%[ Bacularis repository key URL: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBacularisRepositoryKey"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuthDef" Text="<%[ Use default Bacularis repository auth: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveCheckBox
+										ID="OSProfileBacularisRepositoryAuthDef"
+										AutoPostBack="false"
+										CssClass="w3-check w3-border"
+										Checked="true"
+										Attributes.onclick="$('#osprofile_window_bacularis_repo_auth').toggle('fast');"
+									/>
+								</div>
+							</div>
+							<div id="osprofile_window_bacularis_repo_auth" style="display: <%=$this->OSProfileBacularisRepositoryAuthDef->Checked ? 'none' : 'block'%>">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisRepositoryAuth" Text="<%[ Repo auth: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveDropDownList
+											ID="OSProfileBacularisRepositoryAuth"
+											AutoPostBack="false"
+											CssClass="w3-select w3-border"
+										/>
+									</div>
+								</div>
+							</div>
+							<h3><%[ Bacula package repository ]%></h3>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaUseSystemRepo" Text="<%[ Use system repository: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveCheckBox
+										ID="OSProfileBaculaUseSystemRepo"
+										AutoPostBack="false"
+										CssClass="w3-check w3-border"
+										Checked="true"
+										Attributes.onclick="$('#osprofile_window_bacula_repo_options').toggle('fast');"
+									/>
+								</div>
+							</div>
+							<div id="osprofile_window_bacula_repo_options" style="display: <%=$this->OSProfileBaculaUseSystemRepo->Checked ? 'none' : 'block'%>">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third">&nbsp;</div>
+									<div class="w3-half">
+										<com:TActiveLinkButton
+											ID="OSProfileBaculaRepositoryAdaptToBaculaOrg"
+											CssClass="w3-small"
+											OnCallback="adaptOSProfileToBaculaOrgRepo"
+										>
+											<i class="fa-solid fa-sliders"></i> &nbsp;<%[ Adapt OS profile to use Bacula packages from bacula.org repos ]%>
+										</com:TActiveLinkButton>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryAddr" Text="<%[ Bacula repository URL (or entry): ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfileBaculaRepositoryAddr"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryKey" Text="<%[ Bacula repository key URL: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfileBaculaRepositoryKey"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+							</div>
 						</div>
+					</div>
+					<div id="osprofile_window_access_config_form" class="subtab_item w3-animate-opacity" style="display: none">
+						<h3><%[ Bacularis API access ]%></h3>
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaUseSystemRepo" Text="<%[ Use system repository for Bacula packages: ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisUseHTTPS" Text="<%[ Use HTTPS: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveCheckBox
-									ID="OSProfileBaculaUseSystemRepo"
+									ID="OSProfileBacularisUseHTTPS"
 									AutoPostBack="false"
 									CssClass="w3-check w3-border"
 									Checked="true"
-									Attributes.onclick="$('#osprofile_window_bacula_repo_options').toggle('fast');"
 								/>
 							</div>
 						</div>
-						<div id="osprofile_window_bacula_repo_options" style="display: <%=$this->OSProfileBaculaUseSystemRepo->Checked ? 'none' : 'block'%>">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third">&nbsp;</div>
-								<div class="w3-half">
-									<com:TActiveLinkButton
-										ID="OSProfileBaculaRepositoryAdaptToBaculaOrg"
-										CssClass="w3-small"
-										OnCallback="adaptOSProfileToBaculaOrgRepo"
-									>
-										<i class="fa-solid fa-sliders"></i> &nbsp;<%[ Adapt OS profile to use Bacula packages from bacula.org repos ]%>
-									</com:TActiveLinkButton>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryAddr" Text="<%[ Bacula repository URL (or entry): ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfileBaculaRepositoryAddr"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBaculaRepositoryKey" Text="<%[ Bacula repository key URL: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfileBaculaRepositoryKey"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<h3><%[ Bacularis API access ]%></h3>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisUseHTTPS" Text="<%[ Use HTTPS: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveCheckBox
-								ID="OSProfileBacularisUseHTTPS"
-								AutoPostBack="false"
-								CssClass="w3-check w3-border"
-								Checked="true"
-							/>
-						</div>
-					</div>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminUser" Text="<%[ Bacularis admin user: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveTextBox
-								ID="OSProfileBacularisAdminUser"
-								AutoPostBack="false"
-								MaxLength="500"
-								CssClass="w3-input w3-border"
-							/>
-						</div>
-					</div>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminPwd" Text="<%[ Bacularis admin password: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveTextBox
-								ID="OSProfileBacularisAdminPwd"
-								TextMode="Password"
-								AutoPostBack="false"
-								MaxLength="500"
-								CssClass="w3-input w3-border"
-							/>
-						</div>
-						<a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>" style="vertical-align: sub"><i class="fa fa-eye"></i></a>
-						&nbsp;<a href="javascript:void(0)" onclick="document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>').value = get_random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_~!@#$%^&*()_+}{|?[]\\/.,', 10); return false;" title="<%[ Generate new password ]%>" style="vertical-align: sub"><i class="fas fa-random"></i></a>
-					</div>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisStart" Text="<%[ Bacularis start command: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveTextBox
-								ID="OSProfilePackagesBacularisStart"
-								AutoPostBack="false"
-								MaxLength="500"
-								CssClass="w3-input w3-border"
-							/>
-						</div>
-					</div>
-					<h3><%[ Bacularis API settings ]%></h3>
-					<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
-					<h4><%[ Package management ]%></h4>
-					<div class="w3-row directive_field">
-						<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesUseSudo" Text="<%[ Use sudo for commands: ]%>"/></div>
-						<div class="w3-half">
-							<com:TActiveCheckBox
-								ID="OSProfilePackagesUseSudo"
-								AutoPostBack="false"
-								CssClass="w3-check w3-border"
-								Attributes.onclick="const el = $('#osprofile_packages_sudo_user'); this.checked ? el.show('fast') : el.hide('fast');"
-							/>
-						</div>
-					</div>
-					<div id="osprofile_packages_sudo_user" style="display: <%=$this->OSProfilePackagesUseSudo->Checked ? 'block' : 'none'%>">
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSudoUser" Text="<%[ Sudo user: ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminUser" Text="<%[ Bacularis admin user: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveTextBox
-									ID="OSProfilePackagesSudoUser"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_bacularis_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Bacularis commands ]%></a>
-					<div id="osprofile_window_bacularis_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInstall" Text="<%[ Bacularis installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesBacularisInstall"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisUpgrade" Text="<%[ Bacularis upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesBacularisUpgrade"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisRemove" Text="<%[ Bacularis removal command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesBacularisRemove"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInfo" Text="<%[ Bacularis info command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesBacularisInfo"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisEnable" Text="<%[ Bacularis enable command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesBacularisEnable"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bacularis_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_bacularis_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisInstallCmd" Text="<%[ Bacularis pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreBacularisInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div style="display: none">
-								<div class="w3-row directive_field">
-									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisUpgradeCmd" Text="<%[ Bacularis pre-upgrade command: ]%>"/></div>
-									<div class="w3-half">
-										<com:TActiveTextBox
-											ID="OSProfilePackagesPreBacularisUpgradeCmd"
-											AutoPostBack="false"
-											MaxLength="500"
-											CssClass="w3-input w3-border"
-										/>
-									</div>
-								</div>
-								<div class="w3-row directive_field">
-									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisRemoveCmd" Text="<%[ Bacularis pre-remove command: ]%>"/></div>
-									<div class="w3-half">
-										<com:TActiveTextBox
-											ID="OSProfilePackagesPreBacularisRemoveCmd"
-											AutoPostBack="false"
-											MaxLength="500"
-											CssClass="w3-input w3-border"
-										/>
-									</div>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisInstallCmd" Text="<%[ Bacularis post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostBacularisInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div style="display: none">
-								<div class="w3-row directive_field">
-									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisUpgradeCmd" Text="<%[ Bacularis post-upgrade command: ]%>"/></div>
-									<div class="w3-half">
-										<com:TActiveTextBox
-											ID="OSProfilePackagesPostBacularisUpgradeCmd"
-											AutoPostBack="false"
-											MaxLength="500"
-											CssClass="w3-input w3-border"
-										/>
-									</div>
-								</div>
-								<div class="w3-row directive_field">
-									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisRemoveCmd" Text="<%[ Bacularis post-remove command: ]%>"/></div>
-									<div class="w3-half">
-										<com:TActiveTextBox
-											ID="OSProfilePackagesPostBacularisRemoveCmd"
-											AutoPostBack="false"
-											MaxLength="500"
-											CssClass="w3-input w3-border"
-										/>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_command_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Catalog commands ]%></a>
-					<div id="osprofile_window_catalog_command_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInstall" Text="<%[ Catalog installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesCatInstall"
+									ID="OSProfileBacularisAdminUser"
 									AutoPostBack="false"
 									MaxLength="500"
 									CssClass="w3-input w3-border"
@@ -2484,842 +2309,24 @@ $(function() {
 							</div>
 						</div>
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatUpgrade" Text="<%[ Catalog upgrade command: ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBacularisAdminPwd" Text="<%[ Bacularis admin password: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveTextBox
-									ID="OSProfilePackagesCatUpgrade"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatRemove" Text="<%[ Catalog removal command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesCatRemove"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInfo" Text="<%[ Catalog info command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesCatInfo"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatEnable" Text="<%[ Catalog enable command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesCatEnable"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_catalog_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatInstallCmd" Text="<%[ Catalog pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreCatInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatUpgradeCmd" Text="<%[ Catalog pre-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreCatUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatRemoveCmd" Text="<%[ Catalog pre-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreCatRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatInstallCmd" Text="<%[ Catalog post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostCatInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatUpgradeCmd" Text="<%[ Catalog post-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostCatUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatRemoveCmd" Text="<%[ Catalog post-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostCatRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_director_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Director commands ]%></a>
-					<div id="osprofile_window_director_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInstall" Text="<%[ Director installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesDirInstall"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirUpgrade" Text="<%[ Director upgrade command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesDirUpgrade"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirRemove" Text="<%[ Director removal command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesDirRemove"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInfo" Text="<%[ Director info command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesDirInfo"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirEnable" Text="<%[ Director enable command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesDirEnable"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_director_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_director_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirInstallCmd" Text="<%[ Director pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreDirInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirUpgradeCmd" Text="<%[ Director pre-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreDirUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirRemoveCmd" Text="<%[ Director pre-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreDirRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirInstallCmd" Text="<%[ Director post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostDirInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirUpgradeCmd" Text="<%[ Director post-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostDirUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirRemoveCmd" Text="<%[ Director post-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostDirRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_storage_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Storage commands ]%></a>
-					<div id="osprofile_window_storage_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInstall" Text="<%[ Storage installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesSdInstall"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdUpgrade" Text="<%[ Storage upgrade command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesSdUpgrade"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdRemove" Text="<%[ Storage removal command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesSdRemove"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInfo" Text="<%[ Storage info command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesSdInfo"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdEnable" Text="<%[ Storage enable command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesSdEnable"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_storage_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_storage_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdInstallCmd" Text="<%[ Storage pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreSdInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdUpgradeCmd" Text="<%[ Storage pre-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreSdUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdRemoveCmd" Text="<%[ Storage pre-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreSdRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdInstallCmd" Text="<%[ Storage post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostSdInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdUpgradeCmd" Text="<%[ Storage post-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostSdUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdRemoveCmd" Text="<%[ Storage post-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostSdRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_filedaemon_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Client commands ]%></a>
-					<div id="osprofile_window_filedaemon_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInstall" Text="<%[ Client installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesFdInstall"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdUpgrade" Text="<%[ Client upgrade command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesFdUpgrade"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdRemove" Text="<%[ Client removal command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesFdRemove"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInfo" Text="<%[ Client info command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesFdInfo"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdEnable" Text="<%[ Client enable command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesFdEnable"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_filedaemon_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_filedaemon_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdInstallCmd" Text="<%[ Client pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreFdInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdUpgradeCmd" Text="<%[ Client pre-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreFdUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdRemoveCmd" Text="<%[ Client pre-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreFdRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdInstallCmd" Text="<%[ Client post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostFdInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdUpgradeCmd" Text="<%[ Client post-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostFdUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdRemoveCmd" Text="<%[ Client post-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostFdRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_bconsole_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Bconsole commands ]%></a>
-					<div id="osprofile_window_bconsole_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInstall" Text="<%[ Bconsole installation command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesBconsInstall"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsUpgrade" Text="<%[ Bconsole upgrade command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesBconsUpgrade"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsRemove" Text="<%[ Bconsole removal command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesBconsRemove"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInfo" Text="<%[ Bconsole info command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfilePackagesBconsInfo"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bconsole_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
-						<div id="osprofile_window_bconsole_advanced_options" style="display: none">
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsInstallCmd" Text="<%[ Bconsole pre-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreBconsInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsUpgradeCmd" Text="<%[ Bconsole pre-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreBconsUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsRemoveCmd" Text="<%[ Bconsole pre-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPreBconsRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsInstallCmd" Text="<%[ Bconsole post-install command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostBconsInstallCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsUpgradeCmd" Text="<%[ Bconsole post-upgrade command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostBconsUpgradeCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-							<div class="w3-row directive_field">
-								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsRemoveCmd" Text="<%[ Bconsole post-remove command: ]%>"/></div>
-								<div class="w3-half">
-									<com:TActiveTextBox
-										ID="OSProfilePackagesPostBconsRemoveCmd"
-										AutoPostBack="false"
-										MaxLength="500"
-										CssClass="w3-input w3-border"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_configuration_options').toggle('fast');"><h4><%[ Configuration ]%></h4></a>
-					<div id="osprofile_window_configuration_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveCheckBox
-									ID="OSProfileJSONToolsUseSudo"
-									AutoPostBack="false"
-									CssClass="w3-check w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsWorkDir" Text="<%[ Working directory: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsWorkDir"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBDirJSONPath" Text="<%[ Bdirjson binary file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsBDirJSONPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsDirCfgPath" Text="<%[ Main Director config file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsDirCfgPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBSdJSONPath" Text="<%[ Bsdjson binary file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsBSdJSONPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsSdCfgPath" Text="<%[ Main Storage config file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsSdCfgPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBFdJSONPath" Text="<%[ Bfdjson binary file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsBFdJSONPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsFdCfgPath" Text="<%[ Main Client config file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsFdCfgPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBBconsJSONPath" Text="<%[ Bbconsjson binary file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsBBconsJSONPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBconsCfgPath" Text="<%[ Main Bconsole config file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileJSONToolsBconsCfgPath"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_console_options').toggle('fast');"><h4><%[ Console ]%></h4></a>
-					<div id="osprofile_window_console_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleUseSudo" Text="<%[ Use sudo: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveCheckBox
-									ID="OSProfileBconsoleUseSudo"
-									AutoPostBack="false"
-									CssClass="w3-check w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleBin" Text="<%[ Bconsole binary file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileBconsoleBin"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleCfg" Text="<%[ Bconsole admin config file path: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileBconsoleCfg"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_options').toggle('fast');"><h4><%[ Catalog ]%></h4></a>
-					<div id="osprofile_window_catalog_options" style="display: none">
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Database type: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveDropDownList
-									ID="OSProfileDbType"
-									AutoPostBack="false"
-									CssClass="w3-select w3-border"
-								>
-									<com:TListItem Value="" Text="<%[ select database ]%>" />
-									<com:TListItem Value="pgsql" Text="PostgreSQL" />
-									<com:TListItem Value="mysql" Text="MySQL" />
-									<com:TListItem Value="sqlite" Text="SQLite" />
-								</com:TActiveDropDownList>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbName" Text="<%[ Database name: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileDbName"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbLogin" Text="<%[ Username: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileDbLogin"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPassword" Text="<%[ Password: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileDbPassword"
+									ID="OSProfileBacularisAdminPwd"
 									TextMode="Password"
 									AutoPostBack="false"
 									MaxLength="500"
 									CssClass="w3-input w3-border"
 								/>
 							</div>
+							<a href="javascript:void(0)" onclick="var el = document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>'); el.type = el.type == 'text' ? 'password' : 'text'" title="<%[ Show/hide password ]%>" style="vertical-align: sub"><i class="fa fa-eye"></i></a>
+							&nbsp;<a href="javascript:void(0)" onclick="document.getElementById('<%=$this->OSProfileBacularisAdminPwd->ClientID%>').value = get_random_string('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_~!@#$%^&*()_+}{|?[]\\/.,', 10); return false;" title="<%[ Generate new password ]%>" style="vertical-align: sub"><i class="fas fa-random"></i></a>
 						</div>
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbAddress" Text="<%[ IP address (or hostname): ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisStart" Text="<%[ Bacularis start command: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveTextBox
-									ID="OSProfileDbAddress"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPort" Text="<%[ Port: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileDbPort"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-									Width="100px"
-								/>
-							</div>
-						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPath" Text="<%[ Database path (SQLite only): ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileDbPath"
+									ID="OSProfilePackagesBacularisStart"
 									AutoPostBack="false"
 									MaxLength="500"
 									CssClass="w3-input w3-border"
@@ -3327,122 +2334,1142 @@ $(function() {
 							</div>
 						</div>
 					</div>
-					<a class="raw w3-show" href="javascript:void(0)" onclick="$('#osprofile_window_actions_options').toggle('fast');"><h4><%[ Actions ]%></h4></a>
-					<div id="osprofile_window_actions_options" style="display: none">
+					<div id="osprofile_window_package_mgmt_config_form" class="subtab_item w3-animate-opacity" style="display: none">
+						<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
 						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesUseSudo" Text="<%[ Use sudo for commands: ]%>"/></div>
 							<div class="w3-half">
 								<com:TActiveCheckBox
-									ID="OSProfileActionsUseSudo"
+									ID="OSProfilePackagesUseSudo"
 									AutoPostBack="false"
 									CssClass="w3-check w3-border"
+									Attributes.onclick="const el = $('#osprofile_packages_sudo_user'); this.checked ? el.show('fast') : el.hide('fast');"
 								/>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStart" Text="<%[ Director start command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsDirStart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<div id="osprofile_packages_sudo_user" style="display: <%=$this->OSProfilePackagesUseSudo->Checked ? 'block' : 'none'%>">
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSudoUser" Text="<%[ Sudo user: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSudoUser"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStop" Text="<%[ Director stop command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsDirStop"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Bacularis commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInstall" Text="<%[ Bacularis installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBacularisInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisUpgrade" Text="<%[ Bacularis upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesBacularisUpgrade"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisRemove" Text="<%[ Bacularis removal command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesBacularisRemove"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisInfo" Text="<%[ Bacularis info command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesBacularisInfo"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBacularisEnable" Text="<%[ Bacularis enable command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesBacularisEnable"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bacularis_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_bacularis_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisInstallCmd" Text="<%[ Bacularis pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBacularisInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div style="display: none">
+									<div class="w3-row directive_field">
+										<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisUpgradeCmd" Text="<%[ Bacularis pre-upgrade command: ]%>"/></div>
+										<div class="w3-half">
+											<com:TActiveTextBox
+												ID="OSProfilePackagesPreBacularisUpgradeCmd"
+												AutoPostBack="false"
+												MaxLength="500"
+												CssClass="w3-input w3-border"
+											/>
+										</div>
+									</div>
+									<div class="w3-row directive_field">
+										<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBacularisRemoveCmd" Text="<%[ Bacularis pre-remove command: ]%>"/></div>
+										<div class="w3-half">
+											<com:TActiveTextBox
+												ID="OSProfilePackagesPreBacularisRemoveCmd"
+												AutoPostBack="false"
+												MaxLength="500"
+												CssClass="w3-input w3-border"
+											/>
+										</div>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisInstallCmd" Text="<%[ Bacularis post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBacularisInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div style="display: none">
+									<div class="w3-row directive_field">
+										<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisUpgradeCmd" Text="<%[ Bacularis post-upgrade command: ]%>"/></div>
+										<div class="w3-half">
+											<com:TActiveTextBox
+												ID="OSProfilePackagesPostBacularisUpgradeCmd"
+												AutoPostBack="false"
+												MaxLength="500"
+												CssClass="w3-input w3-border"
+											/>
+										</div>
+									</div>
+									<div class="w3-row directive_field">
+										<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBacularisRemoveCmd" Text="<%[ Bacularis post-remove command: ]%>"/></div>
+										<div class="w3-half">
+											<com:TActiveTextBox
+												ID="OSProfilePackagesPostBacularisRemoveCmd"
+												AutoPostBack="false"
+												MaxLength="500"
+												CssClass="w3-input w3-border"
+											/>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirRestart" Text="<%[ Director restart command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsDirRestart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Catalog commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInstall" Text="<%[ Catalog installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesCatInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatUpgrade" Text="<%[ Catalog upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesCatUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatRemove" Text="<%[ Catalog removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesCatRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatInfo" Text="<%[ Catalog info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesCatInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesCatEnable" Text="<%[ Catalog enable command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesCatEnable"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_catalog_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_catalog_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatInstallCmd" Text="<%[ Catalog pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreCatInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatUpgradeCmd" Text="<%[ Catalog pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreCatUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreCatRemoveCmd" Text="<%[ Catalog pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreCatRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatInstallCmd" Text="<%[ Catalog post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostCatInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatUpgradeCmd" Text="<%[ Catalog post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostCatUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostCatRemoveCmd" Text="<%[ Catalog post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostCatRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStart" Text="<%[ Storage start command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsSdStart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Director commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInstall" Text="<%[ Director installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesDirInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirUpgrade" Text="<%[ Director upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesDirUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirRemove" Text="<%[ Director removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesDirRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirInfo" Text="<%[ Director info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesDirInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesDirEnable" Text="<%[ Director enable command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesDirEnable"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_director_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_director_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirInstallCmd" Text="<%[ Director pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreDirInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirUpgradeCmd" Text="<%[ Director pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreDirUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreDirRemoveCmd" Text="<%[ Director pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreDirRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirInstallCmd" Text="<%[ Director post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostDirInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirUpgradeCmd" Text="<%[ Director post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostDirUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostDirRemoveCmd" Text="<%[ Director post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostDirRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStop" Text="<%[ Storage stop command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsSdStop"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Storage commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInstall" Text="<%[ Storage installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSdInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdUpgrade" Text="<%[ Storage upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSdUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdRemove" Text="<%[ Storage removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSdRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdInfo" Text="<%[ Storage info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSdInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSdEnable" Text="<%[ Storage enable command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesSdEnable"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_storage_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_storage_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdInstallCmd" Text="<%[ Storage pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreSdInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdUpgradeCmd" Text="<%[ Storage pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreSdUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreSdRemoveCmd" Text="<%[ Storage pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreSdRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdInstallCmd" Text="<%[ Storage post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostSdInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdUpgradeCmd" Text="<%[ Storage post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostSdUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostSdRemoveCmd" Text="<%[ Storage post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostSdRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdRestart" Text="<%[ Storage restart command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsSdRestart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Client commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInstall" Text="<%[ Client installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesFdInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdUpgrade" Text="<%[ Client upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesFdUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdRemove" Text="<%[ Client removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesFdRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdInfo" Text="<%[ Client info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesFdInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesFdEnable" Text="<%[ Client enable command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesFdEnable"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_filedaemon_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_filedaemon_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdInstallCmd" Text="<%[ Client pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreFdInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdUpgradeCmd" Text="<%[ Client pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreFdUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreFdRemoveCmd" Text="<%[ Client pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreFdRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdInstallCmd" Text="<%[ Client post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostFdInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdUpgradeCmd" Text="<%[ Client post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostFdUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostFdRemoveCmd" Text="<%[ Client post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostFdRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStart" Text="<%[ Client start command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsFdStart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h3><%[ Bconsole commands ]%></h3>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInstall" Text="<%[ Bconsole installation command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBconsInstall"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsUpgrade" Text="<%[ Bconsole upgrade command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBconsUpgrade"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsRemove" Text="<%[ Bconsole removal command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBconsRemove"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesBconsInfo" Text="<%[ Bconsole info command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfilePackagesBconsInfo"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_window_bconsole_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_window_bconsole_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsInstallCmd" Text="<%[ Bconsole pre-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBconsInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsUpgradeCmd" Text="<%[ Bconsole pre-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBconsUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPreBconsRemoveCmd" Text="<%[ Bconsole pre-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPreBconsRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsInstallCmd" Text="<%[ Bconsole post-install command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBconsInstallCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsUpgradeCmd" Text="<%[ Bconsole post-upgrade command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBconsUpgradeCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesPostBconsRemoveCmd" Text="<%[ Bconsole post-remove command: ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesPostBconsRemoveCmd"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStop" Text="<%[ Client stop command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsFdStop"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+					</div>
+					<div id="osprofile_window_configuration_config_form" class="subtab_item w3-animate-opacity" style="display: none">
+						<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
+						<h4><%[ Configs ]%></h4>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveCheckBox
+										ID="OSProfileJSONToolsUseSudo"
+										AutoPostBack="false"
+										CssClass="w3-check w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsWorkDir" Text="<%[ Working directory: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsWorkDir"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBDirJSONPath" Text="<%[ Bdirjson binary file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsBDirJSONPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsDirCfgPath" Text="<%[ Main Director config file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsDirCfgPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBSdJSONPath" Text="<%[ Bsdjson binary file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsBSdJSONPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsSdCfgPath" Text="<%[ Main Storage config file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsSdCfgPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBFdJSONPath" Text="<%[ Bfdjson binary file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsBFdJSONPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsFdCfgPath" Text="<%[ Main Client config file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsFdCfgPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBBconsJSONPath" Text="<%[ Bbconsjson binary file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsBBconsJSONPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileJSONToolsBconsCfgPath" Text="<%[ Main Bconsole config file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileJSONToolsBconsCfgPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
 							</div>
 						</div>
-						<div class="w3-row directive_field">
-							<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdRestart" Text="<%[ Client restart command: ]%>"/></div>
-							<div class="w3-half">
-								<com:TActiveTextBox
-									ID="OSProfileActionsFdRestart"
-									AutoPostBack="false"
-									MaxLength="500"
-									CssClass="w3-input w3-border"
-								/>
+						<h4><%[ Console ]%></h4>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveCheckBox
+										ID="OSProfileBconsoleUseSudo"
+										AutoPostBack="false"
+										CssClass="w3-check w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleBin" Text="<%[ Bconsole binary file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBconsoleBin"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileBconsoleCfg" Text="<%[ Bconsole admin config file path: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileBconsoleCfg"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+						<h4><%[ Catalog ]%></h4>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbType" Text="<%[ Database type: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveDropDownList
+										ID="OSProfileDbType"
+										AutoPostBack="false"
+										CssClass="w3-select w3-border"
+									>
+										<com:TListItem Value="" Text="<%[ select database ]%>" />
+										<com:TListItem Value="pgsql" Text="PostgreSQL" />
+										<com:TListItem Value="mysql" Text="MySQL" />
+										<com:TListItem Value="sqlite" Text="SQLite" />
+									</com:TActiveDropDownList>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbName" Text="<%[ Database name: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbName"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbLogin" Text="<%[ Username: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbLogin"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPassword" Text="<%[ Password: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbPassword"
+										TextMode="Password"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbAddress" Text="<%[ IP address (or hostname): ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbAddress"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPort" Text="<%[ Port: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbPort"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+										Width="100px"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileDbPath" Text="<%[ Database path (SQLite only): ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileDbPath"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+						</div>
+						<h4><%[ Actions ]%></h4>
+						<div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsUseSudo" Text="<%[ Use sudo: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveCheckBox
+										ID="OSProfileActionsUseSudo"
+										AutoPostBack="false"
+										CssClass="w3-check w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStart" Text="<%[ Director start command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsDirStart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirStop" Text="<%[ Director stop command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsDirStop"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsDirRestart" Text="<%[ Director restart command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsDirRestart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStart" Text="<%[ Storage start command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsSdStart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdStop" Text="<%[ Storage stop command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsSdStop"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsSdRestart" Text="<%[ Storage restart command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsSdRestart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStart" Text="<%[ Client start command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsFdStart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdStop" Text="<%[ Client stop command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsFdStop"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
+							</div>
+							<div class="w3-row directive_field">
+								<div class="w3-col w3-third"><com:TLabel ForControl="OSProfileActionsFdRestart" Text="<%[ Client restart command: ]%>"/></div>
+								<div class="w3-half">
+									<com:TActiveTextBox
+										ID="OSProfileActionsFdRestart"
+										AutoPostBack="false"
+										MaxLength="500"
+										CssClass="w3-input w3-border"
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<footer class="w3-container w3-center">
 					<h6 id="osprofile_window_predefined_profile_msg" class="txt-center"><%[ NOTE: This is predefined OS profile that cannot be modified nor removed. ]%></h6>
-					<button type="button" class="w3-button w3-red" onclick="document.getElementById('osprofile_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-red w3-section w3-padding" onclick="document.getElementById('osprofile_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
 					<com:TActiveLinkButton
 						ID="OSProfileSave"
 						ValidationGroup="OSProfileGroup"
