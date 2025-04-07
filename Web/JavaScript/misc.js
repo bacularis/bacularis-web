@@ -1222,6 +1222,7 @@ var MsgEnvelope = {
 		nav: 'msg_envelope_nav',
 		nav_down: 'msg_envelope_nav_down',
 		nav_up: 'msg_envelope_nav_up',
+		search: 'msg_envelope_search',
 		line_indicator: 'msg_envelope_line_indicator',
 		msg_info_cnt: 'msg_envelope_info_cnt',
 		msg_warning_cnt: 'msg_envelope_warning_cnt',
@@ -1321,6 +1322,13 @@ var MsgEnvelope = {
 				}
 			}
 		}.bind(this));
+		const search_field = document.getElementById(this.ids.search);
+		search_field.addEventListener('keyup', function(e) {
+			this.search();
+		}.bind(this));
+		search_field.addEventListener('focus', function(e) {
+			this.search();
+		}.bind(this));
 	},
 	set_actions: function() {
 		var monitor_func = function() {
@@ -1384,6 +1392,7 @@ var MsgEnvelope = {
 		document.getElementById(this.ids.content).innerHTML = logs.join('');
 		this.set_msg_type_counters();
 		this.filter_logs(this.current_filters);
+		this.search(true);
 	},
 	mark_envelope_error: function() {
 		var envelope = document.getElementById(this.ids.envelope);
@@ -1426,6 +1435,11 @@ var MsgEnvelope = {
 	find_issues: function(logs) {
 		var error = warning = false;
 		var logs_len = logs.length;
+		if (logs_len > 0 && !logs[0]) {
+			// remove first empty line
+			logs.shift();
+			logs_len -= 1;
+		}
 		OUTER:
 		for (var i = 0; i < logs_len; i++) {
 			for (var j = 0; j < this.issue_regex.warning.length; j++) {
@@ -1455,9 +1469,13 @@ var MsgEnvelope = {
 		const info_cnt = document.getElementById(this.ids.msg_info_cnt);
 		const warning_cnt = document.getElementById(this.ids.msg_warning_cnt);
 		const error_cnt = document.getElementById(this.ids.msg_error_cnt);
-		info_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="info"]').length;
-		warning_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="warning"]').length;
-		error_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="error"]').length;
+		info_cnt.textContent = this.get_type_lines('info').length;
+		warning_cnt.textContent = this.get_type_lines('warning').length;
+		error_cnt.textContent = this.get_type_lines('error').length;
+	},
+	get_type_lines: function(type) {
+		const sel = '#' + this.ids.content + ' span[data-type="' + type + '"]';
+		return document.querySelectorAll(sel);
 	},
 	filter_logs: function(filters) {
 		const sel = [];
@@ -1485,6 +1503,9 @@ var MsgEnvelope = {
 		this.current_filters[filter] = !this.current_filters[filter];
 		this.filter_logs(this.current_filters);
 
+		// run search if keyword exist
+		this.search(true);
+
 		// Enable/disable filter button
 		if (this.current_filters[filter]) {
 			el.classList.remove('w3-opacity');
@@ -1498,6 +1519,36 @@ var MsgEnvelope = {
 		// Scroll to bottom
 		const container = document.getElementById(this.ids.container);
 		container.scrollTop = container.scrollHeight;
+	},
+	search: function(init) {
+		// Get keyword
+		const search_field = document.getElementById(this.ids.search);
+		const keyword = search_field.value.trim();
+		if (init && !keyword) {
+			// nothing in search on init - end.
+			return;
+		}
+
+		// Prepare to search
+		const no_filter = !this.current_filters.info && !this.current_filters.warning && !this.current_filters.error;
+		const pattern = new RegExp(keyword, 'i');
+		const content_id = '#' + this.ids.content;
+		const lines = document.querySelectorAll(content_id + ' span');
+
+		// Search...
+		let line_type;
+		for (let i = 0; i < lines.length; i++) {
+			line_type = lines[i].getAttribute('data-type');
+			if (!no_filter && !this.current_filters[line_type]) {
+				// filters are used but this filter is not enabled
+				continue;
+			}
+			if (pattern.test(lines[i].textContent) || !keyword) {
+				$(lines[i]).show();
+			} else {
+				$(lines[i]).hide();
+			}
+		}
 	}
 };
 

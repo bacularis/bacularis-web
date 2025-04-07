@@ -2,7 +2,10 @@
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
 			<span onclick="MsgEnvelope.close();" class="w3-button w3-display-topright">&times;</span>
-			<h2><%[ Messages ]%></h2>
+			<h2 class="w3-show-inline-block w3-half"><%[ Messages ]%></h2>
+			<div class="w3-margin w3-right-align" style="margin-right: 32px !important;">
+				<input type="search" id="msg_envelope_search" name="msg_envelope_search" class="w3-input w3-border" placeholder="<%[ Search... ]%>" value="" />
+			</div>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right">
 			<div id="msg_envelope_container" class="w3-code" style="font-size: 12px; min-height: 50px; max-height: 610px; overflow-y: scroll; overflow-x: auto; position: relative;">
