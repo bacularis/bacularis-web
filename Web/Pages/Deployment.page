@@ -1936,6 +1936,9 @@ var oOSProfiles = {
 			'<%=$this->OSProfilePackagesSudoUser->ClientID%>',
 			'<%=$this->OSProfilePackagesBacularisStart->ClientID%>',
 			'<%=$this->OSProfilePackagesBacularisEnable->ClientID%>',
+			'<%=$this->OSProfilePackagesBacularisInstall->ClientID%>',
+			'<%=$this->OSProfilePackagesPreBacularisInstallCmd->ClientID%>',
+			'<%=$this->OSProfilePackagesPostBacularisInstallCmd->ClientID%>',
 
 			'<%=$this->OSProfilePackagesCatInstall->ClientID%>',
 			'<%=$this->OSProfilePackagesCatUpgrade->ClientID%>',
@@ -2156,6 +2159,7 @@ $(function() {
 						 </a>
 					</div>
 
+					<!-- Repositories -->
 					<div id="osprofile_window_repositories_config_form" class="subtab_item w3-animate-opacity">
 						<p><%[ Here you can define repository to install Bacularis on remote host and also Bacula repository if it is different than default system repository. The repositories are added to remote hosts during API host deployment. ]%>
 						<H3><%[ General ]%></h3>
@@ -2284,6 +2288,8 @@ $(function() {
 							</div>
 						</div>
 					</div>
+
+					<!-- Access -->
 					<div id="osprofile_window_access_config_form" class="subtab_item w3-animate-opacity" style="display: none">
 						<h3><%[ Bacularis API access ]%></h3>
 						<div class="w3-row directive_field">
@@ -2334,6 +2340,8 @@ $(function() {
 							</div>
 						</div>
 					</div>
+
+					<!-- Package management -->
 					<div id="osprofile_window_package_mgmt_config_form" class="subtab_item w3-animate-opacity" style="display: none">
 						<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
 						<div class="w3-row directive_field">
@@ -3118,6 +3126,8 @@ $(function() {
 							</div>
 						</div>
 					</div>
+
+					<!-- Configuration -->
 					<div id="osprofile_window_configuration_config_form" class="subtab_item w3-animate-opacity" style="display: none">
 						<p><%[ All of the following settings are added to each new remotely installed Bacularis API that uses this OS profile. ]%></p>
 						<h4><%[ Configs ]%></h4>
