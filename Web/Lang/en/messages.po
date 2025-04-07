@@ -6344,3 +6344,15 @@ msgstr "Bacularis package repository"
 
 msgid "Bacula package repository"
 msgstr "Bacula package repository"
+
+msgid "info"
+msgstr "info"
+
+msgid "warning"
+msgstr "warning"
+
+msgid "error"
+msgstr "error"
+
+msgid "Filter"
+msgstr "Filter"

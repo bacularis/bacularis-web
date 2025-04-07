@@ -9,10 +9,24 @@
 				<pre id="msg_envelope_content"></pre>
 				<div id="msg_envelope_line_indicator" style="position: absolute; display: none;"><i class="fas fa-arrow-right w3-text-red"></i></div>
 			</div>
-			<div id="msg_envelope_nav">
-				<span><%[ Jump to: ]%></span> &nbsp;
-				<i id="msg_envelope_nav_down" class="fas fa-angle-down w3-large" style="cursor: pointer; user-select: none;" title="<%[ Previous error/warning ]%>"></i> &nbsp;
-				<i id="msg_envelope_nav_up" class="fas fa-angle-up w3-large" style="cursor: pointer; user-select: none;" title="<%[ Next error/warning ]%>"></i>
+			<div>
+				<div id="msg_envelope_nav" class="w3-half">
+					<span><%[ Jump to: ]%></span> &nbsp;
+					<i id="msg_envelope_nav_down" class="fas fa-angle-down w3-large" style="cursor: pointer; user-select: none;" title="<%[ Previous error/warning ]%>"></i> &nbsp;
+					<i id="msg_envelope_nav_up" class="fas fa-angle-up w3-large" style="cursor: pointer; user-select: none;" title="<%[ Next error/warning ]%>"></i>
+				</div>
+				<div class="w3-right-align">
+					<%[ Filter ]%>:
+					<span class="w3-tag w3-green w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'info');" style="padding: 1px 12px; user-select: none;">
+						<%[ info ]%> (<span id="msg_envelope_info_cnt">0</span>)
+					</span>
+					<span class="w3-tag w3-orange w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'warning');" style="padding: 1px 12px; user-select: none;">
+						<%[ warning ]%> (<span id="msg_envelope_warning_cnt">0</span>)
+					</span>
+					<span class="w3-tag w3-red w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'error');" style="padding: 1px 12px; user-select: none;">
+						<%[ error ]%> (<span id="msg_envelope_error_cnt">0</span>)
+					</span>
+				</div>
 			</div>
 		</div>
 		<footer class="w3-container w3-center">

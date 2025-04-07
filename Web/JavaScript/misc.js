@@ -1222,7 +1222,10 @@ var MsgEnvelope = {
 		nav: 'msg_envelope_nav',
 		nav_down: 'msg_envelope_nav_down',
 		nav_up: 'msg_envelope_nav_up',
-		line_indicator: 'msg_envelope_line_indicator'
+		line_indicator: 'msg_envelope_line_indicator',
+		msg_info_cnt: 'msg_envelope_info_cnt',
+		msg_warning_cnt: 'msg_envelope_warning_cnt',
+		msg_error_cnt: 'msg_envelope_error_cnt'
 	},
 	css: {
 		wrong: 'span[rel="wrong"]'
@@ -1239,6 +1242,16 @@ var MsgEnvelope = {
 			/ERR=/i,
 			/error: /i
 		]
+	},
+	filters: {
+		info: 'info',
+		warning: 'warning',
+		error: 'error'
+	},
+	current_filters: {
+		info: false,
+		warning: false,
+		error: false
 	},
 	init: function() {
 		this.set_events();
@@ -1351,21 +1364,26 @@ var MsgEnvelope = {
 		MonitorCallsInterval.push(monitor_func);
 	},
 	open: function() {
-		// reset indicator index
-		this.warn_err_idx = -1;
-
 		// hide indicator
-		var indicator = document.getElementById(this.ids.line_indicator);
-		indicator.style.display = 'none';
+		this.show_indicator(false);
 
 		document.getElementById(this.ids.modal).style.display = 'block';
 	},
 	close: function() {
 		document.getElementById(this.ids.modal).style.display = 'none';
 	},
+	show_indicator: function(show) {
+		// reset indicator index
+		this.warn_err_idx = -1;
+
+		var indicator = document.getElementById(this.ids.line_indicator);
+		indicator.style.display = show ? 'block' : 'none';
+	},
 	set_logs: function(logs) {
 		this.find_issues(logs);
-		document.getElementById(this.ids.content).innerHTML = logs.join("\n");
+		document.getElementById(this.ids.content).innerHTML = logs.join('');
+		this.set_msg_type_counters();
+		this.filter_logs(this.current_filters);
 	},
 	mark_envelope_error: function() {
 		var envelope = document.getElementById(this.ids.envelope);
@@ -1412,18 +1430,19 @@ var MsgEnvelope = {
 		for (var i = 0; i < logs_len; i++) {
 			for (var j = 0; j < this.issue_regex.warning.length; j++) {
 				if (this.issue_regex.warning[j].test(logs[i])) {
-					logs[i] = '<span class="w3-orange" rel="wrong">' + logs[i] + '</span>';
+					logs[i] = '<span class="w3-orange" rel="wrong" data-type="warning">' + logs[i] + "\n" + '</span>';
 					warning = true;
 					continue OUTER;
 				}
 			}
 			for (var j = 0; j < this.issue_regex.error.length; j++) {
 				if (this.issue_regex.error[j].test(logs[i])) {
-					logs[i] = '<span class="w3-red" rel="wrong">' + logs[i] + '</span>';
+					logs[i] = '<span class="w3-red" rel="wrong" data-type="error">' + logs[i] + "\n" +  '</span>';
 					error = true;
 					continue OUTER;
 				}
 			}
+			logs[i] = '<span data-type="info">' + logs[i] + "\n" + '</span>';
 		}
 
 		if (error) {
@@ -1431,6 +1450,54 @@ var MsgEnvelope = {
 		} else if (warning) {
 			this.mark_envelope_warning();
 		}
+	},
+	set_msg_type_counters: function() {
+		const info_cnt = document.getElementById(this.ids.msg_info_cnt);
+		const warning_cnt = document.getElementById(this.ids.msg_warning_cnt);
+		const error_cnt = document.getElementById(this.ids.msg_error_cnt);
+		info_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="info"]').length;
+		warning_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="warning"]').length;
+		error_cnt.textContent = document.querySelectorAll('#' + this.ids.content + ' span[data-type="error"]').length;
+	},
+	filter_logs: function(filters) {
+		const sel = [];
+		for (const filter in filters) {
+			if (this.filters.hasOwnProperty(filter) && filters[filter] == true) {
+				sel.push(filter);
+			}
+		}
+
+		const content_id = '#' + this.ids.content;
+		if (sel.length == 0) {
+			$(content_id + ' span').show(); // show all
+		} else {
+			$(content_id + ' span').hide(); // hide all
+			let lines;
+			for (let i = 0; i < sel.length; i++) {
+				lines = $(content_id + ' span[data-type="' + sel[i] + '"]');
+				lines.show();
+			}
+		}
+	},
+	set_filter: function(el, filter) {
+
+		// Set filter and filter logs
+		this.current_filters[filter] = !this.current_filters[filter];
+		this.filter_logs(this.current_filters);
+
+		// Enable/disable filter button
+		if (this.current_filters[filter]) {
+			el.classList.remove('w3-opacity');
+		} else {
+			el.classList.add('w3-opacity');
+		}
+
+		// Reset and hide indicator
+		this.show_indicator(false);
+
+		// Scroll to bottom
+		const container = document.getElementById(this.ids.container);
+		container.scrollTop = container.scrollHeight;
 	}
 };
 
