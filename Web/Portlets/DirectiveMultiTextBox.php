@@ -53,7 +53,7 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 			}
 		}
 		if ($data_mode && count($values) === 0) {
-			$values[] = '';
+			$values[] = null;
 		}
 		return $values;
 	}
@@ -98,7 +98,7 @@ class DirectiveMultiTextBox extends DirectiveListTemplate
 	public function addField($sender, $param)
 	{
 		$data = $this->getDirectiveValue();
-		$data[] = '';
+		$data[] = null;
 		$this->setData($data);
 		$this->loadConfig();
 	}
