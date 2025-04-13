@@ -292,7 +292,6 @@ class DirectiveFileSet extends DirectiveListTemplate
 					$directive_value = $controls[$j]->getDirectiveValue();
 					$index = $controls[$j]->getGroupName();
 					$default_value = $resource_desc['Include']->SubSections->{$directive_name}->DefaultValue;
-					$in_config = $controls[$j]->getInConfig();
 					if (is_null($directive_value)) {
 						// option not set or removed
 						continue;

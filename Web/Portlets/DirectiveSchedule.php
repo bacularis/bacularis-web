@@ -131,12 +131,12 @@ class DirectiveSchedule extends DirectiveListTemplate
 					$resource = 'Pool';
 				}
 				$in_config = false;
-				if ($load_values === true && is_object($directive)) {
+				if (is_object($directive)) {
 					$in_config = property_exists($directive, $subdirectives[$i]);
 				}
 
 				$directive_value = null;
-				if (is_object($directive) && property_exists($directive, $subdirectives[$i])) {
+				if ($in_config) {
 					$directive_value = $directive->{$subdirectives[$i]};
 				}
 				$overwrite_directives[$subdirectives[$i]] = [
@@ -219,7 +219,6 @@ class DirectiveSchedule extends DirectiveListTemplate
 
 	public function createRunItem($sender, $param)
 	{
-		$load_values = $this->getLoadValues();
 		$subdirectives = $this->getSubDirectives();
 		for ($i = 0; $i < count($subdirectives); $i++) {
 			$control = $param->Item->{$subdirectives[$i]};

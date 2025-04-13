@@ -69,7 +69,7 @@ class DirectiveRunscript extends DirectiveListTemplate
 					$in_config = property_exists($config[$i], $directive_name);
 
 					$directive_value = null;
-					if ($in_config === true) {
+					if ($in_config) {
 						$directive_value = $config[$i]->{$directive_name};
 					}
 
@@ -147,7 +147,6 @@ class DirectiveRunscript extends DirectiveListTemplate
 				if (property_exists($resource_desc['Runscript']->SubSections, $directive_name)) {
 					$default_value = $resource_desc['Runscript']->SubSections->{$directive_name}->DefaultValue;
 				}
-				$in_config = $controls[$j]->getInConfig();
 				$index = $controls[$j]->getGroupName();
 
 				if (is_null($directive_value)) {
