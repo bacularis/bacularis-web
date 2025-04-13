@@ -150,6 +150,7 @@ class DirectiveRenderer extends TItemDataRenderer
 			$control->setParentName($data['parent_name']);
 			$control->setLoadValues($this->SourceTemplateControl->getLoadValues());
 			$control->setResourceNames($this->SourceTemplateControl->getResourceNames());
+			$control->setInConfig($data['in_config']);
 			$control->setShow($data['show']);
 			$control->setGroupName($data['group_name']);
 			$control->setResource($data['resource']);

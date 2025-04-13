@@ -52,6 +52,7 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 	public const DIRECTIVE_NAME = 'DirectiveName';
 	public const DATA = 'Data';
 	public const LOAD_VALUES = 'LoadValues';
+	public const IN_CONFIG = 'InConfig';
 	public const SHOW = 'Show';
 	public const PARENT_NAME = 'ParentName';
 	public const GROUP_NAME = 'GroupName';
@@ -194,6 +195,16 @@ class DirectiveListTemplate extends ConfigListTemplate implements IActiveControl
 	{
 		settype($load_values, 'bool');
 		$this->setViewState(self::LOAD_VALUES, $load_values);
+	}
+
+	public function getInConfig()
+	{
+		return $this->getViewState(self::IN_CONFIG, false);
+	}
+
+	public function setInConfig($in_config)
+	{
+		$this->setViewState(self::IN_CONFIG, $in_config);
 	}
 
 	public function getShow()
