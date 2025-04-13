@@ -555,6 +555,9 @@ function render_string_short(data, type, row) {
 	if (type == 'display') {
 		var span = document.createElement('SPAN');
 		span.title = data;
+		if (Array.isArray(data)) {
+			data = data.toString();
+		}
 		if (data.length > 40) {
 			span.textContent = data.substring(0, 40) + '...';
 		} else {
