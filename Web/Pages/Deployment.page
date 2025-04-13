@@ -1212,7 +1212,7 @@ var oDeployAPIHost = {
 				</footer>
 			</div>
 		</div>
-		<div id="api_host_command_window" class="w3-modal">
+		<div id="api_host_command_window" class="w3-modal" style="z-index: 3 !important;">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
 				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('api_host_command_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
