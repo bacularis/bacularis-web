@@ -313,9 +313,10 @@ $(function() {
 						<com:TRegularExpressionValidator
 							ValidationGroup="ConfigGroup"
 							RegularExpression="<%=ConfigConfig::NAME_PATTERN%>"
+							ClientSidePatternModifiers="u"
 							ControlToValidate="ConfigName"
 							ErrorMessage="<%[ Invalid value. ]%>"
-							Display="None"
+							Display="Dynamic"
 						/>
 					</div>
 				</div>
@@ -398,7 +399,7 @@ $(function() {
 					ValidationGroup="ConfigGroup"
 					CausesValidation="true"
 					CssClass="w3-button w3-green w3-section"
-					Attributes.onclick="oConfig.save_config();"
+					OnCallback="saveConfigs"
 				>
 					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>
@@ -407,7 +408,6 @@ $(function() {
 		<com:TActiveHiddenField ID="ConfigWindowMode" />
 	</div>
 	<com:TCallback ID="LoadConfigs" OnCallback="loadConfigs" />
-	<com:TCallback ID="SaveConfigs" OnCallback="saveConfigs" />
 	<script>
 var oConfig = {
 	ids: {
@@ -492,10 +492,6 @@ var oConfig = {
 		});
 		this.show_directives(false);
 		this.show_error(false);
-	},
-	save_config: function() {
-		const cb = <%=$this->SaveConfigs->ActiveControl->Javascript%>;
-		cb.dispatch();
 	},
 	show_error: function(show, emsg) {
 		const self = oConfig;
@@ -750,7 +746,6 @@ $(function() {
 });
 	</script>
 	<com:TCallback ID="LoadPattern" OnCallback="loadPattern" />
-	<com:TCallback ID="SavePattern" OnCallback="savePattern" />
 	<div id="pattern_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
 			<header class="w3-container w3-green">
@@ -781,9 +776,10 @@ $(function() {
 						<com:TRegularExpressionValidator
 							ValidationGroup="PatternGroup"
 							RegularExpression="<%=PatternConfig::NAME_PATTERN%>"
+							ClientSidePatternModifiers="u"
 							ControlToValidate="PatternName"
 							ErrorMessage="<%[ Invalid value. ]%>"
-							Display="None"
+							Display="Dynamic"
 						/>
 					</div>
 				</div>
@@ -857,7 +853,7 @@ $(function() {
 					ValidationGroup="PatternGroup"
 					CausesValidation="true"
 					CssClass="w3-button w3-green w3-section"
-					Attributes.onclick="oPattern.save_pattern();"
+					OnCallback="savePattern"
 				>
 					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
 				</com:TActiveLinkButton>
@@ -934,10 +930,6 @@ var oPattern = {
 			document.getElementById(id).value = '';
 		});
 		this.show_error(false);
-	},
-	save_pattern: function() {
-		const cb = <%=$this->SavePattern->ActiveControl->Javascript%>;
-		cb.dispatch();
 	},
 	show_error: function(show, emsg) {
 		const self = oPattern;
