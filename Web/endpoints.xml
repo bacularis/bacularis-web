@@ -47,6 +47,7 @@
 	<url ServiceParameter="NewCopyJobWizard" pattern="web/new/copy-job/" />
 	<url ServiceParameter="NewMigrateJobWizard" pattern="web/new/migrate-job/" />
 	<url ServiceParameter="NewVerifyJobWizard" pattern="web/new/verify-job/" />
+	<url ServiceParameter="NewVirtualFullJobWizard" pattern="web/new/virtualfull-job/" />
 	<url ServiceParameter="NewFileStorageWizard" pattern="web/new/file-storage/" />
 	<url ServiceParameter="NewCloudStorageWizard" pattern="web/new/cloud-storage/" />
 	<url ServiceParameter="NewTapeStorageWizard" pattern="web/new/tape-storage/" />
