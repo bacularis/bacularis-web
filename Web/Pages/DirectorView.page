@@ -945,6 +945,8 @@ function load_dir_res_config(resource) {
 	cb.dispatch();
 }
 		</script>
+
+		<!-- Apply patterns -->
 		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
 			ID="BulkApplyPatternsDirector"
 			ComponentType="dir"
@@ -952,6 +954,16 @@ function load_dir_res_config(resource) {
 		<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
 			<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
 		</button>
+
+		<!-- Save component config to pattern -->
+		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+			ID="SaveComponentToPattern"
+			ComponentType="dir"
+		/>
+		<button type="button" onclick="const host = '<%=$this->User->getDefaultAPIHost()%>'; oSaveComponentToPattern.set_configs_window(host, 'dir'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
+			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+		</button>
+
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_director_config(); W3SubTabs.open('director_director_config_btn', 'director_director_config_form', 'director_config');">
 				<div id="director_director_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Director</div>

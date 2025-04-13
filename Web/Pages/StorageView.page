@@ -1671,6 +1671,7 @@ function load_sd_res_config(resource) {
 	cb.dispatch();
 }
 		</script>
+		<!-- Apply patterns -->
 		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
 			ID="BulkApplyPatternsStorage"
 			ComponentType="sd"
@@ -1678,6 +1679,16 @@ function load_sd_res_config(resource) {
 		<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
 			<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
 		</button>
+
+		<!-- Save component config to pattern -->
+		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+			ID="SaveComponentToPattern"
+			ComponentType="sd"
+		/>
+		<button type="button" onclick="const host = $('#<%=$this->UserAPIHosts->ClientID%>').val(); oSaveComponentToPattern.set_configs_window(host, 'sd'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
+			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+		</button>
+
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_sd_storagedaemon_config(); W3SubTabs.open('sd_storagedaemon_config_btn', 'sd_storagedaemon_config_form', 'storage_daemon_config');">
 				<div id="sd_storagedaemon_config_btn" class="subtab_btn w3-col m1 w3-bottombar w3-hover-light-grey w3-padding w3-border-red">Storage</div>

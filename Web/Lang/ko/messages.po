@@ -6372,3 +6372,36 @@ msgstr "error"
 
 msgid "Filter"
 msgstr "Filter"
+
+msgid "Check/uncheck all"
+msgstr "Check/uncheck all"
+
+msgid "Save to pattern"
+msgstr "Save to pattern"
+
+msgid "The saving component configuration to pattern feature allows to save entire (or selected) Bacula component configuration to pattern and configs. This enables to easily reuse this configuration on new Bacula hosts. This helps to configure multiple new Bacula hosts with the same or similar configuration using a single action. The configuration is divided into Bacula resources (configs) that can be applied to new hosts at once (by appying pattern) or you can select which Bacula resources you want to apply to new host (by applying configs)."
+msgstr "The saving component configuration to pattern feature allows to save entire (or selected) Bacula component configuration to pattern and configs. This enables to easily reuse this configuration on new Bacula hosts. This helps to configure multiple new Bacula hosts with the same or similar configuration using a single action. The configuration is divided into Bacula resources (configs) that can be applied to new hosts at once (by appying pattern) or you can select which Bacula resources you want to apply to new host (by applying configs)."
+
+msgid "Save Bacula component configuration to pattern"
+msgstr "Save Bacula component configuration to pattern"
+
+msgid "Select Bacula resources to save to pattern configs"
+msgstr "Select Bacula resources to save to pattern configs"
+
+msgid "The following placeholders can be used in the config name"
+msgstr "The following placeholders can be used in the config name"
+
+msgid "Bacula component type (ex: dir, sd, fd)"
+msgstr "Bacula component type (ex: dir, sd, fd)"
+
+msgid "Bacula component name (ex: bacula-dir, debian-fd, hostxyz-sd)"
+msgstr "Bacula component name (ex: bacula-dir, debian-fd, hostxyz-sd)"
+
+msgid "Bacula resource type (ex: Job, Client, Pool)"
+msgstr "Bacula resource type (ex: Job, Client, Pool)"
+
+msgid "Bacula resource name (ex: BackupClient1, BackupCatalog, verify_job_321)"
+msgstr "Bacula resource name (ex: BackupClient1, BackupCatalog, verify_job_321)"
+
+msgid "Overwrite config if exists"
+msgstr "Overwrite config if exists"
