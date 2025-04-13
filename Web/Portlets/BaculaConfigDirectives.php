@@ -196,12 +196,12 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$resource_desc = $data_desc->getDescription($component_type, $resource_type);
 		foreach ($resource_desc as $directive_name => $directive_desc) {
 			$in_config = false;
-			if ($load_values === true) {
-				$in_config = property_exists($config, $directive_name);
+			if ($load_values === true || $predefined) {
+				$in_config = property_exists($config, $directive_name) && !$this->isDataEmpty($config->{$directive_name});
 			}
 
 			$directive_value = null;
-			if (($in_config === true && $load_values === true) || ($predefined && property_exists($config, $directive_name))) {
+			if ($in_config === true) {
 				$directive_value = $config->{$directive_name};
 			}
 
@@ -918,5 +918,26 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public function getRequireDirectives()
 	{
 		return $this->getViewState(self::REQUIRE_DIRECTIVES, true);
+	}
+
+	/**
+	 * Check if data is empty.
+	 * Empty data is data that is used to display directive controls,
+	 * but it is not in config (ex. MultiTextBox control) that displays
+	 * empty fields but the empty fields are not in config.
+	 *
+	 * @param mixed $data directive value data
+	 * @return bool true if data is empty, false otherwise
+	 */
+	private function isDataEmpty($data)
+	{
+		$is_empty = false;
+		if (is_array($data)) {
+			$data = array_filter($data);
+			$is_empty = count($data) == 0;
+		} else {
+			$is_empty = ($data === null);
+		}
+		return $is_empty;
 	}
 }
