@@ -38,7 +38,7 @@ class ConfigConfig extends ConfigFileModule
 	/**
 	 * Allowed characters pattern for the config name.
 	 */
-	public const NAME_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\/\\(\\)\\{\\}:.#~_,+!$]{1,100}';
+	public const NAME_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\\/\\(\\)\\{\\}\\\\%:.#~_,+!$]{1,160}';
 
 	/**
 	 * Stores config.
@@ -78,7 +78,8 @@ class ConfigConfig extends ConfigFileModule
 		if (is_array($config)) {
 			foreach ($config as $key => $value) {
 				if (key_exists('config', $value)) {
-					$value['config'] = json_encode($value['config']);
+					$value['config'] = self::escapeCharacters($value['config']);
+					$value['config'] = json_encode($value['config'], JSON_HEX_QUOT);
 				}
 				$config[$key] = $value;
 			}
@@ -148,5 +149,28 @@ class ConfigConfig extends ConfigFileModule
 	{
 		$config = $this->getConfig();
 		return key_exists($name, $config);
+	}
+
+	/**
+	 * Escape special characters in config directives.
+	 * This is for characters that escaping is not fully supported in json_encode().
+	 * It fixes these lacks in json_encode().
+	 * NOTE: Recursion calls used.
+	 *
+	 * @param array $config config content
+	 * @return array config content with escaped characters ready to save
+	 */
+	private static function escapeCharacters(array $config)
+	{
+		$from = ['\\', '\\|'];
+		$to = ['\\\\', '\\\\u007C'];
+		foreach ($config as $key => $value) {
+			if (is_array($value)) {
+				$config[$key] = self::escapeCharacters($value);
+			} elseif (is_string($value)) {
+				$config[$key] = str_replace($from, $to, $value);
+			}
+		}
+		return $config;
 	}
 }
