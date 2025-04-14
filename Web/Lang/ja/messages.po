@@ -6463,3 +6463,6 @@ msgstr "Bacula resource name (ex: BackupClient1, BackupCatalog, verify_job_321)"
 
 msgid "Overwrite config if exists"
 msgstr "Overwrite config if exists"
+
+msgid "Save the config even if a config with the same name already exists. In this case, the config will be overwritten by the new one."
+msgstr "Save the config even if a config with the same name already exists. In this case, the config will be overwritten by the new one."
