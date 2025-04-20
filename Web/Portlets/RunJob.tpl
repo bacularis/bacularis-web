@@ -2,7 +2,10 @@
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green"> 
 			<span onclick="close_run_job_window();" class="w3-button w3-display-topright">&times;</span>
-			<h2><%[ Run job ]%><%=$this->getJobName() ? ' - ' . $this->getJobName() : ''%></h2>
+			<h2>
+				<%[ Run job ]%><%=$this->getJobName() ? ' - ' . $this->getJobName() : ''%>
+				&nbsp; <i id="run_job_select_job_loader" class="fa-solid fa-sync fa-spin" style="display: none;"></i>
+			</h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right">
 			<com:TActivePanel ID="JobToRunLine" CssClass="w3-row directive_field" Display="None">
@@ -12,6 +15,8 @@
 						ID="JobToRun"
 						CssClass="w3-select w3-border"
 						OnCallback="selectJobValues"
+						ClientSide.OnLoading="document.getElementById('run_job_select_job_loader').style.display = 'inline-block';"
+						ClientSide.OnComplete="document.getElementById('run_job_select_job_loader').style.display = 'none';"
 					/>
 				</div>
 			</com:TActivePanel>
