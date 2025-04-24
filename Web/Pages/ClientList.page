@@ -1,5 +1,7 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
+	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
 	<header class="w3-container">
 		<h5>
@@ -25,6 +27,7 @@
 					<th><%[ AutoPrune ]%></th>
 					<th><%[ Job retention ]%></th>
 					<th><%[ File retention ]%></th>
+					<th><%[ Working ]%></th>
 					<th><%[ Tag ]%></th>
 					<th><%[ Actions ]%></th>
 				</tr>
@@ -39,6 +42,7 @@
 					<th><%[ AutoPrune ]%></th>
 					<th><%[ Job retention ]%></th>
 					<th><%[ File retention ]%></th>
+					<th><%[ Working ]%></th>
 					<th><%[ Tag ]%></th>
 					<th><%[ Actions ]%></th>
 				</tr>
@@ -58,6 +62,7 @@ var oClientList = {
 	data: [],
 	table: null,
 	table_toolbar: null,
+	client_running_jobs: {},
 	actions: [
 		{
 			action: 'apply_configs',
@@ -177,6 +182,54 @@ var oClientList = {
 				{
 					data: 'clientid',
 					render: (data, type, row) => {
+						let ret = '-';
+						if (type == 'display') {
+							if (this.client_running_jobs.hasOwnProperty(data) && this.client_running_jobs[data].length > 0) {
+								const span = document.createElement('SPAN');
+								span.classList.add('helper');
+								span.style.paddingLeft = '1.5em';
+								const img = document.createElement('I');
+								img.classList.add('fa-solid', 'fa-cog', 'w3-text-blue', 'w3-spin', 'w3-large');
+								const nb_running =  document.createElement('SUP');
+								nb_running.textContent = ' (%nb_job)'.replace('%nb_job', this.client_running_jobs[data].length);
+								nb_running.style.position = 'relative';
+								nb_running.style.right = '-0.5em';
+								nb_running.style.top = '-1.2em';
+								span.appendChild(img);
+								span.appendChild(nb_running);
+								span.addEventListener('mouseover', () => {
+									const jobs_running = this.client_running_jobs[data].map((el) => {
+										const details = document.createElement('UL');
+										details.style.margin = '2px 0 4px 0';
+										const jobid = document.createElement('LI');
+										jobid.textContent = 'JobId: ' + el.jobid;
+										const jobstatus = document.createElement('LI');
+										jobstatus.textContent = '<%[ Job status ]%>: ' + el.jobstatus;
+										const starttime = document.createElement('LI');
+										starttime.textContent = '<%[ Start time ]%>: ' + el.starttime;
+
+										details.appendChild(jobid);
+										details.appendChild(jobstatus);
+										details.appendChild(starttime);
+
+										let ret = el.name;
+										ret += details.outerHTML;
+										return ret;
+									});
+									showTip(span, '<%[ Client jobs ]%> (<%[ running ]%>):', jobs_running.join(''), {
+										offset: [-55, 0],
+										tipJoint: 'right middle'
+									});
+								});
+								ret = span;
+							}
+						}
+						return ret;
+					}
+				},
+				{
+					data: 'clientid',
+					render: (data, type, row) => {
 						const id = 'clientid';
 						const tt_obj = oTagTools_<%=$this->TagToolsClientList->ClientID%>;
 						const table = 'oClientList.table';
@@ -216,7 +269,8 @@ var oClientList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -226,7 +280,7 @@ var oClientList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 4, 5, 6, 7, 8 ]
+				targets: [ 1, 4, 5, 6, 7, 8, 9 ]
 			}],
 			select: {
 				style: 'os',
@@ -286,6 +340,26 @@ var oClientList = {
 			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
+	},
+	set_client_running_jobs: function() {
+		const rjob_len = oData.running_jobs.length;
+		let client_id;
+		this.client_running_jobs = [];
+		for (let i = 0; i < rjob_len; i++) {
+			client_id = oData.running_jobs[i].clientid;
+			if (!this.client_running_jobs.hasOwnProperty(client_id)) {
+				this.client_running_jobs[client_id] = [];
+			}
+			this.client_running_jobs[client_id].push(oData.running_jobs[i]);
+		}
+	},
+	is_element_selected: function() {
+		return (this.table && this.table.rows({selected: true}).data().length > 0);
+	},
+	is_element_opened: function() {
+		const tbody = document.getElementById(this.ids.client_list_body);
+		const is_opened = (tbody.querySelector('ul.dtr-details') !== null);
+		return is_opened;
 	}
 };
 function get_client_list_data() {
@@ -301,8 +375,13 @@ function update_client_list_table(data, init) {
 
 MonitorParams = {clients: null};
 $(function() {
-	MonitorCalls.push(function() {
-		<%=$this->ClientViews->ClientID%>_TabViews.tabs.apply_filters();
+	MonitorCallsInterval.push(function() {
+		oClientList.set_client_running_jobs();
+	});
+	MonitorCallsInterval.push(function() {
+		if (!oClientList.is_element_selected() && !oClientList.is_element_opened()) {
+			<%=$this->ClientViews->ClientID%>_TabViews.tabs.apply_filters();
+		}
 	});
 });
 </script>
