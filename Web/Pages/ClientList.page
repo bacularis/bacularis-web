@@ -50,11 +50,23 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
+	<div id="table_predefined_filters_body" style="display: none; width: 290px;">
+		<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-margin-right">
+			<select id="table_predefined_filters_value_type" class="dt-select" style="width: 250px;">
+				<option value=""><%[ All clients ]%></option>
+				<option value="working"><%[ Clients with running jobs ]%></option>
+				<option value="not-working"><%[ Clients without running jobs ]%></option>
+			</select>
+		</div>
+	</div>
 <script type="text/javascript">
 var oClientList = {
 	ids: {
 		client_list: 'client_list',
-		client_list_body: 'client_list_body'
+		client_list_body: 'client_list_body',
+		table_predefined_filters: 'table_predefined_filters',
+		table_predefined_filters_body: 'table_predefined_filters_body',
+		table_predefined_filters_value_type: 'table_predefined_filters_value_type',
 	},
 	opts: {
 		uname_len: 40
@@ -88,7 +100,9 @@ var oClientList = {
 		if (!this.table) {
 			this.set_table();
 			this.set_bulk_actions();
+			this.set_predefined_filters();
 			this.set_events();
+			this.set_filters();
 		} else {
 			this.refresh(data);
 		}
@@ -108,6 +122,14 @@ var oClientList = {
 				}, 'fast');
 			}.bind(this));
 		}.bind(this));
+		const filters_select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		filters_select.addEventListener('change', (e) => {
+			this.reset_filters();
+			const type = filters_select.value;
+			if (type) {
+				this.set_filters(type);
+			}
+		});
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.client_list).DataTable({
@@ -129,6 +151,11 @@ var oClientList = {
 					{
 						div: {
 							className: 'table_toolbar'
+						}
+					},
+					{
+						div: {
+							id: 'table_predefined_filters'
 						}
 					}
 				],
@@ -183,15 +210,19 @@ var oClientList = {
 					data: 'clientid',
 					render: (data, type, row) => {
 						let ret = '-';
+						let nb_job = 0;
+						if (this.client_running_jobs.hasOwnProperty(data) && this.client_running_jobs[data].length > 0) {
+							nb_job = this.client_running_jobs[data].length;
+						}
 						if (type == 'display') {
-							if (this.client_running_jobs.hasOwnProperty(data) && this.client_running_jobs[data].length > 0) {
+							if (nb_job > 0) {
 								const span = document.createElement('SPAN');
 								span.classList.add('helper');
 								span.style.paddingLeft = '1.5em';
 								const img = document.createElement('I');
 								img.classList.add('fa-solid', 'fa-cog', 'w3-text-blue', 'w3-spin', 'w3-large');
 								const nb_running =  document.createElement('SUP');
-								nb_running.textContent = ' (%nb_job)'.replace('%nb_job', this.client_running_jobs[data].length);
+								nb_running.textContent = ' (%nb_job)'.replace('%nb_job', nb_job);
 								nb_running.style.position = 'relative';
 								nb_running.style.right = '-0.5em';
 								nb_running.style.top = '-1.2em';
@@ -204,9 +235,9 @@ var oClientList = {
 										const jobid = document.createElement('LI');
 										jobid.textContent = 'JobId: ' + el.jobid;
 										const jobstatus = document.createElement('LI');
-										jobstatus.textContent = '<%[ Job status ]%>: ' + el.jobstatus;
+										jobstatus.innerHTML= '<%[ Job status ]%>: ' + JobStatus.get_icon(el.jobstatus).outerHTML + ' (' + el.jobstatus + ')';
 										const starttime = document.createElement('LI');
-										starttime.textContent = '<%[ Start time ]%>: ' + el.starttime;
+										starttime.textContent = '<%[ Start time ]%>: ' + Units.format_date(el.starttime_epoch);
 
 										details.appendChild(jobid);
 										details.appendChild(jobstatus);
@@ -223,6 +254,8 @@ var oClientList = {
 								});
 								ret = span;
 							}
+						} else if (type == 'sort') {
+							ret = nb_job;
 						}
 						return ret;
 					}
@@ -352,6 +385,59 @@ var oClientList = {
 			}
 			this.client_running_jobs[client_id].push(oData.running_jobs[i]);
 		}
+	},
+	reset_filters: function() {
+		if ($.fn.dataTable.ext.search.length > 0) {
+			$.fn.dataTable.ext.search.pop();
+		}
+
+		// reset select filters
+		this.table.columns().every(function() {
+			let addr = location.href.replace(/[&;?]?(type)=[^&;]+/, '');
+			history.replaceState({}, '', addr);
+		})
+
+		this.table.columns().draw();
+	},
+	set_filters: function(type) {
+		const ptype = get_url_param('type');
+		type = type || ptype;
+		let search_func;
+		switch (type) {
+			case 'working':
+				search_func = (settings, search_data, index, row_data, counter) => {
+					const clientid = search_data[1];
+					return (this.client_running_jobs.hasOwnProperty(clientid) && this.client_running_jobs[clientid].length > 0);
+				};
+			break;
+			case 'not-working':
+				search_func = (settings, search_data, index, row_data, counter) => {
+					const clientid = search_data[1];
+					return (!this.client_running_jobs.hasOwnProperty(clientid) || this.client_running_jobs[clientid].length == 0);
+				};
+			break;
+		}
+		if (search_func) {
+			$.fn.dataTable.ext.search.push(search_func);
+			if (ptype) {
+				// if type parameter passed in the URL query string, reset all filters (@see search(''))
+				this.table.columns().search('').draw();
+			} else {
+				this.table.columns().draw();
+			}
+			this.set_filter_select(type);
+		}
+	},
+	set_filter_select: function(type) {
+		const select = document.getElementById(this.ids.table_predefined_filters_value_type);
+		select.value = type;
+	},
+	set_predefined_filters() {
+		const predefined = document.getElementById(this.ids.table_predefined_filters);
+		predefined.className = 'dt-buttons';
+		const body = document.getElementById(this.ids.table_predefined_filters_body);
+		predefined.appendChild(body);
+		body.style.display = 'block';
 	},
 	is_element_selected: function() {
 		return (this.table && this.table.rows({selected: true}).data().length > 0);

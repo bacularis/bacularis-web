@@ -6406,3 +6406,12 @@ msgstr "Save the config even if a config with the same name already exists. In t
 
 msgid "Working"
 msgstr "Working"
+
+msgid "All clients"
+msgstr "All clients"
+
+msgid "Clients with running jobs"
+msgstr "Clients with running jobs"
+
+msgid "Clients without running jobs"
+msgstr "Clients without running jobs"
