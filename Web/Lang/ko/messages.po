@@ -6420,3 +6420,24 @@ msgstr "Clients with running jobs"
 
 msgid "Clients without running jobs"
 msgstr "Clients without running jobs"
+
+msgid "Cancel client jobs"
+msgstr "Cancel client jobs"
+
+msgid "Job types to cancel"
+msgstr "Job types to cancel"
+
+msgid "Cancel all jobs"
+msgstr "Cancel all jobs"
+
+msgid "Cancel running jobs"
+msgstr "Cancel running jobs"
+
+msgid "Cancel waiting jobs to run"
+msgstr "Cancel waiting jobs to run"
+
+msgid "Cancel jobs"
+msgstr "Cancel jobs"
+
+msgid "cancelling"
+msgstr "cancelling"

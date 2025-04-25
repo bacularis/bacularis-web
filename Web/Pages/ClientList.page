@@ -59,6 +59,7 @@
 			</select>
 		</div>
 	</div>
+	<com:Bacularis.Web.Portlets.BulkCancelJobsModal ID="CancelJobsModal" />
 <script type="text/javascript">
 var oClientList = {
 	ids: {
@@ -92,6 +93,28 @@ var oClientList = {
 				};
 				oBulkApplyConfigsModal.set_item_cb(cb);
 				oBulkApplyConfigsModal.show_window(true);
+			}
+		},
+		{
+			action: 'cancel_client_jobs',
+			enabled: true,
+			label: '<%[ Cancel client jobs ]%>',
+			value: 'clientid',
+			before: () => {
+				const component_type = '<%=$this->getModule('misc')->getComponentFullName('fd')%>';
+				let component_names = [];
+				let jobs = [];
+				let sel_data = oClientList.table.rows({selected: true}).data();
+				sel_data.each((v, k) => {
+					component_names.push(v.name);
+					if (oClientList.client_running_jobs.hasOwnProperty(v.clientid)) {
+						jobs = jobs.concat(oClientList.client_running_jobs[v.clientid]);
+					}
+				});
+				const cb = () => {
+					oClientList.table.rows({selected: true}).deselect();
+				};
+				oBulkCancelJobsModal.open_window(component_type, component_names, jobs, cb);
 			}
 		}
 	],
