@@ -184,7 +184,9 @@ var oBulkCancelJobsModal = {
 		} else {
 			self.run_callback();
 			self.show_loader(false);
-			self.close_window();
+			if (stat) {
+				self.close_window();
+			}
 		}
 	},
 	mark_job: function(jobid, stat) {
