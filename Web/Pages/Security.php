@@ -2054,7 +2054,17 @@ class Security extends BaculumWebPage
 			$this->APIHostTestResultErr->Text .= $console->output . '<br />';
 		}
 		if (!$is_config) {
-			$this->APIHostTestResultErr->Text .= $config->output . '<br />';
+			$config_output = '';
+			if (!is_string($config->output)) {
+				/**
+				 * For special error codes that do not provide
+				 * string in output like BaculaConfigError::ERROR_CONFIG_NO_JSONTOOL_READY
+				 */
+				$config_output = var_export($config->output, true);
+			} else {
+				$config_output = $config->output;
+			}
+			$this->APIHostTestResultErr->Text .= $config_output . '<br />';
 		}
 
 		$this->APIHostTestResultOk->Display = ($status_ok === true) ? 'Dynamic' : 'None';
