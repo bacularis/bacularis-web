@@ -1853,11 +1853,14 @@ class Deployment extends BaculumWebPage
 			'Name' => $dir_name,
 			'Password' => $fd_pwd
 		];
-		$result = $api->create(
-			['config', 'fd', 'Director', $dir_name],
-			['config' => json_encode($fd_dir_cfg)],
-			$host
-		);
+
+		$path = ['config', 'fd', 'Director', $dir_name];
+		$props = ['config' => json_encode($fd_dir_cfg)];
+		$result = $api->create($path, $props, $host);
+		if ($result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
+			// Resource with given name already exists, update it
+			$result = $api->set($path, $props, $host);
+		}
 		if ($result->error === 0) {
 			$dir_fd_cfg = [
 				'Name' => $fd_name,
@@ -1882,11 +1885,14 @@ class Deployment extends BaculumWebPage
 			'Name' => $dir_name,
 			'Password' => $sd_pwd
 		];
-		$result = $api->create(
-			['config', 'sd', 'Director', $dir_name],
-			['config' => json_encode($sd_dir_cfg)],
-			$host
-		);
+
+		$path = ['config', 'sd', 'Director', $dir_name];
+		$props = ['config' => json_encode($sd_dir_cfg)];
+		$result = $api->create($path, $props, $host);
+		if ($result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
+			// Resource with given name already exists, update it
+			$result = $api->set($path, $props, $host);
+		}
 		if ($result->error === 0) {
 			$devices = [
 				'autochanger' => [],
