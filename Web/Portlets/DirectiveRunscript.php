@@ -62,6 +62,10 @@ class DirectiveRunscript extends DirectiveListTemplate
 		$resource_desc = $this->Application->getModule('data_desc')->getDescription($component_type, $resource_type, 'Runscript');
 		foreach ($directives as $index => $config) {
 			for ($i = 0; $i < count($config); $i++) {
+				if (is_array($config[$i])) {
+					// This is required for proper loading pattern config values
+					$config[$i] = (object) $config[$i];
+				}
 				if (!is_object($config[$i])) {
 					continue;
 				}
