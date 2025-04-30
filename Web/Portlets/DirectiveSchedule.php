@@ -107,6 +107,10 @@ class DirectiveSchedule extends DirectiveListTemplate
 		$resource_desc = $this->getResourceDesc();
 		$time_directives = $directive_values = $overwrite_directives = [];
 		foreach ($directives as $index => $directive) {
+			if (is_array($directive)) {
+				// This is required for proper loading pattern config values
+				$directive = (object) $directive;
+			}
 			for ($i = 0; $i < count($subdirectives); $i++) {
 				$default_value = null;
 				$data = null;
