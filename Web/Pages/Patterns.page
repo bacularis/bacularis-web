@@ -381,16 +381,30 @@ $(function() {
 				</div>
 				<div id="config_directives" style="display: none">
 					<h3><%[ Configuration ]%></h3>
-					<com:Bacularis.Web.Portlets.BaculaConfigDirectives
-						ID="ConfigDirectives"
-						SaveDirectiveActionOk="save_directive_action_ok();"
-						ShowBottomButtons="false"
-						ShowSaveButton="false"
-						ShowRemoveButton="false"
-						ShowCancelButton="false"
-						ShowSectionTabs="true"
-						RequireDirectives="false"
-					/>
+					<div id="config_window_copy_resource" class="w3-right">
+						<span style="vertical-align: super"><%[ Copy configuration from: ]%></span>
+						<div class="directive_field w3-show-inline-block w3-margin-bottom" style="vertical-align: middle">
+							<com:TActiveDropDownList
+								ID="ResourcesToCopy"
+								CssClass="w3-select w3-border w3-show-inline-block"
+								Style="min-width: 300px"
+								OnSelectedIndexChanged="copyConfig"
+							/>
+						</div>
+					</div>
+					<div class="w3-clear"></div>
+					<div class="w3-margin-top">
+						<com:Bacularis.Web.Portlets.BaculaConfigDirectives
+							ID="ConfigDirectives"
+							SaveDirectiveActionOk="save_directive_action_ok();"
+							ShowBottomButtons="false"
+							ShowSaveButton="false"
+							ShowRemoveButton="false"
+							ShowCancelButton="false"
+							ShowSectionTabs="true"
+							RequireDirectives="false"
+						/>
+					</div>
 				</div>
 			</div>
 			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
@@ -421,7 +435,8 @@ var oConfig = {
 		title_add: 'config_window_title_add',
 		title_edit: 'config_window_title_edit',
 		title_name: 'config_window_title_edit_name',
-		mode: '<%=$this->ConfigWindowMode->ClientID%>'
+		mode: '<%=$this->ConfigWindowMode->ClientID%>',
+		copy_resource: 'config_window_copy_resource'
 	},
 	modes: {
 		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
@@ -435,6 +450,9 @@ var oConfig = {
 			cb.setCallbackParameter(name);
 			cb.dispatch();
 			mode = this.modes.edit;
+			this.show_copy_resource(false);
+		} else {
+			this.show_copy_resource(true);
 		}
 		this.set_title(name);
 		this.set_mode(mode);
@@ -500,6 +518,10 @@ var oConfig = {
 			error.textContent = emsg;
 		}
 		error.style.display = show ? 'block' : 'none';
+	},
+	show_copy_resource: function(show) {
+		const copy = document.getElementById(this.ids.copy_resource);
+		copy.style.display = show ? 'block' : 'none';
 	}
 };
 	</script>

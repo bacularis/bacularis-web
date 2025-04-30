@@ -86,7 +86,8 @@ class Patterns extends BaculumWebPage
 			return;
 		}
 
-		$this->getCallbackClient()->callClientFunction(
+		$cb = $this->getCallbackClient();
+		$cb->callClientFunction(
 			'oConfig.show_config_window',
 			[true]
 		);
@@ -134,21 +135,73 @@ class Patterns extends BaculumWebPage
 	public function loadDirectiveList($sender, $param)
 	{
 		$this->ConfigDirectives->unloadDirectives();
-		$component = $this->ConfigComponentName->getSelectedValue();
-		if (empty($component)) {
+		$component_type = $this->ConfigComponentName->getSelectedValue();
+		if (empty($component_type)) {
 			return;
 		}
-		$resource = $this->ConfigResourceName->getSelectedValue();
-		if (empty($resource)) {
+		$sess = $this->getApplication()->getSession();
+		$component_name = $sess->itemAt($component_type);
+
+		$resource_type = $this->ConfigResourceName->getSelectedValue();
+		if (empty($resource_type)) {
 			return;
 		}
+
+		$this->loadResourcesToCopy();
+
 		$misc = $this->getModule('misc');
-		$resource = $misc->setResourceToAPIForm($resource);
-		$this->ConfigDirectives->setComponentType($component);
-		$this->ConfigDirectives->setResourceType($resource);
+		$resource_type = $misc->setResourceToAPIForm($resource_type);
+		$this->ConfigDirectives->setComponentType($component_type);
+		$this->ConfigDirectives->setComponentName($component_name);
+		$this->ConfigDirectives->setResourceType($resource_type);
 		$this->ConfigDirectives->setLoadValues(false);
 		$this->ConfigDirectives->setCopyMode(true);
 		$this->ConfigDirectives->raiseEvent('OnDirectiveListLoad', $this, null);
+	}
+
+	/**
+	 * Load resource names to copy resource configuration feature.
+	 */
+	private function loadResourcesToCopy(): void
+	{
+		$component_type = $this->ConfigComponentName->getSelectedValue();
+		$resource_type = $this->ConfigResourceName->getSelectedValue();
+		$resources_start = ['' => ''];
+		$params = [
+			'config',
+			$component_type,
+			$resource_type
+		];
+		$resources = [];
+		$res = $this->getModule('api')->get($params);
+		if ($res->error === 0) {
+			for ($i = 0; $i < count($res->output); $i++) {
+				$r = $res->output[$i]->{$resource_type}->Name;
+				$resources[$r] = $r;
+			}
+			natcasesort($resources);
+		}
+		$resources = array_merge($resources_start, $resources);
+		$this->ResourcesToCopy->DataSource = $resources;
+		$this->ResourcesToCopy->dataBind();
+	}
+
+	/**
+	 * Copy configuration from existing resource.
+	 *
+	 * @param TActiveDropDownList $sender, sender object
+	 * @param TCallbackEventParameter $param sender parameter
+	 */
+	public function copyConfig($sender, $param)
+	{
+		$resource_name = $this->ResourcesToCopy->SelectedValue;
+		if (!empty($resource_name)) {
+			$this->ConfigDirectives->setResourceName($resource_name);
+			$this->ConfigDirectives->setLoadValues(true);
+			$this->ConfigDirectives->setCopyMode(true);
+			$this->ConfigDirectives->raiseEvent('OnDirectiveListLoad', $this, null);
+			$this->ConfigDirectives->setResourceName(null);
+		}
 	}
 
 	public function saveConfigs($sender, $param)
@@ -176,7 +229,7 @@ class Patterns extends BaculumWebPage
 		if (empty($name) || empty($component) || empty($resource) || empty($config)) {
 			return;
 		}
-		$config = $this->filterConfig($config);
+		$config = self::filterConfig($config);
 		$setting = [
 			'description' => $description,
 			'component' => $component,
@@ -217,15 +270,27 @@ class Patterns extends BaculumWebPage
 		}
 	}
 
-	private function filterConfig(array $config): array
+	/**
+	 * Prepare configuration values to save in config.
+	 *
+	 * @param array $config configuration to save
+	 * @return array configuration ready to save
+	 */
+	private static function filterConfig(array $config): array
 	{
 		$new_config = [];
 		foreach ($config as $name => $value) {
-			if (is_array($value) && count($value) == 1 && $value[0] === '') {
-				// filter empty arrays provided by not used multitextboxes
+			if (is_array($value)) {
+				$val = self::filterConfig($value);
+				if (count($val) > 0) {
+					$new_config[$name] = $val;
+				}
+			} elseif ($value === null) {
+				// filter empty arrays provided for example by not used multitextboxes
 				continue;
+			} else {
+				$new_config[$name] = $value;
 			}
-			$new_config[$name] = $value;
 		}
 		return $new_config;
 	}
