@@ -53,7 +53,7 @@ class DirectiveMultiComboBox extends DirectiveListTemplate
 			}
 		}
 		if ($data_mode && count($values) === 0) {
-			$values[] = '';
+			$values[] = null;
 		}
 		return $values;
 	}
@@ -96,7 +96,7 @@ class DirectiveMultiComboBox extends DirectiveListTemplate
 			array_unshift($items, '*all*');
 		}
 
-		array_unshift($items, '');
+		array_unshift($items, null);
 		$values = [];
 		for ($i = 0; $i < count($data); $i++) {
 			$values[] = [
@@ -121,7 +121,7 @@ class DirectiveMultiComboBox extends DirectiveListTemplate
 	public function addField($sender, $param)
 	{
 		$data = $this->getDirectiveValue();
-		$data[] = '';
+		$data[] = null;
 		$this->setData($data);
 		$this->loadConfig();
 	}
