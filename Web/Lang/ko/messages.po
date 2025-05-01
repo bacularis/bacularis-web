@@ -6441,3 +6441,27 @@ msgstr "Cancel jobs"
 
 msgid "cancelling"
 msgstr "cancelling"
+
+msgid "Bacula client component graphs"
+msgstr "Bacula client component graphs"
+
+msgid "Bacula client system graphs"
+msgstr "Bacula client system graphs"
+
+msgid "Client versions"
+msgstr "Client versions"
+
+msgid "Client plugins"
+msgstr "Client plugins"
+
+msgid "Client plugin versions"
+msgstr "Client plugin versions"
+
+msgid "Client systems"
+msgstr "Client systems"
+
+msgid "Client system distros"
+msgstr "Client system distros"
+
+msgid "Client distro versions"
+msgstr "Client distro versions"

@@ -12,54 +12,67 @@
 		<div class="w3-margin-bottom">
 			<button type="button" class="w3-button w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Client'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add client ]%></button>
 		</div>
-		<com:Bacularis.Web.Portlets.TabViews ID="ClientViews" />
 	</div>
-	<!-- Tag tools -->
-	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsClientList" ViewName="client_list" />
-	<div class="w3-container">
-		<table id="client_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
-			<thead>
-				<tr>
-					<th></th>
-					<th>ClientId</th>
-					<th><%[ Name ]%></th>
-					<th><%[ Uname ]%></th>
-					<th><%[ AutoPrune ]%></th>
-					<th><%[ Job retention ]%></th>
-					<th><%[ File retention ]%></th>
-					<th><%[ Working ]%></th>
-					<th><%[ Tag ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</thead>
-			<tbody id="client_list_body"></tbody>
-			<tfoot>
-				<tr>
-					<th></th>
-					<th>ClientId</th>
-					<th><%[ Name ]%></th>
-					<th><%[ Uname ]%></th>
-					<th><%[ AutoPrune ]%></th>
-					<th><%[ Job retention ]%></th>
-					<th><%[ File retention ]%></th>
-					<th><%[ Working ]%></th>
-					<th><%[ Tag ]%></th>
-					<th><%[ Actions ]%></th>
-				</tr>
-			</tfoot>
-		</table>
-		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<a id="btn_client_table" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_table'); if (oClientList.table) { oClientList.table.responsive.recalc(); oClientList.table.fixedHeader.adjust(); } set_page_tables([oClientList]);">
+			<%[ Clients ]%>
+		</a>
+		<a id="btn_client_graphs" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_graphs'); set_page_tables([oClientList]); oClientGraph.update();">
+			<%[ Graphs ]%>
+		</a>
 	</div>
-	<div id="table_predefined_filters_body" style="display: none; width: 290px;">
-		<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-margin-right">
-			<select id="table_predefined_filters_value_type" class="dt-select" style="width: 250px;">
-				<option value=""><%[ All clients ]%></option>
-				<option value="working"><%[ Clients with running jobs ]%></option>
-				<option value="not-working"><%[ Clients without running jobs ]%></option>
-			</select>
+
+	<!-- Client table -->
+	<div class="w3-container tab_item" id="client_table">
+		<div>
+			<com:Bacularis.Web.Portlets.TabViews ID="ClientViews" />
 		</div>
-	</div>
-	<com:Bacularis.Web.Portlets.BulkCancelJobsModal ID="CancelJobsModal" />
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsClientList" ViewName="client_list" />
+		<div>
+			<table id="client_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+				<thead>
+					<tr>
+						<th></th>
+						<th>ClientId</th>
+						<th><%[ Name ]%></th>
+						<th><%[ Uname ]%></th>
+						<th><%[ AutoPrune ]%></th>
+						<th><%[ Job retention ]%></th>
+						<th><%[ File retention ]%></th>
+						<th><%[ Working ]%></th>
+						<th><%[ Tag ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</thead>
+				<tbody id="client_list_body"></tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th>ClientId</th>
+						<th><%[ Name ]%></th>
+						<th><%[ Uname ]%></th>
+						<th><%[ AutoPrune ]%></th>
+						<th><%[ Job retention ]%></th>
+						<th><%[ File retention ]%></th>
+						<th><%[ Working ]%></th>
+						<th><%[ Tag ]%></th>
+						<th><%[ Actions ]%></th>
+					</tr>
+				</tfoot>
+			</table>
+			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+		</div>
+		<div id="table_predefined_filters_body" style="display: none; width: 290px;">
+			<div id="table_predefined_filters_fields" class="w3-show-inline-block w3-margin-right">
+				<select id="table_predefined_filters_value_type" class="dt-select" style="width: 250px;">
+					<option value=""><%[ All clients ]%></option>
+					<option value="working"><%[ Clients with running jobs ]%></option>
+					<option value="not-working"><%[ Clients without running jobs ]%></option>
+				</select>
+			</div>
+		</div>
+		<com:Bacularis.Web.Portlets.BulkCancelJobsModal ID="CancelJobsModal" />
 <script type="text/javascript">
 var oClientList = {
 	ids: {
@@ -494,9 +507,385 @@ $(function() {
 	});
 });
 </script>
-	<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-		ID="BulkApplyConfigsClient"
-		ComponentType="dir"
-		ResourceType="Client"
-	/>
+		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+			ID="BulkApplyConfigsClient"
+			ComponentType="dir"
+			ResourceType="Client"
+		/>
+	</div>
+
+	<!-- Graphs -->
+	<div class="w3-container tab_item" id="client_graphs" style="display: none">
+		<div class="w3-row">
+			<h3><%[ Bacula client component graphs ]%></h3>
+			<div class="w3-col w3-padding" style="width: 330px">
+				<div id="client_versions_graph" style="height: 330px;"></div>
+				<div id="client_versions_legend"></div>
+			</div>
+			<div id="client_plugins" class="w3-col w3-padding" style="width: 330px;">
+				<div id="client_plugins_graph" style="height: 330px;"></div>
+				<div id="client_plugins_legend"></div>
+			</div>
+			<div id="client_plugin_versions" class="w3-col w3-padding" style="width: 330px">
+				<div id="client_plugin_versions_graph" style="height: 330px;"></div>
+				<div id="client_plugin_versions_legend"></div>
+			</div>
+		</div>
+		<div class="w3-row w3-margin-top">
+			<h3><%[ Bacula client system graphs ]%></h3>
+			<div class="w3-col w3-padding" style="width: 330px;">
+				<div id="client_system_names_graph" style="height: 330px;"></div>
+				<div id="client_system_names_legend"></div>
+			</div>
+			<div class="w3-col w3-padding" style="width: 330px;">
+				<div id="client_system_distros_graph" style="height: 330px;"></div>
+				<div id="client_system_distros_legend"></div>
+			</div>
+			<div class="w3-col w3-padding" style="width: 330px;">
+				<div id="client_system_versions_graph" style="height: 330px;"></div>
+				<div id="client_system_versions_legend"></div>
+			</div>
+		</div>
+		<script>
+const oClientGraph = {
+	gdata: [],
+	graphs: {},
+	ids: {
+		client_graphs: 'client_graphs',
+		client_versions_graph: 'client_versions_graph',
+		client_versions_legend: 'client_versions_legend',
+		client_plugins: 'client_plugins',
+		client_plugins_graph: 'client_plugins_graph',
+		client_plugins_legend: 'client_plugins_legend',
+		client_plugin_versions: 'client_plugin_versions',
+		client_plugin_versions_graph: 'client_plugin_versions_graph',
+		client_plugin_versions_legend: 'client_plugin_versions_legend',
+		client_system_names_graph: 'client_system_names_graph',
+		client_system_names_legend: 'client_system_names_legend',
+		client_system_distros_graph: 'client_system_distros_graph',
+		client_system_distros_legend: 'client_system_distros_legend',
+		client_system_versions_graph: 'client_system_versions_graph',
+		client_system_versions_legend: 'client_system_versions_legend'
+	},
+	txt: {
+		client_versions: {
+			graph_title: '<%[ Client versions ]%>'
+		},
+		client_plugins: {
+			graph_title: '<%[ Client plugins ]%>'
+		},
+		client_plugin_versions: {
+			graph_title: '<%[ Client plugin versions ]%>'
+		},
+		client_system_names: {
+			graph_title: '<%[ Client systems ]%>'
+		},
+		client_system_distros: {
+			graph_title: '<%[ Client system distros ]%>'
+		},
+		client_system_versions: {
+			graph_title: '<%[ Client distro versions ]%>'
+		}
+	},
+	props: {
+		max_show_legend_nb: 20
+	},
+	update: function() {
+		this.prepare_general_data();
+		if (!this.is_graph_page()) {
+			// graphs are created only if graph page is opened
+			return;
+		}
+		this.prepare_client_versions_graph();
+		this.prepare_client_plugins_graph();
+		this.prepare_client_plugin_versions_graph();
+		this.prepare_client_system_names_graph();
+		this.prepare_client_system_distros_graph();
+		this.prepare_client_system_versions_graph();
+	},
+	is_graph_page: function() {
+		return $('#' + this.ids.client_graphs).is(':visible');
+	},
+	prepare_general_data: function() {
+		this.gdata = [];
+		const data = oData.clients.slice(0);
+		const data_len = data.length;
+		let uname, plugins, item;
+		for (let i = 0; i < data_len; i++) {
+			uname = this.parse_uname(data[i].uname);
+			plugins = this.parse_plugins(data[i].plugins || '');
+			item = {
+				name: data[i].name,
+				clientid: data[i].clientid,
+				plugins: plugins,
+				...uname,
+			};
+			this.gdata.push(item);
+		}
+	},
+	parse_uname: function(uname) {
+		let def = 'no data';
+		let version = '';
+		let date = '';
+		let os = '';
+		let distname = '';
+		let distver = '';
+		if (uname) {
+			let host_os, os_rest, dist_rest;
+			[version, date, host_os, ...os_rest] = uname.split(' ');
+			host_os = [host_os].concat(os_rest).join(' ');
+			[os, distname, distver, ...dist_rest ] = host_os.split(/,(?=[^\s])/);
+			distver = [distver].concat(dist_rest).join(' ');
+		};
+		return {
+			version: version || def,
+			date: date || def,
+			os: os || def,
+			distname: distname || def,
+			distver: distver || def
+		};
+	},
+	parse_plugins: function(plugins_line) {
+		if (!plugins_line) {
+			return [];
+		}
+		const val = plugins_line.split(',');
+		const regex = new RegExp('^(?<name>[^\\(]+)(\\((?<version>[\\d\\.]+)\\))*?$', 'i');
+		const plugins = val.map((item) => {
+			const res = item.match(regex);
+			const val =  res ? res.groups : {name: '', version: ''};
+			return val;
+		});
+		return plugins;
+	},
+	get_graph_options: function(graph_obj, container_id, prop) {
+		return {
+			fontColor: (ThemeMode.is_dark() ? 'white': 'black'),
+			pie: {
+				labelFormatter: (total, value) => {
+					return PieGraphBase.pie_label_formatter.call(graph_obj, total, value);
+				},
+				sizeRatio: 0.7
+			},
+			legend: {
+				show: (prop.show_legend || false),
+				container: $('#' + container_id),
+				labelFormatter: (label) => {
+					return PieGraphBase.pie_legend_formatter.call(graph_obj, label);
+				},
+				noColumns: (prop.no_cols || 3)
+			},
+			grid: {
+				color: (ThemeMode.is_dark() ? 'white': 'black')
+			},
+			mouse: {
+				trackFormatter: (e) => {
+					return PieGraphBase.pie_track_formatter.call(graph_obj, e);
+				},
+				mouseHandler: (e) => {
+					return PieGraphBase.pie_mouse_handler.call(graph_obj, e);
+				},
+				relative: true
+			},
+			title: (prop.title || '')
+		};
+	},
+
+	// Client versions graph
+	prepare_client_versions_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		for (let i = 0; i < gdata_len; i++) {
+			if (!data.hasOwnProperty(this.gdata[i].version)) {
+				data[this.gdata[i].version] = [];
+			}
+			data[this.gdata[i].version].push(this.gdata[i]);
+		}
+		return data;
+	},
+	prepare_client_versions_graph: function() {
+		this.destroy_graph(this.graphs.client_versions);
+
+		const data = this.prepare_client_versions_data();
+		this.graphs.client_versions = new GraphPieClass({
+			data: data,
+			container_id: this.ids.client_versions_graph,
+			graph_options: this.get_graph_options(PieGraphClient, this.ids.client_versions_legend, {
+				title: this.txt.client_versions.graph_title,
+				no_cols: 3,
+				show_legend: true
+			})
+		});
+	},
+
+	// Client plugins graph
+	prepare_client_plugins_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		for (let i = 0; i < gdata_len; i++) {
+			for (let j = 0; j < this.gdata[i].plugins.length; j++) {
+				if (!data.hasOwnProperty(this.gdata[i].plugins[j].name)) {
+					data[this.gdata[i].plugins[j].name] = [];
+				}
+				data[this.gdata[i].plugins[j].name].push(this.gdata[i].plugins[j]);
+			}
+		}
+		return data;
+	},
+	prepare_client_plugins_graph: function() {
+		const data = this.prepare_client_plugins_data();
+		const data_len = Object.keys(data).length;
+		if (data_len > 0) {
+			this.destroy_graph(this.graphs.client_plugins);
+
+			this.graphs.client_plugins = new GraphPieClass({
+				data: data,
+				container_id: this.ids.client_plugins_graph,
+				graph_options: this.get_graph_options(PieGraphClient, this.ids.client_plugins_legend, {
+					title: this.txt.client_plugins.graph_title,
+					no_cols: 3,
+					show_legend: true
+				})
+			});
+		} else {
+			this.show_graph(this.ids.client_plugins, false);
+		}
+	},
+
+	// Client plugin versions graph
+	prepare_client_plugin_versions_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		let pver;
+		for (let i = 0; i < gdata_len; i++) {
+			for (let j = 0; j < this.gdata[i].plugins.length; j++) {
+				pver = this.gdata[i].plugins[j].name + '/' + this.gdata[i].plugins[j].version;
+				if (!data.hasOwnProperty(pver)) {
+					data[pver] = [];
+				}
+				data[pver].push(pver);
+			}
+		}
+		return data;
+	},
+	prepare_client_plugin_versions_graph: function() {
+		const data = this.prepare_client_plugin_versions_data();
+		const data_len = Object.keys(data).length;
+		if (data_len > 0) {
+			this.destroy_graph(this.graphs.client_plugin_versions);
+
+			this.graphs.client_plugin_versions = new GraphPieClass({
+				data: data,
+				container_id: this.ids.client_plugin_versions_graph,
+				graph_options: this.get_graph_options(PieGraphClient, this.ids.client_plugin_versions_legend, {
+					title: this.txt.client_plugin_versions.graph_title,
+					no_cols: 3,
+					show_legend: true
+				})
+			});
+		} else {
+			this.show_graph(this.ids.client_plugin_versions, false);
+		}
+	},
+
+	// Client systems graph
+	prepare_client_system_names_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		for (let i = 0; i < gdata_len; i++) {
+			if (!data.hasOwnProperty(this.gdata[i].os)) {
+				data[this.gdata[i].os] = [];
+			}
+			data[this.gdata[i].os].push(this.gdata[i]);
+		}
+		return data;
+	},
+	prepare_client_system_names_graph: function() {
+		this.destroy_graph(this.graphs.client_system_names);
+
+		const data = this.prepare_client_system_names_data();
+		const show_legend = (Object.keys(data).length <= this.props.max_show_legend_nb);
+		this.graphs.client_system_names = new GraphPieClass({
+			data: data,
+			container_id: this.ids.client_system_names_graph,
+			graph_options: this.get_graph_options(PieGraphClient, this.ids.client_system_names_legend, {
+				title: this.txt.client_system_names.graph_title,
+				no_cols: 2,
+				show_legend: show_legend
+			})
+		});
+	},
+
+	// Client system distros
+	prepare_client_system_distros_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		for (let i = 0; i < gdata_len; i++) {
+			if (!data.hasOwnProperty(this.gdata[i].distname)) {
+				data[this.gdata[i].distname] = [];
+			}
+			data[this.gdata[i].distname].push(this.gdata[i]);
+		}
+		return data;
+	},
+	prepare_client_system_distros_graph: function() {
+		this.destroy_graph(this.graphs.client_system_distros);
+
+		const data = this.prepare_client_system_distros_data();
+		const show_legend = (Object.keys(data).length <= this.props.max_show_legend_nb);
+		this.graphs.client_system_distros = new GraphPieClass({
+			data: data,
+			container_id: this.ids.client_system_distros_graph,
+			graph_options: this.get_graph_options(PieGraphClient, this.ids.client_system_distros_legend, {
+				title: this.txt.client_system_distros.graph_title,
+				no_cols: 2,
+				show_legend: show_legend
+			})
+		});
+	},
+
+	// Client system versions
+	prepare_client_system_versions_data: function() {
+		const data = {};
+		const gdata_len = this.gdata.length;
+		for (let i = 0; i < gdata_len; i++) {
+			if (!data.hasOwnProperty(this.gdata[i].distver)) {
+				data[this.gdata[i].distver] = [];
+			}
+			data[this.gdata[i].distver].push(this.gdata[i]);
+		}
+		return data;
+	},
+	prepare_client_system_versions_graph: function() {
+		this.destroy_graph(this.graphs.client_system_versions);
+
+		const data = this.prepare_client_system_versions_data();
+		const show_legend = (Object.keys(data).length <= this.props.max_show_legend_nb);
+		this.graphs.client_system_versions = new GraphPieClass({
+			data: data,
+			container_id: this.ids.client_system_versions_graph,
+			graph_options: this.get_graph_options(PieGraphClient, this.ids.client_system_versions_legend, {
+				title: this.txt.client_system_versions.graph_title,
+				no_cols: 2,
+				show_legend: show_legend
+			})
+		});
+	},
+	show_graph: function(graph_id, show) {
+		const graph = document.getElementById(graph_id);
+		graph.style.display = show ? 'block' : 'none';
+	},
+	destroy_graph: function(graph_obj) {
+		if (graph_obj) {
+			graph_obj.destroy();
+		}
+	}
+};
+$(function() {
+	MonitorCalls.push(function() {
+		oClientGraph.update();
+	});
+});
+		</script>
+	</div>
 </com:TContent>

@@ -377,6 +377,12 @@ const PieGraphPool = {
 	}
 };
 
+const PieGraphClient = {
+	get_addr_by_type: function(type) {
+		return 'javascript:void(0);';
+	}
+};
+
 var Formatters = {
 	formatter: [
 		{css_class: 'size', format_func: function(val) { return Units.get_formatted_size(val); }},
