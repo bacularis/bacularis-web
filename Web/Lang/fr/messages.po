@@ -6460,3 +6460,6 @@ msgstr "Client system distros"
 
 msgid "Client distro versions"
 msgstr "Client distro versions"
+
+msgid "Global check/uncheck all"
+msgstr "Global check/uncheck all"

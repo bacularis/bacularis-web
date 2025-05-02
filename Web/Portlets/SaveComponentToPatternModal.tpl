@@ -85,6 +85,9 @@
 				<dd><%[ Save the config even if a config with the same name already exists. In this case, the config will be overwritten by the new one. ]%></dd>
 			</div>
 			<h4 style="margin-bottom: 2px;"><%[ Select Bacula resources to save to pattern configs ]%>:</h4>
+			<div class="w3-right w3-right-align" style="width: 50%; margin-top: 20px;">
+				<a href="javascript:void(0)" class="raw" onclick="oSaveComponentToPattern.global_check_uncheck_all_resources(this);"><i class="fa-solid fa-check-double"></i> <%[ Global check/uncheck all ]%></a>
+			</div>
 			<div id="save_component_to_pattern_modal_table_container"></div>
 			<p id="save_component_to_pattern_warning_msg" class="w3-orange w3-padding" style="display: none"><p>
 			<p id="save_component_to_pattern_error_msg" class="w3-red w3-padding" style="display: none"><p>
@@ -307,6 +310,15 @@ var oSaveComponentToPattern = {
 
 		this.set_warning('');
 		this.set_error('');
+	},
+	global_check_uncheck_all_resources: function(el) {
+		const is_check = el.getAttribute('data-check') == 1;
+		const tcontainer = document.getElementById(this.ids.tcontainer);
+		const chkbs = tcontainer.querySelectorAll('input[type="checkbox"][data-type][data-resource]');
+		for (let i = 0; i < chkbs.length; i++) {
+			chkbs[i].checked = is_check;
+		}
+		el.setAttribute('data-check', (is_check ? '0' : '1'));
 	},
 	set_warning: function(msg) {
 		const self = oSaveComponentToPattern;
