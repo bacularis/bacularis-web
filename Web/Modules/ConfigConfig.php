@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
+use Bacularis\Common\Modules\Miscellaneous;
 
 /**
  * Manage configs configuration.
@@ -58,6 +59,7 @@ class ConfigConfig extends ConfigFileModule
 				foreach ($this->config as $key => $value) {
 					$value['name'] = $key;
 					if (key_exists('config', $value)) {
+						$value['config'] = Miscellaneous::stripQuotes($value['config']);
 						$value['config'] = json_decode($value['config'], true);
 					}
 					$this->config[$key] = $value;
