@@ -18,6 +18,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\ConfigConfig;
 use Bacularis\Web\Modules\PatternConfig;
+use Bacularis\Web\Modules\VariableConfig;
 
 class Patterns extends BaculumWebPage
 {
@@ -466,6 +467,230 @@ class Patterns extends BaculumWebPage
 			AuditLog::TYPE_INFO,
 			AuditLog::CATEGORY_CONFIG,
 			"Remove patterns. Name: {$names}"
+		);
+	}
+
+	public function loadVariable($sender, $param)
+	{
+		$name = $param->getCallbackParameter();
+		if (empty($name)) {
+			return;
+		}
+		$variable_config = $this->getModule('variable_config');
+		$config = $variable_config->getVariableConfig($name);
+		if (count($config) == 0) {
+			return;
+		}
+
+		$this->VariableName->Text = $config['name'];
+		$this->VariableDescription->Text = $config['description'];
+		$this->VariableDefaultValue->Text = $config['default_value'];
+	}
+
+	public function loadVariableList($sender, $param)
+	{
+		$variable_config = $this->getModule('variable_config');
+		$config = $variable_config->getConfig();
+		$this->getCallbackClient()->callClientFunction(
+			'oVariableList.update_cb',
+			[array_values($config)]
+		);
+	}
+
+	public function saveVariable($sender, $param)
+	{
+		$variable_config = $this->getModule('variable_config');
+		$cb = $this->getCallbackClient();
+
+		$name = $this->VariableName->Text;
+		if ($this->VariableWindowMode->Value == self::CONFIG_WINDOW_MODE_ADD) {
+			if ($variable_config->variableConfigExists($name)) {
+				$cb->callClientFunction(
+					'oVariable.show_error',
+					[
+						true,
+						Prado::localize('Variable with given name already exists.')
+					]
+				);
+				return;
+			}
+		}
+
+		$description = $this->VariableDescription->Text;
+		$default_value = $this->VariableDefaultValue->Text;
+		if (empty($name)) {
+			return;
+		}
+		$setting = [
+			'description' => $description,
+			'default_value' => $default_value
+		];
+		$result = $variable_config->setVariableConfig(
+			$name,
+			$setting
+		);
+		if ($result === true) {
+			$cb->callClientFunction(
+				'oVariable.show_variable_window',
+				[false]
+			);
+
+			// update variable list
+			$this->loadVariableList(null, null);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Save variable. Name: {$name}"
+			);
+		} else {
+			$cb->callClientFunction(
+				'oVariable.show_error',
+				[
+					true,
+					Prado::localize('Error while writing variable.')
+				]
+			);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Error while saving variable. Name: {$name}"
+			);
+		}
+	}
+
+	public function removeVariables($sender, $param)
+	{
+		$names = $param->getCallbackParameter();
+		if (empty($names)) {
+			return;
+		}
+		$variables = explode('|', $names);
+		$variable_config = $this->getModule('variable_config');
+		for ($i = 0; $i < count($variables); $i++) {
+			$variable_config->removeVariableConfig($variables[$i]);
+		}
+
+		// update config list
+		$this->loadVariableList(null, null);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_CONFIG,
+			"Remove variables. Name: {$names}"
+		);
+	}
+
+	public function loadConstant($sender, $param)
+	{
+		$name = $param->getCallbackParameter();
+		if (empty($name)) {
+			return;
+		}
+		$constant_config = $this->getModule('constant_config');
+		$config = $constant_config->getConstantConfig($name);
+		if (count($config) == 0) {
+			return;
+		}
+
+		$this->ConstantName->Text = $config['name'];
+		$this->ConstantDescription->Text = $config['description'];
+		$this->ConstantValue->Text = $config['value'];
+	}
+
+	public function loadConstantList($sender, $param)
+	{
+		$constant_config = $this->getModule('constant_config');
+		$config = $constant_config->getConfig();
+		$this->getCallbackClient()->callClientFunction(
+			'oConstantList.update_cb',
+			[array_values($config)]
+		);
+	}
+
+	public function saveConstant($sender, $param)
+	{
+		$constant_config = $this->getModule('constant_config');
+		$cb = $this->getCallbackClient();
+
+		$name = $this->ConstantName->Text;
+		if ($this->ConstantWindowMode->Value == self::CONFIG_WINDOW_MODE_ADD) {
+			if ($constant_config->constantConfigExists($name)) {
+				$cb->callClientFunction(
+					'oConstant.show_error',
+					[
+						true,
+						Prado::localize('Constant with given name already exists.')
+					]
+				);
+				return;
+			}
+		}
+
+		$description = $this->ConstantDescription->Text;
+		$value = $this->ConstantValue->Text;
+		if (empty($name)) {
+			return;
+		}
+		$setting = [
+			'description' => $description,
+			'value' => $value
+		];
+		$result = $constant_config->setConstantConfig(
+			$name,
+			$setting
+		);
+		if ($result === true) {
+			$cb->callClientFunction(
+				'oConstant.show_constant_window',
+				[false]
+			);
+
+			// update constant list
+			$this->loadConstantList(null, null);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				"Save constant. Name: {$name}"
+			);
+		} else {
+			$cb->callClientFunction(
+				'oConstant.show_error',
+				[
+					true,
+					Prado::localize('Error while writing constant.')
+				]
+			);
+
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_CONFIG,
+				"Error while saving constant. Name: {$name}"
+			);
+		}
+	}
+
+	public function removeConstants($sender, $param)
+	{
+		$names = $param->getCallbackParameter();
+		if (empty($names)) {
+			return;
+		}
+		$constants = explode('|', $names);
+		$constant_config = $this->getModule('constant_config');
+		for ($i = 0; $i < count($constants); $i++) {
+			$constant_config->removeConstantConfig($constants[$i]);
+		}
+
+		// update config list
+		$this->loadConstantList(null, null);
+
+		$this->getModule('audit')->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_CONFIG,
+			"Remove constants. Name: {$names}"
 		);
 	}
 }

@@ -6452,3 +6452,63 @@ msgstr "Client distro versions"
 
 msgid "Global check/uncheck all"
 msgstr "Global check/uncheck all"
+
+msgid "Variables"
+msgstr "Variables"
+
+msgid "Add variable"
+msgstr "Add variable"
+
+msgid "Default value"
+msgstr "Default value"
+
+msgid "Edit variable"
+msgstr "Edit variable"
+
+msgid "Variable name"
+msgstr "Variable name"
+
+msgid "Variable description"
+msgstr "Variable description"
+
+msgid "My variable 123 description."
+msgstr "My variable 123 description."
+
+msgid "My variable value 123"
+msgstr "My variable value 123"
+
+msgid "Constants"
+msgstr "Constants"
+
+msgid "Add constant"
+msgstr "Add constant"
+
+msgid "Constant name"
+msgstr "Constant name"
+
+msgid "Constant description"
+msgstr "Constant description"
+
+msgid "My constant 123 description."
+msgstr "My constant 123 description."
+
+msgid "My constant value 123"
+msgstr "My constant value 123"
+
+msgid "Edit constant"
+msgstr "Edit constant"
+
+msgid "Enter comma separated values to multiple item selection"
+msgstr "Enter comma separated values to multiple item selection"
+
+msgid "Value"
+msgstr "Value"
+
+msgid "Variable with given name already exists."
+msgstr "Variable with given name already exists."
+
+msgid "Constants are names that store user-defined values. They are useful for having a dictionary of frequently used strings that can be accessed in any text field in Bacularis. To select a constant, type % (percent sign) in the text field."
+msgstr "Constants are names that store user-defined values. They are useful for having a dictionary of frequently used strings that can be accessed in any text field in Bacularis. To select a constant, type % (percent sign) in the text field."
+
+msgid "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."
+msgstr "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."

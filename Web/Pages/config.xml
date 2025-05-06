@@ -19,6 +19,8 @@
 		<module id="tag_assign_config" class="Bacularis\Web\Modules\TagAssignConfig" />
 		<module id="conf_config" class="Bacularis\Web\Modules\ConfigConfig" />
 		<module id="pattern_config" class="Bacularis\Web\Modules\PatternConfig" />
+		<module id="constant_config" class="Bacularis\Web\Modules\ConstantConfig" />
+		<module id="variable_config" class="Bacularis\Web\Modules\VariableConfig" />
 		<module id="repoauth_config" class="Bacularis\Web\Modules\RepoAuthConfig" />
 		<module id="plugin_config" class="Bacularis\Web\Modules\PluginConfig" />
 		<module id="web_plugin" class="Bacularis\Web\Modules\WebPluginManager" />

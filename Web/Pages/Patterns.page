@@ -7,8 +7,10 @@
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_configs" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'configs'); oConfigList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList]);"><%[ Configs ]%></button>
-		<button id="btn_patterns" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'patterns'); oPatternList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList]);"><%[ Patterns ]%></button>
+		<button id="btn_configs" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'configs'); oConfigList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList, oConstantList, oVariableList]);"><%[ Configs ]%></button>
+		<button id="btn_patterns" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'patterns'); oPatternList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList, oConstantList, oVariableList]);"><%[ Patterns ]%></button>
+		<button id="btn_constants" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'constants'); oConstantList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList, oConstantList, oVariableList]);"><%[ Constants ]%></button>
+		<button id="btn_variables" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'variables'); oVariableList.table.responsive.recalc(); set_page_tables([oConfigList, oPatternList, oConstantList, oVariableList]);"><%[ Variables ]%></button>
 	</div>
 	<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 	<div class="w3-container tab_item" id="configs">
@@ -286,11 +288,11 @@ $(function() {
 	<div id="config_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
 			<header class="w3-container w3-green">
-				<span onclick="document.getElementById('config_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<span onclick="oConfig.show_config_window(false);" class="w3-button w3-display-topright">&times;</span>
 				<h2 id="config_window_title_add"><%[ Add config ]%></h2>
 				<h2 id="config_window_title_edit" style="display: none"><%[ Edit config ]%> - <span id="config_window_title_edit_name"></span></h2>
 			</header>
-			<div id="config_error" class="w3-red" style="display: none"></div>
+			<div id="config_error" class="w3-red w3-padding" style="display: none"></div>
 			<div class="w3-container w3-margin-left w3-margin-right">
 				<div class="w3-row directive_field w3-margin-bottom">
 					<div class="w3-col w3-third">
@@ -393,9 +395,10 @@ $(function() {
 						</div>
 					</div>
 					<div class="w3-clear"></div>
-					<div class="w3-margin-top">
+					<div id="config_directives_container" class="w3-margin-top" tabindex="0">
 						<com:Bacularis.Web.Portlets.BaculaConfigDirectives
 							ID="ConfigDirectives"
+							ConfigMode="Editable"
 							SaveDirectiveActionOk="save_directive_action_ok();"
 							ShowBottomButtons="false"
 							ShowSaveButton="false"
@@ -408,7 +411,7 @@ $(function() {
 				</div>
 			</div>
 			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
-				<button type="button" class="w3-button w3-red w3-section" onclick="$('#config_window').hide();"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" class="w3-button w3-red w3-section" onclick="oConfig.show_config_window(false);"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
 				<com:TActiveLinkButton
 					ValidationGroup="ConfigGroup"
 					CausesValidation="true"
@@ -420,6 +423,9 @@ $(function() {
 			</footer>
 		</div>
 		<com:TActiveHiddenField ID="ConfigWindowMode" />
+		<com:Bacularis.Web.Portlets.VariablePicker
+			RootHTMLElementID="config_directives_container"
+		/>
 	</div>
 	<com:TCallback ID="LoadConfigs" OnCallback="loadConfigs" />
 	<script>
@@ -491,6 +497,11 @@ var oConfig = {
 		const self = oConfig;
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
+		if (!show) {
+			if (typeof(oVariablePicker) == 'object') {
+				oVariablePicker.show_window(false);
+			}
+		}
 	},
 	clear_config_window: function() {
 		// text fields
@@ -544,7 +555,7 @@ var oConfig = {
 					<th class="w3-center"><%[ Action ]%></th>
 				</tr>
 			</thead>
-			<tbody id="config_list_body"></tbody>
+			<tbody id="pattern_list_body"></tbody>
 			<tfoot>
 				<tr>
 					<th></th>
@@ -775,7 +786,7 @@ $(function() {
 				<h2 id="pattern_window_title_add"><%[ Add pattern ]%></h2>
 				<h2 id="pattern_window_title_edit" style="display: none"><%[ Edit pattern ]%> - <span id="pattern_window_title_edit_name"></span></h2>
 			</header>
-			<div id="pattern_error" class="w3-red" style="display: none"></div>
+			<div id="pattern_error" class="w3-red w3-padding" style="display: none"></div>
 			<div class="w3-container w3-margin-left w3-margin-right">
 				<div class="w3-row directive_field w3-margin-bottom">
 					<div class="w3-col w3-third">
@@ -882,8 +893,7 @@ $(function() {
 			</footer>
 		</div>
 		<com:TActiveHiddenField ID="PatternWindowMode" />
-	</div>
-	<script>
+		<script>
 var oPattern = {
 	ids: {
 		win: 'pattern_window',
@@ -955,6 +965,765 @@ var oPattern = {
 	},
 	show_error: function(show, emsg) {
 		const self = oPattern;
+		const error = document.getElementById(self.ids.error);
+		if (emsg) {
+			error.textContent = emsg;
+		}
+		error.style.display = show ? 'block' : 'none';
+	}
+};
+		</script>
+	</div>
+	<div class="w3-container tab_item" id="constants" style="display: none">
+		<div><%[ Constants are names that store user-defined values. They are useful for having a dictionary of frequently used strings that can be accessed in any text field in Bacularis. To select a constant, type % (percent sign) in the text field. ]%></div>
+		<div class="w3-panel">
+			<button type="button" id="add_constant_btn" class="w3-button w3-green" onclick="oConstant.load_constant_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add constant ]%></button>
+		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsConstantList" ViewName="constant_list" />
+		<table id="constant_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Value ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="constant_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Value ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+	</div>
+	<com:TCallback ID="LoadConstantList" OnCallback="loadConstantList" />
+	<com:TCallback ID="RemoveConstants" OnCallback="removeConstants" ClientSide.OnComplete="if (oConstantPicker) { oConstantPicker.load_constants(); }"  />
+	<script>
+var oConstantList = {
+	ids: {
+		constant_list: 'constant_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveConstants->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function(data) {
+		this.data = data;
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	update: function() {
+		const cb = <%=$this->LoadConstantList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	update_cb: function(data) {
+		const self = oConstantList;
+		self.init(data);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.constant_list).addEventListener('click', function(e) {
+			$(function() {
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.constant_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			columns: [
+				{
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{
+					data: 'description',
+					render: render_string_short
+				},
+				{data: 'value'},
+				{
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsConstantList->ClientID%>;
+						const table = 'oConstantList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						// Edit button
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oConstant.load_constant_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
+				}
+			},
+			columnDefs: [{
+				className: 'dtr-control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col_long',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 3, 4 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			drawCallback: function () {
+				this.api().columns([1]).every(function () {
+					var column = this;
+					var select = $('<select class="dt-select"><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.data().sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Select action ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+$(function() {
+	oConstantList.update();
+});
+	</script>
+	<com:TCallback ID="LoadConstant" OnCallback="loadConstant" />
+	<div id="constant_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('constant_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="constant_window_title_add"><%[ Add constant ]%></h2>
+				<h2 id="constant_window_title_edit" style="display: none"><%[ Edit constant ]%> - <span id="constant_window_title_edit_name"></span></h2>
+			</header>
+			<div id="constant_error" class="w3-red w3-padding" style="display: none"></div>
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Constant name ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="ConstantName"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="my_constant_123"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="ConstantGroup"
+							Display="Dynamic"
+							ControlToValidate="ConstantName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="ConstantGroup"
+							RegularExpression="<%=ConstantConfig::NAME_PATTERN%>"
+							ClientSidePatternModifiers="u"
+							ControlToValidate="ConstantName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							Display="Dynamic"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Constant description ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="ConstantDescription"
+							TextMode="MultiLine"
+							Rows="3"
+							AutoPostBack="false"
+							MaxLength="500"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My constant 123 description. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Value ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="ConstantValue"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My constant value 123 ]%>"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
+				<button type="button" class="w3-button w3-red w3-section" onclick="$('#constant_window').hide();"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ValidationGroup="ConstantGroup"
+					CausesValidation="true"
+					CssClass="w3-button w3-green w3-section"
+					OnCallback="saveConstant"
+					ClientSide.OnComplete="if (oConstantPicker) { oConstantPicker.load_constants(); }"
+				>
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+		</div>
+	</div>
+	<com:TActiveHiddenField ID="ConstantWindowMode" />
+	<script>
+var oConstant = {
+	ids: {
+		win: 'constant_window',
+		error: 'constant_error',
+		name: '<%=$this->ConstantName->ClientID%>',
+		description: '<%=$this->ConstantDescription->ClientID%>',
+		value: '<%=$this->ConstantValue->ClientID%>',
+		title_add: 'constant_window_title_add',
+		title_edit: 'constant_window_title_edit',
+		title_name: 'constant_window_title_edit_name',
+		mode: '<%=$this->ConstantWindowMode->ClientID%>'
+	},
+	modes: {
+		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
+		edit: '<%=Patterns::CONFIG_WINDOW_MODE_EDIT%>'
+	},
+	load_constant_window: function(name) {
+		this.clear_constant_window();
+		let mode = this.modes.add;
+		if (name) {
+			const cb = <%=$this->LoadConstant->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(name);
+			cb.dispatch();
+			mode = this.modes.edit;
+		}
+		this.set_title(name);
+		this.set_mode(mode);
+		this.show_constant_window(true);
+	},
+	set_title: function(name) {
+		const title_add = document.getElementById(this.ids.title_add);
+		const title_edit = document.getElementById(this.ids.title_edit);
+		const tname = document.getElementById(this.ids.title_name);
+		if (name) {
+			tname.textContent = name;
+			title_add.style.display = 'none';
+			title_edit.style.display = 'block';
+		} else {
+			tname.textContent = '';
+			title_edit.style.display = 'none';
+			title_add.style.display = 'block';
+		}
+	},
+	set_mode: function(val) {
+		const mode = document.getElementById(this.ids.mode);
+		mode.value = val;
+		const name = document.getElementById(this.ids.name);
+		if (val == this.modes.edit) {
+			name.setAttribute('readonly', true);
+		} else {
+			name.removeAttribute('readonly', true);
+		}
+	},
+	show_constant_window: function(show) {
+		const self = oConstant;
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_constant_window: function() {
+		// text fields
+		[
+			this.ids.name,
+			this.ids.description,
+			this.ids.value
+		].forEach((id) => {
+			document.getElementById(id).value = '';
+		});
+		this.show_error(false);
+	},
+	show_error: function(show, emsg) {
+		const self = oConstant;
+		const error = document.getElementById(self.ids.error);
+		if (emsg) {
+			error.textContent = emsg;
+		}
+		error.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
+	<div class="w3-container tab_item" id="variables" style="display: none">
+		<div><%[ Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field. ]%></div>
+		<div class="w3-panel">
+			<button type="button" id="add_variable_btn" class="w3-button w3-green" onclick="oVariable.load_variable_window()"><i class="fa-solid fa-plus"></i> &nbsp;<%[ Add variable ]%></button>
+		</div>
+		<!-- Tag tools -->
+		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsVariableList" ViewName="variable_list" />
+		<table id="variable_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<thead>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Default value ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</thead>
+			<tbody id="variable_list_body"></tbody>
+			<tfoot>
+				<tr>
+					<th></th>
+					<th><%[ Name ]%></th>
+					<th class="w3-center"><%[ Description ]%></th>
+					<th class="w3-center"><%[ Default value ]%></th>
+					<th class="w3-center"><%[ Tag ]%></th>
+					<th class="w3-center"><%[ Action ]%></th>
+				</tr>
+			</tfoot>
+		</table>
+		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
+	</div>
+	<com:TCallback ID="LoadVariableList" OnCallback="loadVariableList" />
+	<com:TCallback ID="RemoveVariables" OnCallback="removeVariables" ClientSide.OnComplete="if (oVariablePicker) { oVariablePicker.load_variables(); }" />
+	<script>
+var oVariableList = {
+	ids: {
+		variable_list: 'variable_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveVariables->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function(data) {
+		this.data = data;
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	update: function() {
+		const cb = <%=$this->LoadVariableList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	update_cb: function(data) {
+		const self = oVariableList;
+		self.init(data);
+	},
+	set_events: function() {
+		document.getElementById(this.ids.variable_list).addEventListener('click', function(e) {
+			$(function() {
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
+			}.bind(this));
+		}.bind(this));
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.variable_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			columns: [
+				{
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{
+					data: 'description',
+					render: render_string_short
+				},
+				{data: 'default_value'},
+				{
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsVariableList->ClientID%>;
+						const table = 'oVariableList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						// Edit button
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oVariable.load_variable_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
+				}
+			},
+			columnDefs: [{
+				className: 'dtr-control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: 'action_col_long',
+				orderable: false,
+				targets: [ 5 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 3, 4 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			drawCallback: function () {
+				this.api().columns([1]).every(function () {
+					var column = this;
+					var select = $('<select class="dt-select"><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.data().sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Select action ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
+};
+$(function() {
+	oVariableList.update();
+});
+	</script>
+	<com:TCallback ID="LoadVariable" OnCallback="loadVariable" />
+	<div id="variable_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('variable_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="variable_window_title_add"><%[ Add variable ]%></h2>
+				<h2 id="variable_window_title_edit" style="display: none"><%[ Edit variable ]%> - <span id="variable_window_title_edit_name"></span></h2>
+			</header>
+			<div id="variable_error" class="w3-red w3-padding" style="display: none"></div>
+			<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Variable name ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="VariableName"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="my_variable_123"
+						/>
+						<i class="fa fa-asterisk w3-text-red"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="VariableGroup"
+							Display="Dynamic"
+							ControlToValidate="VariableName"
+							FocusOnError="true"
+							Text="<%[ Field required. ]%>"
+						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="VariableGroup"
+							RegularExpression="<%=VariableConfig::NAME_PATTERN%>"
+							ClientSidePatternModifiers="u"
+							ControlToValidate="VariableName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							Display="Dynamic"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Variable description ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="VariableDescription"
+							TextMode="MultiLine"
+							Rows="3"
+							AutoPostBack="false"
+							MaxLength="500"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My variable 123 description. ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">
+						<%[ Default value ]%>:
+					</div>
+					<div class="w3-col w3-half">
+						<com:TActiveTextBox
+							ID="VariableDefaultValue"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="<%[ My variable value 123 ]%>"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-margin-bottom" style="position: sticky; bottom: 5px;">
+				<button type="button" class="w3-button w3-red w3-section" onclick="$('#variable_window').hide();"><i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<com:TActiveLinkButton
+					ValidationGroup="VariableGroup"
+					CausesValidation="true"
+					CssClass="w3-button w3-green w3-section"
+					OnCallback="saveVariable"
+					ClientSide.OnComplete="if (oVariablePicker) { oVariablePicker.load_variables(); }"
+				>
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save ]%>
+				</com:TActiveLinkButton>
+			</footer>
+		</div>
+	</div>
+	<com:TActiveHiddenField ID="VariableWindowMode" />
+	<script>
+var oVariable = {
+	ids: {
+		win: 'variable_window',
+		error: 'variable_error',
+		name: '<%=$this->VariableName->ClientID%>',
+		description: '<%=$this->VariableDescription->ClientID%>',
+		default_value: '<%=$this->VariableDefaultValue->ClientID%>',
+		title_add: 'variable_window_title_add',
+		title_edit: 'variable_window_title_edit',
+		title_name: 'variable_window_title_edit_name',
+		mode: '<%=$this->VariableWindowMode->ClientID%>'
+	},
+	modes: {
+		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
+		edit: '<%=Patterns::CONFIG_WINDOW_MODE_EDIT%>'
+	},
+	load_variable_window: function(name) {
+		this.clear_variable_window();
+		let mode = this.modes.add;
+		if (name) {
+			const cb = <%=$this->LoadVariable->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(name);
+			cb.dispatch();
+			mode = this.modes.edit;
+		}
+		this.set_title(name);
+		this.set_mode(mode);
+		this.show_variable_window(true);
+	},
+	set_title: function(name) {
+		const title_add = document.getElementById(this.ids.title_add);
+		const title_edit = document.getElementById(this.ids.title_edit);
+		const tname = document.getElementById(this.ids.title_name);
+		if (name) {
+			tname.textContent = name;
+			title_add.style.display = 'none';
+			title_edit.style.display = 'block';
+		} else {
+			tname.textContent = '';
+			title_edit.style.display = 'none';
+			title_add.style.display = 'block';
+		}
+	},
+	set_mode: function(val) {
+		const mode = document.getElementById(this.ids.mode);
+		mode.value = val;
+		const name = document.getElementById(this.ids.name);
+		if (val == this.modes.edit) {
+			name.setAttribute('readonly', true);
+		} else {
+			name.removeAttribute('readonly', true);
+		}
+	},
+	show_variable_window: function(show) {
+		const self = oVariable;
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_variable_window: function() {
+		// text fields
+		[
+			this.ids.name,
+			this.ids.description,
+			this.ids.default_value
+		].forEach((id) => {
+			document.getElementById(id).value = '';
+		});
+		this.show_error(false);
+	},
+	show_error: function(show, emsg) {
+		const self = oVariable;
 		const error = document.getElementById(self.ids.error);
 		if (emsg) {
 			error.textContent = emsg;
