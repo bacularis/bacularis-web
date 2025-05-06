@@ -68,10 +68,11 @@ class BulkApplyPatternsModal extends Portlets
 	public function applyPatterns($sender, $param)
 	{
 		$param = $param->getCallbackParameter();
-		if (empty($param) || !is_object($param) || !isset($param->simulate)) {
+		if (empty($param) || !is_object($param) || !isset($param->simulate) || !isset($param->vars)) {
 			return;
 		}
 		$simulate = $param->simulate;
+		$variables = (array) $param->vars;
 
 		// Get selected patterns setting
 		$pattern_config = $this->getModule('pattern_config');
@@ -81,7 +82,7 @@ class BulkApplyPatternsModal extends Portlets
 			for ($i = 0; $i < $this->Patterns->getItemCount(); $i++) {
 				if ($i === $indice) {
 					$pattern = $this->Patterns->Items[$i]->Value;
-					$patterns[] = $pattern_config->getPatternConfig($pattern, true);
+					$patterns[] = $pattern_config->getPatternConfig($pattern);
 					break;
 				}
 			}
@@ -106,11 +107,13 @@ class BulkApplyPatternsModal extends Portlets
 		}
 
 		// Apply configs to selected resource
+		$variable_config = $this->getModule('variable_config');
 		$conf_config = $this->getModule('conf_config');
 		$new_config = json_decode(json_encode($result->output), true);
 		for ($i = 0; $i < count($patterns); $i++) {
 			for ($j = 0; $j < count($patterns[$i]['configs']); $j++) {
-				$config = $conf_config->getConfConfig($patterns[$i]['configs'][$j]);
+				$config_raw = $conf_config->getConfConfig($patterns[$i]['configs'][$j]);
+				$config = $variable_config->addVariables($config_raw, $variables);
 				if (!key_exists('Name', $config['config'])) {
 					/**
 					 * Config does not have name, so it cannot be added as a new resource.
@@ -197,6 +200,52 @@ class BulkApplyPatternsModal extends Portlets
 				$resource[$directive] = $value;
 			}
 		}
+	}
+
+	public function prepareVariables($sender, $param)
+	{
+		// Get selected configs
+		$configs = $this->getSelectedPatternConfigs();
+		$variable_config = $this->getModule('variable_config');
+		$variables = $variable_config->findVariables($configs);
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->callClientFunction(
+			'oBulkApplyPatternsModal.prepare_variables_cb',
+			[$variables]
+		);
+	}
+
+	/**
+	 * Get configs from selected patterns to apply patterns window.
+	 *
+	 * @return array selected pattern configs
+	 */
+	private function getSelectedPatternConfigs(): array
+	{
+		$conf_config = $this->getModule('conf_config');
+		$pattern_config = $this->getModule('pattern_config');
+		$pattern_list = $this->Patterns->getSelectedIndices();
+		$patterns = [];
+		$configs = [];
+
+		// get selected patterns
+		foreach ($pattern_list as $indice) {
+			for ($i = 0; $i < $this->Patterns->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$pattern = $this->Patterns->Items[$i]->Value;
+					$patterns[] = $pattern_config->getPatternConfig($pattern);
+					break;
+				}
+			}
+		}
+
+		// get selected pattern configs
+		for ($i = 0; $i < count($patterns); $i++) {
+			for ($j = 0; $j < count($patterns[$i]['configs']); $j++) {
+				$configs[] = $conf_config->getConfConfig($patterns[$i]['configs'][$j]);
+			}
+		}
+		return $configs;
 	}
 
 	/**

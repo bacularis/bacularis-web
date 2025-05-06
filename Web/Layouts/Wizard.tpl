@@ -34,6 +34,7 @@
 			<!-- Top container -->
 				<com:TContentPlaceHolder ID="Wizard" />
 		</com:TForm>
+		<com:Bacularis.Web.Portlets.ConstantPicker />
 <script>
 	Formatters.set_formatters();
 	$(function() {

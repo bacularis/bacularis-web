@@ -84,6 +84,7 @@
 <com:Bacularis.Web.Portlets.InfoMessageBox />
 <com:Bacularis.Web.Portlets.ResourceMonitor />
 <com:Bacularis.Web.Portlets.MsgEnvelope Visible="<%=($this->Application->getModule('web_config')->isMessagesLogEnabled() && $this->User->isInRole(WebUserRoles::ADMIN))%>" />
+<com:Bacularis.Web.Portlets.ConstantPicker />
 <script>
 var is_small = $('#small').is(':visible');
 $(function() {

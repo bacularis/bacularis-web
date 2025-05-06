@@ -28,6 +28,7 @@
 						SelectionMode="Multiple"
 						CssClass="w3-border w3-select"
 						Rows="10"
+						Attributes.onchange="oBulkApplyPatternsModal.prepare_variables();"
 					/>
 					<i class="fa fa-asterisk w3-text-red"></i>
 					<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
@@ -40,6 +41,8 @@
 					/>
 				</div>
 			</div>
+			<div id="<%=$this->ClientID%>_variables" class="w3-row"></div>
+			<h4><%[ Options ]%></h4>
 			<div class="w3-row directive_field">
 				<div class="w3-col w3-third"><%[ Overwrite policy ]%>:</div>
 				<div class="w3-col w3-twothird">
@@ -77,10 +80,12 @@
 <com:TCallback ID="LoadPatterns" OnCallback="loadPatterns" />
 <com:TCallback ID="ApplyPatterns" OnCallback="applyPatterns" />
 <com:TCallback ID="SetPatternsWindow" OnCallback="setPatternsWindow" />
+<com:TCallback ID="PrepareVariables" OnCallback="prepareVariables" />
 <script>
 var oBulkApplyPatternsModal = {
 	ids: {
 		win: '<%=$this->BulkApplyPatternsModal->ClientID%>',
+		vars: '<%=$this->ClientID%>_variables',
 		policy_add_new: '<%=$this->OverwritePolicyAddNew->ClientID%>',
 		policy_existing: '<%=$this->OverwritePolicyExisting->ClientID%>'
 	},
@@ -93,6 +98,7 @@ var oBulkApplyPatternsModal = {
 	item_cb: null,
 	selected: [],
 	clear_window: function() {
+		this.clear_vars_form();
 		this.clear_log();
 
 		// set default values
@@ -137,7 +143,9 @@ var oBulkApplyPatternsModal = {
 		const cb = <%=$this->ApplyPatterns->ActiveControl->Javascript%>;
 		const item = document.getElementById('<%=$this->PatternAPIHost->ClientID%>').value;
 		this.add_log_line(item);
+		const vars = this.get_vars();
 		const parameter = {
+			vars: vars,
 			simulate: (simulate || false)
 		};
 		cb.setCallbackParameter(parameter);
@@ -225,6 +233,71 @@ var oBulkApplyPatternsModal = {
 	},
 	set_item_cb: function(cb) {
 		this.item_cb = cb;
+	},
+	prepare_variables: function() {
+		const cb = <%=$this->PrepareVariables->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	prepare_variables_cb: function(variables) {
+		const self = oBulkApplyPatternsModal;
+		self.build_vars_form(variables);
+	},
+	build_vars_form: function(variables) {
+		this.clear_vars_form();
+
+		if (typeof(variables) != 'object' || Array.isArray(variables)) {
+			return;
+		}
+
+		const container = document.getElementById(this.ids.vars);
+
+		const header = document.createElement('H4');
+		header.textContent = '<%[ Variables ]%>';
+		container.appendChild(header);
+
+		let cont, left, right, input;
+		for (const variable in variables) {
+			cont = document.createElement('DIV');
+			cont.classList.add('w3-row', 'directive_field', 'w3-margin-bottom');
+
+			left = document.createElement('DIV');
+			left.classList.add('w3-col', 'w3-third', 'bold');
+			left.title = variables[variable].description || '';
+			left.textContent = '<%=VariableConfig::SPECIAL_CHAR%>{' + variable + '}';
+
+			right = document.createElement('DIV');
+			right.classList.add('w3-col', 'w3-twothird');
+
+			input = document.createElement('INPUT');
+			input.type = 'text';
+			input.setAttribute('data-variable', variable);
+			input.classList.add('w3-input', 'w3-border');
+			input.value = variables[variable].default_value || '';
+
+			right.appendChild(input);
+			cont.appendChild(left);
+			cont.appendChild(right);
+			container.appendChild(cont);
+		}
+	},
+	clear_vars_form: function() {
+		const container = document.getElementById(this.ids.vars);
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	},
+	get_vars: function() {
+		const container = document.getElementById(this.ids.vars);
+		const var_fields = container.querySelectorAll('input[data-variable]');
+		const var_len = var_fields.length;
+		const variables = {};
+		let variable, value;
+		for (let i = 0; i < var_len; i++) {
+			variable = var_fields[i].getAttribute('data-variable');
+			value = var_fields[i].value;
+			variables[variable] = value;
+		}
+		return variables;
 	}
 };
 </script>

@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Modules\VariableConfig;
 
 /**
  * Bulk apply configs modal control.
@@ -65,21 +66,24 @@ class BulkApplyConfigsModal extends Portlets
 	public function applyConfigs($sender, $param)
 	{
 		$param = $param->getCallbackParameter();
-		if (empty($param) || !is_object($param) || !isset($param->name) || !isset($param->simulate)) {
+		if (empty($param) || !is_object($param) || !isset($param->name) || !isset($param->simulate) || !isset($param->vars)) {
 			return;
 		}
 		$selected = $param->name;
 		$simulate = $param->simulate;
+		$variables = (array) $param->vars;
 
 		// Get selected configs setting
 		$conf_config = $this->getModule('conf_config');
+		$variable_config = $this->getModule('variable_config');
 		$config_list = $this->Configs->getSelectedIndices();
 		$configs = [];
 		foreach ($config_list as $indice) {
 			for ($i = 0; $i < $this->Configs->getItemCount(); $i++) {
 				if ($i === $indice) {
 					$config = $this->Configs->Items[$i]->Value;
-					$configs[] = $conf_config->getConfConfig($config);
+					$config_raw = $conf_config->getConfConfig($config);
+					$configs[] = $variable_config->addVariables($config_raw, $variables);
 					break;
 				}
 			}
@@ -174,6 +178,41 @@ class BulkApplyConfigsModal extends Portlets
 			);
 			return;
 		}
+	}
+
+	public function prepareVariables($sender, $param)
+	{
+		// Get selected configs
+		$configs = $this->getSelectedConfigs();
+		$variable_config = $this->getModule('variable_config');
+		$variables = $variable_config->findVariables($configs);
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->callClientFunction(
+			'oBulkApplyConfigsModal.prepare_variables_cb',
+			[$variables]
+		);
+	}
+
+	/**
+	 * Get selected configs in apply configs window.
+	 *
+	 * @return array selected configs
+	 */
+	private function getSelectedConfigs(): array
+	{
+		$conf_config = $this->getModule('conf_config');
+		$config_list = $this->Configs->getSelectedIndices();
+		$configs = [];
+		foreach ($config_list as $indice) {
+			for ($i = 0; $i < $this->Configs->getItemCount(); $i++) {
+				if ($i === $indice) {
+					$config = $this->Configs->Items[$i]->Value;
+					$configs[] = $conf_config->getConfConfig($config);
+					break;
+				}
+			}
+		}
+		return $configs;
 	}
 
 	/**
