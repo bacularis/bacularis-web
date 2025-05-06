@@ -56,6 +56,10 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public const CANCEL_DIRECTIVE_ACTION_OK = 'CancelDirectiveActionOk';
 	public const DISABLE_RENAME = 'DisableRename';
 	public const REQUIRE_DIRECTIVES = 'RequireDirectives';
+	public const CONFIG_MODE = 'ConfigMode';
+
+	public const CONFIG_MODE_NORMAL = 'Normal';
+	public const CONFIG_MODE_EDITABLE = 'Editable';
 
 	private $show_all_directives = false;
 
@@ -66,6 +70,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		'Bacularis\Web\Portlets\DirectiveCheckBoxSimple',
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveComboBoxReload',
+		'Bacularis\Web\Portlets\DirectiveEditableComboBox',
+		'Bacularis\Web\Portlets\DirectiveEditableOrderedListBox',
 		'Bacularis\Web\Portlets\DirectiveInteger',
 		'Bacularis\Web\Portlets\DirectiveListBox',
 		'Bacularis\Web\Portlets\DirectiveOrderedListBox',
@@ -139,6 +145,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$component_name = $this->getComponentName();
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
+		$config_mode = $this->getConfigMode();
 		$directives = [];
 		$config = new StdClass();
 		$predefined = false;
@@ -277,7 +284,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					'parent_name' => null,
 					'group_name' => null,
 					'section' => $directive_desc->Section,
-					'show' => (($in_config || !$load_values) || $this->getShowAllDirectives())
+					'show' => (($in_config || !$load_values) || $this->getShowAllDirectives()),
+					'config_mode' => $config_mode
 				];
 				array_push($directives, $directive);
 			}
@@ -897,6 +905,26 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	public function getDisableRename()
 	{
 		return $this->getViewState(self::DISABLE_RENAME, false);
+	}
+
+	/**
+	 * Set config mode.
+	 *
+	 * @param string $mode config mode
+	 */
+	public function setConfigMode($mode)
+	{
+		$this->setViewState(self::CONFIG_MODE, $mode, self::CONFIG_MODE_NORMAL);
+	}
+
+	/**
+	 * Get config mode.
+	 *
+	 * @return string config mode
+	 */
+	public function getConfigMode()
+	{
+		return $this->getViewState(self::CONFIG_MODE, self::CONFIG_MODE_NORMAL);
 	}
 
 	/**

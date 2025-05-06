@@ -31,6 +31,7 @@ namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
 use Prado\Web\UI\WebControls\TItemDataRenderer;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Bacularis\Web\Portlets\DirectiveListTemplate;
 use Bacularis\Web\Portlets\DirectiveCheckBox;
 use Bacularis\Web\Portlets\DirectiveCheckBoxSimple;
@@ -64,6 +65,8 @@ class DirectiveRenderer extends TItemDataRenderer
 		'DirectiveCheckBox',
 		'DirectiveComboBox',
 		'DirectiveComboBoxReload',
+		'DirectiveEditableComboBox',
+		'DirectiveEditableOrderedListBox',
 		'DirectiveInteger',
 		'DirectiveListBox',
 		'DirectiveOrderedListBox',
@@ -81,6 +84,11 @@ class DirectiveRenderer extends TItemDataRenderer
 		'DirectiveRunscript',
 		'DirectiveMultiComboBox',
 		'DirectiveMultiTextBox'
+	];
+
+	private $directive_editable_types = [
+		'DirectiveComboBox',
+		'DirectiveOrderedListBox'
 	];
 
 	private static $current_section = '';
@@ -113,10 +121,9 @@ class DirectiveRenderer extends TItemDataRenderer
 
 	public function createItem($data)
 	{
-		$field = $this->getField($data['field_type']);
-		$control = Prado::createComponent($field);
-		$type = 'Directive' . $data['field_type'];
-		if (in_array($type, $this->directive_types)) {
+		$field = $this->getField($data);
+		$control = Prado::createComponent($field['path']);
+		if (in_array($field['type'], $this->directive_types)) {
 			$control->setHost($data['host']);
 			$control->setComponentType($data['component_type']);
 			$control->setComponentName($data['component_name']);
@@ -139,7 +146,7 @@ class DirectiveRenderer extends TItemDataRenderer
 			}
 			$this->addParsedObject($control);
 			$control->createDirective();
-		} elseif (in_array($type, $this->directive_list_types)) {
+		} elseif (in_array($field['type'], $this->directive_list_types)) {
 			$control->setHost($data['host']);
 			$control->setComponentType($data['component_type']);
 			$control->setComponentName($data['component_name']);
@@ -182,8 +189,32 @@ class DirectiveRenderer extends TItemDataRenderer
 		$this->setViewState(self::IS_DATA_BOUND, $is_data_bound);
 	}
 
-	private function getField($field_type)
+	private function getField(array $data): array
 	{
-		return 'Bacularis\Web\Portlets\Directive' . $field_type;
+		$prefix = $this->getFieldPrefix($data);
+		$type = $prefix . $data['field_type'];
+		$path = 'Bacularis\Web\Portlets\\' . $type;
+		return ['type' => $type, 'path' => $path];
+	}
+
+	private function getFieldPrefix(array $data): string
+	{
+		$prefix = 'Directive';
+		if (key_exists('config_mode', $data)) {
+			switch ($data['config_mode']) {
+				case BaculaConfigDirectives::CONFIG_MODE_NORMAL: {
+					$prefix = 'Directive';
+					break;
+				}
+				case BaculaConfigDirectives::CONFIG_MODE_EDITABLE: {
+					$type = 'Directive' . $data['field_type'];
+					if (in_array($type, $this->directive_editable_types)) {
+						$prefix = 'DirectiveEditable';
+					}
+					break;
+				}
+			}
+		}
+		return $prefix;
 	}
 }

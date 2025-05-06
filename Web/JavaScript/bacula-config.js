@@ -409,6 +409,21 @@ var oDirectiveOrderedListBox = {
 		}
 		hidden.value = vals.join('!');
 	},
+	apply_selection: function(select_id, hidden_id) {
+		const select = document.getElementById(select_id);
+		const hidden = document.getElementById(hidden_id);
+		const vals = hidden.value.split('!');
+		OUTER:
+		for (let i = 0; i < select.options.length; i++) {
+			INNER:
+			for (let j = 0; j < vals.length; j++) {
+				if (select.options[i].value == vals[j]) {
+					select.options[i].selected = true;
+					break INNER;
+				}
+			}
+		}
+	},
 	clear_selection: function(select_id, hidden_id) {
 		const select = document.getElementById(select_id);
 		const opts = select.querySelectorAll('option:checked');
@@ -419,5 +434,70 @@ var oDirectiveOrderedListBox = {
 		}
 		this.set_list(select)
 		this.set_options(select_id, hidden_id);
+	}
+};
+
+const oDirectiveEditableComboBox = {
+	switch_mode: function(el) {
+		const container = $(el).closest('div.directive_field');
+		const text_cont = $(container).find('div[rel="text_field"]');
+		const text_field = text_cont.find('input[type="text"]');
+		const combo_cont = $(container).find('div[rel="combo_field"]');
+		const combo_field = combo_cont.find('select');
+		if (el.classList.contains('fa-edit')) {
+			// switch to text mode
+			el.classList.replace('fa-edit', 'fa-list');
+			combo_cont.hide();
+			text_cont.show();
+			const cval = combo_field.val();
+			if (cval) {
+				text_field.val(cval);
+			}
+			combo_field.val('')
+		} else {
+			// switch to combobox mode
+			el.classList.replace('fa-list', 'fa-edit');
+			text_cont.hide();
+			combo_cont.show();
+			combo_field.val(text_field.val());
+		}
+	}
+};
+
+const oDirectiveEditableOrderedListBox = {
+	switch_mode: function(el) {
+		const container = $(el).closest('div.directive_field');
+		const text_cont = container.find('div[rel="text_field"]');
+		const text_field = text_cont.find('input[type="text"]');
+		const combo_cont = container.find('div[rel="combo_field"]');
+		const combo_field = combo_cont.find('select');
+		const hidden_field = container.find('input[type="hidden"]');
+		const info_combo = container.find('p[rel="info_combo"]');
+		const info_text = container.find('p[rel="info_text"]');
+		if (el.classList.contains('fa-edit')) {
+			// switch to text mode
+			el.classList.replace('fa-edit', 'fa-list');
+			combo_cont.hide();
+			info_text.show();
+			info_combo.hide();
+			text_cont.show();
+			let cval = hidden_field.val();
+			if (cval) {
+				cval = cval.replace(/!/g, ',');
+				text_field.val(cval);
+			}
+			combo_field.val('')
+		} else {
+			// switch to combobox mode
+			el.classList.replace('fa-list', 'fa-edit');
+			text_cont.hide();
+			info_text.hide();
+			combo_cont.show();
+			info_combo.show();
+			const tval = text_field.val().replace(/,/g, '!');
+			hidden_field.val(tval);
+			oDirectiveOrderedListBox.apply_selection(combo_field.get(0).id, hidden_field.get(0).id);
+			oDirectiveOrderedListBox.init_items(combo_field.get(0).id, hidden_field.get(0).id);
+		}
 	}
 };
