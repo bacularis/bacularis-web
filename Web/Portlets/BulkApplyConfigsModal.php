@@ -124,6 +124,9 @@ class BulkApplyConfigsModal extends Portlets
 						$new_config[$directive] = $value;
 					} elseif ($this->OverwritePolicyAddNew->Checked) {
 						if (is_array($value)) {
+							if (is_object($new_config[$directive])) {
+								$new_config[$directive] = (array) $new_config[$directive];
+							}
 							$new_config[$directive] = array_merge($new_config[$directive], $value);
 						}
 					}
