@@ -1332,7 +1332,7 @@ var oConstant = {
 		const self = oConstant;
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
-		const name = document.getElementById(this.ids.const_name);
+		const name = document.getElementById(self.ids.const_name);
 		name.focus();
 	},
 	clear_constant_window: function() {
@@ -1714,7 +1714,7 @@ var oVariable = {
 		const self = oVariable;
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
-		const name = document.getElementById(this.ids.var_name);
+		const name = document.getElementById(self.ids.var_name);
 		name.focus();
 	},
 	clear_variable_window: function() {
