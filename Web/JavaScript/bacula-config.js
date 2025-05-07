@@ -463,6 +463,42 @@ const oDirectiveEditableComboBox = {
 		}
 	}
 };
+const oDirectiveEditableListBox = {
+	switch_mode: function(el) {
+		const container = $(el).closest('div.directive_field');
+		const text_cont = $(container).find('div[rel="text_field"]');
+		const text_field = text_cont.find('input[type="text"]');
+		const combo_cont = $(container).find('div[rel="combo_field"]');
+		const combo_field = combo_cont.find('select');
+		const info_combo = container.find('p[rel="info_combo"]');
+		const info_text = container.find('p[rel="info_text"]');
+		if (el.classList.contains('fa-edit')) {
+			// switch to text mode
+			el.classList.replace('fa-edit', 'fa-list');
+			combo_cont.hide();
+			text_cont.show();
+			info_combo.hide();
+			info_text.show();
+			const cval = combo_field.val();
+			if (cval) {
+				text_field.val(cval);
+			}
+			combo_field.val('')
+		} else {
+			// switch to combobox mode
+			el.classList.replace('fa-list', 'fa-edit');
+			info_text.hide();
+			info_combo.show();
+			text_cont.hide();
+			combo_cont.show();
+			const tval = text_field.val();
+			if (tval) {
+				const tvals = tval.split(',');
+				combo_field.val(tvals);
+			}
+		}
+	}
+};
 
 const oDirectiveEditableOrderedListBox = {
 	switch_mode: function(el) {

@@ -71,6 +71,7 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		'Bacularis\Web\Portlets\DirectiveComboBox',
 		'Bacularis\Web\Portlets\DirectiveComboBoxReload',
 		'Bacularis\Web\Portlets\DirectiveEditableComboBox',
+		'Bacularis\Web\Portlets\DirectiveEditableListBox',
 		'Bacularis\Web\Portlets\DirectiveEditableOrderedListBox',
 		'Bacularis\Web\Portlets\DirectiveInteger',
 		'Bacularis\Web\Portlets\DirectiveListBox',

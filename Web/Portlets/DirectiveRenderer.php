@@ -66,6 +66,7 @@ class DirectiveRenderer extends TItemDataRenderer
 		'DirectiveComboBox',
 		'DirectiveComboBoxReload',
 		'DirectiveEditableComboBox',
+		'DirectiveEditableListBox',
 		'DirectiveEditableOrderedListBox',
 		'DirectiveInteger',
 		'DirectiveListBox',
@@ -88,6 +89,7 @@ class DirectiveRenderer extends TItemDataRenderer
 
 	private $directive_editable_types = [
 		'DirectiveComboBox',
+		'DirectiveListBox',
 		'DirectiveOrderedListBox'
 	];
 
