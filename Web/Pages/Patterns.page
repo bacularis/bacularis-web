@@ -1284,7 +1284,8 @@ var oConstant = {
 		title_add: 'constant_window_title_add',
 		title_edit: 'constant_window_title_edit',
 		title_name: 'constant_window_title_edit_name',
-		mode: '<%=$this->ConstantWindowMode->ClientID%>'
+		mode: '<%=$this->ConstantWindowMode->ClientID%>',
+		const_name: '<%=$this->ConstantName->ClientID%>'
 	},
 	modes: {
 		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
@@ -1331,6 +1332,8 @@ var oConstant = {
 		const self = oConstant;
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
+		const name = document.getElementById(this.ids.const_name);
+		name.focus();
 	},
 	clear_constant_window: function() {
 		// text fields
@@ -1663,7 +1666,8 @@ var oVariable = {
 		title_add: 'variable_window_title_add',
 		title_edit: 'variable_window_title_edit',
 		title_name: 'variable_window_title_edit_name',
-		mode: '<%=$this->VariableWindowMode->ClientID%>'
+		mode: '<%=$this->VariableWindowMode->ClientID%>',
+		var_name: '<%=$this->VariableName->ClientID%>'
 	},
 	modes: {
 		add: '<%=Patterns::CONFIG_WINDOW_MODE_ADD%>',
@@ -1710,6 +1714,8 @@ var oVariable = {
 		const self = oVariable;
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
+		const name = document.getElementById(this.ids.var_name);
+		name.focus();
 	},
 	clear_variable_window: function() {
 		// text fields

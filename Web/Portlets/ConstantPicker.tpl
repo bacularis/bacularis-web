@@ -1,7 +1,7 @@
-<div id="constant_picker_window" class="w3-white w3-border item_picker" style="display: none;">
-	<div class="w3-container">
+<div id="constant_picker_window" class="w3-white w3-border item_picker w3-card" style="display: none;">
+	<div class="w3-container w3-margin-bottom">
 		<span onclick="oConstantPicker.show_window(false);" class="w3-button w3-display-topright">×</span>
-		<h5><%[ Constants ]%></h5>
+		<h5 class="w3-border-bottom"><%[ Constants ]%></h5>
 		<div rel="list" id="constant_picker_consts_list" style="max-height: 365px; overflow-x: scroll; overflow-x: hidden;"></div>
 	</div>
 </div>
