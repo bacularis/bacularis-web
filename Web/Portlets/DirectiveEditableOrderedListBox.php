@@ -30,9 +30,9 @@ class DirectiveEditableOrderedListBox extends DirectiveTemplate
 
 	public function getValue()
 	{
-		$value = $this->DirectiveText->getText();
-		if (!empty($value) || $value == '0') {
-			$values = explode(',', $this->DirectiveText->getText());
+		$text = $this->DirectiveText->getText();
+		if (!empty($text) || $text == '0') {
+			$values = explode(',', $text);
 		} else {
 			$values = explode('!', $this->DirectiveHidden->getValue());
 		}
@@ -97,7 +97,7 @@ class DirectiveEditableOrderedListBox extends DirectiveTemplate
 				$selected_indices[] = $i;
 			}
 		}
-		$this->text_mode = (count($directive_value) > 0 && count($selected_indices) == 0);
+		$this->text_mode = (count($directive_value) > 0 && count($selected_indices) != count($directive_value));
 		$this->DirectiveText->Text = implode(',', $directive_value);
 
 		if (!empty($directive_value)) {
