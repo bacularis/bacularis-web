@@ -634,7 +634,7 @@ const oClientGraph = {
 			let host_os, os_rest, dist_rest;
 			[version, date, host_os, ...os_rest] = uname.split(' ');
 			host_os = [host_os].concat(os_rest).join(' ');
-			[os, distname, distver, ...dist_rest ] = host_os.split(/,(?=[^\s])/);
+			[os, distname, distver, ...dist_rest ] = host_os.split(/,(?=[^\s]|$)/);
 			distver = [distver].concat(dist_rest).join(' ');
 		};
 		return {
