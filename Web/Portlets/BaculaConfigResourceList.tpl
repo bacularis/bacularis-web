@@ -420,7 +420,8 @@ function post_init_tab_view<%=$this->ClientID%>() {
 					ID="ResourcesToCopy"
 					CssClass="w3-select w3-border w3-show-inline-block"
 					Style="min-width: 300px"
-					OnSelectedIndexChanged="copyConfig"
+					CausesValidation="false"
+					OnCallback="copyConfig"
 				/>
 			</div>
 		</div>
