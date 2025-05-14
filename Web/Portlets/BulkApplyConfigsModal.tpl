@@ -18,7 +18,7 @@
 				</div>
 				<div rel="resource" class="w3-col w3-half bold"></div>
 			</div>
-			<div class="w3-row directive_field w3-margin-bottom">
+			<div class="w3-row directive_field">
 				<div class="w3-col w3-third">
 					<%[ Configs ]%>:
 				</div>
@@ -39,6 +39,15 @@
 						FocusOnError="true"
 						Text="<%[ Field required. ]%>"
 					/>
+				</div>
+			</div>
+			<div class="w3-row">
+				<div class="w3-col w3-third">&nbsp;</div>
+				<div class="w3-col w3-twothird">
+					<a href="javascript:void(0)" onclick="oBulkApplyConfigsModal.toggle_configs_in_patterns(true);">
+						<span id="<%=$this->ClientID%>_show_in_pattern"><i class="fa-solid fa-eye"></i> <%[ Show configs used in patterns ]%></span>
+						<span id="<%=$this->ClientID%>_hide_in_pattern" style="display: none"><i class="fa-solid fa-eye-slash"></i> <%[ Hide configs used in patterns ]%></span>
+					</a>
 				</div>
 			</div>
 			<div id="<%=$this->ClientID%>_variables" class="w3-row"></div>
@@ -99,7 +108,9 @@ var oBulkApplyConfigsModal = {
 		vars: '<%=$this->ClientID%>_variables',
 		stop: '<%=$this->StopOnError->ClientID%>',
 		policy_add_new: '<%=$this->OverwritePolicyAddNew->ClientID%>',
-		policy_existing: '<%=$this->OverwritePolicyExisting->ClientID%>'
+		policy_existing: '<%=$this->OverwritePolicyExisting->ClientID%>',
+		show_in_pattern: '<%=$this->ClientID%>_show_in_pattern',
+		hide_in_pattern: '<%=$this->ClientID%>_hide_in_pattern'
 	},
 	rels: {
 		loader: 'loader',
@@ -118,6 +129,7 @@ var oBulkApplyConfigsModal = {
 	clear_window: function() {
 		this.clear_vars_form();
 		this.clear_log();
+		this.clear_configs_in_patterns();
 
 		// set default values
 		const stop = document.getElementById(this.ids.stop);
@@ -146,8 +158,9 @@ var oBulkApplyConfigsModal = {
 		const win = document.getElementById(this.ids.win);
 		win.style.display = show ? 'block' : '';
 	},
-	load_configs: function() {
+	load_configs: function(params) {
 		const cb = <%=$this->LoadConfigs->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(params);
 		cb.dispatch();
 	},
 	apply_configs: function(simulate) {
@@ -327,6 +340,22 @@ var oBulkApplyConfigsModal = {
 			variables[variable] = value;
 		}
 		return variables;
+	},
+	clear_configs_in_patterns: function() {
+		const show_in_pattern = document.getElementById(this.ids.show_in_pattern);
+		if (show_in_pattern.style.display == 'none') {
+			this.toggle_configs_in_patterns(false);
+		}
+	},
+	toggle_configs_in_patterns: function(load_configs) {
+		const show_in_pattern = document.getElementById(this.ids.show_in_pattern);
+		const hide_in_pattern = document.getElementById(this.ids.hide_in_pattern);
+		const show = ['', 'inline'].indexOf(show_in_pattern.style.display) != -1;
+		show_in_pattern.style.display = show ? 'none' : 'inline';
+		hide_in_pattern.style.display = show ? 'inline' : 'none';
+		if (load_configs) {
+			this.load_configs({in_pattern: show});
+		}
 	}
 };
 </script>

@@ -138,4 +138,23 @@ class PatternConfig extends ConfigFileModule
 		$config = $this->getConfig();
 		return key_exists($name, $config);
 	}
+
+	/**
+	 * Check if config is used in patterns.
+	 *
+	 * @param string $name config name
+	 * @return bool true if config is used to any pattern, false otherwise
+	 */
+	public function isConfigInPattern(string $name): bool
+	{
+		$in_pattern = false;
+		$config = $this->getConfig();
+		foreach ($config as $pname => $pprops) {
+			if (in_array($name, $pprops['configs'])) {
+				$in_pattern = true;
+				break;
+			}
+		}
+		return $in_pattern;
+	}
 }

@@ -38,12 +38,17 @@ class BulkApplyConfigsModal extends Portlets
 
 	public function loadConfigs($sender, $param)
 	{
+		$options = (array) ($param->getCallbackParameter() ?? []);
 		$configs = $this->getModule('conf_config')->getConfig();
+		$pattern_config = $this->getModule('pattern_config');
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$names = [];
 		foreach ($configs as $name => $props) {
 			if ($props['component'] !== $component_type || $props['resource'] !== $resource_type) {
+				continue;
+			}
+			if ((!key_exists('in_pattern', $options) || !$options['in_pattern']) && $pattern_config->isConfigInPattern($name)) {
 				continue;
 			}
 			$names[] = $name;

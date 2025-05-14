@@ -6522,3 +6522,9 @@ msgstr "Constants are names that store user-defined values. They are useful for 
 
 msgid "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."
 msgstr "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."
+
+msgid "Show configs used in patterns"
+msgstr "Show configs used in patterns"
+
+msgid "Hide configs used in patterns"
+msgstr "Hide configs used in patterns"
