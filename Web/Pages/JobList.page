@@ -1333,12 +1333,12 @@ const oJobList = {
 	</div>
 	<div class="w3-container tab_item" id="job_reports" style="display: none">
 		<div class="w3-row w3-margin-bottom">
-			<a href="javascript:void(0)" onclick="W3SubTabs.open('job_reports_job_history_report_tab', 'job_reports_job_history_report_content'); if (oJobHistoryReport.table) { oJobHistoryReport.table.responsive.recalc(); }">
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('job_reports_job_history_report_tab', 'job_reports_job_history_report_content'); if (oJobHistoryReport.table) { oJobHistoryReport.table.responsive.recalc(); }; set_page_tables([oJobHistoryReport]);">
 				<div id="job_reports_job_history_report_tab" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
 					<%[ Job history report ]%>
 				</div>
 			</a>
-			<a href="javascript:void(0)" onclick="W3SubTabs.open('job_reports_job_running_over_time_report_tab', 'job_reports_job_running_over_time_report_content'); oJobRunningOverTimeReport ? oJobRunningOverTimeReport.update() : setTimeout('oJobRunningOverTimeReport.update()', 3000);">
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('job_reports_job_running_over_time_report_tab', 'job_reports_job_running_over_time_report_content'); oJobRunningOverTimeReport ? oJobRunningOverTimeReport.update() : setTimeout('oJobRunningOverTimeReport.update()', 3000); set_page_tables([oJobHistoryReport]);">
 				<div id="job_reports_job_running_over_time_report_tab" class="subtab_btn w3-half w3-bottombar w3-hover-light-grey w3-padding">
 					<%[ Job over time report ]%>
 				</div>
