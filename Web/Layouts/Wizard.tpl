@@ -32,9 +32,9 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />
 			<!-- Top container -->
-				<com:TContentPlaceHolder ID="Wizard" />
+			<com:TContentPlaceHolder ID="Wizard" />
+			<com:Bacularis.Web.Portlets.ConstantPicker />
 		</com:TForm>
-		<com:Bacularis.Web.Portlets.ConstantPicker />
 <script>
 	Formatters.set_formatters();
 	$(function() {

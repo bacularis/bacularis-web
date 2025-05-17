@@ -34,8 +34,8 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	{
 		parent::onLoad($param);
 		$step_index = $this->NewVirtualFullJobWizard->getActiveStepIndex();
-		if ($this->IsPostBack) {
-			if ($step_index == 0 || $step_index == 2 || $step_index == 3) {
+		if ($this->IsPostBack && !$this->IsCallback) {
+			if ($step_index == 2 || $step_index == 3) {
 				$this->setStorageServerSideValidators();
 				$this->setStorageClientSideValidators();
 			} elseif ($step_index == 4 || $step_index == 5) {
@@ -69,8 +69,6 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			}
 			case 1:	{
 				$this->setupJobDefs();
-				$this->loadNormalStorageControl();
-				$this->loadVirtualFullStorageControl();
 				$this->loadClients();
 				$this->loadFilesets();
 				$this->loadNewFilesetForm();
@@ -301,7 +299,6 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	{
 		$this->loadStorageList($this->Storage);
 		$this->loadNormalBackupStorages();
-		$this->Storage->createDirective();
 	}
 
 	/**
@@ -345,8 +342,10 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		if ($this->WhatToDoWithVirtualFullExistingJob->Checked && isset($job_name)) {
 			$storage = $this->getExistingJobDirective($job_name, 'Storage');
 			$this->Storage->setDirectiveValue($storage);
+			$this->Storage->createDirective();
 		} elseif (key_exists('Storage', $jobdefs) && is_array($jobdefs['Storage']) && is_null($this->Storage->getDirectiveValue())) {
 			$this->Storage->setDirectiveValue($jobdefs['Storage']);
+			$this->Storage->createDirective();
 		}
 	}
 

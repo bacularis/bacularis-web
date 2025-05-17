@@ -5,7 +5,11 @@
 		<div rel="list" id="constant_picker_consts_list" style="max-height: 365px; overflow-x: scroll; overflow-x: hidden;"></div>
 	</div>
 </div>
-<com:TCallback ID="LoadConstants" OnCallback="loadConstants" />
+<com:TCallback
+	ID="LoadConstants"
+	OnCallback="loadConstants"
+	ClientSide.EnablePageStateUpdate="false"
+	/>
 <script>
 var oConstantPicker = {
 	ids: {
