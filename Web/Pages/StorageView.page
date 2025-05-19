@@ -1542,7 +1542,9 @@ var oGraphicalStorageStatus = {
 			animationSpeed: (open ? 80 : 1),
 			maxValue: max_value_kbps
 		};
-		this.set_gauge(gauge, options, value_kbps);
+		if (value_kbps > 0) {
+			this.set_gauge(gauge, options, value_kbps);
+		}
 		if (prev_job) {
 			prev_job[name] = max_value_kbps;
 			this.update_running_job(prev_job);
