@@ -50,7 +50,7 @@ class NewFileSetFileOptMenu extends DirectiveListTemplate
 	public function loadConfig()
 	{
 		$plugin_config = $this->getModule('plugin_config');
-		$this->plugins = $plugin_config->getPlugins('backup');
+		$this->plugins = $plugin_config->getPlugins(PluginConfigBase::PLUGIN_TYPE_BACKUP);
 
 		$config_none = ['none' => ' '];
 		$configs = $plugin_config->getConfig();
