@@ -39,7 +39,7 @@ class ConfigConfig extends ConfigFileModule
 	/**
 	 * Allowed characters pattern for the config name.
 	 */
-	public const NAME_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\\/\\(\\)\\{\\}\\\\%:.#~_,+!$]{1,160}';
+	public const NAME_PATTERN = '(?!^\d+$)[\p{L}\p{N}\p{Z}\-\'\\\/\\(\\)\\{\\}\\\\%:.#~_+!$]{1,160}';
 
 	/**
 	 * Stores config.
