@@ -12,31 +12,31 @@
 		<a href="<%=$this->Service->constructUrl('WebConfigWizard')%>" class="w3-button w3-margin-bottom w3-green<%=$this->getModule('users')->isPageAllowed($this->User, 'WebConfigWizard') ? '' : ' hide'%>"><i class="fa fa-magic"></i> &nbsp;<%[ Settings ]%></a>
 	</div>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<a id="btn_application_settings_general" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'application_settings_general'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_general" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'application_settings_general'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ General ]%>
 		</a>
-		<a id="btn_application_settings_display" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_display'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_display" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_display'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Display options ]%>
 		</a>
-		<a id="btn_application_settings_tags" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_tags'); if (oTagManagerList.table) { oTagManagerList.table.responsive.recalc(); } set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_tags" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_tags'); if (oTagManagerList.table) { oTagManagerList.table.responsive.recalc(); } set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Tags ]%>
 		</a>
-		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Features ]%>
 		</a>
-		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); oPluginListSettings.table.responsive.recalc(); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); oPluginListSettings.table.responsive.recalc(); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Plugins ]%>
 		</a>
-		<a id="btn_application_settings_web_server" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_web_server'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_web_server" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_web_server'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Web server ]%>
 		</a>
-		<a id="btn_application_settings_certs" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_certs'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_certs" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_certs'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ SSL certs ]%>
 		</a>
-		<a id="btn_application_settings_audit_log" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_audit_log'); if (oAppSettingsAuditLog.table) { oAppSettingsAuditLog.table.responsive.recalc(); oAppSettingsAuditLog.table.columns.adjust().draw(); } set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_audit_log" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_audit_log'); if (oAppSettingsAuditLog.table) { oAppSettingsAuditLog.table.responsive.recalc(); oAppSettingsAuditLog.table.columns.adjust().draw(); } set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Audit log ]%>
 		</a>
-		<a id="btn_application_settings_self_test" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_self_test'); set_page_tables([oTagManagerList, oPluginListSettings, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_self_test" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_self_test'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Health self test ]%>
 		</a>
 	</div>
@@ -327,7 +327,7 @@
 	</div>
 	<!-- Plugins -->
 	<div class="w3-container tab_item" id="application_settings_plugins" style="display: none">
-		<com:Bacularis.Common.Portlets.PluginList />
+		<p><%[ Plugin functions have been moved to Add-ons page available in the main menu. ]%> <%[ Go to ]%> <a class="bold" href="<%=$this->Service->constructUrl('AddOns')%>"><%[ Add-ons ]%></a>.</p>
 	</div>
 	<!-- Web server settings -->
 	<div class="w3-container tab_item" id="application_settings_web_server" style="display: none">
