@@ -23,7 +23,7 @@
 		<module id="variable_config" class="Bacularis\Web\Modules\VariableConfig" />
 		<module id="repoauth_config" class="Bacularis\Web\Modules\RepoAuthConfig" />
 		<module id="plugin_config" class="Bacularis\Web\Modules\PluginConfig" />
-		<module id="web_plugin" class="Bacularis\Web\Modules\WebPluginManager" />
+		<module id="plugin_manager" class="Bacularis\Web\Modules\WebPluginManager" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />

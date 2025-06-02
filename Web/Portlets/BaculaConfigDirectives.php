@@ -36,6 +36,7 @@ use Prado\Web\UI\TCommandEventParameter;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BWebException;
 
 /**
@@ -486,6 +487,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			return;
 		}
 
+		$plugin_manager = $this->getModule('plugin_manager');
+
 		$params = [
 			'config',
 			$component_type,
@@ -494,21 +497,61 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		];
 		$result = null;
 		if ($load_values === false || $this->getCopyMode() === true) {
-			// create a new resource
+			// Pre-create job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'pre-create',
+				$resource_type,
+				$resource_name
+			);
+
+			// Create a new resource
 			$result = $this->getModule('api')->create(
 				$params,
 				['config' => json_encode($directives)],
 				$host,
 				false
 			);
+
+			if ($result->error == 0) {
+				// Post-create job actions
+				$plugin_manager->callPluginActionByType(
+					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+					'run',
+					'post-create',
+					$resource_type,
+					$resource_name
+				);
+			}
 		} else {
-			// update existing resource
+			// Pre-update job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'pre-update',
+				$resource_type,
+				$resource_name
+			);
+
+			// Update existing resource
 			$result = $this->getModule('api')->set(
 				$params,
 				['config' => json_encode($directives)],
 				$host,
 				false
 			);
+
+			// Post-update job actions
+			if ($result->error == 0) {
+				$plugin_manager->callPluginActionByType(
+					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+					'run',
+					'post-update',
+					$resource_type,
+					$resource_name
+				);
+			}
 
 			if ($resource_name !== $res_name_dir) {
 				// rename resource
@@ -645,6 +688,17 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$host = $this->getHost();
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
+
+		// Pre-remove job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-remove',
+			$resource_type,
+			$resource_name
+		);
+
 		$params = [
 			'config',
 			$component_type,
@@ -656,6 +710,18 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$host,
 			false
 		);
+
+		if ($result->error == 0) {
+			// Post-remove job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-remove',
+				$resource_type,
+				$resource_name
+			);
+		}
+
 		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
 		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 		if ($result->error === 0) {

@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TCallback;
@@ -137,13 +138,34 @@ class JobList extends BaculumWebPage
 	 */
 	public function runJob(string $name): object
 	{
+		// Pre-run job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-run-manually',
+			'Job',
+			$name
+		);
+
+		// Run job
 		$params = ['name' => $name];
 		$result = $this->getModule('api')->create(
 			['jobs', 'run'],
 			$params
 		);
 		if ($result->error === 0) {
-			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
+			// Post-run job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-run-manually',
+				'Job',
+				$name
+			);
+
+			$misc = $this->getModule('misc');
+			$started_jobid = $misc->findJobIdStartedJob($result->output);
 			if (!is_numeric($started_jobid)) {
 				$errmsg = implode('<br />', $result->output);
 				$this->getPage()->getCallbackClient()->callClientFunction(
@@ -228,12 +250,33 @@ class JobList extends BaculumWebPage
 		$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
 		$params['accurate'] = ($accurate == 1);
 
+		// Pre-run job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-run-manually',
+			'Job',
+			$job_info['job']['name']
+		);
+
+		// Run job
 		$result = $this->getModule('api')->create(
 			['jobs', 'run'],
 			$params
 		);
 		if ($result->error === 0) {
-			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
+			// Post-run job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-run-manually',
+				'Job',
+				$job_info['job']['name']
+			);
+
+			$misc = $this->getModule('misc');
+			$started_jobid = $misc->findJobIdStartedJob($result->output);
 			if (!is_numeric($started_jobid)) {
 				$errmsg = implode('<br />', $result->output);
 				$this->getPage()->getCallbackClient()->callClientFunction(

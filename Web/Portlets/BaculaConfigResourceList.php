@@ -31,6 +31,7 @@ namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Bacularis\Web\Modules\HostConfig;
 use Prado\Prado;
@@ -238,6 +239,17 @@ class BaculaConfigResourceList extends Portlets
 		$component_type = $this->getComponentType();
 		$resource_type = $this->getResourceType();
 		$resource_name = $param->getCallbackParameter();
+
+		// Pre-remove job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-remove',
+			$resource_type,
+			$resource_name
+		);
+
 		$params = [
 			'config',
 			$component_type,
@@ -270,6 +282,15 @@ class BaculaConfigResourceList extends Portlets
 			}
 			$this->showRemovedResourceError($error_message);
 		} else {
+			// Post-remove job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-remove',
+				$resource_type,
+				$resource_name
+			);
+
 			$this->loadResourceListTable($sender, $param);
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_INFO,

@@ -52,8 +52,8 @@ class WebAuditLog extends AuditLog
 		parent::audit($type, $category, $action);
 
 		// Run notification plugins
-		$web_plugin = $this->getModule('web_plugin');
-		$web_plugin->callPluginAction(
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
 			PluginConfigBase::PLUGIN_TYPE_NOTIFICATION,
 			'execute',
 			$type,

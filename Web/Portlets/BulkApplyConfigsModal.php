@@ -15,6 +15,7 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Modules\VariableConfig;
 
@@ -148,6 +149,16 @@ class BulkApplyConfigsModal extends Portlets
 			[$name_warning]
 		);
 
+		if (!$simulate) {
+			// Run pre type plugin action
+			$this->runPluginAction(
+				'pre',
+				'update',
+				$resource_type,
+				$selected
+			);
+		}
+
 		$query = [];
 		if ($simulate) {
 			$query['mode'] = 'simulate';
@@ -173,7 +184,16 @@ class BulkApplyConfigsModal extends Portlets
 		);
 		if ($result->error === 0) {
 			if (!$simulate) {
+				// Reload settings
 				$api->set(['console'], ['reload']);
+
+				// Run post type plugin action
+				$this->runPluginAction(
+					'post',
+					'update',
+					$resource_type,
+					$selected
+				);
 			}
 			$cb->callClientFunction(
 				'oBulkApplyConfigsModal.update_log_status',
@@ -198,6 +218,32 @@ class BulkApplyConfigsModal extends Portlets
 		$cb->callClientFunction(
 			'oBulkApplyConfigsModal.prepare_variables_cb',
 			[$variables]
+		);
+	}
+
+	/**
+	 * Execute plugin action for given resources.
+	 *
+	 * @param string $action_type action type (pre or post)
+	 * @param string $action_name action name (update)
+	 * @param string $resource_type resource type
+	 * @param string $resource_name resource name to use in actions
+	 */
+	private function runPluginAction(string $action_type, string $action_name, string $resource_type, string $resource_name)
+	{
+		$plugin_manager = $this->getModule('plugin_manager');
+		$action = sprintf(
+			'%s-%s-%s',
+			$action_type,
+			$action_name,
+			strtolower($resource_type)
+		);
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			$action,
+			$resource_type,
+			$resource_name
 		);
 	}
 

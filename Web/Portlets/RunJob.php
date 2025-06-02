@@ -31,6 +31,7 @@ namespace Bacularis\Web\Portlets;
 
 use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\PluginConfigBase;
 
 /**
  * Run job control.
@@ -424,9 +425,32 @@ class RunJob extends Portlets
 				$params['jobid'] = $this->JobToVerifyJobId->Text;
 			}
 		}
-		$result = $this->getModule('api')->create(['jobs', 'run'], $params);
+
+		// Pre-run job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-run-manually',
+			'Job',
+			$job_name
+		);
+
+		// Run job
+		$api = $this->getModule('api');
+		$result = $api->create(['jobs', 'run'], $params);
+
 		$cc = $this->getPage()->getCallbackClient();
 		if ($result->error === 0) {
+			// Post-run job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-run-manually',
+				'Job',
+				$job_name
+			);
+
 			$started_jobid = $this->getModule('misc')->findJobIdStartedJob($result->output);
 			if (is_numeric($started_jobid)) {
 				if ($this->GoToJobAfterStart->Checked) {

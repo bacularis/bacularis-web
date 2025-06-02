@@ -15,6 +15,7 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\WebUserRoles;
 
 /**
@@ -110,6 +111,7 @@ class BulkApplyPatternsModal extends Portlets
 		$variable_config = $this->getModule('variable_config');
 		$conf_config = $this->getModule('conf_config');
 		$new_config = json_decode(json_encode($result->output), true);
+		$res = [];
 		for ($i = 0; $i < count($patterns); $i++) {
 			for ($j = 0; $j < count($patterns[$i]['configs']); $j++) {
 				$config_raw = $conf_config->getConfConfig($patterns[$i]['configs'][$j]);
@@ -135,14 +137,29 @@ class BulkApplyPatternsModal extends Portlets
 						// Resource exists in configuration, so update it
 						$res_exists = true;
 						$this->applyPatternConfig($config['config'], $new_config[$k][$config['resource']]);
+						$res[] = [
+							'actiona_name' => 'update',
+							'resource_type' => $config['resource'],
+							'resource_name' => $config['config']['Name']
+						];
 						break;
 					}
 				}
 				if (!$res_exists) {
 					// Resource does not exists in configuration, add it as a new
 					$new_config[] = [$config['resource'] => $config['config']];
+					$res[] = [
+						'action_name' => 'create',
+						'resource_type' => $config['resource'],
+						'resource_name' => $config['config']['Name']
+					];
 				}
 			}
+		}
+
+		if (!$simulate) {
+			// Run pre type plugin action
+			$this->runPluginAction('pre', $res);
 		}
 
 		$query = [];
@@ -168,7 +185,11 @@ class BulkApplyPatternsModal extends Portlets
 		);
 		if ($result->error === 0) {
 			if (!$simulate) {
+				// Reload settings
 				$api->set(['console'], ['reload']);
+
+				// Run post type plugin action
+				$this->runPluginAction('post', $res);
 			}
 			$cb->callClientFunction(
 				'oBulkApplyPatternsModal.update_log_status',
@@ -246,6 +267,33 @@ class BulkApplyPatternsModal extends Portlets
 			}
 		}
 		return $configs;
+	}
+
+	/**
+	 * Execute plugin action for given resources.
+	 * This is called both on create and on update resources.
+	 *
+	 * @param string $action_type action type (pre or post)
+	 * @param array $resources resources to use in actions
+	 */
+	private function runPluginAction(string $action_type, array $resources)
+	{
+		$plugin_manager = $this->getModule('plugin_manager');
+		for ($i = 0; $i < count($resources); $i++) {
+			$action = sprintf(
+				'%s-%s-%s',
+				$action_type,
+				$resources[$i]['action_name'],
+				strtolower($resources[$i]['resource_type'])
+			);
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				$action,
+				$resources[$i]['resource_type'],
+				$resources[$i]['resource_name']
+			);
+		}
 	}
 
 	/**
