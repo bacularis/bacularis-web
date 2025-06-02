@@ -45,8 +45,8 @@ abstract class BaculaResourceAction extends BacularisWebPluginBase
 	 * Main run action command.
 	 *
 	 * @param string $action_type action name
-	 * @param string|null $type resource type
-	 * @param string|null $name resource name
+	 * @param null|string $type resource type
+	 * @param null|string $name resource name
 	 */
 	public function run(string $action_type, ?string $type = null, ?string $name = null)
 	{
@@ -70,8 +70,8 @@ abstract class BaculaResourceAction extends BacularisWebPluginBase
 	 * Run single resource type action.
 	 *
 	 * @param string $action action name
-	 * @param string|null $type resource type
-	 * @param string|null $name resource name
+	 * @param null|string $type resource type
+	 * @param null|string $name resource name
 	 */
 	private function runAction(string $action, ?string $type, ?string $name)
 	{

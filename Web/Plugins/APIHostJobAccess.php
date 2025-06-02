@@ -20,6 +20,7 @@ use Bacularis\Common\Modules\IBacularisActionPlugin;
 use Bacularis\Common\Modules\Plugins;
 use Bacularis\Web\Modules\BacularisWebPluginBase;
 use Bacularis\Web\Modules\JobInfo;
+use Bacularis\Web\Modules\OAuth2Record;
 
 /**
  * Add job access to API host plugin module.
@@ -112,8 +113,8 @@ class APIHostJobAccess extends BacularisWebPluginBase implements IBacularisActio
 	/**
 	 * Main run action command.
 	 *
-	 * @param string|null $type resource type
-	 * @param string|null $name resource name
+	 * @param null|string $type resource type
+	 * @param null|string $name resource name
 	 * @return bool true on success, false otherwise
 	 */
 	public function run(?string $type = null, ?string $name = null): bool
