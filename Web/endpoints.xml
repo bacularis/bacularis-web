@@ -36,6 +36,7 @@
 	<url ServiceParameter="Security" pattern="web/security/" />
 	<url ServiceParameter="Deployment" pattern="web/deployment/" />
 	<url ServiceParameter="Patterns" pattern="web/patterns/" />
+	<url ServiceParameter="AddOns" pattern="web/add-ons/" />
 	<url ServiceParameter="NewUserWizard" pattern="web/new/user/" />
 	<url ServiceParameter="ConsoleView" pattern="web/console/" />
 	<url ServiceParameter="NewResource" pattern="web/new/{component_type}/{component_name}/{resource_type}/" parameters.component_type="\w+" parameters.component_name="[a-zA-Z0-9:.\-_ ]+" parameters.resource_type="\w+" />

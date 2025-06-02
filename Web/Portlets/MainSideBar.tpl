@@ -38,8 +38,7 @@
 			<a href="<%=$this->Service->constructUrl('ApplicationSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'ApplicationSettings') ? '' : ' hide'%>" title="<%[ Application settings ]%>"><i class="fa fa-cog"></i></a>
 		</div>
 	</div>
-	<div class="w3-container w3-black">
-		<h5 class="w3-center" style="margin: 6px 0 2px 0">Bacularis Web Menu</h5>
+	<div class="w3-container">
 	</div>
 	<div class="w3-bar-block" style="margin-bottom: 45px;">
 		<!--a href="#" class="w3-bar-item w3-button w3-padding-16 w3-black w3-hover-black w3-hide-large" onclick="W3SideBar.close(); return false;" title="close menu">  <%[ Close Menu ]%> <i class="fa fa-window-close fa-fw w3-right w3-xlarge"></i></a-->
@@ -57,6 +56,7 @@
 		<a href="<%=$this->Service->constructUrl('Security')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Security' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Security') ? '' : ' hide'%>"><i class="fa fa-lock fa-fw"></i>  <%[ Security ]%></a>
 		<a href="<%=$this->Service->constructUrl('Deployment')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Deployment' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Deployment') ? '' : ' hide'%>"><i class="fa-solid fa-rocket fa-fw"></i>  <%[ Deployment ]%></a>
 		<a href="<%=$this->Service->constructUrl('Patterns')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Patterns' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Patterns') ? '' : ' hide'%>"><i class="fa-solid fa-stamp fa-fw"></i>  <%[ Patterns ]%></a>
+		<a href="<%=$this->Service->constructUrl('AddOns')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'AddOns' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'AddOns') ? '' : ' hide'%>"><i class="fa-solid fa-puzzle-piece fa-fw"></i>  <%[ Add-ons ]%></a>
 		<a href="/panel/" class="w3-bar-item w3-button w3-padding<%=(!$this->is_api || !$this->User->isInRole(WebUserRoles::ADMIN)) ? ' hide' : ''%>" target="_blank"><i class="fas fa-exchange-alt fa-rotate-90 fa-fw"></i>  <%[ API Panel ]%></a>
 	</div>
 </nav>

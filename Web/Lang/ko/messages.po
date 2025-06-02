@@ -6534,3 +6534,12 @@ msgstr "Show configs used in patterns"
 
 msgid "Hide configs used in patterns"
 msgstr "Hide configs used in patterns"
+
+msgid "Add-ons"
+msgstr "Add-ons"
+
+msgid "Plugin functions have been moved to Add-ons page available in the main menu."
+msgstr "Plugin functions have been moved to Add-ons page available in the main menu."
+
+msgid "Go to"
+msgstr "Go to"

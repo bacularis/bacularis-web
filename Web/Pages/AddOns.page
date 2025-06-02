@@ -1,0 +1,15 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<header class="w3-container">
+		<h5>
+			<b><i class="fa-solid fa-puzzle-piece"></i> <%[ Add-ons ]%></b>
+		</h5>
+	</header>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<button id="btn_plugins" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'plugins'); oPluginListSettings.table.responsive.recalc(); set_page_tables([oPluginListSettings]);"><%[ Plugins ]%></button>
+	</div>
+	<div class="w3-container tab_item" id="plugins">
+		<com:Bacularis.Common.Portlets.PluginList />
+	</div>
+</com:TContent>
