@@ -148,8 +148,8 @@ var oBaculaConfigSection = {
 		bottombar: 'w3-bottombar',
 		border_red: 'w3-border-red',
 		center: 'w3-center',
-		white: 'w3-white',
-		lgray: 'w3-light-gray',
+		white: 'tabs-window',
+		lgray: 'tabs-normal',
 		top: 'w3-top',
 		modal: 'w3-modal',
 		sidebar: 'w3-sidebar'

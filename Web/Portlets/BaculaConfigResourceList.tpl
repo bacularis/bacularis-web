@@ -243,7 +243,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								span.appendChild(del_btn);
 								return span.outerHTML;
 							},
-							width: '200px'
+							width: '220px'
 						}
 			],
 			responsive: {

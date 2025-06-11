@@ -25,7 +25,7 @@
 						<button id="add_tags_add_btn_<%=$this->ClientID%>" type="button" class="w3-button w3-green" onclick="oTagTools_<%=$this->ClientID%>.assign();"><i class="fa fa-check"></i> &nbsp;<%[ Assign ]%></button>
 					</div>
 					<div id="tag_tools_suggestions_<%=$this->ClientID%>" class="w3-col w3-half w3-border w3-white w3-center" style="width: 320px; position: absolute; z-index: 10; display: none; max-height: 290px; overflow-y: auto; padding: 4px;">
-						<div id="tag_tools_suggestions_new_tag_<%=$this->ClientID%>" class="w3-white pointer btag" style="width: 290px; margin: 0 auto;" onclick="oTagTools_<%=$this->ClientID%>.show_create_tools(true);">
+						<div id="tag_tools_suggestions_new_tag_<%=$this->ClientID%>" class="w3-green pointer btag" style="width: 290px; margin: 0 auto;" onclick="oTagTools_<%=$this->ClientID%>.show_create_tools(true);">
 							<%[ Create a new tag ]%>
 						</div>
 						<div id="tag_tools_suggestions_existing_tags_<%=$this->ClientID%>">
