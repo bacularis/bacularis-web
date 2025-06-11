@@ -3423,9 +3423,6 @@ msgstr "1 linha selecionada"
 msgid "%d rows selected"
 msgstr "%d linhas selecionadas"
 
-msgid "Show _MENU_ entries"
-msgstr "Exibir entradas _MENU_"
-
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "Exibindo _START_ a _END_ de _TOTAL_ registros"
 

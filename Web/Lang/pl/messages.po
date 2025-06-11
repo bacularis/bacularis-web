@@ -3423,9 +3423,6 @@ msgstr "Wybrano 1 wiersz"
 msgid "%d rows selected"
 msgstr "Wybrano %d wierszy"
 
-msgid "Show _MENU_ entries"
-msgstr "Pokaż _MENU_ wierszy"
-
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "Wiersze od _START_ do _END_ z _TOTAL_"
 

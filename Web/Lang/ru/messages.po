@@ -3423,9 +3423,6 @@ msgstr "выбрана 1 строка"
 msgid "%d rows selected"
 msgstr "Выбрано %d строк"
 
-msgid "Show _MENU_ entries"
-msgstr "Показать _MENU_ записей"
-
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "Показаны _START_ по _END_ из _TOTAL_ записей"
 

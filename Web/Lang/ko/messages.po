@@ -3429,9 +3429,6 @@ msgstr "1개의 행이 선택됨"
 msgid "%d rows selected"
 msgstr "%d 개의 행이 선택됨"
 
-msgid "Show _MENU_ entries"
-msgstr "_MENU_ 항목 보기"
-
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "_TOTAL_ 중 _START_ 에서 _END_ 항목 보여주기"
 

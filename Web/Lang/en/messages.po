@@ -3413,9 +3413,6 @@ msgstr "1 row selected"
 msgid "%d rows selected"
 msgstr "%d rows selected"
 
-msgid "Show _MENU_ entries"
-msgstr "Show _MENU_ entries"
-
 msgid "Showing _START_ to _END_ of _TOTAL_ entries"
 msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
 
