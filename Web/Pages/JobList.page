@@ -917,7 +917,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Last successful job ]%></th>
 						<th><%[ Last failed job ]%></th>
 						<th><%[ Enabled ]%></th>
-						<th>Max. concur. jobs</th>
+						<th>Max. con. jobs</th>
 						<th><%[ Priority ]%></th>
 						<th><%[ Tag ]%></th>
 						<th><%[ Actions ]%></th>
@@ -934,7 +934,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 						<th><%[ Last successful job ]%></th>
 						<th><%[ Last failed job ]%></th>
 						<th><%[ Enabled ]%></th>
-						<th>Max. concur. jobs</th>
+						<th>Max. con. jobs</th>
 						<th><%[ Priority ]%></th>
 						<th><%[ Tag ]%></th>
 						<th><%[ Actions ]%></th>
