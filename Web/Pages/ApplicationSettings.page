@@ -24,7 +24,7 @@
 		<a id="btn_application_settings_features" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_features'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Features ]%>
 		</a>
-		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); oPluginListSettings.table.responsive.recalc(); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
+		<a id="btn_application_settings_plugins" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_plugins'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
 			<%[ Plugins ]%>
 		</a>
 		<a id="btn_application_settings_web_server" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'application_settings_web_server'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">
