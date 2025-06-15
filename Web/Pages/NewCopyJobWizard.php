@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
 use Prado\Web\UI\WebControls\TWizard;
@@ -702,6 +703,17 @@ class NewCopyJobWizard extends BaculumWebPage
 
 		// create copy job
 		if ($pool_modified) {
+			$plugin_manager = $this->getModule('plugin_manager');
+
+			// Pre-create job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'pre-create',
+				'Job',
+				$job['Name']
+			);
+
 			$params = [
 				'config',
 				'dir',
@@ -714,6 +726,16 @@ class NewCopyJobWizard extends BaculumWebPage
 			);
 			if ($result->error === 0) {
 				$this->getModule('api')->set(['console'], ['reload']);
+
+				// Post-create job actions
+				$plugin_manager->callPluginActionByType(
+					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+					'run',
+					'post-create',
+					'Job',
+					$job['Name']
+				);
+
 				$this->goToPage('JobList');
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';

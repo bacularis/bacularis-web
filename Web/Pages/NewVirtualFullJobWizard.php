@@ -15,6 +15,7 @@
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Params;
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Web\Javascripts\TJavaScript;
 use Prado\Web\UI\WebControls\TWizard;
@@ -861,13 +862,32 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			$job['Name']
 		];
 
+		$plugin_manager = $this->getModule('plugin_manager');
+
 		$result = (object) ['error' => -1, 'output' => ''];
 		if ($this->WhatToDoWithVirtualFullNewJob->Checked) {
+			// Pre-create job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'pre-create',
+				'Job',
+				$job['Name']
+			);
+
 			$result = $this->getModule('api')->create(
 				$params,
 				['config' => json_encode($job)]
 			);
 		} elseif ($this->WhatToDoWithVirtualFullExistingJob->Checked) {
+			// Pre-update job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'pre-update',
+				'Job',
+				$job['Name']
+			);
 
 			$result = $this->getModule('api')->set(
 				$params,
@@ -876,6 +896,27 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		}
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
+
+			if ($this->WhatToDoWithVirtualFullNewJob->Checked) {
+				// Post-create job actions
+				$plugin_manager->callPluginActionByType(
+					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+					'run',
+					'post-create',
+					'Job',
+					$job['Name']
+				);
+			} elseif ($this->WhatToDoWithVirtualFullExistingJob->Checked) {
+				// Post-update job actions
+				$plugin_manager->callPluginActionByType(
+					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+					'run',
+					'post-update',
+					'Job',
+					$job['Name']
+				);
+			}
+
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_INFO,
 				AuditLog::CATEGORY_CONFIG,

@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Web\UI\WebControls\TWizard;
 
@@ -463,6 +464,18 @@ class NewBackupJobWizard extends BaculumWebPage
 				$job[$directives[$i]] = $val;
 			}
 		}
+
+		$plugin_manager = $this->getModule('plugin_manager');
+
+		// Pre-create job actions
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-create',
+			'Job',
+			$job['Name']
+		);
+
 		$params = [
 			'config',
 			'dir',
@@ -475,6 +488,16 @@ class NewBackupJobWizard extends BaculumWebPage
 		);
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
+
+			// Post-create job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-create',
+				'Job',
+				$job['Name']
+			);
+
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'None';

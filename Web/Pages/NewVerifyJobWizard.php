@@ -13,6 +13,7 @@
  * terms pursuant to its AGPLv3 Section 7.
  */
 
+use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -660,6 +661,16 @@ class NewVerifyJobWizard extends BaculumWebPage
 				$job['Fileset'] = $result->output[0]->Fileset->Name;
 			}
 		}
+		$plugin_manager = $this->getModule('plugin_manager');
+
+		// Pre-create job actions
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-create',
+			'Job',
+			$job['Name']
+		);
 
 		$params = [
 			'config',
@@ -673,6 +684,16 @@ class NewVerifyJobWizard extends BaculumWebPage
 		);
 		if ($result->error === 0) {
 			$this->getModule('api')->set(['console'], ['reload']);
+
+			// Post-create job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-create',
+				'Job',
+				$job['Name']
+			);
+
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'Dynamic';
