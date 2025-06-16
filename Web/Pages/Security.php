@@ -2770,7 +2770,8 @@ class Security extends BaculumWebPage
 	 */
 	private function setJobResourceAccess($api_host, $jobs)
 	{
-		$result = $this->getModule('api')->get([
+		$api = $this->getModule('api');
+		$result = $api->get([
 			'config',
 			'dir',
 			'Job',
@@ -2795,7 +2796,9 @@ class Security extends BaculumWebPage
 			'StorageAcl' => [],
 			'FilesetAcl' => [],
 			'PoolAcl' => [],
-			'ScheduleAcl' => [],
+			'ScheduleAcl' => []
+		];
+		$to_new_acls = [
 			'CatalogAcl' => ['*all*'],
 			'WhereAcl' => ['*all*'],
 			'CommandAcl' => JobInfo::COMMAND_ACL_USED_BY_WEB
@@ -2829,7 +2832,10 @@ class Security extends BaculumWebPage
 			}
 		}
 
-		$result = $this->getModule('api')->create([
+		// Add default fields for new Console ACL
+		$acls = array_merge($acls, $to_new_acls);
+
+		$result = $api->create([
 			'config',
 			'dir',
 			'Console',
@@ -2839,19 +2845,57 @@ class Security extends BaculumWebPage
 		], $api_host);
 
 		if ($result->error === 0) {
-			$this->getModule('api')->set(['console'], ['reload']);
+			$api->set(['console'], ['reload']);
 		} elseif ($result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
 			// Config exists, so try to update it
-			$result = $this->getModule('api')->set([
+
+			// Filter only values required for update, without updating the rest
+			$acls = array_filter(
+				$acls,
+				fn ($key) => !key_exists($key, $to_new_acls),
+				ARRAY_FILTER_USE_KEY
+			);
+
+			$result = $api->get([
 				'config',
 				'dir',
 				'Console',
 				$acls['Name']
-			], [
-				'config' => json_encode($acls)
 			], $api_host);
+
 			if ($result->error === 0) {
-				$this->getModule('api')->set(['console'], ['reload']);
+				$console = json_decode(json_encode($result->output), true);
+				foreach ($acls as $directive_name => $directive_value) {
+					if (key_exists($directive_name, $console)) {
+						// Directive exists in console, update it
+						if (is_array($console[$directive_name])) {
+							$console[$directive_name] = array_values(
+								array_unique(
+									array_merge($console[$directive_name], $directive_value)
+								)
+							);
+						} else {
+							$console[$directive_name] = $directive_value;
+						}
+					} else {
+						// Directive does not exist in console, add it
+						$console[$directive_name] = $directive_value;
+					}
+				}
+				$acls = $console;
+
+				$result = $api->set([
+					'config',
+					'dir',
+					'Console',
+					$acls['Name']
+				], [
+					'config' => json_encode($acls)
+				], $api_host);
+			}
+
+			if ($result->error === 0) {
+				$api->set(['console'], ['reload']);
 			} else {
 				$cb->update(
 					'api_host_access_window_error',
