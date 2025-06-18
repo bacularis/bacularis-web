@@ -6540,3 +6540,6 @@ msgstr "Plugin functions have been moved to Add-ons page available in the main m
 
 msgid "Go to"
 msgstr "Go to"
+
+msgid "Plugin not installed"
+msgstr "Plugin not installed"
