@@ -233,10 +233,9 @@ class BulkApplyConfigsModal extends Portlets
 	{
 		$plugin_manager = $this->getModule('plugin_manager');
 		$action = sprintf(
-			'%s-%s-%s',
+			'%s-%s',
 			$action_type,
-			$action_name,
-			strtolower($resource_type)
+			$action_name
 		);
 		$plugin_manager->callPluginActionByType(
 			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,

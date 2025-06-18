@@ -138,7 +138,7 @@ class BulkApplyPatternsModal extends Portlets
 						$res_exists = true;
 						$this->applyPatternConfig($config['config'], $new_config[$k][$config['resource']]);
 						$res[] = [
-							'actiona_name' => 'update',
+							'action_name' => 'update',
 							'resource_type' => $config['resource'],
 							'resource_name' => $config['config']['Name']
 						];
@@ -281,10 +281,9 @@ class BulkApplyPatternsModal extends Portlets
 		$plugin_manager = $this->getModule('plugin_manager');
 		for ($i = 0; $i < count($resources); $i++) {
 			$action = sprintf(
-				'%s-%s-%s',
+				'%s-%s',
 				$action_type,
-				$resources[$i]['action_name'],
-				strtolower($resources[$i]['resource_type'])
+				$resources[$i]['action_name']
 			);
 			$plugin_manager->callPluginActionByType(
 				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
