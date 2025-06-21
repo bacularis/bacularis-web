@@ -1856,14 +1856,14 @@ $(function() {
 						<div class="w3-row directive_field">
 							<p><com:TActiveRadioButton
 								ID="UserAPIHostResourceAccessAllResources"
-								GroupName="APIHostResourceAccess"
+								GroupName="UserAPIHostResourceAccess"
 								CssClass="w3-radio"
 								Attributes.onclick="$('#user_access_window_select_jobs').slideUp();"
 								Checked="true"
 								/> <label for="<%=$this->UserAPIHostResourceAccessAllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
 							<p><com:TActiveRadioButton
 								ID="UserAPIHostResourceAccessSelectedResources"
-								GroupName="APIHostResourceAccess"
+								GroupName="UserAPIHostResourceAccess"
 								CssClass="w3-radio"
 								Attributes.onclick="$('#user_access_window_select_jobs').slideDown();"
 								/> <label for="<%=$this->UserAPIHostResourceAccessSelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
@@ -1883,12 +1883,12 @@ $(function() {
 								<com:TRequiredFieldValidator
 									ControlCssClass="field_invalid"
 									Display="Dynamic"
-									ControlToValidate="APIHostResourceAccessJobs"
+									ControlToValidate="UserAPIHostResourceAccessJobs"
 									ValidationGroup="UserAPIHostResourceAccessGroup"
 									ErrorMessage="<%[ Field required. ]%>"
 								>
 									<prop:ClientSide.OnValidate>
-										const radio = document.getElementById('<%=$this->APIHostResourceAccessSelectedResources->ClientID%>');
+										const radio = document.getElementById('<%=$this->UserAPIHostResourceAccessSelectedResources->ClientID%>');
 										sender.enabled = radio.checked;
 									</prop:ClientSide.OnValidate>
 								</com:TRequiredFieldValidator>
@@ -4938,14 +4938,14 @@ $(function() {
 					<div class="w3-row directive_field">
 						<p><com:TActiveRadioButton
 							ID="APIHostGroupAPIHostResourceAccessAllResources"
-							GroupName="APIHostResourceAccess"
+							GroupName="APIHostGroupAPIHostResourceAccess"
 							CssClass="w3-radio"
 							Attributes.onclick="$('#api_host_group_access_window_select_jobs').slideUp();"
 							Checked="true"
 							/> <label for="<%=$this->APIHostGroupAPIHostResourceAccessAllResources->ClientID%>"><%[ Access to all shared API host resources (all jobs, all clients, all storages...etc.) ]%></label></p>
 						<p><com:TActiveRadioButton
 							ID="APIHostGroupAPIHostResourceAccessSelectedResources"
-							GroupName="APIHostResourceAccess"
+							GroupName="APIHostGroupAPIHostResourceAccess"
 							CssClass="w3-radio"
 							Attributes.onclick="$('#api_host_group_access_window_select_jobs').slideDown();"
 							/> <label for="<%=$this->APIHostGroupAPIHostResourceAccessSelectedResources->ClientID%>"><%[ Access to selected resources only ]%></label></p>
@@ -4965,12 +4965,12 @@ $(function() {
 							<com:TRequiredFieldValidator
 								ControlCssClass="field_invalid"
 								Display="Dynamic"
-								ControlToValidate="APIHostResourceAccessJobs"
+								ControlToValidate="APIHostGroupAPIHostResourceAccessJobs"
 								ValidationGroup="APIHostGroupAPIHostResourceAccessGroup"
 								ErrorMessage="<%[ Field required. ]%>"
 							>
 								<prop:ClientSide.OnValidate>
-									const radio = document.getElementById('<%=$this->APIHostResourceAccessSelectedResources->ClientID%>');
+									const radio = document.getElementById('<%=$this->APIHostGroupAPIHostResourceAccessSelectedResources->ClientID%>');
 									sender.enabled = radio.checked;
 								</prop:ClientSide.OnValidate>
 							</com:TRequiredFieldValidator>
