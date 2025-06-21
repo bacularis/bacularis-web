@@ -2788,7 +2788,7 @@ class Security extends BaculumWebPage
 			return '';
 		}
 
-		$acls = [
+		$acls_base = [
 			'Name' => 'Console - ' . $api_host,
 			'Password' => $this->getModule('crypto')->getRandomString(40),
 			'JobAcl' => [],
@@ -2807,25 +2807,25 @@ class Security extends BaculumWebPage
 			for ($j = 0; $j < count($result->output); $j++) {
 				if ($result->output[$j]->Job->Name === $jobs[$i]) {
 					// job
-					$acls['JobAcl'][] = $result->output[$j]->Job->Name;
+					$acls_base['JobAcl'][] = $result->output[$j]->Job->Name;
 					// client
-					if (!in_array($result->output[$j]->Job->Client, $acls['ClientAcl'])) {
-						$acls['ClientAcl'][] = $result->output[$j]->Job->Client;
+					if (!in_array($result->output[$j]->Job->Client, $acls_base['ClientAcl'])) {
+						$acls_base['ClientAcl'][] = $result->output[$j]->Job->Client;
 					}
 					// storage
-					$acls['StorageAcl'] = array_merge($acls['StorageAcl'], $result->output[$j]->Job->Storage);
-					$acls['StorageAcl'] = array_unique($acls['StorageAcl']);
+					$acls_base['StorageAcl'] = array_merge($acls_base['StorageAcl'], $result->output[$j]->Job->Storage);
+					$acls_base['StorageAcl'] = array_unique($acls_base['StorageAcl']);
 					// fileset
-					if (!in_array($result->output[$j]->Job->Fileset, $acls['FilesetAcl'])) {
-						$acls['FilesetAcl'][] = $result->output[$j]->Job->Fileset;
+					if (!in_array($result->output[$j]->Job->Fileset, $acls_base['FilesetAcl'])) {
+						$acls_base['FilesetAcl'][] = $result->output[$j]->Job->Fileset;
 					}
 					// pool
-					if (!in_array($result->output[$j]->Job->Pool, $acls['PoolAcl'])) {
-						$acls['PoolAcl'][] = $result->output[$j]->Job->Pool;
+					if (!in_array($result->output[$j]->Job->Pool, $acls_base['PoolAcl'])) {
+						$acls_base['PoolAcl'][] = $result->output[$j]->Job->Pool;
 					}
 					// schedule
-					if (property_exists($result->output[$j]->Job, 'Schedule') && !in_array($result->output[$j]->Job->Schedule, $acls['ScheduleAcl'])) {
-						$acls['ScheduleAcl'][] = $result->output[$j]->Job->Schedule;
+					if (property_exists($result->output[$j]->Job, 'Schedule') && !in_array($result->output[$j]->Job->Schedule, $acls_base['ScheduleAcl'])) {
+						$acls_base['ScheduleAcl'][] = $result->output[$j]->Job->Schedule;
 					}
 					break;
 				}
@@ -2833,13 +2833,13 @@ class Security extends BaculumWebPage
 		}
 
 		// Add default fields for new Console ACL
-		$acls = array_merge($acls, $to_new_acls);
+		$acls = array_merge($acls_base, $to_new_acls);
 
 		$result = $api->create([
 			'config',
 			'dir',
 			'Console',
-			$acls['Name']
+			$acls_base['Name']
 		], [
 			'config' => json_encode($acls)
 		], $api_host);
@@ -2848,71 +2848,46 @@ class Security extends BaculumWebPage
 			$api->set(['console'], ['reload']);
 		} elseif ($result->error === BaculaConfigError::ERROR_CONFIG_ALREADY_EXISTS) {
 			// Config exists, so try to update it
-
-			// Filter only values required for update, without updating the rest
-			$acls = array_filter(
-				$acls,
-				fn ($key) => !key_exists($key, $to_new_acls),
-				ARRAY_FILTER_USE_KEY
-			);
-
 			$result = $api->get([
 				'config',
 				'dir',
 				'Console',
-				$acls['Name']
+				$acls_base['Name']
 			], $api_host);
 
 			if ($result->error === 0) {
 				$console = json_decode(json_encode($result->output), true);
-				foreach ($acls as $directive_name => $directive_value) {
-					if (key_exists($directive_name, $console)) {
-						// Directive exists in console, update it
-						if (is_array($console[$directive_name])) {
-							$console[$directive_name] = array_values(
-								array_unique(
-									array_merge($console[$directive_name], $directive_value)
-								)
-							);
-						} else {
-							$console[$directive_name] = $directive_value;
-						}
-					} else {
-						// Directive does not exist in console, add it
-						$console[$directive_name] = $directive_value;
-					}
+
+				// overwrite base console directives (JobAcl, ClientAcl, StorageAcl...etc) using new values
+				foreach ($acls_base as $directive_name => $directive_value) {
+					$console[$directive_name] = $directive_value;
 				}
-				$acls = $console;
 
 				$result = $api->set([
 					'config',
 					'dir',
 					'Console',
-					$acls['Name']
+					$acls_base['Name']
 				], [
-					'config' => json_encode($acls)
+					'config' => json_encode($console)
 				], $api_host);
-			}
 
-			if ($result->error === 0) {
-				$api->set(['console'], ['reload']);
-			} else {
-				$cb->update(
-					'api_host_access_window_error',
-					$result->output
-				);
-				$cb->show('api_host_access_window_error');
-				return '';
+				if ($result->error === 0) {
+					$api->set(['console'], ['reload']);
+				}
 			}
-		} else {
+		}
+
+		$ret = $acls_base['Name'];
+		if ($result->error != 0) {
 			$cb->update(
 				'api_host_access_window_error',
 				$result->output
 			);
 			$cb->show('api_host_access_window_error');
-			return '';
+			$ret = '';
 		}
-		return $acls['Name'];
+		return $ret;
 	}
 
 	/**
