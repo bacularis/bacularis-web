@@ -122,8 +122,8 @@
 			CausesValidation="true"
 			CssClass="w3-button w3-green"
 			OnClick="updateVolume"
-			ClientSide.OnLoading="$('#status_volume_loading').show();"
-			ClientSide.OnSuccess="$('#status_volume_loading').hide();"
+			ClientSide.OnLoading="$('#status_volume_loading').css('visibility', 'visible');"
+			ClientSide.OnSuccess="$('#status_volume_loading').css('visibility', 'hidden');"
 			Attributes.onclick="<%=$this->DisplayLog ? 'true' : 'false'%> ? document.getElementById('volume_config_log').style.display = '' : '';"
 		>
 			<prop:Text>
@@ -134,6 +134,6 @@
 				<%=$this->SaveVolumeActionOk%>
 			</prop:ClientSide.OnComplete>
 		</com:TActiveLinkButton>
-		<i id="status_volume_loading" class="fa fa-sync w3-spin" style="display: none; vertical-align: super;"></i>
+		<i id="status_volume_loading" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden; vertical-align: baseline;"></i>
 	</div>
 </div>
