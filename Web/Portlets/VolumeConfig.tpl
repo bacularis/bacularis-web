@@ -134,6 +134,6 @@
 				<%=$this->SaveVolumeActionOk%>
 			</prop:ClientSide.OnComplete>
 		</com:TActiveLinkButton>
-		<i id="status_volume_loading" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden; vertical-align: baseline;"></i>
+		<i id="status_volume_loading" class="fa fa-sync w3-spin w3-margin-left" style="visibility: hidden;"></i>
 	</div>
 </div>
