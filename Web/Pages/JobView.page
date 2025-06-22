@@ -1634,8 +1634,11 @@ var oJobHistoryList = {
 				targets: 0
 			},
 			{
-				className: 'action_col',
 				orderable: false,
+				targets: [ 1, 2, 35 ]
+			},
+			{
+				className: 'action_col',
 				targets: [ 35 ]
 			},
 			{
