@@ -11,14 +11,12 @@
 		<div class="w3-col w3-quarter"><com:TLabel ForControl="VolumeStatus" Text="<%[ Volume status: ]%>" /></div>
 		<div class="w3-half">
 			<com:TActiveDropDownList ID="VolumeStatus" AutoPostBack="false" CssClass="w3-select w3-border" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 		</div>
 	</div>
 	<div class="w3-row w3-section directive_field">
 		<div class="w3-col w3-quarter"><com:TLabel ForControl="Pool" Text="<%[ Pool: ]%>" /></div>
 		<div class="w3-half">
 			<com:TActiveDropDownList ID="Pool" AutoPostBack="false" CssClass="w3-select w3-border" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 		</div>
 	</div>
 	<div class="w3-row w3-section">
@@ -28,7 +26,6 @@
 			Label="<%[ Vol. retention ]%>"
 			ValidationGroup="VolumeGroup"
 			Show="true"
-			Required="true"
 			ShowResetButton="false"
 			ShowRemoveButton="false"
 			TimeFormat="hour"
@@ -41,7 +38,6 @@
 			Label="<%[ Vol. use duration ]%>"
 			ValidationGroup="VolumeGroup"
 			Show="true"
-			Required="true"
 			ShowResetButton="false"
 			ShowRemoveButton="false"
 			TimeFormat="hour"
@@ -51,7 +47,6 @@
 		<div class="w3-col w3-quarter"><%[ Max. vol. jobs: ]%></div>
 		<div class="w3-half">
 			<com:TActiveTextBox ID="MaxVolJobs" AutoPostBack="false" CssClass="w3-input w3-border w3-show-inline-block smallbox" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 			<com:TDataTypeValidator
 				ValidationGroup="VolumeGroup"
 				ControlToValidate="MaxVolJobs"
@@ -59,31 +54,18 @@
 				Display="None"
 				DataType="Integer"
 			/>
-			<com:TRequiredFieldValidator
-				ValidationGroup="VolumeGroup"
-				Display="Dynamic"
-				ControlToValidate="MaxVolJobs"
-				Text="<%[ Field required. ]%>"
-			/>
 		</div>
 	</div>
 	<div class="w3-row w3-section">
 		<div class="w3-col w3-quarter"><%[ Max. vol. files: ]%></div>
 		<div class="w3-half">
 			<com:TActiveTextBox ID="MaxVolFiles" AutoPostBack="false" CssClass="w3-input w3-border w3-show-inline-block smallbox" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 			<com:TDataTypeValidator
 				ValidationGroup="VolumeGroup"
 				ControlToValidate="MaxVolFiles"
 				ErrorMessage="<%[ Max. vol. files value must be integer. ]%>"
 				Display="None"
 				DataType="Integer"
-			/>
-			<com:TRequiredFieldValidator
-				ValidationGroup="VolumeGroup"
-				Display="Dynamic"
-				ControlToValidate="MaxVolFiles"
-				Text="<%[ Field required. ]%>"
 			/>
 		</div>
 	</div>
@@ -102,7 +84,6 @@
 		<div class="w3-col w3-quarter"><%[ Slot number: ]%></div>
 		<div class="w3-half">
 			<com:TActiveTextBox ID="Slot" AutoPostBack="false" CssClass="w3-input w3-border w3-show-inline-block smallbox" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 			<com:TDataTypeValidator
 				ValidationGroup="VolumeGroup"
 				ControlToValidate="Slot"
@@ -110,33 +91,24 @@
 				Display="None"
 				DataType="Integer"
 			/>
-			<com:TRequiredFieldValidator
-				ValidationGroup="VolumeGroup"
-				Display="Dynamic"
-				ControlToValidate="Slot"
-				Text="<%[ Field required. ]%>"
-			/>
 		</div>
 	</div>
 	<div class="w3-row w3-section">
 		<div class="w3-col w3-quarter"><%[ Recycle: ]%></div>
 		<div class="w3-half">
 			<com:TActiveCheckBox ID="Recycle" AutoPostBack="false" CssClass="w3-check" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 		</div>
 	</div>
 	<div class="w3-row w3-section">
 		<div class="w3-col w3-quarter"><%[ Enabled: ]%></div>
 		<div class="w3-half">
 			<com:TActiveCheckBox ID="Enabled" AutoPostBack="false" CssClass="w3-check" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 		</div>
 	</div>
 	<div class="w3-row w3-section">
 		<div class="w3-col w3-quarter"><%[ InChanger: ]%></div>
 		<div class="w3-half">
 			<com:TActiveCheckBox ID="InChanger" AutoPostBack="false" CssClass="w3-check" />
-			<i class="fa fa-asterisk w3-text-red"></i>
 		</div>
 	</div>
 	<div id="volume_config_log" class="w3-panel w3-card" style="display: none">
