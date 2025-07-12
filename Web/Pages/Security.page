@@ -53,6 +53,8 @@
 			<div id="auth_idp_list" class="subtab_item" style="display: none">
 				<com:Bacularis.Web.Portlets.AuthenticationIdentityProviders
 					ID="AuthIdentityProviders"
+					OnSaveIdP="postSaveIdP"
+					OnRemoveIdP="postRemoveIdP"
 				/>
 			</div>
 		</div>

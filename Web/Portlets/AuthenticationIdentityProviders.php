@@ -18,6 +18,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Web\Modules\IdentityProviderConfig;
+use Bacularis\Web\Modules\OrganizationConfig;
 
 /**
  * Authentication identity providers control.
@@ -45,6 +46,7 @@ class AuthenticationIdentityProviders extends Security
 		$idps = $idp_config->getConfig();
 
 		$vals = array_values($idps);
+		$this->addIdPRelationInfo($vals);
 		for ($i = 0; $i < count($vals); $i++) {
 			$vals[$i]['idp_type'] = IdentityProviderConfig::getIDPDescByType($vals[$i]['type']);
 		}
@@ -53,6 +55,33 @@ class AuthenticationIdentityProviders extends Security
 		$cb->callClientFunction('oIdPs.load_idp_list_cb', [
 			$vals
 		]);
+	}
+
+	/**
+	 * Add IdP relations.
+	 *
+	 * @param array IdP configuration
+	 */
+	private function addIdPRelationInfo(&$vals)
+	{
+		$org_config = $this->getModule('org_config');
+		$orgs = $org_config->getConfig();
+		$org_list = array_values($orgs);
+		$org_list_len = count($org_list);
+
+		$rels = [];
+		for ($i = 0; $i < count($vals); $i++) {
+			$vals[$i]['orgs'] = [];
+			for ($j = 0; $j < $org_list_len; $j++) {
+				if ($org_list[$j]['auth_type'] !== OrganizationConfig::AUTH_TYPE_IDP) {
+					continue;
+				}
+				if ($vals[$i]['name'] !== $org_list[$j]['identity_provider']) {
+					continue;
+				}
+				$vals[$i]['orgs'][] = $org_list[$j]['name'];
+			}
+		}
 	}
 
 	/**
@@ -210,8 +239,20 @@ class AuthenticationIdentityProviders extends Security
 			}
 		}
 
+		$this->onSaveIdP(null);
+
 		// Refresh identity provider list
 		$this->setIdPList($sender, $param);
+	}
+
+	/**
+	 * On save IdP event.
+	 *
+	 * @param mixed $param event parameter
+	 */
+	public function onSaveIdP($param)
+	{
+		$this->raiseEvent('OnSaveIdP', $this, $param);
 	}
 
 	/**
@@ -249,7 +290,19 @@ class AuthenticationIdentityProviders extends Security
 	 */
 	public function removeIdPs($sender, $param)
 	{
-		$names = explode('|', $param->getCallbackParameter());
+		$idps = $param->getCallbackParameter();
+		$idp_list = json_decode(json_encode($idps), true);
+
+		$names = [];
+		$names_fbd = [];
+		for ($i = 0; $i < count($idp_list); $i++) {
+			if (count($idp_list[$i]['orgs']) > 0) {
+				$names_fbd[] = ['name' => $idp_list[$i]['name']];
+			} else {
+				$names[] = $idp_list[$i]['name'];
+			}
+		}
+
 		$idp_config = $this->getModule('idp_config');
 		$result = $idp_config->removeIdentityProvidersConfig($names);
 		if ($result === true) {
@@ -262,7 +315,26 @@ class AuthenticationIdentityProviders extends Security
 			}
 		}
 
+		if (count($names_fbd) > 0) {
+			$this->IdPFbd->DataSource = $names_fbd;
+			$this->IdPFbd->dataBind();
+			$cb = $this->getPage()->getCallbackClient();
+			$cb->show('idp_action_rm_warning_window');
+		}
+
+		$this->onRemoveIdP(null);
+
 		// Refresh identity provider list
 		$this->setIdPList($sender, $param);
+	}
+
+	/**
+	 * On remove IdP event.
+	 *
+	 * @param mixed $param event parameter
+	 */
+	public function onRemoveIdP($param)
+	{
+		$this->raiseEvent('OnRemoveIdP', $this, $param);
 	}
 }

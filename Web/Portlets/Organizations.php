@@ -49,6 +49,7 @@ class Organizations extends Security
 		$idps = $idp_config->getConfig();
 
 		$vals = array_values($orgs);
+		$this->addOrganizationStatsInfo($vals);
 		for ($i = 0; $i < count($vals); $i++) {
 			$idp_type = ($idps[$vals[$i]['identity_provider']]['type'] ?? '-');
 			$vals[$i]['idp_type'] = IdentityProviderConfig::getIDPDescByType($idp_type);
@@ -78,6 +79,37 @@ class Organizations extends Security
 		array_unshift($idp_ids, '');
 		$this->OrganizationIdP->DataSource = array_combine($idp_ids, $idp_ids);
 		$this->OrganizationIdP->dataBind();
+	}
+
+	/**
+	 * Add organization statistics.
+	 *
+	 * @param array organization configuration
+	 */
+	private function addOrganizationStatsInfo(&$vals)
+	{
+		$user_config = $this->getModule('user_config');
+		$users = $user_config->getConfig();
+		$user_list = array_values($users);
+		$user_list_len = count($user_list);
+		$stats = [];
+		for ($i = 0; $i < $user_list_len; $i++)	{
+			$org_id = $user_list[$i]['organization_id'] ?? '';
+			if (!$org_id) {
+				continue;
+			}
+			if (!key_exists($org_id, $stats)) {
+				$stats[$org_id] = 0;
+			}
+			$stats[$org_id]++;
+		}
+		for ($i = 0; $i < count($vals); $i++) {
+			if (!key_exists($vals[$i]['name'], $stats)) {
+				$vals[$i]['user_no'] = 0;
+				continue;
+			}
+			$vals[$i]['user_no'] = $stats[$vals[$i]['name']];
+		}
 	}
 
 	/**
@@ -210,7 +242,17 @@ class Organizations extends Security
 	 */
 	public function removeOrganizations($sender, $param)
 	{
-		$names = explode('|', $param->getCallbackParameter());
+		$rm_orgs = $param->getCallbackParameter();
+		$rm_orgs = json_decode(json_encode($rm_orgs), true);
+		$names = [];
+		$names_fbd = [];
+		for ($i = 0; $i < count($rm_orgs); $i++) {
+			if ($rm_orgs[$i]['user_no'] > 0) {
+				$names_fbd[] = ['name' => $rm_orgs[$i]['name']];
+			} else {
+				$names[] = $rm_orgs[$i]['name'];
+			}
+		}
 		$org_config = $this->getModule('org_config');
 		$result = $org_config->removeOrganizationsConfig($names);
 		if ($result === true) {
@@ -227,6 +269,13 @@ class Organizations extends Security
 
 		// Refresh organization list
 		$this->setOrganizationList($sender, $param);
+
+		if (count($names_fbd) > 0) {
+			$this->OrganizationFbd->DataSource = $names_fbd;
+			$this->OrganizationFbd->dataBind();
+			$cb = $this->getPage()->getCallbackClient();
+			$cb->show('organization_action_rm_warning_window');
+		}
 	}
 
 	/**

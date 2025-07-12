@@ -11,8 +11,9 @@
 				<th></th>
 				<th>ID</th>
 				<th><%[ Name ]%></th>
+				<th># <%[ Users ]%></th>
 				<th class="w3-center"><%[ Auth type ]%></th>
-				<th class="w3-center"><%[ IdP name ]%></th>
+				<th class="w3-center"><%[ IdP ID ]%></th>
 				<th class="w3-center"><%[ IdP type ]%></th>
 				<th class="w3-center"><%[ Enabled ]%></th>
 				<th class="w3-center"><%[ Tag ]%></th>
@@ -25,8 +26,9 @@
 				<th></th>
 				<th>ID</th>
 				<th><%[ Name ]%></th>
+				<th># <%[ Users ]%></th>
 				<th class="w3-center"><%[ Auth type ]%></th>
-				<th class="w3-center"><%[ IdP name ]%></th>
+				<th class="w3-center"><%[ IdP ID ]%></th>
 				<th class="w3-center"><%[ IdP type ]%></th>
 				<th class="w3-center"><%[ Enabled ]%></th>
 				<th class="w3-center"><%[ Tag ]%></th>
@@ -47,7 +49,7 @@ var oOrganizationList = {
 		{
 			action: 'remove',
 			label: '<%[ Remove ]%>',
-			value: 'name',
+			value: ['name', 'user_no'],
 			callback: <%=$this->RemoveOrganizationsAction->ActiveControl->Javascript%>
 		}
 	],
@@ -120,6 +122,7 @@ var oOrganizationList = {
 				},
 				{data: 'name'},
 				{data: 'full_name'},
+				{data: 'user_no'},
 				{
 					data: 'auth_type',
 					render: function(data, type, row) {
@@ -215,11 +218,11 @@ var oOrganizationList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 8 ]
+				targets: [ 9 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4, 5, 6 ]
+				targets: [ 3, 4, 5, 6, 7 ]
 			}],
 			select: {
 				style:    'os',
@@ -233,7 +236,7 @@ var oOrganizationList = {
 		});
 	},
 	set_filters: function(api) {
-		api.columns([2, 3, 4, 5]).every(function () {
+		api.columns([2, 3, 4, 5, 6, 7]).every(function () {
 			const column = this;
 			const select = $('<select class="dt-select"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
@@ -245,13 +248,29 @@ var oOrganizationList = {
 				.search(val ? '^' + val + '$' : '', true, false)
 				.draw();
 			});
-			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column[0][0] == 7) { // Enabled column
+					column.data().sort().unique().each(function (d, j) {
+						let ds = '';
+						if (d === '1') {
+							ds = '<%[ Enabled ]%>';
+						} else if (d === '0') {
+							ds = '<%[ Disabled ]%>';
+						}
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
+						} else if (ds) {
+							select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+						}
+					});
+				} else {
+					column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else if(d) {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
 				}
-			});
 		});
 	},
 	set_bulk_actions: function() {
@@ -319,7 +338,10 @@ var oOrganizations = {
 		const cpi = document.getElementById('<%=$this->OrganizationLoginBtnColor->ClientID%>');
 		const cpb = document.getElementById('<%=$this->OrganizationLoginBtnColor->ClientID%>_button');
 		cpi.value = cpb.style.backgroundColor = '<%=$this->OrganizationLoginBtnColor->Text%>';
-		
+
+		// reset auth type/idp
+		const type_idp = document.getElementById('organization_window_auth_type_idp');
+		type_idp.style.display = 'none';
 	},
 	save_organization_cb: function() {
 		document.getElementById('organization_window').style.display = 'none';
@@ -487,4 +509,31 @@ $(function() {
 		</footer>
 	</div>
 	<com:TActiveHiddenField ID="OrganizationWindowType" />
+</div>
+<div id="organization_action_rm_warning_window" class="w3-modal">
+	<div class="w3-modal-content w3-animate-top w3-card-4">
+		<header class="w3-container w3-orange">
+			<span onclick="document.getElementById('organization_action_rm_warning_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+			<h2 id="organization_action_rm_warning_window_title_add"><%[ Warning ]%></h2>
+		</header>
+		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+			<p><%[ The following organizations cannot be removed because they contain users. Please unassign users from these organizations and try again. ]%></p>
+			<com:TActiveRepeater
+				ID="OrganizationFbd"
+			>
+				<prop:HeaderTemplate>
+					<ul>
+				</prop:HeaderTemplate>
+				<prop:ItemTemplate>
+					<li><%#$this->Data['name']%></li>
+				</prop:ItemTemplate>
+				<prop:FooterTemplate>
+					</ul>
+				</prop:FooterTemplate>
+			</com:TActiveRepeater>
+		</div>
+		<footer class="w3-container w3-center">
+			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="document.getElementById('organization_action_rm_warning_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+		</footer>
+	</div>
 </div>

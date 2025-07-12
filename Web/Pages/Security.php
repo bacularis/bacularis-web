@@ -41,12 +41,18 @@ class Security extends BaculumWebPage
 	{
 		// refresh organization list
 		$this->Users->initUserWindow();
+
+		// refresh IdP list
+		$this->AuthIdentityProviders->setIdPList($sender, $param);
 	}
 
 	public function postRemoveOrganization($sender, $param)
 	{
 		// refresh organization list
 		$this->Users->initUserWindow();
+
+		// refresh IdP list
+		$this->AuthIdentityProviders->setIdPList($sender, $param);
 	}
 
 	public function postImportUsers($sender, $param)
@@ -58,16 +64,33 @@ class Security extends BaculumWebPage
 		$this->Roles->setRoleList($sender, $param);
 	}
 
+	public function postSaveIdP($sender, $param)
+	{
+		// refresh organization list
+		$this->Organizations->setOrganizationList($sender, $param);
+	}
+
+	public function postRemoveIdP($sender, $param)
+	{
+		// so far nothing to do
+	}
+
 	public function postSaveUser($sender, $param)
 	{
 		// refresh role list
 		$this->Roles->setRoleList($sender, $param);
+
+		// refresh organization list
+		$this->Organizations->setOrganizationList($sender, $param);
 	}
 
 	public function postRemoveUser($sender, $param)
 	{
 		// refresh role list
 		$this->Roles->setRoleList($sender, $param);
+
+		// refresh organization list
+		$this->Organizations->setOrganizationList($sender, $param);
 	}
 
 	public function postSaveRole($sender, $param)

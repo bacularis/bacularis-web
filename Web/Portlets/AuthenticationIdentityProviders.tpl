@@ -13,6 +13,7 @@
 				<th><%[ Name ]%></th>
 				<th class="w3-center"><%[ Type ]%></th>
 				<th class="w3-center"><%[ Enabled ]%></th>
+				<th class="w3-center"><%[ In use by ]%></th>
 				<th class="w3-center"><%[ Tag ]%></th>
 				<th class="w3-center"><%[ Actions ]%></th>
 			</tr>
@@ -25,6 +26,7 @@
 				<th><%[ Name ]%></th>
 				<th class="w3-center"><%[ Type ]%></th>
 				<th class="w3-center"><%[ Enabled ]%></th>
+				<th class="w3-center"><%[ In use by ]%></th>
 				<th class="w3-center"><%[ Tag ]%></th>
 				<th class="w3-center"><%[ Actions ]%></th>
 			</tr>
@@ -43,7 +45,7 @@ var oIdPList = {
 		{
 			action: 'remove',
 			label: '<%[ Remove ]%>',
-			value: 'name',
+			value: ['name', 'orgs'],
 			callback: <%=$this->RemoveIdPsAction->ActiveControl->Javascript%>
 		}
 	],
@@ -135,6 +137,10 @@ var oIdPList = {
 					}
 				},
 				{
+					data: 'orgs',
+					render: render_string_short,
+				},
+				{
 					data: 'name',
 					render: (data, type, row) => {
 						const id = 'name';
@@ -180,11 +186,11 @@ var oIdPList = {
 			{
 				className: 'action_col_long',
 				orderable: false,
-				targets: [ 6 ]
+				targets: [ 7 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 3, 4 ]
+				targets: [ 3, 4, 5 ]
 			}],
 			select: {
 				style:    'os',
@@ -1069,4 +1075,31 @@ const oIdPOIDCUserSecurity = {
 	}
 };
 	</script>
+</div>
+<div id="idp_action_rm_warning_window" class="w3-modal">
+	<div class="w3-modal-content w3-animate-top w3-card-4">
+		<header class="w3-container w3-orange">
+			<span onclick="document.getElementById('idp_action_rm_warning_window').style.display = 'none';" class="w3-button w3-display-topright">&times;</span>
+			<h2 id="idp_action_rm_warning_window_title_add"><%[ Warning ]%></h2>
+		</header>
+		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+			<p><%[ The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again. ]%></p>
+			<com:TActiveRepeater
+				ID="IdPFbd"
+			>
+				<prop:HeaderTemplate>
+					<ul>
+				</prop:HeaderTemplate>
+				<prop:ItemTemplate>
+					<li><%#$this->Data['name']%></li>
+				</prop:ItemTemplate>
+				<prop:FooterTemplate>
+					</ul>
+				</prop:FooterTemplate>
+			</com:TActiveRepeater>
+		</div>
+		<footer class="w3-container w3-center">
+			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="document.getElementById('idp_action_rm_warning_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+		</footer>
+	</div>
 </div>

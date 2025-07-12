@@ -6715,3 +6715,12 @@ msgstr "Select one of the authentication methods to provide base authentication.
 
 msgid "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
 msgstr "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
+
+msgid "IdP ID"
+msgstr "IdP ID"
+
+msgid "The following organizations cannot be removed because they contain users. Please unassign users from these organizations and try again."
+msgstr "The following organizations cannot be removed because they contain users. Please unassign users from these organizations and try again."
+
+msgid "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
+msgstr "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
