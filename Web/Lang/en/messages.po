@@ -6527,3 +6527,180 @@ msgstr "Go to"
 
 msgid "Plugin not installed"
 msgstr "Plugin not installed"
+
+msgid "Organization"
+msgstr "Organization"
+
+msgid "Cannot change organization. A username with the same name already exists in the selected organization."
+msgstr "Cannot change organization. A username with the same name already exists in the selected organization."
+
+msgid "or use"
+msgstr "or use"
+
+msgid "Organizations"
+msgstr "Organizations"
+
+msgid "Auth methods"
+msgstr "Auth methods"
+
+msgid "Identity providers"
+msgstr "Identity providers"
+
+msgid "Provision user"
+msgstr "Provision user"
+
+msgid "New user role"
+msgstr "New user role"
+
+msgid "New user API host"
+msgstr "New user API host"
+
+msgid "Add new identity provider"
+msgstr "Add new identity provider"
+
+msgid "Edit identity provider"
+msgstr "Edit identity provider"
+
+msgid "Add identity provider"
+msgstr "Add identity provider"
+
+msgid "Identity provider identifier"
+msgstr "Identity provider identifier"
+
+msgid "Identity provider name"
+msgstr "Identity provider name"
+
+msgid "This is the Single Sign-On (SSO) authentication method with using the OpenID Connect (OIDC) protocol. It is realized with an external identity provider."
+msgstr "This is the Single Sign-On (SSO) authentication method with using the OpenID Connect (OIDC) protocol. It is realized with an external identity provider."
+
+msgid "Redirect URI"
+msgstr "Redirect URI"
+
+msgid "Endpoints and functions"
+msgstr "Endpoints and functions"
+
+msgid "Use discovery endpoint"
+msgstr "Use discovery endpoint"
+
+msgid "Discovery URL"
+msgstr "Discovery URL"
+
+msgid "Authorization URL"
+msgstr "Authorization URL"
+
+msgid "Token URL"
+msgstr "Token URL"
+
+msgid "Logout URL"
+msgstr "Logout URL"
+
+msgid "User Info URL"
+msgstr "User Info URL"
+
+msgid "Validate signatures"
+msgstr "Validate signatures"
+
+msgid "Use JWKS endpoint"
+msgstr "Use JWKS endpoint"
+
+msgid "Use PKCE"
+msgstr "Use PKCE"
+
+msgid "PKCE method"
+msgstr "PKCE method"
+
+msgid "Scope"
+msgstr "Scope"
+
+msgid "Credentials"
+msgstr "Credentials"
+
+msgid "Client ID"
+msgstr "Client ID"
+
+msgid "Client secret"
+msgstr "Client secret"
+
+msgid "User attribute source"
+msgstr "User attribute source"
+
+msgid "Username attribute"
+msgstr "Username attribute"
+
+msgid "Long name attribute"
+msgstr "Long name attribute"
+
+msgid "Email attribute"
+msgstr "Email attribute"
+
+msgid "Description attribute"
+msgstr "Description attribute"
+
+msgid "Attribute sync. policy"
+msgstr "Attribute sync. policy"
+
+msgid "Do not synchronize"
+msgstr "Do not synchronize"
+
+msgid "Synchronize on each login"
+msgstr "Synchronize on each login"
+
+msgid "JWKS URL"
+msgstr "JWKS URL"
+
+msgid "Public key (PEM format)"
+msgstr "Public key (PEM format)"
+
+msgid "Public key ID"
+msgstr "Public key ID"
+
+msgid "Add new organization"
+msgstr "Add new organization"
+
+msgid "Add organization"
+msgstr "Add organization"
+
+msgid "Organization identifier"
+msgstr "Organization identifier"
+
+msgid "Use current auth method"
+msgstr "Use current auth method"
+
+msgid "Use identity provider"
+msgstr "Use identity provider"
+
+msgid "Identity provider"
+msgstr "Identity provider"
+
+msgid "Login button color"
+msgstr "Login button color"
+
+msgid "Organization:"
+msgstr "Organization:"
+
+msgid "IdP name"
+msgstr "IdP name"
+
+msgid "IdP type"
+msgstr "IdP type"
+
+msgid "Auth method"
+msgstr "Auth method"
+
+msgid "Edit organization"
+msgstr "Edit organization"
+
+msgid "Default organization for imported users:"
+msgstr "Default organization for imported users:"
+
+msgid "New user organization"
+msgstr "New user organization"
+
+msgid "If you use your own identity provider (IdP) to authenticate users, you can configure Bacularis to use it. You can define one or multiple identity providers across different domains. This also enables single sign-on (SSO) support with the OpenID Connect authentication protocol. Identity providers are associated with organizations. Each organization can have its own identity provider."
+msgstr "If you use your own identity provider (IdP) to authenticate users, you can configure Bacularis to use it. You can define one or multiple identity providers across different domains. This also enables single sign-on (SSO) support with the OpenID Connect authentication protocol. Identity providers are associated with organizations. Each organization can have its own identity provider."
+
+msgid "Select one of the authentication methods to provide base authentication."
+msgstr "Select one of the authentication methods to provide base authentication."
+
+msgid "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
+msgstr "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
