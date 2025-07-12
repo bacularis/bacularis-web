@@ -52,7 +52,7 @@ class EmailNotification extends BacularisWebPluginBase implements IBacularisNoti
 	 */
 	public static function getVersion(): string
 	{
-		return '1.0.0';
+		return '1.0.1';
 	}
 
 	/**
@@ -158,12 +158,14 @@ class EmailNotification extends BacularisWebPluginBase implements IBacularisNoti
 	 */
 	private function setKeywords(string $type, string $category, string $content, string &$text): void
 	{
-		$user = Prado::getApplication()->getUser()->getUsername();
+		$org_id = Prado::getApplication()->getUser()->getOrganization();
+		$user_id = Prado::getApplication()->getUser()->getUsername();
 		$address = $_SERVER['REMOTE_ADDR'];
 		$date = date('Y-m-d H:i:s');
 		$title = substr($content, 0, self::MAX_TITLE_SIZE);
 		$text = str_replace('%service', 'Bacularis', $text);
-		$text = str_replace('%user', $user, $text);
+		$text = str_replace('%organization', $org_id, $text);
+		$text = str_replace('%user', $user_id, $text);
 		$text = str_replace('%type', $type, $text);
 		$text = str_replace('%category', $category, $text);
 		$text = str_replace('%address', $address, $text);
