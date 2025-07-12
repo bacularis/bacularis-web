@@ -32,6 +32,8 @@ namespace Bacularis\Web\Modules;
 use Prado\Prado;
 use Prado\Security\TUser;
 use Prado\TPropertyValue;
+use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\WebUserConfig;
 
 /**
@@ -51,6 +53,7 @@ class WebUser extends TUser
 	public const API_HOST_METHOD = 'ApiHostMethod';
 	public const API_HOSTS = 'ApiHosts';
 	public const DEFAULT_API_HOST = 'DefaultApiHost';
+	public const ORGANIZATION = 'Organization';
 	public const IPS = 'Ips';
 	public const ENABLED = 'Enabled';
 	public const IN_CONFIG = 'InConfig';
@@ -65,56 +68,131 @@ class WebUser extends TUser
 	 * Used for authenticated users.
 	 * If user doesn't exist in configuration then default access values can be taken into accout.
 	 *
-	 * @param string username user name
+	 * @param array $org_user user data
 	 * @param bool $new_obj create new user object
 	 * @param mixed $username
 	 * @return WebUser user instance
 	 */
-	public function createUser($username, $new_obj = true)
+	public function createUser($org_user, $new_obj = true)
 	{
 		$user = $this;
 		if ($new_obj === true) {
 			$user = Prado::createComponent(__CLASS__, $this->getManager());
 		}
 
-		$user->setUsername($username);
+		$user->setUsername($org_user['user_id']);
+		$user->setOrganization($org_user['org_id']);
 
 		$application = $this->getManager()->getApplication();
-		$user_config = $application->getModule('user_config')->getUserConfig($username);
+		$user_config = $application->getModule('user_config');
+		$user_cfg = $user_config->getUserConfig(
+			$org_user['org_id'],
+			$org_user['user_id']
+		);
 		$web_config = $application->getModule('web_config')->getConfig();
 		$host_groups = $application->getModule('host_group_config');
 
-		if (count($user_config) > 0) {
-			// User exists in Baculum Web users database
+		if (count($user_cfg) > 0) {
+			// User exists in Bacularis Web users database
 			$user->setInConfig(true);
-			$user->setDescription($user_config['description']);
-			$user->setLongName($user_config['long_name']);
-			$user->setEmail($user_config['email']);
-			$user->setRoles($user_config['roles']);
-			$user->setAPIHostMethod($user_config['api_hosts_method']);
-			if ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
-				$user->setAPIHosts($user_config['api_hosts']);
-			} elseif ($user_config['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
-				$api_hosts = $host_groups->getAPIHostsByGroups($user_config['api_host_groups']);
+			$user->setDescription($user_cfg['description']);
+			$user->setLongName($user_cfg['long_name']);
+			$user->setEmail($user_cfg['email']);
+			$user->setRoles($user_cfg['roles']);
+			$user->setAPIHostMethod($user_cfg['api_hosts_method']);
+			if ($user_cfg['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
+				$user->setAPIHosts($user_cfg['api_hosts']);
+			} elseif ($user_cfg['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
+				$api_hosts = $host_groups->getAPIHostsByGroups($user_cfg['api_host_groups']);
 				$user->setAPIHosts($api_hosts);
 			}
-			$user->setIps($user_config['ips']);
-			$user->setEnabled($user_config['enabled']);
+			$user->setIps($user_cfg['ips']);
+			$user->setEnabled($user_cfg['enabled']);
 		} elseif (isset($web_config['security']['def_access'])) {
 			// User doesn't exist. Check if user can have access.
 			$user->setInConfig(false);
 			if ($web_config['security']['def_access'] === WebConfig::DEF_ACCESS_NO_ACCESS) {
 				// no access, nothing to do
 			} elseif ($web_config['security']['def_access'] === WebConfig::DEF_ACCESS_DEFAULT_SETTINGS) {
+				// access with default settings
 				if (isset($web_config['security']['def_role'])) {
 					$user->setRoles($web_config['security']['def_role']);
 				}
 				if (isset($web_config['security']['def_api_host'])) {
 					$user->setAPIHosts($web_config['security']['def_api_host']);
 				}
+			} elseif ($web_config['security']['def_access'] === WebConfig::DEF_ACCESS_PROVISION_USER) {
+				//provision a new user
+				$new_user_roles = $web_config['security']['new_user_role'] ?? '';
+				$new_user_api_hosts = $web_config['security']['new_user_api_host'] ?? '';
+				$new_user_organization_id = $web_config['security']['new_user_organization_id'] ?? '';
+				$result = $this->provisionUser(
+					$new_user_organization_id,
+					$org_user['user_id'],
+					$new_user_roles,
+					$new_user_api_hosts
+				);
+				if ($result) {
+					if ($new_user_roles) {
+						$user->setRoles($new_user_roles);
+					}
+					if ($new_user_api_hosts) {
+						$user->setAPIHosts($new_user_api_hosts);
+					}
+					if ($new_user_organization_id) {
+						$user->setOrganization($new_user_organization_id);
+					}
+				}
 			}
 		}
 		return $user;
+	}
+
+	/**
+	 * Provision new user.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @param array $roles user roles
+	 * @param array $api_hosts user API hosts
+	 * @return boolean true on success, false otherwise
+	 */
+	private function provisionUser(string $org_id, string $user_id, array $roles, array $api_hosts): bool
+	{
+		$application = $this->getManager()->getApplication();
+		$user_config = $application->getModule('user_config');
+		$new_user_prop = $user_config->getUserConfigProps([
+			'username' => $user_id,
+			'organization_id' => $org_id,
+			'roles' => implode(',', $roles),
+			'api_hosts' => $api_hosts,
+			'enabled' => 1
+		]);
+		$ret = $user_config->setUserConfig(
+			$org_id,
+			$user_id,
+			$new_user_prop
+		);
+		if ($ret) {
+			$msg = "New provisioned user. Org: '{$org_id}', User: '{$user_id}'.";
+			$application->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_APPLICATION,
+				$msg
+			);
+		} else {
+			$emsg = "Error while provisioning new user. Org: '{$org_id}' User: '{$user_id}'.";
+			$application->getModule('audit')->audit(
+				AuditLog::TYPE_ERROR,
+				AuditLog::CATEGORY_APPLICATION,
+				$emsg
+			);
+			Logging::log(
+				Logging::CATEGORY_APPLICATION,
+				$emsg
+			);
+		}
+		return $ret;
 	}
 
 	/**
@@ -295,7 +373,7 @@ class WebUser extends TUser
 	/**
 	 * Set default API host for user.
 	 * It determines which host will be used as default API host to login
-	 * to Baculum Web interface. This host needs to have at least the catalog
+	 * to Bacularis Web interface. This host needs to have at least the catalog
 	 * and the console capabilities.
 	 *
 	 * @param string $api_host default API host
@@ -304,9 +382,8 @@ class WebUser extends TUser
 	{
 		$this->setState(self::DEFAULT_API_HOST, $api_host);
 		$application = $this->getManager()->getApplication();
-		$sess = $application->getSession();
-		$sess->open();
-		$application->getModule('auth')->updateSessionUser($this);
+		$web_session = $application->getModule('web_session');
+		$web_session->updateSessionUser($this);
 	}
 
 	/**
@@ -345,6 +422,29 @@ class WebUser extends TUser
 	{
 		$api_hosts = $this->getAPIHosts();
 		return in_array($api_host, $api_hosts);
+	}
+
+	/**
+	 * Organization setter.
+	 *
+	 * @param string $org_id organization identifier
+	 */
+	public function setOrganization(string $org_id): void
+	{
+		$this->setState(self::ORGANIZATION, $org_id);
+		$application = $this->getManager()->getApplication();
+		$web_session = $application->getModule('web_session');
+		$web_session->updateSessionUser($this);
+	}
+
+	/**
+	 * Organization getter.
+	 *
+	 * @return string organization identifier (default empty string)
+	 */
+	public function getOrganization(): string
+	{
+		return $this->getState(self::ORGANIZATION, '');
 	}
 
 	/**
@@ -445,10 +545,12 @@ class WebUser extends TUser
 	{
 		parent::loadFromString($data);
 		if ($this->getIsGuest() === false) {
-			$username = $this->getName();
+			$user_id = $this->getName();
+			$org_id = $this->getOrganization();
+			$user = WebUserConfig::getOrgUser($org_id, $user_id);
 
 			// Create user from config file data.
-			$this->createUser($username, false);
+			$this->createUser($user, false);
 		}
 		return $this;
 	}

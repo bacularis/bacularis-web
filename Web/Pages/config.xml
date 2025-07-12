@@ -24,6 +24,8 @@
 		<module id="repoauth_config" class="Bacularis\Web\Modules\RepoAuthConfig" />
 		<module id="plugin_config" class="Bacularis\Web\Modules\PluginConfig" />
 		<module id="plugin_manager" class="Bacularis\Web\Modules\WebPluginManager" />
+		<module id="org_config" class="Bacularis\Web\Modules\OrganizationConfig" />
+		<module id="idp_config" class="Bacularis\Web\Modules\IdentityProviderConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
@@ -42,6 +44,8 @@
 		<module id="user_role" class="Bacularis\Web\Modules\WebUserRoles" />
 		<module id="auth" class="Prado\Security\TAuthManager" UserManager="users" LoginPage="LoginPage" />
 		<module id="users" class="Bacularis\Web\Modules\WebUserManager" UserClass="Bacularis\Web\Modules\WebUser" />
+		<module id="oidc" class="Bacularis\Web\Modules\OIDC" />
+		<module id="web_session" class="Bacularis\Web\Modules\WebSession" />
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
 		<module id="storage_tools" class="Bacularis\Web\Modules\StorageTools" />

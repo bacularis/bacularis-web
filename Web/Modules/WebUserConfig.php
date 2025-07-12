@@ -118,7 +118,10 @@ class WebUserConfig extends ConfigFileModule
 				 */
 				continue;
 			}
-			$user_config['username'] = $username;
+			if (!key_exists('username', $user_config)) {
+				$user_config['username'] = $username;
+			}
+
 			// for API hosts backward compatibility
 			if (key_exists('api_hosts', $user_config)) {
 				if (!is_array($user_config['api_hosts'])) {
@@ -133,6 +136,9 @@ class WebUserConfig extends ConfigFileModule
 			}
 			if (!key_exists('api_host_groups', $user_config)) {
 				$user_config['api_host_groups'] = [];
+			}
+			if (!key_exists('organization_id', $user_config)) {
+				$user_config['organization_id'] = '';
 			}
 			$config[$username] = $user_config;
 		}
@@ -153,7 +159,7 @@ class WebUserConfig extends ConfigFileModule
 		$result = false;
 		if ($this->isUserConfigValid($config) === true) {
 			$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
-			if ($result === true) {
+			if ($result) {
 				$this->config = null;
 			}
 		}
@@ -168,44 +174,209 @@ class WebUserConfig extends ConfigFileModule
 	/**
 	 * Get single user config.
 	 *
-	 * @param string $username
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @return array user config
 	 */
-	public function getUserConfig($username)
+	public function getUserConfig(string $org_id, string $user_id): array
 	{
 		$user_config = [];
 		$config = $this->getConfig();
-		if (key_exists($username, $config)) {
-			$config[$username]['username'] = $username;
-			$user_config = $config[$username];
+		$uid = $user_id;
+		if (is_string($org_id) && !empty($org_id)) {
+			$uid = self::getOrgUserID($org_id, $user_id);
+		}
+		if (key_exists($uid, $config)) {
+			$user_config = $config[$uid];
 		}
 		return $user_config;
 	}
 
 	/**
+	 * Get organization user identifier.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @return string organization user identifier
+	 */
+	public static function getOrgUserID(string $org_id, string $user_id): string
+	{
+		$ouid = !empty($org_id) ? "{$org_id} {$user_id}" : $user_id;
+		return $ouid;
+	}
+	/**
+	 * Get organization user.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @return array organization user data
+	 */
+	public static function getOrgUser(string $org_id, string $user_id): array
+	{
+		return [
+			'user_id' => $user_id,
+			'org_id' => $org_id
+		];
+	}
+
+	/**
+	 * Check if user exists.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @return boolean true if user exists, otherwise false
+	 */
+	public function userExists(string $org_id, string $user_id): bool
+	{
+		$uid = self::getOrgUserID($org_id, $user_id);
+		$config = $this->getConfig();
+		return key_exists($uid, $config);
+	}
+
+	/**
 	 * Set single user config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param array $user_config user configuration
 	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setUserConfig($username, array $user_config)
+	public function setUserConfig(string $org_id, string $user_id, array $user_config): bool
 	{
 		$config = $this->getConfig();
-		$config[$username] = $user_config;
-		return $this->setConfig($config);
+		$prev_org_id = $prev_user_id = $new_org_id = $new_user_id = '';
+		$rm_uid = null;
+		$add_uid = self::getOrgUserID($user_config['organization_id'], $user_id);
+		if ($org_id != $user_config['organization_id']) {
+			if (!empty($org_id) && !empty($user_config['organization_id'])) {
+				// changed organization org1 => org2
+				$prev_org_id = $org_id;
+				$prev_user_id = $user_id;
+				$new_org_id = $user_config['organization_id'];
+				$new_user_id = $user_id;
+			} elseif (!empty($org_id) && empty($user_config['organization_id'])) {
+				// unassigned from organization org1 => none
+				$prev_org_id = $org_id;
+				$prev_user_id = $user_id;
+				$new_org_id = '';
+				$new_user_id = $user_id;
+			} elseif (empty($org_id) && !empty($user_config['organization_id'])) {
+				// assigned to organization none => org1
+				$prev_org_id = '';
+				$prev_user_id = $user_id;
+				$new_org_id = $user_config['organization_id'];
+				$new_user_id = $user_id;
+			}
+			$rm_uid = self::getOrgUserID($prev_org_id, $prev_user_id);
+			if (key_exists($rm_uid, $config)) {
+				unset($config[$rm_uid]);
+			}
+			$add_uid = self::getOrgUserID($new_org_id, $new_user_id);
+		}
+		$config[$add_uid] = $user_config;
+		$ret = $this->setConfig($config);
+		if ($ret) {
+			if ($org_id != $user_config['organization_id']) {
+				// user organization changed, rename related configs
+				$this->moveUserConfig(
+					$prev_org_id,
+					$new_org_id,
+					$prev_user_id,
+					$new_user_id
+				);
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * On organization rename move related user settings.
+	 *
+	 * @param string $prev_org_id previous organization identifier
+	 * @param string $new_org_id new organization identifier
+	 * @param string $prev_user_id previous user identifier
+	 * @param string $new_user_id new user identifier
+	 */
+	private function moveUserConfig(string $prev_org_id, string $new_org_id, string $prev_user_id, string $new_user_id): void
+	{
+		// move tag config
+		$tag_config = $this->getModule('tag_config');
+		$tag_config->moveUserTagConfig(
+			$prev_org_id,
+			$new_org_id,
+			$prev_user_id,
+			$new_user_id
+		);
+
+		// move tag assigns config
+		$tag_assign_config = $this->getModule('tag_assign_config');
+		$tag_assign_config->moveUserTagAssignsConfig(
+			$prev_org_id,
+			$new_org_id,
+			$prev_user_id,
+			$new_user_id
+		);
+
+		// move data view config
+		$dataview_config = $this->getModule('dataview_config');
+		$dataview_config->moveUserDataViewConfig(
+			$prev_org_id,
+			$new_org_id,
+			$prev_user_id,
+			$new_user_id
+		);
+	}
+
+	/**
+	 * Remove single user config.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @return boolean true on success, false otherwise
+	 */
+	public function removeUserConfig(string $org_id, string $user_id): bool
+	{
+		$users = $this->getConfig();
+		$uid = self::getOrgUserID($org_id, $user_id);
+		if (key_exists($uid, $users)) {
+			unset($users[$uid]);
+		}
+		return $this->setConfig($users);
+	}
+
+	/**
+	 * Remove users config.
+	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
+	 * @return boolean true on success, false otherwise
+	 */
+	public function removeUsersConfig(array $uids): bool
+	{
+		$users = $this->getConfig();
+		for ($i = 0; $i < count($uids); $i++) {
+			if (!isset($uids[$i]['org_id']) || !isset($uids[$i]['user_id'])) {
+				continue;
+			}
+			$uid = self::getOrgUserID($uids[$i]['org_id'], $uids[$i]['user_id']);
+			if (key_exists($uid, $users)) {
+				unset($users[$uid]);
+			}
+		}
+		return $this->setConfig($users);
 	}
 
 	/**
 	 * Update single user config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param array $user_config user configuration part to update
 	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function updateUserConfig($username, array $user_config): bool
+	public function updateUserConfig(string $org_id, string $user_id, array $user_config): bool
 	{
-		$config = $this->getUserConfig($username);
+		$config = $this->getUserConfig($org_id, $user_id);
 		if (count($config) == 0) {
 			return false;
 		}
@@ -219,7 +390,7 @@ class WebUserConfig extends ConfigFileModule
 				$config[$key] = $value;
 			}
 		}
-		return $this->setUserConfig($username, $config);
+		return $this->setUserConfig($org_id, $user_id, $config);
 	}
 
 	/**
@@ -245,7 +416,7 @@ class WebUserConfig extends ConfigFileModule
 	{
 		$config = $this->getConfig();
 		for ($i = 0; $i < count($hosts); $i++) {
-			foreach ($config as $username => $conf) {
+			foreach ($config as $uid => $conf) {
 				$new_api_hosts = [];
 				for ($j = 0; $j < count($conf['api_hosts']); $j++) {
 					if ($hosts[$i] === $conf['api_hosts'][$j]) {
@@ -253,7 +424,7 @@ class WebUserConfig extends ConfigFileModule
 					}
 					$new_api_hosts[] = $conf['api_hosts'][$j];
 				}
-				$config[$username]['api_hosts'] = $new_api_hosts;
+				$config[$uid]['api_hosts'] = $new_api_hosts;
 			}
 		}
 		return $this->setConfig($config);

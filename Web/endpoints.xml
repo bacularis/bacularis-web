@@ -2,6 +2,8 @@
 	<!-- webGUI endpoints -->
 	<url ServiceParameter="Dashboard" pattern="web/" />
 	<url ServiceParameter="LoginPage" pattern="web/login/" />
+	<url ServiceParameter="OIDCRedirect" pattern="web/oidc/{org}/redirect" parameters.org="[\w\-]+" />
+	<url ServiceParameter="OIDCLogout" pattern="web/oidc/{org}/logout" parameters.org="[\w\-]+" />
 	<url ServiceParameter="SelectAPIHost" pattern="web/api-host/" />
 	<url ServiceParameter="JobList" pattern="web/job/" />
 	<url ServiceParameter="JobList" pattern="web/job/history/" />

@@ -43,6 +43,11 @@ class MainSideBar extends Portlets
 	public $reload_url = '';
 
 	/**
+	 * Current user organization details.
+	 */
+	public $organization = [];
+
+	/**
 	 * Is API configured.
 	 */
 	public $is_api = false;
@@ -50,6 +55,9 @@ class MainSideBar extends Portlets
 	public function onInit($param)
 	{
 		parent::onInit($param);
+		if ($this->getPage()->IsCallback || $this->getPage()->IsPostBack) {
+			return;
+		}
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			$fake_pwd = $this->getModule('crypto')->getRandomString();
 			// must be different than currently logged in Basic user
@@ -60,6 +68,9 @@ class MainSideBar extends Portlets
 		}
 		$api_config = $this->getModule('api_config')->getConfig();
 		$this->is_api = count($api_config) > 0;
+		$org_id = $this->User->getOrganization();
+		$org_config = $this->getModule('org_config');
+		$this->organization = $org_config->getOrganizationConfig($org_id);
 	}
 
 	public function logout($sender, $param)
@@ -70,6 +81,10 @@ class MainSideBar extends Portlets
 
 		// Do log out
 		$this->getModule('auth')->logout();
+
+		// Logout SSO (if any)
+		$oidc = $this->getModule('oidc');
+		$oidc->rpLogoutUser();
 
 		if ($this->getModule('web_config')->isAuthMethodBasic()) {
 			/**

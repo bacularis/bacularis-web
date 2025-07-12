@@ -174,7 +174,7 @@ class WebConfigWizard extends BaculumWebPage
 					'roles' => WebUserRoles::ADMIN,
 					'enabled' => 1
 				]);
-				$ret = $user_config->setUserConfig($this->WebLogin->Text, $new_user_prop);
+				$ret = $user_config->setUserConfig('', $this->WebLogin->Text, $new_user_prop);
 				if (!$ret) {
 					$emsg = 'Error while saving user config.';
 					Logging::log(

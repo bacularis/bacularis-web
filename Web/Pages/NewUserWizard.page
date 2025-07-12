@@ -147,6 +147,16 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
+				<com:Bacularis.Web.Portlets.DirectiveComboBox
+					ID="Organization"
+					DirectiveName="Organization"
+					Label="<%[ Organization ]%>"
+					ValidationGroup="NewUserDirective"
+					Required="false"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					/>
 			</div>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - assign roles to user ]%>" StepType="Auto">

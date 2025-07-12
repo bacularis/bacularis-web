@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Manage tags configuration.
@@ -151,20 +152,22 @@ class TagConfig extends ConfigFileModule
 	/**
 	 * Get user tags config.
 	 *
-	 * @param string $username
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $tag tag name
 	 * @param bool $add_global if true, to results are added also global tags
 	 * @return array user tags config
 	 */
-	public function getTagConfig(string $username, string $tag = '', bool $add_global = false): array
+	public function getTagConfig(string $org_id, string $user_id, string $tag = '', bool $add_global = false): array
 	{
 		$tag_config = [];
 		$config = $this->getConfig();
-		if (isset($config[$username][self::TAG_VIEW_NAME])) {
-			$tag_config = $config[$username][self::TAG_VIEW_NAME];
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (isset($config[$uid][self::TAG_VIEW_NAME])) {
+			$tag_config = $config[$uid][self::TAG_VIEW_NAME];
 		}
 		if (is_array($tag_config)) {
-			$access = ($username == self::GLOBAL_SECTION) ? self::ACCESSIBILITY_GLOBAL : self::ACCESSIBILITY_LOCAL;
+			$access = ($uid == self::GLOBAL_SECTION) ? self::ACCESSIBILITY_GLOBAL : self::ACCESSIBILITY_LOCAL;
 			foreach ($tag_config as $tag_name => $value) {
 				parse_str($value, $result);
 				$result['access'] = $access;
@@ -194,30 +197,32 @@ class TagConfig extends ConfigFileModule
 	 */
 	public function getGlobalTagConfig(): array
 	{
-		return $this->getTagConfig(self::GLOBAL_SECTION);
+		return $this->getTagConfig('', self::GLOBAL_SECTION);
 	}
 
 	/**
 	 * Set single user tags config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param array $tag_config user tags configuration
 	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setTagConfig(string $username, array $tag_config): bool
+	public function setTagConfig(string $org_id, string $user_id, array $tag_config): bool
 	{
 		$config = $this->getConfig();
 		foreach ($tag_config as $tag => $value) {
 			$vw = http_build_query($value);
 			$tag_config[$tag] = $vw;
 		}
-		if (!isset($config[$username][self::TAG_VIEW_NAME])) {
-			$config[$username] = [
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (!isset($config[$uid][self::TAG_VIEW_NAME])) {
+			$config[$uid] = [
 				self::TAG_VIEW_NAME => []
 			];
 		}
-		$config[$username][self::TAG_VIEW_NAME] = array_merge(
-			$config[$username][self::TAG_VIEW_NAME],
+		$config[$uid][self::TAG_VIEW_NAME] = array_merge(
+			$config[$uid][self::TAG_VIEW_NAME],
 			$tag_config
 		);
 		return $this->setConfig($config);
@@ -232,6 +237,7 @@ class TagConfig extends ConfigFileModule
 	public function setGlobalTagConfig(array $tag_config): bool
 	{
 		return $this->setTagConfig(
+			'',
 			self::GLOBAL_SECTION,
 			$tag_config
 		);
@@ -240,16 +246,18 @@ class TagConfig extends ConfigFileModule
 	/**
 	 * Remove single user tags config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $tag tag name
 	 * @return bool true if config removed successfully, otherwise false
 	 */
-	public function removeTagConfig(string $username, string $tag): bool
+	public function removeTagConfig(string $org_id, string $user_id, string $tag): bool
 	{
 		$ret = false;
 		$config = $this->getConfig();
-		if (isset($config[$username]['tag'][$tag])) {
-			unset($config[$username]['tag'][$tag]);
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (isset($config[$uid]['tag'][$tag])) {
+			unset($config[$uid]['tag'][$tag]);
 			$ret = $this->setConfig($config);
 		}
 		return $ret;
@@ -265,9 +273,37 @@ class TagConfig extends ConfigFileModule
 	public function removeGlobalTagConfig(string $view, string $tag): bool
 	{
 		return $this->removeTagConfig(
+			'',
 			self::GLOBAL_SECTION,
 			$view,
 			$tag
 		);
+	}
+
+	/**
+	 * Reassign tag config on rename user.
+	 *
+	 * @param string $prev_org_id previous organization identifier
+	 * @param string $new_org_id new organization identifier
+	 * @param string $prev_user_id previous user identifier
+	 * @param string $new_user_id new user identifier
+	 * @return boolean true on success, otherwise false
+	 */
+	public function moveUserTagConfig(string $prev_org_id, string $new_org_id, string $prev_user_id, string $new_user_id): bool
+	{
+		$tag_config = [];
+		$config = $this->getConfig();
+		$prev_uid = WebUserConfig::getOrgUserID($prev_org_id, $prev_user_id);
+		$new_uid = WebUserConfig::getOrgUserID($new_org_id, $new_user_id);
+		if (isset($config[$prev_uid])) {
+			$tag_config = $config[$prev_uid];
+		}
+		$ret = false;
+		if (count($tag_config) > 0 && !key_exists($new_uid, $config)) {
+			$config[$new_uid] = $tag_config;
+			unset($config[$prev_uid]);
+			$ret = $this->setConfig($config);
+		}
+		return $ret;
 	}
 }

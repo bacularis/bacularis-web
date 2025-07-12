@@ -19,6 +19,7 @@ use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\TagAssignConfig;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Tag tools control.
@@ -79,9 +80,11 @@ class TagTools extends Portlets
 	private function setTagList(): void
 	{
 		$tag_config = $this->getModule('tag_config');
-		$username = $this->getPage()->User->getUsername();
+		$org_id = $this->getPage()->User->getOrganization();
+		$user_id = $this->getPage()->User->getUsername();
 		$tags = $tag_config->getTagConfig(
-			$username,
+			$org_id,
+			$user_id,
 			'',
 			$this->enable_global_tags
 		);
@@ -124,10 +127,12 @@ class TagTools extends Portlets
 	private function setTagAssignList(): void
 	{
 		$tag_assign_config = $this->getModule('tag_assign_config');
-		$username = $this->getPage()->User->getUsername();
+		$org_id = $this->getPage()->User->getOrganization();
+		$user_id = $this->getPage()->User->getUsername();
 		$view = $this->getViewName();
 		$tag_assign = $tag_assign_config->getTagAssignConfig(
-			$username,
+			$org_id,
+			$user_id,
 			$view,
 			$this->enable_global_tags
 		);
@@ -156,6 +161,8 @@ class TagTools extends Portlets
 			'severity' => $severity,
 			'access' => $access
 		] = (array) $param->getCallbackParameter();
+		$org_id = $this->getPage()->User->getOrganization();
+		$user_id = $this->getPage()->User->getUsername();
 		$tag_config = $this->getModule('tag_config');
 		$props = [
 			'color' => $color,
@@ -166,9 +173,9 @@ class TagTools extends Portlets
 		];
 		$result = false;
 		if ($access === TagConfig::ACCESSIBILITY_LOCAL) {
-			$username = $this->getPage()->User->getUsername();
 			$result = $tag_config->setTagConfig(
-				$username,
+				$org_id,
+				$user_id,
 				$tag_props
 			);
 		} elseif ($access === TagConfig::ACCESSIBILITY_GLOBAL && $this->enable_global_tags) {
@@ -191,7 +198,7 @@ class TagTools extends Portlets
 			$out = var_export($tag, true);
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while creating a tag '{$out}' for user '{$username}'."
+				"Error while creating a tag '{$out}' for organization '{$org_id}' user '{$user_id}'."
 			);
 		}
 	}
@@ -210,15 +217,17 @@ class TagTools extends Portlets
 			'value' => $value
 		] = (array) $param->getCallbackParameter();
 		$tag_assign_config = $this->getModule('tag_assign_config');
-		$username = $this->getPage()->User->getUsername();
+		$org_id = $this->getPage()->User->getOrganization();
+		$user_id = $this->getPage()->User->getUsername();
 		$view = $this->getViewName();
 		$result = true;
 		$tout = [];
 		$key = "{$id}_{$value}";
 		for ($i = 0; $i < count($tags); $i++) {
-			$section = ($tags[$i]->access == TagConfig::ACCESSIBILITY_GLOBAL ? TagAssignConfig::GLOBAL_SECTION : $username);
+			[$oid, $uid] = ($tags[$i]->access == TagConfig::ACCESSIBILITY_GLOBAL ? ['', TagAssignConfig::GLOBAL_SECTION] : [$org_id, $user_id]);
 			$result = $tag_assign_config->setTagAssignConfig(
-				$section,
+				$oid,
+				$uid,
 				$view,
 				$key,
 				$tags[$i]->tag
@@ -241,7 +250,7 @@ class TagTools extends Portlets
 			$out = var_export($tout, true);
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while assigning a tag '{$out}' for user '{$username}' in view '{$view}'."
+				"Error while assigning a tag '{$out}' for organization '{$org_id}' user '{$user_id}' in view '{$view}'."
 			);
 		}
 
@@ -283,12 +292,14 @@ class TagTools extends Portlets
 	private function unassignTagInternal(string $id, string $value, array $tag): void
 	{
 		$tag_assign_config = $this->getModule('tag_assign_config');
-		$username = $this->getPage()->User->getUsername();
+		$org_id = $this->getPage()->User->getOrganization();
+		$user_id = $this->getPage()->User->getUsername();
 		$view = $this->getViewName();
-		$section = ($tag['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? TagAssignConfig::GLOBAL_SECTION : $username);
+		[$oid, $uid] = ($tag['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? ['', TagAssignConfig::GLOBAL_SECTION] : [$org_id, $user_id]);
 		$key = "{$id}_{$value}";
 		$result = $tag_assign_config->removeTagAssignConfig(
-			$section,
+			$oid,
+			$uid,
 			$view,
 			$key,
 			$tag['tag']
@@ -307,7 +318,7 @@ class TagTools extends Portlets
 			$tout = var_export($tag, true);
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while unassigning a tag '{$tout}' for user '{$username}' in view '{$view}' and element '{$key}'."
+				"Error while unassigning a tag '{$tout}' for organization '{$org_id}' user '{$user_id}' in view '{$view}' and element '{$key}'."
 			);
 		}
 	}

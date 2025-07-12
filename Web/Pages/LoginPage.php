@@ -31,7 +31,10 @@ use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Protocol\WebAuthn\Authenticate as WebAuthnAuth;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\OrganizationConfig;
+use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\WebUserConfig;
+use Bacularis\Web\Modules\WebConfig;
 
 /**
  * User login page.
@@ -61,6 +64,7 @@ class LoginPage extends BaculumWebPage
 			// do a login try with different user and password to logout current user
 			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
 		}
+		$this->setMessage();
 	}
 
 	public function onPreLoad($param)
@@ -70,10 +74,11 @@ class LoginPage extends BaculumWebPage
 
 		$authorized = $users->isAuthorized();
 
+		$web_config = $this->getModule('web_config');
+
 		if ($this->User->getIsGuest() === false) {
 			// for authenticated users
 
-			$web_config = $this->getModule('web_config');
 			if ($web_config->isAuthMethodBasic()) {
 				/**
 				 * Using default page here is because it is required for case if user doesn't
@@ -93,6 +98,23 @@ class LoginPage extends BaculumWebPage
 				$this->LoginForm->Display = 'None';
 				$this->AuthorizationError->Display = 'Dynamic';
 			}
+		} else {
+			$org_config = $this->getModule('org_config');
+			$config = $org_config->getConfig();
+			$orgs = [];
+			foreach ($config as $org_id => $conf) {
+				if ($conf['enabled'] != 1) {
+					continue;
+				}
+				$orgs[] = [
+					'name' => $conf['name'],
+					'full_name' => $conf['full_name'],
+					'auth_type' => $conf['auth_type'],
+					'color' => $conf['login_btn_color']
+				];
+			}
+			$this->OrgRepeater->DataSource = $orgs;
+			$this->OrgRepeater->dataBind();
 		}
 	}
 
@@ -104,12 +126,13 @@ class LoginPage extends BaculumWebPage
 	 */
 	public function login($sender, $param)
 	{
-		$username = $this->Username->Text;
+		$org_id = $this->Organization->Value;
+		$user_id = $this->Username->Text;
 		$password = $this->Password->Text;
 
 		if ($this->getModule('web_config')->isAuthMethodBasic() && !empty($_SERVER['PHP_AUTH_USER'])) {
-			// For basic auth take username from web server.
-			$username = $_SERVER['PHP_AUTH_USER'];
+			// For basic auth take user_id from web server.
+			$user_id = $_SERVER['PHP_AUTH_USER'];
 		}
 
 		/**
@@ -118,23 +141,39 @@ class LoginPage extends BaculumWebPage
 		$sess = $this->getApplication()->getSession();
 		$sess->open();
 
-		$valid = $this->getModule('users')->validateUser($username, $password);
+		$user_config = $this->getModule('user_config');
+		$user = $user_config->getUserConfig($org_id, $user_id);
+		if (count($user) == 0) {
+			// Log in organization error
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_WARNING,
+				AuditLog::CATEGORY_SECURITY,
+				"Log in failed. Org: '{$org_id}' User: '{$user_id}'"
+			);
+			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+			$this->Msg->Text = Prado::localize('Invalid username or password');
+			$this->Msg->Display = 'Fixed';
+			return;
+		}
+		$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
+
+		$users = $this->getModule('users');
+		$valid = $users->validateUser($org_user, $password);
 		if ($valid === true) {
 			// Pre-login successful
-			$user_config = $this->getModule('user_config');
-			$user = $user_config->getUserConfig($username);
 			if (count($user) > 0 && key_exists('mfa', $user) && !empty($user['mfa']) && $user['mfa'] !== WebUserConfig::MFA_TYPE_NONE) {
 				// The user uses 2FA, go to second step/factor
 				$this->setMFA($user);
 			} else {
 				// Login try
-				$success = $this->getModule('auth')->login($username, $password);
+				$auth = $this->getModule('auth');
+				$success = $auth->login($org_user, $password);
 				if ($success === true) {
 					// Log in successful
 					$this->getModule('audit')->audit(
 						AuditLog::TYPE_INFO,
 						AuditLog::CATEGORY_SECURITY,
-						"Log in successful. User: $username"
+						"Log in successful. Org: '{$org_id}' User: '{$user_id}'"
 					);
 					$this->goToDefaultPage();
 				} else {
@@ -142,9 +181,10 @@ class LoginPage extends BaculumWebPage
 					$this->getModule('audit')->audit(
 						AuditLog::TYPE_WARNING,
 						AuditLog::CATEGORY_SECURITY,
-						"Log in failed. User: $username"
+						"Log in failed. Org: '{$org_id}' User: '{$user_id}'"
 					);
 					sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+					$this->Msg->Text = Prado::localize('Invalid username or password');
 					$this->Msg->Display = 'Fixed';
 				}
 			}
@@ -153,9 +193,10 @@ class LoginPage extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_WARNING,
 				AuditLog::CATEGORY_SECURITY,
-				"Log in failed. User: $username"
+				"Log in failed. Org: '{$org_id}' User: '{$user_id}'"
 			);
 			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
+			$this->Msg->Text = Prado::localize('Invalid username or password');
 			$this->Msg->Display = 'Fixed';
 		}
 	}
@@ -166,16 +207,17 @@ class LoginPage extends BaculumWebPage
 	 */
 	public function loginTOTP2FA()
 	{
-		$username = $this->Username->Text;
+		$org_id = $this->Organization->Value;
+		$user_id = $this->Username->Text;
 		$password = $this->Password->Text;
 
 		if ($this->getModule('web_config')->isAuthMethodBasic() && !empty($_SERVER['PHP_AUTH_USER'])) {
 			// For basic auth take username from web server.
-			$username = $_SERVER['PHP_AUTH_USER'];
+			$user_id = $_SERVER['PHP_AUTH_USER'];
 		}
 
 		$user_config = $this->getModule('user_config');
-		$user = $user_config->getUserConfig($username);
+		$user = $user_config->getUserConfig($org_id, $user_id);
 		if (count($user) === 0 || !key_exists('mfa', $user) || $user['mfa'] !== WebUserConfig::MFA_TYPE_TOTP || !key_exists('totp_secret', $user)) {
 			return false;
 		}
@@ -191,7 +233,9 @@ class LoginPage extends BaculumWebPage
 		$token = $this->AuthTOTP2FAToken->Text;
 		if ($this->getModule('totp')->validateToken($secret, $token) === true) {
 			// 2FA successful, do login to app
-			$success = $this->getModule('auth')->login($username, $password);
+			$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
+			$auth = $this->getModule('auth');
+			$success = $auth->login($org_user, $password);
 			if ($success === true) {
 				// Log in successful
 				$def_page = $this->getDefaultPage();
@@ -203,14 +247,14 @@ class LoginPage extends BaculumWebPage
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
 					AuditLog::CATEGORY_SECURITY,
-					"TOTP 2FA auth successful . User: $username"
+					"TOTP 2FA auth successful. Org: '{$org_id}' User: '{$user_id}'"
 				);
 			} else {
 				// Log in error after successful 2FA
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_WARNING,
 					AuditLog::CATEGORY_SECURITY,
-					"TOTP 2FA auth failed . User: $username"
+					"TOTP 2FA auth failed. Org: '{$org_id}' User: '{$user_id}'"
 				);
 				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 				$emsg = Prado::localize('Invalid username or password');
@@ -225,7 +269,7 @@ class LoginPage extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_WARNING,
 				AuditLog::CATEGORY_SECURITY,
-				"TOTP 2FA auth failed . User: $username"
+				"TOTP 2FA auth failed. Org: '{$org_id}' User: '{$user_id}'"
 			);
 		}
 	}
@@ -240,14 +284,15 @@ class LoginPage extends BaculumWebPage
 	public function loginFIDOU2F($sender, $param)
 	{
 		$cb = $this->getCallbackClient();
-		$username = $this->Username->Text;
+		$org_id = $this->Organization->Value;
+		$user_id = $this->Username->Text;
 		$password = $this->Password->Text;
 		$assertion = $param->getCallbackParameter();
 		$data = json_decode(json_encode($assertion), true);
 		$u2f_authenticate = $this->getModule('u2f_authenticate');
 
 		$user_config = $this->getModule('user_config');
-		$user = $user_config->getUserConfig($username);
+		$user = $user_config->getUserConfig($org_id, $user_id);
 		if (count($user) === 0 || !key_exists('mfa', $user) || $user['mfa'] !== WebUserConfig::MFA_TYPE_FIDOU2F || !key_exists('fidou2f_credentials', $user)) {
 			return false;
 		}
@@ -263,12 +308,14 @@ class LoginPage extends BaculumWebPage
 		}
 		$result = $u2f_authenticate->authenticate(
 			$data,
-			$username
+			$org_id,
+			$user_id
 		);
 		if ($result === true) {
 			$this->getApplication()->getSession()->open();
 			$auth = $this->getModule('auth');
-			$success = $auth->login($username, $password);
+			$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
+			$success = $auth->login($org_user, $password);
 			if ($success === true) {
 				// Log in successful
 				$def_page = $this->getDefaultPage();
@@ -280,14 +327,14 @@ class LoginPage extends BaculumWebPage
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
 					AuditLog::CATEGORY_SECURITY,
-					"FIDO U2F auth successful . User: $username"
+					"FIDO U2F auth successful. Org: '{$org_id}' User: '{$user_id}'"
 				);
 			} else {
 				// Log in error after successful 2FA
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_WARNING,
 					AuditLog::CATEGORY_SECURITY,
-					"FIDO U2F auth failed . User: $username"
+					"FIDO U2F auth failed. Org: '{$org_id}' User: '{$user_id}'"
 				);
 				sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 				$emsg = Prado::localize('Invalid username or password');
@@ -302,8 +349,42 @@ class LoginPage extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_WARNING,
 				AuditLog::CATEGORY_SECURITY,
-				"FIDO U2F auth failed . User: $username"
+				"FIDO U2F auth failed. Org: '{$org_id}' User: '{$user_id}'"
 			);
+		}
+	}
+
+	/**
+	 * Log in with external identity provider.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param parameters
+	 */
+	public function orgLogin($sender, $param)
+	{
+		$props = $param->getCommandParameter();
+		$org_name = $props['name'] ?? '';
+		$auth_type = $props['auth_type'] ?? '';
+
+		$org_config = $this->getModule('org_config');
+		$org = $org_config->getOrganizationConfig($org_name, true);
+		if ($org['enabled'] != 1) {
+			return;
+		}
+		if ($auth_type == OrganizationConfig::AUTH_TYPE_AUTH_METHOD) {
+			$this->OrganizationBox->Display = 'Dynamic';
+			$this->Organization->Value = $org['name'];
+			$this->OrganizationName->Text = $org['full_name'];
+		} elseif ($auth_type == OrganizationConfig::AUTH_TYPE_IDP) {
+			if ($org_name) {
+				$sess = $this->getApplication()->getSession();
+				$sess->open();
+				$sess->add('login_org', $org_name);
+				if ($org['idp']['enabled'] == 1 && $org['idp']['type'] === IdentityProviderConfig::IDP_TYPE_OIDC) {
+					$oidc = $this->getModule('oidc');
+					$oidc->authorize($org['identity_provider']);
+				}
+			}
 		}
 	}
 
@@ -367,6 +448,17 @@ class LoginPage extends BaculumWebPage
 			$this->Response->setStatusCode(401);
 		} else {
 			$this->goToDefaultPage();
+		}
+	}
+
+	/**
+	 * Show error message.
+	 */
+	private function setMessage(): void
+	{
+		if ($this->Request->contains('error')) {
+			$this->Msg->Text = urldecode($this->Request['error']);
+			$this->Msg->Display = 'Fixed';
 		}
 	}
 }

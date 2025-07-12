@@ -46,8 +46,9 @@ class TabViews extends Portlets
 	public function getConfig(): array
 	{
 		$view_config = $this->getModule('dataview_config');
-		$username = $this->User->getUsername();
-		$views = $view_config->getDataViewConfig($username);
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
+		$views = $view_config->getDataViewConfig($org_id, $user_id);
 		$view_name = $this->getViewName();
 		$config = [];
 		if (key_exists($view_name, $views)) {
@@ -60,13 +61,14 @@ class TabViews extends Portlets
 	{
 		$view = $param->getCallbackParameter();
 		$view_config = $this->getModule('dataview_config');
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		if (is_object($view)) {
 			$view = json_decode(json_encode($view), true);
-			$views = $view_config->getDataViewConfig($username);
+			$views = $view_config->getDataViewConfig($org_id, $user_id);
 			$name = key($view);
 			$views[$this->ViewName][$name] = json_decode(json_encode($view[$name]), true);
-			$view_config->setDataViewConfig($username, $views);
+			$view_config->setDataViewConfig($org_id, $user_id, $views);
 		}
 	}
 
@@ -74,9 +76,10 @@ class TabViews extends Portlets
 	{
 		$tab = $param->getCallbackParameter();
 		$view_config = $this->getModule('dataview_config');
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		if (!empty($tab)) {
-			$view_config->removeDataViewConfig($username, $this->ViewName, $tab);
+			$view_config->removeDataViewConfig($org_id, $user_id, $this->ViewName, $tab);
 		}
 	}
 

@@ -77,7 +77,7 @@ class WebSession extends WebModule
 	 *
 	 * @param string $val base session value
 	 */
-	public function destroySession(string $val)
+	public function destroySession(string $val): void
 	{
 		$session_id = $this->prepareSessionID($val);
 		$sess = $this->getApplication()->getSession();

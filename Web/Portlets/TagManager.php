@@ -18,6 +18,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\TagConfig;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Tag manager control.
@@ -46,9 +47,9 @@ class TagManager extends Portlets
 	 */
 	public function loadTagList($sender, $param): void
 	{
-		$username = $this->getUsername();
+		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
-		$tags = $tag_config->getTagConfig($username);
+		$tags = $tag_config->getTagConfig($org_id, $user_id);
 		$tag_names = array_keys($tags);
 		$tag_values = array_values($tags);
 		$tags = array_map(fn ($tag, $val) => array_merge($val, ['tag' => $tag]), $tag_names, $tag_values);
@@ -89,9 +90,9 @@ class TagManager extends Portlets
 	public function editTag($sender, $param): void
 	{
 		$tag = $param->getCallbackParameter();
-		$username = $this->getUsername();
+		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
-		$tag_props = $tag_config->getTagConfig($username, $tag);
+		$tag_props = $tag_config->getTagConfig($org_id, $user_id, $tag);
 
 		$cb = $this->getPage()->getCallbackClient();
 		$cb->callClientFunction(
@@ -119,9 +120,9 @@ class TagManager extends Portlets
 				'severity' => $severity
 			]
 		];
-		$username = $this->getUsername();
+		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
-		$result = $tag_config->setTagConfig($username, $tag_vals);
+		$result = $tag_config->setTagConfig($org_id, $user_id, $tag_vals);
 
 		if ($result) {
 			$cb = $this->getPage()->getCallbackClient();
@@ -148,19 +149,21 @@ class TagManager extends Portlets
 	public function deleteTag($sender, $param): void
 	{
 		$tag = $param->getCallbackParameter();
-		$username = $this->getUsername();
+		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
 
 		// First remove all tag assignments
 		$tag_assign_config = $this->getModule('tag_assign_config');
 		$result = $tag_assign_config->removeAllTagAssignsConfig(
-			$username,
+			$org_id,
+			$user_id,
 			$tag
 		);
 
 		if ($result) {
 			$result = $tag_config->removeTagConfig(
-				$username,
+				$org_id,
+				$user_id,
 				$tag
 			);
 			if ($result) {
@@ -176,13 +179,13 @@ class TagManager extends Portlets
 			} else {
 				Logging::log(
 					Logging::CATEGORY_APPLICATION,
-					"Error while removing tag '{$tag}' for user '{$username}'."
+					"Error while removing tag '{$tag}' for organization '{$org_id}' user '{$user_id}'."
 				);
 			}
 		} else {
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while unassign all tag assignments for tag '{$tag}' and user '{$username}'."
+				"Error while unassign all tag assignments for tag '{$tag}' for organization '{$org_id}' and user '{$user_id}'."
 			);
 		}
 	}
@@ -190,11 +193,13 @@ class TagManager extends Portlets
 	/**
 	 * Set username.
 	 *
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $name view name
 	 */
-	public function setUsername(string $name): void
+	public function setUsername(string $org_id, string $user_id): void
 	{
-		$this->setViewState(self::USERNAME, $name);
+		$this->setViewState(self::USERNAME, [$org_id, $user_id]);
 	}
 
 	/**
@@ -202,8 +207,8 @@ class TagManager extends Portlets
 	 *
 	 * @return string view name
 	 */
-	public function getUsername(): string
+	public function getUsername(): array
 	{
-		return $this->getViewState(self::USERNAME, '');
+		return $this->getViewState(self::USERNAME, ['', '']);
 	}
 }

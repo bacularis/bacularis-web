@@ -65,7 +65,8 @@ class BasicWebUserConfig extends BasicUserConfig implements IUserConfig
 	{
 		$valid = false;
 		if ($username && $password) {
-			$user = $this->getModule('user_config')->getConfig($username);
+			$user_config = $this->getModule('user_config');
+			$user = $user_config->getConfig('', $username);
 			$web_user = $this->getUserCfg($username);
 			if (count($web_user) > 0 && (count($user) > 0 || !$check_conf)) {
 				$mod = $this->getModule('crypto')->getModuleByHash($web_user['pwd_hash']);

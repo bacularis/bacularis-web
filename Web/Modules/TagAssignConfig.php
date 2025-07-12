@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
+use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Manage tag assignments.
@@ -76,17 +77,20 @@ class TagAssignConfig extends ConfigFileModule
 	/**
 	 * Get tag assignment config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $view view name
 	 * @param bool $add_global if true, to results are added also global tags
 	 * @return array tag assignment config
 	 */
-	public function getTagAssignConfig(string $username, string $view, bool $add_global = false): array
+	public function getTagAssignConfig(string $org_id, string $user_id, string $view, bool $add_global = false): array
 	{
 		$tag_config = [];
 		$config = $this->getConfig();
-		if (key_exists($username, $config)) {
-			$tag_config = $config[$username];
+
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (key_exists($uid, $config)) {
+			$tag_config = $config[$uid];
 		}
 		if (is_array($tag_config)) {
 			foreach ($tag_config as $view => $data) {
@@ -117,6 +121,7 @@ class TagAssignConfig extends ConfigFileModule
 	public function getGlobalTagAssignConfig(string $view = ''): array
 	{
 		return $this->getTagAssignConfig(
+			'',
 			self::GLOBAL_SECTION,
 			$view
 		);
@@ -126,53 +131,55 @@ class TagAssignConfig extends ConfigFileModule
 	/**
 	 * Set single tag assignment config.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $view view name
 	 * @param string $id data identifier value
 	 * @param string $tag tag name
 	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function setTagAssignConfig(string $username, string $view, string $id, string $tag): bool
+	public function setTagAssignConfig(string $org_id, string $user_id, string $view, string $id, string $tag): bool
 	{
 		$config = $this->getConfig();
-		if (!key_exists($username, $config)) {
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (!key_exists($uid, $config)) {
 			// user does not have any tag yet at all
-			$config[$username] = [
+			$config[$uid] = [
 				$view => [
 					$id => [
 						'tag' => []
 					]
 				]
 			];
-		} elseif (!key_exists($view, $config[$username])) {
+		} elseif (!key_exists($view, $config[$uid])) {
 			// user does not have any tag for given view
-			$config[$username][$view] = [
+			$config[$uid][$view] = [
 				$id => [
 					'tag' => []
 				]
 			];
-		} elseif (!key_exists($id, $config[$username][$view])) {
+		} elseif (!key_exists($id, $config[$uid][$view])) {
 			// user does not have this tag defined for given view
-			$config[$username][$view][$id] = [
+			$config[$uid][$view][$id] = [
 				'tag' => []
 			];
 		} else {
 			// user have tag defined for given view
-			parse_str($config[$username][$view][$id], $result);
-			$config[$username][$view][$id] = $result;
+			parse_str($config[$uid][$view][$id], $result);
+			$config[$uid][$view][$id] = $result;
 		}
 
-		if (!key_exists('tag', $config[$username][$view][$id])) {
+		if (!key_exists('tag', $config[$uid][$view][$id])) {
 			// id not exists yet, initialize it
-			$config[$username][$view][$id]['tag'] = [];
+			$config[$uid][$view][$id]['tag'] = [];
 		}
 
 		$ret = true;
-		if (!in_array($tag, $config[$username][$view][$id]['tag'])) {
+		if (!in_array($tag, $config[$uid][$view][$id]['tag'])) {
 			// tag is not added yet to this id, assign it
-			$config[$username][$view][$id]['tag'][] = $tag;
-			$config[$username][$view][$id] = http_build_query(
-				$config[$username][$view][$id]
+			$config[$uid][$view][$id]['tag'][] = $tag;
+			$config[$uid][$view][$id] = http_build_query(
+				$config[$uid][$view][$id]
 			);
 			$ret = $this->setConfig($config);
 		}
@@ -182,39 +189,41 @@ class TagAssignConfig extends ConfigFileModule
 	/**
 	 * Remove single tag assignment.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $view view name
 	 * @param string $id identifier value
 	 * @param string $tag tag name
 	 * @return bool true if config removed successfully, otherwise false
 	 */
-	public function removeTagAssignConfig(string $username, string $view, string $id, string $tag): bool
+	public function removeTagAssignConfig(string $org_id, string $user_id, string $view, string $id, string $tag): bool
 	{
 		$ret = false;
 		$config = $this->getConfig();
-		if (isset($config[$username][$view][$id])) {
-			parse_str($config[$username][$view][$id], $result);
-			$config[$username][$view][$id] = $result;
-			if (key_exists('tag', $config[$username][$view][$id])) {
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (isset($config[$uid][$view][$id])) {
+			parse_str($config[$uid][$view][$id], $result);
+			$config[$uid][$view][$id] = $result;
+			if (key_exists('tag', $config[$uid][$view][$id])) {
 				$idx = array_search(
 					$tag,
-					$config[$username][$view][$id]['tag']
+					$config[$uid][$view][$id]['tag']
 				);
 				if ($idx !== false) {
 					array_splice(
-						$config[$username][$view][$id]['tag'],
+						$config[$uid][$view][$id]['tag'],
 						$idx,
 						1
 					);
 				}
 			}
-			if (empty($config[$username][$view][$id]['tag'])) {
+			if (empty($config[$uid][$view][$id]['tag'])) {
 				// no more tags for element, remove view element
-				unset($config[$username][$view][$id]);
+				unset($config[$uid][$view][$id]);
 			} else {
 				// update element tag list
-				$config[$username][$view][$id] = http_build_query(
-					$config[$username][$view][$id]
+				$config[$uid][$view][$id] = http_build_query(
+					$config[$uid][$view][$id]
 				);
 			}
 			$ret = $this->setConfig($config);
@@ -225,19 +234,21 @@ class TagAssignConfig extends ConfigFileModule
 	/**
 	 * Remove all tag assignments.
 	 *
-	 * @param string $username user name
+	 * @param string $org_id organization identifier
+	 * @param string $user_id user identifier
 	 * @param string $tag tag name
 	 * @return bool true if config removed successfully, otherwise false
 	 */
-	public function removeAllTagAssignsConfig(string $username, string $tag): bool
+	public function removeAllTagAssignsConfig(string $org_id, string $user_id, string $tag): bool
 	{
 		$ret = false;
 		$config = $this->getConfig();
-		if (!isset($config[$username])) {
+		$uid = WebUserConfig::getOrgUserID($org_id, $user_id);
+		if (!isset($config[$uid])) {
 			// error: user does not have any tag
 			return $ret;
 		}
-		foreach ($config[$username] as $view => $props) {
+		foreach ($config[$uid] as $view => $props) {
 			foreach ($props as $id => $values) {
 				parse_str($values, $result);
 				if (!isset($result['tag'])) {
@@ -252,14 +263,41 @@ class TagAssignConfig extends ConfigFileModule
 				array_splice($result['tag'], $idx, 1);
 				if (count($result['tag']) == 0) {
 					// no more tags for element, remove view element
-					unset($config[$username][$view][$id]);
+					unset($config[$uid][$view][$id]);
 				} else {
 					// tag(s) exist, write it
-					$config[$username][$view][$id] = http_build_query($result);
+					$config[$uid][$view][$id] = http_build_query($result);
 				}
 			}
 		}
 		$ret = $this->setConfig($config);
+		return $ret;
+	}
+
+	/**
+	 * Reassign tag assign config on rename user.
+	 *
+	 * @param string $prev_org_id previous organization identifier
+	 * @param string $new_org_id new organization identifier
+	 * @param string $prev_user_id previous user identifier
+	 * @param string $new_user_id new user identifier
+	 * @return boolean true on success, otherwise false
+	 */
+	public function moveUserTagAssignsConfig(string $prev_org_id, string $new_org_id, string $prev_user_id, string $new_user_id): bool
+	{
+		$tag_config = [];
+		$config = $this->getConfig();
+		$prev_uid = WebUserConfig::getOrgUserID($prev_org_id, $prev_user_id);
+		$new_uid = WebUserConfig::getOrgUserID($new_org_id, $new_user_id);
+		if (isset($config[$prev_uid])) {
+			$tag_config = $config[$prev_uid];
+		}
+		$ret = false;
+		if (count($tag_config) > 0 && !key_exists($new_uid, $config)) {
+			$config[$new_uid] = $tag_config;
+			unset($config[$prev_uid]);
+			$ret = $this->setConfig($config);
+		}
 		return $ret;
 	}
 }

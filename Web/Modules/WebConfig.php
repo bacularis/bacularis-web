@@ -118,7 +118,7 @@ class WebConfig extends ConfigFileModule
 	public const DEF_AUDIT_LOG_CATEGORIES = AuditLog::DEF_CATEGORIES;
 
 	/**
-	 * Supported authentication methods.
+	 * Supported user/password authentication methods.
 	 */
 	public const AUTH_METHOD_LOCAL = 'local';
 	public const AUTH_METHOD_BASIC = 'basic';
@@ -129,6 +129,7 @@ class WebConfig extends ConfigFileModule
 	 */
 	public const DEF_ACCESS_NO_ACCESS = 'no_access';
 	public const DEF_ACCESS_DEFAULT_SETTINGS = 'default_settings';
+	public const DEF_ACCESS_PROVISION_USER = 'provision_user';
 
 	/**
 	 * Stores web config content.
@@ -265,8 +266,8 @@ class WebConfig extends ConfigFileModule
 		$security = [
 			'auth_method' => self::AUTH_METHOD_LOCAL,
 			'def_access' => self::DEF_ACCESS_DEFAULT_SETTINGS,
-			'def_role' => WebUserRoles::NORMAL,
-			'def_api_host' => HostConfig::MAIN_CATALOG_HOST
+			'def_role' => [WebUserRoles::NORMAL],
+			'def_api_host' => [HostConfig::MAIN_CATALOG_HOST]
 		];
 		if (key_exists('security', $config)) {
 			$config['security'] = array_merge($security, $config['security']);
@@ -299,7 +300,7 @@ class WebConfig extends ConfigFileModule
 	{
 		$config = $this->getConfig();
 
-		$auth_method = self::AUTH_METHOD_LOCAL; // Basic is default method
+		$auth_method = self::AUTH_METHOD_LOCAL; // Local user is default method
 		if (isset($config['security']['auth_method'])) {
 			$auth_method = $config['security']['auth_method'];
 		}
@@ -358,6 +359,18 @@ class WebConfig extends ConfigFileModule
 	{
 		$config = $this->getConfig();
 		return (isset($config['security']['def_access']) && $config['security']['def_access'] === self::DEF_ACCESS_DEFAULT_SETTINGS);
+	}
+
+	/**
+	 * Check if current default access method for not existing users
+	 * in configuration file is set to provision user settings.
+	 *
+	 * @return bool true if is set default settings, otherwise false
+	 */
+	public function isDefAccessProvisionUserSettings()
+	{
+		$config = $this->getConfig();
+		return (isset($config['security']['def_access']) && $config['security']['def_access'] === self::DEF_ACCESS_PROVISION_USER);
 	}
 
 	/**

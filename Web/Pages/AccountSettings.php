@@ -37,9 +37,10 @@ class AccountSettings extends BaculumWebPage
 	public function onInit($param)
 	{
 		parent::onInit($param);
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		self::$user = $user_config->getUserConfig($username);
+		self::$user = $user_config->getUserConfig($org_id, $user_id);
 
 		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
 			$this->AuthTOTP2FAConfigure->getAttributes()->add('onclick', 'return false;');
@@ -76,13 +77,13 @@ class AccountSettings extends BaculumWebPage
 		if (count(self::$user) == 0) {
 			Logging::log(
 				Logging::CATEGORY_SECURITY,
-				"Attempt to get non-existing user '$username' access data."
+				"Attempt to get non-existing user '$user_id' access data."
 			);
 		}
 
-		$this->Username->Text = $username;
+		$this->Username->Text = $user_id;
 
-		$this->TagManager->setUsername($username);
+		$this->TagManager->setUsername($org_id, $user_id);
 		$this->loadTwoFactorMethod();
 	}
 
@@ -93,9 +94,10 @@ class AccountSettings extends BaculumWebPage
 	 */
 	public function isTOTP2FAConfigured(): bool
 	{
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$user = $user_config->getUserConfig($username);
+		$user = $user_config->getUserConfig($org_id, $user_id);
 		return (key_exists('totp_secret', $user)
 			&& !empty($user['totp_secret']));
 	}
@@ -107,9 +109,10 @@ class AccountSettings extends BaculumWebPage
 	 */
 	public function isFIDOU2FConfigured(): bool
 	{
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$user = $user_config->getUserConfig($username);
+		$user = $user_config->getUserConfig($org_id, $user_id);
 		return (key_exists('fidou2f_credentials', $user)
 			&& is_array($user['fidou2f_credentials'])
 			&& count($user['fidou2f_credentials']) > 0);
@@ -155,9 +158,10 @@ class AccountSettings extends BaculumWebPage
 	{
 		$mfa = $this->TwoFactorMethod->SelectedValue;
 		$config = ['mfa' => $mfa];
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$user_config->updateUserConfig($username, $config);
+		$user_config->updateUserConfig($org_id, $user_id, $config);
 	}
 
 	/**
@@ -174,13 +178,14 @@ class AccountSettings extends BaculumWebPage
 
 		// Save user config
 
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$ret = $user_config->setUserConfig($username, self::$user);
+		$ret = $user_config->setUserConfig($org_id, $user_id, self::$user);
 		if ($ret !== true) {
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while saving user config for user '$username'."
+				"Error while saving user config for user '$user_id'."
 			);
 			return;
 		}
@@ -201,7 +206,7 @@ class AccountSettings extends BaculumWebPage
 			if ($this->getModule('web_config')->isAuthMethodLocal()) {
 				// Save local user password
 				$basic->setUsersConfig(
-					$username,
+					$user_id,
 					$this->UserPassword->Text
 				);
 			} elseif ($this->getModule('web_config')->isAuthMethodBasic() &&
@@ -214,7 +219,7 @@ class AccountSettings extends BaculumWebPage
 				}
 
 				$basic->setUsersConfig(
-					$username,
+					$user_id,
 					$this->UserPassword->Text,
 					false,
 					null,
@@ -258,13 +263,14 @@ class AccountSettings extends BaculumWebPage
 		$valid = $this->getModule('totp')->validateToken($secret, $token);
 		if ($valid === true) {
 			// token valid
-			$username = $this->User->getUsername();
+			$org_id = $this->User->getOrganization();
+			$user_id = $this->User->getUsername();
 			if (!key_exists('mfa', self::$user) || self::$user['mfa'] == WebUserConfig::MFA_TYPE_NONE) {
 				self::$user['mfa'] = WebUserConfig::MFA_TYPE_TOTP;
 			}
 			self::$user['totp_secret'] = $this->AuthTOTP2FASecret->Value;
 			$user_config = $this->getModule('user_config');
-			$user_config->setUserConfig($username, self::$user);
+			$user_config->setUserConfig($org_id, $user_id, self::$user);
 
 			$this->EnableTOTP2FA->Display = 'None';
 			$this->DisableTOTP2FA->Display = 'Dynamic';
@@ -290,13 +296,14 @@ class AccountSettings extends BaculumWebPage
 	public function disableTOTP2FA($sender, $param)
 	{
 		$cb = $this->getCallbackClient();
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		if (self::$user['mfa'] == WebUserConfig::MFA_TYPE_TOTP) {
 			self::$user['mfa'] = WebUserConfig::MFA_TYPE_NONE;
 		}
 		unset(self::$user['totp_secret']);
 		$user_config = $this->getModule('user_config');
-		$user_config->setUserConfig($username, self::$user);
+		$user_config->setUserConfig($org_id, $user_id, self::$user);
 
 		$this->DisableTOTP2FA->Display = 'None';
 		$this->EnableTOTP2FA->Display = 'Dynamic';
@@ -332,9 +339,10 @@ class AccountSettings extends BaculumWebPage
 	 */
 	public function loadU2FKeys($sender, $param): void
 	{
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$config = $user_config->getUserConfig($username);
+		$config = $user_config->getUserConfig($org_id, $user_id);
 		$fidou2f_creds = $config['fidou2f_credentials'] ?? [];
 		$creds = [];
 		foreach ($fidou2f_creds as $credential_id => $value) {
@@ -362,9 +370,10 @@ class AccountSettings extends BaculumWebPage
 	public function editU2FKey($sender, $param): void
 	{
 		$credential_id = $param->getCallbackParameter();
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$config = $user_config->getUserConfig($username);
+		$config = $user_config->getUserConfig($org_id, $user_id);
 		if (key_exists('fidou2f_credentials', $config) && key_exists($credential_id, $config['fidou2f_credentials'])) {
 			parse_str($config['fidou2f_credentials'][$credential_id], $props);
 			$cb = $this->getCallbackClient();
@@ -384,9 +393,10 @@ class AccountSettings extends BaculumWebPage
 	public function saveU2FKey($sender, $param)
 	{
 		$credential_id = $this->FIDOU2FKeylId->Value;
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$config = $user_config->getUserConfig($username);
+		$config = $user_config->getUserConfig($org_id, $user_id);
 		if (!key_exists('fidou2f_credentials', $config) || !key_exists($credential_id, $config['fidou2f_credentials'])) {
 			return;
 		}
@@ -399,7 +409,7 @@ class AccountSettings extends BaculumWebPage
 				$credential_id => http_build_query($props)
 			]
 		];
-		$user_config->updateUserConfig($username, $data);
+		$user_config->updateUserConfig($org_id, $user_id, $data);
 
 		$this->loadU2FKeys($sender, $param);
 		$cb = $this->getCallbackClient();
@@ -420,16 +430,17 @@ class AccountSettings extends BaculumWebPage
 		$u2f_register = $this->getModule('u2f_register');
 
 		// Get user
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$user_config = $user_config->getUserConfig($username);
+		$user = $user_config->getUserConfig($org_id, $user_id);
 
 		// Origin info
 		$url = $this->getRequest()->getUrl();
 		$origin = $url->getHost();
 
 		// Get data required for registration
-		$params = $u2f_register->getRegistrationData($user_config, $origin);
+		$params = $u2f_register->getRegistrationData($user, $origin);
 
 		// Set session data
 		$sess = $this->getApplication()->getSession();
@@ -459,10 +470,12 @@ class AccountSettings extends BaculumWebPage
 			// Validation error. Stop.
 			return false;
 		}
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$u2f_register = $this->getModule('u2f_register');
 		$credential_id = $u2f_register->createCredential(
-			$username,
+			$org_id,
+			$user_id,
 			$data_arr
 		);
 
@@ -487,9 +500,10 @@ class AccountSettings extends BaculumWebPage
 	public function removeU2FCreds($sender, $param)
 	{
 		$credential_id = $param->getCallbackParameter();
-		$username = $this->User->getUsername();
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
-		$config = $user_config->getUserConfig($username);
+		$config = $user_config->getUserConfig($org_id, $user_id);
 		if (key_exists('fidou2f_credentials', $config) && key_exists($credential_id, $config['fidou2f_credentials'])) {
 			unset($config['fidou2f_credentials'][$credential_id]);
 			if (count($config['fidou2f_credentials']) == 0) {
@@ -497,8 +511,7 @@ class AccountSettings extends BaculumWebPage
 				$config['mfa'] = WebUserConfig::MFA_TYPE_NONE;
 			}
 
-			$username = $this->User->getUsername();
-			$user_config->setUserConfig($username, $config);
+			$user_config->setUserConfig($org_id, $user_id, $config);
 			self::$user = $config;
 		}
 

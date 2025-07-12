@@ -5,7 +5,10 @@
 			<img src="<%~ ../../../../../Common/Images/avatar2.png %>" class="w3-circle w3-margin-right" style="width: 33px" />
 		</div>
 		<div class="w3-col s9 w3-bar">
-			<span><%[ Welcome ]%>, <strong><%=$this->User->getUsername()%></strong></span><br>
+			<span><%[ Welcome ]%>, <strong><%=$this->User->getUsername()%></strong></span><br />
+			<div class="w3-tiny" style="display: <%=count($this->organization) == 0 ? 'none' : 'block'%>">
+				Org: <strong><%=$this->organization['full_name'] ?? ''%></strong>
+			</div>
 			<script>var main_side_bar_reload_url = '<%=$this->reload_url%>';</script>
 			<com:TActiveLinkButton
 				ID="Logout"

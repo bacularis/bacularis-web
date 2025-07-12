@@ -1571,8 +1571,9 @@ class Deployment extends BaculumWebPage
 	private function assignNewAPIHostToUser($host)
 	{
 		$user_config = $this->getModule('user_config');
-		$username = $this->User->getUsername();
-		$user = $user_config->getUserConfig($username);
+		$org_id = $this->User->getOrganization();
+		$user_id = $this->User->getUsername();
+		$user = $user_config->getUserConfig($org_id, $user_id);
 		if (!in_array($host, $user['api_hosts'])) {
 			if (count($user['api_hosts']) == 0) {
 				/**
@@ -1583,7 +1584,7 @@ class Deployment extends BaculumWebPage
 				$user['api_hosts'][] = HostConfig::MAIN_CATALOG_HOST;
 			}
 			$user['api_hosts'][] = $host;
-			$user_config->setUserConfig($username, $user);
+			$user_config->setUserConfig($org_id, $user_id, $user);
 		}
 	}
 

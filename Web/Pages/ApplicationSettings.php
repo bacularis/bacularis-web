@@ -122,7 +122,7 @@ class ApplicationSettings extends BaculumWebPage
 				$this->SelfTestAPIHosts->dataBind();
 			}
 		}
-		$this->TagManager->setUsername(TagConfig::GLOBAL_SECTION);
+		$this->TagManager->setUsername('', TagConfig::GLOBAL_SECTION);
 	}
 
 

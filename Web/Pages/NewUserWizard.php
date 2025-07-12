@@ -54,6 +54,7 @@ class NewUserWizard extends BaculumWebPage
 		}
 		switch ($step_index) {
 			case 0:	{
+				$this->setOrganizations();
 				break;
 			}
 			case 1:	{
@@ -110,6 +111,18 @@ class NewUserWizard extends BaculumWebPage
 			$this->UserRoles->setSelectedIndices($selected_indices);
 		}
 		$this->UserRoles->dataBind();
+	}
+
+	private function setOrganizations()
+	{
+		$org_config = $this->getModule('org_config');
+		$orgs = $org_config->getConfig();
+		$ids = array_keys($orgs);
+		$names = array_map(fn ($org) => $org['full_name'], $orgs);
+		$org_vals = array_combine($ids, $names);
+		asort($org_vals, SORT_NATURAL | SORT_FLAG_CASE);
+		$this->Organization->setData($org_vals);
+		$this->Organization->createDirective();
 	}
 
 	/**
@@ -869,13 +882,16 @@ class NewUserWizard extends BaculumWebPage
 	 */
 	public function saveUser()
 	{
-		$username = $this->Username->Value;
-		$config = $this->getModule('user_config')->getUserConfig($username);
+		$org_id = $this->Organization->getValue();
+		$user_id = $this->Username->Value;
+		$user_config = $this->getModule('user_config');
+		$config = $user_config->getUserConfig($org_id, $user_id);
 		if (count($config) > 0) {
 			return false;
 		}
 
 		$config = [];
+		$config['username'] = $user_id;
 		$config['long_name'] = '';
 		$config['description'] = '';
 		$config['email'] = '';
@@ -894,16 +910,17 @@ class NewUserWizard extends BaculumWebPage
 		} elseif ($this->APIHostGroupsOpt->Checked) {
 			$config['api_hosts_method'] = WebUserConfig::API_HOST_METHOD_HOST_GROUPS;
 		}
+		$config['organization_id'] = $org_id;
 		$config['ips'] = '';
 		$config['enabled'] = 1;
-		$result = $this->getModule('user_config')->setUserConfig($username, $config);
+		$result = $user_config->setUserConfig($org_id, $user_id, $config);
 
 		// Set password if auth method supports it
 		if ($result === true && !empty($this->UserPassword->Value) && $this->isManageUsersAvail()) {
 			$basic = $this->getModule('basic_webuser');
 			if ($this->getModule('web_config')->isAuthMethodLocal()) {
 				$basic->setUsersConfig(
-					$username,
+					$user_id,
 					$this->UserPassword->Value
 				);
 			} elseif ($this->getModule('web_config')->isAuthMethodBasic() &&
@@ -915,7 +932,7 @@ class NewUserWizard extends BaculumWebPage
 
 				// Setting basic users works both for adding and editing users
 				$basic->setUsersConfig(
-					$username,
+					$user_id,
 					$this->UserPassword->Value,
 					false,
 					null,
@@ -928,7 +945,7 @@ class NewUserWizard extends BaculumWebPage
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_INFO,
 				AuditLog::CATEGORY_ACTION,
-				"Create new user. User: $username"
+				"Create new user. Org: '{$org_id}', User: '{$user_id}'"
 			);
 		}
 	}

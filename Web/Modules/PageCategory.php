@@ -61,6 +61,8 @@ class PageCategory extends WebModule
 	 */
 	public const LOGIN_PAGE = 'LoginPage';
 	public const OAUTH2_REDIRECT = 'OAuth2Redirect';
+	public const OIDC_REDIRECT = 'OIDCRedirect';
+	public const OIDC_LOGOUT = 'OIDCLogout';
 
 	/**
 	 * Pages available under conditions.
@@ -111,6 +113,8 @@ class PageCategory extends WebModule
 	{
 		return [
 			self::OAUTH2_REDIRECT,
+			self::OIDC_REDIRECT,
+			self::OIDC_LOGOUT,
 			self::LOGIN_PAGE
 		];
 	}

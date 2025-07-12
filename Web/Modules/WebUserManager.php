@@ -89,16 +89,16 @@ class WebUserManager extends WebModule implements IUserManager
 	/**
 	 * Create and get new user object.
 	 *
-	 * @param mixed $username username string or null for guests
+	 * @param mixed $org_user user data or null for guests
 	 */
-	public function getUser($username = null)
+	public function getUser($org_user = null)
 	{
 		$user = null;
-		if (is_null($username)) {
+		if (is_null($org_user)) {
 			$user = Prado::createComponent($this->user_class, $this);
 			$user->setIsGuest(true);
 		} else {
-			$user = $this->user_factory->createUser($username);
+			$user = $this->user_factory->createUser($org_user);
 			$user->setIsGuest(false);
 		}
 		return $user;
@@ -108,18 +108,18 @@ class WebUserManager extends WebModule implements IUserManager
 	 * Used for authentication.
 	 * It does login try.
 	 *
-	 * @param string $username username
+	 * @param array $org_user user data
 	 * @param string $password password
 	 * @return bool true if user and password are valid, false otherwise
 	 */
-	public function validateUser($username, $password)
+	public function validateUser($org_user, $password)
 	{
 		$valid = false;
 		$manager_cls = $this->getUserManagerClass();
-		if (!empty($manager_cls)) {
+		if (!empty($manager_cls) && isset($org_user['user_id'])) {
 			$manager = Prado::createComponent($manager_cls);
 			$manager->init(null);
-			$valid = $manager->validateUser($username, $password);
+			$valid = $manager->validateUser($org_user['user_id'], $password);
 		}
 		return $valid;
 	}
@@ -244,17 +244,21 @@ class WebUserManager extends WebModule implements IUserManager
 	 */
 	public function doAuthentication($application)
 	{
-		if ($this->getModule('web_config')->isAuthMethodBasic() && $application->getUser()->IsGuest) {
-			/**
-			 * Open session to be able to log in.
-			 */
-			$sess = $this->getApplication()->getSession();
-			$sess->open();
+		$web_config = $this->getModule('web_config');
+		if ($application->getUser()->IsGuest) {
+			if ($web_config->isAuthMethodBasic()) {
+				/**
+				 * Open session to be able to log in.
+				 */
+				$sess = $this->getApplication()->getSession();
+				$sess->open();
 
-			// If basic user is not logged it, try to log in here
-			$username = $_SERVER['PHP_AUTH_USER'] ?? null;
-			$password = $_SERVER['PHP_AUTH_PW'] ?? null;
-			$this->getModule('auth')->login($username, $password);
+				// If basic user is not logged it, try to log in here
+				$username = $_SERVER['PHP_AUTH_USER'] ?? null;
+				$password = $_SERVER['PHP_AUTH_PW'] ?? null;
+				$auth = $this->getModule('auth');
+				$auth->login($username, $password);
+			}
 		}
 
 		$this->applyAuthorizationRules($application);
@@ -419,5 +423,34 @@ class WebUserManager extends WebModule implements IUserManager
 			(($user->InConfig && !$web_config->isDefAccessNoAccess()) ||
 			(!$user->InConfig && $web_config->isDefAccessDefaultSettings()))
 		);
+	}
+
+	/**
+	 * Switch user to a new user.
+	 *
+	 * @param string $org_user user data
+	 * @param null|string $val base session value
+	 */
+	public function switchUser(array $org_user, ?string $val = null): bool
+	{
+		$user = $this->getUser($org_user);
+		if (is_null($user)) {
+			return false;
+		}
+		$web_session = $this->getModule('web_session');
+		$web_session->updateSessionUser($user, $val);
+		$this->getApplication()->setUser($user);
+		return true;
+	}
+
+	/**
+	 * Logout user using base session value.
+	 *
+	 * @param string $val base session value
+	 */
+	public function logoutUserByBaseValue(string $val): void
+	{
+		$web_session = $this->getModule('web_session');
+		$web_session->destroySession($val);
 	}
 }
