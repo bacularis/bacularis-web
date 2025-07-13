@@ -47,7 +47,7 @@ class WebSession extends WebModule
 		$auth = $this->getModule('auth');
 		$sess->close();
 
-		if (is_string($val)) {
+		if (is_string($val) && !empty($val)) {
 			$session_id = $this->prepareSessionID($val);
 			$sess->setSessionID($session_id);
 		}

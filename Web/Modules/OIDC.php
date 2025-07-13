@@ -20,6 +20,7 @@ use Bacularis\Common\Modules\JWT;
 use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
+use Bacularis\Common\Modules\RSAKey;
 use Bacularis\Common\Modules\SSLCertificate;
 use Prado\Prado;
 
@@ -189,7 +190,7 @@ class OIDC extends WebModule
 		$org_id = $sess->itemAt('login_org');
 		$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
 
-		$sid = $id_token_dec['body']['sid'];
+		$sid = $id_token_dec['body']['sid'] ?? null;
 		$users = $this->getModule('users');
 		$success = $users->switchUser($org_user, $sid);
 		if ($success) {
@@ -560,6 +561,32 @@ class OIDC extends WebModule
 	}
 
 	/**
+	 * Get public key.
+	 *
+	 * @param string $pubkey decoded public key in JWT form
+	 * @return string public key in PEM form
+	 */
+	private function getPubKey(array $pubkey): string
+	{
+		$modulus = $pubkey['n'] ?? '';
+		$exponent = $pubkey['e'] ?? '';
+		$algorithm = $pubkey['alg'] ?? '';
+
+		// NOTE: For now we support only RSA keys
+		$key_type = $algorithm == JWT::ALG_RS256 ? RSAKey::KEY_TYPE : 'unknown';
+
+		$tmpdir = Prado::getPathOfNamespace('Bacularis.Web.Config');
+		$crypto_keys = $this->getModule('crypto_keys');
+		$pubkey  = $crypto_keys->getPublicKeyPEMFromModulusExponent(
+			$key_type,
+			$modulus,
+			$exponent,
+			$tmpdir
+		);
+		return $pubkey;
+	}
+
+	/**
 	 * Get public key from certificate.
 	 *
 	 * @param string $pubkey decoded public key in JWT form
@@ -623,12 +650,11 @@ class OIDC extends WebModule
 	private function isSignatureValid(array $pubkey, string $id_token): bool
 	{
 		// Get public key
-		$cert = $pubkey['x5c'][0] ?? '';
-		if ($cert) {
-			// Key from certificate
-			$pubkey = $this->getPubKeyFromCert($cert);
+		if (key_exists('n', $pubkey) && key_exists('e', $pubkey)) {
+			// Key in JWT format
+			$pubkey = $this->getPubKey($pubkey);
 		} elseif (key_exists('key', $pubkey)) {
-			// Key provided by user
+			// Key provided by user in PEM format
 			$pubkey = $pubkey['key'];
 		}
 
@@ -784,7 +810,8 @@ class OIDC extends WebModule
 			$oidc_idp_config = $this->getDiscoveryInfo($name);
 
 			// Get JWKS keys from discovery endpoint
-			$oidc_idp_config['keys'] = $this->getJWKSKeys($oidc_idp_config['jwks_uri']);
+			$jwks_uri = $oidc_idp_config['jwks_uri'] ?? '';
+			$oidc_idp_config['keys'] = $this->getJWKSKeys($jwks_uri);
 		} else {
 			// Get user-defined properties
 			for ($i = 0; $i < count($idp_params); $i++) {
