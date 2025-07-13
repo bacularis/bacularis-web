@@ -49,7 +49,7 @@ class IdentityProviderConfig extends ConfigFileModule
 	/**
 	 * Default OpenID Connect scope.
 	 */
-	public const OIDC_DEF_SCOPE = 'openid email';
+	public const OIDC_DEF_SCOPE = 'openid email profile';
 
 	/**
 	 * Source of the OpenID Connect user attributes
