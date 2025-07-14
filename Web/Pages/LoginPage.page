@@ -1,21 +1,26 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Simple" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<div style="width: 100%; height: 100%;">
-		<com:TPanel ID="LoginForm" CssClass="w3-display-middle w3-center" Style="width: 100%; max-width: 860px" DefaultButton="LoginBtn">
+		<com:TPanel ID="LoginForm" CssClass="w3-display-middle w3-center w3-padding" Style="width: 100%; max-width: 460px" DefaultButton="LoginBtn">
 			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" rel="logo" style="width: auto; margin: 0 auto 10px auto;"/>
-			<com:TLabel ID="Msg" CssClass="w3-text-red w3-block" Display="Hidden"></com:TLabel>
-			<com:TPanel ID="OrganizationBox" CssClass="w3-margin-top" Display="None">
-				<label class="w3-show-inline-block" style="width: 115px"><%[ Organization ]%>:</label> <com:TLabel ID="OrganizationName" CssClass="normal bold w3-large w3-show-inline-block" Style="width: 335px" />
-				<com:THiddenField ID="Organization" />
+			<com:TPanel ID="MsgBox" CssClass="w3-section w3-center" Display="None">
+				<com:TLabel ID="Msg" CssClass="w3-red w3-padding-small w3-block"></com:TLabel>
 			</com:TPanel>
-			<div class="w3-section">
-				<label for="<%=$this->Username->ClientID%>" class="w3-show-inline-block" style="width: 115px"><%[ Username: ]%></label> <com:TTextBox ID="Username" CssClass="w3-input w3-border w3-show-inline-block" Style="width: 335px" />
-			</div>
-			<div class="w3-section">
-				<label for="<%=$this->Password->ClientID%>" class="w3-show-inline-block" style="width: 115px"><%[ Password: ]%></label> <com:TTextBox ID="Password" CssClass="w3-input w3-border w3-show-inline-block" TextMode="Password" PersistPassword="true" Style="width: 335px" />
-			</div>
+			<com:TPanel ID="LoginBox">
+				<com:TPanel ID="OrganizationBox" CssClass="w3-margin-top" Display="None" Style="position: relative; margin-right: 0;">
+				<span onclick="window.location.href = '<%=$this->getService()->constructUrl('LoginPage')%>';" class="w3-button" style="position: absolute; top: -24px; right: -16px;">×</span>
+					<com:TLabel ID="OrganizationName" CssClass="normal bold w3-large w3-show-inline-block" />
+					<com:THiddenField ID="Organization" />
+				</com:TPanel>
+				<div class="w3-section w3-center">
+					<com:TTextBox ID="Username" CssClass="w3-input w3-border" Attributes.placeholder="<%[ Login ]%>" />
+				</div>
+				<div class="w3-section w3-center">
+					<com:TTextBox ID="Password" CssClass="w3-input w3-border" TextMode="Password" PersistPassword="true" Attributes.placeholder="<%[ Password ]%>" />
+				</div>
+			</com:TPanel>
 			<div class="w3-section w3-center">
-				<com:TLinkButton ID="LoginBtn" OnClick="login" CssClass="w3-button w3-green">
+				<com:TLinkButton ID="LoginBtn" OnClick="login" CssClass="w3-button w3-green w3-block">
 					<i class="fas fa-sign-in-alt"></i> &nbsp;<%[ Log in ]%></i>
 				</com:TLinkButton>
 			</div>
@@ -26,8 +31,8 @@
 					<div class="w3-section">——— <%[ or use ]%> ———</div>
 				</prop:HeaderTemplate>
 				<prop:ItemTemplate>
-					<com:TLinkButton CssClass="w3-button w3-margin-bottom" OnCommand="SourceTemplateControl.orgLogin" CommandParameter="<%#['name' => $this->Data['name'], 'auth_type' => $this->Data['auth_type']]%>" Style="background-color: <%=$this->Data['color']%>" Attributes.data-color="<%=$this->Data['color']%>" Attributes.rel="org-btn">
-						<i class="fa-solid fa-key"></i> &nbsp;<%=$this->Data['full_name']%>
+					<com:TLinkButton CssClass="w3-button w3-margin-bottom w3-block" OnCommand="SourceTemplateControl.orgLogin" CommandParameter="<%#['name' => $this->Data['name'], 'auth_type' => $this->Data['auth_type']]%>" Style="background-color: <%=$this->Data['color']%>;" Attributes.data-color="<%=$this->Data['color']%>" Attributes.rel="org-btn">
+						<i class="<%#$this->Data['icon_css']%>"></i> &nbsp;<%=$this->Data['full_name']%>
 					</com:TLinkButton>
 				</prop:ItemTemplate>
 			</com:TRepeater>

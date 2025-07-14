@@ -101,16 +101,20 @@ class LoginPage extends BaculumWebPage
 		} else {
 			$org_config = $this->getModule('org_config');
 			$config = $org_config->getConfig();
+			$idp_config = $this->getModule('idp_config');
+			$idps = $idp_config->getConfig();
 			$orgs = [];
 			foreach ($config as $org_id => $conf) {
 				if ($conf['enabled'] != 1) {
 					continue;
 				}
+				$type = $idps[$conf['identity_provider']]['type'] ?? '';
 				$orgs[] = [
 					'name' => $conf['name'],
 					'full_name' => $conf['full_name'],
 					'auth_type' => $conf['auth_type'],
-					'color' => $conf['login_btn_color']
+					'color' => $conf['login_btn_color'],
+					'icon_css' => IdentityProviderConfig::getIdPIconCSSByType($type)
 				];
 			}
 			$this->OrgRepeater->DataSource = $orgs;
@@ -152,7 +156,7 @@ class LoginPage extends BaculumWebPage
 			);
 			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 			$this->Msg->Text = Prado::localize('Invalid username or password');
-			$this->Msg->Display = 'Fixed';
+			$this->MsgBox->Display = 'Dynamic';
 			return;
 		}
 		$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
@@ -185,7 +189,7 @@ class LoginPage extends BaculumWebPage
 					);
 					sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 					$this->Msg->Text = Prado::localize('Invalid username or password');
-					$this->Msg->Display = 'Fixed';
+					$this->MsgBox->Display = 'Dynamic';
 				}
 			}
 		} else {
@@ -197,7 +201,7 @@ class LoginPage extends BaculumWebPage
 			);
 			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
 			$this->Msg->Text = Prado::localize('Invalid username or password');
-			$this->Msg->Display = 'Fixed';
+			$this->MsgBox->Display = 'Dynamic';
 		}
 	}
 
@@ -375,6 +379,7 @@ class LoginPage extends BaculumWebPage
 			$this->OrganizationBox->Display = 'Dynamic';
 			$this->Organization->Value = $org['name'];
 			$this->OrganizationName->Text = $org['full_name'];
+			$this->LoginBox->CssClass = 'w3-border w3-card w3-padding';
 		} elseif ($auth_type == OrganizationConfig::AUTH_TYPE_IDP) {
 			if ($org_name) {
 				$sess = $this->getApplication()->getSession();
@@ -471,7 +476,7 @@ class LoginPage extends BaculumWebPage
 	{
 		if ($this->Request->contains('error')) {
 			$this->Msg->Text = urldecode($this->Request['error']);
-			$this->Msg->Display = 'Fixed';
+			$this->MsgBox->Display = 'Dynamic';
 		}
 	}
 }

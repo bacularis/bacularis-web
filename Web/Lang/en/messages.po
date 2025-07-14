@@ -6722,3 +6722,6 @@ msgstr "Prompt"
 
 msgid "Use refresh token"
 msgstr "Use refresh token"
+
+msgid "Login"
+msgstr "Login"

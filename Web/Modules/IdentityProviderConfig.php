@@ -260,4 +260,15 @@ class IdentityProviderConfig extends ConfigFileModule
 		$config['oidc_attr_sync_policy'] = self::ATTR_SYNC_POLICY_NO_SYNC;
 		return $config;
 	}
+
+	public static function getIdPIconCSSByType(string $idp_type)
+	{
+		$icon = '';
+		switch ($idp_type) {
+			case self::IDP_TYPE_OIDC: $icon = 'fa-brands fa-openid'; break;
+			case self::IDP_TYPE_OIDC_GOOGLE: $icon = 'fa-brands fa-google'; break;
+			default: $icon = 'fa-solid fa-key'; break;
+		}
+		return $icon;
+	}
 }
