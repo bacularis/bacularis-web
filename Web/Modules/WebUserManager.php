@@ -444,6 +444,36 @@ class WebUserManager extends WebModule implements IUserManager
 	}
 
 	/**
+	 * Do logout with current session.
+	 *
+	 * @param null|TApplication $application application object
+	 */
+	public function logout($application = null)
+	{
+		// Open session first, to be able to logout
+		$sess = $this->getApplication()->getSession();
+		$sess->open();
+
+		// Do log out
+		$auth = $this->getModule('auth');
+		$auth->logout();
+
+		// post-logout actions
+		if ($application) {
+			$web_config = $this->getModule('web_config');
+			if ($web_config->isAuthMethodBasic()) {
+				/**
+				 * This status code 401 is necessary to stop comming AJAX requests
+				 * and to bring the login prompt on.
+				 */
+				$application->Response->setStatusCode(401);
+			} else {
+				$application->getService()->getRequestedPage()->goToDefaultPage();
+			}
+		}
+	}
+
+	/**
 	 * Logout user using base session value.
 	 *
 	 * @param string $val base session value

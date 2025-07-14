@@ -75,25 +75,12 @@ class MainSideBar extends Portlets
 
 	public function logout($sender, $param)
 	{
-		// Open session first, to be able to logout
-		$sess = $this->getApplication()->getSession();
-		$sess->open();
-
-		// Do log out
-		$this->getModule('auth')->logout();
-
 		// Logout SSO (if any)
 		$oidc = $this->getModule('oidc');
 		$oidc->rpLogoutUser();
 
-		if ($this->getModule('web_config')->isAuthMethodBasic()) {
-			/**
-			 * This status code 401 is necessary to stop comming AJAX requests
-			 * and to bring the login prompt on.
-			 */
-			$this->Response->setStatusCode(401);
-		} else {
-			$this->getPage()->goToDefaultPage();
-		}
+		// do logout
+		$users = $this->getModule('users');
+		$users->logout($this->Application);
 	}
 }
