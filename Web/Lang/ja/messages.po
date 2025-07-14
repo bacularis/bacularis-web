@@ -6787,3 +6787,12 @@ msgstr "The following organizations cannot be removed because they contain users
 
 msgid "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
 msgstr "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
+
+msgid "Organization with identifier '%s' already exists."
+msgstr "Organization with identifier '%s' already exists."
+
+msgid "Prompt"
+msgstr "Prompt"
+
+msgid "Use refresh token"
+msgstr "Use refresh token"

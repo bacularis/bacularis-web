@@ -19,6 +19,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\OrganizationConfig;
+use Prado\Prado;
 
 /**
  * Authentication identity providers control.
@@ -105,55 +106,21 @@ class AuthenticationIdentityProviders extends Security
 			$this->IdPType->SelectedValue = $config['type'];
 			$this->IdPEnabled->Checked = ($config['enabled'] == 1);
 			if ($config['type'] === IdentityProviderConfig::IDP_TYPE_OIDC) {
-				$this->loadIdPOIDCSettings($config);
+				$this->IdentityProviderOIDC->loadSettings($config);
+			} elseif ($config['type'] === IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE) {
+				$this->IdentityProviderOIDCGoogle->loadSettings($config);
 			}
 			$cb->callClientFunction(
 				'oIdPUserSecurity.show_idp_settings',
 				[$config['type'], true]
 			);
 		} else {
-			$this->loadIdPOIDCDefaultSettings();
+			$this->IdentityProviderOIDC->loadDefaultSettings();
+			$this->IdentityProviderOIDCGoogle->loadDefaultSettings();
 		}
 		$cb->callClientFunction(
 			'oIdPUserSecurity.load_settings'
 		);
-	}
-
-	private function loadIdPOIDCSettings(array $config)
-	{
-		$this->IdPOIDCRedirectUri->Text = $config['oidc_redirect_uri'] ?? '';
-		$this->IdPOIDCUseDiscoveryEndpoint->Checked = (isset($config['oidc_use_discovery_endpoint']) && $config['oidc_use_discovery_endpoint'] == 1);
-		$this->IdPOIDCDiscoveryEndpoint->Text = $config['oidc_discovery_endpoint'] ?? '';
-		$this->IdPOIDCAuthorizationEndpoint->Text = $config['oidc_authorization_endpoint'] ?? '';
-		$this->IdPOIDCTokenEndpoint->Text = $config['oidc_token_endpoint'] ?? '';
-		$this->IdPOIDCLogoutEndpoint->Text = $config['oidc_end_session_endpoint'] ?? '';
-		$this->IdPOIDCUserInfoEndpoint->Text = $config['oidc_userinfo_endpoint'] ?? '';
-		$this->IdPOIDCIssuer->Text = $config['oidc_issuer'] ?? '';
-		$this->IdPOIDCValidateSignatures->Checked = (isset($config['oidc_validate_sig']) && $config['oidc_validate_sig'] == 1);
-		$this->IdPOIDCUseJWKSEndpoint->Checked = (isset($config['oidc_use_jwks_endpoint']) && $config['oidc_use_jwks_endpoint'] == 1);
-		$this->IdPOIDCPublicKeyString->Text = str_replace("\\n", "\r\n", $config['oidc_public_key_string'] ?? '');
-		$this->IdPOIDCPublicKeyID->Text = $config['oidc_public_key_id'] ?? '';
-		$this->IdPOIDCJWKSEndpoint->Text = $config['oidc_jwks_uri'] ?? '';
-		$this->IdPOIDCUsePKCE->Checked = (isset($config['oidc_use_pkce']) && $config['oidc_use_pkce'] == 1);
-		$this->IdPOIDCPKCEMethod->SelectedValue = $config['oidc_pkce_method'] ?? '';
-		$this->IdPOIDCClientID->Text = $config['oidc_client_id'] ?? '';
-		$this->IdPOIDCClientSecret->Text = $config['oidc_client_secret'] ?? '';
-		$this->IdPOIDCScope->Text = $config['oidc_scope'] ?? '';
-		$this->IdPOIDCUserAttrSource->Text = $config['oidc_user_attr_source'] ?? '';
-		$this->IdPOIDCUserNameAttr->Text = $config['oidc_user_attr'] ?? '';
-		$this->IdPOIDCLongNameAttr->Text = $config['oidc_long_name_attr'] ?? '';
-		$this->IdPOIDCEmailAttr->Text = $config['oidc_email_attr'] ?? '';
-		$this->IdPOIDCDescriptionAttr->Text = $config['oidc_desc_attr'] ?? '';
-		if ($config['oidc_attr_sync_policy'] == IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC) {
-			$this->IdPOIDCAttrSyncPolicyNoSync->Checked = true;
-		} elseif ($config['oidc_attr_sync_policy'] == IdentityProviderConfig::ATTR_SYNC_POLICY_EACH_LOGIN) {
-			$this->IdPOIDCAttrSyncPolicyEachLogin->Checked = true;
-		}
-	}
-
-	private function loadIdPOIDCDefaultSettings()
-	{
-		$this->IdPOIDCScope->Text = IdentityProviderConfig::OIDC_DEF_SCOPE;
 	}
 
 	/**
@@ -174,47 +141,29 @@ class AuthenticationIdentityProviders extends Security
 		$cfg_idp['type'] = $this->IdPType->SelectedValue;
 		$cfg_idp['enabled'] = $this->IdPEnabled->Checked ? '1': '0';
 
-		// OpenID Connect parameters
-		$cfg_idp['oidc_redirect_uri'] = $this->IdPOIDCRedirectUri->Text;
-		$cfg_idp['oidc_use_discovery_endpoint'] = $this->IdPOIDCUseDiscoveryEndpoint->Checked ? '1' : '0';
-		$cfg_idp['oidc_discovery_endpoint'] = $this->IdPOIDCDiscoveryEndpoint->Text;
-		$cfg_idp['oidc_authorization_endpoint'] = $this->IdPOIDCAuthorizationEndpoint->Text;
-		$cfg_idp['oidc_token_endpoint'] = $this->IdPOIDCTokenEndpoint->Text;
-		$cfg_idp['oidc_end_session_endpoint'] = $this->IdPOIDCLogoutEndpoint->Text;
-		$cfg_idp['oidc_userinfo_endpoint'] = $this->IdPOIDCUserInfoEndpoint->Text;
-		$cfg_idp['oidc_issuer'] = $this->IdPOIDCIssuer->Text;
-		$cfg_idp['oidc_validate_sig'] = $this->IdPOIDCValidateSignatures->Checked ? '1' : '0';
-		$cfg_idp['oidc_public_key_string'] = $this->preparePublicKey($this->IdPOIDCPublicKeyString->Text);
-		$cfg_idp['oidc_public_key_id'] = trim($this->IdPOIDCPublicKeyID->Text);
-		$cfg_idp['oidc_use_jwks_endpoint'] = $this->IdPOIDCUseJWKSEndpoint->Checked ? '1' : '0';
-		$cfg_idp['oidc_jwks_uri'] = $this->IdPOIDCJWKSEndpoint->Text;
-		$cfg_idp['oidc_use_pkce'] = $this->IdPOIDCUsePKCE->Checked ? '1' : '0';
-		$cfg_idp['oidc_pkce_method'] = $this->IdPOIDCPKCEMethod->Text;
-		$cfg_idp['oidc_client_id'] = $this->IdPOIDCClientID->Text;
-		$cfg_idp['oidc_client_secret'] = $this->IdPOIDCClientSecret->Text;
-		$cfg_idp['oidc_scope'] = $this->IdPOIDCScope->Text;
-		$cfg_idp['oidc_user_attr_source'] = $this->IdPOIDCUserAttrSource->SelectedValue;
-		$cfg_idp['oidc_user_attr'] = $this->IdPOIDCUserNameAttr->Text;
-		$cfg_idp['oidc_long_name_attr'] = $this->IdPOIDCLongNameAttr->Text;
-		$cfg_idp['oidc_email_attr'] = $this->IdPOIDCEmailAttr->Text;
-		$cfg_idp['oidc_desc_attr'] = $this->IdPOIDCDescriptionAttr->Text;
-		if ($this->IdPOIDCAttrSyncPolicyNoSync->Checked) {
-			// No sync policy
-			$cfg_idp['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC;
-		} elseif ($this->IdPOIDCAttrSyncPolicyEachLogin->Checked) {
-			// Each login policy
-			$cfg_idp['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_EACH_LOGIN;
-		} else {
-			// Default policy
-			$cfg_idp['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC;
+		$settings = [];
+		switch ($cfg_idp['type']) {
+			case IdentityProviderConfig::IDP_TYPE_OIDC: {
+				$settings = $this->IdentityProviderOIDC->getSettings();
+				break;
+			}
+			case IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE: {
+				$settings = $this->IdentityProviderOIDCGoogle->getSettings();
+				break;
+			}
 		}
+
+		$cfg_idp = array_merge($cfg_idp, $settings);
 
 		$idp_win_type = $this->IdPWindowType->Value;
 		$cb = $this->getPage()->getCallbackClient();
-		$cb->hide('idp_window_idp_exists');
+		$cb->hide($this->IdPWindowError);
 		if ($idp_win_type === self::TYPE_ADD_WINDOW) {
 			if ($idp_exists) {
-				$cb->show('idp_window_idp_exists');
+				$emsg = Prado::localize('Identity provider identifier \'%s\' already exists. Please type different identifier.');
+				$emsg = sprintf($emsg, $idp_name);
+				$cb->update($this->IdPWindowError, $emsg);
+				$cb->show($this->IdPWindowError);
 				return;
 			}
 		}
@@ -253,31 +202,6 @@ class AuthenticationIdentityProviders extends Security
 	public function onSaveIdP($param)
 	{
 		$this->raiseEvent('OnSaveIdP', $this, $param);
-	}
-
-	/**
-	 * Small helper for preparing public key to save.
-	 *
-	 * @param string $pubkey public key string
-	 */
-	private static function preparePublicKey(string $pubkey)
-	{
-		if (empty($pubkey)) {
-			return '';
-		}
-		$key = trim($pubkey);
-		$key = str_replace("\r", '', $key);
-		$key_parts = explode(PHP_EOL, $key);
-		if (count($key_parts) > 1 && preg_match('/^---[\s\w\-]+---/', $key_parts[0]) === 1) {
-			array_shift($key_parts);
-			$last_idx = count($key_parts) - 1;
-			if ($last_idx > 0 && preg_match('/^---[\s\w\-]+---/', $key_parts[$last_idx]) === 1) {
-				array_pop($key_parts);
-			}
-		}
-		$key = implode('', $key_parts);
-		$key = "-----BEGIN PUBLIC KEY-----\\n$key\\n-----END PUBLIC KEY-----";
-		return $key;
 	}
 
 	/**

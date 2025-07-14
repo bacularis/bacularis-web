@@ -380,9 +380,22 @@ class LoginPage extends BaculumWebPage
 				$sess = $this->getApplication()->getSession();
 				$sess->open();
 				$sess->add('login_org', $org_name);
-				if ($org['idp']['enabled'] == 1 && $org['idp']['type'] === IdentityProviderConfig::IDP_TYPE_OIDC) {
-					$oidc = $this->getModule('oidc');
-					$oidc->authorize($org['identity_provider']);
+				if ($org['idp']['enabled'] != 1) {
+					return;
+				}
+				$mod = null;
+				switch ($org['idp']['type']) {
+					case IdentityProviderConfig::IDP_TYPE_OIDC: {
+						$mod = $this->getModule('oidc');
+						break;
+					}
+					case IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE: {
+						$mod = $this->getModule('oidc_google');
+						break;
+					}
+				}
+				if ($mod) {
+					$mod->authorize($org['identity_provider']);
 				}
 			}
 		}
