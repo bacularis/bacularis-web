@@ -61,6 +61,9 @@ class BaculumWebPage extends BaculumPage
 	{
 		parent::onPreInit($param);
 		$this->web_config = $this->getModule('web_config')->getConfig();
+		if (!$this->IsCallBack || !$this->IsPostBack) {
+			$this->getModule('oidc')->checkTokens();
+		}
 
 		if ($this->authenticate() === false) {
 			sleep(self::LOGIN_FAILED_DELAY);

@@ -18,8 +18,8 @@ namespace Bacularis\Web\Modules;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\JWT;
 use Bacularis\Common\Modules\Miscellaneous;
-use Bacularis\Common\Modules\PKCE;
 use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
+use Bacularis\Common\Modules\Protocol\HTTP\Headers as HTTPHeaders;
 use Bacularis\Common\Modules\RSAKey;
 use Bacularis\Common\Modules\SSLCertificate;
 use Prado\Prado;
@@ -34,18 +34,25 @@ class OIDC extends WebModule
 {
 	public const ID_TOKEN_NAME = 'BACULARIS_OIDC_TOKEN';
 
-	private const PROP_STATE = 'OIDC_State';
-	private const PROP_CLIENT = 'OIDC_Client';
-	private const PROP_PKCE = 'OIDC_PKCE';
-	private const PROP_ID_TOKEN = 'OIDC_ID_Token';
-	private const PROP_ACCESS_TOKEN = 'OIDC_Access_Token';
+	private $params;
+
+	public function init($param)
+	{
+		parent::init($param);
+		$this->params = $this->getModule('oidc_session');
+	}
 
 	/**
 	 * Cached information taken from discovery URI
 	 */
 	private static $discovery_info = [];
 
-	public function authorize(string $name): void
+	/**
+	 * Cached information taken from JWKS URL
+	 */
+	private static $jwks = [];
+
+	public function authorize(string $name, array $extra_params = []): void
 	{
 		Logging::$debug_enabled = true;
 
@@ -71,10 +78,10 @@ class OIDC extends WebModule
 			return;
 		}
 
+		$this->params->setClient($name);
+		$this->params->setState($state);
 		$config = $idp_config->getIdentityProviderConfig($name);
 		$oidc_idp_config = $this->getOIDCIdPConfig($name);
-		$this->setClient($name);
-		$this->setState($state);
 
 		// Prepare authorization request
 		$params = [
@@ -84,12 +91,16 @@ class OIDC extends WebModule
 			'state' => $state,
 			'response_type' => 'code'
 		];
+		$params = array_merge($params, $extra_params);
 
 		if ($config['oidc_use_pkce'] == 1) {
-			$this->setPKCE($config['oidc_pkce_method']);
-			$pkce = $this->getPKCE();
+			$this->params->setPKCE($config['oidc_pkce_method']);
+			$pkce = $this->params->getPKCE();
 			$params['code_challenge'] = $pkce['code_challenge'];
 			$params['code_challenge_method'] = $config['oidc_pkce_method'];
+		}
+		if ($config['oidc_prompt'] != '') {
+			$params['prompt'] = $config['oidc_prompt'];
 		}
 
 		$query = http_build_query($params);
@@ -102,7 +113,7 @@ class OIDC extends WebModule
 	{
 		Logging::$debug_enabled = true;
 
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		if (!$this->isIdPEnabled($name)) {
 			$this->reportError('Identity provider is disabled in configuration.');
 			return;
@@ -120,9 +131,9 @@ class OIDC extends WebModule
 		];
 
 		if ($config['oidc_use_pkce'] == 1) {
-			$pkce = $this->getPKCE();
+			$pkce = $this->params->getPKCE();
 			$params['code_verifier'] = $pkce['code_verifier'];
-			$this->removePKCE();
+			$this->params->removePKCE();
 		}
 
 		$body = http_build_query($params);
@@ -159,7 +170,9 @@ class OIDC extends WebModule
 		if ($valid_id && $valid_at) {
 			$this->loginUser(
 				$data['id_token'],
-				$data['access_token']
+				$data['access_token'],
+				$data['expires_in'] ?? -1,
+				$data['refresh_token'] ?? ''
 			);
 		}
 	}
@@ -169,14 +182,17 @@ class OIDC extends WebModule
 	 *
 	 * @param string $id_token ID token
 	 * @param string $access_token access token
+	 * @param int $expires_in token expiry time
+	 * @param string $refresh_token refresh token (if used)
+	 * @return boolean true on success, false otherwise
 	 */
-	private function loginUser(string $id_token, string $access_token)
+	private function loginUser(string $id_token, string $access_token, int $expires_in = 0, string $refresh_token = ''): bool
 	{
 		// Get decoded ID token properties
 		$id_token_dec = JWT::decodeToken($id_token);
 
 		// Get IDP config name
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 
 		// User attributes
 		$attrs = $this->getUserAttributes($id_token_dec, $access_token);
@@ -184,7 +200,7 @@ class OIDC extends WebModule
 		$user_id = $attrs['username'];
 		if (!$user_id) {
 			// user not found
-			return;
+			return false;
 		}
 		$sess = $this->getApplication()->getSession();
 		$org_id = $sess->itemAt('login_org');
@@ -194,12 +210,37 @@ class OIDC extends WebModule
 		$users = $this->getModule('users');
 		$success = $users->switchUser($org_user, $sid);
 		if ($success) {
-			$this->setIDToken($id_token);
-			$this->setAccessToken($access_token);
-			$this->setClient($name);
+			$this->params->setIDToken($id_token);
+			$this->params->setAccessToken($access_token);
+			$this->params->setRefreshToken($refresh_token);
+			$this->params->setTokenExpiresIn($expires_in);
+			$this->params->setClient($name);
 			$this->syncAttributes($attrs);
 			$this->getService()->getRequestedPage()->goToDefaultPage();
 		}
+		return $success;
+	}
+
+	/**
+	 * One-time get OAuth2 state parameter and clear the value.
+	 *
+	 * @return null|string OAuth2 state value
+	 */
+	public function getStateClear()
+	{
+		$state = $this->params->getState();
+		$this->params->removeState();
+		return $state;
+	}
+
+	/**
+	 * Get OIDC configuration identifier.
+	 *
+	 * @return null|string OIDC config id
+	 */
+	public function getClient() {
+		$client = $this->params->getClient();
+		return $client;
 	}
 
 	/**
@@ -209,7 +250,7 @@ class OIDC extends WebModule
 	 */
 	private function syncAttributes(array $attrs): void
 	{
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$idp_config = $this->getModule('idp_config');
 		$idp = $idp_config->getIdentityProviderConfig($name);
 		$sync = false;
@@ -241,7 +282,7 @@ class OIDC extends WebModule
 	 */
 	private function getUserAttributes(array $id_token_dec, string $access_token): array
 	{
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$idp_config = $this->getModule('idp_config');
 		$config = $idp_config->getIdentityProviderConfig($name);
 
@@ -318,12 +359,12 @@ class OIDC extends WebModule
 	 */
 	public function rpLogoutUser(): void
 	{
-		$id_token = $this->getIDToken();
+		$id_token = $this->params->getIDToken();
 		if (!$id_token) {
 			// no token, no logout
 			return;
 		}
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$oidc_idp_config = $this->getOIDCIdPConfig($name);
 		if (!isset($oidc_idp_config['end_session_endpoint'])) {
 			// no logout url endpoint defined
@@ -341,7 +382,7 @@ class OIDC extends WebModule
 		HTTPClient::get($logout_url);
 
 		// Remove token (no longer needed)
-		$this->removeIDToken();
+		$this->params->removeIDToken();
 	}
 
 	/**
@@ -371,7 +412,7 @@ class OIDC extends WebModule
 	 */
 	private function validateIDToken(string $id_token): bool
 	{
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$idp_config = $this->getModule('idp_config');
 		$config = $idp_config->getIdentityProviderConfig($name);
 
@@ -447,7 +488,7 @@ class OIDC extends WebModule
 	{
 		$idp_config = $this->getModule('idp_config');
 		$config = $idp_config->getIdentityProviderConfig($name);
-		$this->setClient($name);
+		$this->params->setClient($name);
 
 		// Get decoded logout token properties
 		$logout_token_dec = JWT::decodeToken($logout_token);
@@ -531,6 +572,84 @@ class OIDC extends WebModule
 	}
 
 	/**
+	 * Token sanity check.
+	 * General check tokens validity and refresh them if needed.
+	 *
+	 * @return bool true on success, otherwise false
+	 */
+	public function checkTokens(): void
+	{
+		$refresh = $logout = false;
+		$id_token = $this->params->getIDToken();
+		if ($id_token) {
+			// Get decoded ID token properties
+			$id_token_dec = JWT::decodeToken($id_token);
+
+			if (!$this->isIssuerValid($id_token_dec)) { // Verify ID token issuer
+				// ID token issuer is invalid, token tampered with - do logout
+				$logout = true;
+			} elseif (!$this->isAudienceValid($id_token_dec)) { // Verify ID token audience
+				// ID token audience is invalid, token tampered with - do logout
+				$logout = true;
+			} elseif (!$this->isExpirationTimeValid($id_token_dec)) { // Verify ID token expiration time
+				if ($this->params->getRefreshToken()) {
+					// Token expired and is no longer valid - refresh
+					$refresh = true;
+				} else {
+					// Refresh token does not exist - logout
+					$logout = true;
+				}
+			}
+		}
+
+		if ($logout) {
+			$users = $this->getModule('users');
+			$users->logout($this->Application);
+		} elseif ($refresh) {
+			$this->refreshTokens();
+		}
+	}
+
+	/**
+	 * Try to acquire new tokens using existing refresh token.
+	 */
+	private function refreshTokens()
+	{
+		$refresh_token = $this->params->getRefreshToken();
+		if (!$refresh_token) {
+			return;
+		}
+		$name = $this->params->getClient();
+		$idp_config = $this->getModule('idp_config');
+		$config = $idp_config->getIdentityProviderConfig($name);
+		$oidc_idp_config = $this->getOIDCIdPConfig($name);
+		$params = [
+			'grant_type' => 'refresh_token',
+			'refresh_token' => $refresh_token,
+			'client_id' => $config['oidc_client_id'],
+			'client_secret' => $config['oidc_client_secret']
+		];
+
+		$body = http_build_query($params);
+		$result = HTTPClient::post(
+			$oidc_idp_config['token_endpoint'],
+			$body
+		);
+		if ($result['error'] === 0) {
+			$data = json_decode($result['output'], true);
+			if (key_exists('access_token', $data)) {
+				$this->params->setAccessToken($data['access_token']);
+			}
+			if (key_exists('refresh_token', $data)) {
+				$this->params->setRefreshToken($data['refresh_token']);
+			}
+			if (key_exists('id_token', $data)) {
+				$this->params->setIDToken($data['id_token']);
+			}
+		}
+	}
+
+	/**
 	 * Get verification public key from JWKS keys or from user provided key.
 	 *
 	 * @param string $id_token_dec decoded ID token properties
@@ -539,7 +658,7 @@ class OIDC extends WebModule
 	private function getVerifyKey(array $id_token_dec): array
 	{
 		$key_id = $id_token_dec['header']['kid'] ?? '';
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$oidc_idp_config = $this->getOIDCIdPConfig($name);
 		$keys = key_exists('keys', $oidc_idp_config) && is_array($oidc_idp_config['keys']) ? $oidc_idp_config['keys'] : [];
 
@@ -687,7 +806,7 @@ class OIDC extends WebModule
 	 */
 	private function isIssuerValid(array $id_token_dec): bool
 	{
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$idp_config = $this->getOIDCIdPConfig($name);
 		$issuer_jwks = $idp_config['issuer'] ?? '';
 		$issuer_token = $id_token_dec['body']['iss'] ?? '';
@@ -710,7 +829,7 @@ class OIDC extends WebModule
 	 */
 	private function isAudienceValid(array $id_token_dec): bool
 	{
-		$name = $this->getClient();
+		$name = $this->params->getClient();
 		$idp_config = $this->getModule('idp_config');
 		$config = $idp_config->getIdentityProviderConfig($name);
 		$audience_config = $config['oidc_client_id'] ?? '';
@@ -811,7 +930,8 @@ class OIDC extends WebModule
 
 			// Get JWKS keys from discovery endpoint
 			$jwks_uri = $oidc_idp_config['jwks_uri'] ?? '';
-			$oidc_idp_config['keys'] = $this->getJWKSKeys($jwks_uri);
+			$jwks = $this->getJWKSKeys($jwks_uri);
+			$oidc_idp_config['keys'] = $jwks['keys'];
 		} else {
 			// Get user-defined properties
 			for ($i = 0; $i < count($idp_params); $i++) {
@@ -819,7 +939,8 @@ class OIDC extends WebModule
 			}
 			if (key_exists('oidc_use_jwks_endpoint', $config) && $config['oidc_use_jwks_endpoint'] == 1) {
 				// Get JWKS keys from user-defined JWKS endpoint
-				$oidc_idp_config['keys'] = $this->getJWKSKeys($config['oidc_jwks_uri']);
+				$jwks = $this->getJWKSKeys($config['oidc_jwks_uri']);
+				$oidc_idp_config['keys'] = $jwks['keys'];
 			} else {
 				// Get keys provided by user in PEM format
 				$key = ['key' => '', 'kid' => '', 'alg' => JWT::ALG_RS256];
@@ -844,15 +965,27 @@ class OIDC extends WebModule
 	private function getDiscoveryInfo(string $name): array
 	{
 		if (!self::$discovery_info) {
-			$idp_config = $this->getModule('idp_config');
-			$config = $idp_config->getIdentityProviderConfig($name);
+			$name = $this->params->getClient();
+			$cache = $this->params->getConfigCache($name);
+			if (is_null($cache) || (is_array($cache) && $cache['expiry_ts'] <= time())) {
+				// cache empty or expired, refresh it
+				$idp_config = $this->getModule('idp_config');
+				$config = $idp_config->getIdentityProviderConfig($name);
 
-			$discovery_url = $config['oidc_discovery_endpoint'] ?? '';
-			if ($discovery_url) {
-				$result = HTTPClient::get($discovery_url);
-				if ($result['error'] === 0) {
-					self::$discovery_info = json_decode($result['output'], true);
+				$discovery_url = $config['oidc_discovery_endpoint'] ?? '';
+				if ($discovery_url) {
+					$result = HTTPClient::get($discovery_url);
+					if ($result['error'] === 0) {
+						self::$discovery_info = json_decode($result['output'], true);
+						$max_age = HTTPHeaders::getCacheControlMaxAge(
+							$result['headers']['cache-control'] ?? ''
+						);
+						$this->params->setConfigCache($name, $max_age, self::$discovery_info);
+					}
 				}
+			} else {
+				// cache is ready, use it
+				self::$discovery_info = $cache['cache'];
 			}
 		}
 		return self::$discovery_info;
@@ -866,13 +999,27 @@ class OIDC extends WebModule
 	 */
 	private function getJWKSKeys(string $jwks_uri): array
 	{
-		$keys = [];
-		$result = HTTPClient::get($jwks_uri);
-		if ($result['error'] === 0) {
-			$jwks = json_decode($result['output'], true);
-			$keys = $jwks['keys'] ?? [];
+		if (!self::$jwks) {
+			$name = $this->params->getClient();
+			$cache = $this->params->getJWKSCache($name);
+			if (is_null($cache) || (is_array($cache) && $cache['expiry_ts'] <= time())) {
+				// cache is empty or expired
+				$keys = [];
+				$result = HTTPClient::get($jwks_uri);
+				if ($result['error'] === 0) {
+					$jwks = json_decode($result['output'], true);
+					self::$jwks = $jwks;
+					$max_age = HTTPHeaders::getCacheControlMaxAge(
+						$result['headers']['cache-control'] ?? ''
+					);
+					$this->params->setJWKSCache($name, $max_age, self::$jwks);
+				}
+			} else {
+				// cache is ready, use it
+				self::$jwks = $cache['cache'];
+			}
 		}
-		return $keys;
+		return self::$jwks;
 	}
 
 	/**
@@ -894,161 +1041,5 @@ class OIDC extends WebModule
 			);
 		}
 		return $enabled;
-	}
-
-	/**
-	 * Get OIDC authentication state value.
-	 *
-	 * @return null|string OIDC state value
-	 */
-	public function getState()
-	{
-		$sess = $this->getSession();
-		return $sess->itemAt(self::PROP_STATE);
-	}
-
-	/**
-	 * Set OIDC authentication state value.
-	 *
-	 * @param string $state OIDC state value
-	 */
-	public function setState(string $state): void
-	{
-		$sess = $this->getSession();
-		$sess->add(self::PROP_STATE, $state);
-	}
-
-	/**
-	 * Remove OIDC authentication state.
-	 */
-	public function removeState(): void
-	{
-		$sess = $this->getSession();
-		$sess->remove(self::PROP_STATE);
-	}
-
-	/**
-	 * Get identity provider name from session.
-	 *
-	 * @return null|string identity provider name
-	 */
-	public function getClient()
-	{
-		$sess = $this->getSession();
-		return $sess->itemAt(self::PROP_CLIENT);
-	}
-
-	/**
-	 * Set identity name in session.
-	 *
-	 * @param string $name identity provider name
-	 */
-	public function setClient(string $name): void
-	{
-		$sess = $this->getSession();
-		$sess->add(self::PROP_CLIENT, $name);
-	}
-
-	/**
-	 * Remove identity provider name from session.
-	 */
-	public function removeClient(): void
-	{
-		$sess = $this->getSession();
-		$sess->remove(self::PROP_CLIENT);
-	}
-
-	/**
-	 * Get OIDC authentication PKCE value.
-	 *
-	 * @return null|string OIDC PKCE value
-	 */
-	public function getPKCE()
-	{
-		$sess = $this->getSession();
-		return $sess->itemAt(self::PROP_PKCE);
-	}
-
-	/**
-	 * Set OIDC authentication PKCE value.
-	 *
-	 * @param string $method PKCE method (plain or S256)
-	 */
-	public function setPKCE($method): void
-	{
-		$keys = PKCE::getKeys($method);
-		$sess = $this->getSession();
-		$sess->add(self::PROP_PKCE, $keys);
-	}
-
-	/**
-	 * Remove OIDC authentication PKCE.
-	 */
-	public function removePKCE(): void
-	{
-		$sess = $this->getSession();
-		$sess->remove(self::PROP_PKCE);
-	}
-
-	/**
-	 * Get OIDC authentication ID token.
-	 *
-	 * @return null|string OIDC ID token
-	 */
-	public function getIDToken()
-	{
-		$sess = $this->getSession();
-		return $sess->itemAt(self::PROP_ID_TOKEN);
-	}
-
-	/**
-	 * Set OIDC authentication ID token.
-	 *
-	 * @param string ID token
-	 */
-	public function setIDToken(string $id_token): void
-	{
-		$sess = $this->getSession();
-		$sess->add(self::PROP_ID_TOKEN, $id_token);
-	}
-
-	/**
-	 * Remove OIDC authentication ID token.
-	 */
-	public function removeIDToken(): void
-	{
-		$sess = $this->getSession();
-		$sess->remove(self::PROP_ID_TOKEN);
-	}
-
-	/**
-	 * Get OAuth2 authorization access token.
-	 *
-	 * @return null|string access token
-	 */
-	public function getAccessToken()
-	{
-		$sess = $this->getSession();
-		return $sess->itemAt(self::PROP_ACCESS_TOKEN);
-	}
-
-	/**
-	 * Set OAuth2 authorization access token.
-	 *
-	 * @param string access token
-	 */
-	public function setAccessToken(string $id_token): void
-	{
-		$sess = $this->getSession();
-		$sess->add(self::PROP_ACCESS_TOKEN, $id_token);
-	}
-
-	/**
-	 * Remove OAuth2 authorization access token.
-	 */
-	public function removeAccessToken(): void
-	{
-		$sess = $this->getSession();
-		$sess->remove(self::PROP_ACCESS_TOKEN);
 	}
 }

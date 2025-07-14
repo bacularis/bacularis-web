@@ -70,8 +70,7 @@ class OIDCRedirect extends BaculumWebPage
 		$code = $_GET['code'] ?? '';
 		$state = $_GET['state'] ?? '';
 		$oidc = $this->getModule('oidc');
-		$st = $oidc->getState();
-		$oidc->removeState();
+		$st = $oidc->getStateClear();
 		if ($st !== $state) {
 			$emsg = "Invalid OIDC state. Required: {$st}, Current: {$state}.";
 			Logging::log(

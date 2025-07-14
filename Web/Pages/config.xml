@@ -44,7 +44,9 @@
 		<module id="user_role" class="Bacularis\Web\Modules\WebUserRoles" />
 		<module id="auth" class="Prado\Security\TAuthManager" UserManager="users" LoginPage="LoginPage" />
 		<module id="users" class="Bacularis\Web\Modules\WebUserManager" UserClass="Bacularis\Web\Modules\WebUser" />
+		<module id="oidc_session" class="Bacularis\Web\Modules\OIDCSession" />
 		<module id="oidc" class="Bacularis\Web\Modules\OIDC" />
+		<module id="oidc_google" class="Bacularis\Web\Modules\OIDCGoogle" />
 		<module id="web_session" class="Bacularis\Web\Modules\WebSession" />
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
