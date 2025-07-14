@@ -361,7 +361,7 @@ $(function() {
 			<h2 id="organization_window_title_edit" style="display: none"><%[ Edit organization ]%></h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
-			<span id="organization_window_org_exists" class="error" style="display: none"><ul><li><%[ Organization with the given name already exists. ]%></li></ul></span>
+			<com:TActiveLabel ID="OrganizationErrorMsg" CssClass="error" Display="None" />
 			<div class="w3-row directive_field">
 				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationName" Text="<%[ Organization identifier ]%>" />:</div>
 				<div class="w3-half">

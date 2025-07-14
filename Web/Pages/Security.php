@@ -39,6 +39,9 @@ class Security extends BaculumWebPage
 {
 	public function postSaveOrganization($sender, $param)
 	{
+		// Refresh organization list in general form
+		$this->AuthGeneral->initDefAccessForm();
+
 		// refresh organization list
 		$this->Users->initUserWindow();
 
@@ -48,6 +51,9 @@ class Security extends BaculumWebPage
 
 	public function postRemoveOrganization($sender, $param)
 	{
+		// Refresh organization list in general form
+		$this->AuthGeneral->initDefAccessForm();
+
 		// refresh organization list
 		$this->Users->initUserWindow();
 

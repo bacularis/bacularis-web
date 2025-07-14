@@ -188,10 +188,13 @@ class Organizations extends Security
 
 		$org_win_type = $this->OrganizationWindowType->Value;
 		$cb = $this->getPage()->getCallbackClient();
-		$cb->hide('organization_window_org_exists');
+		$cb->hide($this->OrganizationErrorMsg);
 		if ($org_win_type === self::TYPE_ADD_WINDOW) {
 			if ($org_exists) {
-				$cb->show('organization_window_org_exists');
+				$msg = Prado::localize('Organization with identifier \'%s\' already exists.');
+				$emsg = sprintf($msg, $org_name);
+				$cb->update($this->OrganizationErrorMsg, $emsg);
+				$cb->show($this->OrganizationErrorMsg);
 				return;
 			}
 		}
