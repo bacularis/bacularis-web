@@ -581,6 +581,9 @@ class OIDC extends WebModule
 	{
 		$refresh = $logout = false;
 		$id_token = $this->params->getIDToken();
+		$org_id = $this->User->getOrganization();
+		$org_config = $this->getModule('org_config');
+		$org = $org_config->getOrganizationConfig($org_id);
 		if ($id_token) {
 			// Get decoded ID token properties
 			$id_token_dec = JWT::decodeToken($id_token);
@@ -600,6 +603,9 @@ class OIDC extends WebModule
 					$logout = true;
 				}
 			}
+		} elseif ($org && $org['auth_type'] == OrganizationConfig::AUTH_TYPE_IDP) {
+			// user is in org that requires having token - logout
+			$logout = true;
 		}
 
 		if ($logout) {
@@ -635,6 +641,12 @@ class OIDC extends WebModule
 			$oidc_idp_config['token_endpoint'],
 			$body
 		);
+
+		// remove tokens, they should not be used longer
+		$this->params->removeAccessToken();
+		$this->params->removeRefreshToken();
+		$this->params->removeIDToken();
+
 		if ($result['error'] === 0) {
 			$data = json_decode($result['output'], true);
 			if (key_exists('access_token', $data)) {
