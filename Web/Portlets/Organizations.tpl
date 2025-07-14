@@ -387,7 +387,7 @@ $(function() {
 						ControlCssClass="field_invalid"
 						Display="Dynamic"
 					/>
-				</div> &nbsp;<i id="organization_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+				</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 			</div>
 			<div class="w3-row directive_field">
 				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationDescription" Text="<%[ Organization name ]%>"/>:</div>
@@ -399,7 +399,14 @@ $(function() {
 						CssClass="w3-input w3-border"
 						Attributes.placeholder="ex: My favourite organization"
 					/>
-				</div>
+					<com:TRequiredFieldValidator
+						ValidationGroup="OrganizationGroup"
+						ControlToValidate="OrganizationFullName"
+						ErrorMessage="<%[ Field required. ]%>"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+					/>
+				</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 			</div>
 			<div class="w3-row directive_field">
 				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationDescription" Text="<%[ Description ]%>"/>:</div>
