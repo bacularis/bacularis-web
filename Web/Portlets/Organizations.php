@@ -175,14 +175,15 @@ class Organizations extends Security
 		$cfg_org['name'] = $org_name;
 		$cfg_org['full_name'] = $this->OrganizationFullName->Text;
 		$cfg_org['description'] = $this->OrganizationDescription->Text;
+		$cfg_org['identity_provider'] = '';
 		if ($this->OrganizationAuthMethodOpt->Checked) {
 			$cfg_org['auth_type'] = OrganizationConfig::AUTH_TYPE_AUTH_METHOD;
 		} elseif ($this->OrganizationIdPOpt->Checked) {
 			$cfg_org['auth_type'] = OrganizationConfig::AUTH_TYPE_IDP;
+			$cfg_org['identity_provider'] = $this->OrganizationIdP->SelectedValue;
 		} else {
 			$cfg_org['auth_type'] = OrganizationConfig::AUTH_TYPE_AUTH_METHOD;
 		}
-		$cfg_org['identity_provider'] = $this->OrganizationIdP->SelectedValue;
 		$cfg_org['enabled'] = $this->OrganizationEnabled->Checked ? '1': '0';
 		$cfg_org['login_btn_color'] = $this->OrganizationLoginBtnColor->Text;
 
