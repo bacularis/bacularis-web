@@ -254,10 +254,11 @@ class WebUserManager extends WebModule implements IUserManager
 				$sess->open();
 
 				// If basic user is not logged it, try to log in here
-				$username = $_SERVER['PHP_AUTH_USER'] ?? null;
-				$password = $_SERVER['PHP_AUTH_PW'] ?? null;
+				$user_id = $_SERVER['PHP_AUTH_USER'] ?? '';
+				$password = $_SERVER['PHP_AUTH_PW'] ?? '';
+				$org_user = WebUserConfig::getOrgUser('', $user_id);
 				$auth = $this->getModule('auth');
-				$auth->login($username, $password);
+				$auth->login($org_user, $password);
 			}
 		}
 

@@ -584,6 +584,7 @@ class OIDC extends WebModule
 		$org_id = $this->User->getOrganization();
 		$org_config = $this->getModule('org_config');
 		$org = $org_config->getOrganizationConfig($org_id);
+		$web_config = $this->getModule('web_config');
 		if ($id_token) {
 			// Get decoded ID token properties
 			$id_token_dec = JWT::decodeToken($id_token);
@@ -603,7 +604,7 @@ class OIDC extends WebModule
 					$logout = true;
 				}
 			}
-		} elseif ($org && $org['auth_type'] == OrganizationConfig::AUTH_TYPE_IDP) {
+		} elseif ($org && $org['auth_type'] == OrganizationConfig::AUTH_TYPE_IDP && !$web_config->isAuthMethodBasic()) {
 			// user is in org that requires having token - logout
 			$logout = true;
 		}
