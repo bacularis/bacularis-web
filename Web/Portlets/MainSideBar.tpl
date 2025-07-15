@@ -9,34 +9,14 @@
 			<div class="w3-tiny" style="display: <%=count($this->organization) == 0 ? 'none' : 'block'%>">
 				Org: <strong><%=$this->organization['full_name'] ?? ''%></strong>
 			</div>
-			<script>var main_side_bar_reload_url = '<%=$this->reload_url%>';</script>
-			<com:TActiveLinkButton
+			<com:TLinkButton
 				ID="Logout"
 				OnClick="logout"
 				CssClass="w3-bar-item w3-button"
 				ToolTip="<%[ Logout ]%>"
 			>
-				<prop:ClientSide.OnComplete>
-					if (!window.chrome && window.navigator.userAgent.indexOf('Safari') != -1) {
-						// Safari
-						var xml_http = new XMLHttpRequest();
-						xml_http.open('POST', main_side_bar_reload_url, true, '<%=$this->User->getUsername()%>');
-						xml_http.onreadystatechange = function() {
-							if (this.readyState == 4 && this.status == 200) {
-								window.location.reload();
-							}
-						}
-						xml_http.send();
-					} else if (!window.chrome || window.navigator.webdriver)  {
-						// Firefox and others
-						window.location.href = main_side_bar_reload_url;
-					} else if (window.chrome) {
-						// Chrome
-						window.location.reload();
-					}
-				</prop:ClientSide.OnComplete>
 				<i class="fa fa-power-off"></i>
-			</com:TActiveLinkButton>
+			</com:TLinkButton>
 			<a href="<%=$this->Service->constructUrl('AccountSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'AccountSettings') ? '' : ' hide'%>" title="<%[ Account settings ]%>"><i class="fa-solid fa-user-gear"></i></a>
 			<a href="<%=$this->Service->constructUrl('ApplicationSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'ApplicationSettings') ? '' : ' hide'%>" title="<%[ Application settings ]%>"><i class="fa fa-cog"></i></a>
 		</div>

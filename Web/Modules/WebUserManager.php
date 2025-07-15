@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\AuthBasic;
 use Prado\Prado;
 use Prado\Security\IUserManager;
 use Prado\Security\TAuthorizationRule;
@@ -468,6 +469,11 @@ class WebUserManager extends WebModule implements IUserManager
 				 * and to bring the login prompt on.
 				 */
 				$application->Response->setStatusCode(401);
+				AuthBasic::setAuthenticateHeader(
+					AuthBasic::REALM_WEB
+				);
+				$application->completeRequest();
+				exit();
 			} else {
 				$application->getService()->getRequestedPage()->goToDefaultPage();
 			}

@@ -38,11 +38,6 @@ namespace Bacularis\Web\Portlets;
 class MainSideBar extends Portlets
 {
 	/**
-	 * Reload URL is used to refresh page after logout with Basic auth.
-	 */
-	public $reload_url = '';
-
-	/**
 	 * Current user organization details.
 	 */
 	public $organization = [];
@@ -57,14 +52,6 @@ class MainSideBar extends Portlets
 		parent::onInit($param);
 		if ($this->getPage()->IsCallback || $this->getPage()->IsPostBack) {
 			return;
-		}
-		if ($this->getModule('web_config')->isAuthMethodBasic()) {
-			$fake_pwd = $this->getModule('crypto')->getRandomString();
-			// must be different than currently logged in Basic user
-			$user = ($_SERVER['PHP_AUTH_USER'] ?? '') . '1';
-
-			// do a login try with different user and password to logout current user
-			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
 		}
 		$api_config = $this->getModule('api_config')->getConfig();
 		$this->is_api = count($api_config) > 0;
