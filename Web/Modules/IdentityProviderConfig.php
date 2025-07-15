@@ -16,7 +16,6 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
-use Bacularis\Common\Modules\PKCE;
 use Bacularis\Web\Modules\OIDC;
 
 /**

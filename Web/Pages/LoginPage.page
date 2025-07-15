@@ -8,7 +8,7 @@
 			</com:TPanel>
 			<com:TPanel ID="LoginBox">
 				<com:TPanel ID="OrganizationBox" CssClass="w3-margin-top" Display="None" Style="position: relative; margin-right: 0;">
-				<span onclick="window.location.href = '<%=$this->getService()->constructUrl('LoginPage')%>';" class="w3-button" style="position: absolute; top: -24px; right: -16px;">×</span>
+					<span onclick="window.location.href = '<%=$this->getService()->constructUrl('LoginPage')%>';" class="w3-button" style="position: absolute; top: -24px; right: -16px;">×</span>
 					<com:TLabel ID="OrganizationName" CssClass="normal bold w3-large w3-show-inline-block" />
 					<com:THiddenField ID="Organization" />
 				</com:TPanel>

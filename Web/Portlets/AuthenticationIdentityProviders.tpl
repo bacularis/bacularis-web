@@ -378,7 +378,7 @@ $(function() {
 						<com:TListItem
 							Value="<%=IdentityProviderConfig::IDP_TYPE_OIDC%>"
 							Text="<%=IdentityProviderConfig::IDP_TYPE_OIDC_DESC%>"
-							Attributes.data-defname="master"
+							Attributes.data-defname="main"
 						/>
 						<com:TListItem
 							Value="<%=IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE%>"
