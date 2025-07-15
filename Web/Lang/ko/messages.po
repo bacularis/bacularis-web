@@ -6744,3 +6744,9 @@ msgstr "Login"
 
 msgid "Identity provider identifier '%s' already exists. Please type different identifier."
 msgstr "Identity provider identifier '%s' already exists. Please type different identifier."
+
+msgid "Additional options"
+msgstr "Additional options"
+
+msgid "Post logout redirect URI"
+msgstr "Post logout redirect URI"

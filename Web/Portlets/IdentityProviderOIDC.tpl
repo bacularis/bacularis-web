@@ -70,6 +70,8 @@
 					sender.enabled = (is_oidc_auth && is_use_discovery);
 				</prop:ClientSide.OnValidate>
 			</com:TRequiredFieldValidator>
+			<i id="idp_method_oidc_load_discovery" class="fa-solid fa-sync pointer w3-margin-left" onclick="oIdPOIDCUserSecurity.load_discovery();"></i>
+			<i id="idp_method_oidc_result_discovery" class="fa-solid" style="display: none; margin-left: 3px;"></i>
 		</div>
 	</div>
 	<div id="idp_method_oidc_disable_discovery" style="display: <%=!$this->IdPOIDCUseDiscoveryEndpoint->Checked ? 'block' : 'none'%>">
@@ -355,6 +357,9 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<span class="pointer bold" onclick="$('#idp_method_oidc_additional_options').slideToggle('fast');"><i class="fa-solid fa-wrench"></i> &nbsp;<%[ Additional options ]%></span>
+	<div id="idp_method_oidc_additional_options" class="w3-container" style="display: none;">
 		<div class="w3-container w3-row directive_field">
 			<div class="w3-third w3-col">
 				<%[ Scope ]%>:
@@ -377,10 +382,26 @@
 				>
 					<prop:ClientSide.OnValidate>
 						const is_oidc_auth = ($('#<%=$this->IdPType->ClientID%>')[0].value == '<%=IdentityProviderConfig::IDP_TYPE_OIDC%>');
-						const is_use_discovery = $('#<%=$this->IdPOIDCUseDiscoveryEndpoint->ClientID%>')[0].checked;
-						sender.enabled = (is_oidc_auth && !is_use_discovery);
+						sender.enabled = (is_oidc_auth);
 					</prop:ClientSide.OnValidate>
+					<prop:ClientSide.OnValidationError>
+						const container = document.getElementById('idp_method_oidc_additional_options');
+						container.style.display = 'block';
+					</prop:ClientSide.OnValidationError>
 				</com:TRequiredFieldValidator>
+			</div>
+		</div>
+		<div class="w3-container w3-row directive_field">
+			<div class="w3-third w3-col">
+				<%[ Post logout redirect URI ]%>:
+			</div>
+			<div class="w3-twothird w3-col">
+				<com:TActiveTextBox
+					ID="IdPOIDCPostLogoutRedirectURI"
+					CssClass="w3-input w3-border w3-show-inline-block"
+					CausesValidation="false"
+					Width="90%"
+				/>
 			</div>
 		</div>
 	</div>
@@ -552,8 +573,16 @@
 		</div>
 	</div>
 </div>
+<com:TCallback ID="LoadDiscovery" OnCallback="loadDiscovery">
+	<prop:ClientSide.OnLoading>
+		oIdPOIDCUserSecurity.load_discovery_loading(true);
+	</prop:ClientSide.OnLoading>
+	<prop:ClientSide.OnComplete>
+		oIdPOIDCUserSecurity.load_discovery_loading(false);
+	</prop:ClientSide.OnComplete>
+</com:TCallback>
 <script>
-const oIdPOIDCUserSecurity = {
+var oIdPOIDCUserSecurity = {
 	ids: {
 		chkb_discovery: '<%=$this->IdPOIDCUseDiscoveryEndpoint->ClientID%>',
 		disable_discovery: 'idp_method_oidc_disable_discovery',
@@ -565,7 +594,9 @@ const oIdPOIDCUserSecurity = {
 		chkb_pkce: '<%=$this->IdPOIDCUsePKCE->ClientID%>',
 		enable_pkce: 'idp_method_oidc_enable_pkce',
 		discovery_url_req: 'idp_method_oidc_discovery_url_req',
-		use_jwks: '<%=$this->IdPOIDCUseJWKSEndpoint->ClientID%>'
+		use_jwks: '<%=$this->IdPOIDCUseJWKSEndpoint->ClientID%>',
+		load_discovery: 'idp_method_oidc_load_discovery',
+		result_discovery: 'idp_method_oidc_result_discovery'
 	},
 	load_settings: function() {
 		this.show_discovery();
@@ -610,6 +641,30 @@ const oIdPOIDCUserSecurity = {
 		const show = chkb_pkce.checked;
 		const enable_pkce = document.getElementById(this.ids.enable_pkce);
 		enable_pkce.style.display = show ? 'block' : 'none';
+	},
+	load_discovery: function() {
+		const cb = <%=$this->LoadDiscovery->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_discovery_cb: function(state) {
+		const self = oIdPOIDCUserSecurity;
+		const loader = document.getElementById(self.ids.load_discovery);
+		const result = document.getElementById(self.ids.result_discovery);
+		result.classList.remove('fa-check', 'fa-times', 'w3-text-green', 'w3-text-red');
+		if (state) {
+			result.classList.add('fa-check', 'w3-text-green');
+		} else {
+			result.classList.add('fa-times', 'w3-text-red');
+		}
+		result.style.display = 'inline-block';
+	},
+	load_discovery_loading: function(loading) {
+		const loader = document.getElementById(this.ids.load_discovery);
+		if (loading) {
+			loader.classList.add('w3-spin');
+		} else {
+			loader.classList.remove('w3-spin');
+		}
 	}
 };
 var oIdPOIDC = {

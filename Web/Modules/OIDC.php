@@ -388,6 +388,8 @@ class OIDC extends WebModule
 			return;
 		}
 		$name = $this->params->getClient();
+		$idp_config = $this->getModule('idp_config');
+		$config = $idp_config->getIdentityProviderConfig($name);
 		$oidc_idp_config = $this->getOIDCIdPConfig($name);
 		if (!isset($oidc_idp_config['end_session_endpoint'])) {
 			// no logout url endpoint defined
@@ -398,6 +400,9 @@ class OIDC extends WebModule
 		$query = [
 			'id_token_hint' => $id_token
 		];
+		if (isset($config['oidc_post_logout_redirect_uri'])) {
+			$query['post_logout_redirect_uri'] = $config['oidc_post_logout_redirect_uri'];
+		}
 		$logout_url .=  (strpos($logout_url, '?') === false) ? '?' : '&';
 		$logout_url .= http_build_query($query);
 
@@ -1122,6 +1127,7 @@ class OIDC extends WebModule
 		$config['oidc_client_id'] = '';
 		$config['oidc_client_secret'] = '';
 		$config['oidc_scope'] = self::DEF_SCOPE;
+		$config['oidc_post_logout_redirect_uri'] = '';
 		$config['oidc_prompt'] = '';
 		$config['oidc_user_attr_source'] = self::USER_ATTR_SOURCE_ID_TOKEN;
 		$config['oidc_user_attr'] = '';

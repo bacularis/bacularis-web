@@ -19,6 +19,7 @@ use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\IIdentityProviderForm;
 use Bacularis\Web\Modules\OIDC;
 use Bacularis\Common\Modules\PKCE;
+use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
 
 /**
  * Options for identity providers OIDC.
@@ -65,6 +66,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$this->IdPOIDCClientID->Text = $config['oidc_client_id'] ?? '';
 		$this->IdPOIDCClientSecret->Text = $config['oidc_client_secret'] ?? '';
 		$this->IdPOIDCScope->Text = $config['oidc_scope'] ?? '';
+		$this->IdPOIDCPostLogoutRedirectURI->Text = $config['oidc_post_logout_redirect_uri'] ?? '';
 		$this->IdPOIDCUserAttrSource->Text = $config['oidc_user_attr_source'] ?? '';
 		$this->IdPOIDCUserNameAttr->Text = $config['oidc_user_attr'] ?? '';
 		$this->IdPOIDCLongNameAttr->Text = $config['oidc_long_name_attr'] ?? '';
@@ -111,6 +113,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$config['oidc_client_id'] = $this->IdPOIDCClientID->Text;
 		$config['oidc_client_secret'] = $this->IdPOIDCClientSecret->Text;
 		$config['oidc_scope'] = $this->IdPOIDCScope->Text;
+		$config['oidc_post_logout_redirect_uri'] = $this->IdPOIDCPostLogoutRedirectURI->Text;
 		$config['oidc_prompt'] = '';
 		$config['oidc_user_attr_source'] = $this->IdPOIDCUserAttrSource->SelectedValue;
 		$config['oidc_user_attr'] = $this->IdPOIDCUserNameAttr->Text;
@@ -128,6 +131,42 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_NO_SYNC;
 		}
 		return $config;
+	}
+
+	public function loadDiscovery($sender, $param)
+	{
+		$discovery_url = $this->IdPOIDCDiscoveryEndpoint->Text;
+		$result = HTTPClient::get($discovery_url);
+		$state = false;
+		if ($result['error'] == 0) {
+			$discovery = json_decode($result['output'], true);
+			if (is_array($discovery)) {
+				if (key_exists('authorization_endpoint', $discovery)) {
+					$this->IdPOIDCAuthorizationEndpoint->Text = $discovery['authorization_endpoint'];
+				}
+				if (key_exists('token_endpoint', $discovery)) {
+					$this->IdPOIDCTokenEndpoint->Text = $discovery['token_endpoint'];
+				}
+				if (key_exists('end_session_endpoint', $discovery)) {
+					$this->IdPOIDCLogoutEndpoint->Text = $discovery['end_session_endpoint'];
+				}
+				if (key_exists('userinfo_endpoint', $discovery)) {
+					$this->IdPOIDCUserInfoEndpoint->Text = $discovery['userinfo_endpoint'];
+				}
+				if (key_exists('issuer', $discovery)) {
+					$this->IdPOIDCIssuer->Text = $discovery['issuer'];
+				}
+				if (key_exists('jwks_uri', $discovery)) {
+					$this->IdPOIDCJWKSEndpoint->Text = $discovery['jwks_uri'];
+				}
+				$state = true;
+			}
+		}
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->callClientFunction(
+			'oIdPOIDCUserSecurity.load_discovery_cb',
+			[$state]
+		);
 	}
 
 	/**
