@@ -18,6 +18,7 @@ namespace Bacularis\Web\Modules;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\JWT;
 use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Common\Modules\PKCE;
 use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
 use Bacularis\Common\Modules\Protocol\HTTP\Headers as HTTPHeaders;
 use Bacularis\Common\Modules\RSAKey;
@@ -966,7 +967,7 @@ class OIDC extends WebModule
 			// Get JWKS keys from discovery endpoint
 			$jwks_uri = $oidc_idp_config['jwks_uri'] ?? '';
 			$jwks = $this->getJWKSKeys($jwks_uri);
-			$oidc_idp_config['keys'] = $jwks['keys'];
+			$oidc_idp_config['keys'] = $jwks['keys'] ?? [];
 		} else {
 			// Get user-defined properties
 			for ($i = 0; $i < count($idp_params); $i++) {
@@ -975,7 +976,7 @@ class OIDC extends WebModule
 			if (key_exists('oidc_use_jwks_endpoint', $config) && $config['oidc_use_jwks_endpoint'] == 1) {
 				// Get JWKS keys from user-defined JWKS endpoint
 				$jwks = $this->getJWKSKeys($config['oidc_jwks_uri']);
-				$oidc_idp_config['keys'] = $jwks['keys'];
+				$oidc_idp_config['keys'] = $jwks['keys'] ?? [];
 			} else {
 				// Get keys provided by user in PEM format
 				$key = ['key' => '', 'kid' => '', 'alg' => JWT::ALG_RS256];
@@ -1039,7 +1040,6 @@ class OIDC extends WebModule
 			$cache = $this->params->getJWKSCache($name);
 			if (is_null($cache) || (is_array($cache) && $cache['expiry_ts'] <= time())) {
 				// cache is empty or expired
-				$keys = [];
 				$result = HTTPClient::get($jwks_uri);
 				if ($result['error'] === 0) {
 					$jwks = json_decode($result['output'], true);
