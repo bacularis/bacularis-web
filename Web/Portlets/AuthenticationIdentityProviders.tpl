@@ -385,6 +385,11 @@ $(function() {
 							Text="<%=IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE_DESC%>"
 							Attributes.data-defname="google"
 						/>
+						<com:TListItem
+							Value="<%=IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK%>"
+							Text="<%=IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK_DESC%>"
+							Attributes.data-defname="facebook"
+						/>
 					</com:TActiveDropDownList>
 					<i class="fas fa-asterisk w3-text-red opt_req"></i>
 					<com:TRequiredFieldValidator
@@ -439,6 +444,12 @@ $(function() {
 				IdPType="<%=$this->IdPType%>"
 			/>
 		</div>
+		<div id="idp_method_facebook" class="w3-container" rel="idp_method" style="display: <%=$this->IdPType->SelectedValue == IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK ? 'block' : 'none'%>">
+			<com:Bacularis.Web.Portlets.IdentityProviderOIDCFacebook
+				ID="IdentityProviderOIDCFacebook"
+				IdPType="<%=$this->IdPType%>"
+			/>
+		</div>
 		<footer class="w3-container w3-center">
 			<button type="button" class="w3-button w3-red" onclick="document.getElementById('idp_window').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
 			<com:TActiveLinkButton
@@ -480,6 +491,7 @@ var oIdPUserSecurity = {
 	clear_idp_forms: function() {
 		oIdPOIDC.clear_idp_window();
 		oIdPOIDCGoogle.clear_idp_window();
+		oIdPOIDCFacebook.clear_idp_window();
 	},
 	load_settings: function() {
 		oIdPOIDCUserSecurity.load_settings();
@@ -489,7 +501,7 @@ var oIdPUserSecurity = {
 		idp_id.value = id;
 	},
 	set_redirect_uri: function(name) {
-		const pattern = '<%=IdentityProviderConfig::OIDC_REDIRECT_URI_PATTERN%>';
+		const pattern = '<%=OIDC::REDIRECT_URI_PATTERN%>';
 		const protocol = window.location.protocol.replace(/:$/, '');
 		const host = window.location.host;
 		let uri = pattern.replace(/%protocol/, protocol);

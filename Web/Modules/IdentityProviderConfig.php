@@ -17,6 +17,7 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\ConfigFileModule;
 use Bacularis\Common\Modules\PKCE;
+use Bacularis\Web\Modules\OIDC;
 
 /**
  * Identity provider configuration module.
@@ -48,28 +49,8 @@ class IdentityProviderConfig extends ConfigFileModule
 	public const IDP_TYPE_OIDC_DESC = 'SSO - OpenID Connect';
 	public const IDP_TYPE_OIDC_GOOGLE = 'google';
 	public const IDP_TYPE_OIDC_GOOGLE_DESC = 'Google - Social Login';
-
-	/**
-	 * Default OpenID Connect scope.
-	 */
-	public const OIDC_DEF_SCOPE = 'openid email profile';
-
-	/**
-	 * Source of the OpenID Connect user attributes
-	 */
-	public const OIDC_USER_ATTR_SOURCE_ID_TOKEN = 'id_token';
-	public const OIDC_USER_ATTR_SOURCE_USERINFO_ENDPOINT = 'userinfo';
-
-	/**
-	 * Redirect URI pattern for OpenID connect.
-	 */
-	public const OIDC_REDIRECT_URI_PATTERN = '%protocol://%host/web/oidc/%name/redirect';
-
-	/**
-	 * Attribute synchronization policies.
-	 */
-	public const ATTR_SYNC_POLICY_NO_SYNC = 'no_sync';
-	public const ATTR_SYNC_POLICY_EACH_LOGIN = 'each_login';
+	public const IDP_TYPE_OIDC_FACEBOOK = 'facebook';
+	public const IDP_TYPE_OIDC_FACEBOOK_DESC = 'Facebook - Social Login';
 
 	/**
 	 * Stores config.
@@ -206,6 +187,10 @@ class IdentityProviderConfig extends ConfigFileModule
 				$idp_desc = self::IDP_TYPE_OIDC_GOOGLE_DESC;
 				break;
 			}
+			case self::IDP_TYPE_OIDC_FACEBOOK: {
+				$idp_desc = self::IDP_TYPE_OIDC_FACEBOOK_DESC;
+				break;
+			}
 		}
 		return $idp_desc;
 	}
@@ -226,39 +211,8 @@ class IdentityProviderConfig extends ConfigFileModule
 		return str_replace(
 			$from,
 			$to,
-			self::OIDC_REDIRECT_URI_PATTERN
+			OIDC::REDIRECT_URI_PATTERN
 		);
-	}
-
-	public static function getOIDCOptions(): array
-	{
-		$config = [];
-		$config['oidc_redirect_uri'] = '';
-		$config['oidc_use_discovery_endpoint'] = '1';
-		$config['oidc_discovery_endpoint'] = '';
-		$config['oidc_authorization_endpoint'] = '';
-		$config['oidc_token_endpoint'] = '';
-		$config['oidc_end_session_endpoint'] = '';
-		$config['oidc_userinfo_endpoint'] = '';
-		$config['oidc_issuer'] = '';
-		$config['oidc_validate_sig'] = '1';
-		$config['oidc_public_key_string'] = '';
-		$config['oidc_public_key_id'] = '';
-		$config['oidc_use_jwks_endpoint'] = '1';
-		$config['oidc_jwks_uri'] = '';
-		$config['oidc_use_pkce'] = '1';
-		$config['oidc_pkce_method'] = PKCE::CODE_CHALLENGE_METHOD_S256;
-		$config['oidc_client_id'] = '';
-		$config['oidc_client_secret'] = '';
-		$config['oidc_scope'] = self::OIDC_DEF_SCOPE;
-		$config['oidc_prompt'] = '';
-		$config['oidc_user_attr_source'] = self::OIDC_USER_ATTR_SOURCE_ID_TOKEN;
-		$config['oidc_user_attr'] = '';
-		$config['oidc_long_name_attr'] = '';
-		$config['oidc_email_attr'] = '';
-		$config['oidc_desc_attr'] = '';
-		$config['oidc_attr_sync_policy'] = self::ATTR_SYNC_POLICY_NO_SYNC;
-		return $config;
 	}
 
 	public static function getIdPIconCSSByType(string $idp_type)
@@ -267,6 +221,7 @@ class IdentityProviderConfig extends ConfigFileModule
 		switch ($idp_type) {
 			case self::IDP_TYPE_OIDC: $icon = 'fa-brands fa-openid'; break;
 			case self::IDP_TYPE_OIDC_GOOGLE: $icon = 'fa-brands fa-google'; break;
+			case self::IDP_TYPE_OIDC_FACEBOOK: $icon = 'fa-brands fa-facebook'; break;
 			default: $icon = 'fa-solid fa-key'; break;
 		}
 		return $icon;

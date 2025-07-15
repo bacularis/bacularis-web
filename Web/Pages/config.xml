@@ -47,6 +47,7 @@
 		<module id="oidc_session" class="Bacularis\Web\Modules\OIDCSession" />
 		<module id="oidc" class="Bacularis\Web\Modules\OIDC" />
 		<module id="oidc_google" class="Bacularis\Web\Modules\OIDCGoogle" />
+		<module id="oidc_facebook" class="Bacularis\Web\Modules\OIDCFacebook" />
 		<module id="web_session" class="Bacularis\Web\Modules\WebSession" />
 		<!-- data modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />

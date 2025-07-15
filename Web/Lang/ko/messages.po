@@ -6741,3 +6741,6 @@ msgstr "Use refresh token"
 
 msgid "Login"
 msgstr "Login"
+
+msgid "Identity provider identifier '%s' already exists. Please type different identifier."
+msgstr "Identity provider identifier '%s' already exists. Please type different identifier."

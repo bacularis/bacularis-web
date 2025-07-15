@@ -18,6 +18,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Web\Modules\IdentityProviderConfig;
+use Bacularis\Web\Modules\OIDC;
 use Bacularis\Web\Modules\OrganizationConfig;
 use Prado\Prado;
 
@@ -109,6 +110,8 @@ class AuthenticationIdentityProviders extends Security
 				$this->IdentityProviderOIDC->loadSettings($config);
 			} elseif ($config['type'] === IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE) {
 				$this->IdentityProviderOIDCGoogle->loadSettings($config);
+			} elseif ($config['type'] === IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK) {
+				$this->IdentityProviderOIDCFacebook->loadSettings($config);
 			}
 			$cb->callClientFunction(
 				'oIdPUserSecurity.show_idp_settings',
@@ -117,6 +120,7 @@ class AuthenticationIdentityProviders extends Security
 		} else {
 			$this->IdentityProviderOIDC->loadDefaultSettings();
 			$this->IdentityProviderOIDCGoogle->loadDefaultSettings();
+			$this->IdentityProviderOIDCFacebook->loadDefaultSettings();
 		}
 		$cb->callClientFunction(
 			'oIdPUserSecurity.load_settings'
@@ -149,6 +153,10 @@ class AuthenticationIdentityProviders extends Security
 			}
 			case IdentityProviderConfig::IDP_TYPE_OIDC_GOOGLE: {
 				$settings = $this->IdentityProviderOIDCGoogle->getSettings();
+				break;
+			}
+			case IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK: {
+				$settings = $this->IdentityProviderOIDCFacebook->getSettings();
 				break;
 			}
 		}
