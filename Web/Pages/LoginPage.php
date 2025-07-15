@@ -133,8 +133,9 @@ class LoginPage extends BaculumWebPage
 		$org_id = $this->Organization->Value;
 		$user_id = $this->Username->Text;
 		$password = $this->Password->Text;
+		$web_config = $this->getModule('web_config');
 
-		if ($this->getModule('web_config')->isAuthMethodBasic() && !empty($_SERVER['PHP_AUTH_USER'])) {
+		if ($web_config->isAuthMethodBasic() && !empty($_SERVER['PHP_AUTH_USER'])) {
 			// For basic auth take user_id from web server.
 			$user_id = $_SERVER['PHP_AUTH_USER'];
 		}
@@ -145,26 +146,13 @@ class LoginPage extends BaculumWebPage
 		$sess = $this->getApplication()->getSession();
 		$sess->open();
 
-		$user_config = $this->getModule('user_config');
-		$user = $user_config->getUserConfig($org_id, $user_id);
-		if (count($user) == 0) {
-			// Log in organization error
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_WARNING,
-				AuditLog::CATEGORY_SECURITY,
-				"Log in failed. Org: '{$org_id}' User: '{$user_id}'"
-			);
-			sleep(BaculumWebPage::LOGIN_FAILED_DELAY);
-			$this->Msg->Text = Prado::localize('Invalid username or password');
-			$this->MsgBox->Display = 'Dynamic';
-			return;
-		}
 		$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
-
 		$users = $this->getModule('users');
 		$valid = $users->validateUser($org_user, $password);
 		if ($valid === true) {
 			// Pre-login successful
+			$user_config = $this->getModule('user_config');
+			$user = $user_config->getUserConfig($org_id, $user_id);
 			if (count($user) > 0 && key_exists('mfa', $user) && !empty($user['mfa']) && $user['mfa'] !== WebUserConfig::MFA_TYPE_NONE) {
 				// The user uses 2FA, go to second step/factor
 				$this->setMFA($user);
