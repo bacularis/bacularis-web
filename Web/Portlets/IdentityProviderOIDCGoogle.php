@@ -17,10 +17,11 @@ namespace Bacularis\Web\Portlets;
 
 use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\IIdentityProviderForm;
+use Bacularis\Web\Modules\OIDC;
 use Bacularis\Web\Modules\OIDCGoogle;
 
 /**
- * Options for identity providers OIDC.
+ * Social login with Google.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
@@ -68,7 +69,7 @@ class IdentityProviderOIDCGoogle extends Portlets implements IIdentityProviderFo
 	 */
 	public function getSettings(): array
 	{
-		$config = IdentityProviderConfig::getOIDCOptions();
+		$config = OIDC::getDefaultOptions();
 		$config['oidc_discovery_endpoint'] = OIDCGoogle::DEF_DISCOVERY_INFO_URI;
 		$config['oidc_redirect_uri'] = $this->IdPOIDCGoogleRedirectUri->Text;
 		$config['oidc_client_id'] = $this->IdPOIDCGoogleClientID->Text;
@@ -79,8 +80,6 @@ class IdentityProviderOIDCGoogle extends Portlets implements IIdentityProviderFo
 		$config['oidc_email_attr'] = OIDCGoogle::DEF_EMAIL_ATTR;
 		$config['oidc_desc_attr'] = OIDCGoogle::DEF_DESC_ATTR;
 		$config[OIDCGoogle::CFG_NAME_PREFIX . 'access_type'] = ($this->IdPOIDCGoogleRefreshToken->Checked ? 'offline' : 'online');
-		$idp_config = $this->getModule('idp_config');
-		$def_config = $idp_config->getOIDCOptions();
-		return array_merge($def_config, $config);
+		return $config;
 	}
 }

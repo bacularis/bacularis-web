@@ -38,22 +38,11 @@ class OIDCGoogle extends OIDC
 
 	public function authorize(string $name, $extra_params = []): void
 	{
-		$extra_params = $this->getParams($name);
+		$extra_params = $this->getParams(
+			self::CFG_NAME_PREFIX,
+			$name,
+			self::$params
+		);
 		parent::authorize($name, $extra_params);
-	}
-
-	private function getParams(string $name)
-	{
-		$params = [];
-		$idp_config = $this->getModule('idp_config');
-		$config = $idp_config->getIdentityProviderConfig($name);
-		for ($i = 0; $i < count(self::$params); $i++) {
-			$key = self::CFG_NAME_PREFIX . self::$params[$i];
-			if (!key_exists($key, $config) || $config[$key] == '') {
-				continue;
-			}
-			$params[self::$params[$i]] = $config[$key];
-		}
-		return $params;
 	}
 }

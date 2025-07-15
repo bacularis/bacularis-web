@@ -17,6 +17,7 @@ namespace Bacularis\Web\Portlets;
 
 use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\IIdentityProviderForm;
+use Bacularis\Web\Modules\OIDC;
 use Bacularis\Common\Modules\PKCE;
 
 /**
@@ -69,9 +70,9 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$this->IdPOIDCLongNameAttr->Text = $config['oidc_long_name_attr'] ?? '';
 		$this->IdPOIDCEmailAttr->Text = $config['oidc_email_attr'] ?? '';
 		$this->IdPOIDCDescriptionAttr->Text = $config['oidc_desc_attr'] ?? '';
-		if ($config['oidc_attr_sync_policy'] == IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC) {
+		if ($config['oidc_attr_sync_policy'] == OIDC::ATTR_SYNC_POLICY_NO_SYNC) {
 			$this->IdPOIDCAttrSyncPolicyNoSync->Checked = true;
-		} elseif ($config['oidc_attr_sync_policy'] == IdentityProviderConfig::ATTR_SYNC_POLICY_EACH_LOGIN) {
+		} elseif ($config['oidc_attr_sync_policy'] == OIDC::ATTR_SYNC_POLICY_EACH_LOGIN) {
 			$this->IdPOIDCAttrSyncPolicyEachLogin->Checked = true;
 		}
 	}
@@ -81,7 +82,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 	 */
 	public function loadDefaultSettings(): void
 	{
-		$this->IdPOIDCScope->Text = IdentityProviderConfig::OIDC_DEF_SCOPE;
+		$this->IdPOIDCScope->Text = OIDC::DEF_SCOPE;
 	}
 
 	/**
@@ -91,7 +92,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 	 */
 	public function getSettings(): array
 	{
-		$config = [];
+		$config = OIDC::getDefaultOptions();
 		$config['oidc_redirect_uri'] = $this->IdPOIDCRedirectUri->Text;
 		$config['oidc_use_discovery_endpoint'] = $this->IdPOIDCUseDiscoveryEndpoint->Checked ? '1' : '0';
 		$config['oidc_discovery_endpoint'] = $this->IdPOIDCDiscoveryEndpoint->Text;
@@ -118,17 +119,15 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$config['oidc_desc_attr'] = $this->IdPOIDCDescriptionAttr->Text;
 		if ($this->IdPOIDCAttrSyncPolicyNoSync->Checked) {
 			// No sync policy
-			$config['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC;
+			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_NO_SYNC;
 		} elseif ($this->IdPOIDCAttrSyncPolicyEachLogin->Checked) {
 			// Each login policy
-			$config['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_EACH_LOGIN;
+			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_EACH_LOGIN;
 		} else {
 			// Default policy
-			$config['oidc_attr_sync_policy'] = IdentityProviderConfig::ATTR_SYNC_POLICY_NO_SYNC;
+			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_NO_SYNC;
 		}
-		$idp_config = $this->getModule('idp_config');
-		$def_config = $idp_config->getOIDCOptions();
-		return array_merge($def_config, $config);
+		return $config;
 	}
 
 	/**

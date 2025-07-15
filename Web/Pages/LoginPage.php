@@ -398,6 +398,10 @@ class LoginPage extends BaculumWebPage
 						$mod = $this->getModule('oidc_google');
 						break;
 					}
+					case IdentityProviderConfig::IDP_TYPE_OIDC_FACEBOOK: {
+						$mod = $this->getModule('oidc_facebook');
+						break;
+					}
 				}
 				if ($mod) {
 					$mod->authorize($org['identity_provider']);

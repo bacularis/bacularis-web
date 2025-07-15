@@ -453,8 +453,8 @@
 				CausesValidation="false"
 				Width="90%"
 			>
-				<com:TListItem Value="<%=IdentityProviderConfig::OIDC_USER_ATTR_SOURCE_ID_TOKEN%>" Text="ID token" />
-				<com:TListItem Value="<%=IdentityProviderConfig::OIDC_USER_ATTR_SOURCE_USERINFO_ENDPOINT%>" Text="User info endpoint" />
+				<com:TListItem Value="<%=OIDC::USER_ATTR_SOURCE_ID_TOKEN%>" Text="ID token" />
+				<com:TListItem Value="<%=OIDC::USER_ATTR_SOURCE_USERINFO_ENDPOINT%>" Text="User info endpoint" />
 			</com:TActiveDropDownList>
 			<com:TRequiredFieldValidator
 				ValidationGroup="IdPGroup"
@@ -648,10 +648,12 @@ var oIdPOIDC = {
 			document.getElementById(id).checked = true;
 		});
 
+		const scope = document.getElementById('<%=$this->IdPOIDCScope->ClientID%>');
+		scope.value = '<%=OIDC::DEF_SCOPE%>';
 		const pkce = document.getElementById('<%=$this->IdPOIDCPKCEMethod->ClientID%>');
 		pkce.value = '<%=PKCE::CODE_CHALLENGE_METHOD_S256%>';
 		const attr_src = document.getElementById('<%=$this->IdPOIDCUserAttrSource->ClientID%>');
-		attr_src.value = '<%=IdentityProviderConfig::OIDC_USER_ATTR_SOURCE_ID_TOKEN%>';
+		attr_src.value = '<%=OIDC::USER_ATTR_SOURCE_ID_TOKEN%>';
 	}
 }
 </script>

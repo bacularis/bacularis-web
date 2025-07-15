@@ -34,6 +34,28 @@ class OIDC extends WebModule
 {
 	public const ID_TOKEN_NAME = 'BACULARIS_OIDC_TOKEN';
 
+	/**
+	 * Default OpenID Connect scope.
+	 */
+	public const DEF_SCOPE = 'openid email profile';
+
+	/**
+	 * Source of the OpenID Connect user attributes
+	 */
+	public const USER_ATTR_SOURCE_ID_TOKEN = 'id_token';
+	public const USER_ATTR_SOURCE_USERINFO_ENDPOINT = 'userinfo';
+
+	/**
+	 * Redirect URI pattern for OpenID connect.
+	 */
+	public const REDIRECT_URI_PATTERN = '%protocol://%host/web/oidc/%name/redirect';
+
+	/**
+	 * Attribute synchronization policies.
+	 */
+	public const ATTR_SYNC_POLICY_NO_SYNC = 'no_sync';
+	public const ATTR_SYNC_POLICY_EACH_LOGIN = 'each_login';
+
 	private $params;
 
 	public function init($param)
@@ -254,7 +276,7 @@ class OIDC extends WebModule
 		$idp_config = $this->getModule('idp_config');
 		$idp = $idp_config->getIdentityProviderConfig($name);
 		$sync = false;
-		if ($idp['oidc_attr_sync_policy'] === IdentityProviderConfig::ATTR_SYNC_POLICY_EACH_LOGIN) {
+		if ($idp['oidc_attr_sync_policy'] === self::ATTR_SYNC_POLICY_EACH_LOGIN) {
 			$sync = true;
 		}
 
@@ -287,10 +309,10 @@ class OIDC extends WebModule
 		$config = $idp_config->getIdentityProviderConfig($name);
 
 		$attrs = [];
-		if ($config['oidc_user_attr_source'] === IdentityProviderConfig::OIDC_USER_ATTR_SOURCE_ID_TOKEN) {
+		if ($config['oidc_user_attr_source'] === self::USER_ATTR_SOURCE_ID_TOKEN) {
 			// Get user information from ID token
 			$attrs = $this->getUserAttributesFromIDToken($id_token_dec);
-		} elseif ($config['oidc_user_attr_source'] === IdentityProviderConfig::OIDC_USER_ATTR_SOURCE_USERINFO_ENDPOINT) {
+		} elseif ($config['oidc_user_attr_source'] === self::USER_ATTR_SOURCE_USERINFO_ENDPOINT) {
 			// Get user information from user info endpoint
 			$attrs = $this->getUserAttributesFromUserInfo($config, $access_token);
 		}
@@ -378,11 +400,11 @@ class OIDC extends WebModule
 		$logout_url .=  (strpos($logout_url, '?') === false) ? '?' : '&';
 		$logout_url .= http_build_query($query);
 
-		// Logout request
-		HTTPClient::get($logout_url);
-
 		// Remove token (no longer needed)
 		$this->params->removeIDToken();
+
+		// Logout request
+		$this->Response->redirect($logout_url);
 	}
 
 	/**
@@ -1054,5 +1076,59 @@ class OIDC extends WebModule
 			);
 		}
 		return $enabled;
+	}
+
+	/**
+	 * Get extra vendor-specific params to authorization flow.
+	 *
+	 * @param string $prefix parameter key prefix
+	 * @param string $name identity provider configuration name
+	 * @param array $param_def extra params definition
+	 * @return array additional parameters
+	 */
+	protected function getParams(string $prefix, string $name, array $params_def): array
+	{
+		$params = [];
+		$idp_config = $this->getModule('idp_config');
+		$config = $idp_config->getIdentityProviderConfig($name);
+		for ($i = 0; $i < count($params_def); $i++) {
+			$key = $prefix . $params_def[$i];
+			if (!key_exists($key, $config) || $config[$key] == '') {
+				continue;
+			}
+			$params[$params_def[$i]] = $config[$key];
+		}
+		return $params;
+	}
+
+	public static function getDefaultOptions(): array
+	{
+		$config = [];
+		$config['oidc_redirect_uri'] = '';
+		$config['oidc_use_discovery_endpoint'] = '1';
+		$config['oidc_discovery_endpoint'] = '';
+		$config['oidc_authorization_endpoint'] = '';
+		$config['oidc_token_endpoint'] = '';
+		$config['oidc_end_session_endpoint'] = '';
+		$config['oidc_userinfo_endpoint'] = '';
+		$config['oidc_issuer'] = '';
+		$config['oidc_validate_sig'] = '1';
+		$config['oidc_public_key_string'] = '';
+		$config['oidc_public_key_id'] = '';
+		$config['oidc_use_jwks_endpoint'] = '1';
+		$config['oidc_jwks_uri'] = '';
+		$config['oidc_use_pkce'] = '1';
+		$config['oidc_pkce_method'] = PKCE::CODE_CHALLENGE_METHOD_S256;
+		$config['oidc_client_id'] = '';
+		$config['oidc_client_secret'] = '';
+		$config['oidc_scope'] = self::DEF_SCOPE;
+		$config['oidc_prompt'] = '';
+		$config['oidc_user_attr_source'] = self::USER_ATTR_SOURCE_ID_TOKEN;
+		$config['oidc_user_attr'] = '';
+		$config['oidc_long_name_attr'] = '';
+		$config['oidc_email_attr'] = '';
+		$config['oidc_desc_attr'] = '';
+		$config['oidc_attr_sync_policy'] = self::ATTR_SYNC_POLICY_NO_SYNC;
+		return $config;
 	}
 }
