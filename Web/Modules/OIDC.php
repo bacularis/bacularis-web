@@ -222,7 +222,13 @@ class OIDC extends WebModule
 
 		$user_id = $attrs['username'];
 		if (!$user_id) {
-			// user not found
+			// user attribute not found
+			$emsg = 'Username attribute has not been found in ID token';
+			Logging::log(
+				Logging::CATEGORY_SECURITY,
+				$emsg
+			);
+			$this->reportError($emsg);
 			return false;
 		}
 		$sess = $this->getApplication()->getSession();
