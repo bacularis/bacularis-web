@@ -25,8 +25,8 @@ class OIDCFacebook extends OIDC
 {
 	public const CFG_NAME_PREFIX = 'oidc_facebook_';
 
-	public const DEF_AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v11.0/dialog/oauth';
-	public const DEF_TOKEN_ENDPOINT = 'https://graph.facebook.com/v11.0/oauth/access_token';
+	public const DEF_AUTHORIZATION_ENDPOINT = 'https://www.facebook.com/v23.0/dialog/oauth';
+	public const DEF_TOKEN_ENDPOINT = 'https://graph.facebook.com/v23.0/oauth/access_token';
 	public const DEF_USE_JWKS_ENDPOINT = '1';
 	public const DEF_JWKS_ENDPOINT = 'https://www.facebook.com/.well-known/oauth/openid/jwks/';
 	public const DEF_ISSUER = 'https://www.facebook.com';
