@@ -41,6 +41,10 @@ class AccountSettings extends BaculumWebPage
 		$user_id = $this->User->getUsername();
 		$user_config = $this->getModule('user_config');
 		self::$user = $user_config->getUserConfig($org_id, $user_id);
+		if (count(self::$user) == 0) {
+			// user account does not exists, nothing to do on the user account page.
+			exit();
+		}
 
 		if (isset($this->web_config['security']['auth_method']) && $this->web_config['security']['auth_method'] === WebConfig::AUTH_METHOD_BASIC) {
 			$this->AuthTOTP2FAConfigure->getAttributes()->add('onclick', 'return false;');

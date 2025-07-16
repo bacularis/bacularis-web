@@ -17,7 +17,7 @@
 			>
 				<i class="fa fa-power-off"></i>
 			</com:TLinkButton>
-			<a href="<%=$this->Service->constructUrl('AccountSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'AccountSettings') ? '' : ' hide'%>" title="<%[ Account settings ]%>"><i class="fa-solid fa-user-gear"></i></a>
+			<a href="<%=$this->Service->constructUrl('AccountSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'AccountSettings') ? '' : ' hide'%>" title="<%[ Account settings ]%>" style="display: <%=$this->user_exists ? 'inline-block' : 'none'%>"><i class="fa-solid fa-user-gear"></i></a>
 			<a href="<%=$this->Service->constructUrl('ApplicationSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'ApplicationSettings') ? '' : ' hide'%>" title="<%[ Application settings ]%>"><i class="fa fa-cog"></i></a>
 		</div>
 	</div>

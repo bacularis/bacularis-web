@@ -42,6 +42,8 @@ class MainSideBar extends Portlets
 	 */
 	public $organization = [];
 
+	public $user_exists = false;
+
 	/**
 	 * Is API configured.
 	 */
@@ -58,6 +60,10 @@ class MainSideBar extends Portlets
 		$org_id = $this->User->getOrganization();
 		$org_config = $this->getModule('org_config');
 		$this->organization = $org_config->getOrganizationConfig($org_id);
+		$user_config = $this->getModule('user_config');
+		$user_id = $this->User->getUsername();
+		$this->user_exists = $user_config->userExists($org_id, $user_id);
+
 	}
 
 	public function logout($sender, $param)
