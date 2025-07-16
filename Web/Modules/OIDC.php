@@ -77,8 +77,6 @@ class OIDC extends WebModule
 
 	public function authorize(string $name, array $extra_params = []): void
 	{
-		Logging::$debug_enabled = true;
-
 		if (!$this->isIdPEnabled($name)) {
 			$this->reportError('Identity provider is disabled in configuration.');
 			return;
@@ -134,8 +132,6 @@ class OIDC extends WebModule
 
 	public function acquireToken(string $code)
 	{
-		Logging::$debug_enabled = true;
-
 		$name = $this->params->getClient();
 		if (!$this->isIdPEnabled($name)) {
 			$this->reportError('Identity provider is disabled in configuration.');

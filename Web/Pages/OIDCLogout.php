@@ -28,8 +28,6 @@ class OIDCLogout extends BaculumWebPage
 	public function onInit($param)
 	{
 		parent::onInit($param);
-		Logging::$debug_enabled = true;
-
 		$this->logout();
 	}
 

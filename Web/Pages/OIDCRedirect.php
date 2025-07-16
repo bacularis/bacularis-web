@@ -27,8 +27,6 @@ class OIDCRedirect extends BaculumWebPage
 	public function onInit($param)
 	{
 		parent::onInit($param);
-		Logging::$debug_enabled = true;
-
 		$this->setAccessControl();
 	}
 
