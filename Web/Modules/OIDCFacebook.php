@@ -30,7 +30,7 @@ class OIDCFacebook extends OIDC
 	public const DEF_USE_JWKS_ENDPOINT = '1';
 	public const DEF_JWKS_ENDPOINT = 'https://www.facebook.com/.well-known/oauth/openid/jwks/';
 	public const DEF_ISSUER = 'https://www.facebook.com';
-	public const DEF_SCOPE = 'openid';
+	public const DEF_SCOPE = 'openid email';
 	public const DEF_USER_ATTR = 'email';
 	public const DEF_LONG_NAME_ATTR = 'name';
 	public const DEF_EMAIL_ATTR = 'email';
