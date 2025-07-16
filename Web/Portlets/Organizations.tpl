@@ -345,6 +345,16 @@ var oOrganizations = {
 	},
 	save_organization_cb: function() {
 		document.getElementById('organization_window').style.display = 'none';
+	},
+	set_organization_id: function() {
+		const org_id = document.getElementById('<%=$this->OrganizationName->ClientID%>');
+		const org_name = document.getElementById('<%=$this->OrganizationFullName->ClientID%>');
+		if (org_id.hasAttribute('readonly')) {
+			return;
+		}
+		let id = org_name.value.replace(/\s/g, '-');
+		id = id.replace(/[^\w\-]/g, '');
+		org_id.value = id.toLowerCase();
 	}
 }
 
@@ -362,6 +372,26 @@ $(function() {
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 			<com:TActiveLabel ID="OrganizationErrorMsg" CssClass="error" Display="None" />
+			<div class="w3-row directive_field">
+				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationDescription" Text="<%[ Organization name ]%>"/>:</div>
+				<div class="w3-half">
+					<com:TActiveTextBox
+						ID="OrganizationFullName"
+						AutoPostBack="false"
+						MaxLength="160"
+						CssClass="w3-input w3-border"
+						Attributes.placeholder="ex: My favourite organization"
+						Attributes.onkeyup="oOrganizations.set_organization_id();"
+					/>
+					<com:TRequiredFieldValidator
+						ValidationGroup="OrganizationGroup"
+						ControlToValidate="OrganizationFullName"
+						ErrorMessage="<%[ Field required. ]%>"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+					/>
+				</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+			</div>
 			<div class="w3-row directive_field">
 				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationName" Text="<%[ Organization identifier ]%>" />:</div>
 				<div class="w3-half">
@@ -384,25 +414,6 @@ $(function() {
 						RegularExpression="<%=OrganizationConfig::NAME_PATTERN%>"
 						ControlToValidate="OrganizationName"
 						ErrorMessage="<%[ Invalid value. ]%>"
-						ControlCssClass="field_invalid"
-						Display="Dynamic"
-					/>
-				</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
-			</div>
-			<div class="w3-row directive_field">
-				<div class="w3-col w3-third"><com:TLabel ForControl="OrganizationDescription" Text="<%[ Organization name ]%>"/>:</div>
-				<div class="w3-half">
-					<com:TActiveTextBox
-						ID="OrganizationFullName"
-						AutoPostBack="false"
-						MaxLength="160"
-						CssClass="w3-input w3-border"
-						Attributes.placeholder="ex: My favourite organization"
-					/>
-					<com:TRequiredFieldValidator
-						ValidationGroup="OrganizationGroup"
-						ControlToValidate="OrganizationFullName"
-						ErrorMessage="<%[ Field required. ]%>"
 						ControlCssClass="field_invalid"
 						Display="Dynamic"
 					/>
