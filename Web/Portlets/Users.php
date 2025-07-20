@@ -76,15 +76,15 @@ class Users extends Security
 	 */
 	public function setUserList($sender, $param)
 	{
-		$user_config =$this->getModule('user_config');
+		$user_config = $this->getModule('user_config');
 		$users = $user_config->getConfig();
-		$org_config =$this->getModule('org_config');
+		$org_config = $this->getModule('org_config');
 		$orgs = $org_config->getConfig();
 		// Add organization details
 		$user_list = array_values($users);
 		$user_list = array_map(function ($user) use ($orgs) {
 			if (!empty($user['organization_id'])) {
-				$user['organization_name'] =  $orgs[$user['organization_id']]['full_name'] ?? 'N/A';
+				$user['organization_name'] = $orgs[$user['organization_id']]['full_name'] ?? 'N/A';
 			} else {
 				$user['organization_name'] = '-';
 			}

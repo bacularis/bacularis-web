@@ -155,7 +155,7 @@ class WebUser extends TUser
 	 * @param string $user_id user identifier
 	 * @param array $roles user roles
 	 * @param array $api_hosts user API hosts
-	 * @return boolean true on success, false otherwise
+	 * @return bool true on success, false otherwise
 	 */
 	private function provisionUser(string $org_id, string $user_id, array $roles, array $api_hosts): bool
 	{

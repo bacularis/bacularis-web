@@ -224,7 +224,7 @@ class WebUserConfig extends ConfigFileModule
 	 *
 	 * @param string $org_id organization identifier
 	 * @param string $user_id user identifier
-	 * @return boolean true if user exists, otherwise false
+	 * @return bool true if user exists, otherwise false
 	 */
 	public function userExists(string $org_id, string $user_id): bool
 	{
@@ -332,7 +332,7 @@ class WebUserConfig extends ConfigFileModule
 	 *
 	 * @param string $org_id organization identifier
 	 * @param string $user_id user identifier
-	 * @return boolean true on success, false otherwise
+	 * @return bool true on success, false otherwise
 	 */
 	public function removeUserConfig(string $org_id, string $user_id): bool
 	{
@@ -347,9 +347,8 @@ class WebUserConfig extends ConfigFileModule
 	/**
 	 * Remove users config.
 	 *
-	 * @param string $org_id organization identifier
-	 * @param string $user_id user identifier
-	 * @return boolean true on success, false otherwise
+	 * @param string $uids user identifiers
+	 * @return bool true on success, false otherwise
 	 */
 	public function removeUsersConfig(array $uids): bool
 	{

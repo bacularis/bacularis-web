@@ -62,7 +62,7 @@ class AuthenticationIdentityProviders extends Security
 	/**
 	 * Add IdP relations.
 	 *
-	 * @param array IdP configuration
+	 * @param array $vals IdP configuration
 	 */
 	private function addIdPRelationInfo(&$vals)
 	{
@@ -143,7 +143,7 @@ class AuthenticationIdentityProviders extends Security
 		$cfg_idp['full_name'] = $this->IdPFullName->Text;
 		$cfg_idp['description'] = $this->IdPDescription->Text;
 		$cfg_idp['type'] = $this->IdPType->SelectedValue;
-		$cfg_idp['enabled'] = $this->IdPEnabled->Checked ? '1': '0';
+		$cfg_idp['enabled'] = $this->IdPEnabled->Checked ? '1' : '0';
 
 		$settings = [];
 		switch ($cfg_idp['type']) {

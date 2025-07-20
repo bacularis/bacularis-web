@@ -281,7 +281,7 @@ class TagAssignConfig extends ConfigFileModule
 	 * @param string $new_org_id new organization identifier
 	 * @param string $prev_user_id previous user identifier
 	 * @param string $new_user_id new user identifier
-	 * @return boolean true on success, otherwise false
+	 * @return bool true on success, otherwise false
 	 */
 	public function moveUserTagAssignsConfig(string $prev_org_id, string $new_org_id, string $prev_user_id, string $new_user_id): bool
 	{

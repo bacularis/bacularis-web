@@ -89,6 +89,7 @@ class OrganizationConfig extends ConfigFileModule
 	 * Get config.
 	 *
 	 * @param string $name organization name
+	 * @param bool $with_idp_config if true, in results is added idp config
 	 * @return array organization config
 	 */
 	public function getOrganizationConfig(string $name, bool $with_idp_config = false): array

@@ -135,7 +135,7 @@ class TagManager extends Portlets
 		} else {
 			Logging::log(
 				Logging::CATEGORY_APPLICATION,
-				"Error while editing tag '{$tag}' for user '{$username}'."
+				"Error while editing tag '{$tag}' for org '{$org_id}' user '{$user_id}'."
 			);
 		}
 	}

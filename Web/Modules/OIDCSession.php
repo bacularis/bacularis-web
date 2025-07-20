@@ -153,7 +153,7 @@ class OIDCSession extends WebModule
 	/**
 	 * Set OIDC authentication ID token.
 	 *
-	 * @param string ID token
+	 * @param string $id_token ID token
 	 */
 	public function setIDToken(string $id_token): void
 	{
@@ -184,7 +184,7 @@ class OIDCSession extends WebModule
 	/**
 	 * Set OAuth2 authorization access token.
 	 *
-	 * @param string access token
+	 * @param string $access_token access token
 	 */
 	public function setAccessToken(string $access_token): void
 	{
@@ -215,7 +215,7 @@ class OIDCSession extends WebModule
 	/**
 	 * Set OAuth2 authorization refresh token.
 	 *
-	 * @param string refresh token
+	 * @param string $refresh_token refresh token
 	 */
 	public function setRefreshToken(string $refresh_token): void
 	{
@@ -246,7 +246,7 @@ class OIDCSession extends WebModule
 	/**
 	 * Set OAuth2 authorization token expiry time.
 	 *
-	 * @param integer token expiry time
+	 * @param int $expires_in token expiry time
 	 */
 	public function setTokenExpiresIn(int $expires_in): void
 	{
@@ -291,8 +291,8 @@ class OIDCSession extends WebModule
 	 * Set OIDC configuration cache.
 	 *
 	 * @param string $id cache identifier
-	 * @param integer cache expiry time in seconds
-	 * @param array OIDC configuration cache
+	 * @param int $expiry_time cache expiry time in seconds
+	 * @param array $cache OIDC configuration cache
 	 */
 	public function setConfigCache(string $id, int $expiry_time, array $cache): bool
 	{
@@ -336,9 +336,9 @@ class OIDCSession extends WebModule
 	 * Set JWKS configuration cache.
 	 *
 	 * @param string $id cache identifier
-	 * @param integer $expiry_time cache expiry time
+	 * @param int $expiry_time cache expiry time
 	 * @param array $cache JWKS configuration cache
-	 * @return boolean true on success, false otherwise
+	 * @return bool true on success, false otherwise
 	 */
 	public function setJWKSCache(string $id, int $expiry_time, array $cache): bool
 	{

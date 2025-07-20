@@ -244,7 +244,7 @@ class Roles extends Security
 	 */
 	private function addUserStatsToRoles(&$role_config)
 	{
-		$user_config =$this->getModule('user_config');
+		$user_config = $this->getModule('user_config');
 		$config = $user_config->getConfig();
 		$user_roles = [];
 		foreach ($role_config as $role => $prop) {

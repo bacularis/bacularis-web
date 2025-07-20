@@ -203,7 +203,7 @@ class OIDC extends WebModule
 	 * @param string $access_token access token
 	 * @param int $expires_in token expiry time
 	 * @param string $refresh_token refresh token (if used)
-	 * @return boolean true on success, false otherwise
+	 * @return bool true on success, false otherwise
 	 */
 	private function loginUser(string $id_token, string $access_token, int $expires_in = 0, string $refresh_token = ''): bool
 	{
@@ -263,7 +263,8 @@ class OIDC extends WebModule
 	 *
 	 * @return null|string OIDC config id
 	 */
-	public function getClient() {
+	public function getClient()
+	{
 		$client = $this->params->getClient();
 		return $client;
 	}
@@ -405,7 +406,7 @@ class OIDC extends WebModule
 		if (isset($config['oidc_post_logout_redirect_uri'])) {
 			$query['post_logout_redirect_uri'] = $config['oidc_post_logout_redirect_uri'];
 		}
-		$logout_url .=  (strpos($logout_url, '?') === false) ? '?' : '&';
+		$logout_url .= (strpos($logout_url, '?') === false) ? '?' : '&';
 		$logout_url .= http_build_query($query);
 
 		// Remove token (no longer needed)
@@ -456,7 +457,7 @@ class OIDC extends WebModule
 			$pubkey = $this->getVerifyKey($id_token_dec);
 
 			// Validate key
-			if (count($pubkey) ===  0) {
+			if (count($pubkey) === 0) {
 				// Without public key there is not possible to check the singature
 				$this->reportError('Public key has not been found.');
 				return false;
@@ -530,7 +531,7 @@ class OIDC extends WebModule
 			$pubkey = $this->getVerifyKey($logout_token_dec);
 
 			// Validate key
-			if (count($pubkey) ===  0) {
+			if (count($pubkey) === 0) {
 				// Without public key there is not possible to check the singature
 				return false;
 			}
@@ -739,7 +740,7 @@ class OIDC extends WebModule
 
 		$tmpdir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 		$crypto_keys = $this->getModule('crypto_keys');
-		$pubkey  = $crypto_keys->getPublicKeyPEMFromModulusExponent(
+		$pubkey = $crypto_keys->getPublicKeyPEMFromModulusExponent(
 			$key_type,
 			$modulus,
 			$exponent,
@@ -751,7 +752,7 @@ class OIDC extends WebModule
 	/**
 	 * Get public key from certificate.
 	 *
-	 * @param string $pubkey decoded public key in JWT form
+	 * @param string $cert certificate
 	 * @return string public key in PEM form
 	 */
 	private function getPubKeyFromCert(string $cert): string
@@ -807,7 +808,7 @@ class OIDC extends WebModule
 	 *
 	 * @param array $pubkey public key to verify signature
 	 * @param string $id_token ID token
-	 * @return boolean true on success, otherwise false
+	 * @return bool true on success, otherwise false
 	 */
 	private function isSignatureValid(array $pubkey, string $id_token): bool
 	{
@@ -942,7 +943,7 @@ class OIDC extends WebModule
 	 */
 	public function reportError(string $emsg): void
 	{
-		$emsg .=  ' Please check Bacularis logs or contact the administrator.';
+		$emsg .= ' Please check Bacularis logs or contact the administrator.';
 		$page = $this->getService()->constructUrl(
 			'LoginPage',
 			['error' => $emsg]
@@ -1002,7 +1003,7 @@ class OIDC extends WebModule
 	/**
 	 * Get discovery URL information.
 	 *
-	 * @param string OIDC config name
+	 * @param string $name OIDC config name
 	 * @return array remote discovery URL configuration
 	 */
 	private function getDiscoveryInfo(string $name): array
@@ -1090,7 +1091,7 @@ class OIDC extends WebModule
 	 *
 	 * @param string $prefix parameter key prefix
 	 * @param string $name identity provider configuration name
-	 * @param array $param_def extra params definition
+	 * @param array $params_def extra params definition
 	 * @return array additional parameters
 	 */
 	protected function getParams(string $prefix, string $name, array $params_def): array

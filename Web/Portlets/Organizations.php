@@ -84,7 +84,7 @@ class Organizations extends Security
 	/**
 	 * Add organization statistics.
 	 *
-	 * @param array organization configuration
+	 * @param array $vals organization configuration
 	 */
 	private function addOrganizationStatsInfo(&$vals)
 	{
@@ -93,7 +93,7 @@ class Organizations extends Security
 		$user_list = array_values($users);
 		$user_list_len = count($user_list);
 		$stats = [];
-		for ($i = 0; $i < $user_list_len; $i++)	{
+		for ($i = 0; $i < $user_list_len; $i++) {
 			$org_id = $user_list[$i]['organization_id'] ?? '';
 			if (!$org_id) {
 				continue;
@@ -147,15 +147,19 @@ class Organizations extends Security
 		$this->setCurrentAuthMethodLabel();
 	}
 
-	private function setCurrentAuthMethodLabel() {
+	private function setCurrentAuthMethodLabel()
+	{
 		$web_config = $this->getModule('web_config');
 		$security = $web_config->getConfig('security');
 		$txt = Prado::localize('Use current auth method');
 		$txt .= ' - ';
-		switch($security['auth_method']) {
-			case WebConfig::AUTH_METHOD_LOCAL: $txt .= Prado::localize('Local user authentication'); break;
-			case WebConfig::AUTH_METHOD_BASIC: $txt .= Prado::localize('HTTP Basic authentication'); break;
-			case WebConfig::AUTH_METHOD_LOCAL: $txt .= Prado::localize('LDAP authentication'); break;
+		switch ($security['auth_method']) {
+			case WebConfig::AUTH_METHOD_LOCAL: $txt .= Prado::localize('Local user authentication');
+				break;
+			case WebConfig::AUTH_METHOD_BASIC: $txt .= Prado::localize('HTTP Basic authentication');
+				break;
+			case WebConfig::AUTH_METHOD_LOCAL: $txt .= Prado::localize('LDAP authentication');
+				break;
 		}
 		$this->OrganizationCurrentAuthMethod->Text = $txt;
 	}
@@ -184,7 +188,7 @@ class Organizations extends Security
 		} else {
 			$cfg_org['auth_type'] = OrganizationConfig::AUTH_TYPE_AUTH_METHOD;
 		}
-		$cfg_org['enabled'] = $this->OrganizationEnabled->Checked ? '1': '0';
+		$cfg_org['enabled'] = $this->OrganizationEnabled->Checked ? '1' : '0';
 		$cfg_org['login_btn_color'] = $this->OrganizationLoginBtnColor->Text;
 
 		$org_win_type = $this->OrganizationWindowType->Value;

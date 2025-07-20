@@ -218,10 +218,14 @@ class IdentityProviderConfig extends ConfigFileModule
 	{
 		$icon = '';
 		switch ($idp_type) {
-			case self::IDP_TYPE_OIDC: $icon = 'fa-brands fa-openid'; break;
-			case self::IDP_TYPE_OIDC_GOOGLE: $icon = 'fa-brands fa-google'; break;
-			case self::IDP_TYPE_OIDC_FACEBOOK: $icon = 'fa-brands fa-facebook'; break;
-			default: $icon = 'fa-solid fa-key'; break;
+			case self::IDP_TYPE_OIDC: $icon = 'fa-brands fa-openid';
+				break;
+			case self::IDP_TYPE_OIDC_GOOGLE: $icon = 'fa-brands fa-google';
+				break;
+			case self::IDP_TYPE_OIDC_FACEBOOK: $icon = 'fa-brands fa-facebook';
+				break;
+			default: $icon = 'fa-solid fa-key';
+				break;
 		}
 		return $icon;
 	}
