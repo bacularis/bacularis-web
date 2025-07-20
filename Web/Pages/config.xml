@@ -31,7 +31,7 @@
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
 		<module id="doc_dir" class="Bacularis\Web\Modules\DirectiveDoc" />
 		<module id="globalization" class="TGlobalization">
-			<translation type="gettext" source="Application.Web.Lang" marker="@@" autosave="false" cache="false" DefaultCulture="en" />
+			<translation type="gettext" source="Application.Web.Lang" marker="" autosave="false" cache="false" DefaultCulture="en" />
 		</module>
 		<module id="log" class="System.Util.TLogRouter">
 			<route class="Bacularis\Common\Modules\BFileLogRoute" Categories="Execute, External, Application, General, Security" LogPath="Application.Web.Logs" LogFile="bacularis-web.log" MaxFileSize="1000" MaxLogFiles="5" />
