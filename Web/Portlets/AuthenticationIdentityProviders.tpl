@@ -138,7 +138,12 @@ var oIdPList = {
 				},
 				{
 					data: 'orgs',
-					render: render_string_short,
+					render: function(data, type, row) {
+						if (Array.isArray(data) && data.length == 0) {
+							data = ['-'];
+						}
+						return render_string_short(data, type, row);
+					}
 				},
 				{
 					data: 'name',
@@ -204,7 +209,7 @@ var oIdPList = {
 		});
 	},
 	set_filters: function(api) {
-		api.columns([2]).every(function () {
+		api.columns([1, 2, 3, 4, 5]).every(function () {
 			const column = this;
 			const select = $('<select class="dt-select"><option value=""></option></select>')
 			.appendTo($(column.footer()).empty())
@@ -216,13 +221,35 @@ var oIdPList = {
 				.search(val ? '^' + val + '$' : '', true, false)
 				.draw();
 			});
-			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
-				}
-			});
+			if ([4, 5].indexOf(column[0][0]) != -1) { // Enabled and In use by columns
+				column.data().unique().sort().each(function (d, j) {
+					var ds = d;
+					if (column[0][0] == 4) { // Enabled column
+						if (d === '1') {
+							ds = '<%[ Enabled ]%>';
+						} else if (d === '0') {
+							ds = '<%[ Disabled ]%>';
+						}
+					} else if (column[0][0] == 5) { // In use by column
+						if (Array.isArray(d) && d.length == 0) {
+							ds = d = '-';
+						}
+					}
+					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
+					} else if (ds) {
+						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					}
+				});
+			} else {
+				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+						select.append('<option value="' + d + '" selected>' + d + '</option>');
+					} else if(d) {
+						select.append('<option value="' + d + '">' + d + '</option>');
+					}
+				});
+			}
 		});
 	},
 	set_bulk_actions: function() {
