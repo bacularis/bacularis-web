@@ -882,7 +882,7 @@ class NewUserWizard extends BaculumWebPage
 	 */
 	public function saveUser()
 	{
-		$org_id = $this->Organization->getValue();
+		$org_id = $this->Organization->getValue() ?? '';
 		$user_id = $this->Username->Value;
 		$user_config = $this->getModule('user_config');
 		$config = $user_config->getUserConfig($org_id, $user_id);
