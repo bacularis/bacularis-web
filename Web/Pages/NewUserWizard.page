@@ -1013,6 +1013,10 @@ const oConsoles = {
 						<div class="w3-quarter"><%[ Password ]%></div>
 						<div class="w3-threequarter bold"><%=preg_replace('/./', '*', $this->UserPassword->getDirectiveValue())%></div>
 					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Organization ]%></div>
+						<div class="w3-threequarter bold"><%=$this->Organization->Data[$this->Organization->DirectiveValue] ?? '-'%></div>
+					</div>
 				</fieldset>
 				<fieldset>
 					<legend><%[ Roles ]%></legend>
