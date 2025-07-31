@@ -1,5 +1,7 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
+	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
 	<header class="w3-container">
 		<h5>
@@ -164,6 +166,7 @@ var oGraphicalClientStatus = {
 	data: {},
 	refresh_timeout: null,
 	running_jobids: [],
+	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
 	ids: {
 		running_jobs: 'status_client_running_jobs',
 		refresh_interval: 'status_client_refresh_interval',
@@ -185,6 +188,55 @@ var oGraphicalClientStatus = {
 		}
 	},
 	formatters: {
+		version: (value) => {
+			const self = oGraphicalClientStatus;
+			const span = document.createElement('SPAN');
+			let [version, date] = value.split(' ');
+			const cli = parse_comp_version(version);
+			if (!is_comp_compat(self.dir_version.major, self.dir_version.minor, cli.major, cli.minor)) {
+				const img = document.createElement('I');
+				img.classList.add('fa-solid', 'fa-triangle-exclamation', 'fa-lg', 'fa-fw', 'w3-text-orange', 'helper');
+				img.style.marginRight = '6px';
+				span.appendChild(img);
+				img.addEventListener('mouseover', () => {
+					const warning = document.createElement('DIV');
+					const message = document.createElement('SPAN');
+					message.textContent = '<%[ Client version should be the same or lower than the Director and Storage Daemon version. ]%>';
+					const desc = document.createElement('P');
+					desc.textContent = '<%[ Current components ]%>:';
+					const details = document.createElement('UL');
+					details.style.margin = '12px 0 4px 0';
+					const serv_ver = document.createElement('LI');
+					serv_ver.textContent = '<%[ Director version ]%>: ' + [
+						self.dir_version.major,
+						self.dir_version.minor,
+						self.dir_version.release
+					].join('.');
+					const sd_ver = document.createElement('LI');
+					sd_ver.textContent = '<%[ Client version ]%>: ' + [
+						cli.major,
+						cli.minor,
+						cli.release
+					].join('.');
+
+					details.appendChild(serv_ver);
+					details.appendChild(sd_ver);
+					warning.appendChild(message);
+					warning.appendChild(desc);
+					warning.appendChild(details);
+
+					showTip(img, '<%[ Possible compatibility issue ]%>', warning.outerHTML, {
+						offset: [-55, 0],
+						tipJoint: 'right middle'
+					});
+				});
+				const text = document.createTextNode(value);
+				span.appendChild(text);
+			} else {
+				span.textContent = value;
+			}
+			return span;
+		},
 		uname: function(value) {
 			var img = document.createElement('I');
 			img.className = 'fab fa-2x';
@@ -297,7 +349,10 @@ var oGraphicalClientStatus = {
 				el = document.getElementById(this.ids[section][key]);
 				val = this.formatters.hasOwnProperty(key) ? this.formatters[key].call(this, this.data[section][key]) : this.data[section][key];
 				if (val instanceof HTMLElement) {
-					el.innerHTML = val.outerHTML;
+					while (el.firstChild) {
+						el.removeChild(el.firstChild);
+					}
+					el.appendChild(val);
 				} else {
 					el.textContent = val;
 				}
