@@ -1,5 +1,7 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
+	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
+	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
 	<header class="w3-container">
 		<h5>
@@ -283,6 +285,7 @@ var oGraphicalStorageStatus = {
 	data: {},
 	refresh_timeout: null,
 	running_jobs: [],
+	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
 	ids: {
 		refresh_interval: 'status_storage_refresh_interval',
 		status_not_supported: 'status_storage_status_not_supported',
@@ -451,6 +454,55 @@ var oGraphicalStorageStatus = {
 		}.bind(this));
 	},
 	formatters: {
+		version: (value) => {
+			const self = oGraphicalStorageStatus;
+			const span = document.createElement('SPAN');
+			let [version, date] = value.split(' ');
+			const sdv = parse_comp_version(version);
+			if (!is_serv_compat(self.dir_version.major, self.dir_version.minor, sdv.major, sdv.minor)) {
+				const img = document.createElement('I');
+				img.classList.add('fa-solid', 'fa-triangle-exclamation', 'fa-lg', 'fa-fw', 'w3-text-orange', 'helper');
+				img.style.marginRight = '6px';
+				span.appendChild(img);
+				img.addEventListener('mouseover', () => {
+					const warning = document.createElement('DIV');
+					const message = document.createElement('SPAN');
+					message.textContent = '<%[ Storage Daemon version should be the same as the Director version. ]%>';
+					const desc = document.createElement('P');
+					desc.textContent = '<%[ Current components ]%>:';
+					const details = document.createElement('UL');
+					details.style.margin = '12px 0 4px 0';
+					const serv_ver = document.createElement('LI');
+					serv_ver.textContent = '<%[ Director version ]%>: ' + [
+						self.dir_version.major,
+						self.dir_version.minor,
+						self.dir_version.release
+					].join('.');
+					const sd_ver = document.createElement('LI');
+					sd_ver.textContent = '<%[ Storage Daemon version ]%>: ' + [
+						sdv.major,
+						sdv.minor,
+						sdv.release
+					].join('.');
+
+					details.appendChild(serv_ver);
+					details.appendChild(sd_ver);
+					warning.appendChild(message);
+					warning.appendChild(desc);
+					warning.appendChild(details);
+
+					showTip(img, '<%[ Possible compatibility issue ]%>', warning.outerHTML, {
+						offset: [-55, 0],
+						tipJoint: 'right middle'
+					});
+				});
+				const text = document.createTextNode(value);
+				span.appendChild(text);
+			} else {
+				span.textContent = value;
+			}
+			return span;
+		},
 		uname: function(value) {
 			var img = document.createElement('I');
 			img.className = 'fab fa-2x';
@@ -573,7 +625,10 @@ var oGraphicalStorageStatus = {
 				el = document.getElementById(this.ids[section][key]);
 				val = this.formatters.hasOwnProperty(key) ? this.formatters[key].call(this, this.data[section][key]) : this.data[section][key];
 				if (val instanceof HTMLElement) {
-					el.innerHTML = val.outerHTML;
+					while (el.firstChild) {
+						el.removeChild(el.firstChild);
+					}
+					el.appendChild(val);
 				} else {
 					el.textContent = val;
 				}
