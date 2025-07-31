@@ -6734,3 +6734,24 @@ msgstr "Additional options"
 
 msgid "Post logout redirect URI"
 msgstr "Post logout redirect URI"
+
+msgid "Client version should be the same or lower than the Director and Storage Daemon version."
+msgstr "Client version should be the same or lower than the Director and Storage Daemon version."
+
+msgid "Director version"
+msgstr "Director version"
+
+msgid "Client version"
+msgstr "Client version"
+
+msgid "Current components"
+msgstr "Current components"
+
+msgid "Possible compatibility issue"
+msgstr "Possible compatibility issue"
+
+msgid "Storage Daemon version should be the same as the Director version."
+msgstr "Storage Daemon version should be the same as the Director version."
+
+msgid "Storage Daemon version"
+msgstr "Storage Daemon version"

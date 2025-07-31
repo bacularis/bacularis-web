@@ -1829,6 +1829,79 @@ function showTip(el, title, description, opts) {
 	return new Opentip(el, description, title, main_opts);
 }
 
+function is_comp_compat(serv_major, serv_minor, cli_major, cli_minor)
+{
+	let compat = true;
+
+	serv_major = parseInt(serv_major, 10);
+	serv_minor = parseInt(serv_minor, 10);
+	cli_major = parseInt(cli_major, 10);
+	cli_minor = parseInt(cli_minor, 10);
+
+	if (isNaN(serv_major) || isNaN(cli_major) || serv_major < 1 || cli_major < 1) {
+		// it means that one of parts is not comparable. Do nothing.
+	} else if (serv_major < cli_major) {
+		// server lower than client (major difference)
+		compat = false;
+	} else if (serv_major == cli_major) {
+		// server lower than client (minor difference)
+		if (serv_minor < cli_minor) {
+			compat = false;
+		}
+	}
+	return compat;
+}
+
+function is_serv_compat(dir_major, dir_minor, sd_major, sd_minor)
+{
+	let compat = true;
+
+	dir_major = parseInt(dir_major, 10);
+	dir_minor = parseInt(dir_minor, 10);
+	sd_major = parseInt(sd_major, 10);
+	sd_minor = parseInt(sd_minor, 10);
+
+	if  (isNaN(dir_major) || isNaN(sd_major) || dir_major < 1 || sd_major < 1) {
+		// it means that one of parts is not comparable. Do nothing.
+	} else if (dir_major != sd_major || dir_minor != sd_minor) {
+		// dir and sd version different
+		compat = false;
+	}
+	return compat;
+}
+
+function parse_comp_uname(uname, def_val) {
+	let def = def_val || '';
+	let version = '';
+	let date = '';
+	let os = '';
+	let distname = '';
+	let distver = '';
+	if (uname) {
+		let host_os, os_rest, dist_rest;
+		[version, date, host_os, ...os_rest] = uname.split(' ');
+		host_os = [host_os].concat(os_rest).join(' ');
+		[os, distname, distver, ...dist_rest ] = host_os.split(/,(?=[^\s])/);
+		distver = [distver].concat(dist_rest).join(' ');
+	};
+	return {
+		version: version || def,
+		date: date || def,
+		os: os || def,
+		distname: distname || def,
+		distver: distver || def
+	};
+}
+
+function parse_comp_version(version) {
+	let [major, minor, release] = version.split('.');
+	return {
+		major: (major ? parseInt(major, 10) : 0),
+		minor: (minor ? parseInt(minor, 10) : 0),
+		release: (release ? parseInt(release, 10) : 0)
+	}
+}
+
 function on_element_show(element, callback) {
 	if (typeof(IntersectionObserver) != 'function') {
 		// old browser, no observer

@@ -151,15 +151,28 @@ class BaculumWebPage extends BaculumPage
 	 */
 	private function setSessionUserVars()
 	{
+		$api = $this->getModule('api');
+
 		// Set director
-		$directors = $this->getModule('api')->get(['directors'], null, false);
+		$directors = $api->get(['directors'], null, false);
 		$sess = $this->getApplication()->getSession();
 		$sess->open();
 		if ($directors->error === 0 && count($directors->output) > 0 && (!$sess->contains('director') || $directors->output[0] != $sess->itemAt('director'))) {
+			// Set director name
 			$sess->add('director', $directors->output[0]);
+
+			// Set director uname properties
+			$uname = $api->get(
+				['directors', $directors->output[0], 'uname', '?output=json'],
+				null,
+				false
+			);
+			if ($uname->error === 0) {
+				$sess->add('director_uname', (array) $uname->output);
+			}
 		}
 		// Set config main component names
-		$config = $this->getModule('api')->get(['config'], null, false);
+		$config = $api->get(['config'], null, false);
 		if ($config->error === 0) {
 			for ($i = 0; $i < count($config->output); $i++) {
 				$component = (array) $config->output[$i];
@@ -177,6 +190,7 @@ class BaculumWebPage extends BaculumPage
 		$sess->open();
 		$sess->add('is_user_vars', false);
 		$sess->add('director', '');
+		$sess->add('director_uname', '');
 		$sess->add('dir', '');
 		$sess->add('sd', '');
 		$sess->add('fd', '');

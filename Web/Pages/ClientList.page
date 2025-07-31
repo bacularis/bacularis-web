@@ -89,6 +89,7 @@ var oClientList = {
 	table: null,
 	table_toolbar: null,
 	client_running_jobs: {},
+	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
 	actions: [
 		{
 			action: 'apply_configs',
@@ -217,13 +218,53 @@ var oClientList = {
 				{data: 'name'},
 				{
 					data: 'uname',
-					render: function(data, type, row) {
+					render: (data, type, row) => {
 						let ret = data;
 						if (type == 'display') {
+							const div = document.createElement('DIV');
+							let uname = parse_comp_uname(data);
+							let cli_version = parse_comp_version(uname.version);
+							if (!is_comp_compat(this.dir_version.major, this.dir_version.minor, cli_version.major, cli_version.minor)) {
+								const img = document.createElement('I');
+								img.classList.add('fa-solid', 'fa-triangle-exclamation', 'fa-lg', 'fa-fw', 'w3-text-orange', 'helper');
+								img.style.marginRight = '6px';
+								div.appendChild(img);
+								img.addEventListener('mouseover', () => {
+									const warning = document.createElement('DIV');
+									const message = document.createElement('SPAN');
+									message.textContent = '<%[ Client version should be the same or lower than the Director and Storage Daemon version. ]%>';
+									const desc = document.createElement('P');
+									desc.textContent = '<%[ Current components ]%>:';
+									const details = document.createElement('UL');
+									details.style.margin = '12px 0 4px 0';
+									const serv_ver = document.createElement('LI');
+									serv_ver.textContent = '<%[ Director version ]%>: ' + [
+										this.dir_version.major,
+										this.dir_version.minor,
+										this.dir_version.release
+									].join('.');
+									const cli_ver = document.createElement('LI');
+									cli_ver.textContent = '<%[ Client version ]%>: ' + uname.version;
+
+									details.appendChild(serv_ver);
+									details.appendChild(cli_ver);
+									warning.appendChild(message);
+									warning.appendChild(desc);
+									warning.appendChild(details);
+
+									showTip(img, '<%[ Possible compatibility issue ]%>', warning.outerHTML, {
+										offset: [-55, 0],
+										tipJoint: 'right middle'
+									});
+								});
+							}
+							const data_short = data.substr(0, oClientList.opts.uname_len);
+							const text = document.createTextNode(data_short);
 							const span = document.createElement('SPAN');
 							span.title = data;
-							span.textContent = data.substr(0, oClientList.opts.uname_len);
-							ret = span.outerHTML;
+							span.appendChild(text);
+							div.appendChild(span);
+							ret = div;
 						}
 						return ret;
 					}
@@ -271,7 +312,7 @@ var oClientList = {
 										const jobid = document.createElement('LI');
 										jobid.textContent = 'JobId: ' + el.jobid;
 										const jobstatus = document.createElement('LI');
-										jobstatus.innerHTML= '<%[ Job status ]%>: ' + JobStatus.get_icon(el.jobstatus).outerHTML + ' (' + el.jobstatus + ')';
+										jobstatus.innerHTML = '<%[ Job status ]%>: ' + JobStatus.get_icon(el.jobstatus).outerHTML + ' (' + el.jobstatus + ')';
 										const starttime = document.createElement('LI');
 										starttime.textContent = '<%[ Start time ]%>: ' + Units.format_date(el.starttime_epoch);
 
@@ -612,7 +653,7 @@ const oClientGraph = {
 		const data_len = data.length;
 		let uname, plugins, item;
 		for (let i = 0; i < data_len; i++) {
-			uname = this.parse_uname(data[i].uname);
+			uname = parse_comp_uname(data[i].uname, 'no data');
 			plugins = this.parse_plugins(data[i].plugins || '');
 			item = {
 				name: data[i].name,
@@ -622,28 +663,6 @@ const oClientGraph = {
 			};
 			this.gdata.push(item);
 		}
-	},
-	parse_uname: function(uname) {
-		let def = 'no data';
-		let version = '';
-		let date = '';
-		let os = '';
-		let distname = '';
-		let distver = '';
-		if (uname) {
-			let host_os, os_rest, dist_rest;
-			[version, date, host_os, ...os_rest] = uname.split(' ');
-			host_os = [host_os].concat(os_rest).join(' ');
-			[os, distname, distver, ...dist_rest ] = host_os.split(/,(?=[^\s]|$)/);
-			distver = [distver].concat(dist_rest).join(' ');
-		};
-		return {
-			version: version || def,
-			date: date || def,
-			os: os || def,
-			distname: distname || def,
-			distver: distver || def
-		};
 	},
 	parse_plugins: function(plugins_line) {
 		if (!plugins_line) {
