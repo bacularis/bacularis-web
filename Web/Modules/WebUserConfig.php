@@ -434,6 +434,52 @@ class WebUserConfig extends ConfigFileModule
 	}
 
 	/**
+	 * Unassign roles from given users.
+	 *
+	 * NOTE: At least one role must be assigned. If during unassigning
+	 * there stays one role in user account, it is preserved and the process
+	 * is stopped for this user.
+	 *
+	 * @param array $users user list
+	 * @param array $roles role list
+	 * @return bool true if roles unassigned successfully, otherwise false
+	 */
+	public function unassignUserRoles(array $users, array $roles): bool
+	{
+		$config = $this->getConfig();
+		$user_len = count($users);
+		$role_len = count($roles);
+		for ($i = 0; $i < $user_len; $i++) {
+			$uid = self::getOrgUserID(
+				$users[$i]['org_id'],
+				$users[$i]['user_id']
+			);
+			if (!key_exists($uid, $config)) {
+				// non-existing user given, skip it
+				continue;
+			}
+			$rls = explode(',', $config[$uid]['roles']);
+			if (count($rls) == 1) {
+				// one role has to stay, continue with next user
+				continue;
+			}
+			for ($j = 0; $j < $role_len; $j++) {
+				if (count($rls) == 1) {
+					// one role has to stay, stop the process for current user
+					break;
+				}
+				$idx = array_search($roles[$j], $rls);
+				if (is_int($idx)) {
+					array_splice($rls, $idx, 1);
+				}
+			}
+			// set reduced roles
+			$config[$uid]['roles'] = implode(',', $rls);
+		}
+		return $this->setConfig($config);
+	}
+
+	/**
 	 * Unassign given API hosts from all user accounts.
 	 *
 	 * @param array $hosts API host list to unassign

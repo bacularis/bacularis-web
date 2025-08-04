@@ -63,7 +63,7 @@ class Users extends Security
 
 		// set roles
 		$this->setRoles($this->UserRoles);
-		$this->setRoles($this->AssignUserRoleList);
+		$this->setRoles($this->UserRoleList);
 
 		// set organizations
 		$this->setOrganizations($this->UserOrganization);
@@ -587,14 +587,14 @@ class Users extends Security
 			],
 			$users
 		);
-		$roles = $this->AssignUserRoleList->getSelectedValues();
+		$roles = $this->UserRoleList->getSelectedValues();
 		$roles = (array) $roles;
 
 		// Assign user roles
 		$user_config = $this->getModule('user_config');
 		$result = $user_config->assignUserRoles($users, $roles);
 
-		// refresh user list
+		// Refresh user list
 		$this->setUserList($sender, $param);
 
 		// Finish or report error
@@ -605,6 +605,46 @@ class Users extends Security
 			$cb->callClientFunction('oUserRolesWindow.show', [false]);
 		} else {
 			$emsg = Prado::localize('Error while assigning user roles.');
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Unassign roles from users - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function unassignUserRoles($sender, $param)
+	{
+		// Users and roles to unassign
+		$users = $param->getCallbackParameter();
+		$users = array_map(
+			fn ($item) => [
+				'org_id' => $item->organization_id,
+				'user_id' => $item->username
+			],
+			$users
+		);
+		$roles = $this->UserRoleList->getSelectedValues();
+		$roles = (array) $roles;
+
+		// Unassign user roles
+		$user_config = $this->getModule('user_config');
+		$result = $user_config->unassignUserRoles($users, $roles);
+
+		// Refresh user list
+		$this->setUserList($sender, $param);
+
+		// Finish or report error
+		$eid = 'user_roles_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if ($result) {
+			$cb->callClientFunction('oUserRolesWindow.show', [false]);
+		} else {
+			$emsg = Prado::localize('Error while unassigning user roles.');
 			$cb->update($eid, $emsg);
 			$cb->show($eid);
 		}

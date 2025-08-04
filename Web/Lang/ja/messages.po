@@ -6838,3 +6838,21 @@ msgstr "Assign user roles"
 
 msgid "Error while assigning user roles."
 msgstr "Error while assigning user roles."
+
+msgid "Unassign user roles"
+msgstr "Unassign user roles"
+
+msgid "Select the roles you want to unassign from the selected users."
+msgstr "Select the roles you want to unassign from the selected users."
+
+msgid "Note"
+msgstr "Note"
+
+msgid "User must have at least one role assigned. This function protects against unassigning all roles and always keeps at least one role assigned to user."
+msgstr "User must have at least one role assigned. This function protects against unassigning all roles and always keeps at least one role assigned to user."
+
+msgid "Unassign roles"
+msgstr "Unassign roles"
+
+msgid "Error while unassigning user roles."
+msgstr "Error while unassigning user roles."

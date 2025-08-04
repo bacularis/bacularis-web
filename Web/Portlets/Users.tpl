@@ -51,6 +51,7 @@
 <com:TCallback ID="LoadUser" OnCallback="TemplateControl.loadUserWindow" />
 <com:TCallback ID="RemoveUsersAction" OnCallback="TemplateControl.removeUsers" />
 <com:TCallback ID="AssignUserRolesAction" OnCallback="TemplateControl.assignUserRoles" />
+<com:TCallback ID="UnassignUserRolesAction" OnCallback="TemplateControl.unassignUserRoles" />
 <script>
 var oUserList = {
 	ids: {
@@ -70,7 +71,22 @@ var oUserList = {
 					return selected;
 				};
 				oUserRolesWindow.set_user_func(cb);
-				oUserRolesWindow.show(true);
+				oUserRolesWindow.show(true, oUserRolesWindow.types.assign);
+			}
+		},
+		{
+			action: 'unassign_user_roles',
+			label: '<%[ Unassign roles ]%>',
+			value: ['organization_id', 'username'],
+			before: function() {
+				const cb = () => {
+					const fields = ['organization_id', 'username'];
+					const table = oUserList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oUserRolesWindow.set_user_func(cb);
+				oUserRolesWindow.show(true, oUserRolesWindow.types.unassign);
 			}
 		},
 		{
@@ -839,30 +855,35 @@ $(function() {
 		</com:TCallback>
 		<com:TCallback ID="UnassignUserAPIHostConsole" OnCallback="TemplateControl.unassignUserAPIHostConsole" />
 	</div>
-	<div id="assign_user_roles_window" class="w3-modal">
+	<div id="user_roles_window" class="w3-modal">
 		<div class="w3-modal-content w3-animate-top w3-card-4">
 			<header class="w3-container w3-green">
 				<span onclick="oUserRolesWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
-				<h2 id="assign_user_roles_window_title_add"><%[ Assign user roles ]%></h2>
+				<h2 id="user_roles_window_title_assign" style="display: none"><%[ Assign user roles ]%></h2>
+				<h2 id="user_roles_window_title_unassign" style="display: none"><%[ Unassign user roles ]%></h2>
 			</header>
 			<div class="w3-container w3-margin-left w3-margin-right">
-				<span id="assign_user_roles_error" class="error" style="display: none"></span>
-				<p>
+				<p id="user_roles_error" class="error w3-margin-top" style="display: none"></p>
+				<p id="user_roles_window_msg_assign" style="display: none">
 					<%[ Select the roles you want to assign to the selected users. ]%>
 				</p>
+				<div id="user_roles_window_msg_unassign" style="display: none">
+					<p><%[ Select the roles you want to unassign from the selected users. ]%></p>
+					<p><strong><%[ Note ]%>:</strong> <%[ User must have at least one role assigned. This function protects against unassigning all roles and always keeps at least one role assigned to user. ]%></p>
+				</div>
 				<div class="w3-row directive_field">
-					<div class="w3-col w3-third"><com:TLabel ForControl="AssignUserRoleList" Text="<%[ Roles: ]%>"/></div>
+					<div class="w3-col w3-third"><com:TLabel ForControl="UserRoleList" Text="<%[ Roles: ]%>"/></div>
 					<div class="w3-half">
 						<com:TActiveListBox
-							ID="AssignUserRoleList"
+							ID="UserRoleList"
 							SelectionMode="Multiple"
 							Rows="6"
 							CssClass="w3-select w3-border"
 							AutoPostBack="false"
 						/>
 						<com:TRequiredFieldValidator
-							ValidationGroup="AssignUserRolesGroup"
-							ControlToValidate="AssignUserRoleList"
+							ValidationGroup="UserRolesGroup"
+							ControlToValidate="UserRoleList"
 							ErrorMessage="<%[ Field required. ]%>"
 							ControlCssClass="field_invalid"
 							Display="Dynamic"
@@ -873,35 +894,83 @@ $(function() {
 			</div>
 			<footer class="w3-container w3-center w3-padding">
 				<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oUserRolesWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
-				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="const fm = Prado.Validation.getForm(); return (Prado.Validation.validate(fm, 'AssignUserRolesGroup') && oUserRolesWindow.save());"><i class="fas fa-save"></i> &nbsp;<%[ Save ]%></button>
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="const fm = Prado.Validation.getForm(); return (Prado.Validation.validate(fm, 'UserRolesGroup') && oUserRolesWindow.save());"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
 			</footer>
 		</div>
 	</div>
 	<script>
 var oUserRolesWindow = {
 	users_func: null,
+	type: null,
+	types: {
+		assign: 'assign',
+		unassign: 'unassign'
+	},
 	ids: {
-		win: 'assign_user_roles_window',
-		roles: '<%=$this->AssignUserRoleList->ClientID%>'
+		win: 'user_roles_window',
+		error: 'user_roles_error',
+		roles: '<%=$this->UserRoleList->ClientID%>',
+		title_assign: 'user_roles_window_title_assign',
+		msg_assign: 'user_roles_window_msg_assign',
+		title_unassign: 'user_roles_window_title_unassign',
+		msg_unassign: 'user_roles_window_msg_unassign'
 	},
 	clear: function() {
 		const roles = document.getElementById(this.ids.roles);
 		for (let i = 0; i < roles.options.length; i++) {
 			roles.options[i].selected = false;
 		}
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
 	},
 	set_user_func: function(func) {
 		this.users_func = func;
 	},
+	set_type: function(type) {
+		// Set action type
+		this.type = type;
+
+		// Prepare window for given action type
+		this.prepare_type_fields();
+	},
+	prepare_type_fields: function() {
+		const title_assign = document.getElementById(this.ids.title_assign);
+		const title_unassign = document.getElementById(this.ids.title_unassign);
+		const msg_assign = document.getElementById(this.ids.msg_assign);
+		const msg_unassign = document.getElementById(this.ids.msg_unassign);
+		if (this.type == this.types.assign) {
+			title_unassign.style.display = 'none';
+			msg_unassign.style.display = 'none';
+			title_assign.style.display = 'block';
+			msg_assign.style.display = 'block';
+		} else if (this.type == this.types.unassign) {
+			title_assign.style.display = 'none';
+			msg_assign.style.display = 'none';
+			title_unassign.style.display = 'block';
+			msg_unassign.style.display = 'block';
+		}
+	},
 	save: function() {
 		const users = this.users_func();
-		const cb = <%=$this->AssignUserRolesAction->ActiveControl->Javascript%>;
+		let cb;
+		if (this.type == this.types.assign) {
+			cb = <%=$this->AssignUserRolesAction->ActiveControl->Javascript%>;
+		} else if (this.type == this.types.unassign) {
+			cb = <%=$this->UnassignUserRolesAction->ActiveControl->Javascript%>;
+		}
 		cb.setCallbackParameter(users);
 		cb.dispatch();
 	},
-	show: function(show) {
+	show: function(show, type) {
 		const self = oUserRolesWindow;
+
+		// Prepare given window type
+		self.set_type(type);
+
+		// Clean up before showing
 		self.clear();
+
+		// Show window
 		const win = document.getElementById(self.ids.win);
 		win.style.display = show ? 'block' : 'none';
 	}
