@@ -406,6 +406,34 @@ class WebUserConfig extends ConfigFileModule
 	}
 
 	/**
+	 * Assign roles to given users.
+	 *
+	 * @param array $users user list
+	 * @param array $roles role list
+	 * @return bool true if roles assigned successfully, otherwise false
+	 */
+	public function assignUserRoles(array $users, array $roles): bool
+	{
+		$config = $this->getConfig();
+		$user_len = count($users);
+		for ($i = 0; $i < $user_len; $i++) {
+			$uid = self::getOrgUserID(
+				$users[$i]['org_id'],
+				$users[$i]['user_id']
+			);
+			if (!key_exists($uid, $config)) {
+				// non-existing user given, skip it
+				continue;
+			}
+			$rls = explode(',', $config[$uid]['roles']);
+			$rls = array_merge($rls, $roles);
+			$rls = array_unique($rls);
+			$config[$uid]['roles'] = implode(',', $rls);
+		}
+		return $this->setConfig($config);
+	}
+
+	/**
 	 * Unassign given API hosts from all user accounts.
 	 *
 	 * @param array $hosts API host list to unassign

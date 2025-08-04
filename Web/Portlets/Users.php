@@ -19,6 +19,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\OrganizationConfig;
 use Bacularis\Web\Modules\WebUserConfig;
+use Prado\Prado;
 
 /**
  * User list module.
@@ -62,6 +63,7 @@ class Users extends Security
 
 		// set roles
 		$this->setRoles($this->UserRoles);
+		$this->setRoles($this->AssignUserRoleList);
 
 		// set organizations
 		$this->setOrganizations($this->UserOrganization);
@@ -566,5 +568,45 @@ class Users extends Security
 			AuditLog::CATEGORY_SECURITY,
 			"Save user API host access to resources. API host: $api_host"
 		);
+	}
+
+	/**
+	 * Assign roles to users - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function assignUserRoles($sender, $param)
+	{
+		// Users and roles to assign
+		$users = $param->getCallbackParameter();
+		$users = array_map(
+			fn ($item) => [
+				'org_id' => $item->organization_id,
+				'user_id' => $item->username
+			],
+			$users
+		);
+		$roles = $this->AssignUserRoleList->getSelectedValues();
+		$roles = (array) $roles;
+
+		// Assign user roles
+		$user_config = $this->getModule('user_config');
+		$result = $user_config->assignUserRoles($users, $roles);
+
+		// refresh user list
+		$this->setUserList($sender, $param);
+
+		// Finish or report error
+		$eid = 'assign_user_roles_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if ($result) {
+			$cb->callClientFunction('oUserRolesWindow.show', [false]);
+		} else {
+			$emsg = Prado::localize('Error while assigning user roles.');
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
 	}
 }

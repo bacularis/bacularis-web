@@ -50,6 +50,7 @@
 <com:TCallback ID="UserList" OnCallback="TemplateControl.setUserList" />
 <com:TCallback ID="LoadUser" OnCallback="TemplateControl.loadUserWindow" />
 <com:TCallback ID="RemoveUsersAction" OnCallback="TemplateControl.removeUsers" />
+<com:TCallback ID="AssignUserRolesAction" OnCallback="TemplateControl.assignUserRoles" />
 <script>
 var oUserList = {
 	ids: {
@@ -57,6 +58,21 @@ var oUserList = {
 		user_list_body: 'user_list_body'
 	},
 	actions: [
+		{
+			action: 'assign_user_roles',
+			label: '<%[ Assign roles ]%>',
+			value: ['organization_id', 'username'],
+			before: function() {
+				const cb = () => {
+					const fields = ['organization_id', 'username'];
+					const table = oUserList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oUserRolesWindow.set_user_func(cb);
+				oUserRolesWindow.show(true);
+			}
+		},
 		{
 			action: 'remove',
 			label: '<%[ Remove ]%>',
@@ -823,4 +839,72 @@ $(function() {
 		</com:TCallback>
 		<com:TCallback ID="UnassignUserAPIHostConsole" OnCallback="TemplateControl.unassignUserAPIHostConsole" />
 	</div>
+	<div id="assign_user_roles_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="oUserRolesWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2 id="assign_user_roles_window_title_add"><%[ Assign user roles ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<span id="assign_user_roles_error" class="error" style="display: none"></span>
+				<p>
+					<%[ Select the roles you want to assign to the selected users. ]%>
+				</p>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="AssignUserRoleList" Text="<%[ Roles: ]%>"/></div>
+					<div class="w3-half">
+						<com:TActiveListBox
+							ID="AssignUserRoleList"
+							SelectionMode="Multiple"
+							Rows="6"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+						/>
+						<com:TRequiredFieldValidator
+							ValidationGroup="AssignUserRolesGroup"
+							ControlToValidate="AssignUserRoleList"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
+						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+					</div> &nbsp;<i id="user_window_required" class="fa fa-asterisk w3-text-red opt_req" style="display none"></i>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oUserRolesWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="const fm = Prado.Validation.getForm(); return (Prado.Validation.validate(fm, 'AssignUserRolesGroup') && oUserRolesWindow.save());"><i class="fas fa-save"></i> &nbsp;<%[ Save ]%></button>
+			</footer>
+		</div>
+	</div>
+	<script>
+var oUserRolesWindow = {
+	users_func: null,
+	ids: {
+		win: 'assign_user_roles_window',
+		roles: '<%=$this->AssignUserRoleList->ClientID%>'
+	},
+	clear: function() {
+		const roles = document.getElementById(this.ids.roles);
+		for (let i = 0; i < roles.options.length; i++) {
+			roles.options[i].selected = false;
+		}
+	},
+	set_user_func: function(func) {
+		this.users_func = func;
+	},
+	save: function() {
+		const users = this.users_func();
+		const cb = <%=$this->AssignUserRolesAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(users);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oUserRolesWindow;
+		self.clear();
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
 </div>

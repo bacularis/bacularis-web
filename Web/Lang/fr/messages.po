@@ -6766,3 +6766,12 @@ msgstr "Storage Daemon version should be the same as the Director version."
 
 msgid "Storage Daemon version"
 msgstr "Storage Daemon version"
+
+msgid "Select the roles you want to assign to the selected users."
+msgstr "Select the roles you want to assign to the selected users."
+
+msgid "Assign user roles"
+msgstr "Assign user roles"
+
+msgid "Error while assigning user roles."
+msgstr "Error while assigning user roles."
