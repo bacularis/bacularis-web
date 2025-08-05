@@ -6782,3 +6782,18 @@ msgstr "Unassign roles"
 
 msgid "Error while unassigning user roles."
 msgstr "Error while unassigning user roles."
+
+msgid "Set organization"
+msgstr "Set organization"
+
+msgid "Set user organization"
+msgstr "Set user organization"
+
+msgid "Select the organization to which you want to assign the selected users."
+msgstr "Select the organization to which you want to assign the selected users."
+
+msgid "Error while setting user organization."
+msgstr "Error while setting user organization."
+
+msgid "The following selected users could not be assigned to the destination organization because the same users already exists there:"
+msgstr "The following selected users could not be assigned to the destination organization because the same users already exists there:"

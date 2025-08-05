@@ -480,6 +480,42 @@ class WebUserConfig extends ConfigFileModule
 	}
 
 	/**
+	 * Set organization to given users.
+	 *
+	 * @param array $users user list
+	 * @param string $org_id organization identifier or empty string
+	 * @return array empty user arrays if organization assigned to all users, otherwise list of unassigned and/or error users
+	 */
+	public function setUserOrganization(array $users, string $org_id): array
+	{
+		$unassigned_users = [];
+		$error_users = [];
+		$user_len = count($users);
+		for ($i = 0; $i < $user_len; $i++) {
+			if ($users[$i]['org_id'] == $org_id) {
+				// User is already member of this organization, nothing to do.
+				continue;
+			}
+			if ($this->userExists($org_id, $users[$i]['user_id'])) {
+				// The same user already exists in destination organization
+				$unassigned_users[] = $users[$i];
+				continue;
+			}
+			$result = $this->updateUserConfig(
+				$users[$i]['org_id'],
+				$users[$i]['user_id'],
+				['organization_id' => $org_id]
+			);
+			if (!$result) {
+				// Error while updating user account, mark it as error
+				$error_users[] = $users[$i];
+				continue;
+			}
+		}
+		return ['unassigned' => $unassigned_users, 'error' => $error_users];
+	}
+
+	/**
 	 * Unassign given API hosts from all user accounts.
 	 *
 	 * @param array $hosts API host list to unassign

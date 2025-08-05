@@ -52,6 +52,7 @@
 <com:TCallback ID="RemoveUsersAction" OnCallback="TemplateControl.removeUsers" />
 <com:TCallback ID="AssignUserRolesAction" OnCallback="TemplateControl.assignUserRoles" />
 <com:TCallback ID="UnassignUserRolesAction" OnCallback="TemplateControl.unassignUserRoles" />
+<com:TCallback ID="SetUserOrganizationAction" OnCallback="TemplateControl.setUserOrganization" />
 <script>
 var oUserList = {
 	ids: {
@@ -87,6 +88,21 @@ var oUserList = {
 				};
 				oUserRolesWindow.set_user_func(cb);
 				oUserRolesWindow.show(true, oUserRolesWindow.types.unassign);
+			}
+		},
+		{
+			action: 'set_user_organization',
+			label: '<%[ Set organization ]%>',
+			value: ['organization_id', 'username'],
+			before: function() {
+				const cb = () => {
+					const fields = ['organization_id', 'username'];
+					const table = oUserList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oUserOrganizationWindow.set_user_func(cb);
+				oUserOrganizationWindow.show(true);
 			}
 		},
 		{
@@ -966,6 +982,69 @@ var oUserRolesWindow = {
 
 		// Prepare given window type
 		self.set_type(type);
+
+		// Clean up before showing
+		self.clear();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
+	<div id="user_organization_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="oUserOrganizationWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2><%[ Set user organization ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<p id="user_organization_error" class="error w3-margin-top" style="display: none"></p>
+				<p>
+					<%[ Select the organization to which you want to assign the selected users. ]%>
+				</p>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><com:TLabel ForControl="UserOrganizationList" Text="<%[ Organization: ]%>"/></div>
+					<div class="w3-half">
+						<com:TActiveDropDownList
+							ID="UserOrganizationList"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oUserOrganizationWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oUserOrganizationWindow.save();"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
+			</footer>
+		</div>
+	</div>
+	<script>
+var oUserOrganizationWindow = {
+	users_func: null,
+	ids: {
+		win: 'user_organization_window',
+		error: 'user_organization_error',
+		organization: '<%=$this->UserOrganizationList->ClientID%>'
+	},
+	clear: function() {
+		const organization = document.getElementById(this.ids.organization);
+		organization.value = '';
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+	},
+	set_user_func: function(func) {
+		this.users_func = func;
+	},
+	save: function() {
+		const users = this.users_func();
+		const cb = <%=$this->SetUserOrganizationAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(users);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oUserOrganizationWindow;
 
 		// Clean up before showing
 		self.clear();

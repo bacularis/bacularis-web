@@ -67,6 +67,7 @@ class Users extends Security
 
 		// set organizations
 		$this->setOrganizations($this->UserOrganization);
+		$this->setOrganizations($this->UserOrganizationList);
 	}
 
 	/**
@@ -645,6 +646,59 @@ class Users extends Security
 			$cb->callClientFunction('oUserRolesWindow.show', [false]);
 		} else {
 			$emsg = Prado::localize('Error while unassigning user roles.');
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Set user organization - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setUserOrganization($sender, $param)
+	{
+		// Users and organization identifier
+		$users = $param->getCallbackParameter();
+		$users = array_map(
+			fn ($item) => [
+				'org_id' => $item->organization_id,
+				'user_id' => $item->username
+			],
+			$users
+		);
+		$org_id = $this->UserOrganizationList->getSelectedValue();
+
+		// Set user organization
+		$user_config = $this->getModule('user_config');
+		$result = $user_config->setUserOrganization($users, $org_id);
+
+		// Refresh user list
+		$this->setUserList($sender, $param);
+
+		// Finish or report error
+		$eid = 'user_organization_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (count($result['unassigned']) == 0 && count($result['error']) == 0) {
+			$cb->callClientFunction('oUserOrganizationWindow.show', [false]);
+		} elseif (count($result['error']) > 0) {
+			$emsg = Prado::localize('Error while setting user organization.');
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		} elseif (count($result['unassigned']) > 0) {
+			$org_config = $this->getModule('org_config');
+			$text = 'The following selected users could not be assigned to the destination organization because the same users already exists there:';
+			$emsg = Prado::localize($text);
+			$usrs = [];
+			for ($i = 0; $i < count($result['unassigned']); $i++) {
+				$org_cfg = $org_config->getOrganizationConfig($result['unassigned'][$i]['org_id']);
+				$org = count($org_cfg) > 0 ? $org_cfg['full_name'] : ($result['unassigned'][$i]['org_id'] ?: '-');
+				$usrs[] = "{$result['unassigned'][$i]['user_id']} (Org: {$org})";
+			}
+			$usrs_list = '<li>' . implode('</li><li>', $usrs) . '</li>';
+			$emsg = $emsg . '<ul>' . $usrs_list . '</ul>';
 			$cb->update($eid, $emsg);
 			$cb->show($eid);
 		}
