@@ -720,6 +720,7 @@ class NewUserWizard extends BaculumWebPage
 					// storage
 					$acls['StorageAcl'] = array_merge($acls['StorageAcl'], $result->output[$j]->Job->Storage);
 					$acls['StorageAcl'] = array_unique($acls['StorageAcl']);
+					$acls['StorageAcl'] = array_values($acls['StorageAcl']);
 					// fileset
 					if (!in_array($result->output[$j]->Job->Fileset, $acls['FilesetAcl'])) {
 						$acls['FilesetAcl'][] = $result->output[$j]->Job->Fileset;

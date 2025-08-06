@@ -452,6 +452,7 @@ class Security extends Portlets
 					// storage
 					$acls_base['StorageAcl'] = array_merge($acls_base['StorageAcl'], $result->output[$j]->Job->Storage);
 					$acls_base['StorageAcl'] = array_unique($acls_base['StorageAcl']);
+					$acls_base['StorageAcl'] = array_values($acls_base['StorageAcl']);
 					// fileset
 					if (!in_array($result->output[$j]->Job->Fileset, $acls_base['FilesetAcl'])) {
 						$acls_base['FilesetAcl'][] = $result->output[$j]->Job->Fileset;
