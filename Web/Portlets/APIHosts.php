@@ -77,7 +77,8 @@ class APIHosts extends Security
 	 */
 	public function loadAPIBasicUsers($sender, $param)
 	{
-		$basic_users = $this->getModule('api')->get(['basic', 'users']);
+		$api = $this->getModule('api');
+		$basic_users = $api->get(['basic', 'users'], null, false);
 		if ($basic_users->error === 0) {
 			$usernames = ['' => ''];
 			for ($i = 0; $i < count($basic_users->output); $i++) {
