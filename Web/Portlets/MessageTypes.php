@@ -86,6 +86,7 @@ class MessageTypes extends DirectiveListTemplate
 			$control->setInConfig($param->Item->Data['in_config']);
 			$control->setShow($param->Item->Data['show']);
 			$control->setParentName($param->Item->Data['parent_name']);
+			$control->getAttributes()->add('onchange', $param->Item->Data['onchange']);
 		}
 	}
 }

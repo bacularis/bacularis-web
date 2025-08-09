@@ -18,3 +18,38 @@
 		</div>
 	</prop:ItemTemplate>
 </com:TActiveRepeater>
+<script>
+var oDirectiveMessages = {
+	ids: {
+		rep: '<%=$this->RepeaterMessages->ClientID%>_Container'
+	},
+	init: function() {
+		$(() => {
+			oDirectiveMessages.init_types();
+		});
+	},
+	init_types: function() {
+		const rep = document.getElementById(this.ids.rep);
+		const all_chkbs = rep.querySelectorAll('input[type="checkbox"]');
+		for (let i = 1; i < all_chkbs.length; i++) {
+			$(all_chkbs[i]).trigger('change');
+		}
+	},
+	onchange: function(event) {
+		const curr = event.target;
+		const all = $(curr).closest('div:not(.directive_field)').find('input[type="checkbox"]').get(0);
+		const container = $(curr).closest('div[rel="type_container"]').get(0);
+		this.set_negation(container, all.checked);
+	},
+	set_negation: function(container, negation) {
+		const chkbs = container.querySelectorAll('input[type="checkbox"]');
+		for (let i = 1; i < chkbs.length; i++) {
+			if (!chkbs[i].checked) {
+				continue;
+			}
+			chkbs[i].indeterminate = negation;
+		}
+	}
+};
+oDirectiveMessages.init();
+</script>

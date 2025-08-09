@@ -130,7 +130,8 @@ class DirectiveMessages extends DirectiveListTemplate
 					'data' => $dest['Type'],
 					'in_config' => true,
 					'show' => true,
-					'parent_name' => __CLASS__
+					'parent_name' => __CLASS__,
+					'onchange' => 'oDirectiveMessages.onchange(event);'
 				];
 			}
 		}
@@ -228,6 +229,7 @@ class DirectiveMessages extends DirectiveListTemplate
 		$this->SourceTemplateControl->setShowAllDirectives(true);
 		$this->setData($data);
 		$this->loadConfig();
+		$this->setMessageTypes();
 	}
 
 	public function removeMessages($sender, $param)
@@ -238,6 +240,15 @@ class DirectiveMessages extends DirectiveListTemplate
 			array_splice($data, $idx, 1);
 			$this->setData($data);
 			$this->loadConfig();
+			$this->setMessageTypes();
+		}
+	}
+
+	private function setMessageTypes()
+	{
+		if ($this->getPage()->IsCallBack) {
+			$cb = $this->getPage()->getCallbackClient();
+			$cb->callClientFunction('oDirectiveMessages.init');
 		}
 	}
 }
