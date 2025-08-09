@@ -75,7 +75,9 @@ class DirectiveMessages extends DirectiveListTemplate
 		'Restored',
 		'Security',
 		'Alert',
-		'VolMgmt'
+		'VolMgmt',
+		'Events',
+		'Verified'
 	];
 
 	public function loadConfig()
