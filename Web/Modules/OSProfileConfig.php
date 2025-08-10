@@ -417,17 +417,21 @@ class OSProfileConfig extends ConfigFileModule
 		'rpm' => [
 			'AlmaLinux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/almalinux8/',
 			'AlmaLinux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/almalinux9/',
+			'AlmaLinux 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/almalinux10/',
 			'CentOS 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centos8/',
 			'CentOS Stream 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream8/',
 			'CentOS Stream 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream9/',
+			'CentOS Stream 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream10/',
 			'Fedora 39' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora39/',
 			'Fedora 40' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora40/',
 			'Fedora 41' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora41/',
 			'Fedora 42' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora42/',
 			'Oracle Linux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux8/',
 			'Oracle Linux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux9/',
+			'Oracle Linux 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux10/',
 			'Rocky 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky8/',
-			'Rocky 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky9/'
+			'Rocky 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky9/',
+			'Rocky 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/rocky10/'
 		],
 		'deb' => [
 			'Debian 11 Bullseye' => self::BACULARIS_REPOSITORY_ADDR . '/stable/debian/ bullseye main',
