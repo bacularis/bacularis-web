@@ -371,9 +371,10 @@ class WebUserConfig extends ConfigFileModule
 	 * @param string $org_id organization identifier
 	 * @param string $user_id user identifier
 	 * @param array $user_config user configuration part to update
+	 * @param bool $overwrite if true, it overwrites array values instead merging them
 	 * @return bool true if config saved successfully, otherwise false
 	 */
-	public function updateUserConfig(string $org_id, string $user_id, array $user_config): bool
+	public function updateUserConfig(string $org_id, string $user_id, array $user_config, bool $overwrite = false): bool
 	{
 		$config = $this->getUserConfig($org_id, $user_id);
 		if (count($config) == 0) {
@@ -381,10 +382,16 @@ class WebUserConfig extends ConfigFileModule
 		}
 		foreach ($user_config as $key => $value) {
 			if (key_exists($key, $config) && is_array($config[$key])) {
-				$config[$key] = array_merge(
-					$config[$key],
-					$value
-				);
+				if ($overwrite) {
+					// set new value in place older value
+					$config[$key] = $value;
+				} else {
+					// merge new value with existing values
+					$config[$key] = array_merge(
+						$config[$key],
+						$value
+					);
+				}
 			} else {
 				$config[$key] = $value;
 			}
@@ -514,6 +521,52 @@ class WebUserConfig extends ConfigFileModule
 		}
 		return ['unassigned' => $unassigned_users, 'error' => $error_users];
 	}
+
+	/**
+	 * Set API host method (set API hosts or API host groups).
+	 *
+	 * @param array $users user list
+	 * @param string $api_host_method API host method (hosts or host_groups)
+	 * @param array $values API hosts or API host groups to set (depending on $api_host_method parameter)
+	 * @return bool true on success, otherwise false
+	 */
+	public function setUserAPIHostMethod(array $users, string $api_host_method, array $values): bool
+	{
+		$success = false;
+
+		// Prepare config to save
+		$setting = [
+			'api_hosts_method' => $api_host_method,
+		];
+		if ($api_host_method == self::API_HOST_METHOD_HOSTS) {
+			$setting['api_hosts'] = $values;
+		} elseif ($api_host_method == self::API_HOST_METHOD_HOST_GROUPS) {
+			$setting['api_host_groups'] = $values;
+		} else {
+			// Unknown API host method, do nothing
+			return $success;
+		}
+
+		// Save new config for users
+		$error_users = [];
+		$user_len = count($users);
+		for ($i = 0; $i < $user_len; $i++) {
+			$result = $this->updateUserConfig(
+				$users[$i]['org_id'],
+				$users[$i]['user_id'],
+				$setting,
+				true
+			);
+			if (!$result) {
+				// Error while updating user account, mark it as error
+				$error_users[] = $users[$i];
+				continue;
+			}
+		}
+		$success = (count($error_users) == 0);
+		return $success;
+	}
+
 
 	/**
 	 * Unassign given API hosts from all user accounts.

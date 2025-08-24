@@ -57,9 +57,11 @@ class Users extends Security
 	{
 		// set API hosts
 		$this->setAPIHosts($this->UserAPIHosts, null, false);
+		$this->setAPIHosts($this->UserAPIHostsValues, null, false);
 
 		// set API host groups
 		$this->setAPIHostGroups($this->UserAPIHostGroups);
+		$this->setAPIHostGroups($this->UserAPIHostGroupsValues);
 
 		// set roles
 		$this->setRoles($this->UserRoles);
@@ -699,6 +701,55 @@ class Users extends Security
 			}
 			$usrs_list = '<li>' . implode('</li><li>', $usrs) . '</li>';
 			$emsg = $emsg . '<ul>' . $usrs_list . '</ul>';
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Set user API hosts or API host groups - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setUserAPIHostsGroups($sender, $param)
+	{
+		// User and organization identifiers
+		$users = $param->getCallbackParameter();
+		$users = array_map(
+			fn ($item) => [
+				'org_id' => $item->organization_id,
+				'user_id' => $item->username
+			],
+			$users
+		);
+
+		// Prepare user API host values to save
+		$method = '';
+		$values = [];
+		if ($this->UserAPIHostsOption->Checked) {
+			$method = WebUserConfig::API_HOST_METHOD_HOSTS;
+			$values = $this->UserAPIHostsValues->getSelectedValues();
+		} elseif ($this->UserAPIHostGroupsOption->Checked) {
+			$method = WebUserConfig::API_HOST_METHOD_HOST_GROUPS;
+			$values = $this->UserAPIHostGroupsValues->getSelectedValues();
+		}
+
+		// Set user API host method
+		$user_config = $this->getModule('user_config');
+		$result = $user_config->setUserAPIHostMethod($users, $method, $values);
+
+		// Refresh user list
+		$this->setUserList($sender, $param);
+
+		// Finish or report error
+		$eid = 'user_api_hosts_groups_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if ($result) {
+			$cb->callClientFunction('oUserAPIHostsGroupsWindow.show', [false]);
+		} else {
+			$emsg = Prado::localize('Error while setting API host method for users.');
 			$cb->update($eid, $emsg);
 			$cb->show($eid);
 		}

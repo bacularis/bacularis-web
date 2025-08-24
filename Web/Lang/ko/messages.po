@@ -6813,3 +6813,18 @@ msgstr "Error while setting user organization."
 
 msgid "The following selected users could not be assigned to the destination organization because the same users already exists there:"
 msgstr "The following selected users could not be assigned to the destination organization because the same users already exists there:"
+
+msgid "Set API hosts or API host groups"
+msgstr "Set API hosts or API host groups"
+
+msgid "Set API hosts or groups"
+msgstr "Set API hosts or groups"
+
+msgid "Select API hosts or API host groups that you want to set for the selected users."
+msgstr "Select API hosts or API host groups that you want to set for the selected users."
+
+msgid "Previous user API host setting will be overwritten by this new setting."
+msgstr "Previous user API host setting will be overwritten by this new setting."
+
+msgid "Error while setting API host method for users."
+msgstr "Error while setting API host method for users."

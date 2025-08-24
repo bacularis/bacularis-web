@@ -53,6 +53,7 @@
 <com:TCallback ID="AssignUserRolesAction" OnCallback="TemplateControl.assignUserRoles" />
 <com:TCallback ID="UnassignUserRolesAction" OnCallback="TemplateControl.unassignUserRoles" />
 <com:TCallback ID="SetUserOrganizationAction" OnCallback="TemplateControl.setUserOrganization" />
+<com:TCallback ID="SetUserAPIHostsGroupsAction" OnCallback="TemplateControl.setUserAPIHostsGroups" />
 <script>
 var oUserList = {
 	ids: {
@@ -103,6 +104,21 @@ var oUserList = {
 				};
 				oUserOrganizationWindow.set_user_func(cb);
 				oUserOrganizationWindow.show(true);
+			}
+		},
+		{
+			action: 'set_user_api_hosts_groups',
+			label: '<%[ Set API hosts or groups ]%>',
+			value: ['organization_id', 'username'],
+			before: function() {
+				const cb = () => {
+					const fields = ['organization_id', 'username'];
+					const table = oUserList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oUserAPIHostsGroupsWindow.set_user_func(cb);
+				oUserAPIHostsGroupsWindow.show(true);
 			}
 		},
 		{
@@ -1045,6 +1061,158 @@ var oUserOrganizationWindow = {
 	},
 	show: function(show) {
 		const self = oUserOrganizationWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+	</script>
+	<div id="user_api_hosts_groups_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="oUserAPIHostsGroupsWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2><%[ Set API hosts or API host groups ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<p id="user_api_hosts_groups_error" class="error w3-margin-top" style="display: none"></p>
+				<p id="user_api_hosts_groups_window_msg_assign">
+					<%[ Select API hosts or API host groups that you want to set for the selected users. ]%> <%[ Previous user API host setting will be overwritten by this new setting. ]%>
+				</p>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><%[ API host method ]%>:</div>
+					<div class="w3-half">
+						<com:TActiveRadioButton
+							ID="UserAPIHostsOption"
+							GroupName="APIHostsGroups"
+							Checked="true"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#user_api_hosts_groups_window_api_host_groups').hide();$('#user_api_hosts_groups_window_api_hosts').show();"
+						/>
+						<com:TLabel
+							ForControl="UserAPIHostsOption"
+							CssClass="normal w3-radio"
+							Style="vertical-align: super"
+							Text="<%[ Use API hosts ]%>"
+						/>
+					</div>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-half">
+						<com:TActiveRadioButton
+							ID="UserAPIHostGroupsOption"
+							GroupName="APIHostsGroups"
+							CssClass="w3-radio"
+							Attributes.onclick="$('#user_api_hosts_groups_window_api_hosts').hide();$('#user_api_hosts_groups_window_api_host_groups').show();"
+						/>
+						<com:TLabel
+							ForControl="UserAPIHostGroupsOption"
+							CssClass="normal w3-radio"
+							Style="vertical-align: super"
+							Text="<%[ Use API host groups ]%>"
+						/>
+					</div>
+				</div>
+				<div id="user_api_hosts_groups_window_api_hosts" class="w3-row directive_field" style="display: none">
+					<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostsValues" Text="<%[ API hosts: ]%>"/></div>
+					<div class="w3-half">
+						<com:TActiveListBox
+							ID="UserAPIHostsValues"
+							SelectionMode="Multiple"
+							Rows="6"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+						/>
+						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+					</div>
+				</div>
+				<div id="user_api_hosts_groups_window_api_host_groups" class="w3-row directive_field" style="display: none">
+					<div class="w3-col w3-third"><com:TLabel ForControl="UserAPIHostGroupsValues" Text="<%[ API host groups: ]%>"/></div>
+					<div class="w3-half">
+						<com:TActiveListBox
+							ID="UserAPIHostGroupsValues"
+							SelectionMode="Multiple"
+							Rows="6"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+						/>
+						<com:TRequiredFieldValidator
+							ValidationGroup="UserAPIHostsGroupsGroup"
+							ControlToValidate="UserAPIHostGroupsValues"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						>
+							<prop:ClientSide.OnValidate>
+								const radio = document.getElementById('<%=$this->UserAPIHostGroupsOption->ClientID%>');
+								sender.enabled = radio.checked;
+							</prop:ClientSide.OnValidate>
+						</com:TRequiredFieldValidator>
+						<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
+					</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oUserAPIHostsGroupsWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="const fm = Prado.Validation.getForm(); return (Prado.Validation.validate(fm, 'UserAPIHostsGroupsGroup') && oUserAPIHostsGroupsWindow.save());"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
+			</footer>
+		</div>
+	</div>
+	<script>
+var oUserAPIHostsGroupsWindow = {
+	users_func: null,
+	ids: {
+		win: 'user_api_hosts_groups_window',
+		error: 'user_api_hosts_groups_error',
+		api_hosts_opt: '<%=$this->UserAPIHostsOption->ClientID%>',
+		api_hosts_groups_opt: '<%=$this->UserAPIHostGroupsOption->ClientID%>',
+		api_hosts: '<%=$this->UserAPIHostsValues->ClientID%>',
+		api_hosts_groups: '<%=$this->UserAPIHostGroupsValues->ClientID%>',
+		api_hosts_cont: 'user_api_hosts_groups_window_api_hosts',
+		api_hosts_groups_cont: 'user_api_hosts_groups_window_api_host_groups'
+	},
+	clear: function() {
+		// Select lists
+		const api_hosts = document.getElementById(this.ids.api_hosts);
+		const api_hosts_groups = document.getElementById(this.ids.api_hosts_groups);
+		[api_hosts, api_hosts_groups].forEach((item) => {
+			item.value = '';
+		});
+
+		// Checkboxes
+		const api_hosts_opt = document.getElementById(this.ids.api_hosts_opt);
+		const api_hosts_groups_opt = document.getElementById(this.ids.api_hosts_groups_opt);
+		[api_hosts_opt, api_hosts_groups_opt].forEach((item) => {
+			item.checked = false;
+		});
+
+		// Hide containers
+		const api_hosts_cont = document.getElementById(this.ids.api_hosts_cont);
+		const api_hosts_groups_cont = document.getElementById(this.ids.api_hosts_groups_cont);
+		[api_hosts_cont, api_hosts_groups_cont].forEach((item) => {
+			item.style.display = 'none';
+		});
+
+		// Error message
+		const error = document.getElementById(this.ids.error);
+		error.textContent = '';
+		error.style.display = 'none';
+	},
+	set_user_func: function(func) {
+		this.users_func = func;
+	},
+	save: function() {
+		const users = this.users_func();
+		const cb = <%=$this->SetUserAPIHostsGroupsAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(users);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oUserAPIHostsGroupsWindow;
 
 		// Clean up before showing
 		self.clear();
