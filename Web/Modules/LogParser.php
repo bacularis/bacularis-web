@@ -88,9 +88,6 @@ class LogParser extends WebModule
 		} elseif (preg_match(self::WRITE_STORAGE_PATTERN, $log_line, $match) === 1) {
 			$link = $this->getLink('storage', $match['write_storage']);
 			$log_line = str_replace($match['write_storage'], $link, $log_line);
-		} elseif (preg_match(self::FILESET_PATTERN, $log_line, $match) === 1) {
-			$link = $this->getLink('fileset', $match['fileset']);
-			$log_line = str_replace($match['fileset'], $link, $log_line);
 		} elseif (preg_match(self::VERIFY_JOB_PATTERN, $log_line, $match) === 1) {
 			$link = $this->getLink('job', $match['verify_job']);
 			$log_line = str_replace($match['verify_job'], $link, $log_line);
