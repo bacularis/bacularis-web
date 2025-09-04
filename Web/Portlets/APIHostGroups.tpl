@@ -34,200 +34,200 @@
 <com:TCallback ID="RemoveAPIHostGroupsAction" OnCallback="TemplateControl.removeAPIHostGroups" />
 <script>
 var oAPIHostGroupList = {
-ids: {
-	api_host_group_list: 'api_host_group_list_table'
-},
-actions: [
-	{
-		action: 'remove',
-		label: '<%[ Remove ]%>',
-		value: 'name',
-		callback: <%=$this->RemoveAPIHostGroupsAction->ActiveControl->Javascript%>
-	}
-],
-data: [],
-table: null,
-table_toolbar: null,
-init: function() {
-	if (!this.table) {
-		this.set_table();
-		this.set_bulk_actions();
-		this.set_events();
-	} else {
-		const page = this.table.page();
-		this.table.clear().rows.add(this.data).draw();
-		this.table.page(page).draw(false);
-		oAPIHostGroupList.set_filters(this.table);
-		this.table_toolbar.style.display = 'none';
-	}
-},
-set_events: function() {
-	document.getElementById(this.ids.api_host_group_list).addEventListener('click', function(e) {
-		$(function() {
-			const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
-			$(this.table_toolbar).animate({
-				width: wa
-			}, 'fast');
+	ids: {
+		api_host_group_list: 'api_host_group_list_table'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'name',
+			callback: <%=$this->RemoveAPIHostGroupsAction->ActiveControl->Javascript%>
+		}
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(this.data).draw();
+			this.table.page(page).draw(false);
+			oAPIHostGroupList.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.api_host_group_list).addEventListener('click', function(e) {
+			$(function() {
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
+			}.bind(this));
 		}.bind(this));
-	}.bind(this));
-},
-set_table: function() {
-	this.table = $('#' + this.ids.api_host_group_list).DataTable({
-		data: this.data,
-		deferRender: true,
-		autoWidth: false,
-		fixedHeader: {
-			header: true,
-			headerOffset: $('#main_top_bar').height()
-		},
-		layout: {
-			topStart: [
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.api_host_group_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			columns: [
 				{
-					pageLength: {}
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'name'},
+				{
+					data: 'api_hosts',
+					render: (data, type, row) => data.length
 				},
 				{
-					buttons: ['copy', 'csv', 'colvis']
+					data: 'api_hosts_str',
+					render: render_string_short
 				},
 				{
-					div: {
-						className: 'table_toolbar'
+					data: 'name',
+					render: (data, type, row) => {
+						const id = 'name';
+						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostGroupList->ClientID%>;
+						const table = 'oAPIHostGroupList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'name',
+					render: function (data, type, row) {
+						let btns = '';
+
+						// Set access button
+						const span = document.createElement('SPAN');
+						const access_btn = document.createElement('BUTTON');
+						access_btn.className = 'w3-button w3-green';
+						access_btn.type = 'button';
+						const i = document.createElement('I');
+						i.className = 'fa-solid fa-shield';
+						const label = document.createTextNode(' <%[ Set access ]%>');
+						access_btn.appendChild(i);
+						access_btn.innerHTML += '&nbsp';
+						access_btn.appendChild(label);
+						access_btn.setAttribute('onclick', 'oAPIHostGroups.load_access_window("' + data + '")');
+						span.appendChild(access_btn);
+						span.style.marginRight = '5px';
+						btns += span.outerHTML;
+
+						// Edit button
+						const btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						const i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						const label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oAPIHostGroups.load_api_host_group_window(\'' + data + '\')');
+						btns += btn_edit.outerHTML;
+
+						return btns;
 					}
 				}
 			],
-			topEnd: [
-				'search'
-			],
-			bottomStart: [
-				'info'
-			],
-			bottomEnd: [
-				'paging'
-			]
-		},
-		stateSave: true,
-		stateDuration: KEEP_TABLE_SETTINGS,
-		columns: [
-			{
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
+				}
+			},
+			columnDefs: [{
+				className: 'dtr-control',
 				orderable: false,
-				data: null,
-				defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
-			},
-			{data: 'name'},
-			{
-				data: 'api_hosts',
-				render: (data, type, row) => data.length
+				targets: 0
 			},
 			{
-				data: 'api_hosts_str',
-				render: render_string_short
+				className: 'action_col_long',
+				orderable: false,
+				targets: [ 5 ]
 			},
 			{
-				data: 'name',
-				render: (data, type, row) => {
-					const id = 'name';
-					const tt_obj = oTagTools_<%=$this->TagToolsAPIHostGroupList->ClientID%>;
-					const table = 'oAPIHostGroupList.table';
-					return render_tags(type, id, data, tt_obj, table);
-				}
+				className: "dt-center",
+				targets: [ 2, 3, 4 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
+				blurable: false
 			},
-			{
-				data: 'name',
-				render: function (data, type, row) {
-					let btns = '';
-
-					// Set access button
-					const span = document.createElement('SPAN');
-					const access_btn = document.createElement('BUTTON');
-					access_btn.className = 'w3-button w3-green';
-					access_btn.type = 'button';
-					const i = document.createElement('I');
-					i.className = 'fa-solid fa-shield';
-					const label = document.createTextNode(' <%[ Set access ]%>');
-					access_btn.appendChild(i);
-					access_btn.innerHTML += '&nbsp';
-					access_btn.appendChild(label);
-					access_btn.setAttribute('onclick', 'oAPIHostGroups.load_access_window("' + data + '")');
-					span.appendChild(access_btn);
-					span.style.marginRight = '5px';
-					btns += span.outerHTML;
-
-					// Edit button
-					const btn_edit = document.createElement('BUTTON');
-					btn_edit.className = 'w3-button w3-green';
-					btn_edit.type = 'button';
-					const i_edit = document.createElement('I');
-					i_edit.className = 'fa fa-edit';
-					const label_edit = document.createTextNode(' <%[ Edit ]%>');
-					btn_edit.appendChild(i_edit);
-					btn_edit.innerHTML += '&nbsp';
-					btn_edit.style.marginRight = '8px';
-					btn_edit.appendChild(label_edit);
-					btn_edit.setAttribute('onclick', 'oAPIHostGroups.load_api_host_group_window(\'' + data + '\')');
-					btns += btn_edit.outerHTML;
-
-					return btns;
-				}
-			}
-		],
-		responsive: {
-			details: {
-				type: 'column',
-				display: DataTable.Responsive.display.childRow
-			}
-		},
-		columnDefs: [{
-			className: 'dtr-control',
-			orderable: false,
-			targets: 0
-		},
-		{
-			className: 'action_col_long',
-			orderable: false,
-			targets: [ 5 ]
-		},
-		{
-			className: "dt-center",
-			targets: [ 2, 3, 4 ]
-		}],
-		select: {
-			style:    'os',
-			selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
-			blurable: false
-		},
-		order: [1, 'asc'],
-		initComplete: function () {
-			oAPIHostGroupList.set_filters(this.api());
-		}
-	});
-},
-set_filters: function(api) {
-	api.columns([2]).every(function () {
-		const column = this;
-		const select = $('<select class="dt-select"><option value=""></option></select>')
-		.appendTo($(column.footer()).empty())
-		.on('change', function () {
-			const val = dtEscapeRegex(
-				$(this).val()
-			);
-			column
-			.search(val ? '^' + val + '$' : '', true, false)
-			.draw();
-		});
-		column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-			if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-				select.append('<option value="' + d + '" selected>' + d + '</option>');
-			} else if(d) {
-				select.append('<option value="' + d + '">' + d + '</option>');
+			order: [1, 'asc'],
+			initComplete: function () {
+				oAPIHostGroupList.set_filters(this.api());
 			}
 		});
-	});
-},
-set_bulk_actions: function() {
-	this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-		actions: '<%[ Select action ]%>',
-		ok: '<%[ OK ]%>'
-	});
-}
+	},
+	set_filters: function(api) {
+		api.columns([2]).every(function () {
+			const column = this;
+			const select = $('<select class="dt-select"><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				const val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
+			});
+			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
+				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+					select.append('<option value="' + d + '" selected>' + d + '</option>');
+				} else if(d) {
+					select.append('<option value="' + d + '">' + d + '</option>');
+				}
+			});
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Select action ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
 };
 
 var oAPIHostGroups = {
