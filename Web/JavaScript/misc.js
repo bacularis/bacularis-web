@@ -150,19 +150,31 @@ var Units = {
 		var ret = {value: time_seconds, format: f};
 		return ret;
 	},
-	format_time_duration: function(time_seconds) {
+	format_time_duration: function(time_seconds, long_unit) {
 		let ret = ''
 		let val = 0;
 		let pval = time_seconds;
+		const funit = (val, u) => {
+			let ret = '';
+			if (long_unit) {
+				ret = ' ' + u.long;
+				if (val > 1) {
+					ret += 's';
+				}
+			} else {
+				ret = u.long[0];
+			}
+			return ret;
+		};
 		for (let i = this.units.time.length - 1; i >= 0; i--) {
 			val = pval / this.units.time[i].full;
 			if (val >= 1) {
 				pval = time_seconds % this.units.time[i].full;
-				ret += ' ' + parseInt(val, 10) + this.units.time[i].long[0];
+				ret += ' ' + parseInt(val, 10) + funit(val, this.units.time[i]);
 			}
 		}
 		if (!ret) {
-			ret = '0' + this.units.time[0].long[0];
+			ret = '0' + funit(0, this.units.time[0]);
 		}
 		return ret;
 	},
