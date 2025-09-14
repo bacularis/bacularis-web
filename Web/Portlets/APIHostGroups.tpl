@@ -308,7 +308,7 @@ var oAPIHostGroups = {
 };
 
 $(function() {
-oAPIHostGroups.load_api_host_group_list();
+	oAPIHostGroups.load_api_host_group_list();
 });
 	</script>
 </div>
