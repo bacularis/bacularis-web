@@ -67,6 +67,21 @@ class JobInfo extends WebModule
 
 	public const DEFAULT_MAX_JOBS = 10000;
 
+	/**
+	 * Default job priority to run.
+	 */
+	public const DEFAULT_JOB_PRIORITY = 10;
+
+	/**
+	 * Verify job type letters.
+	 */
+	public const VERIFY_JOBS = ['O', 'd', 'A'];
+
+	/**
+	 * Verify jobs that do not use accurate mode.
+	 */
+	public const VERIFY_JOBS_NO_ACCURATE = ['O', 'd'];
+
 	public function parseResourceDirectives(array $show_out)
 	{
 		$result = [];

@@ -31,8 +31,8 @@
 						var verify_by_jobid = $('#<%=$this->JobToVerifyJobIdLine->ClientID%>');
 						var accurate = $('#<%=$this->AccurateLine->ClientID%>');
 						var verify_current_opt = document.getElementById('<%=$this->JobToVerifyOptions->ClientID%>').value;
-						if(/^(<%=implode('|', $this->job_to_verify)%>)$/.test(this.value)) {
-							if(/^(<%=implode('|', $this->verify_no_accurate)%>)$/.test(this.value)) {
+						if(/^(<%=implode('|', JobInfo::VERIFY_JOBS)%>)$/.test(this.value)) {
+							if(/^(<%=implode('|', JobInfo::VERIFY_JOBS_NO_ACCURATE)%>)$/.test(this.value)) {
 								accurate.hide();
 							} else {
 								accurate.show();

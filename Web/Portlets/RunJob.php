@@ -32,6 +32,7 @@ namespace Bacularis\Web\Portlets;
 use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\PluginConfigBase;
+use Bacularis\Web\Modules\JobInfo;
 
 /**
  * Run job control.
@@ -45,12 +46,6 @@ class RunJob extends Portlets
 	public const JOB_NAME = 'JobName';
 
 	public const USE_CACHE = true;
-
-	public const DEFAULT_JOB_PRIORITY = 10;
-
-	public $job_to_verify = ['O', 'd', 'A'];
-
-	public $verify_no_accurate = ['O', 'd'];
 
 	public $verify_options = ['jobname' => 'Verify by Job Name', 'jobid' => 'Verify by JobId'];
 
@@ -107,7 +102,7 @@ class RunJob extends Portlets
 			$pool = key_exists('pool', $job_info) ? $job_info['pool']['name'] : null;
 			$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
 			$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
-			$priority = key_exists('job', $job_info) ? $job_info['job']['priority'] : self::DEFAULT_JOB_PRIORITY;
+			$priority = key_exists('job', $job_info) ? $job_info['job']['priority'] : JobInfo::DEFAULT_JOB_PRIORITY;
 			$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
 			$jobdata->client = $client;
 			$jobdata->fileset = $fileset;
@@ -138,8 +133,8 @@ class RunJob extends Portlets
 		$is_accurate = true;
 		if (is_object($jobdata) && property_exists($jobdata, 'level')) {
 			$this->Level->SelectedValue = $jobdata->level;
-			$is_verify_option = in_array($jobdata->level, $this->job_to_verify);
-			$is_accurate = !in_array($jobdata->level, $this->verify_no_accurate);
+			$is_verify_option = in_array($jobdata->level, JobInfo::VERIFY_JOBS);
+			$is_accurate = !in_array($jobdata->level, JobInfo::VERIFY_JOBS_NO_ACCURATE);
 		}
 		$this->Level->dataBind();
 
@@ -252,7 +247,7 @@ class RunJob extends Portlets
 			$this->Accurate->Checked = $jobdata->accurate;
 		}
 
-		$priority = self::DEFAULT_JOB_PRIORITY;
+		$priority = JobInfo::DEFAULT_JOB_PRIORITY;
 		if (is_object($jobdata) && property_exists($jobdata, 'priorjobid') && $jobdata->priorjobid > 0) {
 			$priority = $jobdata->priorjobid;
 		}
@@ -316,7 +311,7 @@ class RunJob extends Portlets
 	public function jobIdToVerifyValidator($sender, $param)
 	{
 		$verifyVals = $this->getVerifyVals();
-		if (in_array($this->Level->SelectedValue, $this->job_to_verify) && $this->JobToVerifyOptions->SelectedItem->Value == $verifyVals['jobid']) {
+		if (in_array($this->Level->SelectedValue, JobInfo::VERIFY_JOBS) && $this->JobToVerifyOptions->SelectedItem->Value == $verifyVals['jobid']) {
 			$isValid = preg_match('/^[0-9]+$/', $this->JobToVerifyJobId->Text) === 1 && $this->JobToVerifyJobId->Text > 0;
 		} else {
 			$isValid = true;
@@ -417,7 +412,7 @@ class RunJob extends Portlets
 		$params['priority'] = $this->Priority->Text;
 		$params['accurate'] = (int) $this->Accurate->Checked;
 
-		if (!empty($this->Level->SelectedItem) && in_array($this->Level->SelectedItem->Value, $this->job_to_verify)) {
+		if (!empty($this->Level->SelectedItem) && in_array($this->Level->SelectedItem->Value, JobInfo::VERIFY_JOBS)) {
 			$verifyVals = $this->getVerifyVals();
 			if ($this->JobToVerifyOptions->SelectedItem->Value == $verifyVals['jobname']) {
 				$params['verifyjob'] = $this->JobToVerifyJobName->SelectedValue;
