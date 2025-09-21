@@ -134,8 +134,21 @@ class JobView extends BaculumWebPage
 			$this->FileList->setJobId($jobid);
 		}
 		$this->RunJobModal->setJobName($job_name);
+
+		// prepare schedule list
 		$this->Schedules->setJob($job_name);
 		$this->Schedules->setDays(90);
+
+		// prepare job web access
+		$api_host = $this->User->getDefaultAPIHost();
+		$sess = $this->getApplication()->getSession();
+		$director = $sess->contains('director') ? $sess->itemAt('director') : '';
+		$this->JobWebAccess->setAPIHosts([$api_host]);
+		$this->JobWebAccess->setComponentType('dir');
+		$this->JobWebAccess->setComponentName($director);
+		$this->JobWebAccess->setResourceType('Job');
+		$this->JobWebAccess->setResourceName($job_name);
+
 		$this->setJobInfo($job_name);
 	}
 

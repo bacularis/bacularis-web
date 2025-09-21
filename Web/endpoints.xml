@@ -57,4 +57,5 @@
 	<url ServiceParameter="BacularisError" pattern="web/message/{error}/" parameters.error="\d+" />
 	<url ServiceParameter="Monitor" pattern="web/monitor/" />
 	<url ServiceParameter="OAuth2Redirect" pattern="web/redirect/" />
+	<url ServiceParameter="WebAccess" pattern="web/access/{token}/" parameters.token="[a-zA-Z0-9\-_]+" />
 </urls>

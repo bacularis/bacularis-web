@@ -6822,3 +6822,153 @@ msgstr "Previous user API host setting will be overwritten by this new setting."
 
 msgid "Error while setting API host method for users."
 msgstr "Error while setting API host method for users."
+
+msgid "Web access"
+msgstr "Web access"
+
+msgid "Add web access"
+msgstr "Add web access"
+
+msgid "The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually."
+msgstr "The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually."
+
+msgid "Time access"
+msgstr "Time access"
+
+msgid "Usage access"
+msgstr "Usage access"
+
+msgid "Source access"
+msgstr "Source access"
+
+msgid "Resource action"
+msgstr "Resource action"
+
+msgid "Resource params"
+msgstr "Resource params"
+
+msgid "Access URL"
+msgstr "Access URL"
+
+msgid "Stats"
+msgstr "Stats"
+
+msgid "Resource type"
+msgstr "Resource type"
+
+msgid "Create time"
+msgstr "Create time"
+
+msgid "Access time"
+msgstr "Access time"
+
+msgid "Action target"
+msgstr "Action target"
+
+msgid "Access limits"
+msgstr "Access limits"
+
+msgid "valid all the time (until manual remove)"
+msgstr "valid all the time (until manual remove)"
+
+msgid "valid for X days from now"
+msgstr "valid for X days from now"
+
+msgid "Validity days"
+msgstr "Validity days"
+
+msgid "valid between date X and Y"
+msgstr "valid between date X and Y"
+
+msgid "From date"
+msgstr "From date"
+
+msgid "To date"
+msgstr "To date"
+
+msgid "one-time use"
+msgstr "one-time use"
+
+msgid "X number of uses"
+msgstr "X number of uses"
+
+msgid "unlimited number of uses"
+msgstr "unlimited number of uses"
+
+msgid "Number of uses"
+msgstr "Number of uses"
+
+msgid "access for given IP addresses"
+msgstr "access for given IP addresses"
+
+msgid "Allowed IP addresses (comma separated)"
+msgstr "Allowed IP addresses (comma separated)"
+
+msgid "Modify action parameters"
+msgstr "Modify action parameters"
+
+msgid "Run job action params"
+msgstr "Run job action params"
+
+msgid "Params"
+msgstr "Params"
+
+msgid "See resource params"
+msgstr "See resource params"
+
+msgid "See statistics"
+msgstr "See statistics"
+
+msgid "Edit web access"
+msgstr "Edit web access"
+
+msgid "Not used yet"
+msgstr "Not used yet"
+
+msgid "Valid from"
+msgstr "Valid from"
+
+msgid "Valid to"
+msgstr "Valid to"
+
+msgid "Number of days"
+msgstr "Number of days"
+
+msgid "Valid for"
+msgstr "Valid for"
+
+msgid "Time state"
+msgstr "Time state"
+
+msgid "Max. usage"
+msgstr "Max. usage"
+
+msgid "Usage left"
+msgstr "Usage left"
+
+msgid "Usage state"
+msgstr "Usage state"
+
+msgid "Date range"
+msgstr "Date range"
+
+msgid "Valid"
+msgstr "Valid"
+
+msgid "Numer of use"
+msgstr "Numer of use"
+
+msgid "Web access statistics"
+msgstr "Web access statistics"
+
+msgid "IP addr. restriction"
+msgstr "IP addr. restriction"
+
+msgid "For X days"
+msgstr "For X days"
+
+msgid "One-time use"
+msgstr "One-time use"
+
+msgid "Web access parameters"
+msgstr "Web access parameters"

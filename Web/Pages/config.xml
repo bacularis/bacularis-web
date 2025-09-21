@@ -26,6 +26,7 @@
 		<module id="plugin_manager" class="Bacularis\Web\Modules\WebPluginManager" />
 		<module id="org_config" class="Bacularis\Web\Modules\OrganizationConfig" />
 		<module id="idp_config" class="Bacularis\Web\Modules\IdentityProviderConfig" />
+		<module id="web_access_config" class="Bacularis\Web\Modules\WebAccessConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
@@ -38,6 +39,7 @@
 		</module>
 		<module id="log_parser" class="Bacularis\Web\Modules\LogParser" />
 		<module id="audit" class="Bacularis\Web\Modules\WebAuditLog" />
+		<module id="web_access_resource" class="Bacularis\Web\Modules\WebAccessBaculaResource" />
 		<!-- auth modules -->
 		<module id="basic_webuser" class="Bacularis\Web\Modules\BasicWebUserConfig" />
 		<module id="page_category" class="Bacularis\Web\Modules\PageCategory" />
@@ -49,7 +51,7 @@
 		<module id="oidc_google" class="Bacularis\Web\Modules\OIDCGoogle" />
 		<module id="oidc_facebook" class="Bacularis\Web\Modules\OIDCFacebook" />
 		<module id="web_session" class="Bacularis\Web\Modules\WebSession" />
-		<!-- data modules -->
+		<!-- various modules -->
 		<module id="job_info" class="Bacularis\Web\Modules\JobInfo" />
 		<module id="storage_tools" class="Bacularis\Web\Modules\StorageTools" />
 		<module id="messages_log" class="Bacularis\Web\Modules\MessagesLog" />

@@ -63,6 +63,7 @@ class PageCategory extends WebModule
 	public const OAUTH2_REDIRECT = 'OAuth2Redirect';
 	public const OIDC_REDIRECT = 'OIDCRedirect';
 	public const OIDC_LOGOUT = 'OIDCLogout';
+	public const WEB_ACCESS = 'WebAccess';
 
 	/**
 	 * Pages available under conditions.
@@ -115,7 +116,8 @@ class PageCategory extends WebModule
 			self::OAUTH2_REDIRECT,
 			self::OIDC_REDIRECT,
 			self::OIDC_LOGOUT,
-			self::LOGIN_PAGE
+			self::LOGIN_PAGE,
+			self::WEB_ACCESS
 		];
 	}
 

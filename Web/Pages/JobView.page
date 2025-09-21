@@ -58,14 +58,15 @@
 			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
 			OnCallback="loadScheduleConfig"
 		/>
-		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList]);"><%[ Job history ]%></button>
+		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Job history ]%></button>
 		<com:TActiveLinkButton
 			ID="JobSchedulesBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
 			Text="<%[ Job schedules ]%>"
 			OnCallback="loadSchedules"
-			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList]);"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"
 		/>
+		<button id="btn_job_web_access" type="button" class="w3-bar-item w3-button tab_btn<%=$this->User->isInRole(WebUserRoles::ADMIN) ? '' : ' hide'%>" onclick="W3Tabs.open(this.id, 'job_web_access'); oWebAccessResourceList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Web access ]%></button>
 	</div>
 
 	<!-- Job Log -->
@@ -2062,6 +2063,13 @@ $(function() {
 	<div class="w3-container tab_item" id="job_schedules" data-btn="<%=$this->JobSchedulesBtn->ClientID%>" style="display: none">
 		<com:Bacularis.Web.Portlets.StatusSchedule
 			ID="Schedules"
+		/>
+	</div>
+	<div class="w3-container tab_item" id="job_web_access" style="display: none">
+		<p><%[ The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually. ]%></p>
+		<com:Bacularis.Web.Portlets.WebAccessResource
+			ID="JobWebAccess"
+			Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
 		/>
 	</div>
 </com:TContent>
