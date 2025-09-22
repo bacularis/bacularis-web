@@ -134,6 +134,31 @@
 			</div>
 		</div>
 		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Number of latest jobs in table on dashboard ]%></div>
+			<div class="w3-quarter w3-col">
+				<com:TTextBox
+					ID="MaxLatestJobs"
+					CssClass="w3-input w3-border w3-show-inline-block"
+					ValidationGroup="AppSettingDisplay"
+					Width="120px"
+				/>
+				<i class="fa fa-asterisk w3-text-red"></i>
+				<com:TRequiredFieldValidator
+					ValidationGroup="AppSettingDisplay"
+					ControlToValidate="MaxLatestJobs"
+					ErrorMessage="<%[ Field required. ]%>"
+					Display="Dynamic"
+				/>
+				<com:TDataTypeValidator
+					ValidationGroup="AppSettingDisplay"
+					ControlToValidate="MaxLatestJobs"
+					ErrorMessage="<%[ Invalid value. ]%>"
+					Display="Dynamic"
+					DataType="Integer"
+				/>
+			</div>
+		</div>
+		<div class="w3-container w3-row w3-padding">
 			<div class="w3-quarter w3-col"><%[ Keep custom table settings: ]%></div>
 			<div class="w3-quarter w3-col">
 				<p><com:TRadioButton

@@ -6962,3 +6962,6 @@ msgstr "One-time use"
 
 msgid "Web access parameters"
 msgstr "Web access parameters"
+
+msgid "Number of latest jobs in table on dashboard"
+msgstr "Number of latest jobs in table on dashboard"

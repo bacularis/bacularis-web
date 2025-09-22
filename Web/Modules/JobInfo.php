@@ -68,6 +68,11 @@ class JobInfo extends WebModule
 	public const DEFAULT_MAX_JOBS = 10000;
 
 	/**
+	 * Maximum latest jobs displayed in table on dashboard.
+	 */
+	public const DEFAULT_MAX_LATEST_JOBS = 15;
+
+	/**
 	 * Default job priority to run.
 	 */
 	public const DEFAULT_JOB_PRIORITY = 10;

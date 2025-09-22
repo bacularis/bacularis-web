@@ -1125,7 +1125,7 @@ var Dashboard = {
 	},
 	update_job_access: function() {
 		// get last 15 jobs
-		var data = this.stats.jobs.slice(0, 15);
+		var data = this.stats.jobs.slice(0, MAX_LATEST_JOBS);
 		$(function() {
 			oLastJobsList.init(data);
 		});

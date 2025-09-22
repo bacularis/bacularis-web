@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Layouts;
 
+use Bacularis\Web\Modules\JobInfo;
 use Prado\Web\UI\TTemplateControl;
 
 /**

@@ -49,6 +49,7 @@ class ApplicationSettings extends BaculumWebPage
 			$this->Language->SelectedValue = $this->web_config['baculum']['lang'];
 			$this->Debug->Checked = ($this->web_config['baculum']['debug'] == 1);
 			$this->MaxJobs->Text = (key_exists('max_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_jobs']) : JobInfo::DEFAULT_MAX_JOBS);
+			$this->MaxLatestJobs->Text = (key_exists('max_latest_jobs', $this->web_config['baculum']) ? (int) ($this->web_config['baculum']['max_latest_jobs']) : JobInfo::DEFAULT_MAX_LATEST_JOBS);
 			if (key_exists('keep_table_settings', $this->web_config['baculum'])) {
 				if ($this->web_config['baculum']['keep_table_settings'] === '-1') {
 					// keep settings until end of web browser session
@@ -147,6 +148,7 @@ class ApplicationSettings extends BaculumWebPage
 	{
 		if (count($this->web_config) > 0) {
 			$max_jobs = (int) ($this->MaxJobs->Text);
+			$max_latest_jobs = (int) ($this->MaxLatestJobs->Text);
 			$keep_table_settings = null;
 			if ($this->KeepTableSettingsNoLimit->Checked) {
 				$keep_table_settings = '0';
@@ -156,6 +158,7 @@ class ApplicationSettings extends BaculumWebPage
 				$keep_table_settings = $this->KeepTableSettingsFor->getValue();
 			}
 			$this->web_config['baculum']['max_jobs'] = $max_jobs;
+			$this->web_config['baculum']['max_latest_jobs'] = $max_latest_jobs;
 			$this->web_config['baculum']['keep_table_settings'] = $keep_table_settings;
 			$this->web_config['baculum']['size_values_unit'] = $this->BinaryBytes->Checked ? 'binary' : 'decimal';
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
