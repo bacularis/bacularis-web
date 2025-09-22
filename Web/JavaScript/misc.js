@@ -1124,7 +1124,7 @@ var Dashboard = {
 		document.getElementById(this.ids.clients.jobs).textContent = occupancy;
 	},
 	update_job_access: function() {
-		// get last 15 jobs
+		// get last XX jobs
 		var data = this.stats.jobs.slice(0, MAX_LATEST_JOBS);
 		$(function() {
 			oLastJobsList.init(data);
