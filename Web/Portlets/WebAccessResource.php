@@ -43,14 +43,6 @@ class WebAccessResource extends Portlets
 		'jobid' => 'Verify by JobId'
 	];
 
-	public function onInit($param)
-	{
-		parent::onInit($param);
-		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
-			die();
-		}
-	}
-
 	/**
 	 * Load web access resource list.
 	 *
@@ -59,6 +51,9 @@ class WebAccessResource extends Portlets
 	 */
 	public function loadWebAccessResourceList($sender, $param)
 	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			return;
+		}
 		$filters = [
 			'api_hosts' => $this->getAPIHosts(),
 			'component_type' => $this->getComponentType(),
@@ -84,6 +79,9 @@ class WebAccessResource extends Portlets
 	 */
 	public function loadWebAccessResourceWindow($sender, $param): void
 	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			return;
+		}
 		$name = $param->getCallbackParameter();
 
 		// prepare API hosts
@@ -661,6 +659,9 @@ class WebAccessResource extends Portlets
 	 */
 	public function saveWebAccessResource($sender, $param): void
 	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			return;
+		}
 		$api_hosts = $this->getAPIHosts();
 		$component_type = $this->getComponentType();
 		$component_name = $this->getComponentName();
