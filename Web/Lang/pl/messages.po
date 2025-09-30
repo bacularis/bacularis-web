@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-06-16 11:50\n"
+"PO-Revision-Date: 2025-09-30 12:46\n"
 "Project-Id-Version: bacularis\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Marcin Haba <marcin.haba@bacula.pl>\n"
@@ -477,7 +477,7 @@ msgid "Step 4 - select destination for restore"
 msgstr "Krok 4 - wybierz cel do przywrócenia danych"
 
 msgid "Step 4 - options for restore"
-msgstr "Krok 4 - opcje dla przywracania"
+msgstr "Krok 4 - opcje przywracania"
 
 msgid "Replace files:"
 msgstr "Zastępowanie plików:"
@@ -1180,7 +1180,7 @@ msgid "Please enter API password."
 msgstr "Proszę wprowadzić hasło API."
 
 msgid "Bacularis web interface requires to add at least one Bacularis API instance with shared Catalog access. Please add API instance."
-msgstr "Interfejs web Bacularis wymaga dodania conajmniej jednej instancji Bacularis API ze skonfigurowanym dostępem do bazy danych Bacula. Proszę dodać instancję API."
+msgstr "Interfejs web Bacularis wymaga dodania co najmniej jednej instancji Bacularis API, która mam dostęp do bazy danych Bacula. Proszę dodać instancję API."
 
 msgid "Save with name:"
 msgstr "Zapisz pod nazwą:"
@@ -4300,10 +4300,10 @@ msgid "Account settings"
 msgstr "Ustawienia konta"
 
 msgid "The two-factor authentication makes authentication process stronger by adding to traditional user/password login method one additional step (second factor)."
-msgstr "Uwierzytelnianie dwuskładnikowe wzmacnia proces uwierzytelniania poprzez dodanie do tradycyjnej metody logowania użytkownika/hasła jeden dodatkowy krok (drugi składnik)."
+msgstr "Uwierzytelnianie dwuskładnikowe wzmacnia proces uwierzytelniania poprzez dodanie do tradycyjnej metody logowania użytkownikiem/hasłem jednego dodatkowego kroku (drugi składnik)."
 
 msgid "The second factor can use third-party authenticator application (e.g. a mobile or desktop app) that shows a generated and frequently changing code to use for authentication."
-msgstr "Drugi krok autentykacji może korzystać z aplikacji uwierzytelniającej (np. aplikacja mobilna lub stacjonarna), która pokazuje wygenerowany i często zmieniający kod używany do uwierzytelniania."
+msgstr "Drugi czynnik może korzystać z aplikacji uwierzytelniającej (np. aplikacja mobilna lub stacjonarna), która pokazuje wygenerowany i często zmieniający kod używany do uwierzytelniania."
 
 msgid "2FA settings"
 msgstr "Ustawienia 2FA"
@@ -5580,1017 +5580,1016 @@ msgstr "Konfiguracje są małymi kawałkami konfiguracji Bacula, które mogą by
 msgid "Patterns are sets of configs that can be applied to existing Bacula components (Director, Storage Daemon, File Daemon). Unlike configs, patterns are applied to the entire component configuration instead of selected resources. Configs that are part of patterns have to contain complete new resources configuration (resources will be added to components) or existing configuration (resources will be updated in components). Configs assigned to patterns needs to have the Name directive defined."
 msgstr "Wzorce są zbiorami konfiguracji, które mogą być używane do istniejących komponentów Bacula (Director, Storage Daemon, File Daemon). W odróżnieniu od pojedynczych konfiguracji wzorce są stosowanie do całej konfiguracji komponentów zamiast do wybranych zasobów. Konfiguracje, które są częściami wzorców, muszą zawierać kompletną konfigurację zasobu (zasób będzie dodany jako nowy) lub istniejącą konfigurację (zasób będzie zaktualizowany w komponentach). Konfiguracje przypisane do wzorców muszą mieć zdefiniowaną dyrektywę Name."
 
-
 msgid "Catalog commands"
-msgstr "Catalog commands"
+msgstr "Komendy Catalog"
 
 msgid "Catalog installation command:"
-msgstr "Catalog installation command:"
+msgstr "Polecenie instalacji Catalog:"
 
 msgid "Catalog upgrade command:"
-msgstr "Catalog upgrade command:"
+msgstr "Polecenie aktualizacji Catalog:"
 
 msgid "Catalog removal command:"
-msgstr "Catalog removal command:"
+msgstr "Polecenie usuwania Catalog:"
 
 msgid "Catalog info command:"
-msgstr "Catalog info command:"
+msgstr "Polecenie informacji o Catalog:"
 
 msgid "Catalog enable command:"
-msgstr "Catalog enable command:"
+msgstr "Polecenie włączenia Catalog:"
 
 msgid "Catalog pre-install command:"
-msgstr "Catalog pre-install command:"
+msgstr "Komenda pre-instalacji Catalog:"
 
 msgid "Catalog pre-upgrade command:"
-msgstr "Catalog pre-upgrade command:"
+msgstr "Komenda pre-aktualizacji Catalog:"
 
 msgid "Catalog pre-remove command:"
-msgstr "Catalog pre-remove command:"
+msgstr "Komenda pre-usuwania Catalog:"
 
 msgid "Catalog post-install command:"
-msgstr "Catalog post-install command:"
+msgstr "Komenda post-instalacji Catalog:"
 
 msgid "Catalog post-upgrade command:"
-msgstr "Catalog post-upgrade command:"
+msgstr "Komenda post-aktualizacji Catalog:"
 
 msgid "Catalog post-remove command:"
-msgstr "Catalog post-remove command:"
+msgstr "Komenda post-usuwania Catalog:"
 
 msgid "Catalog:"
 msgstr "Catalog:"
 
 msgid "Repo auth with the given name already exists."
-msgstr "Repo auth with the given name already exists."
+msgstr "Repo auth o podanej nazwie już istnieje."
 
 msgid "Repo auths"
 msgstr "Repo auths"
 
 msgid "Add new repo auth"
-msgstr "Add new repo auth"
+msgstr "Dodaj nowe repo auth"
 
 msgid "Repo auth name"
-msgstr "Repo auth name"
+msgstr "Nazwa repo auth"
 
 msgid "Auth type"
-msgstr "Auth type"
+msgstr "Typ uwierzytelniania"
 
 msgid "Default"
-msgstr "Default"
+msgstr "Domyślny"
 
 msgid "Repository authentication name:"
-msgstr "Repository authentication name:"
+msgstr "Nazwa uwierzytelniania do repozytorium:"
 
 msgid "Authentication type:"
-msgstr "Authentication type:"
+msgstr "Typ uwierzytelniania:"
 
 msgid "Default:"
-msgstr "Default:"
+msgstr "Domyślnie:"
 
 msgid "Add repo auth"
-msgstr "Add repo auth"
+msgstr "Dodaj repo auth"
 
 msgid "Edit repo auth"
-msgstr "Edit repo auth"
+msgstr "Edytuj repo auth"
 
 msgid "Use default Bacularis repository auth:"
-msgstr "Use default Bacularis repository auth:"
+msgstr "Użyj domyślnego repozytorium Bacularis:"
 
 msgid "Repo auth:"
 msgstr "Repo auth:"
 
 msgid "Step 1 - new storage basic params"
-msgstr "Step 1 - new storage basic params"
+msgstr "Krok 1 - podstawowe parametry nowego magazynu"
 
 msgid "New file storage wizard"
-msgstr "New file storage wizard"
+msgstr "Kreator nowego plikowego magazynu danych"
 
 msgid "This wizard enables you to create in easy way a new file storage."
-msgstr "This wizard enables you to create in easy way a new file storage."
+msgstr "Ten kreator umożliwia łatwe tworzenie nowego plikowego magazynu danych."
 
 msgid "Basic information"
-msgstr "Basic information"
+msgstr "Podstawowe informacje"
 
 msgid "Storage description"
-msgstr "Storage description"
+msgstr "Opis magazynu"
 
 msgid "Storage daemon API host"
-msgstr "Storage daemon API host"
+msgstr "Serwer API magazynu danych"
 
 msgid "What storage type would you like to create?"
-msgstr "What storage type would you like to create?"
+msgstr "Jaki typ pamięci chcesz utworzyć?"
 
 msgid "Single file device storage"
-msgstr "Single file device storage"
+msgstr "Pojedyncze urządzenie plikowego magazyn danych"
 
 msgid "Multi-device file storage (Autochanger)"
-msgstr "Multi-device file storage (Autochanger)"
+msgstr "Urządzenie z wieloma napędami plikowego magazynu danych (Autochanger)"
 
 msgid "Step 2 - new storage parameters"
-msgstr "Step 2 - new storage parameters"
+msgstr "Krok 2 - parametry nowego magazynu danych"
 
 msgid "Where should storage store backup data?"
-msgstr "Where should storage store backup data?"
+msgstr "Gdzie magazyn danych powinien przechowywać dane kopii zapasowych?"
 
 msgid "Directory path for data volumes"
-msgstr "Directory path for data volumes"
+msgstr "Lokalizacja katalogu do składowania wolumenów z danymi"
 
 msgid "What is storage media type?"
-msgstr "What is storage media type?"
+msgstr "Jaki jest typ media (MediaType)?"
 
 msgid "Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ."
-msgstr "Media type is a user defined value that is used for identifying storage and volumes. With media type storage knows what volumes it can use. For example: storage with media type XYZ supports volumes with media type XYZ."
+msgstr "Typ mediów (MediaType) jest wartością zdefiniowaną przez użytkownika, która jest używana do identyfikacji urządzeń i wolumenów. Dzięki typowi mediów urządzenie wie, jakich wolumenów może używać. Na przykład: urządzenie z ustawionym typem mediów XYZ obsługuje wolumeny z typem mediów XYZ."
 
 msgid "Step 3 - summary"
-msgstr "Step 3 - summary"
+msgstr "Krok 3 - podsumowanie"
 
 msgid "Storage type"
-msgstr "Storage type"
+msgstr "Type urządzenia"
 
 msgid "Data volume directory"
-msgstr "Data volume directory"
+msgstr "Katalog na wolumeny z danymi"
 
 msgid "Single storage"
-msgstr "Single storage"
+msgstr "Pojedyncze urządzenie magazynu danych"
 
 msgid "How many devices should storage have?"
-msgstr "How many devices should storage have?"
+msgstr "Ile napędów powinno mieć urządzenie magazynu danych?"
 
 msgid "Number of backup/restore devices"
-msgstr "Number of backup/restore devices"
+msgstr "Liczba urządzeń backup/restore"
 
 msgid "Number of restore reserved devices"
-msgstr "Number of restore reserved devices"
+msgstr "Liczba urządzeń zarezerwowanych do przywracania danych"
 
 msgid "Multi-device autochanger storage"
-msgstr "Multi-device autochanger storage"
+msgstr "Wielo-urządzeniowy autochanger magazynu danych"
 
 msgid "Create storage"
-msgstr "Create storage"
+msgstr "Utwórz urządzenie magazynu danych"
 
 msgid "Storage daemon restart needed"
-msgstr "Storage daemon restart needed"
+msgstr "Wymagany restart magazynu danych"
 
 msgid "To apply new changes, you need to restart the storage daemon."
-msgstr "To apply new changes, you need to restart the storage daemon."
+msgstr "Aby zastosować nowe zmiany, musisz ponownie uruchomić magazyn danych."
 
 msgid "Do you want to restart it now?"
-msgstr "Do you want to restart it now?"
+msgstr "Czy chcesz go teraz zrestartować?"
 
 msgid "Yes, restart it now"
-msgstr "Yes, restart it now"
+msgstr "Tak, uruchom ponownie teraz"
 
 msgid "No, I will restart it later"
-msgstr "No, I will restart it later"
+msgstr "Nie, zrestartuję go później"
 
 msgid "Error while creating storage"
-msgstr "Error while creating storage"
+msgstr "Błąd podczas tworzenia urządzenia magazynu danych"
 
 msgid "Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them."
-msgstr "Please note that on the storage on host '%address' currently are running %job_no job(s). Restarting the storage daemon will stop them."
+msgstr "Pamiętaj, że na dysku na serwerze '%address' jest aktualnie uruchomiony %job_no zadań. Ponowne uruchomienie magazynu pamięci spowoduje zatrzymanie tych zadań."
 
 msgid "Done!"
-msgstr "Done!"
+msgstr "Gotowe!"
 
 msgid "Add file storage"
-msgstr "Add file storage"
+msgstr "Dodaj urządzenie plikowe"
 
 msgid "Plugin settings"
-msgstr "Plugin settings"
+msgstr "Ustawienia wtyczki"
 
 msgid "Installed plugins"
-msgstr "Installed plugins"
+msgstr "Zainstalowane wtyczki"
 
 msgid "Add plugin settings"
-msgstr "Add plugin settings"
+msgstr "Dodaj ustawienia wtyczki"
 
 msgid "Plugin name"
-msgstr "Plugin name"
+msgstr "Nazwa wtyczki"
 
 msgid "Plugin"
-msgstr "Plugin"
+msgstr "Wtyczka"
 
 msgid "Select plugin"
-msgstr "Select plugin"
+msgstr "Wybierz wtyczkę"
 
 msgid "Edit plugin settings"
-msgstr "Edit plugin settings"
+msgstr "Edytuj ustawienia wtyczki"
 
 msgid "Version"
-msgstr "Version"
+msgstr "Wersja"
 
 msgid "Plugin settings with the given name already exists."
-msgstr "Plugin settings with the given name already exists."
+msgstr "Ustawienia wtyczki o podanej nazwie już istnieją."
 
 msgid "Where to restore"
-msgstr "Where to restore"
+msgstr "Gdzie przywrócić"
 
 msgid "File options"
-msgstr "File options"
+msgstr "Opcje pliku"
 
 msgid "Total"
-msgstr "Total"
+msgstr "Łącznie"
 
 msgid "Adapt OS profile to use Bacula packages from bacula.org repos"
-msgstr "Adapt OS profile to use Bacula packages from bacula.org repos"
+msgstr "Dostosuj profil OS, aby używać pakietów Bacula z repozytoriów bacula.org"
 
 msgid "The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected."
-msgstr "The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected."
+msgstr "Repo auths umożliwiają konfigurację danych logowania do repozytorium pakietów. Może to być przydatne, jeśli dostęp repozytorium pakietów jest chroniony i wymaga uwierzytelnienia. Repo auths są używane w profilach systemu operacyjnego lub działają automatycznie, jeśli opcja 'Domyślne' jest wybrana."
 
 msgid "The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used."
-msgstr "The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used."
+msgstr "Konfiguracja SSH może być przydatna do dostarczenia klientowi SSH niektórych wspólnych parametrów, takich jak nazwa użytkownika, klucz SSH lub port. W ten sposób użytkownik nie musi wpisywać ich dla każdego wdrożenia Bacularis. Konfiguracja SSH może być zdefiniowana dla danego hosta lub dla wielu hostów jednocześnie, jeśli używane są znaki wieloznaczne hosta."
 
 msgid "The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window."
-msgstr "The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window."
+msgstr "Funkcja kluczy SSH zapewnia przechowywanie kluczy prywatnych do użycia w konfiguracjach SSH lub bezpośrednio w oknie wdrażania Bacularis."
 
 msgid "The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far."
-msgstr "The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far."
+msgstr "Profile systemu operacyjnego definiują opcje instalacji i konfiguracji Bacularis i Bacula. Są one używane do wdrażania i są dostosowane do konkretnego systemu operacyjnego. Są dostępne pre-definiowane profile systemu operacyjnego dla wybranych systemów operacyjnych, ale istnieje możliwość tworzenia własnych profili systemu operacyjnego, aby obsługiwać inne, dotychczas nieobsługiwane systemy."
 
 msgid "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."
-msgstr "Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles."
+msgstr "Role definiują zasoby Bacularis, do których użytkownicy mogą mieć dostęp. Role umożliwiają organizowanie interfejsu web, aby umożliwić wybranym użytkownikom ograniczony dostęp do niektórych zasobów, stron i funkcji. Jednemu użytkownikowi można przypisać jedną lub więcej ról."
 
 msgid "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
-msgstr "Select an API host to set resources and permissions. Please note that the 'Main' API host is not listed because the 'Main' is the full access API host and it should not be limited."
+msgstr "Wybierz host API, aby ustawić zasoby i uprawnienia. Pamiętaj, że 'Main' host API nie jest wymieniony, ponieważ 'Main' jest hostem API pełnego dostępu i nie powinien być w żaden sposób ograniczany."
 
 msgid "Add cloud storage"
-msgstr "Add cloud storage"
+msgstr "Dodaj urządzenie chmurowe"
 
 msgid "New cloud storage wizard"
-msgstr "New cloud storage wizard"
+msgstr "Kreator tworzenia nowego chmurowego urządzenia magazynu danych"
 
 msgid "This wizard enables you to create in easy way a new cloud storage."
-msgstr "This wizard enables you to create in easy way a new cloud storage."
+msgstr "Ten kreator umożliwia łatwe tworzenie nowego urządzenia do zastosowań z chmurą."
 
 msgid "Storage daemon name"
-msgstr "Storage daemon name"
+msgstr "Nazwa magazynu danych"
 
 msgid "Step 3 - cloud parameters"
-msgstr "Step 3 - cloud parameters"
+msgstr "Krok 3 - parametry chmury"
 
 msgid "What is your cloud type?"
-msgstr "What is your cloud type?"
+msgstr "Jaki jest twój typ chmury?"
 
 msgid "NOTE: The Amazon driver replaces the deprecated S3 driver."
-msgstr "NOTE: The Amazon driver replaces the deprecated S3 driver."
+msgstr "UWAGA: Sterownik Amazon zastępuje przestarzały sterownik S3."
 
 msgid "Driver"
 msgstr "Driver"
 
 msgid "What are connection parameters of your cloud?"
-msgstr "What are connection parameters of your cloud?"
+msgstr "Jakie są parametry połączenia do chmury?"
 
 msgid "Bucket name"
-msgstr "Bucket name"
+msgstr "Nazwa bucketa"
 
 msgid "Access key"
-msgstr "Access key"
+msgstr "Klucz dostępu"
 
 msgid "Secret key"
-msgstr "Secret key"
+msgstr "Tajny klucz"
 
 msgid "Region"
 msgstr "Region"
 
 msgid "When would you like to send data to cloud?"
-msgstr "When would you like to send data to cloud?"
+msgstr "Kiedy chcesz wysyłać dane do chmury?"
 
 msgid "Manual"
-msgstr "Manual"
+msgstr "Manualnie"
 
 msgid "I upload volumes to cloud manually by bconsole 'cloud' command"
-msgstr "I upload volumes to cloud manually by bconsole 'cloud' command"
+msgstr "Prześlę wolumeny do chmury ręcznie za pomocą polecenia \"cloud\""
 
 msgid "Bacula storage daemon sends each volume part to cloud when it is complete"
-msgstr "Bacula storage daemon sends each volume part to cloud when it is complete"
+msgstr "Magazyn danych Bacula wysyła każdą część wolumena do chmury od razu po jej zakończeniu"
 
 msgid "Bacula storage daemon sends all volume parts that have not been previously uploaded at the end of the job"
-msgstr "Bacula storage daemon sends all volume parts that have not been previously uploaded at the end of the job"
+msgstr "Magazyn danych Bacula wysyła wszystkie części wolumenu, które nie zostały wcześniej przesłane na koniec backupu"
 
 msgid "Uri style"
-msgstr "Uri style"
+msgstr "Styl Uri"
 
 msgid "Truncate cache"
-msgstr "Truncate cache"
+msgstr "Przytnij pamięć podręczną"
 
 msgid "Cloud"
-msgstr "Cloud"
+msgstr "Chmura"
 
 msgid "Cloud driver"
-msgstr "Cloud driver"
+msgstr "Sterownik chmury"
 
 msgid "Upload"
-msgstr "Upload"
+msgstr "Wyślij"
 
 msgid "The storage daemon configuration capability on API host '%s' is configured but not work correctly. Please check the bsdjson configuration on that API host. Error: %s."
-msgstr "The storage daemon configuration capability on API host '%s' is configured but not work correctly. Please check the bsdjson configuration on that API host. Error: %s."
+msgstr "Możliwość konfigurowania magazynu danych na serwerze API '%s' jest włączona, ale nie działa poprawnie. Sprawdź konfigurację bsdjson na tym serwerze API. Błąd: %s."
 
 msgid "Blob endpoint"
 msgstr "Blob endpoint"
 
 msgid "Before using this wizard the cloud storage plugin has to be installed."
-msgstr "Before using this wizard the cloud storage plugin has to be installed."
+msgstr "Przed użyciem tego kreatora należy zainstalować wtyczkę do przechowywania danych w chmurze."
 
 msgid "Step 4 - summary"
-msgstr "Step 4 - summary"
+msgstr "Krok 4 - podsumowanie"
 
 msgid "Where should storage store local backup data (local cache)?"
-msgstr "Where should storage store local backup data (local cache)?"
+msgstr "Gdzie należy przechowywać lokalne dane kopii zapasowej (lokalna pamięć podręczna)?"
 
 msgid "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
-msgstr "In this directory is stored Bacula volume data locally and from here it is uploaded to the cloud."
+msgstr "W tym katalogu przechowywane są dane dotyczące wolumenów Bacula lokalnie i stąd są przesyłane do chmury."
 
 msgid "Single cloud device storage"
-msgstr "Single cloud device storage"
+msgstr "Pojedyncze urządzenie chmurowe magazynu danych"
 
 msgid "Multi-device cloud storage (Autochanger)"
-msgstr "Multi-device cloud storage (Autochanger)"
+msgstr "Urządzenie chmurowe z wieloma napędami (Autochanger)"
 
 msgid "Please select one of the options."
-msgstr "Please select one of the options."
+msgstr "Proszę wybrać jedną z opcji."
 
 msgid "New tape storage wizard"
-msgstr "New tape storage wizard"
+msgstr "Kreator urządzenia taśmowego"
 
 msgid "This wizard enables you to create in easy way a new tape storage."
-msgstr "This wizard enables you to create in easy way a new tape storage."
+msgstr "Ten kreator umożliwia łatwe tworzenie nowego urządzenia taśmowego."
 
 msgid "Do you already have tape storage configured in Bacula?"
-msgstr "Do you already have tape storage configured in Bacula?"
+msgstr "Czy masz już skonfigurowane urządzenie taśmowe w Bacula?"
 
 msgid "Yes, I already have it configured in Bacula. I want to add it to Bacularis."
-msgstr "Yes, I already have it configured in Bacula. I want to add it to Bacularis."
+msgstr "Tak, mam już skonfigurowane w Bacula. Chcę dodać to urządzenie do Bacularis."
 
 msgid "No, I do not have it configured yet. I want to add it to Bacula and to Bacularis."
-msgstr "No, I do not have it configured yet. I want to add it to Bacula and to Bacularis."
+msgstr "Nie, nie mam go jeszcze skonfigurowanego. Chcę dodać je do Bacula i Bacularis."
 
 msgid "What changer does your tape device have?"
-msgstr "What changer does your tape device have?"
+msgstr "Jaka jest typ twojego urządzenia taśmowego?"
 
 msgid "Single tape device storage (tape drive)"
-msgstr "Single tape device storage (tape drive)"
+msgstr "Pojedynczy napęd taśmowy (tape drive)"
 
 msgid "Single-drive or multi-drive tape storage with changer (autochanger)"
-msgstr "Single-drive or multi-drive tape storage with changer (autochanger)"
+msgstr "Jedno-napędowe lub wielo-napędowe urządzenie taśmowe ze zmieniarką (autochanger)"
 
 msgid "What tape drives does your tape device have?"
-msgstr "What tape drives does your tape device have?"
+msgstr "Jaką napędy ma twoje urządzenie taśmowe?"
 
 msgid "Changer device file"
-msgstr "Changer device file"
+msgstr "Lokalizacja pliku urządzenia zmieniarki"
 
 msgid "Changer command"
-msgstr "Changer command"
+msgstr "Komenda zmieniarki urządzenia"
 
 msgid "Tape drive device file"
-msgstr "Tape drive device file"
+msgstr "Lokalizacja pliku urządzenia napędu taśmowego"
 
 msgid "Add tape drive"
-msgstr "Add tape drive"
+msgstr "Dodaj napęd taśmowy"
 
 msgid "Backup/Restore device"
-msgstr "Backup/Restore device"
+msgstr "Urządzenie Backup/Restore"
 
 msgid "Restore only device"
-msgstr "Restore only device"
+msgstr "Urządzenie tylko do przywracania"
 
 msgid "Drive type"
-msgstr "Drive type"
+msgstr "Typ napędu"
 
 msgid "What is tape drive file path in system?"
-msgstr "What is tape drive file path in system?"
+msgstr "Jakia jest lokalizacja pliku napędu taśmowego w systemie?"
 
 msgid "Add tape storage"
-msgstr "Add tape storage"
+msgstr "Dodaj urządzenie taśmowe"
 
 msgid "Storage daemon actions needed"
-msgstr "Storage daemon actions needed"
+msgstr "Wymagane działania magazynu danych"
 
 msgid "Add to the storage daemon host the following sudo entries below."
-msgstr "Add to the storage daemon host the following sudo entries below."
+msgstr "Dodaj do hosta magazynu danych następujące wpisy sudo poniżej."
 
 msgid "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others)"
-msgstr "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others)"
+msgstr "Dla serwerów Apache, Nginx i Lighttpd z domyślną konfiguracją PHP-FPM (RHEL, CentOS i inne)"
 
 msgid "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others)"
-msgstr "For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others)"
+msgstr "Dla serwerów Apache, Nginx i Lighttpd z domyślną konfiguracją PHP-FPM (Debian, Ubuntu i inne)"
 
 msgid "NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel."
-msgstr "NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel."
+msgstr "UWAGA: Jeśli chcesz skonfigurować sudo runas user/group możesz to zrobić w konfiguracji autochangera w panelu API."
 
 msgid "Please copy appropriate sudo configuration and put it to a sudoers.d file for example /etc/sudoers.d/bacularis-app"
-msgstr "Please copy appropriate sudo configuration and put it to a sudoers.d file for example /etc/sudoers.d/bacularis-app"
+msgstr "Proszę skopiować odpowiednią konfigurację sudo i umieścić ją w pliku sudoers.d na przykład /etc/sudoers.d/bacularis-app"
 
 msgid "Which tape storage would you like to add to Bacularis?"
-msgstr "Which tape storage would you like to add to Bacularis?"
+msgstr "Które urządzenie taśmowe chcesz dodać do Bacularis?"
 
 msgid "Tape autochangers"
-msgstr "Tape autochangers"
+msgstr "Autochanger taśmowy"
 
 msgid "Administrator action needed"
-msgstr "Administrator action needed"
+msgstr "Wymagane działanie administratora"
 
 msgid "TO DO"
-msgstr "TO DO"
+msgstr "DO ZROBIENIA"
 
 msgid "Restore to a given directory"
-msgstr "Restore to a given directory"
+msgstr "Przywróć do podanego katalogu"
 
 msgid "Restore to original location"
-msgstr "Restore to original location"
+msgstr "Przywróć do pierwotnej lokalizacji"
 
 msgid "Plugin options"
-msgstr "Plugin options"
+msgstr "Opcje wtyczki"
 
 msgid "Restore destination"
-msgstr "Restore destination"
+msgstr "Cel przywracania"
 
 msgid "Add blank new Plugin directive"
-msgstr "Add blank new Plugin directive"
+msgstr "Dodaj pustą nową dyrektywę Plugin"
 
 msgid "Use existing Plugin configuration"
-msgstr "Use existing Plugin configuration"
+msgstr "Użyj istniejącej konfiguracji wtyczki"
 
 msgid "Create a new plugin configuration and use it in the Plugin directive"
-msgstr "Create a new plugin configuration and use it in the Plugin directive"
+msgstr "Utwórz nową konfigurację wtyczki i użyj jej w dyrektywie Plugin"
 
 msgid "Select configuration"
-msgstr "Select configuration"
+msgstr "Wybierz konfigurację"
 
 msgid "original location"
-msgstr "original location"
+msgstr "pierwotna lokalizacja"
 
 msgid "plugin restore options decide"
-msgstr "plugin restore options decide"
+msgstr "opcje przywracania wtyczki decydują"
 
 msgid "Installed SSL certificate"
-msgstr "Installed SSL certificate"
+msgstr "Zainstalowany certyfikat SSL"
 
 msgid "Issuer"
-msgstr "Issuer"
+msgstr "Wystawca"
 
 msgid "Country"
-msgstr "Country"
+msgstr "Kraj"
 
 msgid "Locality"
-msgstr "Locality"
+msgstr "Miejscowość"
 
 msgid "Organization name"
-msgstr "Organization name"
+msgstr "Nazwa organizacji"
 
 msgid "Organization unit"
-msgstr "Organization unit"
+msgstr "Jednostka organizacji"
 
 msgid "Common name"
-msgstr "Common name"
+msgstr "Nazwa zwykła"
 
 msgid "Validity"
-msgstr "Validity"
+msgstr "Ważność"
 
 msgid "Not before"
-msgstr "Not before"
+msgstr "Nie wcześniej"
 
 msgid "Not after"
-msgstr "Not after"
+msgstr "Nie po"
 
 msgid "Subject"
-msgstr "Subject"
+msgstr "Temat"
 
 msgid "SSL certs"
-msgstr "SSL certs"
+msgstr "Certyfikaty SSL"
 
 msgid "Certificate info"
-msgstr "Certificate info"
+msgstr "Informacje o certyfikacie"
 
 msgid "valid for"
-msgstr "valid for"
+msgstr "ważne przez"
 
 msgid "Close to expire"
-msgstr "Close to expire"
+msgstr "Bliskie wygaśnięciu"
 
 msgid "Expired"
-msgstr "Expired"
+msgstr "Wygasły"
 
 msgid "Success"
-msgstr "Success"
+msgstr "Sukces"
 
 msgid "The SSL certificate has been installed successfully. Please load the page using the HTTPS protocol."
-msgstr "The SSL certificate has been installed successfully. Please load the page using the HTTPS protocol."
+msgstr "Certyfikat SSL został zainstalowany pomyślnie. Proszę załadować stronę za pomocą protokołu HTTPS."
 
 msgid "Load page using HTTPS protocol"
-msgstr "Load page using HTTPS protocol"
+msgstr "Załaduj stronę za pomocą protokołu HTTPS"
 
 msgid "OS environment"
-msgstr "OS environment"
+msgstr "Środowisko systemu operacyjnego"
 
 msgid "Operating system"
-msgstr "Operating system"
+msgstr "System operacyjny"
 
 msgid "Web server name"
-msgstr "Web server name"
+msgstr "Nazwa serwera sieci Web"
 
 msgid "Renew SSL certificate"
-msgstr "Renew SSL certificate"
+msgstr "Odnów certyfikat SSL"
 
 msgid "Create SSL certificate"
-msgstr "Create SSL certificate"
+msgstr "Utwórz certyfikat SSL"
 
 msgid "Install SSL certificate"
-msgstr "Install SSL certificate"
+msgstr "Zainstaluj certyfikat SSL"
 
 msgid "Certificate parameters"
-msgstr "Certificate parameters"
+msgstr "Parametry certyfikatu"
 
 msgid "Certificate type"
-msgstr "Certificate type"
+msgstr "Typ certyfikatu"
 
 msgid "Let's Encrypt certificate"
-msgstr "Let's Encrypt certificate"
+msgstr "Certyfikat Let's Encrypt"
 
 msgid "Self-signed certificate"
-msgstr "Self-signed certificate"
+msgstr "Certyfikat samopodpisany"
 
 msgid "Uploaded own certificate"
-msgstr "Uploaded own certificate"
+msgstr "Przesłany własny certyfikat"
 
 msgid "Common name (address, e.g. myhost.xyz)"
-msgstr "Common name (address, e.g. myhost.xyz)"
+msgstr "Nazwa zwyczajowa (adres, np. myhost.xyz)"
 
 msgid "Validity time (days)"
-msgstr "Validity time (days)"
+msgstr "Czas ważności (dni)"
 
 msgid "Additional parameters"
-msgstr "Additional parameters"
+msgstr "Dodatkowe parametry"
 
 msgid "Email address"
-msgstr "Email address"
+msgstr "Adres e-mail"
 
 msgid "Country code (two letters)"
-msgstr "Country code (two letters)"
+msgstr "Kod kraju (dwie litery)"
 
 msgid "State or province"
-msgstr "State or province"
+msgstr "Województwo"
 
 msgid "Locality (e.g. city)"
-msgstr "Locality (e.g. city)"
+msgstr "Miejscowość (np. miasto)"
 
 msgid "Organization unit (e.g. section)"
-msgstr "Organization unit (e.g. section)"
+msgstr "Jednostka organizacji (np. sekcja)"
 
 msgid "Administrator access needed"
-msgstr "Administrator access needed"
+msgstr "Wymagany dostęp administratora"
 
 msgid "System admin name"
-msgstr "System admin name"
+msgstr "Nazwa administratora systemu"
 
 msgid "System admin password"
-msgstr "System admin password"
+msgstr "Hasło administratora systemu"
 
 msgid "Use sudo"
-msgstr "Use sudo"
+msgstr "Użyj sudo"
 
 msgid "Uninstall SSL certificate"
-msgstr "Uninstall SSL certificate"
+msgstr "Odinstaluj certyfikat SSL"
 
 msgid "Web server"
-msgstr "Web server"
+msgstr "Serwer www"
 
 msgid "Web server port"
-msgstr "Web server port"
+msgstr "Port web serwera"
 
 msgid "Network options"
-msgstr "Network options"
+msgstr "Opcje sieciowe"
 
 msgid "New web server settings will be automatically applied to the current main API host if this API host is local (with 'localhost' address)."
-msgstr "New web server settings will be automatically applied to the current main API host if this API host is local (with 'localhost' address)."
+msgstr "Nowe ustawienia serwera sieciowego zostaną automatycznie zastosowane do bieżącego głównego hosta API, jeśli ten host API jest lokalny (z adresem 'localhost')."
 
 msgid "All other existing local API hosts definitions (if exist) have to be updated manually on the [Security] -> [API hosts] page."
-msgstr "All other existing local API hosts definitions (if exist) have to be updated manually on the [Security] -> [API hosts] page."
+msgstr "Wszystkie inne istniejące lokalne definicje hostów API (jeśli istnieje) muszą być zaktualizowane ręcznie na stronie [Security] -> [API hosts]."
 
 msgid "This way the local connection between Web -> API will be adapted to new settings."
-msgstr "This way the local connection between Web -> API will be adapted to new settings."
+msgstr "W ten sposób połączenie lokalne między Web -> API zostanie dostosowane do nowych ustawień."
 
 msgid "Load page using new settings"
-msgstr "Load page using new settings"
+msgstr "Załaduj stronę za pomocą nowych ustawień"
 
 msgid "The web server settings have been updated successfully. Please load the page using the new settings."
-msgstr "The web server settings have been updated successfully. Please load the page using the new settings."
+msgstr "Ustawienia serwera zostały pomyślnie zaktualizowane. Proszę załadować stronę za pomocą nowych ustawień."
 
 msgid "By clicking the create SSL certificate button, you agree with"
-msgstr "By clicking the create SSL certificate button, you agree with"
+msgstr "Klikając przycisk stworzenia certyfikatu SSL, zgadzasz się z"
 
 msgid "The SSL certificate has been uninstalled successfully. Please load the page using the HTTP protocol."
-msgstr "The SSL certificate has been uninstalled successfully. Please load the page using the HTTP protocol."
+msgstr "Certyfikat SSL został pomyślnie odinstalowany. Proszę załadować stronę za pomocą protokołu HTTP."
 
 msgid "Load page using HTTP protocol"
-msgstr "Load page using HTTP protocol"
+msgstr "Wczytaj stronę używając protokołu HTTP"
 
 msgid "This certificate type can be useful if you are going to share Bacularis outside your local network."
-msgstr "This certificate type can be useful if you are going to share Bacularis outside your local network."
+msgstr "Ten typ certyfikatu może być przydatny, jeśli zamierzasz udostępniać Bacularis poza siecią lokalną."
 
 msgid "To prepare this certificate type, there is required to have Bacularis available on publicly open TCP port 80. This is necessary to perform by the certificate provider a validation that proves your control over the domain name. This it called the HTTP-01 challenge."
-msgstr "To prepare this certificate type, there is required to have Bacularis available on publicly open TCP port 80. This is necessary to perform by the certificate provider a validation that proves your control over the domain name. This it called the HTTP-01 challenge."
+msgstr "Aby przygotować ten typ certyfikatu, wymagane jest, aby Bacularis był dostępny na publicznie otwartym porcie TCP 80. Jest to niezbędne do przeprowadzenia przez dostawcę certyfikatu weryfikacji, która udowodni Twoją kontrolę nad nazwą domeny. Nazywa się to HTTP-01 challenge."
 
 msgid "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."
-msgstr "After performing validation and issuing the certificate, Bacularis will be switched to HTTPS port 443 automatically. At the end port can be changed to any other port."
+msgstr "Po zatwierdzeniu i wydaniu certyfikatu, Bacularis zostanie automatycznie przełączony do portu HTTPS 443. Na koniec numer portu można zmienić na każdy inny port."
 
 msgid "Tag"
 msgstr "Tag"
 
 msgid "Assign"
-msgstr "Assign"
+msgstr "Przypisz"
 
 msgid "Please select existing tags or create new ones."
-msgstr "Please select existing tags or create new ones."
+msgstr "Proszę wybrać istniejące tagi lub utworzyć nowe."
 
 msgid "Assign tag"
-msgstr "Assign tag"
+msgstr "Przypisz tag"
 
 msgid "Selected tags"
-msgstr "Selected tags"
+msgstr "Wybrane tagi"
 
 msgid "Add tag(s)"
-msgstr "Add tag(s)"
+msgstr "Dodaj tag(i)"
 
 msgid "Click here to set tags"
-msgstr "Click here to set tags"
+msgstr "Kliknij tutaj, aby ustawić tagi"
 
 msgid "Create a new tag"
-msgstr "Create a new tag"
+msgstr "Utwórz nowy tag"
 
 msgid "Color"
-msgstr "Color"
+msgstr "Kolor"
 
 msgid "Severity"
-msgstr "Severity"
+msgstr "Ważność"
 
 msgid "Select severity"
-msgstr "Select severity"
+msgstr "Wybierz ważność"
 
 msgid "Accessibility"
-msgstr "Accessibility"
+msgstr "Dostępność"
 
 msgid "Local tag - available only for you"
-msgstr "Local tag - available only for you"
+msgstr "Tag lokalny - dostępny tylko dla Ciebie"
 
 msgid "Global tag - available for everybody"
-msgstr "Global tag - available for everybody"
+msgstr "Tag globalny - dostępny dla wszystkich"
 
 msgid "Tag already exists."
-msgstr "Tag already exists."
+msgstr "Tag już istnieje."
 
 msgid "Please select tag to assign."
-msgstr "Please select tag to assign."
+msgstr "Wybierz tag do przypisania."
 
 msgid "Please type new tag name."
-msgstr "Please type new tag name."
+msgstr "Proszę wpisać nową nazwę tagu."
 
 msgid "Type a tag name."
-msgstr "Type a tag name."
+msgstr "Wpisz nazwę tagu."
 
 msgid "local tag"
-msgstr "local tag"
+msgstr "tag lokalny"
 
 msgid "global tag"
-msgstr "global tag"
+msgstr "tag globalny"
 
 msgid "severity"
-msgstr "severity"
+msgstr "ważność"
 
 msgid "All tags"
-msgstr "All tags"
+msgstr "Wszystkie tagi"
 
 msgid "Tags"
-msgstr "Tags"
+msgstr "Tagi"
 
 msgid "Edit tag"
-msgstr "Edit tag"
+msgstr "Edytuj tag"
 
 msgid "Local user tags"
-msgstr "Local user tags"
+msgstr "Lokalne tagi użytkownika"
 
 msgid "Global tags"
-msgstr "Global tags"
+msgstr "Globalne tagi"
 
 msgid "Global tags are tags available for all users. Because every user can create and assign them, you may want to consider enabling this feature if Bacularis users collaborate with each other and want to have shared tags. In environments where users do not collaborate or do not know each other, it is recommended to disable this option."
-msgstr "Global tags are tags available for all users. Because every user can create and assign them, you may want to consider enabling this feature if Bacularis users collaborate with each other and want to have shared tags. In environments where users do not collaborate or do not know each other, it is recommended to disable this option."
+msgstr "Globalne tagi to tagi dostępne dla wszystkich użytkowników. Ponieważ każdy użytkownik może je tworzyć i przypisywać, możesz rozważyć włączenie tej funkcji, jeśli użytkownicy Bacularis współpracują ze sobą i chcą mieć udostępnione tagi. W środowiskach, w których użytkownicy nie współpracują lub nie znają się nawzajem, zaleca się wyłączenie tej opcji."
 
 msgid "Enable global tags"
-msgstr "Enable global tags"
+msgstr "Włącz tagi globalne"
 
 msgid "Select action"
-msgstr "Select action"
+msgstr "Wybierz akcję"
 
 msgid "If you use non-AWS S3 cloud storage, please don't forget to set the BlobEndpoint directive in the advanced options below."
-msgstr "If you use non-AWS S3 cloud storage, please don't forget to set the BlobEndpoint directive in the advanced options below."
+msgstr "Jeśli używasz magazynu danych w chmurze typu S3, ale spoza AWS, nie zapomnij ustawić dyrektywy BlobEndpoint w zaawansowanych opcjach poniżej."
 
 msgid "NOTE"
-msgstr "NOTE"
+msgstr "UWAGA"
 
 msgid "Multi-factor authentication"
-msgstr "Multi-factor authentication"
+msgstr "Uwierzytelnianie wieloskładnikowe"
 
 msgid "Configure TOTP 2FA"
-msgstr "Configure TOTP 2FA"
+msgstr "Konfiguruj TOTP 2FA"
 
 msgid "TOTP 2FA is configured."
-msgstr "TOTP 2FA is configured."
+msgstr "TOTP 2FA jest skonfigurowany."
 
 msgid "Disable TOTP 2FA"
-msgstr "Disable TOTP 2FA"
+msgstr "Wyłącz TOTP 2FA"
 
 msgid "FIDO U2F hardware keys"
-msgstr "FIDO U2F hardware keys"
+msgstr "Klucze sprzętowe FIDO U2F"
 
 msgid "The second factor uses the U2F security hardware keys."
-msgstr "The second factor uses the U2F security hardware keys."
+msgstr "Drugi czynnik wykorzystuje klucze bezpieczeństwa U2F."
 
 msgid "Configure U2F keys"
-msgstr "Configure U2F keys"
+msgstr "Skonfiguruj klucze U2F"
 
 msgid "FIDO U2F two-factor authentication"
-msgstr "FIDO U2F two-factor authentication"
+msgstr "Weryfikacja dwuskładnikowa FIDO U2F"
 
 msgid "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
-msgstr "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
+msgstr "Standard FIDO U2F/CTAP1 dodaje do uwierzytelniania drugi czynnik wykorzystujący sprzętowy klucz bezpieczeństwa. Jest to bardzo silna i bezpieczna metoda wykorzystująca kryptografię asymetryczną. Dobrą praktyką jest dodanie dwóch kluczy bezpieczeństwa, aby móc się zalogować nawet wtedy, gdy straci się główny klucz."
 
 msgid "Add new security key"
-msgstr "Add new security key"
+msgstr "Dodaj nowy klucz bezpieczeństwa"
 
 msgid "Are you sure you want to remove key '%key_name'?"
-msgstr "Are you sure you want to remove key '%key_name'?"
+msgstr "Czy na pewno chcesz usunąć klucz '%key_name'?"
 
 msgid "Last used"
-msgstr "Last used"
+msgstr "Ostatnio używane"
 
 msgid "Enable TOTP 2FA"
-msgstr "Enable TOTP 2FA"
+msgstr "Włącz TOTP 2FA"
 
 msgid "Two-factor authentication method"
-msgstr "Two-factor authentication method"
+msgstr "Metoda uwierzytelniania dwuskładnikowego"
 
 msgid "unconfigured"
-msgstr "unconfigured"
+msgstr "nieskonfigurowany"
 
 msgid "FIDO U2F settings"
-msgstr "FIDO U2F settings"
+msgstr "Ustawienia FIDO U2F"
 
 msgid "TOTP 2FA settings"
-msgstr "TOTP 2FA settings"
+msgstr "Ustawienia TOTP 2FA"
 
 msgid "Key properties"
-msgstr "Key properties"
+msgstr "Właściwości klucza"
 
 msgid "Set a friendly name for your key to make it easier to recognize."
-msgstr "Set a friendly name for your key to make it easier to recognize."
+msgstr "Ustaw przyjazną nazwę swojego klucza, aby łatwiej było go rozpoznawać."
 
 msgid "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."
-msgstr "The connection is not HTTPS. FIDO U2F does not work with an unencrypted HTTP connection. To use FIDO U2F, please install a valid TLS/SSL certificate."
+msgstr "Połączenie nie jest HTTPS. FIDO U2F nie działa z niezaszyfrowanym połączeniem HTTP. Aby użyć FIDO U2F, zainstaluj prawidłowy certyfikat TLS/SSL."
 
 msgid "Bacularis package repository"
-msgstr "Bacularis package repository"
+msgstr "Repozytorium pakietów Bacularis"
 
 msgid "Bacula package repository"
-msgstr "Bacula package repository"
+msgstr "Repozytorium pakietów Bacula"
 
 msgid "info"
 msgstr "info"
 
 msgid "warning"
-msgstr "warning"
+msgstr "ostrzeżenie"
 
 msgid "error"
-msgstr "error"
+msgstr "błąd"
 
 msgid "Filter"
-msgstr "Filter"
+msgstr "Filtruj"
 
 msgid "Check/uncheck all"
-msgstr "Check/uncheck all"
+msgstr "Zaznacz/odznacz wszystkie"
 
 msgid "Save to pattern"
-msgstr "Save to pattern"
+msgstr "Zapisz do wzorca"
 
 msgid "The saving component configuration to pattern feature allows to save entire (or selected) Bacula component configuration to pattern and configs. This enables to easily reuse this configuration on new Bacula hosts. This helps to configure multiple new Bacula hosts with the same or similar configuration using a single action. The configuration is divided into Bacula resources (configs) that can be applied to new hosts at once (by appying pattern) or you can select which Bacula resources you want to apply to new host (by applying configs)."
-msgstr "The saving component configuration to pattern feature allows to save entire (or selected) Bacula component configuration to pattern and configs. This enables to easily reuse this configuration on new Bacula hosts. This helps to configure multiple new Bacula hosts with the same or similar configuration using a single action. The configuration is divided into Bacula resources (configs) that can be applied to new hosts at once (by appying pattern) or you can select which Bacula resources you want to apply to new host (by applying configs)."
+msgstr "Zapisywanie konfiguracji komponentu do wzorca pozwala zapisać całą (lub wybraną) konfigurację komponentu Bacula do wzorca i konfiguracji (configs). Umożliwia to łatwe ponowne użycie tej konfiguracji na nowych hostach Bacula. Pomaga to skonfigurować wiele nowych hostów Baculi z tą samą lub podobną konfiguracją za pomocą jednej akcji. Konfiguracja jest podzielona na zasoby Bacula (configs), które mogą być zastosowane do nowych hostów na raz (poprzez zastosowanie wzorca) lub możesz wybrać, które zasoby Baculi chcesz zastosować do nowego hosta (poprzez zastosowanie configs)."
 
 msgid "Save Bacula component configuration to pattern"
-msgstr "Save Bacula component configuration to pattern"
+msgstr "Zapisz konfigurację komponentu Bacula do wzorca"
 
 msgid "Select Bacula resources to save to pattern configs"
-msgstr "Select Bacula resources to save to pattern configs"
+msgstr "Wybierz zasoby Bacula, aby zapisać do konfiguracji wzorca"
 
 msgid "The following placeholders can be used in the config name"
-msgstr "The following placeholders can be used in the config name"
+msgstr "Następujące symbole zastępcze mogą być użyte w nazwie konfiguracji"
 
 msgid "Bacula component type (ex: dir, sd, fd)"
-msgstr "Bacula component type (ex: dir, sd, fd)"
+msgstr "Typ komponentu Bacula (np.: dir, sd, fd)"
 
 msgid "Bacula component name (ex: bacula-dir, debian-fd, hostxyz-sd)"
-msgstr "Bacula component name (ex: bacula-dir, debian-fd, hostxyz-sd)"
+msgstr "Nazwa komponentu Bacula (np. bacula-dir, debian-fd, hostxyz-sd)"
 
 msgid "Bacula resource type (ex: Job, Client, Pool)"
-msgstr "Bacula resource type (ex: Job, Client, Pool)"
+msgstr "Typ zasobu Bacula (np.: Job, Client, Pool)"
 
 msgid "Bacula resource name (ex: BackupClient1, BackupCatalog, verify_job_321)"
-msgstr "Bacula resource name (ex: BackupClient1, BackupCatalog, verify_job_321)"
+msgstr "Nazwa zasobu Bacula (np.: BackupClient1, BackupCatalog, verify_job_321)"
 
 msgid "Overwrite config if exists"
-msgstr "Overwrite config if exists"
+msgstr "Nadpisz config, jeśli już istnieje"
 
 msgid "Save the config even if a config with the same name already exists. In this case, the config will be overwritten by the new one."
-msgstr "Save the config even if a config with the same name already exists. In this case, the config will be overwritten by the new one."
+msgstr "Zapisz config, nawet jeśli config o tej samej nazwie już istnieje. W tym przypadku config zostanie nadpisany przez nowy."
 
 msgid "Working"
-msgstr "Working"
+msgstr "Pracuje"
 
 msgid "All clients"
-msgstr "All clients"
+msgstr "Wszyscy klienci"
 
 msgid "Clients with running jobs"
-msgstr "Clients with running jobs"
+msgstr "Klienci z uruchomionymi zadaniami"
 
 msgid "Clients without running jobs"
-msgstr "Clients without running jobs"
+msgstr "Klienci bez uruchomionych zadań"
 
 msgid "Cancel client jobs"
-msgstr "Cancel client jobs"
+msgstr "Anuluj zadania klienta"
 
 msgid "Job types to cancel"
-msgstr "Job types to cancel"
+msgstr "Typy zadań do anulowania"
 
 msgid "Cancel all jobs"
-msgstr "Cancel all jobs"
+msgstr "Anuluj wszystkie zadania"
 
 msgid "Cancel running jobs"
-msgstr "Cancel running jobs"
+msgstr "Anuluj uruchomione zadania"
 
 msgid "Cancel waiting jobs to run"
-msgstr "Cancel waiting jobs to run"
+msgstr "Anuluj zadania oczekujące na uruchomienie"
 
 msgid "Cancel jobs"
-msgstr "Cancel jobs"
+msgstr "Anuluj zadania"
 
 msgid "cancelling"
-msgstr "cancelling"
+msgstr "anulowanie"
 
 msgid "Bacula client component graphs"
-msgstr "Bacula client component graphs"
+msgstr "Grafy componentów klientów Bacula"
 
 msgid "Bacula client system graphs"
-msgstr "Bacula client system graphs"
+msgstr "Grafy systemów klientów Bacula"
 
 msgid "Client versions"
-msgstr "Client versions"
+msgstr "Wersje klienta"
 
 msgid "Client plugins"
-msgstr "Client plugins"
+msgstr "Wtyczki klienta"
 
 msgid "Client plugin versions"
-msgstr "Client plugin versions"
+msgstr "Wersje wtyczki klienta"
 
 msgid "Client systems"
-msgstr "Client systems"
+msgstr "Systemy klientów"
 
 msgid "Client system distros"
-msgstr "Client system distros"
+msgstr "Distrybucje systemów klienta"
 
 msgid "Client distro versions"
-msgstr "Client distro versions"
+msgstr "Wersje dystrybucji systemów klientów"
 
 msgid "Global check/uncheck all"
-msgstr "Global check/uncheck all"
+msgstr "Zaznacz/odznacz wszystkie globalnie"
 
 msgid "Variables"
-msgstr "Variables"
+msgstr "Zmienne"
 
 msgid "Add variable"
-msgstr "Add variable"
+msgstr "Dodaj zmienną"
 
 msgid "Default value"
-msgstr "Default value"
+msgstr "Wartość domyślna"
 
 msgid "Edit variable"
-msgstr "Edit variable"
+msgstr "Edytuj zmienną"
 
 msgid "Variable name"
-msgstr "Variable name"
+msgstr "Nazwa zmiennej"
 
 msgid "Variable description"
-msgstr "Variable description"
+msgstr "Opis zmiennej"
 
 msgid "My variable 123 description."
-msgstr "My variable 123 description."
+msgstr "Mój opis zmiennej 123."
 
 msgid "My variable value 123"
-msgstr "My variable value 123"
+msgstr "Moja zmienna 123"
 
 msgid "Constants"
-msgstr "Constants"
+msgstr "Stałe"
 
 msgid "Add constant"
-msgstr "Add constant"
+msgstr "Dodaj stałą"
 
 msgid "Constant name"
-msgstr "Constant name"
+msgstr "Nazwa stałej"
 
 msgid "Constant description"
-msgstr "Constant description"
+msgstr "Opis stałej"
 
 msgid "My constant 123 description."
-msgstr "My constant 123 description."
+msgstr "Opis 123 mojej stałej."
 
 msgid "My constant value 123"
-msgstr "My constant value 123"
+msgstr "Moja stała wartość 123"
 
 msgid "Edit constant"
-msgstr "Edit constant"
+msgstr "Edytuj stałą"
 
 msgid "Enter comma separated values to multiple item selection"
-msgstr "Enter comma separated values to multiple item selection"
+msgstr "Wprowadź wartości oddzielone przecinkami do wyboru wielu elementów"
 
 msgid "Value"
-msgstr "Value"
+msgstr "Wartość"
 
 msgid "Variable with given name already exists."
-msgstr "Variable with given name already exists."
+msgstr "Zmienna o podanej nazwie już istnieje."
 
 msgid "Constants are names that store user-defined values. They are useful for having a dictionary of frequently used strings that can be accessed in any text field in Bacularis. To select a constant, type % (percent sign) in the text field."
-msgstr "Constants are names that store user-defined values. They are useful for having a dictionary of frequently used strings that can be accessed in any text field in Bacularis. To select a constant, type % (percent sign) in the text field."
+msgstr "Stałe to nazwy, które przechowują wartości zdefiniowane przez użytkownika. Są one przydatne do stworzenia słownika często używanych ciągów, do których można uzyskać dostęp w dowolnym polu tekstowym w Bacularis. Aby wybrać stałą, wpisz % (znak procentowy) w polu tekstowym."
 
 msgid "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."
-msgstr "Variables are placeholders for user-provided values. Unlike global constants, variables are only used in pattern configs. The main difference between constants and variables is that the values of constants are defined in advance, whereas the values of variables are provided by user at the time of use. When the user applies patterns or configs that have variables in the configuration, he/she is prompted to provide values of the variables. This extends the config and pattern functions and makes them dynamically configurable. To select a variable, type $ (dollar sign) in the config text field."
+msgstr "Zmienne są symbolami zastępczymi dla wartości dostarczanych przez użytkownika. W przeciwieństwie do globalnych stałych, zmienne są używane tylko w konfiguracjach (pattern configs). Główna różnica między stałymi i zmiennymi polega na tym, że wartości stałe są zdefiniowane z wyprzedzeniem, natomiast wartości zmiennych są dostarczane przez użytkownika w czasie rzeczywistym - w czasie użytkowania. Gdy użytkownik stosuje patterns lub configs, które mają zmienne w konfiguracji, jest proszony o podanie wartości dla tych zmiennych. To rozszerza funkcje konfiguracji i wzoru i sprawia, że są dynamicznie konfigurowalne. Aby wybrać zmienną, wpisz $ (znak dolara) w polu tekstowym konfiguracji."
 
 msgid "Show configs used in patterns"
-msgstr "Show configs used in patterns"
+msgstr "Pokaż configs używane w patterns"
 
 msgid "Hide configs used in patterns"
-msgstr "Hide configs used in patterns"
+msgstr "Ukryj configs używane w patterns"
 
 msgid "Add-ons"
-msgstr "Add-ons"
+msgstr "Dodatki"
 
 msgid "Plugin functions have been moved to Add-ons page available in the main menu."
-msgstr "Plugin functions have been moved to Add-ons page available in the main menu."
+msgstr "Funkcje wtyczek zostały przeniesione do strony dodatków dostępnej w menu głównym."
 
 msgid "Go to"
-msgstr "Go to"
+msgstr "Przejdź do"
 
 msgid "Plugin not installed"
-msgstr "Plugin not installed"
+msgstr "Wtyczka nie jest zainstalowana"
 
 msgid "Organization"
-msgstr "Organization"
+msgstr "Organizacja"
 
 msgid "Cannot change organization. A username with the same name already exists in the selected organization."
-msgstr "Cannot change organization. A username with the same name already exists in the selected organization."
+msgstr "Nie można zmienić organizacji. Nazwa użytkownika o tej samej nazwie już istnieje w wybranej organizacji."
 
 msgid "or use"
-msgstr "or use"
+msgstr "lub użyj"
 
 msgid "Organizations"
-msgstr "Organizations"
+msgstr "Organizacje"
 
 msgid "Auth methods"
-msgstr "Auth methods"
+msgstr "Metody uwierzytelniania"
 
 msgid "Identity providers"
-msgstr "Identity providers"
+msgstr "Dostawcy tożsamości"
 
 msgid "Provision user"
-msgstr "Provision user"
+msgstr "Prowizjonuj uzytkwonika"
 
 msgid "New user role"
-msgstr "New user role"
+msgstr "Nowa rola użytkownika"
 
 msgid "New user API host"
-msgstr "New user API host"
+msgstr "Nowy host API użytkownika"
 
 msgid "Add new identity provider"
-msgstr "Add new identity provider"
+msgstr "Dodaj nowego dostawcę tożsamości"
 
 msgid "Edit identity provider"
-msgstr "Edit identity provider"
+msgstr "Edytuj dostawcę tożsamości"
 
 msgid "Add identity provider"
-msgstr "Add identity provider"
+msgstr "Dodaj dostawcę tożsamości"
 
 msgid "Identity provider identifier"
-msgstr "Identity provider identifier"
+msgstr "Identyfikator dostawcy tożsamości"
 
 msgid "Identity provider name"
-msgstr "Identity provider name"
+msgstr "Nazwa dostawcy tożsamości"
 
 msgid "This is the Single Sign-On (SSO) authentication method with using the OpenID Connect (OIDC) protocol. It is realized with an external identity provider."
-msgstr "This is the Single Sign-On (SSO) authentication method with using the OpenID Connect (OIDC) protocol. It is realized with an external identity provider."
+msgstr "Jest to metoda uwierzytelniania Single Sign-On (SSO) z użyciem protokołu OpenID Connect (OIDC). Jest ona realizowana z zewnętrznym dostawcą tożsamości."
 
 msgid "Redirect URI"
-msgstr "Redirect URI"
+msgstr "Przekierowanie URI"
 
 msgid "Endpoints and functions"
-msgstr "Endpoints and functions"
+msgstr "Punkty końcowe i funkcje"
 
 msgid "Use discovery endpoint"
-msgstr "Use discovery endpoint"
+msgstr "Użyj punktu końcowego discovery"
 
 msgid "Discovery URL"
 msgstr "Discovery URL"
@@ -6608,22 +6607,22 @@ msgid "User Info URL"
 msgstr "User Info URL"
 
 msgid "Validate signatures"
-msgstr "Validate signatures"
+msgstr "Sprawdzaj sygnatury"
 
 msgid "Use JWKS endpoint"
-msgstr "Use JWKS endpoint"
+msgstr "Użyj punktu końcowego JWKS"
 
 msgid "Use PKCE"
-msgstr "Use PKCE"
+msgstr "Użyj PKCE"
 
 msgid "PKCE method"
-msgstr "PKCE method"
+msgstr "Metoda PKCE"
 
 msgid "Scope"
-msgstr "Scope"
+msgstr "Zakres"
 
 msgid "Credentials"
-msgstr "Credentials"
+msgstr "Dane logowania"
 
 msgid "Client ID"
 msgstr "Client ID"
@@ -6632,346 +6631,347 @@ msgid "Client secret"
 msgstr "Client secret"
 
 msgid "User attribute source"
-msgstr "User attribute source"
+msgstr "Źródło atrybutów użytkownika"
 
 msgid "Username attribute"
-msgstr "Username attribute"
+msgstr "Atrybut nazwy użytkownika"
 
 msgid "Long name attribute"
-msgstr "Long name attribute"
+msgstr "Atrybut długiej nazwy"
 
 msgid "Email attribute"
-msgstr "Email attribute"
+msgstr "Atrybut e-mail"
 
 msgid "Description attribute"
-msgstr "Description attribute"
+msgstr "Atrybut opisu"
 
 msgid "Attribute sync. policy"
-msgstr "Attribute sync. policy"
+msgstr "Polityka synchronizacji atrybutów"
 
 msgid "Do not synchronize"
-msgstr "Do not synchronize"
+msgstr "Nie synchronizuj"
 
 msgid "Synchronize on each login"
-msgstr "Synchronize on each login"
+msgstr "Synchronizuj przy każdym logowaniu"
 
 msgid "JWKS URL"
-msgstr "JWKS URL"
+msgstr "Adres URL JWKS"
 
 msgid "Public key (PEM format)"
 msgstr "Public key (PEM format)"
 
 msgid "Public key ID"
-msgstr "Public key ID"
+msgstr "ID klucza publicznego"
 
 msgid "Add new organization"
-msgstr "Add new organization"
+msgstr "Dodaj nową organizację"
 
 msgid "Add organization"
-msgstr "Add organization"
+msgstr "Dodaj organizację"
 
 msgid "Organization identifier"
-msgstr "Organization identifier"
+msgstr "Identyfikator organizacji"
 
 msgid "Use current auth method"
-msgstr "Use current auth method"
+msgstr "Użyj bieżącej metody uwierzytelniania"
 
 msgid "Use identity provider"
-msgstr "Use identity provider"
+msgstr "Użyj dostawcy tożsamości"
 
 msgid "Identity provider"
-msgstr "Identity provider"
+msgstr "Dostawca tożsamości"
 
 msgid "Login button color"
-msgstr "Login button color"
+msgstr "Kolor przycisku logowania"
 
 msgid "Organization:"
-msgstr "Organization:"
+msgstr "Organizacja:"
 
 msgid "IdP name"
-msgstr "IdP name"
+msgstr "Nazwa IdP"
 
 msgid "IdP type"
-msgstr "IdP type"
+msgstr "Typ IdP"
 
 msgid "Auth method"
-msgstr "Auth method"
+msgstr "Metoda uwierzytelniania"
 
 msgid "Edit organization"
-msgstr "Edit organization"
+msgstr "Edytuj organizację"
 
 msgid "Default organization for imported users:"
-msgstr "Default organization for imported users:"
+msgstr "Domyślna organizacja dla zaimportowanych użytkowników:"
 
 msgid "New user organization"
-msgstr "New user organization"
+msgstr "Nowa organizacja użytkownika"
 
 msgid "If you use your own identity provider (IdP) to authenticate users, you can configure Bacularis to use it. You can define one or multiple identity providers across different domains. This also enables single sign-on (SSO) support with the OpenID Connect authentication protocol. Identity providers are associated with organizations. Each organization can have its own identity provider."
-msgstr "If you use your own identity provider (IdP) to authenticate users, you can configure Bacularis to use it. You can define one or multiple identity providers across different domains. This also enables single sign-on (SSO) support with the OpenID Connect authentication protocol. Identity providers are associated with organizations. Each organization can have its own identity provider."
+msgstr "Jeśli używasz własnego dostawcy tożsamości (IdP) do uwierzytelniania użytkowników, możesz skonfigurować Bacularis, aby użyć tego IdP. Możesz zdefiniować jednego lub wielu dostawców tożsamości w różnych domenach. Umożliwia to również obsługę pojedynczego logowania (SSO) za pomocą protokołu uwierzytelniania OpenID Connect. Dostawcy tożsamości są powiązani z organizacjami. Każda organizacja może mieć własnego dostawcę tożsamości."
 
 msgid "Select one of the authentication methods to provide base authentication."
-msgstr "Select one of the authentication methods to provide base authentication."
+msgstr "Wybierz jedną z metod uwierzytelniania, aby zapewnić podstawowe uwierzytelnienie."
 
 msgid "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
-msgstr "Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol."
+msgstr "Organizacje pomagają dzielić użytkowników na działy lub inne grupy (np. dział sprzedaży, dział finansów...). Ułatwia to zarządzanie użytkownikami w strukturach i umożliwia oddzielne typy uwierzytelniania dla każdej organizacji. Są one również przydatne do włączenia pojedynczego logowania (SSO) przy użyciu protokołu uwierzytelniania OpenID Connect."
 
 msgid "IdP ID"
-msgstr "IdP ID"
+msgstr "ID IdP"
 
 msgid "The following organizations cannot be removed because they contain users. Please unassign users from these organizations and try again."
-msgstr "The following organizations cannot be removed because they contain users. Please unassign users from these organizations and try again."
+msgstr "Następujące organizacje nie mogą zostać usunięte, ponieważ zawierają one użytkowników. Usuń przypisanie użytkowników z tych organizacji i spróbuj ponownie."
 
 msgid "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
-msgstr "The following identity providers cannot be removed because they are used in organizations. Please unassign identity providers from the organizations and try again."
+msgstr "Nie można usunąć następujących dostawców tożsamości, ponieważ oni używani w organizacjach. Usuń przypisanie dostawców tożsamości z organizacji i spróbuj ponownie."
 
 msgid "Organization with identifier '%s' already exists."
-msgstr "Organization with identifier '%s' already exists."
+msgstr "Organizacja o identyfikatorze '%s' już istnieje."
 
 msgid "Prompt"
 msgstr "Prompt"
 
 msgid "Use refresh token"
-msgstr "Use refresh token"
+msgstr "Użyj tokenu odświeżania"
 
 msgid "Login"
 msgstr "Login"
 
 msgid "Identity provider identifier '%s' already exists. Please type different identifier."
-msgstr "Identity provider identifier '%s' already exists. Please type different identifier."
+msgstr "Identyfikator dostawcy tożsamości '%s' już istnieje. Proszę wpisać inny identyfikator."
 
 msgid "Additional options"
-msgstr "Additional options"
+msgstr "Dodatkowe opcje"
 
 msgid "Post logout redirect URI"
 msgstr "Post logout redirect URI"
 
 msgid "Client version should be the same or lower than the Director and Storage Daemon version."
-msgstr "Client version should be the same or lower than the Director and Storage Daemon version."
+msgstr "Wersja klienta powinna być taka sama lub niższa niż wersja dyrektora i magazynu danych."
 
 msgid "Director version"
-msgstr "Director version"
+msgstr "Wersja dyrektora"
 
 msgid "Client version"
-msgstr "Client version"
+msgstr "Wersja klienta"
 
 msgid "Current components"
-msgstr "Current components"
+msgstr "Aktualne komponenty"
 
 msgid "Possible compatibility issue"
-msgstr "Possible compatibility issue"
+msgstr "Możliwy problem z kompatybilnością"
 
 msgid "Storage Daemon version should be the same as the Director version."
-msgstr "Storage Daemon version should be the same as the Director version."
+msgstr "Wersja magazynu danych powinna być taka sama jak wersja dyrektora."
 
 msgid "Storage Daemon version"
-msgstr "Storage Daemon version"
+msgstr "Wersja magazynu danych"
 
 msgid "Select the roles you want to assign to the selected users."
-msgstr "Select the roles you want to assign to the selected users."
+msgstr "Wybierz role, które chcesz przypisać do wybranych użytkowników."
 
 msgid "Assign user roles"
-msgstr "Assign user roles"
+msgstr "Przypisz role użytkownika"
 
 msgid "Error while assigning user roles."
-msgstr "Error while assigning user roles."
+msgstr "Wystąpił błąd podczas przypisywania ról użytkownika."
 
 msgid "Unassign user roles"
-msgstr "Unassign user roles"
+msgstr "Usuń przypisanie ról użytkownika"
 
 msgid "Select the roles you want to unassign from the selected users."
-msgstr "Select the roles you want to unassign from the selected users."
+msgstr "Wybierz role, które chcesz usunąć z wybranych użytkowników."
 
 msgid "Note"
-msgstr "Note"
+msgstr "Uwaga"
 
 msgid "User must have at least one role assigned. This function protects against unassigning all roles and always keeps at least one role assigned to user."
-msgstr "User must have at least one role assigned. This function protects against unassigning all roles and always keeps at least one role assigned to user."
+msgstr "Użytkownik musi mieć co najmniej jedną przypisaną rolę. Ta funkcja chroni przed wypisaniem wszystkich ról i zawsze zachowuje co najmniej jedną rolę przypisaną do użytkownika."
 
 msgid "Unassign roles"
-msgstr "Unassign roles"
+msgstr "Usuń przypisanie ról"
 
 msgid "Error while unassigning user roles."
-msgstr "Error while unassigning user roles."
+msgstr "Błąd podczas usuwania przypisywania ról użytkownika."
 
 msgid "Set organization"
-msgstr "Set organization"
+msgstr "Ustaw organizację"
 
 msgid "Set user organization"
-msgstr "Set user organization"
+msgstr "Ustaw organizację użytkownika"
 
 msgid "Select the organization to which you want to assign the selected users."
-msgstr "Select the organization to which you want to assign the selected users."
+msgstr "Wybierz organizację, do której chcesz przypisać wybranych użytkowników."
 
 msgid "Error while setting user organization."
-msgstr "Error while setting user organization."
+msgstr "Błąd podczas ustawiania organizacji użytkownika."
 
 msgid "The following selected users could not be assigned to the destination organization because the same users already exists there:"
-msgstr "The following selected users could not be assigned to the destination organization because the same users already exists there:"
+msgstr "Następujący wybrani użytkownicy nie mogą być przypisani do organizacji docelowej, ponieważ tacy sami użytkownicy już tam istnieją:"
 
 msgid "Set API hosts or API host groups"
-msgstr "Set API hosts or API host groups"
+msgstr "Ustaw hosty API lub grupy hostów API"
 
 msgid "Set API hosts or groups"
-msgstr "Set API hosts or groups"
+msgstr "Ustaw API hosty lub grupy API"
 
 msgid "Select API hosts or API host groups that you want to set for the selected users."
-msgstr "Select API hosts or API host groups that you want to set for the selected users."
+msgstr "Wybierz hosty API lub grupy hostów API, które chcesz ustawić dla wybranych użytkowników."
 
 msgid "Previous user API host setting will be overwritten by this new setting."
-msgstr "Previous user API host setting will be overwritten by this new setting."
+msgstr "Poprzednie ustawienia API hosta zostaną nadpisane przez to nowe ustawienie."
 
 msgid "Error while setting API host method for users."
-msgstr "Error while setting API host method for users."
+msgstr "Błąd podczas ustawiania metody hosta API dla użytkowników."
 
 msgid "Web access"
 msgstr "Web access"
 
 msgid "Add web access"
-msgstr "Add web access"
+msgstr "Dodaj web access"
 
 msgid "The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually."
-msgstr "The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually."
+msgstr "Adresy URL web access mogą być używane dla różnych automatyzacji. Pozwala na tworzenie adresów URL, które zapewniają kontrolowany dostęp do wybranych akcji (takich jak uruchamianie kopii zapasowej). Można skonfigurować różne limity dostępu do adresów IP. Konfiguracja może być dostosowana osobno dla każdego adresu web access osobno."
 
 msgid "Time access"
-msgstr "Time access"
+msgstr "Dostęp czasowy"
 
 msgid "Usage access"
-msgstr "Usage access"
+msgstr "Dostęp wg użycia"
 
 msgid "Source access"
-msgstr "Source access"
+msgstr "Dostęp wg źródła"
 
 msgid "Resource action"
-msgstr "Resource action"
+msgstr "Akcja zasobu"
 
 msgid "Resource params"
-msgstr "Resource params"
+msgstr "Parametry zasobu"
 
 msgid "Access URL"
-msgstr "Access URL"
+msgstr "Dostęp URL"
 
 msgid "Stats"
-msgstr "Stats"
+msgstr "Statystyki"
 
 msgid "Resource type"
-msgstr "Resource type"
+msgstr "Typ zasobu"
 
 msgid "Create time"
-msgstr "Create time"
+msgstr "Czas tworzenia"
 
 msgid "Access time"
-msgstr "Access time"
+msgstr "Czas dostępu"
 
 msgid "Action target"
-msgstr "Action target"
+msgstr "Cel akcji"
 
 msgid "Access limits"
-msgstr "Access limits"
+msgstr "Limit dostępu"
 
 msgid "valid all the time (until manual remove)"
-msgstr "valid all the time (until manual remove)"
+msgstr "ważne przez cały czas (do ręcznego usunięcia)"
 
 msgid "valid for X days from now"
-msgstr "valid for X days from now"
+msgstr "ważne przez X dni od teraz"
 
 msgid "Validity days"
-msgstr "Validity days"
+msgstr "Dni ważności"
 
 msgid "valid between date X and Y"
-msgstr "valid between date X and Y"
+msgstr "ważne między datą X i Y"
 
 msgid "From date"
-msgstr "From date"
+msgstr "Od daty"
 
 msgid "To date"
-msgstr "To date"
+msgstr "Do daty"
 
 msgid "one-time use"
-msgstr "one-time use"
+msgstr "jednorazowe użycie"
 
 msgid "X number of uses"
-msgstr "X number of uses"
+msgstr "X liczba zastosowań"
 
 msgid "unlimited number of uses"
-msgstr "unlimited number of uses"
+msgstr "nieograniczona liczba zastosowań"
 
 msgid "Number of uses"
-msgstr "Number of uses"
+msgstr "Liczba zastosowań"
 
 msgid "access for given IP addresses"
-msgstr "access for given IP addresses"
+msgstr "dostęp dla podanych adresów IP"
 
 msgid "Allowed IP addresses (comma separated)"
-msgstr "Allowed IP addresses (comma separated)"
+msgstr "Dozwolone adresy IP (oddzielone przecinkami)"
 
 msgid "Modify action parameters"
-msgstr "Modify action parameters"
+msgstr "Modyfikuj parametry akcji"
 
 msgid "Run job action params"
-msgstr "Run job action params"
+msgstr "Parametry akcji uruchomienia zadania"
 
 msgid "Params"
-msgstr "Params"
+msgstr "Parametry"
 
 msgid "See resource params"
-msgstr "See resource params"
+msgstr "Zobacz parametry zasobów"
 
 msgid "See statistics"
-msgstr "See statistics"
+msgstr "Zobacz statystyki"
 
 msgid "Edit web access"
-msgstr "Edit web access"
+msgstr "Edytuj web access"
 
 msgid "Not used yet"
-msgstr "Not used yet"
+msgstr "Jeszcze nieużywane"
 
 msgid "Valid from"
-msgstr "Valid from"
+msgstr "Ważny od"
 
 msgid "Valid to"
-msgstr "Valid to"
+msgstr "Ważny do"
 
 msgid "Number of days"
-msgstr "Number of days"
+msgstr "Liczba dni"
 
 msgid "Valid for"
-msgstr "Valid for"
+msgstr "Ważny przez"
 
 msgid "Time state"
-msgstr "Time state"
+msgstr "Stan czasu"
 
 msgid "Max. usage"
-msgstr "Max. usage"
+msgstr "Maksymalne użycie"
 
 msgid "Usage left"
-msgstr "Usage left"
+msgstr "Pozostałe użycie"
 
 msgid "Usage state"
-msgstr "Usage state"
+msgstr "Stan użycia"
 
 msgid "Date range"
-msgstr "Date range"
+msgstr "Zakres czasu"
 
 msgid "Valid"
-msgstr "Valid"
+msgstr "Poprawny"
 
 msgid "Numer of use"
-msgstr "Numer of use"
+msgstr "Ilość użyć"
 
 msgid "Web access statistics"
-msgstr "Web access statistics"
+msgstr "Statystyki web access"
 
 msgid "IP addr. restriction"
-msgstr "IP addr. restriction"
+msgstr "Restrykcje adresu IP"
 
 msgid "For X days"
-msgstr "For X days"
+msgstr "Przez X dni"
 
 msgid "One-time use"
-msgstr "One-time use"
+msgstr "Jednorazowe użycie"
 
 msgid "Web access parameters"
-msgstr "Web access parameters"
+msgstr "Parametry web access"
 
 msgid "Number of latest jobs in table on dashboard"
-msgstr "Number of latest jobs in table on dashboard"
+msgstr "Liczba najnowszych zadań w tabeli na stronie głównej"
+
