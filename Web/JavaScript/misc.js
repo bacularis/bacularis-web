@@ -328,7 +328,36 @@ var Strings = {
 		}
 		return short_txt;
 	}
-}
+};
+
+const Numbers = {
+	add_commas: function(val) {
+		if (typeof(val) != 'string') {
+			if ((val).toString) {
+				val = val.toString();
+			} else {
+				// Value that is not string and does not provide method to convert to string
+				return val;
+			}
+		}
+		let result = '';
+		if (val.length > 3) {
+			const new_arr = [];
+			const val_arr = val.split('');
+			const arr_len = val_arr.length;
+			for (let i = (arr_len - 1), j = 1; i >= 0; i--, j++) {
+				new_arr.push(val_arr[i]);
+				if (i > 0 && j % 3 == 0) {
+					new_arr.push(',');
+				}
+			}
+			result = new_arr.reverse().join('');
+		} else {
+			result = val;
+		}
+		return result;
+	}
+};
 
 const PieGraphBase  = {
 	pie_label_formatter: function (total, value) {
@@ -1912,6 +1941,21 @@ function parse_comp_version(version) {
 		minor: (minor ? parseInt(minor, 10) : 0),
 		release: (release ? parseInt(release, 10) : 0)
 	}
+}
+
+function parse_estimate_job(log) {
+	const pattern = /\sestimate files=([\d,]+)\sbytes=([\d,]+)\n?$/;
+	let ret;
+	const result = {files: -1, bytes: -1};
+	for (const l of log) {
+		ret = l.match(pattern);
+		if (ret) {
+			result.files = parseInt(ret[1].replace(/,/g, ''), 10);
+			result.bytes = parseInt(ret[2].replace(/,/g, ''), 10);
+			break;
+		}
+	}
+	return result;
 }
 
 function on_element_show(element, callback) {

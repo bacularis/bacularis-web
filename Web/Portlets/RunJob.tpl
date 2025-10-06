@@ -310,12 +310,12 @@ function set_loading_status(status) {
 		start.style.display = 'none';
 		loading.style.display = '';
 		finish.style.display = 'none';
-		set_estimation();
+		clear_estimation();
 	} else if (status === 'start') {
 		start.style.display = '';
 		loading.style.display = 'none';
 		finish.style.display = 'none';
-		set_estimation();
+		clear_estimation();
 	}
 }
 function estimate_output_refresh(out_id) {
@@ -331,26 +331,24 @@ function set_estimate_output(out_id) {
 function check_estimated_results() {
 	const joblog = document.getElementById('<%=$this->RunJobLog->ClientID%>');
 	const log = joblog.textContent.split("\n");
-	const pattern = /\sestimate files=([\d,]+)\sbytes=([\d,]+)$/;
-	let ret;
-	for (const l of log) {
-		ret = l.match(pattern);
-		if (ret) {
-			set_estimation(ret[2], ret[1]);
-			break;
-		}
+	const result = parse_estimate_job(log);
+	if (result.files > -1) {
+		set_estimation(result.bytes, result.files);
 	}
 }
 function set_estimation(bytes, files) {
-	let bytes_f;
-	if (bytes) {
-		bytes_f = bytes.replace(/,/g, '');
-		bytes_f = Units.get_formatted_size(bytes_f);
-	}
+	let bytes_f = Units.get_formatted_size(bytes);
+	let files_f = Numbers.add_commas(files);
+	set_estimation_values(bytes_f, files_f);
+}
+function clear_estimation() {
+	set_estimation_values('-', '-');
+}
+function set_estimation_values(bytes, files) {
 	const bytes_el = document.getElementById('estimate_job_bytes');
-	bytes_el.textContent = bytes_f ? bytes_f : '-';
+	bytes_el.textContent = bytes;
 	const files_el = document.getElementById('estimate_job_files');
-	files_el.textContent = files ? files : '-';
+	files_el.textContent = files;
 }
 function set_run_job_output(output) {
 	const container = document.getElementById('run_job_raw_output_container');
