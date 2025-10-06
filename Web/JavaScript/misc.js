@@ -1171,7 +1171,7 @@ var Dashboard = {
 	},
 	update_jobtotals: function() {
 		document.getElementById(this.ids.jobtotals.total_bytes).textContent = Units.get_formatted_size(this.stats.jobtotals.bytes || 0);
-		document.getElementById(this.ids.jobtotals.total_files).textContent = this.stats.jobtotals.files || 0;
+		document.getElementById(this.ids.jobtotals.total_files).textContent = ' ' + Numbers.add_commas(this.stats.jobtotals.files || 0);
 	},
 	update_database: function() {
 		if (this.stats.dbsize.dbsize) {
