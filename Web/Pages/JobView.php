@@ -69,6 +69,8 @@ class JobView extends BaculumWebPage
 	private $list_files_mode_verify_levels = ['V'];
 	private $show_restore_types = ['B', 'C'];
 
+	private $fileset = '';
+
 	public function onPreInit($param)
 	{
 		parent::onPreInit($param);
@@ -94,6 +96,7 @@ class JobView extends BaculumWebPage
 			}
 			$this->setJobLevel($jobdata->level);
 			$this->setClientId($jobdata->clientid);
+			$this->setFileSet($jobdata->fileset);
 			$this->is_running = $this->getModule('misc')->isJobRunning($jobdata->jobstatus);
 			$this->allow_report_summary = !$this->is_running;
 			$this->allow_graph_mode = ($this->is_running && !in_array($jobdata->type, $this->no_graph_mode_types));
@@ -227,6 +230,91 @@ class JobView extends BaculumWebPage
 	}
 
 	/**
+	 * Get values to files/bytes progress bars from the estimation on client.
+	 * NOTE: It can take long time.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function getFilesBytesFromEstimate($sender, $param)
+	{
+		$job_info = $this->getJobInfo();
+		$params = [
+			'id' => $this->getJobId(),
+			'level' => $this->getJobLevel(),
+			'clientid' => $this->getClientId(),
+			'fileset' => $this->getFileSet(),
+			/**
+			 * NOTE: accurate taken from job configuration instead from running job.
+			 * There is not any command that could determine if running job works with
+			 * the accurate mode or without.
+			 */
+			'accurate' => $job_info['job']['accurate'] ?? '0'
+		];
+		$api = $this->getModule('api');
+		$query = [
+			'jobs',
+			'estimate'
+		];
+		$result = $api->create(
+			$query,
+			$params
+		);
+		$cb = $this->getCallbackClient();
+		if ($result->error === 0 && count($result->output) == 1) {
+			$out = json_decode($result->output[0]);
+			if (is_object($out) && property_exists($out, 'out_id')) {
+				$cb->callClientFunction(
+					'oRunningJobStatus.estimate_files_bytes_refresh',
+					[[], $out->out_id]
+				);
+			}
+		}
+	}
+
+	/**
+	 * Get estimated output from pending estimate process.
+	 *
+	 * @param string $out_id output identifier
+	 * @return object API output and error number
+	 */
+	public function getFilesBytesEstimateOutput(string $out_id)
+	{
+		$query = [
+			'jobs',
+			'estimate',
+			'?out_id=' . rawurlencode($out_id)
+		];
+		$api = $this->getModule('api');
+		$result = $api->get($query);
+		return $result;
+	}
+
+	/**
+	 * Check if estimate process has finished and if yes, take output.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function refreshFilesBytesEstimate($sender, $param)
+	{
+		$out_id = $param->getCallbackParameter();
+		$result = $this->getFilesBytesEstimateOutput($out_id);
+
+		if ($result->error === 0) {
+			$cb = $this->getCallbackClient();
+			if (count($result->output) > 0) {
+				$cb->callClientFunction(
+					'oRunningJobStatus.estimate_files_bytes_refresh',
+					[$result->output, $out_id]
+				);
+			} else {
+				// end, output is ready, process is finished
+			}
+		}
+	}
+
+	/**
 	 * Set jobid to run job again.
 	 *
 	 * @param mixed $jobid
@@ -308,6 +396,26 @@ class JobView extends BaculumWebPage
 	public function getClientId()
 	{
 		return $this->getViewState(self::CLIENTID, 0);
+	}
+
+	/**
+	 * Set fileset name
+	 *
+	 * @param mixed $fileset
+	 */
+	public function setFileSet($fileset)
+	{
+		$this->fileset = $fileset;
+	}
+
+	/**
+	 * Get fileset name.
+	 *
+	 * @return string fileset name
+	 */
+	public function getFileSet()
+	{
+		return $this->fileset;
 	}
 
 	/**

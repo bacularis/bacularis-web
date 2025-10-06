@@ -6975,3 +6975,12 @@ msgstr "Parametry web access"
 msgid "Number of latest jobs in table on dashboard"
 msgstr "Liczba najnowszych zadań w tabeli na stronie głównej"
 
+
+msgid "Estimation loading... This may take some time."
+msgstr "Estimation loading... This may take some time."
+
+msgid "Done. Accurate estimation has been loaded."
+msgstr "Done. Accurate estimation has been loaded."
+
+msgid "Get accurate estimation from client. This may take some time."
+msgstr "Get accurate estimation from client. This may take some time."

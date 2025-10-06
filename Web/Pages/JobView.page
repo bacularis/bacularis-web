@@ -151,10 +151,13 @@
 					/>
 					<com:TJuiProgressbar Display="None" />
 				</div>
+				<com:TCallback ID="EstimateFilesBytesGet" OnCallback="getFilesBytesFromEstimate" />
+				<com:TCallback ID="EstimateFilesBytesRefresh" OnCallback="refreshFilesBytesEstimate" />
 				<script>
 var oRunningJobStatus = {
 	data: {},
 	refresh_timeout: null,
+	estimated_vals: {},
 	ids: {
 		loader: 'status_running_job_loading',
 		running_job: 'status_running_job',
@@ -360,6 +363,9 @@ var oRunningJobStatus = {
 		var files = parseInt(job.jobfiles, 10);
 		files = files > 0 ? (files - 1) : 0;
 		var est = estimate_job(oData.jobs, job_name, job.level);
+		if (this.estimated_vals.hasOwnProperty('bytes')) {
+			est.est_bytes = this.estimated_vals.bytes;
+		}
 
 		// Progress bar bytes
 		var bytes_progress;
@@ -374,6 +380,38 @@ var oRunningJobStatus = {
 				bytes_perc = 100;
 			}
 			bytes_label.textContent =  Units.get_formatted_size(bytes) + ' / <%[ est. ]%> ' +  Units.get_formatted_size(est.est_bytes) + ' (' + bytes_perc.toFixed(1) + '%' + ')';
+			const est_btn = document.createElement('I');
+			est_btn.classList.add('fa-solid', 'fa-weight', 'pointer');
+			est_btn.style.margin = '0 0 4px 6px';
+			bytes_label.appendChild(est_btn);
+			if (this.estimated_vals.hasOwnProperty('state')) {
+				if (this.estimated_vals.state == 'loading') {
+					// loading, in progress
+					est_btn.title = '<%[ Estimation loading... This may take some time. ]%>';
+					est_btn.classList.remove('fa-weight');
+					est_btn.classList.add('fa-rotate', 'w3-spin');
+				} else if (this.estimated_vals.state == 'finished') {
+					// finished
+					est_btn.title = '<%[ Done. Accurate estimation has been loaded. ]%>';
+					est_btn.classList.remove('fa-rotate', 'fa-weight', 'w3-spin', 'pointer');
+					est_btn.classList.add('fa-check');
+				}
+			} else {
+				// inactive, not started
+				est_btn.title = '<%[ Get accurate estimation from client. This may take some time. ]%>';
+				const click_fn = (e) => {
+					if (e.target.nodeName != 'I') {
+						return;
+					}
+					const cb = <%=$this->EstimateFilesBytesGet->ActiveControl->Javascript%>;
+					cb.dispatch();
+					est_btn.classList.remove('fa-weight');
+					est_btn.classList.add('fa-rotate', 'w3-spin');
+					this.estimated_vals.state = 'loading';
+				};
+				bytes_label.addEventListener('click', click_fn);
+			}
+
 			bytes_progress.style.width = '70%';
 			bytes_progress.appendChild(bytes_label);
 			var bytes_bar = $(bytes_progress);
@@ -386,6 +424,9 @@ var oRunningJobStatus = {
 		}
 		this.add_job_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
 
+		if (this.estimated_vals.hasOwnProperty('files')) {
+			est.est_files = this.estimated_vals.files;
+		}
 
 		// Progress bar files
 		var files_progress;
@@ -599,6 +640,29 @@ var oRunningJobStatus = {
 			const gauge = document.querySelector('canvas[rel="ave_speed"]');
 			this.set_gauge(gauge, this.gauges_data.speed.currValue);
 		});
+	},
+	estimate_files_bytes_refresh: function(log, out_id) {
+		const self = oRunningJobStatus;
+		self.set_estimated_values(log);
+		if (self.estimated_vals.state != 'finished') {
+			setTimeout(() => {
+				self.estimate_files_bytes(out_id)
+			}, 3000);
+		}
+	},
+	estimate_files_bytes: function(out_id) {
+		const cb = <%=$this->EstimateFilesBytesRefresh->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(out_id);
+		cb.dispatch();
+	},
+	set_estimated_values: function(log) {
+		const result = parse_estimate_job(log);
+		if (result.files > -1) {
+			this.estimated_vals.state = 'finished';
+			this.estimated_vals.files = result.files;
+			this.estimated_vals.bytes = result.bytes;
+			this.refresh_status();
+		}
 	}
 }
 
