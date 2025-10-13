@@ -586,7 +586,13 @@ class OIDC extends WebModule
 	{
 		// Get decoded ID token properties
 		$id_token_dec = JWT::decodeToken($id_token);
-		$at_hash = $id_token_dec['body']['at_hash'];
+		$at_hash = $id_token_dec['body']['at_hash'] ?? null;
+
+		if (is_null($at_hash)) {
+			# at_hash is optional
+			# OpenID Connect Core 1.0 §3.1.3.8. - Access Token Validation
+			return true;
+		}
 
 		// Compute at hash
 		$digit = hash('sha256', $access_token, true);
