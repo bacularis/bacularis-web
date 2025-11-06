@@ -370,15 +370,8 @@ $(function() {
 						CssClass="w3-select w3-border"
 						AutoPostBack="false"
 					/>
-					<com:TRequiredFieldValidator
-						ValidationGroup="APIHostGroupGroup"
-						ControlToValidate="APIHostGroupAPIHosts"
-						ErrorMessage="<%[ Field required. ]%>"
-						ControlCssClass="field_invalid"
-						Display="Dynamic"
-					/>
 					<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
-				</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
+				</div>
 			</div>
 		</div>
 		<footer class="w3-container w3-center">

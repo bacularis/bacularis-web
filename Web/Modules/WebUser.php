@@ -102,12 +102,18 @@ class WebUser extends TUser
 			$user->setAPIHostMethod($user_cfg['api_hosts_method']);
 			if ($user_cfg['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
 				$user->setAPIHosts($user_cfg['api_hosts']);
+				$user->setEnabled($user_cfg['enabled']);
 			} elseif ($user_cfg['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOST_GROUPS) {
 				$api_hosts = $host_groups->getAPIHostsByGroups($user_cfg['api_host_groups']);
 				$user->setAPIHosts($api_hosts);
+				if (count($api_hosts) == 0) {
+					// All assigned groups are empty - deny access
+					$user->setEnabled(0);
+				} else {
+					$user->setEnabled($user_cfg['enabled']);
+				}
 			}
 			$user->setIps($user_cfg['ips']);
-			$user->setEnabled($user_cfg['enabled']);
 		} elseif (isset($web_config['security']['def_access'])) {
 			// User doesn't exist. Check if user can have access.
 			$user->setInConfig(false);

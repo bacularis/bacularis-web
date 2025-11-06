@@ -46,8 +46,7 @@ class HostGroupConfig extends ConfigFileModule
 	 * These host group options are obligatory for each host group config.
 	 */
 	private $host_group_required_options = [
-		'name',
-		'api_hosts'
+		'name'
 	];
 
 	/**
@@ -70,6 +69,9 @@ class HostGroupConfig extends ConfigFileModule
 				 * to rest hosts by web interface. Validation errors are logged.
 				 */
 				continue;
+			}
+			if (!key_exists('api_hosts', $host_group_config)) {
+				$host_group_config['api_hosts'] = [];
 			}
 			$host_groups_config[$group] = $host_group_config;
 		}
@@ -119,6 +121,45 @@ class HostGroupConfig extends ConfigFileModule
 		$config = $this->getConfig();
 		$config[$group] = $host_group_config;
 		$result = $this->setConfig($config);
+		return $result;
+	}
+
+	/**
+	 * Unassing host from all host groups.
+	 *
+	 * @param string $host API host name
+	 * @return bool true on success, otherwhise false
+	 */
+	public function unassignHostFromHostGroups(string $host): bool
+	{
+		$config = $this->getConfig();
+		foreach ($config as $name => &$opts) {
+			$idx = array_search($host, $opts['api_hosts']);
+			if ($idx !== false) {
+				// API host found, remove it
+				array_splice($opts['api_hosts'], $idx, 1);
+			}
+		}
+		$result = $this->setConfig($config);
+		return $result;
+	}
+
+	/**
+	 * Unassign hosts from all host groups.
+	 * NOTE: This stops on first unassign host error.
+	 *
+	 * @param array $hosts API host names
+	 * @return bool true on success, otherwise false
+	 */
+	public function unassignHostsFromHostGroups(array $hosts): bool
+	{
+		$result = true;
+		for ($i = 0; $i < count($hosts); $i++) {
+			$result = $this->unassignHostFromHostGroups($hosts[$i]);
+			if (!$result) {
+				break;
+			}
+		}
 		return $result;
 	}
 

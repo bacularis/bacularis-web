@@ -229,6 +229,8 @@ class Deployment extends BaculumWebPage
 		if ($result === true) {
 			$uc = $this->getModule('user_config');
 			$uc->unassignAPIHosts($names);
+			$hgc = $this->getModule('host_group_config');
+			$hgc->unassignHostsFromHostGroups($names);
 			for ($i = 0; $i < count($names); $i++) {
 				$this->getModule('audit')->audit(
 					AuditLog::TYPE_INFO,
