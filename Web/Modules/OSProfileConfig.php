@@ -441,7 +441,8 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
 			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main',
 			'Ubuntu 24.10 Oracular' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ oracular main',
-			'Ubuntu 25.04 Plucky' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ plucky main'
+			'Ubuntu 25.04 Plucky' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ plucky main',
+			'Ubuntu 25.10 Questing' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ questing main'
 		]
 	];
 
