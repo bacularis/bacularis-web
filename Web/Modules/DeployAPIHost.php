@@ -286,7 +286,6 @@ $user_pass
 		$src_file = '';
 		$dst_file = '';
 		if (count($sudo_cmd) > 0) {
-			array_unshift($sudo_cmd, "Defaults:{$osprofile['packages_sudo_user']} !requiretty");
 			$sudo_cmd[] = ''; // last line in sudo must be empty
 			$fbody = implode(PHP_EOL, $sudo_cmd);
 			$dst_file = DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, ['etc', 'sudoers.d', 'bacularis-api']);

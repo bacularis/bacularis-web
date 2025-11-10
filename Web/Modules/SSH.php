@@ -102,7 +102,7 @@ class SSH extends WebModule
 				$expect->addAction('', '');
 			}
 			if ($creds['use_sudo'] && !empty($creds['password_sudo'])) {
-				$expect->addAction('.sudo. password for.*:', $creds['password_sudo'], self::SSH_CASE_TIMEOUT);
+				$expect->addAction('(.sudo. password for.*|.sudo: authenticate. [Pp]assword):', $creds['password_sudo'], self::SSH_CASE_TIMEOUT);
 			}
 		} elseif ($ptype === self::PTYPE_BG_CMD) {
 			if (key_exists('password', $creds) && !empty($creds['password'])) {
@@ -323,6 +323,12 @@ expect {
 		send "$pwd\r"
 		exp_continue
 	}
+	-re ".sudo: authenticate. \[Pp\]assword:" {
+		expect_user -re "(.*)\n"
+		set pwd $expect_out(1,string)
+		send "$pwd\r"
+		exp_continue
+	}
 	-re "passphrase" {
 		expect_user -re "(.*)\n"
 		set pwd $expect_out(1,string)
@@ -366,6 +372,10 @@ expect {
 		exp_continue
 	}
 	-re ".sudo. password for.*:" {
+		send "$env(PASSWORD_SUDO)\r"
+		exp_continue
+	}
+	-re ".sudo: authenticate. \[Pp\]assword:" {
 		send "$env(PASSWORD_SUDO)\r"
 		exp_continue
 	}
