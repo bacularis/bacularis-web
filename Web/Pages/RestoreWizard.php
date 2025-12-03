@@ -1295,7 +1295,14 @@ class RestoreWizard extends BaculumWebPage
 			if (count($item['category']) == 0) {
 				return true;
 			}
-			return (in_array($item['category'][0], $categories));
+			$is_category = false;
+			for ($i = 0; $i < count($item['category']); $i++) {
+				if (in_array($item['category'][$i], $categories)) {
+					$is_category = true;
+					break;
+				}
+			}
+			return $is_category;
 		});
 		$setting['parameters'] = array_values($parameters);
 		$params_copy = $plugin['parameters'];
