@@ -1309,7 +1309,7 @@ class RestoreWizard extends BaculumWebPage
 		foreach ($params_copy as $key => $val) {
 			$found = false;
 			for ($i = 0; $i < count($setting['parameters']); $i++) {
-				if ($setting['parameters'][$i]['name'] == $key) {
+				if ($setting['parameters'][$i]['name'] == $key && $setting['parameters'][$i]['default'] !== $val) {
 					$found = true;
 					break;
 				}
