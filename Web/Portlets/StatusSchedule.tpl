@@ -197,7 +197,7 @@ var oJobScheduleList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 3 ]
+				targets: [ 1, 3, 4 ]
 			},
 			<%=empty($this->Job) ? '{responsivePriority: 1,	targets: 5},' : ''%>
 			{
