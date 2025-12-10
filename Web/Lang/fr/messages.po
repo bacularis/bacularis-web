@@ -6985,3 +6985,6 @@ msgstr "Done. Accurate estimation has been loaded."
 
 msgid "Get accurate estimation from client. This may take some time."
 msgstr "Get accurate estimation from client. This may take some time."
+
+msgid "The selected operating system and web server combination is not supported for this action."
+msgstr "The selected operating system and web server combination is not supported for this action."
