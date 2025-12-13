@@ -416,7 +416,7 @@ oRoles.load_role_list();
 						<com:TActiveListBox
 							ID="RoleResources"
 							SelectionMode="Multiple"
-							Rows="6"
+							Rows="10"
 							CssClass="w3-select w3-border"
 							AutoPostBack="false"
 						/>
