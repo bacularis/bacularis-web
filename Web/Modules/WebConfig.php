@@ -231,6 +231,7 @@ class WebConfig extends ConfigFileModule
 		$baculum = [
 			'debug' => 0,
 			'lang' => self::DEF_LANG,
+			'show_welcome' => 1,
 			'max_jobs' => self::DEF_MAX_JOBS,
 			'size_values_unit' => self::DEF_SIZE_VAL_UNIT,
 			'time_in_job_log' => self::DEF_TIME_IN_JOB_LOG,
@@ -289,6 +290,30 @@ class WebConfig extends ConfigFileModule
 			);
 		}
 		return $ret;
+	}
+
+	/**
+	 * Set selected config options.
+	 *
+	 * NOTE: Pass options in format:
+	 * ['sectionA' => ['optionB' => 'valueC', 'optionD' => 'valueE'] ...etc.]
+	 *
+	 * @param array $new_config selected config options to set
+	 * @return bool true on success, false otherwise
+	 */
+	public function setConfigOptions(array $new_config): bool
+	{
+		$config = $this->getConfig();
+		foreach ($new_config as $new_section => $new_options) {
+			foreach ($new_options as $new_option => $new_value) {
+				if (!key_exists($new_section, $config)) {
+					// new section that does not exist in original config
+					$config[$new_section] = [];
+				}
+				$config[$new_section][$new_option] = $new_value;
+			}
+		}
+		return $this->setConfig($config);
 	}
 
 	/**

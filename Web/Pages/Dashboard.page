@@ -140,4 +140,7 @@ ThemeMode.add_cb(() => {
 	Dashboard.update_bytes_files_graph();
 });
 </script>
+	<com:Bacularis.Web.Portlets.WelcomeModal
+		Visible="<%=isset($this->web_config['baculum']['show_welcome']) && $this->web_config['baculum']['show_welcome'] == 1%>"
+	/>
 </com:TContent>

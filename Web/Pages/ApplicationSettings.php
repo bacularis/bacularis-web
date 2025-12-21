@@ -87,6 +87,11 @@ class ApplicationSettings extends BaculumWebPage
 			}
 			$this->JobAgeOnJobStatusGraph->createDirective();
 
+			// Show welcome screen
+			if (key_exists('show_welcome', $this->web_config['baculum'])) {
+				$this->ShowWelcome->Checked = ($this->web_config['baculum']['show_welcome'] == 1);
+			}
+
 			// Tags
 			$this->EnableGlobalTags->Checked = (bool) ($this->web_config['baculum']['enable_global_tags'] ?? TagConfig::DEF_GLOBAL_TAG_ENABLED);
 
@@ -164,6 +169,7 @@ class ApplicationSettings extends BaculumWebPage
 			$this->web_config['baculum']['time_in_job_log'] = ($this->TimeInJobLog->Checked === true) ? 1 : 0;
 			$this->web_config['baculum']['date_time_format'] = $this->DateTimeFormat->Text;
 			$this->web_config['baculum']['job_age_on_job_status_graph'] = $this->JobAgeOnJobStatusGraph->getValue();
+			$this->web_config['baculum']['show_welcome'] = $this->ShowWelcome->Checked ? 1 : 0;
 			$this->getModule('web_config')->setConfig($this->web_config);
 
 			$this->getModule('audit')->audit(

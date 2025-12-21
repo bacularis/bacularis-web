@@ -290,6 +290,15 @@
 				Doc="<%[ Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation. ]%>"
 			/>
 		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Show welcome screen after loggin in: ]%></div>
+			<div class="w3-quarter w3-col">
+				<com:TCheckBox
+					ID="ShowWelcome"
+					CssClass="w3-check"
+				/>
+			</div>
+		</div>
 		<div class="w3-center">
 			<com:TActiveLinkButton
 				CssClass="w3-button w3-green"

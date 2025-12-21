@@ -6988,3 +6988,99 @@ msgstr "Get accurate estimation from client. This may take some time."
 
 msgid "The selected operating system and web server combination is not supported for this action."
 msgstr "The selected operating system and web server combination is not supported for this action."
+
+msgid "Welcome to Bacularis"
+msgstr "Welcome to Bacularis"
+
+msgid "Bacularis is a free and open-source web interface for managing Bacula environments."
+msgstr "Bacularis is a free and open-source web interface for managing Bacula environments."
+
+msgid "It helps you monitor jobs, inspect configuration, and perform restores using a safe and predictable workflow."
+msgstr "It helps you monitor jobs, inspect configuration, and perform restores using a safe and predictable workflow."
+
+msgid "Get started in a few simple steps"
+msgstr "Get started in a few simple steps"
+
+msgid "Check system status"
+msgstr "Check system status"
+
+msgid "Verify the connection to Bacula Director, Storage, and Client."
+msgstr "Verify the connection to Bacula Director, Storage, and Client."
+
+msgid "Review recent jobs"
+msgstr "Review recent jobs"
+
+msgid "See recent backup jobs, their status, and detailed logs."
+msgstr "See recent backup jobs, their status, and detailed logs."
+
+msgid "Try a restore (safe)"
+msgstr "Try a restore (safe)"
+
+msgid "Explore the restore workflow. Nothing will be restored until you explicitly confirm the operation."
+msgstr "Explore the restore workflow. Nothing will be restored until you explicitly confirm the operation."
+
+msgid "Helpful links"
+msgstr "Helpful links"
+
+msgid "Bacula basics"
+msgstr "Bacula basics"
+
+msgid "Read how to perform basic Bacula tasks in Bacularis"
+msgstr "Read how to perform basic Bacula tasks in Bacularis"
+
+msgid "Restore documentation"
+msgstr "Restore documentation"
+
+msgid "How restores work in Bacularis"
+msgstr "How restores work in Bacularis"
+
+msgid "Community & support"
+msgstr "Community & support"
+
+msgid "Ask questions and share feedback"
+msgstr "Ask questions and share feedback"
+
+msgid "Safe by default"
+msgstr "Safe by default"
+
+msgid "Bacularis uses read-only access during initial setup and does not modify your Bacula configuration unless you explicitly enable write access."
+msgstr "Bacularis uses read-only access during initial setup and does not modify your Bacula configuration unless you explicitly enable write access."
+
+msgid "Show guided tour"
+msgstr "Show guided tour"
+
+msgid "Start using Bacularis"
+msgstr "Start using Bacularis"
+
+msgid "Don't show this again"
+msgstr "Don't show this again"
+
+msgid "This is the main overview of your Bacula environment."
+msgstr "This is the main overview of your Bacula environment."
+
+msgid "Check system status, recent jobs, and potential issues at a glance."
+msgstr "Check system status, recent jobs, and potential issues at a glance."
+
+msgid "End"
+msgstr "End"
+
+msgid "Here you can browse all backup jobs, review their status, and inspect detailed logs."
+msgstr "Here you can browse all backup jobs, review their status, and inspect detailed logs."
+
+msgid "Prev"
+msgstr "Prev"
+
+msgid "View Bacula messages, warnings, and errors."
+msgstr "View Bacula messages, warnings, and errors."
+
+msgid "This is usually the first place to check when something goes wrong."
+msgstr "This is usually the first place to check when something goes wrong."
+
+msgid "Explore the restore workflow and browse available backups."
+msgstr "Explore the restore workflow and browse available backups."
+
+msgid "No data will be restored until you explicitly confirm the operation."
+msgstr "No data will be restored until you explicitly confirm the operation."
+
+msgid "Manage users, access permissions, and advanced security options."
+msgstr "Manage users, access permissions, and advanced security options."
