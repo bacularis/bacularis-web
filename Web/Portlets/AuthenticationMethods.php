@@ -138,6 +138,7 @@ class AuthenticationMethods extends Security
 		if (!key_exists('security', $config)) {
 			$config['security'] = [];
 		}
+		$prev_auth_method = $config['security']['auth_method'] ?? '';
 		if ($this->LocalAuth->Checked) {
 			$config['security']['auth_method'] = WebConfig::AUTH_METHOD_LOCAL;
 		} elseif ($this->BasicAuth->Checked) {
@@ -153,6 +154,10 @@ class AuthenticationMethods extends Security
 		if ($ret === true) {
 			$cb->hide('auth_method_save_error');
 			$cb->show('auth_method_save_ok');
+			if ($prev_auth_method != $config['security']['auth_method'] && $config['security']['auth_method'] != WebConfig::AUTH_METHOD_LOCAL) {
+				// show advice info window if user switched to a new auth method
+				$cb->show('admin_user_required_info');
+			}
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_INFO,
 				AuditLog::CATEGORY_APPLICATION,

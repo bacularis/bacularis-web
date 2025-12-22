@@ -583,6 +583,28 @@
 		<span id="auth_method_save_error" class="w3-text-red" style="display: none"><i class="fas fa-times-circle w3-text-red"></i><%[ Error ]%></span>
 	</div>
 
+	<!-- New authentication method notice -->
+	<div id="admin_user_required_info" class="w3-modal" style="display: none">
+		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
+			<header class="w3-container w3-green">
+				<span onclick="document.getElementById('admin_user_required_info').style.display = 'none';" class="w3-button w3-display-topright">×</span>
+				<h2 id="get_users_table_title"><%[ New authentication method notice ]%></h2>
+			</header>
+			<div class="w3-margin-left w3-margin-right">
+				<p><%[ You have switched to a new authentication method. Before logging out, please make sure that: ]%>
+				<ul>
+					<li><%[ You have imported users for the new authentication method into Bacularis. ]%> <%[ To import users, use the manage users button in this authentication method form. ]%></li>
+					<li><%[ You have assigned the administrator role to at least one user. ]%> <%[ If no user has the administrator role, you will lose administrative access to the Bacularis web interface after logging out. ]%></li>
+				</ul>
+			</div>
+			<footer class="w3-container w3-border-top w3-padding w3-center">
+				<button type="button" class="w3-button w3-green" onclick="document.getElementById('admin_user_required_info').style.display = 'none';">
+					<i class="fa-solid fa-check"></i> &nbsp;<%[ OK ]%>
+				</button>
+			</footer>
+		</div>
+	</div>
+
 	<div id="get_users_modal" class="w3-modal" style="display: none">
 		<div class="w3-modal-content w3-card-4 w3-animate-zoom" style="width: 990px">
 			<header class="w3-container w3-green">

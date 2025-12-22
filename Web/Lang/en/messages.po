@@ -7073,3 +7073,21 @@ msgstr "No data will be restored until you explicitly confirm the operation."
 
 msgid "Manage users, access permissions, and advanced security options."
 msgstr "Manage users, access permissions, and advanced security options."
+
+msgid "New authentication method notice"
+msgstr "New authentication method notice"
+
+msgid "You have switched to a new authentication method. Before logging out, please make sure that:"
+msgstr "You have switched to a new authentication method. Before logging out, please make sure that:"
+
+msgid "You have imported users for the new authentication method into Bacularis."
+msgstr "You have imported users for the new authentication method into Bacularis."
+
+msgid "To import users, use the manage users button in this authentication method form."
+msgstr "To import users, use the manage users button in this authentication method form."
+
+msgid "You have assigned the administrator role to at least one user."
+msgstr "You have assigned the administrator role to at least one user."
+
+msgid "If no user has the administrator role, you will lose administrative access to the Bacularis web interface after logging out."
+msgstr "If no user has the administrator role, you will lose administrative access to the Bacularis web interface after logging out."
