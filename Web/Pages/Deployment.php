@@ -342,6 +342,7 @@ class Deployment extends BaculumWebPage
 		}
 		$this->OSProfilePackagesBacularisStart->Text = $config['packages_bacularis_start'];
 		$this->OSProfilePackagesSudoUser->Text = $config['packages_sudo_user'];
+		$this->OSProfilePackagesSudoEnvKeep->Text = $config['packages_sudo_env_keep'] ?? '';
 		$this->OSProfilePackagesBacularisInstall->Text = $config['packages_bacularis_install'];
 		$this->OSProfilePackagesBacularisUpgrade->Text = $config['packages_bacularis_upgrade'];
 		$this->OSProfilePackagesBacularisRemove->Text = $config['packages_bacularis_remove'];
@@ -476,6 +477,7 @@ class Deployment extends BaculumWebPage
 		$config['bacularis_use_https'] = $this->OSProfileBacularisUseHTTPS->Checked ? '1' : '0';
 		$config['packages_use_sudo'] = $this->OSProfilePackagesUseSudo->Checked ? '1' : '0';
 		$config['packages_sudo_user'] = $this->OSProfilePackagesSudoUser->Text;
+		$config['packages_sudo_env_keep'] = $this->OSProfilePackagesSudoEnvKeep->Text;
 		$config['packages_bacularis_start'] = $this->OSProfilePackagesBacularisStart->Text;
 		$config['packages_bacularis_install'] = $this->OSProfilePackagesBacularisInstall->Text;
 		$config['packages_bacularis_upgrade'] = $this->OSProfilePackagesBacularisUpgrade->Text;

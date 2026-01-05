@@ -266,10 +266,16 @@ $user_pass
 	public function prepareSUDOFile(array $osprofile)
 	{
 		$sudo_cmd = [];
+		$packages_env_keep = [];
+		if ($osprofile['packages_sudo_env_keep']) {
+			$packages_env_keep = explode(' ', $osprofile['packages_sudo_env_keep']);
+			$sudo_cmd[] = "Defaults:{$osprofile['packages_sudo_user']} env_keep += \"{$osprofile['packages_sudo_env_keep']}\"";
+		}
 
 		foreach ($osprofile as $key => $value) {
 			$cmd = '';
 			if ($osprofile['packages_use_sudo'] === '1' && preg_match('/^packages_(cat|dir|sd|fd|bcons)(_(pre|post))?_(install|upgrade|remove|info|enable)(_cmd)?$/', $key) === 1) {
+				self::removeEnvVariablesFromCmd($value, $packages_env_keep);
 				$cmd = $value;
 			} elseif ($osprofile['bconsole_use_sudo'] === '1' && $key == 'bconsole_bin_path') {
 				$cmd = $value;
@@ -305,6 +311,30 @@ $user_pass
 			'user' => 'root',
 			'group' => 'root'
 		];
+	}
+
+	/**
+	 * Remove environment variables from command.
+	 *
+	 * Useful in creating sudoers rule (@see DeployAPIHost::prepareSUDOFile()).
+	 * Example command:
+	 *   ABC="def ghi" JKL=mno /usr/bin/my_command -x --yz
+	 * Environment vars:
+	 *   ['ABC', 'JKL']
+	 * Result:
+	 *   /usr/bin/my_command -x --yz
+	 *
+	 * @param string $cmd full command
+	 * @param array $env_vars environment variables to remove
+	 */
+	private static function removeEnvVariablesFromCmd(string &$cmd, array $env_vars = [])
+	{
+		for ($i = 0; $i < count($env_vars); $i++) {
+			$new_cmd = preg_replace('/(' . $env_vars[$i] . '="[\S\s]+?"|' . $env_vars[$i] . '=[^\s]+?) /', '', $cmd, 1);
+			if (is_string($new_cmd)) {
+				$cmd = $new_cmd;
+			}
+		}
 	}
 
 	/**

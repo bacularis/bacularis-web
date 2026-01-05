@@ -2368,6 +2368,20 @@ $(function() {
 									/>
 								</div>
 							</div>
+							<a class="raw w3-show w3-center" href="javascript:void(0)" onclick="$('#osprofile_packages_sudo_advanced_options').toggle('fast');"><i class="fas fa-wrench"></i> &nbsp;<%[ Advanced settings ]%></a>
+							<div id="osprofile_packages_sudo_advanced_options" style="display: none">
+								<div class="w3-row directive_field">
+									<div class="w3-col w3-third"><com:TLabel ForControl="OSProfilePackagesSudoEnvKeep" Text="<%[ Sudo env_keep (space separated): ]%>"/></div>
+									<div class="w3-half">
+										<com:TActiveTextBox
+											ID="OSProfilePackagesSudoEnvKeep"
+											AutoPostBack="false"
+											MaxLength="500"
+											CssClass="w3-input w3-border"
+										/>
+									</div>
+								</div>
+							</div>
 						</div>
 						<h3><%[ Bacularis commands ]%></h3>
 						<div>

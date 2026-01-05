@@ -7091,3 +7091,6 @@ msgstr "You have assigned the administrator role to at least one user."
 
 msgid "If no user has the administrator role, you will lose administrative access to the Bacularis web interface after logging out."
 msgstr "If no user has the administrator role, you will lose administrative access to the Bacularis web interface after logging out."
+
+msgid "Sudo env_keep (space separated):"
+msgstr "Sudo env_keep (space separated):"

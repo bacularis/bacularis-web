@@ -76,7 +76,7 @@ class OSProfileConfig extends ConfigFileModule
 		],
 		'deb' => [
 			'postgresql' => [
-				'packages_cat_install' => "/usr/bin/sh -c DEBIAN_FRONTEND=noninteractive\ /usr/bin/apt\ -y\ install\ postgresql\ postgresql-contrib\ postgresql-client\ dbconfig-pgsql\ bacula-director",
+				'packages_cat_install' => "DEBIAN_FRONTEND=noninteractive /usr/bin/apt -y install postgresql postgresql-contrib postgresql-client dbconfig-pgsql bacula-director",
 				'packages_cat_upgrade' => '/usr/bin/apt -y install --only-upgrade postgresql postgresql-client',
 				'packages_cat_remove' => '/usr/bin/apt -y remove --purge postgresql postgresql-client',
 				'packages_cat_info' => '/usr/bin/dpkg -l postgresql postgresql-client',
@@ -110,6 +110,7 @@ class OSProfileConfig extends ConfigFileModule
 			'bacularis_use_https' => '1',
 			'packages_use_sudo' => '1',
 			'packages_sudo_user' => 'apache',
+			'packages_sudo_env_keep' => '',
 			'packages_bacularis_start' => 'systemctl start nginx',
 			'packages_bacularis_install' => '/usr/bin/dnf -y install bacularis bacularis-nginx bacularis-selinux',
 			'packages_bacularis_upgrade' => '/usr/bin/dnf -y update bacularis bacularis-nginx bacularis-selinux',
@@ -224,6 +225,7 @@ class OSProfileConfig extends ConfigFileModule
 			'bacularis_use_https' => '1',
 			'packages_use_sudo' => '1',
 			'packages_sudo_user' => 'www-data',
+			'packages_sudo_env_keep' => 'DEBIAN_FRONTEND',
 			'packages_bacularis_start' => 'systemctl restart nginx',
 			'packages_bacularis_install' => '/usr/bin/apt -y install --reinstall bacularis bacularis-nginx',
 			'packages_bacularis_upgrade' => '/usr/bin/apt -y install --only-upgrade bacularis bacularis-nginx',
