@@ -13,9 +13,10 @@
  * terms pursuant to its AGPLv3 Section 7.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Web\Portlets\Portlets;
 use Prado\Prado;
 use Prado\TPropertyValue;
-use Bacularis\Web\Portlets\Portlets;
 
 /**
  * Volume config
@@ -85,8 +86,8 @@ class VolumeConfig extends Portlets
 		)->output;
 		$this->setVolumeName($volume->volumename);
 
-		$volstatus = $this->volstatus_by_user;
-		if (!in_array($volume->volstatus, $this->volstatus_by_user)) {
+		$volstatus = Miscellaneous::VOLSTATUS_USER;
+		if (!in_array($volume->volstatus, $volstatus)) {
 			array_push($volstatus, $volume->volstatus);
 		}
 		$this->VolumeStatus->DataSource = array_combine($volstatus, $volstatus);
