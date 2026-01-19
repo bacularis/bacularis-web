@@ -7168,3 +7168,18 @@ msgstr "If no user has the administrator role, you will lose administrative acce
 
 msgid "Sudo env_keep (space separated):"
 msgstr "Sudo env_keep (space separated):"
+
+msgid "Set vol. status"
+msgstr "Set vol. status"
+
+msgid "Set volume status"
+msgstr "Set volume status"
+
+msgid "Select the volume status to set for selected volumes."
+msgstr "Select the volume status to set for selected volumes."
+
+msgid "Number of volumes"
+msgstr "Number of volumes"
+
+msgid "Volume status"
+msgstr "Volume status"

@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
 
@@ -52,6 +53,7 @@ class VolumeList extends BaculumWebPage
 		$this->volumes = $this->getVolumes();
 		$this->pools = $this->getPools();
 		$this->setDataViews();
+		$this->setVolStatusList();
 	}
 
 	private function setDataViews()
@@ -85,6 +87,16 @@ class VolumeList extends BaculumWebPage
 		$this->VolumeViews->setViewDataFunction('get_volume_list_data');
 		$this->VolumeViews->setUpdateViewFunction('update_volume_list_table');
 		$this->VolumeViews->setDescription($volume_view_desc);
+	}
+
+	public function setVolStatusList()
+	{
+		$volstatus = Miscellaneous::VOLSTATUS_USER;
+		$this->VolumeStatusList->DataSource = array_combine(
+			$volstatus,
+			$volstatus
+		);
+		$this->VolumeStatusList->dataBind();
 	}
 
 	public function getVolumes()
@@ -122,8 +134,7 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
-	 * Prune multiple volumes.
-	 * Used for bulk actions.
+	 * Prune multiple volumes - bulk action.
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
@@ -147,8 +158,7 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
-	 * Purge multiple volumes.
-	 * Used for bulk actions.
+	 * Purge multiple volumes - bulk action.
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
@@ -172,8 +182,7 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
-	 * Delete multiple volumes.
-	 * Used for bulk actions.
+	 * Delete multiple volumes - bulk action.
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter
@@ -207,5 +216,49 @@ class VolumeList extends BaculumWebPage
 	{
 		$volumes = $this->getVolumes();
 		$this->getCallbackClient()->callClientFunction('set_volume_list_data', [$volumes]);
+	}
+
+	/**
+	 * Set volume status - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setVolumeStatus($sender, $param)
+	{
+		// Mediaids and volume status to set
+		$mediaids = $param->getCallbackParameter();
+		$volstatus = $this->VolumeStatusList->getSelectedValue();
+
+		// Set volume status
+		$api = $this->getModule('api');
+		$error = '';
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$result = $api->set(
+				['volumes', $mediaids[$i]],
+				['volstatus' => $volstatus]
+			);
+			if ($result->error != 0) {
+				// stop on first error
+				$error = $result->output;
+				break;
+			}
+		}
+
+		// Finish or report error
+		$eid = 'volume_list_volume_status_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			// Refresh volume list
+			$this->updateVolumes($sender, $param);
+
+			$cb->callClientFunction('oVolumeStatusWindow.show', [false]);
+		} else {
+			$emsg = 'Error while setting volume status. Message: %s.';
+			$emsg = sprintf($emsg, $error);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
 	}
 }
