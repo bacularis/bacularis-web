@@ -149,8 +149,8 @@ class VolumeList extends BaculumWebPage
 	 * Set recycle flag - bulk action.
 	 *
 	 * @param array $mediaids media identifiers to set recycle flag
-	 * @param boolean $enable true to enable recycle flag, otherwise false
-	 * @return boolean true on success, false otherwise
+	 * @param bool $enabled true to enable recycle flag, otherwise false
+	 * @return bool true on success, false otherwise
 	 */
 	private function setVolumeRecycle(array $mediaids, bool $enabled = true): bool
 	{
@@ -204,11 +204,69 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
+	 * Set volume inchanger flag - bulk action.
+	 *
+	 * @param array $mediaids media identifiers to set inchanger flag
+	 * @param bool $enabled true to enable inchanger flag, otherwise false
+	 * @return bool true on success, false otherwise
+	 */
+	private function setVolumeInChanger(array $mediaids, bool $enabled = true): bool
+	{
+		$error = false;
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$ret = $api->set(
+				['volumes', $mediaids[$i]],
+				['inchanger' => (int) $enabled]
+			);
+			if ($ret->error !== 0) {
+				$error = true;
+				break;
+			}
+		}
+		return ($error == false);
+	}
+
+	/**
+	 * Enable volume inchanger flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function enableVolumeInChanger($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeInChanger($mediaids, true);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
+	 * Disable volume inchanger flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function disableVolumeInChanger($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeInChanger($mediaids, false);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
 	 * Set volume enabled flag - bulk action.
 	 *
 	 * @param array $mediaids media identifiers to set enabled flag
-	 * @param boolean $enable true to enable volume enabled flag, otherwise false
-	 * @return boolean true on success, false otherwise
+	 * @param bool $enabled true to enable volume enabled flag, otherwise false
+	 * @return bool true on success, false otherwise
 	 */
 	private function setVolumeEnabled(array $mediaids, bool $enabled = true): bool
 	{

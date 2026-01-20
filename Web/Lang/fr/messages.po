@@ -7162,3 +7162,9 @@ msgstr "Enable volume"
 
 msgid "Disable volume"
 msgstr "Disable volume"
+
+msgid "Enable inchanger flag"
+msgstr "Enable inchanger flag"
+
+msgid "Disable inchanger flag"
+msgstr "Disable inchanger flag"
