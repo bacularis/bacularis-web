@@ -7195,3 +7195,12 @@ msgstr "Select the pool to set for selected volumes."
 
 msgid "Volume pool"
 msgstr "Volume pool"
+
+msgid "Set vol. retention"
+msgstr "Set vol. retention"
+
+msgid "Set volume retention time"
+msgstr "Set volume retention time"
+
+msgid "Type the volume retention time to set for selected volumes."
+msgstr "Type the volume retention time to set for selected volumes."

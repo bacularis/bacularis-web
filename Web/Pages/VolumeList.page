@@ -186,6 +186,21 @@ var oVolumeList = {
 			}
 		},
 		{
+			action: 'set_vol_retention',
+			label: '<%[ Set vol. retention ]%>',
+			value: 'mediaid',
+			before: function() {
+				const cb = () => {
+					const fields = 'mediaid';
+					const table = oVolumeList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oVolumeRetentionWindow.set_items_func(cb);
+				oVolumeRetentionWindow.show(true);
+			}
+		},
+		{
 			action: 'prune',
 			label: '<%[ Prune ]%>',
 			value: 'mediaid',
@@ -782,6 +797,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 </com:TCallback>
 <com:TCallback ID="SetVolumeStatusAction" OnCallback="TemplateControl.setVolumeStatus" />
 <com:TCallback ID="SetVolumePoolAction" OnCallback="TemplateControl.setVolumePool" />
+<com:TCallback ID="SetVolumeRetentionAction" OnCallback="TemplateControl.setVolumeRetention" />
 <com:TCallback ID="UpdateVolumes" OnCallback="updateVolumes" />
 <com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"
@@ -929,6 +945,84 @@ var oVolumePoolWindow = {
 	},
 	show: function(show) {
 		const self = oVolumePoolWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set selected item count
+		self.set_item_count();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
+<div id="volume_list_volume_retention_window" class="w3-modal">
+	<div class="w3-modal-content w3-animate-top w3-card-4">
+		<header class="w3-container w3-green">
+			<span onclick="oVolumeRetentionWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+			<h2><%[ Set volume retention time ]%></h2>
+		</header>
+		<div class="w3-container w3-margin-left w3-margin-right">
+			<p id="volume_list_volume_retention_error" class="error w3-margin-top" style="display: none"></p>
+			<p>
+				<%[ Type the volume retention time to set for selected volumes. ]%>
+			</p>
+			<div class="w3-row directive_field">
+				<div class="w3-col w3-quarter"><%[ Number of volumes ]%>:</div>
+				<div id="volume_list_volume_retention_count" class="w3-half bold">0</div>
+			</div>
+			<div class="w3-row directive_field">
+				<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+					ID="VolumeRetentionPeriod"
+					DirectiveName="VolumeRetention"
+					Label="<%[ Vol. retention ]%>"
+					ValidationGroup="VolumeGroup"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					TimeFormat="hour"
+				/>
+			</div>
+		</div>
+		<footer class="w3-container w3-center w3-padding">
+			<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oVolumeRetentionWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oVolumeRetentionWindow.save();"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
+		</footer>
+	</div>
+</div>
+<script>
+var oVolumeRetentionWindow = {
+	items_func: null,
+	ids: {
+		win: 'volume_list_volume_retention_window',
+		error: 'volume_list_volume_retention_error',
+		volretention: '<%=$this->VolumeRetentionPeriod->Directive->ClientID%>',
+		count: 'volume_list_volume_retention_count'
+	},
+	clear: function() {
+		const volretention = document.getElementById(this.ids.volretention);
+		volretention.value = '0';
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_count: function() {
+		const items = this.items_func();
+		const count = document.getElementById(this.ids.count);
+		count.textContent = items.length;
+	},
+	save: function() {
+		const items = this.items_func();
+		const cb = <%=$this->SetVolumeRetentionAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oVolumeRetentionWindow;
 
 		// Clean up before showing
 		self.clear();

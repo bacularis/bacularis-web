@@ -317,4 +317,48 @@ class VolumeList extends BaculumWebPage
 			$cb->show($eid);
 		}
 	}
+
+	/**
+	 * Set volume retention - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setVolumeRetention($sender, $param)
+	{
+		// Mediaids and volume retention to set
+		$mediaids = $param->getCallbackParameter();
+		$volretention = $this->VolumeRetentionPeriod->getValue();
+
+		// Set volume retention
+		$api = $this->getModule('api');
+		$error = '';
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$result = $api->set(
+				['volumes', $mediaids[$i]],
+				['volretention' => $volretention]
+			);
+			if ($result->error != 0) {
+				// stop on first error
+				$error = $result->output;
+				break;
+			}
+		}
+
+		// Finish or report error
+		$eid = 'volume_list_volume_retention_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			// Refresh volume list
+			$this->updateVolumes($sender, $param);
+
+			$cb->callClientFunction('oVolumeRetentionWindow.show', [false]);
+		} else {
+			$emsg = 'Error while setting volume retention time. Message: %s.';
+			$emsg = sprintf($emsg, $error);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
 }
