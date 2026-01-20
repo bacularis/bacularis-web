@@ -146,6 +146,64 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
+	 * Set recycle flag - bulk action.
+	 *
+	 * @param array $mediaids media identifiers to set recycle flag
+	 * @param boolean $enable true to enable recycle flag, otherwise false
+	 * @return boolean true on success, false otherwise
+	 */
+	private function setVolumeRecycle(array $mediaids, bool $enabled = true): bool
+	{
+		$error = false;
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$ret = $api->set(
+				['volumes', $mediaids[$i]],
+				['recycle' => (int) $enabled]
+			);
+			if ($ret->error !== 0) {
+				$error = true;
+				break;
+			}
+		}
+		return ($error == false);
+	}
+
+	/**
+	 * Enable recycle flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function enableVolumeRecycle($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeRecycle($mediaids, true);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
+	 * Disable recycle flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function disableVolumeRecycle($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeRecycle($mediaids, false);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
 	 * Prune multiple volumes - bulk action.
 	 *
 	 * @param TCallback $sender callback object

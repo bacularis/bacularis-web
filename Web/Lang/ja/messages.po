@@ -7213,3 +7213,9 @@ msgstr "Set volume use duration time"
 
 msgid "Type the volume use duration time to set for selected volumes."
 msgstr "Type the volume use duration time to set for selected volumes."
+
+msgid "Enable recycle flag"
+msgstr "Enable recycle flag"
+
+msgid "Disable recycle flag"
+msgstr "Disable recycle flag"
