@@ -171,6 +171,21 @@ var oVolumeList = {
 			}
 		},
 		{
+			action: 'set_vol_pool',
+			label: '<%[ Set vol. pool ]%>',
+			value: 'mediaid',
+			before: function() {
+				const cb = () => {
+					const fields = 'mediaid';
+					const table = oVolumeList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oVolumePoolWindow.set_items_func(cb);
+				oVolumePoolWindow.show(true);
+			}
+		},
+		{
 			action: 'prune',
 			label: '<%[ Prune ]%>',
 			value: 'mediaid',
@@ -766,6 +781,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 	</prop:ClientSide.OnComplete>
 </com:TCallback>
 <com:TCallback ID="SetVolumeStatusAction" OnCallback="TemplateControl.setVolumeStatus" />
+<com:TCallback ID="SetVolumePoolAction" OnCallback="TemplateControl.setVolumePool" />
 <com:TCallback ID="UpdateVolumes" OnCallback="updateVolumes" />
 <com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"
@@ -837,6 +853,82 @@ var oVolumeStatusWindow = {
 	},
 	show: function(show) {
 		const self = oVolumeStatusWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set selected item count
+		self.set_item_count();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
+<div id="volume_list_volume_pool_window" class="w3-modal">
+	<div class="w3-modal-content w3-animate-top w3-card-4">
+		<header class="w3-container w3-green">
+			<span onclick="oVolumePoolWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+			<h2><%[ Set volume pool ]%></h2>
+		</header>
+		<div class="w3-container w3-margin-left w3-margin-right">
+			<p id="volume_list_volume_pool_error" class="error w3-margin-top" style="display: none"></p>
+			<p>
+				<%[ Select the pool to set for selected volumes. ]%>
+			</p>
+			<div class="w3-row directive_field">
+				<div class="w3-col w3-third"><%[ Number of volumes ]%>:</div>
+				<div id="volume_list_volume_pool_count" class="w3-half bold">0</div>
+			</div>
+			<div class="w3-row directive_field">
+				<div class="w3-col w3-third"><label for="<%=$this->VolumePoolList->ClientID%>"><%[ Volume pool ]%>:</label></div>
+				<div class="w3-half">
+					<com:TActiveDropDownList
+						ID="VolumePoolList"
+						CssClass="w3-select w3-border"
+						AutoPostBack="false"
+					/>
+				</div>
+			</div>
+		</div>
+		<footer class="w3-container w3-center w3-padding">
+			<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oVolumePoolWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oVolumePoolWindow.save();"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
+		</footer>
+	</div>
+</div>
+<script>
+var oVolumePoolWindow = {
+	items_func: null,
+	ids: {
+		win: 'volume_list_volume_pool_window',
+		error: 'volume_list_volume_pool_error',
+		pool: '<%=$this->VolumePoolList->ClientID%>',
+		count: 'volume_list_volume_pool_count'
+	},
+	clear: function() {
+		const pool = document.getElementById(this.ids.pool);
+		pool.value = '';
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_count: function() {
+		const items = this.items_func();
+		const count = document.getElementById(this.ids.count);
+		count.textContent = items.length;
+	},
+	save: function() {
+		const items = this.items_func();
+		const cb = <%=$this->SetVolumePoolAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oVolumePoolWindow;
 
 		// Clean up before showing
 		self.clear();

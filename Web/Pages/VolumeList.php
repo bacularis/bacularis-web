@@ -54,6 +54,7 @@ class VolumeList extends BaculumWebPage
 		$this->pools = $this->getPools();
 		$this->setDataViews();
 		$this->setVolStatusList();
+		$this->setVolPoolList();
 	}
 
 	private function setDataViews()
@@ -97,6 +98,17 @@ class VolumeList extends BaculumWebPage
 			$volstatus
 		);
 		$this->VolumeStatusList->dataBind();
+	}
+
+	public function setVolPoolList()
+	{
+		$pool_ids = array_map(fn ($pool) => $pool->poolid, $this->pools);
+		$pool_names = array_map(fn ($pool) => $pool->name, $this->pools);
+		$this->VolumePoolList->DataSource = array_combine(
+			$pool_ids,
+			$pool_names
+		);
+		$this->VolumePoolList->dataBind();
 	}
 
 	public function getVolumes()
@@ -256,6 +268,50 @@ class VolumeList extends BaculumWebPage
 			$cb->callClientFunction('oVolumeStatusWindow.show', [false]);
 		} else {
 			$emsg = 'Error while setting volume status. Message: %s.';
+			$emsg = sprintf($emsg, $error);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Set volume pool - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setVolumePool($sender, $param)
+	{
+		// Mediaids and volume pool to set
+		$mediaids = $param->getCallbackParameter();
+		$poolid = $this->VolumePoolList->getSelectedValue();
+
+		// Set volume pool
+		$api = $this->getModule('api');
+		$error = '';
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$result = $api->set(
+				['volumes', $mediaids[$i]],
+				['poolid' => $poolid]
+			);
+			if ($result->error != 0) {
+				// stop on first error
+				$error = $result->output;
+				break;
+			}
+		}
+
+		// Finish or report error
+		$eid = 'volume_list_volume_pool_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			// Refresh volume list
+			$this->updateVolumes($sender, $param);
+
+			$cb->callClientFunction('oVolumePoolWindow.show', [false]);
+		} else {
+			$emsg = 'Error while setting volume pool. Message: %s.';
 			$emsg = sprintf($emsg, $error);
 			$cb->update($eid, $emsg);
 			$cb->show($eid);

@@ -7125,3 +7125,15 @@ msgstr "Number of volumes"
 
 msgid "Volume status"
 msgstr "Volume status"
+
+msgid "Set vol. pool"
+msgstr "Set vol. pool"
+
+msgid "Set volume pool"
+msgstr "Set volume pool"
+
+msgid "Select the pool to set for selected volumes."
+msgstr "Select the pool to set for selected volumes."
+
+msgid "Volume pool"
+msgstr "Volume pool"
