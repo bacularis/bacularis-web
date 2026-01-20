@@ -7146,3 +7146,12 @@ msgstr "Set volume retention time"
 
 msgid "Type the volume retention time to set for selected volumes."
 msgstr "Type the volume retention time to set for selected volumes."
+
+msgid "Set vol. use duration"
+msgstr "Set vol. use duration"
+
+msgid "Set volume use duration time"
+msgstr "Set volume use duration time"
+
+msgid "Type the volume use duration time to set for selected volumes."
+msgstr "Type the volume use duration time to set for selected volumes."

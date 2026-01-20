@@ -201,6 +201,21 @@ var oVolumeList = {
 			}
 		},
 		{
+			action: 'set_vol_use_duration',
+			label: '<%[ Set vol. use duration ]%>',
+			value: 'mediaid',
+			before: function() {
+				const cb = () => {
+					const fields = 'mediaid';
+					const table = oVolumeList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oVolumeUseDurationWindow.set_items_func(cb);
+				oVolumeUseDurationWindow.show(true);
+			}
+		},
+		{
 			action: 'prune',
 			label: '<%[ Prune ]%>',
 			value: 'mediaid',
@@ -798,6 +813,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 <com:TCallback ID="SetVolumeStatusAction" OnCallback="TemplateControl.setVolumeStatus" />
 <com:TCallback ID="SetVolumePoolAction" OnCallback="TemplateControl.setVolumePool" />
 <com:TCallback ID="SetVolumeRetentionAction" OnCallback="TemplateControl.setVolumeRetention" />
+<com:TCallback ID="SetVolumeUseDurationAction" OnCallback="TemplateControl.setVolumeUseDuration" />
 <com:TCallback ID="UpdateVolumes" OnCallback="updateVolumes" />
 <com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"
@@ -806,6 +822,8 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 <com:Bacularis.Web.Portlets.QuickVolumeEdit
 	SaveVolumeActionOk="oVolumeList.update_volumes();"
 />
+
+<!-- Set volume status -->
 <div id="volume_list_volume_status_window" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
@@ -882,6 +900,8 @@ var oVolumeStatusWindow = {
 	}
 };
 </script>
+
+<!-- Set volume pool -->
 <div id="volume_list_volume_pool_window" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
@@ -958,6 +978,8 @@ var oVolumePoolWindow = {
 	}
 };
 </script>
+
+<!-- Set volume retention -->
 <div id="volume_list_volume_retention_window" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
@@ -978,7 +1000,6 @@ var oVolumePoolWindow = {
 					ID="VolumeRetentionPeriod"
 					DirectiveName="VolumeRetention"
 					Label="<%[ Vol. retention ]%>"
-					ValidationGroup="VolumeGroup"
 					Show="true"
 					ShowResetButton="false"
 					ShowRemoveButton="false"
@@ -1023,6 +1044,85 @@ var oVolumeRetentionWindow = {
 	},
 	show: function(show) {
 		const self = oVolumeRetentionWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set selected item count
+		self.set_item_count();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
+
+<!-- Set volume use duration -->
+<div id="volume_list_volume_use_duration_window" class="w3-modal">
+	<div class="w3-modal-content w3-animate-top w3-card-4">
+		<header class="w3-container w3-green">
+			<span onclick="oVolumeUseDurationWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+			<h2><%[ Set volume use duration time ]%></h2>
+		</header>
+		<div class="w3-container w3-margin-left w3-margin-right">
+			<p id="volume_list_volume_use_duration_error" class="error w3-margin-top" style="display: none"></p>
+			<p>
+				<%[ Type the volume use duration time to set for selected volumes. ]%>
+			</p>
+			<div class="w3-row directive_field">
+				<div class="w3-col w3-quarter"><%[ Number of volumes ]%>:</div>
+				<div id="volume_list_volume_use_duration_count" class="w3-half bold">0</div>
+			</div>
+			<div class="w3-row directive_field">
+				<com:Bacularis.Web.Portlets.DirectiveTimePeriod
+					ID="VolumeUseDurationPeriod"
+					DirectiveName="VolumeUseDuration"
+					Label="<%[ Vol. use duration ]%>"
+					Show="true"
+					ShowResetButton="false"
+					ShowRemoveButton="false"
+					TimeFormat="hour"
+				/>
+			</div>
+		</div>
+		<footer class="w3-container w3-center w3-padding">
+			<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oVolumeUseDurationWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oVolumeUseDurationWindow.save();"><i class="fas fa-check"></i> &nbsp;<%[ Apply ]%></button>
+		</footer>
+	</div>
+</div>
+<script>
+var oVolumeUseDurationWindow = {
+	items_func: null,
+	ids: {
+		win: 'volume_list_volume_use_duration_window',
+		error: 'volume_list_volume_use_duration_error',
+		voluseduration: '<%=$this->VolumeUseDurationPeriod->Directive->ClientID%>',
+		count: 'volume_list_volume_use_duration_count'
+	},
+	clear: function() {
+		const voluseduration = document.getElementById(this.ids.voluseduration);
+		voluseduration.value = '0';
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_count: function() {
+		const items = this.items_func();
+		const count = document.getElementById(this.ids.count);
+		count.textContent = items.length;
+	},
+	save: function() {
+		const items = this.items_func();
+		const cb = <%=$this->SetVolumeUseDurationAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oVolumeUseDurationWindow;
 
 		// Clean up before showing
 		self.clear();

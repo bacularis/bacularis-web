@@ -361,4 +361,48 @@ class VolumeList extends BaculumWebPage
 			$cb->show($eid);
 		}
 	}
+
+	/**
+	 * Set volume use duration - bulk action.
+	 *
+	 * @param TCallback $sender sender object
+	 * @param TCallbackEventParameter $param callback parameter
+	 */
+	public function setVolumeUseDuration($sender, $param)
+	{
+		// Mediaids and volume use duration to set
+		$mediaids = $param->getCallbackParameter();
+		$voluseduration = $this->VolumeUseDurationPeriod->getValue();
+
+		// Set volume use duration
+		$api = $this->getModule('api');
+		$error = '';
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$result = $api->set(
+				['volumes', $mediaids[$i]],
+				['voluseduration' => $voluseduration]
+			);
+			if ($result->error != 0) {
+				// stop on first error
+				$error = $result->output;
+				break;
+			}
+		}
+
+		// Finish or report error
+		$eid = 'volume_list_volume_use_duration_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			// Refresh volume list
+			$this->updateVolumes($sender, $param);
+
+			$cb->callClientFunction('oVolumeUseDurationWindow.show', [false]);
+		} else {
+			$emsg = 'Error while setting volume use duration time. Message: %s.';
+			$emsg = sprintf($emsg, $error);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
 }
