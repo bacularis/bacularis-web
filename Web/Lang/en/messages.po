@@ -7145,3 +7145,9 @@ msgstr "Enable recycle flag"
 
 msgid "Disable recycle flag"
 msgstr "Disable recycle flag"
+
+msgid "Enable volume"
+msgstr "Enable volume"
+
+msgid "Disable volume"
+msgstr "Disable volume"

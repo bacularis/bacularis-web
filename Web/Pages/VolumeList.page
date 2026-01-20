@@ -228,6 +228,18 @@ var oVolumeList = {
 			callback: <%=$this->DisableVolumeRecycleAction->ActiveControl->Javascript%>
 		},
 		{
+			action: 'enable_enabled',
+			label: '<%[ Enable volume ]%>',
+			value: 'mediaid',
+			callback: <%=$this->EnableVolumeEnabledAction->ActiveControl->Javascript%>
+		},
+		{
+			action: 'disable_enabled',
+			label: '<%[ Disable volume ]%>',
+			value: 'mediaid',
+			callback: <%=$this->DisableVolumeEnabledAction->ActiveControl->Javascript%>
+		},
+		{
 			action: 'prune',
 			label: '<%[ Prune ]%>',
 			value: 'mediaid',
@@ -828,6 +840,8 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 <com:TCallback ID="SetVolumeUseDurationAction" OnCallback="TemplateControl.setVolumeUseDuration" />
 <com:TCallback ID="EnableVolumeRecycleAction" OnCallback="TemplateControl.enableVolumeRecycle" />
 <com:TCallback ID="DisableVolumeRecycleAction" OnCallback="TemplateControl.disableVolumeRecycle" />
+<com:TCallback ID="EnableVolumeEnabledAction" OnCallback="TemplateControl.enableVolumeEnabled" />
+<com:TCallback ID="DisableVolumeEnabledAction" OnCallback="TemplateControl.disableVolumeEnabled" />
 <com:TCallback ID="UpdateVolumes" OnCallback="updateVolumes" />
 <com:Bacularis.Web.Portlets.BulkActionsModal
 	ID="BulkActions"

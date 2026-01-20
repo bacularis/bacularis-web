@@ -204,6 +204,64 @@ class VolumeList extends BaculumWebPage
 	}
 
 	/**
+	 * Set volume enabled flag - bulk action.
+	 *
+	 * @param array $mediaids media identifiers to set enabled flag
+	 * @param boolean $enable true to enable volume enabled flag, otherwise false
+	 * @return boolean true on success, false otherwise
+	 */
+	private function setVolumeEnabled(array $mediaids, bool $enabled = true): bool
+	{
+		$error = false;
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($mediaids); $i++) {
+			$ret = $api->set(
+				['volumes', $mediaids[$i]],
+				['enabled' => (int) $enabled]
+			);
+			if ($ret->error !== 0) {
+				$error = true;
+				break;
+			}
+		}
+		return ($error == false);
+	}
+
+	/**
+	 * Enable volume enabled flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function enableVolumeEnabled($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeEnabled($mediaids, true);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
+	 * Disable volume enabled flag - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function disableVolumeEnabled($sender, $param)
+	{
+		$mids = $param->getCallbackParameter();
+		$mediaids = explode('|', $mids);
+		$result = $this->setVolumeEnabled($mediaids, false);
+		if ($result) {
+			// refresh volume list
+			$this->updateVolumes($sender, $param);
+		}
+	}
+
+	/**
 	 * Prune multiple volumes - bulk action.
 	 *
 	 * @param TCallback $sender callback object
