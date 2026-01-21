@@ -7231,3 +7231,6 @@ msgstr "Enable inchanger flag"
 
 msgid "Disable inchanger flag"
 msgstr "Disable inchanger flag"
+
+msgid "You can also add an autochanger to Bacularis in the web interface using the storage wizard in [Main menu] => [Page: Storage] => [Button: Add tape storage]."
+msgstr "You can also add an autochanger to Bacularis in the web interface using the storage wizard in [Main menu] => [Page: Storage] => [Button: Add tape storage]."
