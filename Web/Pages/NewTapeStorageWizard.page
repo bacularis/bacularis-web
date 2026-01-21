@@ -238,11 +238,20 @@ function new_storage_in_bacula(sender, parameter) {
 						<div class="w3-twothird">
 							<com:TTextBox
 								ID="AutochangerFile"
-								CssClass="w3-input w3-border"
+								CssClass="w3-input w3-border w3-show-inline-block"
 								Width="400px"
 								Attributes.placeholder="Ex: /dev/sg5"
 								ReadOnly="<%=$this->StorageInBacula->Checked%>"
-							/>
+							/> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="AutochangerFile"
+								Text="<%[ Field required. ]%>"
+							>
+								<prop:ClientSide.OnValidate>
+									sender.enabled = <%=($this->StorageTypeAutochanger->Checked || $this->StorageInBacula->Checked) ? 'true' : 'false'%>
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
 						</div>
 					</div>
 					<div class="w3-row w3-section">
@@ -250,11 +259,20 @@ function new_storage_in_bacula(sender, parameter) {
 						<div class="w3-twothird">
 							<com:TTextBox
 								ID="AutochangerCommand"
-								CssClass="w3-input w3-border"
+								CssClass="w3-input w3-border w3-show-inline-block"
 								Width="500px"
 								Attributes.placeholder="Ex: /etc/bacula/scripts/mtx-changer %c %o %S %a %d"
 								ReadOnly="<%=$this->StorageInBacula->Checked%>"
-							/>
+							/> <i class="fa fa-asterisk w3-text-red directive_required"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewStorageDirective"
+								ControlToValidate="AutochangerCommand"
+								Text="<%[ Field required. ]%>"
+							>
+								<prop:ClientSide.OnValidate>
+									sender.enabled = <%=($this->StorageTypeAutochanger->Checked || $this->StorageInBacula->Checked) ? 'true' : 'false'%>
+								</prop:ClientSide.OnValidate>
+							</com:TRequiredFieldValidator>
 						</div>
 					</div>
 					<h4><%[ What tape drives does your tape device have? ]%></h4>
