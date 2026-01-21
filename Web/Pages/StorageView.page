@@ -1793,7 +1793,8 @@ function load_sd_res_config(resource) {
 	</div>
 	<div class="w3-container tab_item" id="manage_autochanger" data-btn="<%=$this->ManageAutochangerBtn->ClientID%>" style="display: none">
 		<div id="manage_autochanger_not_available">
-			<strong><%[ Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side. ]%></strong>
+			<p class="bold"><%[ Autochanger management is unavailable. To manage autochanger from here, add it to the API host devices on the API host side. ]%></p>
+			<p class="bold"><%[ You can also add an autochanger to Bacularis in the web interface using the storage wizard in [Main menu] => [Page: Storage] => [Button: Add tape storage]. ]%></p>
 		</div>
 		<div id="drive_list_container">
 			<h5><%[ Tape drives ]%></h5>
