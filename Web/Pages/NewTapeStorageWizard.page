@@ -290,7 +290,7 @@ function new_storage_in_bacula(sender, parameter) {
 											ID="TapeDriveFile"
 											CssClass="w3-input w3-border tape_drive_file"
 											Width="400px"
-											Text="<%=$this->Data['drive_file']%>"
+											Text="<%#$this->Data['drive_file']%>"
 											Attributes.placeholder="Ex: /dev/nst0"
 											ReadOnly="<%=$this->TemplateControl->StorageInBacula->Checked%>"
 										/>
@@ -303,7 +303,7 @@ function new_storage_in_bacula(sender, parameter) {
 											ID="TapeDriveIndex"
 											CssClass="w3-input w3-border"
 											Width="50px"
-											Text="<%=$this->Data['drive_index']%>"
+											Text="<%#$this->Data['drive_index']%>"
 											ReadOnly="<%=$this->TemplateControl->StorageInBacula->Checked%>"
 										/>
 									</div>
@@ -315,7 +315,7 @@ function new_storage_in_bacula(sender, parameter) {
 											ID="TapeDriveType"
 											CssClass="w3-select w3-border"
 											Width="200px"
-											SelectedValue="<%=$this->Data['drive_type']%>"
+											SelectedValue="<%#$this->Data['drive_type']%>"
 											Enabled="<%=!$this->TemplateControl->StorageInBacula->Checked%>"
 										>
 											<com:TListItem Value="BR" Text="<%[ Backup/Restore device ]%>" />
