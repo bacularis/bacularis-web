@@ -474,13 +474,11 @@ const oNewTapeStorageStep2 = {
 						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others) ]%>:</p>
 						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo1');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
 <pre class="w3-code" id="restart_storage_sudo1">
-Defaults:apache !requiretty
 apache ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
 </pre>
 						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others) ]%>:</p>
 						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo2');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
 <pre class="w3-code" id="restart_storage_sudo2">
-Defaults:www-data !requiretty
 www-data ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
 </pre>
 						<small><%[ NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel. ]%></small>
