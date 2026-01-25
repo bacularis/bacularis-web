@@ -14,6 +14,7 @@
 			Options.changeMonth="true"
 			Options.showAnim="fold"
 			Style.Width="100px"
+			CssClass="w3-input w3-border w3-show-inline-block"
 			/>
 		<com:TRequiredFieldValidator
 			ValidationGroup="ScheduleFilters"
@@ -31,6 +32,7 @@
 		<%[ Days: ]%> <com:TTextBox
 			ID="Days"
 			Style.Width="50px"
+			CssClass="w3-input w3-border w3-show-inline-block"
 		/>
 		<com:TRequiredFieldValidator
 			ValidationGroup="ScheduleFilters"
@@ -61,6 +63,7 @@
 		/> <com:TDropDownList
 			ID="Client"
 			Style.Width="150px"
+			CssClass="w3-select w3-border w3-show-inline-block"
 		/>
 		<com:TLabel
 			ID="ScheduleLabel"
@@ -70,6 +73,7 @@
 		 <com:TDropDownList
 			ID="Schedule"
 			Style.Width="150px"
+			CssClass="w3-select w3-border w3-show-inline-block"
 		/>
 		<com:TActiveLinkButton
 			ID="ApplyFilter"
