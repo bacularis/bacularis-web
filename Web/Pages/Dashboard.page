@@ -83,47 +83,135 @@
 				</div>
 			</div>
 			<div class="w3-threequarter">
-				<table id="last_jobs_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
-					<thead>
-						<tr>
-							<th></th>
-							<th><%[ JobId ]%></th>
-							<th><%[ Name ]%></th>
-							<th><%[ Type ]%></th>
-							<th><%[ Level ]%></th>
-							<th>ClientId</th>
-							<th><%[ Client ]%></th>
-							<th><%[ Scheduled time ]%></th>
-							<th><%[ Start time ]%></th>
-							<th><%[ End time ]%></th>
-							<th><%[ Real end time ]%></th>
-							<th>JobTDate</th>
-							<th>VolSessionId</th>
-							<th>VolSessionTime</th>
-							<th><%[ Size ]%></th>
-							<th><%[ Read bytes ]%></th>
-							<th><%[ Files ]%></th>
-							<th><%[ Job status ]%></th>
-							<th><%[ Job errors ]%></th>
-							<th><%[ Job missing files ]%></th>
-							<th>PoolId</th>
-							<th><%[ Pool ]%></th>
-							<th>FileSetId</th>
-							<th><%[ FileSet ]%></th>
-							<th>PriorJobId</th>
-							<th><%[ Purged files ]%></th>
-							<th><%[ Has base ]%></th>
-							<th><%[ Reviewed ]%></th>
-							<th><%[ Comment ]%></th>
-							<th><%[ File table ]%></th>
-							<th><%[ First vol. ]%></th>
-							<th><%[ Vol. count ]%></th>
-						</tr>
-					</thead>
-					<tbody id="last_jobs_list_body">
-					</tbody>
-				</table>
-				<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+				<div id="dashboard_jobs">
+					<div class="w3-margin-bottom">
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_recent_jobs_subtab', 'dashboard_recent_jobs', 'dashboard_jobs');">
+							<div id="dashboard_recent_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-border-red w3-padding">
+								<i class="fa-solid fa-tasks fa-fw"></i> &nbsp;<%[ Recent jobs ]%> &nbsp;(<span id="dashboard_recent_jobs_count">0</span>)
+							</div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_today_jobs_subtab', 'dashboard_scheduled_today_jobs', 'dashboard_jobs');">
+							<div id="dashboard_scheduled_today_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
+								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for today ]%> &nbsp;(<span id="dashboard_scheduled_today_jobs_count">0</span>)
+
+							</div>
+						</a>
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_days_jobs_subtab', 'dashboard_scheduled_days_jobs', 'dashboard_jobs');">
+							<div id="dashboard_scheduled_days_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
+								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for the next 5 days ]%> &nbsp;(<span id="dashboard_scheduled_days_jobs_count">0</span>)
+
+							</div>
+						</a>
+						<div style="clear: left"></div>
+					</div>
+					<div id="dashboard_recent_jobs" class="subtab_item">
+						<table id="last_jobs_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full" style="width: 100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th><%[ JobId ]%></th>
+									<th><%[ Name ]%></th>
+									<th><%[ Type ]%></th>
+									<th><%[ Level ]%></th>
+									<th>ClientId</th>
+									<th><%[ Client ]%></th>
+									<th><%[ Scheduled time ]%></th>
+									<th><%[ Start time ]%></th>
+									<th><%[ End time ]%></th>
+									<th><%[ Real end time ]%></th>
+									<th>JobTDate</th>
+									<th>VolSessionId</th>
+									<th>VolSessionTime</th>
+									<th><%[ Size ]%></th>
+									<th><%[ Read bytes ]%></th>
+									<th><%[ Files ]%></th>
+									<th><%[ Job status ]%></th>
+									<th><%[ Job errors ]%></th>
+									<th><%[ Job missing files ]%></th>
+									<th>PoolId</th>
+									<th><%[ Pool ]%></th>
+									<th>FileSetId</th>
+									<th><%[ FileSet ]%></th>
+									<th>PriorJobId</th>
+									<th><%[ Purged files ]%></th>
+									<th><%[ Has base ]%></th>
+									<th><%[ Reviewed ]%></th>
+									<th><%[ Comment ]%></th>
+									<th><%[ File table ]%></th>
+									<th><%[ First vol. ]%></th>
+									<th><%[ Vol. count ]%></th>
+								</tr>
+							</thead>
+							<tbody id="last_jobs_list_body">
+							</tbody>
+						</table>
+						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+					</div>
+					<div id="dashboard_scheduled_today_jobs" class="subtab_item" style="display: none">
+						<table id="dashboard_scheduled_today_job_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full" style="width: 100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th><%[ Job name ]%></th>
+									<th><%[ Type ]%></th>
+									<th><%[ Level ]%></th>
+									<th><%[ Scheduled ]%></th>
+									<th><%[ Starts in ]%></th>
+									<th><%[ Client ]%></th>
+									<th><%[ FileSet ]%></th>
+									<th><%[ Schedule ]%></th>
+								</tr>
+							</thead>
+							<tbody id="dashboard_scheduled_today_job_list_body"></tbody>
+							<tfoot>
+								<tr>
+									<th></th>
+									<th><%[ Job name ]%></th>
+									<th><%[ Type ]%></th>
+									<th><%[ Level ]%></th>
+									<th><%[ Scheduled ]%></th>
+									<th><%[ Starts in ]%></th>
+									<th><%[ Client ]%></th>
+									<th><%[ FileSet ]%></th>
+									<th><%[ Schedule ]%></th>
+								</tr>
+							</tfoot>
+						</table>
+						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+					</div>
+					<div id="dashboard_scheduled_days_jobs" class="subtab_item" style="display: none">
+						<table id="dashboard_scheduled_days_job_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full" style="width: 100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th><%[ Job name ]%></th>
+									<th><%[ Type ]%></th>
+									<th><%[ Level ]%></th>
+									<th><%[ Scheduled ]%></th>
+									<th><%[ Starts in ]%></th>
+									<th><%[ Client ]%></th>
+									<th><%[ FileSet ]%></th>
+									<th><%[ Schedule ]%></th>
+								</tr>
+							</thead>
+							<tbody id="dashboard_scheduled_days_job_list_body"></tbody>
+							<tfoot>
+								<tr>
+									<th></th>
+									<th><%[ Job name ]%></th>
+									<th><%[ Type ]%></th>
+									<th><%[ Level ]%></th>
+									<th><%[ Scheduled ]%></th>
+									<th><%[ Starts in ]%></th>
+									<th><%[ Client ]%></th>
+									<th><%[ FileSet ]%></th>
+									<th><%[ Schedule ]%></th>
+								</tr>
+							</tfoot>
+						</table>
+						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -133,7 +221,8 @@ MonitorParams = {
 	clients: null,
 	pools: null,
 	job_totals: null,
-	dbsize: null
+	dbsize: null,
+	status_schedule: {days: 5}
 };
 ThemeMode.add_cb(() => {
 	Dashboard.update_pie_jobstatus();

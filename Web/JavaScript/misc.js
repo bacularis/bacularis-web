@@ -312,6 +312,10 @@ var Units = {
 			}
 		}
 		return unit_short;
+	},
+	get_time_diff_duration: function(ts_from, ts_to, long_unit) {
+		const time_diff = ts_to - ts_from;
+		return this.format_time_duration(time_diff, long_unit);
 	}
 }
 
@@ -1083,6 +1087,153 @@ var oLastJobsList = {
 	}
 };
 
+var oScheduledJobsList = {
+	table: null,
+	ids: {
+		scheduled_jobs_list: ''
+	},
+	init: function(data) {
+		if (!this.table) {
+			this.set_table(data);
+		} else {
+			const page = this.table.page();
+			this.table.clear().rows.add(data).draw();
+			this.table.page(page).draw(false);
+		}
+	},
+	set_table: function(data) {
+		this.table = $('#' + this.ids.scheduled_jobs_list).DataTable({
+			data: data,
+			deferRender: true,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					}
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
+			},
+			stateSave: false,
+			columns: [
+				{
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{
+					data: 'name',
+					responsivePriority: 1
+				},
+				{
+					data: 'type',
+					render: function(data, type, row) {
+						return JobType.get_type(data);
+					},
+					responsivePriority: 5
+				},
+				{
+					data: 'level',
+					render: function(data, type, row) {
+						data = data || ' ';
+						return (['R', 'D'].indexOf(row.type) === -1 ? JobLevel.get_level(data) : '-');
+					},
+					responsivePriority: 3
+				},
+				{
+					data: 'schedtime_epoch',
+					render: render_date_ts_local,
+					responsivePriority: 2
+				},
+				{
+					data: 'schedtime_epoch',
+					render: function(data, type, row) {
+						let res = data;
+						if (type == 'display' || type == 'filter') {
+							const now_ts_ms = (new Date()).getTime();
+							const now = parseInt((now_ts_ms / 1000), 10);
+							const sched = parseInt(data, 10);
+							res = Units.get_time_diff_duration(now, sched);
+						}
+						return res;
+					},
+					responsivePriority: 4
+				},
+				{data: 'client'},
+				{data: 'fileset'},
+				{data: 'schedule'}
+			],
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
+				}
+			},
+			columnDefs: [{
+				className: 'dtr-control',
+				orderable: false,
+				targets: 0
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5, 6, 7, 8 ]
+			}],
+			order: [4, 'asc'],
+			drawCallback: function () {
+				this.api().columns([1, 2, 3, 6, 7, 8]).every(function () {
+					var column = this;
+					var select = $('<select class="dt-select"><option value=""></option></select>')
+					.appendTo($(column.footer()).empty())
+					.on('change', function () {
+						var val = dtEscapeRegex(
+							$(this).val()
+						);
+						column
+						.search(val ? '^' + val + '$' : '', true, false)
+						.draw();
+					});
+					column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
+						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+							select.append('<option value="' + d + '" selected>' + d + '</option>');
+						} else {
+							select.append('<option value="' + d + '">' + d + '</option>');
+						}
+					});
+				});
+			}
+		});
+		this.set_events();
+	},
+	set_events: function() {
+		var self = this;
+		$('#' + this.ids.scheduled_jobs_list + ' tbody').on('click', 'tr', function (e) {
+			var td = e.target;
+			if (td.nodeName != 'TD') {
+				td = $(td).closest('td');
+			}
+			// first cell should not be clickable, it contains the button to open row details
+			if ($(td).index() > 0) {
+				var data = self.table.row(this).data();
+				document.location.href = '/web/job/' + data.name + '/'
+			}
+		});
+	}
+}
+
 var Dashboard = {
 	stats: null,
 	txt: null,
@@ -1121,9 +1272,22 @@ var Dashboard = {
 		bytes_files_graph: {
 			container_id: 'jobs_bytes_files_graph',
 			legend_container_id: 'jobs_bytes_files_legend'
+		},
+		recent_jobs_list: {
+			count: 'dashboard_recent_jobs_count'
+		},
+		scheduled_jobs_today_list: {
+			table: 'dashboard_scheduled_today_job_list',
+			count: 'dashboard_scheduled_today_jobs_count'
+		},
+		scheduled_jobs_days_list: {
+			table: 'dashboard_scheduled_days_job_list',
+			count: 'dashboard_scheduled_days_jobs_count'
 		}
 	},
 	last_jobs_table: null,
+	scheduled_jobs_today_table: null,
+	scheduled_jobs_days_table: null,
 	dbtype: {
 		pgsql: 'PostgreSQL',
 		mysql: 'MySQL',
@@ -1138,6 +1302,7 @@ var Dashboard = {
 		this.update_clients();
 		this.update_jobs();
 		this.update_job_access();
+		this.update_scheduled_jobs();
 		this.update_pools();
 		this.update_jobtotals();
 		this.update_database();
@@ -1155,8 +1320,71 @@ var Dashboard = {
 	update_job_access: function() {
 		// get last XX jobs
 		var data = this.stats.jobs.slice(0, MAX_LATEST_JOBS);
+
+		// update job count in tab
+		const count = document.getElementById(this.ids.recent_jobs_list.count);
+		count.textContent = data.length;
+
 		$(function() {
 			oLastJobsList.init(data);
+		});
+	},
+	update_scheduled_jobs: function() {
+		const jobs_today = [];
+		const today = new Date();
+		let today_now_epoch = (today.getTime() / 1000);
+		today_now_epoch = parseInt(today_now_epoch, 10);
+		let job_sched_epoch;
+		for (const job of oData.status_schedule) {
+			job_sched_epoch = parseInt(job.schedtime_epoch, 10);
+			if (job_sched_epoch < today_now_epoch) {
+				// job has already started
+				continue;
+			}
+			jobs_today.push(job);
+		}
+		this.update_scheduled_today_jobs(jobs_today);
+		this.update_scheduled_days_jobs(jobs_today);
+	},
+	update_scheduled_today_jobs: function(jobs) {
+		const jobs_today = [];
+		const today = new Date();
+		today.setUTCHours(23, 59, 59, 999);
+		let today_end_day_epoch = (today.getTime() / 1000)
+		today_end_day_epoch = parseInt(today_end_day_epoch, 10);
+		for (const job of jobs) {
+			const job_sched_epoch = parseInt(job.schedtime_epoch, 10);
+			if (job_sched_epoch > today_end_day_epoch) {
+				// job scheduled for tomorrow or later
+				break;
+			}
+			jobs_today.push(job);
+		}
+		$(() => {
+			if (!this.scheduled_jobs_today_table) {
+				this.scheduled_jobs_today_table = $.extend(true, {}, oScheduledJobsList);
+				this.scheduled_jobs_today_table.ids.scheduled_jobs_list = this.ids.scheduled_jobs_today_list.table;
+			}
+			// update job count in tab
+			const count = document.getElementById(this.ids.scheduled_jobs_today_list.count);
+			count.textContent = jobs_today.length;
+
+			// initialize table
+			this.scheduled_jobs_today_table.init(jobs_today);
+		});
+	},
+	update_scheduled_days_jobs: function(jobs) {
+		$(() => {
+			if (!this.scheduled_jobs_days_table) {
+				this.scheduled_jobs_days_table = $.extend(true, {}, oScheduledJobsList);
+				this.scheduled_jobs_days_table.ids.scheduled_jobs_list = this.ids.scheduled_jobs_days_list.table;
+			}
+			// update job count in tab
+			const count = document.getElementById(this.ids.scheduled_jobs_days_list.count);
+			count.textContent = jobs.length;
+
+			// initialize table
+			this.scheduled_jobs_days_table.init(jobs);
 		});
 	},
 	update_jobs: function() {

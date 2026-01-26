@@ -7176,3 +7176,18 @@ msgstr "Disable inchanger flag"
 
 msgid "You can also add an autochanger to Bacularis in the web interface using the storage wizard in [Main menu] => [Page: Storage] => [Button: Add tape storage]."
 msgstr "You can also add an autochanger to Bacularis in the web interface using the storage wizard in [Main menu] => [Page: Storage] => [Button: Add tape storage]."
+
+msgid "Recent jobs"
+msgstr "Recent jobs"
+
+msgid "Scheduled for today"
+msgstr "Scheduled for today"
+
+msgid "Scheduled for the next 5 days"
+msgstr "Scheduled for the next 5 days"
+
+msgid "Starts in"
+msgstr "Starts in"
+
+msgid "More scheduled jobs"
+msgstr "More scheduled jobs"

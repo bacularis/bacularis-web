@@ -162,6 +162,17 @@ class Monitor extends BaculumWebPage
 				$error = $result;
 			}
 		}
+		if (!$error && key_exists('status_schedule', $params)) {
+			$days = $params['status_schedule']['days'] ?? '5';
+			$query = ['days' => $days];
+			$qparams = http_build_query($query);
+			$result = $this->getModule('api')->get(['schedules', 'status', '?' . $qparams]);
+			if ($result->error === 0) {
+				$monitor_data['status_schedule'] = $result->output;
+			} else {
+				$error = $result;
+			}
+		}
 		if (!$error && $this->getModule('web_config')->isMessagesLogEnabled() && $this->User->isInRole(WebUserRoles::ADMIN)) {
 			$result = $this->getModule('api')->get(['joblog', 'messages']);
 			if ($result->error === 0) {
