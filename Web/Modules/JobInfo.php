@@ -62,7 +62,8 @@ class JobInfo extends WebModule
 		'run',
 		'delete',
 		'cancel',
-		'reload'
+		'reload',
+		'status'
 	];
 
 	public const DEFAULT_MAX_JOBS = 10000;
