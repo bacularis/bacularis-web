@@ -1164,8 +1164,15 @@ var oScheduledJobsList = {
 					render: function(data, type, row) {
 						let res = data;
 						if (type == 'display' || type == 'filter') {
-							const now_ts_ms = (new Date()).getTime();
-							const now = parseInt((now_ts_ms / 1000), 10);
+							let now;
+							if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
+								// time from API server
+								now = oData.jobtotals.currtime_epoch;
+							} else {
+								// old API - time from web browser
+								const now_ts_ms = (new Date()).getTime();
+								now = parseInt((now_ts_ms / 1000), 10);
+							}
 							const sched = parseInt(data, 10);
 							res = Units.get_time_diff_duration(now, sched);
 						}
@@ -1331,9 +1338,16 @@ var Dashboard = {
 	},
 	update_scheduled_jobs: function() {
 		const jobs_today = [];
-		const today = new Date();
-		let today_now_epoch = (today.getTime() / 1000);
-		today_now_epoch = parseInt(today_now_epoch, 10);
+		let today_now_epoch;
+		if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
+			// get API server time
+			today_now_epoch = oData.jobtotals.currtime_epoch;
+		} else {
+			// old API - get local web browser time
+			const today = new Date();
+			let today_now_epoch = (today.getTime() / 1000);
+			today_now_epoch = parseInt(today_now_epoch, 10);
+		}
 		let job_sched_epoch;
 		for (const job of oData.status_schedule) {
 			job_sched_epoch = parseInt(job.schedtime_epoch, 10);
@@ -1348,8 +1362,15 @@ var Dashboard = {
 	},
 	update_scheduled_today_jobs: function(jobs) {
 		const jobs_today = [];
-		const today = new Date();
-		today.setUTCHours(23, 59, 59, 999);
+		let today;
+		if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
+			// get API server time
+			today = new Date(oData.jobtotals.currtime_epoch * 1000);
+		} else {
+			// old API - get local web browser time
+			today = new Date();
+		}
+		today.setHours(23, 59, 59, 999);
 		let today_end_day_epoch = (today.getTime() / 1000)
 		today_end_day_epoch = parseInt(today_end_day_epoch, 10);
 		for (const job of jobs) {
