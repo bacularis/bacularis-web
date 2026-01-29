@@ -130,6 +130,22 @@ var oClientList = {
 				};
 				oBulkCancelJobsModal.open_window(component_type, component_names, jobs, cb);
 			}
+		},
+		{
+			action: 'delete',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			label: '<%[ Delete ]%>',
+			value: ['clientid', 'name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['clientid', 'name'];
+					const table = oClientList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oClientListDeleteClientResourceWindow.set_items_func(cb);
+				oClientListDeleteClientResourceWindow.show(true);
+			}
 		}
 	],
 	init: function(data) {
@@ -553,6 +569,111 @@ $(function() {
 			ComponentType="dir"
 			ResourceType="Client"
 		/>
+		<com:TCallback ID="DeleteClientResourcesAction" OnCallback="deleteClientResources">
+			<prop:ClientSide.OnComplete>
+				oClientListDeleteClientResourceWindow.delete_cb();
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+
+		<!-- Delete client confirmation window -->
+		<div id="client_list_delete_client_resource_confirm_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-orange w3-text-white">
+					<span onclick="oClientListDeleteClientResourceWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Confirm client deletion ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<div id="client_list_delete_client_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
+						<h3><%[ Error ]%></h3>
+						<p id="client_list_delete_client_resource_confirm_window_error_text"></p>
+					</div>
+					<p>
+						<%[ Are you sure you want to delete the following clients? ]%>
+					</p>
+					<ul id="client_list_delete_client_resource_confirm_window_list" class="bold"></ul>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oClientListDeleteClientResourceWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" id="client_list_delete_client_resource_confirm_window_rm_btn" class="w3-button w3-red w3-margin-bottom" onclick="oClientListDeleteClientResourceWindow.delete();"><i class="fa-solid fa-trash-alt"></i> &nbsp;<%[ Remove ]%></button>
+				</footer>
+			</div>
+		</div>
+<script>
+var oClientListDeleteClientResourceWindow = {
+	items_func: null,
+	ids: {
+		win: 'client_list_delete_client_resource_confirm_window',
+		error_box: 'client_list_delete_client_resource_confirm_window_error_contaner',
+		error_text: 'client_list_delete_client_resource_confirm_window_error_text',
+		item_list: 'client_list_delete_client_resource_confirm_window_list',
+		rm_btn: 'client_list_delete_client_resource_confirm_window_rm_btn'
+	},
+	clear: function() {
+		this.error('');
+		this.clear_items();
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_list: function() {
+		this.clear_items();
+		const items = this.items_func();
+		for (const item of items) {
+			this.add_item(item);
+		}
+	},
+	add_item: function(item) {
+		const ul = document.getElementById(this.ids.item_list);
+		const li = document.createElement('LI');
+		li.textContent = item.name;
+		ul.appendChild(li);
+	},
+	clear_items: function() {
+		const ul = document.getElementById(this.ids.item_list);
+		while (ul.firstChild) {
+			ul.removeChild(ul.firstChild);
+		}
+	},
+	delete: function() {
+		const items = this.items_func();
+		const cb = <%=$this->DeleteClientResourcesAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	delete_cb: function() {
+		const self = oClientListDeleteClientResourceWindow;
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = 'none';
+
+		oClientList.table.rows({selected: true}).deselect();
+	},
+	error: function(emsg) {
+		const self = oClientListDeleteClientResourceWindow;
+		const error_text = document.getElementById(self.ids.error_text);
+		error_text.innerHTML = emsg;
+		const error_box = document.getElementById(self.ids.error_box);
+		error_box.style.display = emsg ? 'block' : 'none';
+	},
+	show: function(show) {
+		const self = oClientListDeleteClientResourceWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set item list to delete
+		self.set_item_list();
+
+		// show delete button
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = show ? 'inline-block' : 'none';
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
 	</div>
 
 	<!-- Graphs -->

@@ -27,7 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Prado\Prado;
 
 /**
@@ -58,5 +61,78 @@ class ClientList extends BaculumWebPage
 		$this->ClientViews->setViewDataFunction('get_client_list_data');
 		$this->ClientViews->setUpdateViewFunction('update_client_list_table');
 		$this->ClientViews->setDescription($client_view_desc);
+	}
+
+	/**
+	 * Delete director component client configuration and catalog resources - bulk action
+	 * NOTE: Action available only for users wiht admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function deleteClientResources($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$clients = $param->getCallbackParameter();
+		if (!is_array($clients)) {
+			// this is not list - end
+			return;
+		}
+		$error = null;
+		$err_client = '';
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($clients); $i++) {
+			$params = [
+				'config',
+				'dir',
+				'Client',
+				$clients[$i]->name
+			];
+			$result = $api->remove($params);
+			if ($result->error != 0) {
+				$error = $result;
+				$err_client = $clients[$i];
+				break;
+			}
+			$api->set(['console'], ['reload']);
+
+			$params = [
+				'clients',
+				$clients[$i]->clientid
+			];
+			$result = $api->remove($params);
+			if ($result->error != 0) {
+				$error = $result;
+				$err_client = $clients[$i];
+				break;
+			}
+		}
+		$cb = $this->getCallbackClient();
+		$message = '';
+		if (!$error) {
+			$cb->callClientFunction(
+				'oClientListDeleteClientResourceWindow.show',
+				[false]
+			);
+		} elseif ($error->error == BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+			// Other resources depend on this client so it cannot be removed.
+			$message = BaculaConfigDirectives::getDependenciesError(
+				json_decode($error->output, true),
+				'Client',
+				$err_client->name
+			);
+		} else {
+			$emsg = "Error while removing client '%s'. ErrorCode: %d, ErrorMessage: '%s'";
+			$message = sprintf($emsg, $err_client->name, $error->error, $error->output);
+		}
+		if ($message) {
+			$cb->callClientFunction(
+				'oClientListDeleteClientResourceWindow.error',
+				[$message]
+			);
+		}
 	}
 }

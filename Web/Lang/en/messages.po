@@ -7181,3 +7181,9 @@ msgstr "Confirm job deletion"
 
 msgid "Are you sure you want to delete the following job configuration resources?"
 msgstr "Are you sure you want to delete the following job configuration resources?"
+
+msgid "Confirm client deletion"
+msgstr "Confirm client deletion"
+
+msgid "Are you sure you want to delete the following clients?"
+msgstr "Are you sure you want to delete the following clients?"
