@@ -27,8 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TCallback;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
@@ -45,33 +48,12 @@ class JobList extends BaculumWebPage
 
 	public const DEFAULT_JOB_PRIORITY = 10;
 
-	public $jobs;
-
 	public function onInit($param)
 	{
 		parent::onInit($param);
 		if ($this->IsPostBack || $this->IsCallBack) {
 			return;
 		}
-		$result = $this->getModule('api')->get(
-			['jobs', 'show', '?output=json'],
-			null,
-			true,
-			self::USE_CACHE
-		);
-		$jobs = [];
-		if ($result->error === 0) {
-			for ($i = 0; $i < count($result->output); $i++) {
-				$jobs[] = [
-					'job' => $result->output[$i]->name,
-					'enabled' => $result->output[$i]->enabled,
-					'priority' => $result->output[$i]->priority,
-					'type' => chr($result->output[$i]->jobtype),
-					'maxjobs' => $result->output[$i]->maxjobs
-				];
-			}
-		}
-		$this->jobs = $jobs;
 		$this->setDataViews();
 	}
 
@@ -104,6 +86,41 @@ class JobList extends BaculumWebPage
 	public function loadRunJobModal($sender, $param)
 	{
 		$this->RunJobModal->loadData();
+	}
+
+
+	/**
+	 * Load job resource list.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function loadJobList($sender, $param)
+	{
+		$api = $this->getModule('api');
+		$result = $api->get(
+			['jobs', 'show', '?output=json'],
+			null,
+			true,
+			self::USE_CACHE
+		);
+		if ($result->error === 0) {
+			$jobs = [];
+			for ($i = 0; $i < count($result->output); $i++) {
+				$jobs[] = [
+					'job' => $result->output[$i]->name,
+					'enabled' => $result->output[$i]->enabled,
+					'priority' => $result->output[$i]->priority,
+					'type' => chr($result->output[$i]->jobtype),
+					'maxjobs' => $result->output[$i]->maxjobs
+				];
+			}
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oJobList.load_job_list_cb',
+				[$jobs]
+			);
+		}
 	}
 
 	/**
@@ -413,5 +430,72 @@ class JobList extends BaculumWebPage
 			'job_history_report_details_joblog_' . $jobid,
 			$log
 		);
+	}
+
+	/**
+	 * Delete job configuration resources - bulk action
+	 * NOTE: Action available only for users wiht admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function deleteJobResources($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$jobs = $param->getCallbackParameter();
+		if (!is_array($jobs)) {
+			// this is not list - end
+			return;
+		}
+		$error = null;
+		$err_job = '';
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($jobs); $i++) {
+			$params = [
+				'config',
+				'dir',
+				'Job',
+				$jobs[$i]
+			];
+			$result = $api->remove($params);
+			if ($result->error != 0) {
+				$error = $result;
+				$err_job = $jobs[$i];
+				break;
+			}
+		}
+		$cb = $this->getCallbackClient();
+		$message = '';
+		if (!$error) {
+			$api->set(['console'], ['reload']);
+
+			$this->loadJobList($sender, $param);
+
+			$cb->callClientFunction(
+				'oJobListDeleteJobResourceWindow.show',
+				[false]
+			);
+		} elseif ($error->error == BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+			$api->set(['console'], ['reload']);
+
+			// Other resources depend on this job so it cannot be removed.
+			$message = BaculaConfigDirectives::getDependenciesError(
+				json_decode($error->output, true),
+				'Job',
+				$err_job
+			);
+		} else {
+			$emsg = "Error while removing job '%s'. ErrorCode: %d, ErrorMessage: '%s'";
+			$message = sprintf($emsg, $err_job, $error->error, $error->output);
+		}
+		if ($message) {
+			$cb->callClientFunction(
+				'oJobListDeleteJobResourceWindow.error',
+				[$message]
+			);
+		}
 	}
 }

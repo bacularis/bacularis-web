@@ -7186,3 +7186,9 @@ msgstr "Starts in"
 
 msgid "More scheduled jobs"
 msgstr "More scheduled jobs"
+
+msgid "Confirm job deletion"
+msgstr "Confirm job deletion"
+
+msgid "Are you sure you want to delete the following job configuration resources?"
+msgstr "Are you sure you want to delete the following job configuration resources?"

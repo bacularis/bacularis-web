@@ -943,11 +943,12 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 			</table>
 			<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 		</div>
+		<com:TCallback ID="LoadJobList" OnCallback="loadJobList" />
 <script>
 function get_run_job_callback() {
 	return <%=$this->RunJobAction->ActiveControl->Javascript%>;
 }
-const oJobList = {
+var oJobList = {
 	ids: {
 		job_details_list: 'job_details_list',
 		job_details_list_body: 'job_details_list_body'
@@ -994,10 +995,26 @@ const oJobList = {
 			before: function() {
 				oBulkActionsModal.show_output(true);
 			}
+		},
+		{
+			action: 'delete',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			label: '<%[ Delete ]%>',
+			value: 'job',
+			before: function() {
+				const cb = () => {
+					const fields = 'job';
+					const table = oJobList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oJobListDeleteJobResourceWindow.set_items_func(cb);
+				oJobListDeleteJobResourceWindow.show(true);
+			}
 		}
 	],
 	job_weather: {},
-	init: function(data) {
+	update: function(data) {
 		this.data = data;
 		if (!this.table) {
 			this.set_weather();
@@ -1011,10 +1028,6 @@ const oJobList = {
 			this.table_toolbar.style.display = 'none';
 		}
 	},
-	update: function(data) {
-		const tdata = data || <%=json_encode($this->jobs)%>;
-		this.init(tdata);
-	},
 	set_events: function() {
 		document.getElementById(this.ids.job_details_list).addEventListener('click', function(e) {
 			$(function() {
@@ -1024,6 +1037,13 @@ const oJobList = {
 				}, 'fast');
 			}.bind(this));
 		}.bind(this));
+	},
+	load_job_list: function() {
+		const cb = <%=$this->LoadJobList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_job_list_cb: function(data) {
+		oJobList.update(data);
 	},
 	set_table: function() {
 		this.table = $('#' + this.ids.job_details_list).DataTable({
@@ -1325,11 +1345,98 @@ const oJobList = {
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
+		<com:TCallback ID="DeleteJobResourcesAction" OnCallback="deleteJobResources" />
 		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
 			ID="BulkApplyConfigsJob"
 			ComponentType="dir"
 			ResourceType="Job"
 		/>
+		<!-- Delete job confirmation window -->
+		<div id="job_list_delete_job_resource_confirm_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-orange w3-text-white">
+					<span onclick="oJobListDeleteJobResourceWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Confirm job deletion ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<div id="job_list_delete_job_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
+						<h3><%[ Error ]%></h3>
+						<p id="job_list_delete_job_resource_confirm_window_error_text"></p>
+					</div>
+					<p>
+						<%[ Are you sure you want to delete the following job configuration resources? ]%>
+					</p>
+					<ul id="job_list_delete_job_resource_confirm_window_list" class="w3-half bold"></ul>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oJobListDeleteJobResourceWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oJobListDeleteJobResourceWindow.delete();"><i class="fa-solid fa-trash-alt"></i> &nbsp;<%[ Remove ]%></button>
+				</footer>
+			</div>
+		</div>
+<script>
+var oJobListDeleteJobResourceWindow = {
+	items_func: null,
+	ids: {
+		win: 'job_list_delete_job_resource_confirm_window',
+		error_box: 'job_list_delete_job_resource_confirm_window_error_contaner',
+		error_text: 'job_list_delete_job_resource_confirm_window_error_text',
+		item_list: 'job_list_delete_job_resource_confirm_window_list'
+	},
+	clear: function() {
+		this.error('');
+		this.clear_items();
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_list: function() {
+		this.clear_items();
+		const items = this.items_func();
+		for (const item of items) {
+			this.add_item(item);
+		}
+	},
+	add_item: function(item) {
+		const ul = document.getElementById(this.ids.item_list);
+		const li = document.createElement('LI');
+		li.textContent = item;
+		ul.appendChild(li);
+	},
+	clear_items: function() {
+		const ul = document.getElementById(this.ids.item_list);
+		while (ul.firstChild) {
+			ul.removeChild(ul.firstChild);
+		}
+	},
+	delete: function() {
+		const items = this.items_func();
+		const cb = <%=$this->DeleteJobResourcesAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	error: function(emsg) {
+		const self = oJobListDeleteJobResourceWindow;
+		const error_text = document.getElementById(self.ids.error_text);
+		error_text.innerHTML = emsg;
+		const error_box = document.getElementById(self.ids.error_box);
+		error_box.style.display = emsg ? 'block' : 'none';
+	},
+	show: function(show) {
+		const self = oJobListDeleteJobResourceWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set item list to delete
+		self.set_item_list();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
 	</div>
 	<div class="w3-container tab_item" id="job_reports" style="display: none">
 		<div class="w3-row w3-margin-bottom">
@@ -2356,7 +2463,7 @@ $(function() {
 	MonitorCalls.push(() => {
 		setTimeout(() => {
 			oJobHistoryReport = new JobHistoryReport();
-			oJobList.update();
+			oJobList.load_job_list();
 			oJobRunningOverTimeReport = new JobRunningOverTimeReport();
 		}, 1000);
 	});
