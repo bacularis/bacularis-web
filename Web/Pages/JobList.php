@@ -59,6 +59,28 @@ class JobList extends BaculumWebPage
 
 	private function setDataViews()
 	{
+		$this->setJobListDataView();
+		$this->setJobHistoryListDataView();
+	}
+
+	private function setJobListDataView()
+	{
+		$job_view_desc = [
+			'job' => ['type' => 'string', 'name' => Prado::localize('Job')],
+			'enabled' => ['type' => 'boolean', 'name' => Prado::localize('Enabled')],
+			'priority' => ['type' => 'number', 'name' => Prado::localize('Priority')],
+			'type' => ['type' => 'string', 'name' => Prado::localize('Type'), 'formatter' => 'JobType.get_type'],
+			'maxjobs' => ['type' => 'number', 'name' => 'Max. con. jobs']
+		];
+
+		$this->JobViews->setViewName('job_list');
+		$this->JobViews->setViewDataFunction('get_job_list_data');
+		$this->JobViews->setUpdateViewFunction('update_job_list_table');
+		$this->JobViews->setDescription($job_view_desc);
+	}
+
+	private function setJobHistoryListDataView()
+	{
 		$job_view_desc = [
 			'jobid' => ['type' => 'number', 'name' => Prado::localize('JobId')],
 			'name' => ['type' => 'string', 'name' => Prado::localize('Name')],
@@ -77,10 +99,10 @@ class JobList extends BaculumWebPage
 			'joberrors' => ['type' => 'number', 'name' => Prado::localize('Job errors')],
 			'volcount' => ['type' => 'number', 'name' => Prado::localize('Vol. count')]
 		];
-		$this->JobViews->setViewName('job_history');
-		$this->JobViews->setViewDataFunction('get_job_history_data');
-		$this->JobViews->setUpdateViewFunction('update_job_history_table');
-		$this->JobViews->setDescription($job_view_desc);
+		$this->JobHistoryViews->setViewName('job_history');
+		$this->JobHistoryViews->setViewDataFunction('get_job_history_data');
+		$this->JobHistoryViews->setUpdateViewFunction('update_job_history_table');
+		$this->JobHistoryViews->setDescription($job_view_desc);
 	}
 
 	public function loadRunJobModal($sender, $param)
