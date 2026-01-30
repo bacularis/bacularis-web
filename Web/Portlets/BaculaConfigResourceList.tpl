@@ -12,7 +12,7 @@
 			</com:TActivePanel>
 		</div>
 	</div>
-	<table id="<%=$this->ClientID%>_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%; table-layout: fixed;">
+	<table id="<%=$this->ClientID%>_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%; table-layout: fixed;">
 		<thead>
 			<tr>
 				<th></th>

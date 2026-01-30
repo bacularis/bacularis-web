@@ -18,7 +18,7 @@
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsStorageList" ViewName="storage_list" />
 	<div class="w3-container">
-		<table id="storage_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+		<table id="storage_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
 				<tr>
 					<th></th>

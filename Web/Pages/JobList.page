@@ -907,7 +907,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 	<div class="w3-container tab_item" id="job_details" style="display: none">
 		<com:Bacularis.Web.Portlets.TabViews ID="JobViews" />
 		<div class="w3-container">
-			<table id="job_details_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
+			<table id="job_details_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
