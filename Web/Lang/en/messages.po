@@ -7187,3 +7187,9 @@ msgstr "Confirm client deletion"
 
 msgid "Are you sure you want to delete the following clients?"
 msgstr "Are you sure you want to delete the following clients?"
+
+msgid "Confirm storage deletion"
+msgstr "Confirm storage deletion"
+
+msgid "Are you sure you want to delete the following storage configuration resources?"
+msgstr "Are you sure you want to delete the following storage configuration resources?"

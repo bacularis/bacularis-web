@@ -43,6 +43,7 @@
 		</table>
 		<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 	</div>
+	<com:TCallback ID="LoadStorageList" OnCallback="loadStorageList" />
 <script type="text/javascript">
 var oStorageList = {
 	ids: {
@@ -50,6 +51,7 @@ var oStorageList = {
 		storage_list_body: 'storage_list_body'
 	},
 	data: [],
+	data_all: [],
 	table: null,
 	table_toolbar: null,
 	actions: [
@@ -69,6 +71,22 @@ var oStorageList = {
 				};
 				oBulkApplyConfigsModal.set_item_cb(cb);
 				oBulkApplyConfigsModal.show_window(true);
+			}
+		},
+		{
+			action: 'delete',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			label: '<%[ Delete ]%>',
+			value: ['name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['name'];
+					const table = oStorageList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oStorageListDeleteStorageResourceWindow.set_items_func(cb);
+				oStorageListDeleteStorageResourceWindow.show(true);
 			}
 		}
 	],
@@ -237,10 +255,18 @@ var oStorageList = {
 			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
+	},
+	load_storage_list: function() {
+		const cb = <%=$this->LoadStorageList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_storage_list_cb: function(data) {
+		oStorageList.data_all = data;
+		<%=$this->StorageViews->ClientID%>_TabViews.tabs.apply_filters();
 	}
 };
 function get_storage_list_data() {
-	return <%=json_encode($this->storages)%>;
+	return oStorageList.data_all;
 }
 function update_storage_list_table(data, init) {
 	if (init) {
@@ -249,13 +275,117 @@ function update_storage_list_table(data, init) {
 		oStorageList.init(data);
 	}
 }
-$(function() {
-	<%=$this->StorageViews->ClientID%>_TabViews.tabs.apply_filters();
-});
 </script>
 	<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
 		ID="BulkApplyConfigsStorage"
 		ComponentType="dir"
 		ResourceType="Storage"
 	/>
+	<com:TCallback ID="DeleteStorageResourcesAction" OnCallback="deleteStorageResources">
+		<prop:ClientSide.OnComplete>
+			oStorageListDeleteStorageResourceWindow.delete_cb();
+			oStorageList.load_storage_list();
+		</prop:ClientSide.OnComplete>
+	</com:TCallback>
+	<!-- Delete storage confirmation window -->
+	<div id="storage_list_delete_storage_resource_confirm_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-orange w3-text-white">
+				<span onclick="oStorageListDeleteStorageResourceWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2><%[ Confirm storage deletion ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<div id="storage_list_delete_storage_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
+					<h3><%[ Error ]%></h3>
+					<p id="storage_list_delete_storage_resource_confirm_window_error_text"></p>
+				</div>
+				<p>
+					<%[ Are you sure you want to delete the following storage configuration resources? ]%>
+				</p>
+				<ul id="storage_list_delete_storage_resource_confirm_window_list" class="bold"></ul>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oStorageListDeleteStorageResourceWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" id="storage_list_delete_storage_resource_confirm_window_rm_btn" class="w3-button w3-red w3-margin-bottom" onclick="oStorageListDeleteStorageResourceWindow.delete();"><i class="fa-solid fa-trash-alt"></i> &nbsp;<%[ Remove ]%></button>
+			</footer>
+		</div>
+	</div>
+<script>
+var oStorageListDeleteStorageResourceWindow = {
+	items_func: null,
+	ids: {
+		win: 'storage_list_delete_storage_resource_confirm_window',
+		error_box: 'storage_list_delete_storage_resource_confirm_window_error_contaner',
+		error_text: 'storage_list_delete_storage_resource_confirm_window_error_text',
+		item_list: 'storage_list_delete_storage_resource_confirm_window_list',
+		rm_btn: 'storage_list_delete_storage_resource_confirm_window_rm_btn'
+	},
+	clear: function() {
+		this.error('');
+		this.clear_items();
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_list: function() {
+		this.clear_items();
+		const items = this.items_func();
+		for (const item of items) {
+			this.add_item(item);
+		}
+	},
+	add_item: function(item) {
+		const ul = document.getElementById(this.ids.item_list);
+		const li = document.createElement('LI');
+		li.textContent = item.name;
+		ul.appendChild(li);
+	},
+	clear_items: function() {
+		const ul = document.getElementById(this.ids.item_list);
+		while (ul.firstChild) {
+			ul.removeChild(ul.firstChild);
+		}
+	},
+	delete: function() {
+		const items = this.items_func();
+		const cb = <%=$this->DeleteStorageResourcesAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	delete_cb: function() {
+		const self = oStorageListDeleteStorageResourceWindow;
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = 'none';
+
+		oStorageList.table.rows({selected: true}).deselect();
+	},
+	error: function(emsg) {
+		const self = oStorageListDeleteStorageResourceWindow;
+		const error_text = document.getElementById(self.ids.error_text);
+		error_text.innerHTML = emsg;
+		const error_box = document.getElementById(self.ids.error_box);
+		error_box.style.display = emsg ? 'block' : 'none';
+	},
+	show: function(show) {
+		const self = oStorageListDeleteStorageResourceWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set item list to delete
+		self.set_item_list();
+
+		// show delete button
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = show ? 'inline-block' : 'none';
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+$(() => {
+	oStorageList.load_storage_list();
+});
+</script>
 </com:TContent>

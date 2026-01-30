@@ -27,7 +27,10 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Prado\Prado;
 
 /**
@@ -66,5 +69,87 @@ class StorageList extends BaculumWebPage
 		$this->StorageViews->setViewDataFunction('get_storage_list_data');
 		$this->StorageViews->setUpdateViewFunction('update_storage_list_table');
 		$this->StorageViews->setDescription($storage_view_desc);
+	}
+
+	/**
+	 * Load storage resource list.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function loadStorageList($sender, $param)
+	{
+		$api = $this->getModule('api');
+		$params = ['storages'];
+		$storage_list = $api->get($params, null, true, self::USE_CACHE);
+		if ($storage_list->error === 0) {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oStorageList.load_storage_list_cb',
+				[$storage_list->output]
+			);
+		}
+	}
+
+	/**
+	 * Delete director component storage configuration and catalog resources - bulk action
+	 * NOTE: Action available only for users wiht admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function deleteStorageResources($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$storages = $param->getCallbackParameter();
+		if (!is_array($storages)) {
+			// this is not list - end
+			return;
+		}
+		$error = null;
+		$err_storage = '';
+		$api = $this->getModule('api');
+		for ($i = 0; $i < count($storages); $i++) {
+			$params = [
+				'config',
+				'dir',
+				'Storage',
+				$storages[$i]->name
+			];
+			$result = $api->remove($params);
+			if ($result->error != 0) {
+				$error = $result;
+				$err_storage = $storages[$i];
+				break;
+			}
+			$api->set(['console'], ['reload']);
+		}
+		$cb = $this->getCallbackClient();
+		$message = '';
+		if (!$error) {
+			$cb->callClientFunction(
+				'oStorageListDeleteStorageResourceWindow.show',
+				[false]
+			);
+		} elseif ($error->error == BaculaConfigError::ERROR_CONFIG_DEPENDENCY_ERROR) {
+			// Other resources depend on this storage so it cannot be removed.
+			$message = BaculaConfigDirectives::getDependenciesError(
+				json_decode($error->output, true),
+				'Storage',
+				$err_storage->name
+			);
+		} else {
+			$emsg = "Error while removing storage '%s'. ErrorCode: %d, ErrorMessage: '%s'";
+			$message = sprintf($emsg, $err_storage->name, $error->error, $error->output);
+		}
+		if ($message) {
+			$cb->callClientFunction(
+				'oStorageListDeleteStorageResourceWindow.error',
+				[$message]
+			);
+		}
 	}
 }
