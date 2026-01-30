@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
@@ -488,6 +489,17 @@ class JobList extends BaculumWebPage
 				$err_job = $jobs[$i];
 				break;
 			}
+			$amsg = sprintf(
+				'Remove Bacula config resource. Component: %s, Resource: %s, Name: %s',
+				$this->getApplication()->getSession()->itemAt('dir'),
+				'Job',
+				$jobs[$i]
+			);
+			$this->getModule('audit')->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_CONFIG,
+				$amsg
+			);
 		}
 		$cb = $this->getCallbackClient();
 		$message = '';
