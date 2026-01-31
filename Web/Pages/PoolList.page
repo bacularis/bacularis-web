@@ -75,6 +75,22 @@ var oPoolList = {
 				oBulkApplyConfigsModal.set_item_cb(cb);
 				oBulkApplyConfigsModal.show_window(true);
 			}
+		},
+		{
+			action: 'delete',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			label: '<%[ Delete ]%>',
+			value: ['poolid', 'name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['poolid', 'name'];
+					const table = oPoolList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oPoolListDeletePoolResourceWindow.set_items_func(cb);
+				oPoolListDeletePoolResourceWindow.show(true);
+			}
 		}
 	],
 	init: function(data) {
@@ -290,7 +306,7 @@ function update_pool_list_table(data, init) {
 }
 MonitorParams = {pools: null};
 $(function() {
-	MonitorCalls.push(function() {
+	MonitorCallsInterval.push(function() {
 		<%=$this->PoolViews->ClientID%>_TabViews.tabs.apply_filters();
 	});
 });
@@ -300,4 +316,112 @@ $(function() {
 		ComponentType="dir"
 		ResourceType="Pool"
 	/>
+	<com:TCallback ID="DeletePoolResourcesAction" OnCallback="deletePoolResources">
+		<prop:ClientSide.OnComplete>
+			oPoolListDeletePoolResourceWindow.delete_cb();
+			oMonitor();
+		</prop:ClientSide.OnComplete>
+	</com:TCallback>
+
+	<!-- Delete pool confirmation window -->
+	<div id="pool_list_delete_pool_resource_confirm_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-orange w3-text-white">
+				<span onclick="oPoolListDeletePoolResourceWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2><%[ Confirm pool deletion ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<div id="pool_list_delete_pool_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
+					<h3><%[ Error ]%></h3>
+					<p id="pool_list_delete_pool_resource_confirm_window_error_text"></p>
+				</div>
+				<p>
+					<%[ Are you sure you want to delete the following pools? ]%>
+				</p>
+				<p>
+					<strong><%[ NOTE ]%></strong>: <%[ Pools to delete must be empty (no volume in pool). ]%>
+				</p>
+				<ul id="pool_list_delete_pool_resource_confirm_window_list" class="bold"></ul>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oPoolListDeletePoolResourceWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" id="pool_list_delete_pool_resource_confirm_window_rm_btn" class="w3-button w3-red w3-margin-bottom" onclick="oPoolListDeletePoolResourceWindow.delete();"><i class="fa-solid fa-trash-alt"></i> &nbsp;<%[ Remove ]%></button>
+			</footer>
+		</div>
+	</div>
+<script>
+var oPoolListDeletePoolResourceWindow = {
+	items_func: null,
+	ids: {
+		win: 'pool_list_delete_pool_resource_confirm_window',
+		error_box: 'pool_list_delete_pool_resource_confirm_window_error_contaner',
+		error_text: 'pool_list_delete_pool_resource_confirm_window_error_text',
+		item_list: 'pool_list_delete_pool_resource_confirm_window_list',
+		rm_btn: 'pool_list_delete_pool_resource_confirm_window_rm_btn'
+	},
+	clear: function() {
+		this.error('');
+		this.clear_items();
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_item_list: function() {
+		this.clear_items();
+		const items = this.items_func();
+		for (const item of items) {
+			this.add_item(item);
+		}
+	},
+	add_item: function(item) {
+		const ul = document.getElementById(this.ids.item_list);
+		const li = document.createElement('LI');
+		li.textContent = item.name;
+		ul.appendChild(li);
+	},
+	clear_items: function() {
+		const ul = document.getElementById(this.ids.item_list);
+		while (ul.firstChild) {
+			ul.removeChild(ul.firstChild);
+		}
+	},
+	delete: function() {
+		const items = this.items_func();
+		const cb = <%=$this->DeletePoolResourcesAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(items);
+		cb.dispatch();
+	},
+	delete_cb: function() {
+		const self = oPoolListDeletePoolResourceWindow;
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = 'none';
+
+		oPoolList.table.rows({selected: true}).deselect();
+	},
+	error: function(emsg) {
+		const self = oPoolListDeletePoolResourceWindow;
+		const error_text = document.getElementById(self.ids.error_text);
+		error_text.innerHTML = emsg;
+		const error_box = document.getElementById(self.ids.error_box);
+		error_box.style.display = emsg ? 'block' : 'none';
+	},
+	show: function(show) {
+		const self = oPoolListDeletePoolResourceWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set item list to delete
+		self.set_item_list();
+
+		// show delete button
+		const rm_btn = document.getElementById(self.ids.rm_btn);
+		rm_btn.style.display = show ? 'inline-block' : 'none';
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+</script>
 </com:TContent>

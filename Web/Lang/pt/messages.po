@@ -7204,3 +7204,12 @@ msgstr "Confirm storage deletion"
 
 msgid "Are you sure you want to delete the following storage configuration resources?"
 msgstr "Are you sure you want to delete the following storage configuration resources?"
+
+msgid "Confirm pool deletion"
+msgstr "Confirm pool deletion"
+
+msgid "Are you sure you want to delete the following pools?"
+msgstr "Are you sure you want to delete the following pools?"
+
+msgid "Pools to delete must be empty (no volume in pool)."
+msgstr "Pools to delete must be empty (no volume in pool)."
