@@ -107,6 +107,7 @@ var oPoolList = {
 		const page = this.table.page();
 		this.table.clear().rows.add(data).draw();
 		this.table.page(page).draw(false);
+		this.table_toolbar.style.display = 'none';
 	},
 	set_events: function() {
 		document.getElementById(this.ids.pool_list).addEventListener('click', function(e) {
@@ -292,6 +293,14 @@ var oPoolList = {
 			actions: '<%[ Select action ]%>',
 			ok: '<%[ OK ]%>'
 		});
+	},
+	is_element_selected: function() {
+		return (this.table && this.table.rows({selected: true}).data().length > 0);
+	},
+	is_element_opened: function() {
+		const tbody = document.getElementById(this.ids.pool_list_body);
+		const is_opened = (tbody.querySelector('ul.dtr-details') !== null);
+		return is_opened;
 	}
 };
 function get_pool_list_data() {
@@ -307,7 +316,9 @@ function update_pool_list_table(data, init) {
 MonitorParams = {pools: null};
 $(function() {
 	MonitorCallsInterval.push(function() {
-		<%=$this->PoolViews->ClientID%>_TabViews.tabs.apply_filters();
+		if (!oPoolList.is_element_selected() && !oPoolList.is_element_opened()) {
+			<%=$this->PoolViews->ClientID%>_TabViews.tabs.apply_filters();
+		}
 	});
 });
 </script>
