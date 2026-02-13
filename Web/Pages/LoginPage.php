@@ -443,22 +443,13 @@ class LoginPage extends BaculumWebPage
 	 */
 	public function logout($sender, $param)
 	{
-		/**
-		 * Open session to be able to log out.
-		 */
-		$sess = $this->getApplication()->getSession();
-		$sess->open();
+		// Logout SSO (if any)
+		$oidc = $this->getModule('oidc');
+		$oidc->rpLogoutUser();
 
-		$this->getModule('auth')->logout();
-		if ($this->getModule('web_config')->isAuthMethodBasic()) {
-			/**
-			 * This status code 401 is necessary to stop comming AJAX requests
-			 * and to bring the login prompt on.
-			 */
-			$this->Response->setStatusCode(401);
-		} else {
-			$this->goToDefaultPage();
-		}
+		// do logout
+		$users = $this->getModule('users');
+		$users->logout();
 	}
 
 	/**
