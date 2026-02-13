@@ -91,8 +91,8 @@ class WebRoleMappingConfig extends ConfigFileModule
 		return $result;
 	}
 
-	 public function getMappingConfig(?string $mapping_id)
-	 {
+	public function getMappingConfig(?string $mapping_id)
+	{
 		$mapping_config = [];
 		$config = $this->getConfig();
 		if (key_exists($mapping_id, $config)) {
@@ -109,7 +109,7 @@ class WebRoleMappingConfig extends ConfigFileModule
 			$mapping_config = $cfg;
 		}
 		return $mapping_config;
-	 }
+	}
 
 	/**
 	 * Set role mapping config.
