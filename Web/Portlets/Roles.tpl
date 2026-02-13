@@ -41,308 +41,308 @@
 <com:TCallback ID="LoadRole" OnCallback="TemplateControl.loadRoleWindow" />
 <script>
 var oRoleList = {
-ids: {
-	role_list: 'role_list_table',
-	role_list_body: 'role_list_body'
-},
-actions: [
-	{
-		action: 'remove',
-		label: '<%[ Remove ]%>',
-		value: 'role',
-		callback: <%=$this->RemoveRolesAction->ActiveControl->Javascript%>,
-		validate: function(selected) {
-			var used_roles = [];
-			var predefined_roles = <%=json_encode(array_keys($this->getModule('user_role')->getPreDefinedRoles()))%>;
-			var predef_roles = [];
-			selected.each(function(v, k) {
-				if (predefined_roles.indexOf(v.role) !== -1) {
-					predef_roles.push(' - ' + v.role);
-				} else if (v.user_count > 0) {
-					used_roles.push(' - ' + v.role);
+	ids: {
+		role_list: 'role_list_table',
+		role_list_body: 'role_list_body'
+	},
+	actions: [
+		{
+			action: 'remove',
+			label: '<%[ Remove ]%>',
+			value: 'role',
+			callback: <%=$this->RemoveRolesAction->ActiveControl->Javascript%>,
+			validate: function(selected) {
+				var used_roles = [];
+				var predefined_roles = <%=json_encode(array_keys($this->getModule('user_role')->getPreDefinedRoles()))%>;
+				var predef_roles = [];
+				selected.each(function(v, k) {
+					if (predefined_roles.indexOf(v.role) !== -1) {
+						predef_roles.push(' - ' + v.role);
+					} else if (v.user_count > 0) {
+						used_roles.push(' - ' + v.role);
+					}
+				});
+				var emsg = '', msg;
+				if (predef_roles.length > 0) {
+					msg = '<%[ The following roles are predefined and cannot be removed: %predefined_roles ]%>';
+					emsg += msg.replace('%predefined_roles', '<hr />' + predef_roles.join('<br />') + '<hr />');
 				}
-			});
-			var emsg = '', msg;
-			if (predef_roles.length > 0) {
-				msg = '<%[ The following roles are predefined and cannot be removed: %predefined_roles ]%>';
-				emsg += msg.replace('%predefined_roles', '<hr />' + predef_roles.join('<br />') + '<hr />');
+				if (used_roles.length > 0) {
+					msg = '<%[ The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles. ]%>';
+					emsg += msg.replace('%used_roles', '<hr />' + used_roles.join('<br />') + '<hr />');
+				}
+				if (emsg) {
+					oBulkActionsModal.set_error(emsg);
+					return false;
+				}
+				return true;
 			}
-			if (used_roles.length > 0) {
-				msg = '<%[ The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles. ]%>';
-				emsg += msg.replace('%used_roles', '<hr />' + used_roles.join('<br />') + '<hr />');
-			}
-			if (emsg) {
-				oBulkActionsModal.set_error(emsg);
-				return false;
-			}
-			return true;
 		}
-	}
-],
-data: [],
-table: null,
-table_toolbar: null,
-init: function() {
-	if (!this.table) {
-		this.set_table();
-		this.set_bulk_actions();
-		this.set_events();
-	} else {
-		var page = this.table.page();
-		this.table.clear().rows.add(oRoleList.data).draw();
-		this.table.page(page).draw(false);
-		this.set_filters(this.table);
-		this.table_toolbar.style.display = 'none';
-	}
-},
-set_events: function() {
-	document.getElementById(this.ids.role_list).addEventListener('click', function(e) {
-		$(function() {
-			const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
-			$(this.table_toolbar).animate({
-				width: wa
-			}, 'fast');
+	],
+	data: [],
+	table: null,
+	table_toolbar: null,
+	init: function() {
+		if (!this.table) {
+			this.set_table();
+			this.set_bulk_actions();
+			this.set_events();
+		} else {
+			var page = this.table.page();
+			this.table.clear().rows.add(oRoleList.data).draw();
+			this.table.page(page).draw(false);
+			this.set_filters(this.table);
+			this.table_toolbar.style.display = 'none';
+		}
+	},
+	set_events: function() {
+		document.getElementById(this.ids.role_list).addEventListener('click', function(e) {
+			$(function() {
+				const wa = (this.table.rows({selected: true}).data().length > 0) ? 'show' : 'hide';
+				$(this.table_toolbar).animate({
+					width: wa
+				}, 'fast');
+			}.bind(this));
 		}.bind(this));
-	}.bind(this));
-},
-set_table: function() {
-	this.table = $('#' + this.ids.role_list).DataTable({
-		data: this.data,
-		deferRender: true,
-		autoWidth: false,
-		fixedHeader: {
-			header: true,
-			headerOffset: $('#main_top_bar').height()
-		},
-		layout: {
-			topStart: [
-				{
-					pageLength: {}
-				},
-				{
-					buttons: ['copy', 'csv', 'colvis']
-				},
-				{
-					div: {
-						className: 'table_toolbar'
+	},
+	set_table: function() {
+		this.table = $('#' + this.ids.role_list).DataTable({
+			data: this.data,
+			deferRender: true,
+			autoWidth: false,
+			fixedHeader: {
+				header: true,
+				headerOffset: $('#main_top_bar').height()
+			},
+			layout: {
+				topStart: [
+					{
+						pageLength: {}
+					},
+					{
+						buttons: ['copy', 'csv', 'colvis']
+					},
+					{
+						div: {
+							className: 'table_toolbar'
+						}
 					}
-				}
-			],
-			topEnd: [
-				'search'
-			],
-			bottomStart: [
-				'info'
-			],
-			bottomEnd: [
-				'paging'
-			]
-		},
-		stateSave: true,
-		stateDuration: KEEP_TABLE_SETTINGS,
-		columns: [
-			{
-				orderable: false,
-				data: null,
-				defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				],
+				topEnd: [
+					'search'
+				],
+				bottomStart: [
+					'info'
+				],
+				bottomEnd: [
+					'paging'
+				]
 			},
-			{data: 'role'},
-			{data: 'long_name'},
-			{
-				data: 'description',
-				visible: false
-			},
-			{data: 'user_count'},
-			{
-				data: 'resources',
-				render: function(data, type, row) {
-					ret = data;
-					if (type == 'display') {
-						var span = document.createElement('SPAN');
-						span.title = data;
-						if (data.length > 40) {
-							span.textContent = data.substring(0, 40) + '...';
+			stateSave: true,
+			stateDuration: KEEP_TABLE_SETTINGS,
+			columns: [
+				{
+					orderable: false,
+					data: null,
+					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
+				},
+				{data: 'role'},
+				{data: 'long_name'},
+				{
+					data: 'description',
+					visible: false
+				},
+				{data: 'user_count'},
+				{
+					data: 'resources',
+					render: function(data, type, row) {
+						ret = data;
+						if (type == 'display') {
+							var span = document.createElement('SPAN');
+							span.title = data;
+							if (data.length > 40) {
+								span.textContent = data.substring(0, 40) + '...';
+							} else {
+								span.textContent = data;
+							}
+							ret = span.outerHTML;
 						} else {
-							span.textContent = data;
+							ret = data;
 						}
-						ret = span.outerHTML;
-					} else {
-						ret = data;
+						return ret;
 					}
-					return ret;
-				}
-			},
-			{
-				data: 'enabled',
-				render: function(data, type, row) {
-					var ret;
-					if (type == 'display') {
-						ret = '';
-						if (data == 1) {
-							var check = document.createElement('I');
-							check.className = 'fas fa-check';
-							ret = check.outerHTML;
+				},
+				{
+					data: 'enabled',
+					render: function(data, type, row) {
+						var ret;
+						if (type == 'display') {
+							ret = '';
+							if (data == 1) {
+								var check = document.createElement('I');
+								check.className = 'fas fa-check';
+								ret = check.outerHTML;
+							}
+						} else {
+							ret = data;
 						}
-					} else {
-						ret = data;
+						return ret;
 					}
-					return ret;
+				},
+				{
+					data: 'role',
+					render: (data, type, row) => {
+						const id = 'role';
+						const tt_obj = oTagTools_<%=$this->TagToolsRoleList->ClientID%>;
+						const table = 'oRoleList.table';
+						return render_tags(type, id, data, tt_obj, table);
+					}
+				},
+				{
+					data: 'role',
+					render: function (data, type, row) {
+						var btn_edit = document.createElement('BUTTON');
+						btn_edit.className = 'w3-button w3-green';
+						btn_edit.type = 'button';
+						var i_edit = document.createElement('I');
+						i_edit.className = 'fa fa-edit';
+						var label_edit = document.createTextNode(' <%[ Edit ]%>');
+						btn_edit.appendChild(i_edit);
+						btn_edit.innerHTML += '&nbsp';
+						btn_edit.style.marginRight = '8px';
+						btn_edit.appendChild(label_edit);
+						btn_edit.setAttribute('onclick', 'oRoles.load_role_window(\'' + data + '\')');
+						return btn_edit.outerHTML;
+					}
+				}
+			],
+			responsive: {
+				details: {
+					type: 'column',
+					display: DataTable.Responsive.display.childRow
 				}
 			},
-			{
-				data: 'role',
-				render: (data, type, row) => {
-					const id = 'role';
-					const tt_obj = oTagTools_<%=$this->TagToolsRoleList->ClientID%>;
-					const table = 'oRoleList.table';
-					return render_tags(type, id, data, tt_obj, table);
-				}
+			columnDefs: [{
+				className: 'dtr-control',
+				orderable: false,
+				targets: 0
 			},
 			{
-				data: 'role',
-				render: function (data, type, row) {
-					var btn_edit = document.createElement('BUTTON');
-					btn_edit.className = 'w3-button w3-green';
-					btn_edit.type = 'button';
-					var i_edit = document.createElement('I');
-					i_edit.className = 'fa fa-edit';
-					var label_edit = document.createTextNode(' <%[ Edit ]%>');
-					btn_edit.appendChild(i_edit);
-					btn_edit.innerHTML += '&nbsp';
-					btn_edit.style.marginRight = '8px';
-					btn_edit.appendChild(label_edit);
-					btn_edit.setAttribute('onclick', 'oRoles.load_role_window(\'' + data + '\')');
-					return btn_edit.outerHTML;
-				}
+				className: 'action_col',
+				orderable: false,
+				targets: [ 8 ]
+			},
+			{
+				className: "dt-center",
+				targets: [ 2, 3, 4, 5, 6, 7, 8 ]
+			}],
+			select: {
+				style:    'os',
+				selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
+				blurable: false
+			},
+			order: [1, 'asc'],
+			initComplete: function () {
+				oRoleList.set_filters(this.api());
 			}
-		],
-		responsive: {
-			details: {
-				type: 'column',
-				display: DataTable.Responsive.display.childRow
-			}
-		},
-		columnDefs: [{
-			className: 'dtr-control',
-			orderable: false,
-			targets: 0
-		},
-		{
-			className: 'action_col',
-			orderable: false,
-			targets: [ 8 ]
-		},
-		{
-			className: "dt-center",
-			targets: [ 2, 3, 4, 5, 6, 7, 8 ]
-		}],
-		select: {
-			style:    'os',
-			selector: 'td:not(:last-child):not(:first-child):not(:nth-last-child(2))',
-			blurable: false
-		},
-		order: [1, 'asc'],
-		initComplete: function () {
-			oRoleList.set_filters(this.api());
-		}
-	});
-},
-set_filters: function(api) {
-	api.columns([6]).every(function () {
-		var column = this;
-		var select = $('<select class="dt-select"><option value=""></option></select>')
-		.appendTo($(column.footer()).empty())
-		.on('change', function () {
-			var val = dtEscapeRegex(
-				$(this).val()
-			);
-			column
-			.search(val ? '^' + val + '$' : '', true, false)
-			.draw();
 		});
-		if (column[0][0] == 6) { // Enabled column
-			column.data().unique().sort().each(function (d, j) {
-				var ds = '';
-				if (d === '1') {
-					ds = '<%[ Enabled ]%>';
-				} else if (d === '0') {
-					ds = '<%[ Disabled ]%>';
-				}
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-				} else if (ds) {
-					select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
-				}
+	},
+	set_filters: function(api) {
+		api.columns([6]).every(function () {
+			var column = this;
+			var select = $('<select class="dt-select"><option value=""></option></select>')
+			.appendTo($(column.footer()).empty())
+			.on('change', function () {
+				var val = dtEscapeRegex(
+					$(this).val()
+				);
+				column
+				.search(val ? '^' + val + '$' : '', true, false)
+				.draw();
 			});
-		}
-	});
-},
-set_bulk_actions: function() {
-	this.table_toolbar = get_table_toolbar(this.table, this.actions, {
-		actions: '<%[ Select action ]%>',
-		ok: '<%[ OK ]%>'
-	});
-}
+			if (column[0][0] == 6) { // Enabled column
+				column.data().unique().sort().each(function (d, j) {
+					var ds = '';
+					if (d === '1') {
+						ds = '<%[ Enabled ]%>';
+					} else if (d === '0') {
+						ds = '<%[ Disabled ]%>';
+					}
+					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
+						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
+					} else if (ds) {
+						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					}
+				});
+			}
+		});
+	},
+	set_bulk_actions: function() {
+		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
+			actions: '<%[ Select action ]%>',
+			ok: '<%[ OK ]%>'
+		});
+	}
 };
 
 var oRoles = {
-load_role_window: function(role) {
-	var title_add = document.getElementById('role_window_title_add');
-	var title_edit = document.getElementById('role_window_title_edit');
-	var role_field_name = document.getElementById('<%=$this->Role->ClientID%>');
-	var role_field_req = document.getElementById('role_window_required');
-	var role_win_type = document.getElementById('<%=$this->RoleWindowType->ClientID%>');
-	var cb = <%=$this->LoadRole->ActiveControl->Javascript%>;
-	cb.setCallbackParameter(role);
-	cb.dispatch();
-	if (role) {
-		title_add.style.display = 'none';
-		title_edit.style.display = 'inline-block';
-		role_field_name.setAttribute('readonly', '');
-		role_field_req.style.display = 'none';
-		role_win_type.value = 'edit';
-	} else {
-		title_add.style.display = 'inline-block';
-		title_edit.style.display = 'none';
-		this.clear_role_window();
-		if (role_field_name.hasAttribute('readonly')) {
-			role_field_name.removeAttribute('readonly');
+	load_role_window: function(role) {
+		var title_add = document.getElementById('role_window_title_add');
+		var title_edit = document.getElementById('role_window_title_edit');
+		var role_field_name = document.getElementById('<%=$this->Role->ClientID%>');
+		var role_field_req = document.getElementById('role_window_required');
+		var role_win_type = document.getElementById('<%=$this->RoleWindowType->ClientID%>');
+		var cb = <%=$this->LoadRole->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(role);
+		cb.dispatch();
+		if (role) {
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			role_field_name.setAttribute('readonly', '');
+			role_field_req.style.display = 'none';
+			role_win_type.value = 'edit';
+		} else {
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			this.clear_role_window();
+			if (role_field_name.hasAttribute('readonly')) {
+				role_field_name.removeAttribute('readonly');
+			}
+			role_field_req.style.display = 'inline';
+			role_win_type.value = 'add';
 		}
-		role_field_req.style.display = 'inline';
-		role_win_type.value = 'add';
+		document.getElementById('role_window_role_exists').style.display = 'none';
+		document.getElementById('role_window').style.display = 'block';
+		if (!role) {
+			role_field_name.focus();
+		}
+	},
+	clear_role_window: function() {
+		[
+			'<%=$this->Role->ClientID%>',
+			'<%=$this->RoleLongName->ClientID%>',
+			'<%=$this->RoleDescription->ClientID%>',
+			'<%=$this->RoleResources->ClientID%>',
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+		document.getElementById('<%=$this->RoleEnabled->ClientID%>').checked = true;
+	},
+	load_role_list: function() {
+		var cb = <%=$this->RoleList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_role_list_cb: function(list) {
+		oRoleList.data = list;
+		oRoleList.init();
+	},
+	save_role_cb: function() {
+		document.getElementById('role_window').style.display = 'none';
 	}
-	document.getElementById('role_window_role_exists').style.display = 'none';
-	document.getElementById('role_window').style.display = 'block';
-	if (!role) {
-		role_field_name.focus();
-	}
-},
-clear_role_window: function() {
-	[
-		'<%=$this->Role->ClientID%>',
-		'<%=$this->RoleLongName->ClientID%>',
-		'<%=$this->RoleDescription->ClientID%>',
-		'<%=$this->RoleResources->ClientID%>',
-	].forEach(function(id) {
-		document.getElementById(id).value = '';
-	});
-	document.getElementById('<%=$this->RoleEnabled->ClientID%>').checked = true;
-},
-load_role_list: function() {
-	var cb = <%=$this->RoleList->ActiveControl->Javascript%>;
-	cb.dispatch();
-},
-load_role_list_cb: function(list) {
-	oRoleList.data = list;
-	oRoleList.init();
-},
-save_role_cb: function() {
-	document.getElementById('role_window').style.display = 'none';
-}
 }
 
 $(function() {
-oRoles.load_role_list();
+	oRoles.load_role_list();
 });
 </script>
 	<div id="role_window" class="w3-modal">
