@@ -556,6 +556,18 @@
 	</div>
 	<div class="w3-container w3-row directive_field">
 		<div class="w3-third w3-col">
+			<%[ Role attribute ]%>:
+		</div>
+		<div class="w3-twothird w3-col">
+			<com:TActiveTextBox
+				ID="IdPOIDCRoleAttr"
+				CssClass="w3-input w3-border w3-show-inline-block"
+				Width="90%"
+			/>
+		</div>
+	</div>
+	<div class="w3-container w3-row directive_field">
+		<div class="w3-third w3-col">
 			<%[ Attribute sync. policy ]%>:
 		</div>
 		<div class="w3-twothird w3-col">
@@ -570,6 +582,40 @@
 				GroupName="IdPOIDCAttrSyncPolicy"
 				CssClass="w3-radio"
 			/> <label for="<%=$this->IdPOIDCAttrSyncPolicyEachLogin->ClientID%>"><%[ Synchronize on each login ]%></label>
+		</div>
+	</div>
+	<h5><%[ Roles ]%></h5>
+	<div class="w3-container w3-row directive_field">
+		<div class="w3-third w3-col">
+			<%[ Role source ]%>:
+		</div>
+		<div class="w3-twothird w3-col">
+			<com:TActiveRadioButton
+				ID="IdPOIDCRoleSourceBacularis"
+				GroupName="IdPOIDCRoleSource"
+				CssClass="w3-radio"
+				Attributes.onclick="$('#idp_method_oidc_role_source_role_mapping').slideUp('fast');"
+				Checked="true"
+			/> <label for="<%=$this->IdPOIDCRoleSourceBacularis->ClientID%>"><%[ Bacularis (manage roles locally) ]%></label><br />
+			<com:TActiveRadioButton
+				ID="IdPOIDCRoleSourceIdP"
+				GroupName="IdPOIDCRoleSource"
+				CssClass="w3-radio"
+				Attributes.onclick="$('#idp_method_oidc_role_source_role_mapping').slideDown('fast');"
+			/> <label for="<%=$this->IdPOIDCRoleSourceIdP->ClientID%>"><%[ Identity Provider (map IdP roles to Bacularis roles) ]%></label>
+		</div>
+	</div>
+	<div id="idp_method_oidc_role_source_role_mapping" class="w3-container w3-row directive_field" style="display: <%=$this->IdPOIDCRoleSourceIdP->Checked ? 'block' : 'none'%>;">
+		<div class="w3-third w3-col">
+			<%[ Role mapping ]%>:
+		</div>
+		<div class="w3-twothird w3-col">
+			<com:TActiveDropDownList
+				ID="IdPOIDCRoleMapping"
+				CssClass="w3-select w3-border w3-show-inline-block"
+				CausesValidation="false"
+				Width="90%"
+			/><br /><br /><a href="javascript:void(0)" onclick="$('#btn_security_roles').click(); $('#roles_subtab_role_mapping_list').click();"><%[ Create role mappings: Security -&gt; Roles -&gt; Role mapping ]%></a>
 		</div>
 	</div>
 </div>
@@ -595,6 +641,8 @@ var oIdPOIDCUserSecurity = {
 		enable_pkce: 'idp_method_oidc_enable_pkce',
 		discovery_url_req: 'idp_method_oidc_discovery_url_req',
 		use_jwks: '<%=$this->IdPOIDCUseJWKSEndpoint->ClientID%>',
+		role_mapping: 'idp_method_oidc_role_source_role_mapping',
+		role_source_idp: '<%=$this->IdPOIDCRoleSourceIdP->ClientID%>',
 		load_discovery: 'idp_method_oidc_load_discovery',
 		result_discovery: 'idp_method_oidc_result_discovery'
 	},
@@ -604,6 +652,7 @@ var oIdPOIDCUserSecurity = {
 		this.show_jwks_options();
 		this.show_public_key_options();
 		this.show_pkce_options();
+		this.show_role_options();
 	},
 	show_discovery: function() {
 		const chkb_discovery = document.getElementById(this.ids.chkb_discovery); 
@@ -641,6 +690,12 @@ var oIdPOIDCUserSecurity = {
 		const show = chkb_pkce.checked;
 		const enable_pkce = document.getElementById(this.ids.enable_pkce);
 		enable_pkce.style.display = show ? 'block' : 'none';
+	},
+	show_role_options: function() {
+		const radio_role_source_idp = document.getElementById(this.ids.role_source_idp);
+		const show = radio_role_source_idp.checked;
+		const role_mapping = document.getElementById(this.ids.role_mapping);
+		role_mapping.style.display = show ? 'block' : 'none';
 	},
 	load_discovery: function() {
 		const cb = <%=$this->LoadDiscovery->ActiveControl->Javascript%>;
@@ -687,7 +742,9 @@ var oIdPOIDC = {
 			'<%=$this->IdPOIDCUserNameAttr->ClientID%>',
 			'<%=$this->IdPOIDCLongNameAttr->ClientID%>',
 			'<%=$this->IdPOIDCDescriptionAttr->ClientID%>',
-			'<%=$this->IdPOIDCEmailAttr->ClientID%>'
+			'<%=$this->IdPOIDCEmailAttr->ClientID%>',
+			'<%=$this->IdPOIDCRoleAttr->ClientID%>',
+			'<%=$this->IdPOIDCRoleMapping->ClientID%>'
 		].forEach(function(id) {
 			document.getElementById(id).value = '';
 		});
@@ -698,7 +755,8 @@ var oIdPOIDC = {
 			'<%=$this->IdPOIDCValidateSignatures->ClientID%>',
 			'<%=$this->IdPOIDCUsePKCE->ClientID%>',
 			'<%=$this->IdPOIDCUseJWKSEndpoint->ClientID%>',
-			'<%=$this->IdPOIDCAttrSyncPolicyNoSync->ClientID%>'
+			'<%=$this->IdPOIDCAttrSyncPolicyNoSync->ClientID%>',
+			'<%=$this->IdPOIDCRoleSourceBacularis->ClientID%>'
 		].forEach(function(id) {
 			document.getElementById(id).checked = true;
 		});

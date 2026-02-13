@@ -54,6 +54,7 @@ class WebUser extends TUser
 	public const API_HOSTS = 'ApiHosts';
 	public const DEFAULT_API_HOST = 'DefaultApiHost';
 	public const ORGANIZATION = 'Organization';
+	public const SESSION_ROLES = 'SessionRoles';
 	public const IPS = 'Ips';
 	public const ENABLED = 'Enabled';
 	public const IN_CONFIG = 'InConfig';
@@ -82,6 +83,10 @@ class WebUser extends TUser
 
 		$user->setUsername($org_user['user_id']);
 		$user->setOrganization($org_user['org_id']);
+		if (isset($org_user['roles']) && is_array($org_user['roles'])) {
+			$user->setSessionRoles($org_user['roles']);
+		}
+		$session_roles = $user->getSessionRoles();
 
 		$application = $this->getManager()->getApplication();
 		$user_config = $application->getModule('user_config');
@@ -98,7 +103,11 @@ class WebUser extends TUser
 			$user->setDescription($user_cfg['description']);
 			$user->setLongName($user_cfg['long_name']);
 			$user->setEmail($user_cfg['email']);
-			$user->setRoles($user_cfg['roles']);
+			if (is_array($session_roles)) {
+				$user->setRoles($session_roles);
+			} else {
+				$user->setRoles($user_cfg['roles']);
+			}
 			$user->setAPIHostMethod($user_cfg['api_hosts_method']);
 			if ($user_cfg['api_hosts_method'] === WebUserConfig::API_HOST_METHOD_HOSTS) {
 				$user->setAPIHosts($user_cfg['api_hosts']);
@@ -121,15 +130,24 @@ class WebUser extends TUser
 				// no access, nothing to do
 			} elseif ($web_config['security']['def_access'] === WebConfig::DEF_ACCESS_DEFAULT_SETTINGS) {
 				// access with default settings
-				if (isset($web_config['security']['def_role'])) {
+				if (is_array($session_roles)) {
+					$user->setRoles($session_roles);
+				} elseif (isset($web_config['security']['def_role'])) {
 					$user->setRoles($web_config['security']['def_role']);
+				} else {
+					$user->setRoles([]);
 				}
 				if (isset($web_config['security']['def_api_host'])) {
 					$user->setAPIHosts($web_config['security']['def_api_host']);
 				}
 			} elseif ($web_config['security']['def_access'] === WebConfig::DEF_ACCESS_PROVISION_USER) {
 				//provision a new user
-				$new_user_roles = $web_config['security']['new_user_role'] ?? '';
+				$new_user_roles = [];
+				if (is_array($session_roles)) {
+					$new_user_roles = $session_roles;
+				} elseif (isset($web_config['security']['new_user_role'])) {
+					$new_user_roles = $web_config['security']['new_user_role'];
+				}
 				$new_user_api_hosts = $web_config['security']['new_user_api_host'] ?? '';
 				$new_user_organization_id = $web_config['security']['new_user_organization_id'] ?? '';
 				$result = $this->provisionUser(
@@ -451,6 +469,29 @@ class WebUser extends TUser
 	public function getOrganization(): string
 	{
 		return $this->getState(self::ORGANIZATION, '');
+	}
+
+	/**
+	 * Session role setter.
+	 *
+	 * @param string $roles user roles
+	 */
+	public function setSessionRoles(array $roles): void
+	{
+		$this->setState(self::SESSION_ROLES, $roles);
+		$application = $this->getManager()->getApplication();
+		$web_session = $application->getModule('web_session');
+		$web_session->updateSessionUser($this);
+	}
+
+	/**
+	 * Session role getter.
+	 *
+	 * @return string user roles
+	 */
+	public function getSessionRoles(): ?array
+	{
+		return $this->getState(self::SESSION_ROLES, null);
 	}
 
 	/**

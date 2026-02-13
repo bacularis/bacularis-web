@@ -57,6 +57,12 @@ class OIDC extends WebModule
 	public const ATTR_SYNC_POLICY_NO_SYNC = 'no_sync';
 	public const ATTR_SYNC_POLICY_EACH_LOGIN = 'each_login';
 
+	/**
+	 * Role sources.
+	 */
+	public const IDP_ROLE_SOURCE_BACULARIS = 'bacularis';
+	public const IDP_ROLE_SOURCE_IDP = 'idp';
+
 	private $params;
 
 	public function init($param)
@@ -230,6 +236,8 @@ class OIDC extends WebModule
 		$sess = $this->getApplication()->getSession();
 		$org_id = $sess->itemAt('login_org');
 		$org_user = WebUserConfig::getOrgUser($org_id, $user_id);
+		$roles = $this->getMappedRoles($attrs);
+		$attrs['roles'] = $org_user['roles'] = $roles;
 
 		$sid = $id_token_dec['body']['sid'] ?? null;
 		$users = $this->getModule('users');
@@ -294,6 +302,10 @@ class OIDC extends WebModule
 				$config['long_name'] = $attrs['long_name'];
 				$config['description'] = $attrs['description'];
 				$config['email'] = $attrs['email'];
+				// The 'role' attribute must be not empty and 'roles' must be array to sync roles
+				if (key_exists('role', $attrs) && !empty($attrs['role']) && is_array($attrs['roles'])) {
+					$config['roles'] = implode(',', $attrs['roles']);
+				}
 				$user_config->setUserConfig($org_id, $user_id, $config);
 			}
 		}
@@ -327,6 +339,7 @@ class OIDC extends WebModule
 		$long_name_attr = $config['oidc_long_name_attr'] ?? '';
 		$desc_attr = $config['oidc_desc_attr'] ?? '';
 		$email_attr = $config['oidc_email_attr'] ?? '';
+		$role_attr = $config['oidc_role_attr'] ?? '';
 
 		// User attribute is special and it has to be taken from ID token anyway
 		$username = $id_token_dec['body'][$user_attr] ?? '';
@@ -335,12 +348,14 @@ class OIDC extends WebModule
 		$long_name = $attrs[$long_name_attr] ?? '';
 		$description = $attrs[$desc_attr] ?? '';
 		$email = $attrs[$email_attr] ?? '';
+		$role = $attrs[$role_attr] ?? '';
 
 		return [
 			'username' => $username,
 			'long_name' => $long_name,
 			'description' => $description,
-			'email' => $email
+			'email' => $email,
+			'role' => $role
 		];
 	}
 
@@ -378,6 +393,77 @@ class OIDC extends WebModule
 			$attrs = json_decode($result['output'], true) ?? [];
 		}
 		return $attrs;
+	}
+
+	/**
+	 * Get user mapped roles.
+	 *
+	 * @param array $attrs user attributes
+	 */
+	private function getMappedRoles(array $attrs): ?array
+	{
+		// Prepare configuration
+		$name = $this->params->getClient();
+		$idp_config = $this->getModule('idp_config');
+		$idp = $idp_config->getIdentityProviderConfig($name);
+		$role_source = $idp['oidc_role_source'] ?? self::IDP_ROLE_SOURCE_BACULARIS;
+
+		// Prepare roles for mapping
+		$roles = [];
+		if ($role_source === self::IDP_ROLE_SOURCE_IDP) {
+			$mroles = [];
+			if (key_exists('role', $attrs)) {
+				$mroles = $attrs['role'];
+			}
+			$role_mapping = $idp['oidc_role_mapping'] ?? '';
+			$mapper_roles = [];
+			if ($role_mapping) {
+				$role_mapping_config = $this->getModule('role_mapping_config');
+				$mappers = $role_mapping_config->getMappingConfig($role_mapping);
+				if ($mappers['enabled'] == 1) {
+					$mapper_roles = $mappers['roles'] ?? [];
+				}
+			}
+			if (is_string($mroles)) {
+				$mroles = !empty($mroles) ? [$mroles] : [];
+			}
+			for ($i = 0; $i < count($mroles); $i++) {
+				if (!key_exists($mroles[$i], $mapper_roles)) {
+					// IdP role is not defined in mapper, skip it
+					continue;
+				}
+				// Get role mapping
+				$roles = array_merge($roles, $mapper_roles[$mroles[$i]]);
+			}
+		} elseif ($role_source == self::IDP_ROLE_SOURCE_BACULARIS) {
+			// Roles managed locally by Bacularis
+			$roles = null;
+		}
+
+		// Map roles
+		$mapped_roles = [];
+		if (is_array($roles)) {
+			$user_role = $this->getModule('user_role');
+			$config_roles = $user_role->getRoles();
+			for ($i = 0; $i < count($roles); $i++) {
+				if (!key_exists($roles[$i], $config_roles)) {
+					// Bacularis role in mapper does not exist in config, skip it
+					continue;
+				}
+				if ($config_roles[$roles[$i]]['enabled'] != 1) {
+					// Bacularis role is disabled in config, skip it
+					continue;
+				}
+				// Role valid - use mapped role
+				$mapped_roles[] = $roles[$i];
+			}
+			// Mapping, roles are mapped
+			$mapped_roles = array_unique($mapped_roles);
+		} else {
+			// No mapping, roles managed by Bacularis
+			$mapped_roles = null;
+		}
+		return $mapped_roles;
 	}
 
 	/**
@@ -1143,7 +1229,10 @@ class OIDC extends WebModule
 		$config['oidc_long_name_attr'] = '';
 		$config['oidc_email_attr'] = '';
 		$config['oidc_desc_attr'] = '';
+		$config['oidc_role_attr'] = '';
 		$config['oidc_attr_sync_policy'] = self::ATTR_SYNC_POLICY_NO_SYNC;
+		$config['oidc_role_source'] = self::IDP_ROLE_SOURCE_BACULARIS;
+		$config['oidc_role_mapping'] = '';
 		return $config;
 	}
 }

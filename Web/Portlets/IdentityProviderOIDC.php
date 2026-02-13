@@ -72,11 +72,23 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$this->IdPOIDCLongNameAttr->Text = $config['oidc_long_name_attr'] ?? '';
 		$this->IdPOIDCEmailAttr->Text = $config['oidc_email_attr'] ?? '';
 		$this->IdPOIDCDescriptionAttr->Text = $config['oidc_desc_attr'] ?? '';
+		$this->IdPOIDCRoleAttr->Text = $config['oidc_role_attr'] ?? '';
 		if ($config['oidc_attr_sync_policy'] == OIDC::ATTR_SYNC_POLICY_NO_SYNC) {
 			$this->IdPOIDCAttrSyncPolicyNoSync->Checked = true;
 		} elseif ($config['oidc_attr_sync_policy'] == OIDC::ATTR_SYNC_POLICY_EACH_LOGIN) {
 			$this->IdPOIDCAttrSyncPolicyEachLogin->Checked = true;
 		}
+		$role_source = $config['oidc_role_source'] ?? '';
+		if ($role_source == OIDC::IDP_ROLE_SOURCE_BACULARIS) {
+			$this->IdPOIDCRoleSourceBacularis->Checked = true;
+		} elseif ($role_source == OIDC::IDP_ROLE_SOURCE_IDP) {
+			$this->IdPOIDCRoleSourceIdP->Checked = true;
+		} else {
+			$this->IdPOIDCRoleSourceBacularis->Checked = true;
+		}
+		$this->loadRoleMappingList(null, null);
+		$this->IdPOIDCRoleMapping->SelectedValue = $config['oidc_role_mapping'] ?? '';
+
 	}
 
 	/**
@@ -120,6 +132,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 		$config['oidc_long_name_attr'] = $this->IdPOIDCLongNameAttr->Text;
 		$config['oidc_email_attr'] = $this->IdPOIDCEmailAttr->Text;
 		$config['oidc_desc_attr'] = $this->IdPOIDCDescriptionAttr->Text;
+		$config['oidc_role_attr'] = $this->IdPOIDCRoleAttr->Text;
 		if ($this->IdPOIDCAttrSyncPolicyNoSync->Checked) {
 			// No sync policy
 			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_NO_SYNC;
@@ -130,8 +143,33 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 			// Default policy
 			$config['oidc_attr_sync_policy'] = OIDC::ATTR_SYNC_POLICY_NO_SYNC;
 		}
+		if ($this->IdPOIDCRoleSourceBacularis->Checked) {
+			// Local Bacularis managed roles
+			$config['oidc_role_source'] = OIDC::IDP_ROLE_SOURCE_BACULARIS;
+		} elseif ($this->IdPOIDCRoleSourceIdP->Checked) {
+			// IdP managed roles
+			$config['oidc_role_source'] = OIDC::IDP_ROLE_SOURCE_IDP;
+		} else {
+			// Default role source
+			$config['oidc_role_source'] = OIDC::IDP_ROLE_SOURCE_BACULARIS;
+		}
+		$config['oidc_role_mapping'] = $this->IdPOIDCRoleMapping->SelectedValue;
+
 		return $config;
 	}
+
+	public function loadRoleMappingList($sender, $param)
+	{
+		// Role source
+		$role_mapping_config = $this->getModule('role_mapping_config');
+		$mapping_vals = $role_mapping_config->getConfig();
+		$mappings = array_keys($mapping_vals);
+		sort($mappings, SORT_NATURAL | SORT_FLAG_CASE);
+		array_unshift($mappings, '');
+		$this->IdPOIDCRoleMapping->DataSource = array_combine($mappings, $mappings);
+		$this->IdPOIDCRoleMapping->dataBind();
+	}
+
 
 	public function loadDiscovery($sender, $param)
 	{
