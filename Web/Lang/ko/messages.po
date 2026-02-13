@@ -7218,3 +7218,66 @@ msgstr "Are you sure you want to delete the following pools?"
 
 msgid "Pools to delete must be empty (no volume in pool)."
 msgstr "Pools to delete must be empty (no volume in pool)."
+
+msgid "Role mapping"
+msgstr "Role mapping"
+
+msgid "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
+msgstr "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
+
+msgid "Add new role mapping"
+msgstr "Add new role mapping"
+
+msgid "Mapping name"
+msgstr "Mapping name"
+
+msgid "Mappings"
+msgstr "Mappings"
+
+msgid "Add role mapping"
+msgstr "Add role mapping"
+
+msgid "General options"
+msgstr "General options"
+
+msgid "Mapping name:"
+msgstr "Mapping name:"
+
+msgid "Add new mapping"
+msgstr "Add new mapping"
+
+msgid "New mapping"
+msgstr "New mapping"
+
+msgid "Role name:"
+msgstr "Role name:"
+
+msgid "Mapped roles:"
+msgstr "Mapped roles:"
+
+msgid "Add mapping"
+msgstr "Add mapping"
+
+msgid "Edit role mapping"
+msgstr "Edit role mapping"
+
+msgid "Role attribute"
+msgstr "Role attribute"
+
+msgid "Role source"
+msgstr "Role source"
+
+msgid "Bacularis (manage roles locally)"
+msgstr "Bacularis (manage roles locally)"
+
+msgid "Identity Provider (map IdP roles to Bacularis roles)"
+msgstr "Identity Provider (map IdP roles to Bacularis roles)"
+
+msgid "Create role mappings: Security -&gt; Roles -&gt; Role mapping"
+msgstr "Create role mappings: Security -&gt; Roles -&gt; Role mapping"
+
+msgid "Role mapping with the given name already exists."
+msgstr "Role mapping with the given name already exists."
+
+msgid "The following role mappings cannot be removed because they are used by identity providers. Please unassign role mappings from the identity providers and try again."
+msgstr "The following role mappings cannot be removed because they are used by identity providers. Please unassign role mappings from the identity providers and try again."

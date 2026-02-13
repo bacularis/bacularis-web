@@ -11,6 +11,7 @@
 		<module id="host_group_config" class="Bacularis\Web\Modules\HostGroupConfig" />
 		<module id="user_config" class="Bacularis\Web\Modules\WebUserConfig" />
 		<module id="role_config" class="Bacularis\Web\Modules\WebRoleConfig" />
+		<module id="role_mapping_config" class="Bacularis\Web\Modules\WebRoleMappingConfig" />
 		<module id="ssh_config" class="Bacularis\Web\Modules\SSHConfig" />
 		<module id="ssh_key" class="Bacularis\Web\Modules\SSHKey" />
 		<module id="osprofile_config" class="Bacularis\Web\Modules\OSProfileConfig" />
