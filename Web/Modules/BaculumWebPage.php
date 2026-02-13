@@ -211,7 +211,7 @@ class BaculumWebPage extends BaculumPage
 			$def_page = $this->findDefaultPageForUser();
 		}
 		if (!is_string($def_page)) {
-			$def_page = $this->getModule('auth')->getLoginPage();
+			$def_page = $this->Service->DefaultPage;
 		}
 		return $def_page;
 	}
