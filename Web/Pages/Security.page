@@ -7,15 +7,15 @@
 		</h5>
 	</header>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_security_auth" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'security_auth'); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Authentication ]%></button>
-		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Users ]%></button>
-		<button id="btn_role_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'role_list'); oRoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Roles ]%></button>
-		<button id="btn_organization_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'organization_list'); oOrganizationList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Organizations ]%></button>
-		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Console ACLs ]%></button>
-		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API basic users ]%></button>
-		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API OAuth2 clients ]%></button>
-		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API hosts ]%></button>
-		<button id="btn_api_host_group_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_group_list'); oAPIHostGroupList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API host groups ]%></button>
+		<button id="btn_security_auth" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'security_auth'); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Authentication ]%></button>
+		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Users ]%></button>
+		<button id="btn_security_roles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'security_roles'); oRoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Roles ]%></button>
+		<button id="btn_organization_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'organization_list'); oOrganizationList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Organizations ]%></button>
+		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Console ACLs ]%></button>
+		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API basic users ]%></button>
+		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API OAuth2 clients ]%></button>
+		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API hosts ]%></button>
+		<button id="btn_api_host_group_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_group_list'); oAPIHostGroupList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API host groups ]%></button>
 	</div>
 
 	<div class="w3-container tab_item" id="security_auth">
@@ -66,12 +66,34 @@
 			OnRemoveUser="postRemoveUser"
 		/>
 	</div>
-	<div class="w3-container tab_item" id="role_list" style="display: none;">
-		<com:Bacularis.Web.Portlets.Roles
-			ID="Roles"
-			OnSaveRole="postSaveRole"
-			OnRemoveRole="postRemoveRole"
-		/>
+	<div class="w3-container tab_item" id="security_roles" style="display: none;">
+		<div id="roles" class="w3-container w3-padding">
+			<!-- Authentication submenu -->
+			<div class="w3-row w3-margin-bottom">
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('roles_subtab_role_list', 'role_list', 'roles'); oRoleList.table.responsive.recalc();">
+					<div id="roles_subtab_role_list" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding w3-border-red"><%[ Roles ]%></div>
+				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('roles_subtab_role_mapping_list', 'role_mapping_list', 'roles'); oRoleMappingList.table.responsive.recalc();">
+					<div id="roles_subtab_role_mapping_list" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Role mapping ]%></div>
+				</a>
+			</div>
+			<!-- Role list -->
+			<div id="role_list" class="subtab_item">
+				<com:Bacularis.Web.Portlets.Roles
+					ID="Roles"
+					OnSaveRole="postSaveRole"
+					OnRemoveRole="postRemoveRole"
+				/>
+			</div>
+			<!-- Role mapping list -->
+			<div id="role_mapping_list" class="subtab_item" style="display: none">
+				<com:Bacularis.Web.Portlets.RoleMapping
+					ID="RoleMapping"
+					OnSaveRoleMapping="postSaveRoleMapping"
+					OnRemoveRoleMapping="postRemoveRoleMapping"
+				/>
+			</div>
+		</div>
 	</div>
 	<div class="w3-container tab_item" id="organization_list" style="display: none;">
 		<com:Bacularis.Web.Portlets.Organizations

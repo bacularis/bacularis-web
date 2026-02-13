@@ -74,6 +74,9 @@ class Security extends BaculumWebPage
 	{
 		// refresh organization list
 		$this->Organizations->setOrganizationList($sender, $param);
+
+		// refresh role mapping list
+		$this->RoleMapping->setRoleMappingList($sender, $param);
 	}
 
 	public function postRemoveIdP($sender, $param)
@@ -111,6 +114,17 @@ class Security extends BaculumWebPage
 		$this->Users->initUserWindow();
 	}
 
+	public function postSaveRoleMapping($sender, $param)
+	{
+		// reload role mapping list
+		$this->AuthIdentityProviders->IdentityProviderOIDC->loadRoleMappingList($sender, $param);
+	}
+
+	public function postRemoveRoleMapping($sender, $param)
+	{
+		// reload role mapping list
+		$this->AuthIdentityProviders->IdentityProviderOIDC->loadRoleMappingList($sender, $param);
+	}
 	public function postSaveConsole($sender, $param)
 	{
 		// reload console list in basic user settings
