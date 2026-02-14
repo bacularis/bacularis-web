@@ -97,6 +97,7 @@ class IdentityProviderOIDC extends Portlets implements IIdentityProviderForm
 	public function loadDefaultSettings(): void
 	{
 		$this->IdPOIDCScope->Text = OIDC::DEF_SCOPE;
+		$this->loadRoleMappingList(null, null);
 	}
 
 	/**
