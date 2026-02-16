@@ -206,11 +206,24 @@ class JobList extends BaculumWebPage
 
 			$misc = $this->getModule('misc');
 			$started_jobid = $misc->findJobIdStartedJob($result->output);
-			if (!is_numeric($started_jobid)) {
+			$audit = $this->getModule('audit');
+			if (is_numeric($started_jobid)) {
+				$audit->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_ACTION,
+					"Run job. Job: $name, JobId: $started_jobid"
+				);
+			} else {
 				$errmsg = implode('<br />', $result->output);
 				$this->getPage()->getCallbackClient()->callClientFunction(
 					'show_error',
 					[$errmsg, $result->error]
+				);
+
+				$audit->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_ACTION,
+					"Run job failed. Job: $name"
 				);
 			}
 		} else {
@@ -317,11 +330,23 @@ class JobList extends BaculumWebPage
 
 			$misc = $this->getModule('misc');
 			$started_jobid = $misc->findJobIdStartedJob($result->output);
-			if (!is_numeric($started_jobid)) {
+			$audit = $this->getModule('audit');
+			if (is_numeric($started_jobid)) {
+				$audit->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_ACTION,
+					"Run job. Job: {$job_info['job']['name']}, JobId: $started_jobid"
+				);
+			} else {
 				$errmsg = implode('<br />', $result->output);
 				$this->getPage()->getCallbackClient()->callClientFunction(
 					'show_error',
 					[$errmsg, $result->error]
+				);
+				$audit->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_ACTION,
+					"Run job failed. Job: {$job_info['job']['name']}"
 				);
 			}
 		} else {
