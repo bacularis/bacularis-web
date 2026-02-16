@@ -665,8 +665,8 @@ function set_formatters() {
 
 var JobStatus = {
 	st: {
-		ok: ['T', 'D'],
-		warning: ['W'],
+		ok: ['T'],
+		warning: ['W', 'D'],
 		error: ['E', 'e', 'f', 'I'],
 		cancel: ['A'],
 		running: ['R'],
