@@ -7339,3 +7339,21 @@ msgstr "Role mapping with the given name already exists."
 
 msgid "The following role mappings cannot be removed because they are used by identity providers. Please unassign role mappings from the identity providers and try again."
 msgstr "The following role mappings cannot be removed because they are used by identity providers. Please unassign role mappings from the identity providers and try again."
+
+msgid "Run job verification"
+msgstr "Run job verification"
+
+msgid "Select the verify job that you want to use to verify selected jobids."
+msgstr "Select the verify job that you want to use to verify selected jobids."
+
+msgid "Jobs to verify"
+msgstr "Jobs to verify"
+
+msgid "Verify job"
+msgstr "Verify job"
+
+msgid "You do not have any verify job that could be used to perform backup verification."
+msgstr "You do not have any verify job that could be used to perform backup verification."
+
+msgid "To use backup verification, please create a general purpose verify job using the new verify job wizard."
+msgstr "To use backup verification, please create a general purpose verify job using the new verify job wizard."

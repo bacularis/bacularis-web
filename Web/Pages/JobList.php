@@ -532,4 +532,124 @@ class JobList extends BaculumWebPage
 			);
 		}
 	}
+
+
+	/**
+	 * Load verify job list.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function loadVerifyJobList($sender, $param)
+	{
+		$api = $this->getModule('api');
+		$result = $api->get(
+			['jobs', 'resnames', '?type=V']
+		);
+		if ($result->error == 0) {
+			$sess = $this->getApplication()->getSession();
+			$director = $sess->contains('director') ? $sess->itemAt('director') : '';
+			$verify_jobs = $result->output->{$director} ?? [];
+			$this->VerifyJobList->DataSource = array_combine($verify_jobs, $verify_jobs);
+			$this->VerifyJobList->dataBind();
+			if (count($verify_jobs) == 0) {
+				$cb = $this->getCallbackClient();
+				$cb->show('job_history_list_no_verify_job');
+				$cb->hide('job_history_list_verify_job_btn');
+			}
+		}
+	}
+
+	/**
+	 * Verify backup jobids - bulk action.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function verifyJobs($sender, $param)
+	{
+		// Job names and jobids to verify
+		$jobids = $param->getCallbackParameter();
+		$verify_job = $this->VerifyJobList->getSelectedValue();
+
+		// Verify jobids
+		$error = '';
+		for ($i = 0; $i < count($jobids); $i++) {
+			$jobid = (int) $jobids[$i]->jobid;
+			$result = $this->verifyJob($verify_job, $jobid);
+			if ($result->error != 0) {
+				// stop on first error
+				$error = $result->output;
+				break;
+			}
+		}
+
+		// Finish or report error
+		$eid = 'job_history_list_verify_job_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			$cb->callClientFunction('oVerifyJobWindow.show', [false]);
+		} else {
+			$emsg = 'Error while starting verify job. Message: %s.';
+			$emsg = sprintf($emsg, $error);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Verify backup job.
+	 *
+	 * @param string $verify_job verify job that will do verification
+	 * @param int $jobid backup job identifier to verify
+	 * @return object run verify job result
+	 */
+	private function verifyJob(string $verify_job, int $jobid): object
+	{
+		// Pre-run verify job actions
+		$plugin_manager = $this->getModule('plugin_manager');
+		$plugin_manager->callPluginActionByType(
+			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+			'run',
+			'pre-run-manually',
+			'Job',
+			$verify_job
+		);
+
+		// Run verify job
+		$api = $this->getModule('api');
+		$params = ['name' => $verify_job, 'jobid' => $jobid];
+		$result = $api->create(
+			['jobs', 'run'],
+			$params
+		);
+		$audit = $this->getModule('audit');
+		if ($result->error === 0) {
+			// Post-run verify job actions
+			$plugin_manager->callPluginActionByType(
+				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
+				'run',
+				'post-run-manually',
+				'Job',
+				$verify_job
+			);
+			$misc = $this->getModule('misc');
+			$started_jobid = $misc->findJobIdStartedJob($result->output);
+			if (is_numeric($started_jobid)) {
+				$audit->audit(
+					AuditLog::TYPE_INFO,
+					AuditLog::CATEGORY_ACTION,
+					"Run job. Job: $verify_job, JobId: $started_jobid"
+				);
+			} else {
+				$audit->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_ACTION,
+					"Run job failed. Job: $verify_job"
+				);
+			}
+		}
+		return $result;
+	}
 }

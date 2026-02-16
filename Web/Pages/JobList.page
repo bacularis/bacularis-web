@@ -264,6 +264,21 @@ var oJobHistoryList = {
 			}
 		},
 		{
+			action: 'verify',
+			label: '<%[ Verify ]%>',
+			value: ['jobid', 'name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['jobid', 'name'];
+					const table = oJobHistoryList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oVerifyJobWindow.set_items_func(cb);
+				oVerifyJobWindow.show(true);
+			}
+		},
+		{
 			action: 'delete',
 			label: '<%[ Delete ]%>',
 			value: 'jobid',
@@ -897,11 +912,124 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
+		<com:TCallback ID="LoadVerifyJobList" OnCallback="loadVerifyJobList" />
+		<com:TCallback ID="VerifyJobsAction" OnCallback="verifyJobs">
+			<prop:ClientSide.OnComplete>
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
 		<com:Bacularis.Web.Portlets.JobLog />
 	</div>
 
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsJobList" ViewName="job_list" />
+
+	<!-- Run verify job -->
+	<div id="job_history_list_verify_job_window" class="w3-modal">
+		<div class="w3-modal-content w3-animate-top w3-card-4">
+			<header class="w3-container w3-green">
+				<span onclick="oVerifyJobWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+				<h2><%[ Run job verification ]%></h2>
+			</header>
+			<div class="w3-container w3-margin-left w3-margin-right">
+				<div id="job_history_list_no_verify_job" class="w3-panel w3-green" style="display: none">
+					<h3><%[ Information ]%></h3>
+					<p><%[ You do not have any verify job that could be used to perform backup verification. ]%></p>
+					<p><%[ To use backup verification, please create a general purpose verify job using the new verify job wizard. ]%></p>
+					<p class="w3-center"><a href="<%=$this->getPage()->getService()->constructUrl('NewVerifyJobWizard')%>" class="w3-button w3-white"><%[ New verify job ]%></a></p>
+				</div>
+				<p id="job_history_list_verify_job_error" class="error w3-margin-top" style="display: none"></p>
+				<p>
+					<%[ Select the verify job that you want to use to verify selected jobids. ]%>
+				</p>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><%[ Jobs to verify ]%>:</div>
+					<div class="w3-half">
+						<ul id="job_history_list_verify_jobid_list"><ul>
+					</div>
+				</div>
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><label for="<%=$this->VerifyJobList->ClientID%>"><%[ Verify job ]%>:</label></div>
+					<div class="w3-half">
+						<com:TActiveDropDownList
+							ID="VerifyJobList"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+						/>
+					</div>
+				</div>
+			</div>
+			<footer class="w3-container w3-center w3-padding">
+				<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oVerifyJobWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+				<button type="button" id="job_history_list_verify_job_btn" class="w3-button w3-green w3-margin-bottom" onclick="oVerifyJobWindow.save();"><i class="fas fa-circle-check"></i> &nbsp;<%[ Verify ]%></button>
+			</footer>
+		</div>
+	</div>
+	<script>
+	var oVerifyJobWindow = {
+		items_func: null,
+		ids: {
+			win: 'job_history_list_verify_job_window',
+			error: 'job_history_list_verify_job_error',
+			volstatus: '<%=$this->VerifyJobList->ClientID%>',
+			list: 'job_history_list_verify_jobid_list'
+		},
+		clear: function() {
+			const volstatus = document.getElementById(this.ids.volstatus);
+			volstatus.value = '';
+			const error = document.getElementById(this.ids.error);
+			error.style.display = 'none';
+			const list = document.getElementById(this.ids.list);
+			while (list.firstChild) {
+				list.removeChild(list.firstChild);
+			}
+		},
+		set_items_func: function(func) {
+			this.items_func = func;
+		},
+		set_items: function() {
+			const items = this.items_func();
+			const list = document.getElementById(this.ids.list);
+			let line;
+			for (const item of items) {
+				line = this.add_item(item);
+				list.appendChild(line);
+			}
+		},
+		add_item: function(item) {
+			const li = document.createElement('LI');
+			li.classList.add('bold');
+			li.textContent = '[JobId: ' + item.jobid + '] ' + item.name;
+			return li;
+		},
+		load_verify_jobs: function() {
+			const cb = <%=$this->LoadVerifyJobList->ActiveControl->Javascript%>;
+			cb.dispatch();
+		},
+		save: function() {
+			const items = this.items_func();
+			const cb = <%=$this->VerifyJobsAction->ActiveControl->Javascript%>;
+			cb.setCallbackParameter(items);
+			cb.dispatch();
+		},
+		show: function(show) {
+			const self = oVerifyJobWindow;
+
+			// Clean up before showing
+			self.clear();
+
+			// Load verify job list
+			self.load_verify_jobs();
+
+			// Set selected item list
+			self.set_items();
+
+			// Show window
+			const win = document.getElementById(self.ids.win);
+			win.style.display = show ? 'block' : 'none';
+		}
+	};
+	</script>
 
 	<!-- Job List -->
 	<div class="w3-container tab_item" id="job_details" style="display: none">
