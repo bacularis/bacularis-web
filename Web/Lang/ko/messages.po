@@ -7299,3 +7299,25 @@ msgstr "You do not have any verify job that could be used to perform backup veri
 
 msgid "To use backup verification, please create a general purpose verify job using the new verify job wizard."
 msgstr "To use backup verification, please create a general purpose verify job using the new verify job wizard."
+
+msgid "Disable"
+msgstr "Disable"
+
+msgid "Disable client"
+msgstr "Disable client"
+
+msgid "Select the way you want to disable selected clients."
+msgstr "Select the way you want to disable selected clients."
+
+msgid "Temporarily disable client"
+msgstr "Temporarily disable client"
+
+
+msgid "temporarily disables the client in memory. Uses the \"disable\" command in the Bconsole. The client remains disabled until it is re-enabled or the Director component is restarted."
+msgstr "temporarily disables the client in memory. Uses the \"disable\" command in the Bconsole. The client remains disabled until it is re-enabled or the Director component is restarted."
+
+msgid "Permanently disable client"
+msgstr "Permanently disable client"
+
+msgid "disables the client in Client resource in the Director configuration (Enabled = no). The client remains disabled until re-enabled. This method of disabling the client is resistant to Director component restarts."
+msgstr "disables the client in Client resource in the Director configuration (Enabled = no). The client remains disabled until re-enabled. This method of disabling the client is resistant to Director component restarts."

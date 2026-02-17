@@ -41,6 +41,9 @@ use Prado\Prado;
  */
 class ClientList extends BaculumWebPage
 {
+	public const DISABLE_ENABLE_METHOD_BCONSOLE = 0;
+	public const DISABLE_ENABLE_METHOD_CONFIG = 1;
+
 	public function onInit($param)
 	{
 		parent::onInit($param);
@@ -65,8 +68,140 @@ class ClientList extends BaculumWebPage
 	}
 
 	/**
+	 * Disable client - bulk action.
+	 * NOTE: Action available only for users with admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function disableClient($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$params = $param->getCallbackParameter();
+		if (!is_object($params)) {
+			// this is not object - end
+			return;
+		}
+		$method = (int) $params->method;
+		$clients = $params->items;
+		$error = null;
+		$err_cli = null;
+		for ($i = 0; $i < count($clients); $i++) {
+			$result = null;
+			if ($method == self::DISABLE_ENABLE_METHOD_BCONSOLE) {
+				$result = $this->disableClientConsole(
+					$clients[$i]->clientid,
+					$clients[$i]->name
+				);
+			} elseif ($method == self::DISABLE_ENABLE_METHOD_CONFIG) {
+				$result = $this->disableClientConfig(
+					$clients[$i]->name
+				);
+			}
+			if (is_object($result) && $result->error != 0) {
+				$err_cli = $clients[$i]->name;
+				$error = $result;
+				break;
+			}
+		}
+		// Finish or report error
+		$eid = 'client_list_disable_client_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			$cb->callClientFunction('oDisableClientWindow.show', [false]);
+		} else {
+			$emsg = 'Error while disabling client "%s". ErrorCode: %d, Message: %s.';
+			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+		}
+	}
+
+	/**
+	 * Disable client using Bconsole 'disable' command.
+	 *
+	 * @param int $clientid client identifier to disable
+	 * @param string $name client name to disable
+	 * @return object disable client result
+	 */
+	private function disableClientConsole(int $clientid, string $name): object
+	{
+		$api = $this->getModule('api');
+		$result = $api->set(
+			['clients', $clientid, 'disable']
+		);
+		if ($result->error === 0) {
+			$audit = $this->getModule('audit');
+			$audit->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Client '{$name}' has been disabled."
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * Disable client in Bacula Director configuration.
+	 *
+	 * @param string $name client name to disable
+	 * @return object disable client result
+	 */
+	private function disableClientConfig(string $name): ?object
+	{
+		$sess = $this->getApplication()->getSession();
+		if (!$sess->itemAt('dir')) {
+			// Configuration part not enabled for user - end.
+			return null;
+		}
+		$component_type = 'dir';
+		$resource_type = 'Client';
+		$resource_name = $name;
+		$params = [
+			'config',
+			$component_type,
+			$resource_type,
+			$resource_name
+		];
+		$api = $this->getModule('api');
+		$result = $api->get($params, null, false);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$directives = $result->output;
+		$directives->Enabled = false;
+		$result = $api->set(
+			$params,
+			['config' => json_encode($directives)],
+			null,
+			false
+		);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$audit = $this->getModule('audit');
+		$audit->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_ACTION,
+			"Client '{$name}' has been disabled."
+		);
+
+		$result = $api->set(
+			['console'],
+			['reload']
+		);
+		return $result;
+	}
+
+	/**
 	 * Delete director component client configuration and catalog resources - bulk action
-	 * NOTE: Action available only for users wiht admin role assigned.
+	 * NOTE: Action available only for users with admin role assigned.
 	 *
 	 * @param TCallback $sender callback object
 	 * @param TCallbackEventPrameter $param event parameter

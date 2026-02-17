@@ -132,6 +132,22 @@ var oClientList = {
 			}
 		},
 		{
+			action: 'disable',
+			label: '<%[ Disable ]%>',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			value: ['clientid', 'name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['clientid', 'name'];
+					const table = oClientList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oDisableClientWindow.set_items_func(cb);
+				oDisableClientWindow.show(true);
+			}
+		},
+		{
 			action: 'delete',
 			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
 			label: '<%[ Delete ]%>',
@@ -674,6 +690,126 @@ var oClientListDeleteClientResourceWindow = {
 	}
 };
 </script>
+
+		<!-- Disable client -->
+		<com:TCallback ID="DisableClientAction" OnCallback="disableClient">
+			<prop:ClientSide.OnComplete>
+				oMonitor();
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<div id="client_list_disable_client_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="oDisableClientWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Disable client ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<p id="client_list_disable_client_error" class="error w3-margin-top" style="display: none"></p>
+					<p>
+						<%[ Select the way you want to disable selected clients. ]%>
+					</p>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-quarter"><%[ Clients ]%>:</div>
+						<div class="w3-threequarter">
+							<ul id="client_list_disable_client_list"><ul>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-quarter"><%[ Action ]%>:</div>
+						<div class="w3-threequarter">
+							<div>
+								<input type="radio" id="client_list_disable_client_tmp_chkb" name="client_list_disable_client_chkb" class="w3-radio" value="1" checked="checked" /> &nbsp;<label for="client_list_disable_client_tmp_chkb" class="pointer"><strong><%[ Temporarily disable client ]%></strong> - <%[ temporarily disables the client in memory. Uses the "disable" command in the Bconsole. The client remains disabled until it is re-enabled or the Director component is restarted. ]%></label>
+							</div>
+							<div>
+								<input type="radio" id="client_list_disable_client_per_chkb" name="client_list_disable_client_chkb" class="w3-radio" value="1" /> &nbsp;<label for="client_list_disable_client_per_chkb" class="pointer"><strong><%[ Permanently disable client ]%></strong> - <%[ disables the client in Client resource in the Director configuration (Enabled = no). The client remains disabled until re-enabled. This method of disabling the client is resistant to Director component restarts. ]%></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oDisableClientWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oDisableClientWindow.save();"><i class="fas fa-ban"></i> &nbsp;<%[ Disable ]%></button>
+				</footer>
+			</div>
+		</div>
+		<script>
+var oDisableClientWindow = {
+	items_func: null,
+	methods: {
+		tmp: <%=ClientList::DISABLE_ENABLE_METHOD_BCONSOLE%>,
+		per: <%=ClientList::DISABLE_ENABLE_METHOD_CONFIG%>
+	},
+	ids: {
+		win: 'client_list_disable_client_window',
+		error: 'client_list_disable_client_error',
+		list: 'client_list_disable_client_list',
+		method_tmp: 'client_list_disable_client_tmp_chkb',
+		method_per: 'client_list_disable_client_per_chkb'
+	},
+	clear: function() {
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+		const list = document.getElementById(this.ids.list);
+		while (list.firstChild) {
+			list.removeChild(list.firstChild);
+		}
+	},
+	get_method: function() {
+		const method_tmp = document.getElementById(this.ids.method_tmp);
+		const method_per = document.getElementById(this.ids.method_per);
+		let method;
+		if (method_tmp.checked) {
+			method = this.methods.tmp;
+		} else if (method_per.checked) {
+			method = this.methods.per;
+		}
+		return method;
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_items: function() {
+		const items = this.items_func();
+		const list = document.getElementById(this.ids.list);
+		let line;
+		for (const item of items) {
+			line = this.add_item(item);
+			list.appendChild(line);
+		}
+	},
+	add_item: function(item) {
+		const li = document.createElement('LI');
+		li.classList.add('bold');
+		li.textContent = item.name;
+		return li;
+	},
+	save: function() {
+		const items = this.items_func();
+		const method = this.get_method();
+		const params = {
+			method: method,
+			items: items
+		};
+		const cb = <%=$this->DisableClientAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(params);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oDisableClientWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set selected item list
+		self.set_items();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+		</script>
+
 	</div>
 
 	<!-- Graphs -->
