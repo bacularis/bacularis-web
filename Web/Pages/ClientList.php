@@ -44,6 +44,8 @@ class ClientList extends BaculumWebPage
 	public const DISABLE_ENABLE_METHOD_BCONSOLE = 0;
 	public const DISABLE_ENABLE_METHOD_CONFIG = 1;
 
+	public $client_show = [];
+
 	public function onInit($param)
 	{
 		parent::onInit($param);
@@ -51,6 +53,7 @@ class ClientList extends BaculumWebPage
 			return;
 		}
 		$this->setDataViews();
+		$this->loadClientShow(null, null);
 	}
 
 	private function setDataViews()
@@ -65,6 +68,45 @@ class ClientList extends BaculumWebPage
 		$this->ClientViews->setViewDataFunction('get_client_list_data');
 		$this->ClientViews->setUpdateViewFunction('update_client_list_table');
 		$this->ClientViews->setDescription($client_view_desc);
+	}
+
+	/**
+	 * Load client show properties.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function loadClientShow($sender, $param): void
+	{
+		$this->client_show = $this->getClientShow();
+		if ($this->IsCallBack) {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oClientList.load_client_show_cb',
+				[$this->client_show]
+			);
+		}
+	}
+
+	/**
+	 * Get client show properties.
+	 *
+	 * @return array client show properties or empty array on error
+	 */
+	private function getClientShow(): array
+	{
+		$client_show = [];
+		$api = $this->getModule('api');
+		$result = $api->get(['clients', 'show', '?output=json']);
+		if ($result->error == 0) {
+			for ($i = 0; $i < count($result->output); $i++) {
+				if (!property_exists($result->output[$i], 'name')) {
+					continue;
+				}
+				$client_show[$result->output[$i]->name] = $result->output[$i];
+			}
+		}
+		return $client_show;
 	}
 
 	/**
@@ -120,6 +162,7 @@ class ClientList extends BaculumWebPage
 			$cb->show($eid);
 			$cb->hide('client_list_disable_client_btn');
 		}
+		$this->loadClientShow($sender, $param);
 	}
 
 	/**

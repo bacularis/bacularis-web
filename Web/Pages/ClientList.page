@@ -41,6 +41,7 @@
 						<th><%[ Job retention ]%></th>
 						<th><%[ File retention ]%></th>
 						<th><%[ Working ]%></th>
+						<th><%[ Enabled ]%></th>
 						<th><%[ Tag ]%></th>
 						<th><%[ Actions ]%></th>
 					</tr>
@@ -56,6 +57,7 @@
 						<th><%[ Job retention ]%></th>
 						<th><%[ File retention ]%></th>
 						<th><%[ Working ]%></th>
+						<th><%[ Enabled ]%></th>
 						<th><%[ Tag ]%></th>
 						<th><%[ Actions ]%></th>
 					</tr>
@@ -90,6 +92,7 @@ var oClientList = {
 	table_toolbar: null,
 	client_running_jobs: {},
 	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
+	client_show: {},
 	actions: [
 		{
 			action: 'apply_configs',
@@ -370,6 +373,27 @@ var oClientList = {
 					}
 				},
 				{
+					data: 'name',
+					render: function(data, type, row) {
+						let enabled = 0;
+						if (this.client_show.hasOwnProperty(data) && this.client_show[data].hasOwnProperty('enabled')) {
+							enabled = parseInt(this.client_show[data].enabled, 10);
+						}
+						let ret;
+						if (type == 'display') {
+							ret = '';
+							if (enabled == 1) {
+								const check = document.createElement('I');
+								check.className = 'fas fa-check';
+								ret = check.outerHTML;
+							}
+						} else {
+							ret = enabled;
+						}
+						return ret;
+					}.bind(this)
+				},
+				{
 					data: 'clientid',
 					render: (data, type, row) => {
 						const id = 'clientid';
@@ -422,7 +446,7 @@ var oClientList = {
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 4, 5, 6, 7, 8, 9 ]
+				targets: [ 1, 4, 5, 6, 7, 8, 9, 10 ]
 			}],
 			select: {
 				style: 'os',
@@ -431,7 +455,7 @@ var oClientList = {
 			},
 			order: [2, 'asc'],
 			drawCallback: function () {
-				this.api().columns([2, 3, 4, 5, 6]).every(function () {
+				this.api().columns([2, 3, 4, 5, 6, 8]).every(function () {
 					var column = this;
 					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
@@ -462,6 +486,28 @@ var oClientList = {
 								select.append('<option value="' + time_f + '">' + time_f + '</option>');
 							}
 						});
+					} else if (column[0][0] == 8) { // Enabled flag
+						let items = [];
+						column.data().unique().sort().each(function (d, j) {
+							const self = oClientList;
+							d = self.client_show.hasOwnProperty(d) ? self.client_show[d].enabled : '';
+							if (d === '' || items.indexOf(d) > -1) {
+								return;
+							}
+							items.push(d);
+						});
+						for (const item of items) {
+							if (item === '1') {
+								ds = '<%[ Enabled ]%>';
+							} else if (item === '0') {
+								ds = '<%[ Disabled ]%>';
+							}
+							if (column.search() == '^' + dtEscapeRegex(item) + '$') {
+								select.append('<option value="' + item + '" title="' + ds + '" selected>' + ds + '</option>');
+							} else {
+								select.append('<option value="' + item + '" title="' + ds + '">' + ds + '</option>');
+							}
+						};
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
 							if (d) {
@@ -555,6 +601,9 @@ var oClientList = {
 		const tbody = document.getElementById(this.ids.client_list_body);
 		const is_opened = (tbody.querySelector('ul.dtr-details') !== null);
 		return is_opened;
+	},
+	load_client_show_cb: function(data) {
+		oClientList.client_show = data;
 	}
 };
 function get_client_list_data() {
@@ -570,6 +619,7 @@ function update_client_list_table(data, init) {
 
 MonitorParams = {clients: null};
 $(function() {
+	oClientList.load_client_show_cb(<%=json_encode($this->client_show)%>);
 	MonitorCallsInterval.push(function() {
 		oClientList.set_client_running_jobs();
 	});
