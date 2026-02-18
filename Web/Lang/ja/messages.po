@@ -7379,3 +7379,24 @@ msgstr "Permanently disable client"
 
 msgid "disables the client in Client resource in the Director configuration (Enabled = no). The client remains disabled until re-enabled. This method of disabling the client is resistant to Director component restarts."
 msgstr "disables the client in Client resource in the Director configuration (Enabled = no). The client remains disabled until re-enabled. This method of disabling the client is resistant to Director component restarts."
+
+msgid "Enable"
+msgstr "Enable"
+
+msgid "Select the way you want to enable selected clients."
+msgstr "Select the way you want to enable selected clients."
+
+msgid "Enable client via Bconsole"
+msgstr "Enable client via Bconsole"
+
+msgid "enables client that was temporarily disabled in memory by Bconsole \"disable\" command."
+msgstr "enables client that was temporarily disabled in memory by Bconsole \"disable\" command."
+
+msgid "Enable client in configuration"
+msgstr "Enable client in configuration"
+
+msgid "permanently enables the client in Client resource in the Director configuration (Enabled = yes)."
+msgstr "permanently enables the client in Client resource in the Director configuration (Enabled = yes)."
+
+msgid "Enable client"
+msgstr "Enable client"

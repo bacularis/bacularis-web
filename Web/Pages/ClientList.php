@@ -244,6 +244,140 @@ class ClientList extends BaculumWebPage
 	}
 
 	/**
+	 * Enable client - bulk action.
+	 * NOTE: Action available only for users with admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function enableClient($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$params = $param->getCallbackParameter();
+		if (!is_object($params)) {
+			// this is not object - end
+			return;
+		}
+		$method = (int) $params->method;
+		$clients = $params->items;
+		$error = null;
+		$err_cli = null;
+		for ($i = 0; $i < count($clients); $i++) {
+			$result = null;
+			if ($method == self::DISABLE_ENABLE_METHOD_BCONSOLE) {
+				$result = $this->enableClientConsole(
+					$clients[$i]->clientid,
+					$clients[$i]->name
+				);
+			} elseif ($method == self::DISABLE_ENABLE_METHOD_CONFIG) {
+				$result = $this->enableClientConfig(
+					$clients[$i]->name
+				);
+			}
+			if (is_object($result) && $result->error != 0) {
+				$err_cli = $clients[$i]->name;
+				$error = $result;
+				break;
+			}
+		}
+		// Finish or report error
+		$eid = 'client_list_enable_client_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			$cb->callClientFunction('oEnableClientWindow.show', [false]);
+		} else {
+			$emsg = 'Error while enabling client "%s". ErrorCode: %d, Message: %s.';
+			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+			$cb->hide('client_list_enable_client_btn');
+		}
+		$this->loadClientShow($sender, $param);
+	}
+
+	/**
+	 * Enable client using Bconsole 'enable' command.
+	 *
+	 * @param int $clientid client identifier to enable
+	 * @param string $name client name to enable
+	 * @return object enable client result
+	 */
+	private function enableClientConsole(int $clientid, string $name): object
+	{
+		$api = $this->getModule('api');
+		$result = $api->set(
+			['clients', $clientid, 'enable']
+		);
+		if ($result->error === 0) {
+			$audit = $this->getModule('audit');
+			$audit->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Client '{$name}' has been enabled."
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * Enable client in Bacula Director configuration.
+	 *
+	 * @param string $name client name to enable
+	 * @return object enable client result
+	 */
+	private function enableClientConfig(string $name): ?object
+	{
+		$sess = $this->getApplication()->getSession();
+		if (!$sess->itemAt('dir')) {
+			// Configuration part not enabled for user - end.
+			return null;
+		}
+		$component_type = 'dir';
+		$resource_type = 'Client';
+		$resource_name = $name;
+		$params = [
+			'config',
+			$component_type,
+			$resource_type,
+			$resource_name
+		];
+		$api = $this->getModule('api');
+		$result = $api->get($params, null, false);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$directives = $result->output;
+		$directives->Enabled = true;
+		$result = $api->set(
+			$params,
+			['config' => json_encode($directives)],
+			null,
+			false
+		);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$audit = $this->getModule('audit');
+		$audit->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_ACTION,
+			"Client '{$name}' has been enabled."
+		);
+
+		$result = $api->set(
+			['console'],
+			['reload']
+		);
+		return $result;
+	}
+
+	/**
 	 * Delete director component client configuration and catalog resources - bulk action
 	 * NOTE: Action available only for users with admin role assigned.
 	 *

@@ -135,6 +135,22 @@ var oClientList = {
 			}
 		},
 		{
+			action: 'enable',
+			label: '<%[ Enable ]%>',
+			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
+			value: ['clientid', 'name'],
+			before: function() {
+				const cb = () => {
+					const fields = ['clientid', 'name'];
+					const table = oClientList.table;
+					const selected = get_table_action_selected_items(table, fields);
+					return selected;
+				};
+				oEnableClientWindow.set_items_func(cb);
+				oEnableClientWindow.show(true);
+			}
+		},
+		{
 			action: 'disable',
 			label: '<%[ Disable ]%>',
 			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
@@ -740,6 +756,137 @@ var oClientListDeleteClientResourceWindow = {
 	}
 };
 </script>
+		<!-- Enable client -->
+		<com:TCallback ID="EnableClientAction" OnCallback="enableClient">
+			<prop:ClientSide.OnLoading>
+				oEnableClientWindow.show_loader(true);
+			</prop:ClientSide.OnLoading>
+			<prop:ClientSide.OnComplete>
+				oClientList.table.rows({selected: true}).deselect();
+				oMonitor();
+				oEnableClientWindow.show_loader(false);
+			</prop:ClientSide.OnComplete>
+		</com:TCallback>
+		<div id="client_list_enable_client_window" class="w3-modal">
+			<div class="w3-modal-content w3-animate-top w3-card-4">
+				<header class="w3-container w3-green">
+					<span onclick="oEnableClientWindow.show(false);" class="w3-button w3-display-topright">&times;</span>
+					<h2><%[ Enable client ]%></h2>
+				</header>
+				<div class="w3-container w3-margin-left w3-margin-right">
+					<p id="client_list_enable_client_error" class="error w3-margin-top" style="display: none"></p>
+					<p>
+						<%[ Select the way you want to enable selected clients. ]%>
+					</p>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-quarter"><%[ Clients ]%>:</div>
+						<div class="w3-threequarter">
+							<ul id="client_list_enable_client_list"><ul>
+						</div>
+					</div>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-quarter"><%[ Action ]%>:</div>
+						<div class="w3-threequarter">
+							<div>
+								<input type="radio" id="client_list_enable_client_tmp_chkb" name="client_list_enable_client_chkb" class="w3-radio" value="1" checked="checked" /> &nbsp;<label for="client_list_enable_client_tmp_chkb" class="pointer"><strong><%[ Enable client via Bconsole ]%></strong> - <%[ enables client that was temporarily disabled in memory by Bconsole "disable" command. ]%></label>
+							</div>
+							<div>
+								<input type="radio" id="client_list_enable_client_per_chkb" name="client_list_enable_client_chkb" class="w3-radio" value="1" /> &nbsp;<label for="client_list_enable_client_per_chkb" class="pointer"><strong><%[ Enable client in configuration ]%></strong> - <%[ permanently enables the client in Client resource in the Director configuration (Enabled = yes). ]%></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<footer class="w3-container w3-center w3-padding">
+					<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oEnableClientWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
+					<button type="button" id="client_list_enable_client_btn" class="w3-button w3-green w3-margin-bottom" onclick="oEnableClientWindow.save();"><i class="fa-solid fa-circle-check"></i> &nbsp;<%[ Enable ]%></button> &nbsp;<i id="client_list_enable_client_loader" class="fa-solid fa-sync-alt w3-spin" style="visibility: hidden; vertical-align: super;"></i>
+				</footer>
+			</div>
+		</div>
+		<script>
+var oEnableClientWindow = {
+	items_func: null,
+	methods: {
+		tmp: <%=ClientList::DISABLE_ENABLE_METHOD_BCONSOLE%>,
+		per: <%=ClientList::DISABLE_ENABLE_METHOD_CONFIG%>
+	},
+	ids: {
+		win: 'client_list_enable_client_window',
+		error: 'client_list_enable_client_error',
+		list: 'client_list_enable_client_list',
+		method_tmp: 'client_list_enable_client_tmp_chkb',
+		method_per: 'client_list_enable_client_per_chkb',
+		btn: 'client_list_enable_client_btn',
+		loader: 'client_list_enable_client_loader'
+	},
+	clear: function() {
+		const error = document.getElementById(this.ids.error);
+		error.style.display = 'none';
+		const btn = document.getElementById(this.ids.btn);
+		btn.style.display = 'inline-block';
+		const list = document.getElementById(this.ids.list);
+		while (list.firstChild) {
+			list.removeChild(list.firstChild);
+		}
+	},
+	get_method: function() {
+		const method_tmp = document.getElementById(this.ids.method_tmp);
+		const method_per = document.getElementById(this.ids.method_per);
+		let method;
+		if (method_tmp.checked) {
+			method = this.methods.tmp;
+		} else if (method_per.checked) {
+			method = this.methods.per;
+		}
+		return method;
+	},
+	set_items_func: function(func) {
+		this.items_func = func;
+	},
+	set_items: function() {
+		const items = this.items_func();
+		const list = document.getElementById(this.ids.list);
+		let line;
+		for (const item of items) {
+			line = this.add_item(item);
+			list.appendChild(line);
+		}
+	},
+	show_loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
+	},
+	add_item: function(item) {
+		const li = document.createElement('LI');
+		li.classList.add('bold');
+		li.textContent = item.name;
+		return li;
+	},
+	save: function() {
+		const items = this.items_func();
+		const method = this.get_method();
+		const params = {
+			method: method,
+			items: items
+		};
+		const cb = <%=$this->EnableClientAction->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(params);
+		cb.dispatch();
+	},
+	show: function(show) {
+		const self = oEnableClientWindow;
+
+		// Clean up before showing
+		self.clear();
+
+		// Set selected item list
+		self.set_items();
+
+		// Show window
+		const win = document.getElementById(self.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	}
+};
+		</script>
 
 		<!-- Disable client -->
 		<com:TCallback ID="DisableClientAction" OnCallback="disableClient">
