@@ -694,6 +694,7 @@ var oClientListDeleteClientResourceWindow = {
 		<!-- Disable client -->
 		<com:TCallback ID="DisableClientAction" OnCallback="disableClient">
 			<prop:ClientSide.OnComplete>
+				oClientList.table.rows({selected: true}).deselect();
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
@@ -728,7 +729,7 @@ var oClientListDeleteClientResourceWindow = {
 				</div>
 				<footer class="w3-container w3-center w3-padding">
 					<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oDisableClientWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
-					<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="oDisableClientWindow.save();"><i class="fas fa-ban"></i> &nbsp;<%[ Disable ]%></button>
+					<button type="button" id="client_list_disable_client_btn" class="w3-button w3-green w3-margin-bottom" onclick="oDisableClientWindow.save();"><i class="fas fa-ban"></i> &nbsp;<%[ Disable ]%></button>
 				</footer>
 			</div>
 		</div>
@@ -744,11 +745,14 @@ var oDisableClientWindow = {
 		error: 'client_list_disable_client_error',
 		list: 'client_list_disable_client_list',
 		method_tmp: 'client_list_disable_client_tmp_chkb',
-		method_per: 'client_list_disable_client_per_chkb'
+		method_per: 'client_list_disable_client_per_chkb',
+		btn: 'client_list_disable_client_btn'
 	},
 	clear: function() {
 		const error = document.getElementById(this.ids.error);
 		error.style.display = 'none';
+		const btn = document.getElementById(this.ids.btn);
+		btn.style.display = 'inline-block';
 		const list = document.getElementById(this.ids.list);
 		while (list.firstChild) {
 			list.removeChild(list.firstChild);

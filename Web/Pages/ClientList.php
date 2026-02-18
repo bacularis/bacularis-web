@@ -118,6 +118,7 @@ class ClientList extends BaculumWebPage
 			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
 			$cb->update($eid, $emsg);
 			$cb->show($eid);
+			$cb->hide('client_list_disable_client_btn');
 		}
 	}
 
