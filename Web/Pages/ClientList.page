@@ -851,15 +851,15 @@ var oEnableClientWindow = {
 			list.appendChild(line);
 		}
 	},
-	show_loader: function(show) {
-		const loader = document.getElementById(this.ids.loader);
-		loader.style.visibility = show ? 'visible' : 'hidden';
-	},
 	add_item: function(item) {
 		const li = document.createElement('LI');
 		li.classList.add('bold');
 		li.textContent = item.name;
 		return li;
+	},
+	show_loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
 	},
 	save: function() {
 		const items = this.items_func();
@@ -890,9 +890,13 @@ var oEnableClientWindow = {
 
 		<!-- Disable client -->
 		<com:TCallback ID="DisableClientAction" OnCallback="disableClient">
+			<prop:ClientSide.OnLoading>
+				oDisableClientWindow.show_loader(true);
+			</prop:ClientSide.OnLoading>
 			<prop:ClientSide.OnComplete>
 				oClientList.table.rows({selected: true}).deselect();
 				oMonitor();
+				oDisableClientWindow.show_loader(false);
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
 		<div id="client_list_disable_client_window" class="w3-modal">
@@ -926,7 +930,8 @@ var oEnableClientWindow = {
 				</div>
 				<footer class="w3-container w3-center w3-padding">
 					<button type="button" class="w3-button w3-red w3-margin-bottom" onclick="oDisableClientWindow.show(false);"><i class="fas fa-times"></i> &nbsp;<%[ Cancel ]%></button>
-					<button type="button" id="client_list_disable_client_btn" class="w3-button w3-green w3-margin-bottom" onclick="oDisableClientWindow.save();"><i class="fas fa-ban"></i> &nbsp;<%[ Disable ]%></button>
+					<button type="button" id="client_list_disable_client_btn" class="w3-button w3-green w3-margin-bottom" onclick="oDisableClientWindow.save();"><i class="fas fa-ban"></i> &nbsp;<%[ Disable ]%></button> &nbsp;<i id="client_list_disable_client_loader" class="fa-solid fa-sync-alt w3-spin" style="visibility: hidden; vertical-align: super;"></i>
+
 				</footer>
 			</div>
 		</div>
@@ -943,7 +948,8 @@ var oDisableClientWindow = {
 		list: 'client_list_disable_client_list',
 		method_tmp: 'client_list_disable_client_tmp_chkb',
 		method_per: 'client_list_disable_client_per_chkb',
-		btn: 'client_list_disable_client_btn'
+		btn: 'client_list_disable_client_btn',
+		loader: 'client_list_disable_client_loader'
 	},
 	clear: function() {
 		const error = document.getElementById(this.ids.error);
@@ -983,6 +989,10 @@ var oDisableClientWindow = {
 		li.classList.add('bold');
 		li.textContent = item.name;
 		return li;
+	},
+	show_loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
 	},
 	save: function() {
 		const items = this.items_func();
