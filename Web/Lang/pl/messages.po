@@ -7336,3 +7336,15 @@ msgstr "permanently enables the client in Client resource in the Director config
 
 msgid "Enable client"
 msgstr "Enable client"
+
+msgid "Enable storage"
+msgstr "Enable storage"
+
+msgid "This enables storage that was temporarily disabled by Bconsole \"disable\" command."
+msgstr "This enables storage that was temporarily disabled by Bconsole \"disable\" command."
+
+msgid "Disable storage"
+msgstr "Disable storage"
+
+msgid "This temporarily disables the storage. It uses the \"disable\" command in Bconsole. The storage remains disabled until it is re-enabled or the Storage component is restarted."
+msgstr "This temporarily disables the storage. It uses the \"disable\" command in Bconsole. The storage remains disabled until it is re-enabled or the Storage component is restarted."

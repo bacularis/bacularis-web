@@ -44,6 +44,11 @@ class StorageList extends BaculumWebPage
 {
 	public const USE_CACHE = true;
 
+	public const DISABLE_ENABLE_METHOD_BCONSOLE = 0;
+	public const DISABLE_ENABLE_METHOD_CONFIG = 1;
+
+	public $client_show = [];
+
 	public $storages;
 
 	public function onInit($param)
@@ -91,6 +96,275 @@ class StorageList extends BaculumWebPage
 			);
 		}
 	}
+
+	/**
+	 * Disable storage - bulk action.
+	 * NOTE: Action available only for users with admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function disableStorage($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$params = $param->getCallbackParameter();
+		if (!is_object($params)) {
+			// this is not object - end
+			return;
+		}
+		$method = (int) $params->method;
+		$storages = $params->items;
+		$error = null;
+		$err_cli = null;
+		for ($i = 0; $i < count($storages); $i++) {
+			$result = null;
+			if ($method == self::DISABLE_ENABLE_METHOD_BCONSOLE) {
+				$result = $this->disableStorageConsole(
+					$storages[$i]->storageid,
+					$storages[$i]->name
+				);
+			} elseif (false && $method == self::DISABLE_ENABLE_METHOD_CONFIG) {
+				// Remove 'false' if the config method will be fixed in Bacula
+				$result = $this->disableStorageConfig(
+					$storages[$i]->name
+				);
+			}
+			if (is_object($result) && $result->error != 0) {
+				$err_cli = $storages[$i]->name;
+				$error = $result;
+				break;
+			}
+		}
+		// Finish or report error
+		$eid = 'storage_list_disable_storage_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			$cb->callClientFunction('oDisableStorageWindow.show', [false]);
+		} else {
+			$emsg = 'Error while disabling storage "%s". ErrorCode: %d, Message: %s.';
+			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+			$cb->hide('storage_list_disable_storage_btn');
+		}
+	}
+
+	/**
+	 * Disable storage using Bconsole 'disable' command.
+	 *
+	 * @param int $storageid storage identifier to disable
+	 * @param string $name storage name to disable
+	 * @return object disable storage result
+	 */
+	private function disableStorageConsole(int $storageid, string $name): object
+	{
+		$api = $this->getModule('api');
+		$result = $api->set(
+			['storages', $storageid, 'disable']
+		);
+		if ($result->error === 0) {
+			$audit = $this->getModule('audit');
+			$audit->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Storage '{$name}' has been disabled."
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * Disable storage in Bacula Director configuration.
+	 *
+	 * @param string $name storage name to disable
+	 * @return object disable storage result
+	 */
+	private function disableStorageConfig(string $name): ?object
+	{
+		$sess = $this->getApplication()->getSession();
+		if (!$sess->itemAt('dir')) {
+			// Configuration part not enabled for user - end.
+			return null;
+		}
+		$component_type = 'dir';
+		$resource_type = 'Storage';
+		$resource_name = $name;
+		$params = [
+			'config',
+			$component_type,
+			$resource_type,
+			$resource_name
+		];
+		$api = $this->getModule('api');
+		$result = $api->get($params, null, false);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$directives = $result->output;
+		$directives->Enabled = false;
+		$result = $api->set(
+			$params,
+			['config' => json_encode($directives)],
+			null,
+			false
+		);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$audit = $this->getModule('audit');
+		$audit->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_ACTION,
+			"Storage '{$name}' has been disabled."
+		);
+
+		$result = $api->set(
+			['console'],
+			['reload']
+		);
+		return $result;
+	}
+
+	/**
+	 * Enable storage - bulk action.
+	 * NOTE: Action available only for users with admin role assigned.
+	 *
+	 * @param TCallback $sender callback object
+	 * @param TCallbackEventPrameter $param event parameter
+	 */
+	public function enableStorage($sender, $param)
+	{
+		if (!$this->User->isInRole(WebUserRoles::ADMIN)) {
+			// non-admin user - end
+			return;
+		}
+		$params = $param->getCallbackParameter();
+		if (!is_object($params)) {
+			// this is not object - end
+			return;
+		}
+		$method = (int) $params->method;
+		$storages = $params->items;
+		$error = null;
+		$err_cli = null;
+		for ($i = 0; $i < count($storages); $i++) {
+			$result = null;
+			if ($method == self::DISABLE_ENABLE_METHOD_BCONSOLE) {
+				$result = $this->enableStorageConsole(
+					$storages[$i]->storageid,
+					$storages[$i]->name
+				);
+			} elseif (false && $method == self::DISABLE_ENABLE_METHOD_CONFIG) {
+				// Remove 'false' if the config method will be fixed in Bacula
+				$result = $this->enableStorageConfig(
+					$storages[$i]->name
+				);
+			}
+			if (is_object($result) && $result->error != 0) {
+				$err_cli = $storages[$i]->name;
+				$error = $result;
+				break;
+			}
+		}
+		// Finish or report error
+		$eid = 'storage_list_enable_storage_error';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($eid);
+		if (!$error) {
+			$cb->callClientFunction('oEnableStorageWindow.show', [false]);
+		} else {
+			$emsg = 'Error while enabling storage "%s". ErrorCode: %d, Message: %s.';
+			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+			$cb->hide('storage_list_enable_storage_btn');
+		}
+	}
+
+	/**
+	 * Enable storage using Bconsole 'enable' command.
+	 *
+	 * @param int $storageid storage identifier to enable
+	 * @param string $name storage name to enable
+	 * @return object enable storage result
+	 */
+	private function enableStorageConsole(int $storageid, string $name): object
+	{
+		$api = $this->getModule('api');
+		$result = $api->set(
+			['storages', $storageid, 'enable']
+		);
+		if ($result->error === 0) {
+			$audit = $this->getModule('audit');
+			$audit->audit(
+				AuditLog::TYPE_INFO,
+				AuditLog::CATEGORY_ACTION,
+				"Storage '{$name}' has been enabled."
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * Enable storage in Bacula Director configuration.
+	 *
+	 * @param string $name storage name to enable
+	 * @return object enable storage result
+	 */
+	private function enableStorageConfig(string $name): ?object
+	{
+		$sess = $this->getApplication()->getSession();
+		if (!$sess->itemAt('dir')) {
+			// Configuration part not enabled for user - end.
+			return null;
+		}
+		$component_type = 'dir';
+		$resource_type = 'Storage';
+		$resource_name = $name;
+		$params = [
+			'config',
+			$component_type,
+			$resource_type,
+			$resource_name
+		];
+		$api = $this->getModule('api');
+		$result = $api->get($params, null, false);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$directives = $result->output;
+		$directives->Enabled = true;
+		$result = $api->set(
+			$params,
+			['config' => json_encode($directives)],
+			null,
+			false
+		);
+		if ($result->error != 0) {
+			return $result;
+		}
+
+		$audit = $this->getModule('audit');
+		$audit->audit(
+			AuditLog::TYPE_INFO,
+			AuditLog::CATEGORY_ACTION,
+			"Storage '{$name}' has been enabled."
+		);
+
+		$result = $api->set(
+			['console'],
+			['reload']
+		);
+		return $result;
+	}
+
 
 	/**
 	 * Delete director component storage configuration and catalog resources - bulk action
