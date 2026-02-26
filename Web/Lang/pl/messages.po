@@ -5437,7 +5437,7 @@ msgid "Error. Please check: 1) if Bacula Director version is 11.0 or greater. Th
 msgstr "Błąd. Proszę sprawdzić: 1) czy wersja Zarządcy Bacula jest 11.0 lub większa. Ta funkcja jest wspierana przez Zarządcę Bacula w wersji >= 11.0. 2) czy masz wystarczająco pamięci przydzielonej dla PHP do wyświetlenia wielu rekordów (zobacz opcję memory_limit w pliku php.ini) 3) czy nie ma za dużo plików zadań do wyświetlnia (np. 1 milion plików lub więcej)."
 
 msgid "In use by"
-msgstr "W użyciu przez"
+msgstr "W użyciu"
 
 msgid "Resource usage"
 msgstr "Użycie zasobu"
