@@ -1,5 +1,6 @@
 <com:TActiveLinkButton
-	CssClass="w3-button w3-green"
+	ID="UpdateSlotsBtn"
+	CssClass="w3-button w3-green header_item"
 	OnClick="loadValues"
 	Visible="<%=$this->ShowButton%>"
 >
