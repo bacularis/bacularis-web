@@ -333,4 +333,60 @@ class ClientView extends BaculumWebPage
 			$this->JobBandwidth->setJobUname($job_uname);
 		}
 	}
+
+	public function getNavData()
+	{
+		$clientid = $this->getClientId();
+		$name = $this->getClientName();
+		$params = [];
+		if ($clientid) {
+			$params['clientid'] = $clientid;
+		} elseif ($name) {
+			$params['client'] = $name;
+		}
+		$page_url = $this->Service->constructUrl('ClientView', $params);
+		return [
+			[
+				'page' => 'Dashboard',
+			],
+			[
+				'page' => 'ClientList',
+			],
+			[
+				'page' => 'ClientView',
+				'params' => $params,
+				'label' => 'Client details',
+				'sub_label' => $name . ($clientid ? sprintf(' [%s]', $clientid) : ''),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#client_actions',
+						'label' => 'Actions',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#client_jobs',
+						'label' => 'Client jobs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#client_config',
+						'label' => 'Configure client',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#filedaemon_config',
+						'label' => 'Configure file daemon',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

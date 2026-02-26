@@ -440,4 +440,67 @@ class StorageList extends BaculumWebPage
 			);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('StorageList');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'StorageList',
+				'label' => 'Storage',
+				'icon' => 'fa-solid fa-database fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#btn_add_storage',
+						'label' => 'Add storage',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_add_device',
+						'label' => 'Add device',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_add_autochanger',
+						'label' => 'Add autochanger',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_file_storage',
+						'label' => 'Add file storage',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_tape_storage',
+						'label' => 'Add tape job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_cloud_storage',
+						'label' => 'Add cloud storage',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
+
+	public function isSdConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('sd') ? true : false);
+	}
 }

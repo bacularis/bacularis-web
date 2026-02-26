@@ -202,4 +202,50 @@ class VolumeView extends BaculumWebPage
 			$this->VolumeActionLog->Text = $result->output;
 		}
 	}
+
+	public function getNavData()
+	{
+		$mediaid = $this->getMediaId();
+		$name = $this->getVolumeName();
+		$params = [];
+		if ($mediaid) {
+			$params['mediaid'] = $mediaid;
+		} elseif ($name) {
+			$params['media'] = $name;
+		}
+		$page_url = $this->Service->constructUrl('VolumeView', $params);
+		return [
+			[
+				'page' => 'Dashboard',
+			],
+			[
+				'page' => 'VolumeList',
+			],
+			[
+				'page' => 'VolumeView',
+				'params' => $params,
+				'label' => 'Volume details',
+				'sub_label' => $name . ($mediaid ? sprintf(' [%s]', $mediaid) : ''),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#volume_actions',
+						'label' => 'Actions',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#jobs_on_volume',
+						'label' => 'Jobs on volume',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#volume_config',
+						'label' => 'Configure volume',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
+
 }

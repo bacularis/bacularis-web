@@ -4,14 +4,17 @@
 	<header class="w3-container">
 		<h5>
 			<b><i class="fa fa-tachometer-alt"></i> <%[ Dashboard ]%></b>
-			<com:TActiveLinkButton
-				OnClick="loadRunJobModal"
-				Attributes.onclick="document.getElementById('run_job').style.display='block'"
-				CssClass="w3-button w3-green w3-margin-left"
-				Style="font-size: 10px"
-			>
-				<i class="fa fa-cogs w3-small"></i> &nbsp;<strong><%[ Run job ]%></strong>
-			</com:TActiveLinkButton>
+			<div id="btn_run_job" class="w3-show-inline-block" data-btn="<%=$this->RunJobBtn->ClientID%>">
+				<com:TActiveLinkButton
+					ID="RunJobBtn"
+					OnClick="loadRunJobModal"
+					Attributes.onclick="document.getElementById('run_job').style.display='block'"
+					CssClass="w3-button w3-green w3-margin-left"
+					Style="font-size: 10px"
+				>
+					<i class="fa fa-cogs w3-small"></i> &nbsp;<strong><%[ Run job ]%></strong>
+				</com:TActiveLinkButton>
+			</div>
 		</h5>
 		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	</header>

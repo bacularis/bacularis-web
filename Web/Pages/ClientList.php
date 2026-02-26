@@ -461,4 +461,42 @@ class ClientList extends BaculumWebPage
 			);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('ClientList');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'ClientList',
+				'label' => 'Clients',
+				'icon' => 'fa-solid fa-desktop fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#client_table',
+						'label' => 'Clients',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#client_graphs',
+						'label' => 'Graphs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#btn_add_client',
+						'label' => 'Add client',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

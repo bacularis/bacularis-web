@@ -565,4 +565,36 @@ class AccountSettings extends BaculumWebPage
 		}
 		return $result['valid'];
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('AccountSettings');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'AccountSettings',
+				'label' => 'Account settings',
+				'icon' => 'fa-solid fa-user-gear fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#account_settings_general',
+						'label' => 'General',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#account_settings_auth',
+						'label' => 'Security',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#account_settings_tags',
+						'label' => 'Tags',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

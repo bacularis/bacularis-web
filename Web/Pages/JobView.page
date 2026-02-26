@@ -1,45 +1,55 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-tasks"></i> <%[ Job details ]%></b>
-		</h5>
-	</header>
-	<h3 class="view_header"><%[ Job: ]%> <%=$this->getJobName()%> &nbsp;<span class="w3-small<%=$this->getJobId() == 0 ? ' hide' : ''%>">[<%[ JobId ]%> <%=$this->getJobId()%>]</span></h3>
-	<com:TActiveLinkButton
-		CssClass="w3-button w3-green w3-margin-left w3-margin-bottom w3-left"
-		OnClick="loadRunJobModal"
-		Attributes.onclick="document.getElementById('run_job').style.display='block'"
-	>
-		<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
-	</com:TActiveLinkButton>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-file-lines fa-fw"
+		Title="Job"
+		ItemName="<%=$this->getJobName()%>"
+		SubItemName="<%=$this->getJobId() == 0 ? '' : 'JobId ' .$this->getJobId()%>"
+		CssClass="w3-show-inline-block"
+	/>
+	<span id="btn_run_job" data-btn="<%=$this->RunJobBtn->ClientID%>">
+		<com:TActiveLinkButton
+			ID="RunJobBtn"
+			CssClass="w3-button w3-green w3-margin-left header_item"
+			OnClick="loadRunJobModal"
+			Attributes.onclick="document.getElementById('run_job').style.display='block'"
+		>
+			<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
+		</com:TActiveLinkButton>
+	</span>
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Job" Director="<%=$this->getApplication()->getSession()->itemAt('director')%>" />
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
-	<com:TLinkButton
-		CssClass="w3-button w3-green w3-margin-left"
-		Visible="<%=($this->getPrevJobId() > 0)%>"
-		Attributes.onclick="window.location.href='/web/job/history/<%=$this->getPrevJobId()%>/'; return false;"
-	>
-		<i class="fa fa-angle-left"></i> &nbsp;<%[ Prev job ]%>
-	</com:TLinkButton>
-	<com:TLinkButton
-		CssClass="w3-button w3-green"
-		Visible="<%=($this->getNextJobId() > 0)%>"
-		Attributes.onclick="window.location.href='/web/job/history/<%=$this->getNextJobId()%>/'; return false;"
-	>
-		<%[ Next job ]%> &nbsp;<i class="fa fa-angle-right"></i>
-	</com:TLinkButton>
+	<div class="w3-show-inline-block" id="btn_prev_job" data-btn="<%=$this->PrevJobBtn->ClientID%>">
+		<com:TLinkButton
+			ID="PrevJobBtn"
+			CssClass="w3-button w3-green w3-margin-left header_item"
+			Visible="<%=$this->isPrevJobVisible()%>"
+			Attributes.onclick="window.location.href='/web/job/history/<%=$this->getPrevJobId()%>/'; return false;"
+		>
+			<i class="fa fa-angle-left"></i> &nbsp;<%[ Prev job ]%>
+		</com:TLinkButton>
+	</div>
+	<div class="w3-show-inline-block" id="btn_next_job" data-btn="<%=$this->NextJobBtn->ClientID%>">
+		<com:TLinkButton
+			ID="NextJobBtn"
+			CssClass="w3-button w3-green header_item"
+			Visible="<%=$this->isNextJobVisible()%>"
+			Attributes.onclick="window.location.href='/web/job/history/<%=$this->getNextJobId()%>/'; return false;"
+		>
+			<%[ Next job ]%> &nbsp;<i class="fa fa-angle-right"></i>
+		</com:TLinkButton>
+	</div>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('JobList')%>#<%=$this->getJobId() > 0 ? 'job_history' : 'job_details'%>"><i class="fa fa-angle-left"></i></a>
-		<button id="btn_job_log" type="button" class="w3-bar-item w3-button tab_btn <%=$this->getJobId() > 0 ? 'w3-grey' : 'hide'%>" onclick="W3Tabs.open(this.id, 'job_log'); job_callback_func(); oRunningJobStatus.init_refresh();"><%[ Job log ]%></button>
+		<button id="btn_job_log" type="button" class="w3-bar-item w3-button tab_btn <%=$this->isJobLogVisible() ? 'w3-grey' : 'hide'%>" onclick="W3Tabs.open(this.id, 'job_log'); job_callback_func(); oRunningJobStatus.init_refresh();"><%[ Job log ]%></button>
 		<button id="btn_job_graphs" type="button" class="w3-bar-item w3-button tab_btn<%=$this->getJobId() == 0 ? ' w3-grey' : ''%>" onclick="W3Tabs.open(this.id, 'job_graphs'); oJobGraphs.update();"><%[ Graphs ]%></button>
 		<com:TActiveLinkButton
 			ID="JobConfigBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'job_config');"
 			Text="<%[ Configure job ]%>"
-			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
+			Visible="<%=$this->isDirConfigVisible()%>"
 			OnCallback="loadJobConfig"
 		/>
 		<com:TActiveLinkButton
@@ -47,7 +57,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'fileset_config');"
 			Text="<%[ Configure fileset ]%>"
-			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
+			Visible="<%=$this->isDirConfigVisible()%>"
 			OnCallback="loadFileSetConfig"
 		/>
 		<com:TActiveLinkButton
@@ -55,7 +65,7 @@
 			CssClass="w3-bar-item w3-button tab_btn"
 			Attributes.onclick="W3Tabs.open(this.id, 'schedule_config');"
 			Text="<%[ Configure schedule ]%>"
-			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
+			Visible="<%=$this->isDirConfigVisible()%>"
 			OnCallback="loadScheduleConfig"
 		/>
 		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Job history ]%></button>
@@ -66,7 +76,7 @@
 			OnCallback="loadSchedules"
 			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"
 		/>
-		<button id="btn_job_web_access" type="button" class="w3-bar-item w3-button tab_btn<%=$this->User->isInRole(WebUserRoles::ADMIN) ? '' : ' hide'%>" onclick="W3Tabs.open(this.id, 'job_web_access'); oWebAccessResourceList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Web access ]%></button>
+		<button id="btn_job_web_access" type="button" class="w3-bar-item w3-button tab_btn<%=$this->isWebAccessVisible() ? '' : ' hide'%>" onclick="W3Tabs.open(this.id, 'job_web_access'); oWebAccessResourceList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Web access ]%></button>
 	</div>
 
 	<!-- Job Log -->

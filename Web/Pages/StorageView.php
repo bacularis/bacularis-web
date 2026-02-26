@@ -1152,4 +1152,66 @@ class StorageView extends BaculumWebPage
 	{
 		return $this->getViewState(self::STORAGE_ADDRESS);
 	}
+
+	public function getNavData()
+	{
+		$storageid = $this->getStorageId();
+		$name = $this->getStorageName();
+		$params = [];
+		if ($storageid) {
+			$params['storageid'] = $storageid;
+		} elseif ($name) {
+			$params['storage'] = $name;
+		}
+		$page_url = $this->Service->constructUrl('StorageView', $params);
+		return [
+			[
+				'page' => 'Dashboard',
+			],
+			[
+				'page' => 'StorageList',
+			],
+			[
+				'page' => 'StorageView',
+				'params' => $params,
+				'label' => 'Storage details',
+				'sub_label' => $name . ($storageid ? sprintf(' [%s]', $storageid) : ''),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#storage_actions',
+						'label' => 'Actions',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#storage_config',
+						'label' => 'Storage config',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#storage_daemon_config',
+						'label' => 'Storage file daemon',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isSdConfigVisible()
+					],
+					[
+						'address' => $page_url . '#manage_autochanger',
+						'label' => 'Manage autochanger',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
+
+	public function isSdConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('sd') ? true : false);
+	}
 }

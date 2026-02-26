@@ -1,18 +1,17 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-database"></i> <%[ Storage list ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-database fa-fw"
+		Title="Storage"
+	/>
 	<div class="w3-container">
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Storage'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add storage ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('sd') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $this->getApplication()->getSession()->itemAt('sd'), 'resource_type' => 'Device'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add device ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('sd') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $this->getApplication()->getSession()->itemAt('sd'), 'resource_type' => 'Autochanger'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add autochanger ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewFileStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add file storage ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewTapeStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add tape storage ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewCloudStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add cloud storage ]%></button>
+		<button type="button" id="btn_add_storage" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Storage'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add storage ]%></button>
+		<button type="button" id="btn_add_device" class="w3-button w3-green header_item<%=!$this->isSdConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $this->getApplication()->getSession()->itemAt('sd'), 'resource_type' => 'Device'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add device ]%></button>
+		<button type="button" id="btn_add_autochanger" class="w3-button w3-green header_item<%=!$this->isSdConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'sd', 'component_name' => $this->getApplication()->getSession()->itemAt('sd'), 'resource_type' => 'Autochanger'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add autochanger ]%></button>
+		<button type="button" id="btn_new_file_storage" class="w3-button w3-green header_item<%=!$this->isSdConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewFileStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add file storage ]%></button>
+		<button type="button" id="btn_new_tape_storage" class="w3-button w3-green header_item<%=!$this->isSdConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewTapeStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add tape storage ]%></button>
+		<button type="button" id="btn_new_cloud_storage" class="w3-button w3-green header_item<%=!$this->isSdConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCloudStorageWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ Add cloud storage ]%></button>
 		<com:Bacularis.Web.Portlets.TabViews ID="StorageViews" />
 	</div>
 	<!-- Tag tools -->

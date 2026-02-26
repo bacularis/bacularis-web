@@ -1,12 +1,13 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-hdd"></i> <%[ Volume details ]%></b>
-		</h5>
-	</header>
-	<h3 class="view_header"><%[ Volume: ]%> <%=$this->getVolumeName()%> &nbsp;<span class="w3-small">[MediaId <%=$this->getMediaId()%>]</span></h3>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-file-lines fa-fw"
+		Title="Volume"
+		ItemName="<%=$this->getVolumeName()%>"
+		SubItemName="<%=$this->getMediaId() == 0 ? '' : 'MediaId ' .$this->getMediaId()%>"
+		CssClass="w3-show-inline-block"
+	/>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('VolumeList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_volume_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'volume_actions');"><%[ Actions ]%></button>

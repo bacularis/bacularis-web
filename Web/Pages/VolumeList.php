@@ -579,4 +579,31 @@ class VolumeList extends BaculumWebPage
 			$cb->show($eid);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('VolumeList');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'VolumeList',
+				'label' => 'Volumes',
+				'icon' => 'fa-solid fa-hdd fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#btn_label_volumes',
+						'label' => 'Label volume(s)',
+						'icon' => 'fa-solid fa-tag fa-fw'
+					],
+					[
+						'address' => $page_url . '#btn_update_slots',
+						'label' => 'Update slots',
+						'icon' => 'fa-solid fa-retweet fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

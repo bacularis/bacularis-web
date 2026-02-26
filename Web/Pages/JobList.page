@@ -1,25 +1,27 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-tasks"></i> <%[ Job list ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-tasks fa-fw"
+		Title="Jobs"
+	/>
 	<div class="w3-margin-left">
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Job'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVerifyJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New verify job ]%></button>
-		<button type="button" class="w3-button w3-margin-bottom w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVirtualFullJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New virtual full job ]%></button>
-		<com:TActiveLinkButton
-			CssClass="w3-button w3-margin-bottom w3-green"
-			OnClick="loadRunJobModal"
-			Attributes.onclick="document.getElementById('run_job').style.display='block'"
-		>
-			<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
-		</com:TActiveLinkButton>
+		<button type="button" id="btn_add_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Job'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add job ]%></button>
+		<button type="button" id="btn_new_backup_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewBackupJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New backup job ]%></button>
+		<button type="button" id="btn_new_copy_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewCopyJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New copy job ]%></button>
+		<button type="button" id="btn_new_migrate_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewMigrateJobWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New migrate job ]%></button>
+		<button type="button" id="btn_new_verify_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVerifyJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New verify job ]%></button>
+		<button type="button" id="btn_new_virtual_full_job" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewVirtualFullJobWizard')%>';"><i class="fas fa-magic"></i> &nbsp;<%[ New virtual full job ]%></button>
+		<div class="w3-show-inline-block" id="btn_run_job" data-btn="<%=$this->RunJobBtn->ClientID%>">
+			<com:TActiveLinkButton
+				ID="RunJobBtn"
+				CssClass="w3-button w3-green header_item"
+				OnClick="loadRunJobModal"
+				Attributes.onclick="document.getElementById('run_job').style.display='block'"
+			>
+				<i class="fa fa-cogs"></i> &nbsp;<%[ Run job ]%>
+			</com:TActiveLinkButton>
+		</div>
 	</div>
 	<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	<div class="w3-bar w3-green w3-margin-bottom">

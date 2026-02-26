@@ -234,4 +234,61 @@ class PoolView extends BaculumWebPage
 	{
 		$this->getCallbackClient()->show('pool_view_rename_resource');
 	}
+
+	public function getNavData()
+	{
+		$poolid = $this->getPoolId();
+		$name = $this->getPoolName();
+		$params = [];
+		if ($poolid) {
+			$params['poolid'] = $poolid;
+		}
+		if ($name) {
+			$params['pool'] = $name;
+		}
+		$page_url = $this->Service->constructUrl('PoolView', $params);
+		return [
+			[
+				'page' => 'Dashboard',
+			],
+			[
+				'page' => 'PoolList',
+			],
+			[
+				'page' => 'PoolView',
+				'params' => $params,
+				'label' => 'Pool details',
+				'sub_label' => $name . ($poolid ? sprintf(' [%s]', $poolid) : ''),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#pool_actions',
+						'label' => 'Actions',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#pool_graphs',
+						'label' => 'Graphs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#volumes_in_pool',
+						'label' => 'Volumes in pool',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#pool_config',
+						'label' => 'Configure pool',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
+
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

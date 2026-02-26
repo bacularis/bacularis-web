@@ -1,11 +1,11 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-terminal"></i> <%[ Console details ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-terminal fa-fw"
+		Title="Console"
+		CssClass="w3-show-inline-block"
+	/>
 
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a id="btn_console_web" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'console_web');"<%=!$this->getModule('users')->isPageAllowed($this->User, 'Console') ? ' style="display: none"': ''%>>

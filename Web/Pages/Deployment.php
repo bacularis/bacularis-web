@@ -2013,4 +2013,46 @@ class Deployment extends BaculumWebPage
 		}
 		return $result;
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('Deployment');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'Deployment',
+				'label' => 'Deployment',
+				'icon' => 'fa-solid fa-rocket fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#api_hosts',
+						'label' => 'Hosts',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#os_profiles',
+						'label' => 'OS profiles',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#repo_auth',
+						'label' => 'Repo auths',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#ssh_configs',
+						'label' => 'SSH configs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#ssh_keys',
+						'label' => 'SSH keys',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

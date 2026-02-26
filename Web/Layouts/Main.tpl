@@ -75,6 +75,7 @@
 					const KEEP_TABLE_SETTINGS = <%=(count($this->web_config) > 0 && key_exists('keep_table_settings', $this->web_config['baculum'])) ? $this->web_config['baculum']['keep_table_settings'] : WebConfig::DEF_KEEP_TABLE_SETTINGS%>;
 					const MAX_LATEST_JOBS = <%=(count($this->web_config) > 0 && key_exists('max_latest_jobs', $this->web_config['baculum'])) ? $this->web_config['baculum']['max_latest_jobs'] : JobInfo::DEFAULT_MAX_LATEST_JOBS%>;
 				</script>
+				<com:Bacularis.Web.Portlets.Breadcrumbs />
 				<com:TContentPlaceHolder ID="Main" />
 				<!-- Footer -->
 				<footer class="w3-container w3-right-align w3-small"><%[ Version: ]%> <%=Params::BACULARIS_VERSION%></footer>

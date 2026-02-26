@@ -7,8 +7,8 @@
 	<url ServiceParameter="SelectAPIHost" pattern="web/api-host/" />
 	<url ServiceParameter="JobList" pattern="web/job/" />
 	<url ServiceParameter="JobList" pattern="web/job/history/" />
-	<url ServiceParameter="JobView" pattern="web/job/history/{jobid}/" parameters.jobid="\d+" />
 	<url ServiceParameter="JobView" pattern="web/job/history/{jobid}/{job}/" parameters.jobid="\d+" parameters.job="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="JobView" pattern="web/job/history/{jobid}/" parameters.jobid="\d+" />
 	<url ServiceParameter="JobView" pattern="web/job/{job}/" parameters.job="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="DirectorView" pattern="web/director/{director}/" parameters.director="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="StorageList" pattern="web/storage/" />
@@ -16,9 +16,9 @@
 	<url ServiceParameter="StorageView" pattern="web/storage/{storage}/" parameters.storage="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="DeviceView" pattern="web/device/{storageid}/{device}/" parameters.storageid="\d+" parameters.device="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="PoolList" pattern="web/pool/" />
+	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/{pool}/" parameters.poolid="\d+" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/" parameters.poolid="\d+" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{pool}/" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
-	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/{pool}/" parameters.poolid="\d+" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="VolumeList" pattern="web/volume/" />
 	<!-- @TODO: Add support for numerical volume names -->
 	<url ServiceParameter="VolumeView" pattern="web/volume/{mediaid}/" parameters.mediaid="\d+" />

@@ -17,4 +17,25 @@ use Bacularis\Web\Modules\BaculumWebPage;
 
 class AddOns extends BaculumWebPage
 {
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('AddOns');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'AddOns',
+				'label' => 'Add-ons',
+				'icon' => 'fa-solid fa-puzzle-piece fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#plugins',
+						'label' => 'Plugins',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

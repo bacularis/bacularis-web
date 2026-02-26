@@ -3,13 +3,13 @@
 	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
 	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-cog"></i> <%[ Application settings ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-cog fa-fw"
+		Title="Application settings"
+		CssClass="w3-show-inline-block"
+	/>
 	<div class="w3-margin-left">
-		<a href="<%=$this->Service->constructUrl('WebConfigWizard')%>" class="w3-button w3-margin-bottom w3-green<%=$this->getModule('users')->isPageAllowed($this->User, 'WebConfigWizard') ? '' : ' hide'%>"><i class="fa fa-magic"></i> &nbsp;<%[ Settings ]%></a>
+		<button type="button" onclick="window.location.href = '<%=$this->Service->constructUrl('WebConfigWizard')%>';" id="btn_settings" class="w3-button w3-green header_item<%=$this->getModule('users')->isPageAllowed($this->User, 'WebConfigWizard') ? '' : ' hide'%>"><i class="fa fa-magic"></i> &nbsp;<%[ Settings ]%></button>
 	</div>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a id="btn_application_settings_general" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'application_settings_general'); set_page_tables([oTagManagerList, oAppSettingsAuditLog]);">

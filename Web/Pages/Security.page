@@ -1,17 +1,17 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-lock"></i> <%[ Security ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-lock fa-fw"
+		Title="Security"
+		CssClass="w3-show-inline-block"
+	/>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<button id="btn_security_auth" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'security_auth'); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Authentication ]%></button>
 		<button id="btn_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'user_list'); oUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Users ]%></button>
 		<button id="btn_security_roles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'security_roles'); oRoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Roles ]%></button>
 		<button id="btn_organization_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'organization_list'); oOrganizationList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Organizations ]%></button>
-		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Console ACLs ]%></button>
+		<button id="btn_console_list" type="button" class="w3-bar-item w3-button tab_btn<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="W3Tabs.open(this.id, 'console_list'); oConsoleList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ Console ACLs ]%></button>
 		<button id="btn_api_basic_user_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_basic_user_list'); oAPIBasicUserList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API basic users ]%></button>
 		<button id="btn_oauth2_client_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'oauth2_client_list'); oOAuth2ClientList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API OAuth2 clients ]%></button>
 		<button id="btn_api_host_list" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'api_host_list'); oAPIHostList.table.responsive.recalc(); set_page_tables([oUserList, oRoleList, oRoleMappingList, oConsoleList, oAPIBasicUserList, oOAuth2ClientList, oAPIHostList, oAPIHostGroupList, oOrganizationList, oIdPList]);"><%[ API hosts ]%></button>

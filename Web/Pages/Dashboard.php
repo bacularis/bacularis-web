@@ -41,4 +41,38 @@ class Dashboard extends BaculumWebPage
 	{
 		$this->RunJobModal->loadData();
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('Dashboard');
+		return [
+			[
+				'page' => 'Dashboard',
+				'label' => 'Dasboard',
+				'icon' => 'fa-solid fa-tachometer-alt fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#btn_run_job',
+						'label' => 'Run job',
+						'icon' => 'fa-solid fa-cogs fa-fw'
+					],
+					[
+						'address' => $page_url . '#dashboard_recent_jobs_subtab',
+						'label' => 'Recent jobs',
+						'icon' => 'fa-solid fa-tasks fa-fw'
+					],
+					[
+						'address' => $page_url . '#dashboard_scheduled_today_jobs_subtab',
+						'label' => 'Scheduled for today',
+						'icon' => 'fa-solid fa-clock fa-fw'
+					],
+					[
+						'address' => $page_url . '#dashboard_scheduled_days_jobs_subtab',
+						'label' => 'Scheduled for next 5 days',
+						'icon' => 'fa-solid fa-clock fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

@@ -3,12 +3,13 @@
 	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
 	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-database"></i> <%[ Storage details ]%></b>
-		</h5>
-	</header><br />
-	<h3 class="view_header w3-show-inline-block"><%[ Storage: ]%> <%=$this->getStorageName()%> &nbsp;<span class="w3-small">[StorageId <%=$this->getStorageId()%>]</span></h3>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-file-lines fa-fw"
+		Title="Storage"
+		ItemName="<%=$this->getStorageName()%>"
+		SubItemName="<%=$this->getStorageId() == 0 ? '' : 'StorageId ' .$this->getStorageId()%>"
+		CssClass="w3-show-inline-block"
+	/>
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Storage" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('StorageList')%>"><i class="fa fa-angle-left"></i></a>

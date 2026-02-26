@@ -3,25 +3,28 @@
 	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
 	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-desktop"></i> <%[ Client details ]%></b>
-		</h5>
-	</header><br />
-	<h3 class="view_header w3-show-inline-block"><%[ Client: ]%> <%=$this->getClientName()%> &nbsp;<span class="w3-small">[ClientId <%=$this->getClientId()%>]</span></h3>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-file-lines fa-fw"
+		Title="Client"
+		ItemName="<%=$this->getClientName()%>"
+		SubItemName="<%='ClientId ' . $this->getClientId()%>"
+		CssClass="w3-show-inline-block"
+	/>
 	<com:Bacularis.Web.Portlets.GoToResource ResourceType="Client" />
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a class="w3-bar-item w3-button tab_btn" href="<%=$this->Service->constructUrl('ClientList')%>"><i class="fa fa-angle-left"></i></a>
 		<button id="btn_client_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_actions');"><%[ Actions ]%></button>
 		<button id="btn_client_jobs" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'client_jobs'); oJobForClientList.table.responsive.recalc(); set_page_tables([oJobForClientList, oBaculaConfigResourceList<%=$this->FileDaemonResourcesConfig->ClientID%>]);"><%[ Client jobs ]%></button>
-		<com:TActiveLinkButton
-			ID="ClientConfigBtn"
-			CssClass="w3-bar-item w3-button tab_btn"
-			Attributes.onclick="W3Tabs.open(this.id, 'client_config');"
-			Text="<%[ Configure client ]%>"
-			Visible="<%=($this->getApplication()->getSession()->itemAt('dir') ? true : false)%>"
-			OnClick="setDIRClientConfig"
-		/>
+		<div id="client_config" data-btn="<%=$this->ClientConfigBtn->ClientID%>">
+			<com:TActiveLinkButton
+				ID="ClientConfigBtn"
+				CssClass="w3-bar-item w3-button tab_btn"
+				Attributes.onclick="W3Tabs.open(this.id, 'client_config');"
+				Text="<%[ Configure client ]%>"
+				Visible="<%=$this->isDirConfigVisible()%>"
+				OnClick="setDIRClientConfig"
+			/>
+		</div>
 		<a id="btn_filedaemon_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="load_fd_filedaemon_config(); W3Tabs.open(this.id, 'filedaemon_config');">
 			<%[ Configure file daemon ]%>
 		</a>

@@ -693,4 +693,41 @@ class Patterns extends BaculumWebPage
 			"Remove constants. Name: {$names}"
 		);
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('Patterns');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'Patterns',
+				'label' => 'Patterns',
+				'icon' => 'fa-solid fa-stamp fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#configs',
+						'label' => 'Configs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#patterns',
+						'label' => 'Patterns',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#constants',
+						'label' => 'Constants',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#variables',
+						'label' => 'Variables',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

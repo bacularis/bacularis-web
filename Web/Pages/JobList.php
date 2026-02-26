@@ -677,4 +677,82 @@ class JobList extends BaculumWebPage
 		}
 		return $result;
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('JobList');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'JobList',
+				'label' => 'Jobs',
+				'icon' => 'fa-solid fa-tasks fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#job_history',
+						'label' => 'Job history',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#job_details',
+						'label' => 'Jobs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#job_reports',
+						'label' => 'Reports',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#btn_add_job',
+						'label' => 'Add job',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_backup_job',
+						'label' => 'New backup job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_copy_job',
+						'label' => 'New copy job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_migrate_job',
+						'label' => 'New migrate job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_verify_job',
+						'label' => 'New verify job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_new_virtual_full_job',
+						'label' => 'New virtual full job',
+						'icon' => 'fa-solid fa-magic fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#btn_run_job',
+						'label' => 'Run job',
+						'icon' => 'fa-solid fa-cogs fa-fw'
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

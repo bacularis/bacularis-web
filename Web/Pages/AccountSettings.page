@@ -2,11 +2,11 @@
 <com:TContent ID="Main">
 	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/qrcodejs/qrcode.min.js %> />
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa-solid fa-user-gear"></i> <%[ Account settings ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-user-gear fa-fw"
+		Title="Account settings"
+		CssClass="w3-show-inline-block"
+	/>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a id="btn_account_settings_general" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'account_settings_general');">
 			<%[ General ]%>

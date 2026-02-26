@@ -3,15 +3,12 @@
 	<com:BClientScript ScriptUrl=<%~ ../../../../../vendor/npm-asset/opentip/downloads/opentip-jquery.min.js %> />
 	<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-desktop"></i> <%[ Client list ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-desktop fa-fw"
+		Title="Clients"
+	/>
 	<div class="w3-container">
-		<div class="w3-margin-bottom">
-			<button type="button" class="w3-button w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Client'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add client ]%></button>
-		</div>
+		<button type="button" id="btn_add_client" class="w3-button w3-green header_item<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewResource', array('component_type' => 'dir', 'component_name' => $this->getApplication()->getSession()->itemAt('dir'), 'resource_type' => 'Client'))%>';"><i class="fa fa-plus"></i> &nbsp;<%[ Add client ]%></button>
 	</div>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<a id="btn_client_table" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'client_table'); if (oClientList.table) { oClientList.table.responsive.recalc(); oClientList.table.fixedHeader.adjust(); } set_page_tables([oClientList]);">

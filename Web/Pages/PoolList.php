@@ -171,4 +171,32 @@ class PoolList extends BaculumWebPage
 			);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('PoolList');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'PoolList',
+				'label' => 'Pools',
+				'icon' => 'fa-solid fa-tape fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#btn_add_pool',
+						'label' => 'Add pool',
+						'icon' => 'fa-solid fa-plus fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

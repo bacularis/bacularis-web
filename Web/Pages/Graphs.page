@@ -1,11 +1,11 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-chart-pie"></i> <%[ Graphs ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-chart-pie fa-fw"
+		Title="Graphs"
+		CssClass="w3-show-inline-block"
+	/>
 	<div style="clear: both"></div>
 	<com:Bacularis.Web.Portlets.JobGraphs ID="Graphs" />
 </com:TContent>

@@ -296,4 +296,71 @@ class ApplicationSettings extends BaculumWebPage
 			);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('ApplicationSettings');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'ApplicationSettings',
+				'label' => 'Application settings',
+				'icon' => 'fa-solid fa-cog fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#application_settings_general',
+						'label' => 'General',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_display',
+						'label' => 'Display options',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_tags',
+						'label' => 'Tags',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_features',
+						'label' => 'Features',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_plugins',
+						'label' => 'Plugins',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_web_server',
+						'label' => 'Web server',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_certs',
+						'label' => 'SSL certs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_audit_log',
+						'label' => 'Audit log',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#application_settings_self_test',
+						'label' => 'Health self test',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#btn_settings',
+						'label' => 'Settings',
+						'icon' => 'fa-solid fa-magic fa-fw'
+					]
+				]
+			]
+		];
+	}
 }

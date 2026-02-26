@@ -208,4 +208,72 @@ class Security extends BaculumWebPage
 		// reload API host window
 		$this->APIHosts->initAPIHostWindow();
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('Security');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'Security',
+				'label' => 'Security',
+				'icon' => 'fa-solid fa-lock fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#security_auth',
+						'label' => 'Authentication',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#user_list',
+						'label' => 'Users',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#security_roles',
+						'label' => 'Roles',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#organization_list',
+						'label' => 'Organizations',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#console_list',
+						'label' => 'Console ACLs',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#api_basic_user_list',
+						'label' => 'API basic users',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#oauth2_client_list',
+						'label' => 'API OAuth2 clients',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#api_host_list',
+						'label' => 'API hosts',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#api_host_group_list',
+						'label' => 'API host groups',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

@@ -32,6 +32,7 @@ use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
 use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Job view page.
@@ -862,5 +863,123 @@ class JobView extends BaculumWebPage
 			}
 		}
 		return $res;
+	}
+
+	public function getNavData()
+	{
+		$jobid = $this->getJobId();
+		$name = $this->getJobName();
+		$params = [];
+		if ($jobid) {
+			$params['jobid'] = $jobid;
+		}
+		if ($name) {
+			$params['job'] = $name;
+		}
+		$page_url = $this->Service->constructUrl('JobView', $params);
+		return [
+			[
+				'page' => 'Dashboard',
+			],
+			[
+				'page' => 'JobList',
+			],
+			[
+				'page' => 'JobView',
+				'params' => $params,
+				'label' => 'Job details',
+				'sub_label' => $name . ($jobid ? sprintf(' [%s]', $jobid) : ''),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#job_log',
+						'label' => 'Job log',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isJobLogVisible()
+					],
+					[
+						'address' => $page_url . '#job_graphs',
+						'label' => 'Graphs',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#job_config',
+						'label' => 'Configure job',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#fileset_config',
+						'label' => 'Configure fileset',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#schedule_config',
+						'label' => 'Configure schedule',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#job_history',
+						'label' => 'Job history',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#job_schedules',
+						'label' => 'Job schedules',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#job_web_access',
+						'label' => 'Web access',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isWebAccessVisible()
+					],
+					[
+						'address' => $page_url . '#btn_run_job',
+						'label' => 'Run job',
+						'icon' => 'fa-solid fa-cogs fa-fw'
+					],
+					[
+						'address' => $page_url . '#btn_prev_job',
+						'label' => 'Prev job',
+						'icon' => 'fa-solid fa-angle-left fa-fw',
+						'visible' => $this->isPrevJobVisible()
+					],
+					[
+						'address' => $page_url . '#btn_next_job',
+						'label' => 'Next job',
+						'icon' => 'fa-solid fa-angle-right fa-fw',
+						'visible' => $this->isNextJobVisible()
+					]
+				]
+			]
+		];
+	}
+
+	public function isJobLogVisible(): bool
+	{
+		return ($this->getJobId() > 0);
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
+
+	public function isWebAccessVisible(): bool
+	{
+		return $this->User->isInRole(WebUserRoles::ADMIN);
+	}
+
+	public function isPrevJobVisible(): bool
+	{
+		return ($this->getPrevJobId() > 0);
+	}
+
+	public function isNextJobVisible(): bool
+	{
+		return ($this->getNextJobId() > 0);
 	}
 }

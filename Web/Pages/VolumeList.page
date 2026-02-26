@@ -1,17 +1,20 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa fa-hdd"></i> <%[ Volume list ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-hdd fa-fw"
+		Title="Volumes"
+	/>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsVolumeList" ViewName="volume_list" />
 	<div class="w3-container tab_item">
-		<div class="w3-margin-bottom">
-			<com:Bacularis.Web.Portlets.LabelVolume />
-			<com:Bacularis.Web.Portlets.UpdateSlots />
+		<div>
+			<div id="btn_label_volumes" class="w3-show-inline-block" data-btn="<%=$this->LabelVolumes->LabelVolumesBtn->ClientID%>">
+				<com:Bacularis.Web.Portlets.LabelVolume ID="LabelVolumes" />
+			</div>
+			<div id="btn_update_slots" class="w3-show-inline-block" data-btn="<%=$this->UpdateSlots->UpdateSlotsBtn->ClientID%>">
+				<com:Bacularis.Web.Portlets.UpdateSlots ID="UpdateSlots" />
+			</div>
 		</div>
 		<com:Bacularis.Web.Portlets.TabViews ID="VolumeViews" />
 		<table id="volume_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">

@@ -1,11 +1,11 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
-		<h5>
-			<b><i class="fa-solid fa-rocket"></i> <%[ Deployment ]%></b>
-		</h5>
-	</header>
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-rocket fa-fw"
+		Title="Deployment"
+		CssClass="w3-show-inline-block"
+	/>
 	<div class="w3-bar w3-green w3-margin-bottom">
 		<button id="btn_api_hosts" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'api_hosts'); if (oAPIHostList.table) { oAPIHostList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); }"><%[ Hosts ]%></button>
 		<button id="btn_os_profiles" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'os_profiles'); if (oOSProfileList.table) { oOSProfileList.table.responsive.recalc(); set_page_tables([oAPIHostList, oOSProfileList, oRepoAuthList, oSSHConfigList, oSSHKeyList]); } "><%[ OS profiles ]%></button>

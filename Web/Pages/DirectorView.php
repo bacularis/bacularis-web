@@ -159,4 +159,44 @@ class DirectorView extends BaculumWebPage
 			}
 		}
 	}
+
+	public function getNavData()
+	{
+		$params = ['director' => $this->getDirectorName()];
+		$page_url = $this->Service->constructUrl('DirectorView', $params);
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'DirectorView',
+				'label' => 'Director details',
+				'sub_label' => $this->getDirectorName(),
+				'icon' => 'fa-solid fa-file-lines fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#director_actions',
+						'label' => 'Actions',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#director_config',
+						'label' => 'Configure director',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					],
+					[
+						'address' => $page_url . '#director_schedule_status',
+						'label' => 'Schedule status',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }

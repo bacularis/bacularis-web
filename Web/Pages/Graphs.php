@@ -36,4 +36,18 @@ use Bacularis\Web\Modules\BaculumWebPage;
  */
 class Graphs extends BaculumWebPage
 {
+	public function getNavData()
+	{
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'Graphs',
+				'label' => 'Graphs',
+				'icon' => 'fa-solid fa-chart-pie fa-fw',
+				'actions' => []
+			]
+		];
+	}
 }

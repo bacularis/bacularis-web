@@ -60,4 +60,37 @@ class ConsoleView extends BaculumWebPage
 			$this->ConsoleResourcesConfig->showError(true);
 		}
 	}
+
+	public function getNavData()
+	{
+		$page_url = $this->Service->constructUrl('ConsoleView');
+		return [
+			[
+				'page' => 'Dashboard'
+			],
+			[
+				'page' => 'ConsoleView',
+				'label' => 'Console',
+				'icon' => 'fa-solid fa-terminal fa-fw',
+				'actions' => [
+					[
+						'address' => $page_url . '#console_web',
+						'label' => 'Console',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
+						'address' => $page_url . '#console_config',
+						'label' => 'Configure console',
+						'icon' => 'fa-solid fa-table-columns fa-fw',
+						'visible' => $this->isDirConfigVisible()
+					]
+				]
+			]
+		];
+	}
+
+	public function isDirConfigVisible(): bool
+	{
+		return ($this->getApplication()->getSession()->itemAt('dir') ? true : false);
+	}
 }
