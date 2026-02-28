@@ -164,10 +164,8 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update(
-			$this->BulkActions->BulkActionsOutput,
-			implode(PHP_EOL, $result)
-		);
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 	}
 
 	/**
@@ -377,10 +375,8 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update(
-			$this->BulkActions->BulkActionsOutput,
-			implode(PHP_EOL, $result)
-		);
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 	}
 
 	public function cancelJob($sender, $param)
@@ -413,10 +409,8 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update(
-			$this->BulkActions->BulkActionsOutput,
-			implode(PHP_EOL, $result)
-		);
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 	}
 
 	/**
@@ -440,10 +434,8 @@ class JobList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update(
-			$this->BulkActions->BulkActionsOutput,
-			implode(PHP_EOL, $result)
-		);
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 	}
 
 	/**

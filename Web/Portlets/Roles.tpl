@@ -39,6 +39,7 @@
 	<p class="info w3-hide-medium w3-hide-small"><%[ Tip: Use left-click to select table row. Use CTRL + left-click to multiple row selection. Use SHIFT + left-click to add a range of rows to selection. ]%></p>
 <com:TCallback ID="RoleList" OnCallback="TemplateControl.setRoleList" />
 <com:TCallback ID="LoadRole" OnCallback="TemplateControl.loadRoleWindow" />
+<com:Bacularis.Web.Portlets.BulkActionsModal ID="BulkActions" />
 <script>
 var oRoleList = {
 	ids: {

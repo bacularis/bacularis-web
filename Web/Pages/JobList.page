@@ -876,15 +876,10 @@ $(function() {
 	});
 });
 
-/**
- * Defne bulk actions output id here because expression tags (< % = % >) cannot
- * be defined in the TCallback ClientSide properties.
- */
-var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->BulkActionsOutput->ClientID%>';
 </script>
 		<com:TCallback ID="ReRunJobsAction" OnCallback="rerunJobs">
 			<prop:ClientSide.OnLoading>
-				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.clear_output();
 				oBulkActionsModal.show_loader(true);
 			</prop:ClientSide.OnLoading>
 			<prop:ClientSide.OnComplete>
@@ -894,7 +889,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		</com:TCallback>
 		<com:TCallback ID="CancelJobsAction" OnCallback="cancelJobs">
 			<prop:ClientSide.OnLoading>
-				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.clear_output();
 				oBulkActionsModal.show_loader(true);
 			</prop:ClientSide.OnLoading>
 			<prop:ClientSide.OnComplete>
@@ -905,7 +900,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 		</com:TCallback>
 		<com:TCallback ID="DeleteJobsAction" OnCallback="deleteJobs">
 			<prop:ClientSide.OnLoading>
-				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.clear_output();
 				oBulkActionsModal.show_loader(true);
 			</prop:ClientSide.OnLoading>
 			<prop:ClientSide.OnComplete>
@@ -1484,7 +1479,7 @@ function update_job_list_table(data, init) {
 		</com:TCallback>
 		<com:TCallback ID="RunJobsAction" OnCallback="runJobs">
 			<prop:ClientSide.OnLoading>
-				oBulkActionsModal.clear_output(bulk_actions_output_id);
+				oBulkActionsModal.clear_output();
 				oBulkActionsModal.show_loader(true);
 			</prop:ClientSide.OnLoading>
 			<prop:ClientSide.OnComplete>

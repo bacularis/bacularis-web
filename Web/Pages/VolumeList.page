@@ -814,16 +814,11 @@ $(function() {
 	const volumes = <%=json_encode($this->volumes)%>;
 	set_volume_list_data(volumes);
 });
-/**
- * Defne bulk actions output id here because expression tags (< % = % >) cannot
- * be defined in the TCallback ClientSide properties.
- */
-var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->BulkActionsOutput->ClientID%>';
 </script>
 <com:Bacularis.Web.Portlets.VolumeJobListWindow />
 <com:TCallback ID="PruneVolumesAction" OnCallback="pruneVolumes">
 	<prop:ClientSide.OnLoading>
-		oBulkActionsModal.clear_output(bulk_actions_output_id);
+		oBulkActionsModal.clear_output();
 		oBulkActionsModal.show_loader(true);
 	</prop:ClientSide.OnLoading>
 	<prop:ClientSide.OnComplete>
@@ -832,7 +827,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 </com:TCallback>
 <com:TCallback ID="PurgeVolumesAction" OnCallback="purgeVolumes">
 	<prop:ClientSide.OnLoading>
-		oBulkActionsModal.clear_output(bulk_actions_output_id);
+		oBulkActionsModal.clear_output();
 		oBulkActionsModal.show_loader(true);
 	</prop:ClientSide.OnLoading>
 	<prop:ClientSide.OnComplete>
@@ -841,7 +836,7 @@ var bulk_actions_output_id = '<%=$this->SourceTemplateControl->BulkActions->Bulk
 </com:TCallback>
 <com:TCallback ID="DeleteVolumesAction" OnCallback="deleteVolumes">
 	<prop:ClientSide.OnLoading>
-		oBulkActionsModal.clear_output(bulk_actions_output_id);
+		oBulkActionsModal.clear_output();
 		oBulkActionsModal.show_loader(true);
 	</prop:ClientSide.OnLoading>
 	<prop:ClientSide.OnComplete>

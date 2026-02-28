@@ -339,7 +339,8 @@ class VolumeList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 		$this->updateVolumes($sender, $param);
 	}
 
@@ -363,7 +364,8 @@ class VolumeList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 		$this->updateVolumes($sender, $param);
 	}
 
@@ -387,7 +389,8 @@ class VolumeList extends BaculumWebPage
 			}
 			$result[] = implode(PHP_EOL, $ret->output);
 		}
-		$this->getCallbackClient()->update($this->BulkActions->BulkActionsOutput, implode(PHP_EOL, $result));
+		$output = implode(PHP_EOL, $result);
+		$this->BulkActions->setOutput($output);
 		$this->updateVolumes($sender, $param);
 	}
 

@@ -60,4 +60,17 @@ class BulkActionsModal extends Portlets
 	{
 		return $this->getViewState(self::REFRESH_PAGE_BTN);
 	}
+
+	public function setOutput($output)
+	{
+		if (!$this->getPage()->IsCallBack) {
+			return;
+		}
+		$id = $this->ClientID . 'bulk_actions_output';
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->update(
+			$id,
+			$output
+		);
+	}
 }
