@@ -970,9 +970,18 @@ class OIDC extends WebModule
 		$config = $idp_config->getIdentityProviderConfig($name);
 		$audience_config = $config['oidc_client_id'] ?? '';
 		$audience_token = $id_token_dec['body']['aud'] ?? '';
-		$valid = (!empty($audience_config) && !empty($audience_token) && $audience_config === $audience_token);
+		$valid = false;
+		if (!empty($audience_config)) {
+			// NOTE: Audience claim can be array or string
+			if (is_string($audience_token)) {
+				$valid = (!empty($audience_token) && $audience_config === $audience_token);
+			} elseif (is_array($audience_token)) {
+				$valid = in_array($audience_config, $audience_token);
+			}
+		}
 		if (!$valid) {
-			$emsg = "Invalid ID token audience. Config audience: {$audience_config}, ID token audience: {$audience_token}.";
+			$audience_token_s = var_export($audience_token, true);
+			$emsg = "Invalid ID token audience. Config audience: {$audience_config}, ID token audience: {$audience_token_s}.";
 			Logging::log(
 				Logging::CATEGORY_SECURITY,
 				$emsg
