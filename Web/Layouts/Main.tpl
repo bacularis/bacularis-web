@@ -53,7 +53,7 @@
 					<%[ API host: ]%>
 					<com:TDropDownList
 						ID="UserAPIHosts"
-						CssClass="w3-select w3-border w3-small"
+						CssClass="w3-select w3-border w3-small w3-white"
 						OnTextChanged="setAPIHost"
 						AutoPostBack="true"
 						Width="200px"
