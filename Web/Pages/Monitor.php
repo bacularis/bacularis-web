@@ -79,13 +79,13 @@ class Monitor extends BaculumWebPage
 		$web_config = $this->getModule('web_config')->getConfig();
 		$job_limit = JobInfo::DEFAULT_MAX_JOBS;
 		$job_age = WebConfig::DEF_JOB_AGE_ON_JOB_STATUS_GRAPH;
-		if (count($web_config) > 0) {
-			if (key_exists('max_jobs', $web_config['baculum'])) {
-				$job_limit = $web_config['baculum']['max_jobs'];
-			}
-			if (key_exists('job_age_on_job_status_graph', $web_config['baculum'])) {
-				$job_age = $web_config['baculum']['job_age_on_job_status_graph'];
-			}
+		if (isset($web_config['baculum']['max_jobs'])) {
+			$job_limit = (int) $web_config['baculum']['max_jobs'];
+		}
+		if ($this->Request->contains('age')) {
+			$job_age = (int) $this->Request->itemAt('age');
+		} elseif (isset($web_config['baculum']['job_age_on_job_status_graph'])) {
+			$job_age = (int) $web_config['baculum']['job_age_on_job_status_graph'];
 		}
 
 		$error = null;

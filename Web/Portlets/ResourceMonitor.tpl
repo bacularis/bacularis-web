@@ -8,6 +8,7 @@ var callback_time_offset = 0;
 var oData;
 var MonitorCalls = [];
 var MonitorCallsInterval = [];
+let DATA_AGE = <%=$this->job_age_on_job_status_graph%>;
 $(function() {
 	oMonitor = function() {
 		return $.ajax('<%=$this->Service->constructUrl("Monitor")%>', {
@@ -15,8 +16,9 @@ $(function() {
 			type: 'post',
 			data: {
 				'params': (typeof(MonitorParams) == 'object' ? MonitorParams : []),
-				'use_limit' : <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '0' : '1'%>,
-				'use_age' : <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '1' : '0'%>
+				'use_limit': <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '0' : '1'%>,
+				'use_age': <%=$this->Service->getRequestedPagePath() == "Dashboard" ? '1' : '0'%>,
+				'age': DATA_AGE
 			},
 			beforeSend: function() {
 				last_callback_time = new Date().getTime();
@@ -31,18 +33,17 @@ $(function() {
 
 				oData = response;
 				if ('<%=get_class($this->Service->getRequestedPage())%>' == 'Dashboard') {
-					const job_age_on_job_status_graph = <%=$this->job_age_on_job_status_graph%>;
 					Statistics.grab_statistics(oData, {
 						job_states: JobStatus.get_states(),
-						job_age: job_age_on_job_status_graph,
+						job_age: DATA_AGE,
 						txts: {
 							jobfiles: '<%[ Job files ]%>',
 							jobbytes: '<%[ Job size ]%>'
 						}
 					});
 					let age_label = '';
-					if (job_age_on_job_status_graph > 0) {
-						const job_age = Units.format_time_period(job_age_on_job_status_graph);
+					if (DATA_AGE > 0) {
+						const job_age = Units.format_time_period(DATA_AGE);
 						const job_age_unit = job_age.format + (job_age.value > 1 ? 's' : '');
 						const label_format = ' - <%[ last %time %unit ]%>';
 						age_label = label_format.replace('%time', job_age.value);

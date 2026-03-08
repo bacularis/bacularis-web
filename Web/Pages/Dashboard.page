@@ -76,6 +76,25 @@
 	<div class="w3-panel">
 		<div class="w3-row-padding" style="margin:0 -16px">
 			<div class="w3-quarter">
+				<div class="w3-margin-bottom" style="display: flex; justify-content: space-between;">
+					<div id="dashboard_job_age_range" class="w3-small w3-show-inline-block"></div>
+					<div class="w3-right-align w3-show-inline-block">
+						<i id="dashboard_job_age_loader" class="fa-solid fa-sync w3-spin" style="visibility: hidden"></i>
+						<i id="dashboard_job_age_prev" class="fa-solid fa-chevron-left fa-fw pointer" onclick="Dashboard.set_job_age_prev();" title="<%[ Previous ]%>"></i>
+						<select id="dashboard_job_age_list" class="w3-select w3-tiny w3-border w3-white w3-padding-small" style="width: 150px;" onchange="Dashboard.set_job_age(this.value); oMonitor();">
+							<option value="86400"><%= sprintf(Prado::localize('Last %d day'), 1) %></option>
+							<option value="604800"><%= sprintf(Prado::localize('Last %d days'), 7) %></option>
+							<option value="1209600"><%= sprintf(Prado::localize('Last %d days'), 14) %></option>
+							<option value="2592000"><%= sprintf(Prado::localize('Last %d days'), 30) %></option>
+							<option value="5184000"><%= sprintf(Prado::localize('Last %d days'), 60) %></option>
+							<option value="7776000"><%= sprintf(Prado::localize('Last %d days'), 90) %></option>
+							<option value="10368000"><%= sprintf(Prado::localize('Last %d days'), 120) %></option>
+							<option value="12960000"><%= sprintf(Prado::localize('Last %d days'), 150) %></option>
+							<option value="0"><%[ No limit ]%></option>
+						</select>
+						<i id="dashboard_job_age_next"  class="fa-solid fa-chevron-right fa-fw pointer" onclick="Dashboard.set_job_age_next();" title="<%[ Next ]%>"></i>
+					</div>
+				</div>
 				<div>
 					<div id="jobs_summary_graph"></div>
 					<div id="jobs_summary_legend"></div>
@@ -230,6 +249,15 @@ MonitorParams = {
 ThemeMode.add_cb(() => {
 	Dashboard.update_pie_jobstatus();
 	Dashboard.update_bytes_files_graph();
+});
+$(() => {
+	Dashboard.set_text({
+		job_age_custom: '<%[ Last %time %unit (custom) ]%>'
+	});
+	Dashboard.init_job_age(DATA_AGE);
+	MonitorCallsInterval.push(() => {
+		Dashboard.show_job_age_loader(false);
+	});
 });
 </script>
 	<com:Bacularis.Web.Portlets.WelcomeModal

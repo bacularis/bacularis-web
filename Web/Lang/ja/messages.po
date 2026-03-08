@@ -7412,3 +7412,13 @@ msgstr "Disable storage"
 
 msgid "This temporarily disables the storage. It uses the \"disable\" command in Bconsole. The storage remains disabled until it is re-enabled or the Storage component is restarted."
 msgstr "This temporarily disables the storage. It uses the \"disable\" command in Bconsole. The storage remains disabled until it is re-enabled or the Storage component is restarted."
+
+msgid "Last %d day"
+msgstr "Last %d day"
+
+msgid "Last %d days"
+msgstr "Last %d days"
+
+
+msgid "Last %time %unit (custom)"
+msgstr "Last %time %unit (custom)"

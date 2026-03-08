@@ -386,8 +386,10 @@ const PieGraphBase  = {
 		return a.outerHTML;
 	},
 	pie_mouse_handler: function(e) {
-		var type = e.hit.series.label.split(' ')[0];
-		window.location.href = this.get_addr_by_type(type);
+		var type = e.hit?.series?.label?.split(' ')[0];
+		if (type) {
+			window.location.href = this.get_addr_by_type(type);
+		}
 		return false;
 	}
 };
@@ -1164,15 +1166,7 @@ var oScheduledJobsList = {
 					render: function(data, type, row) {
 						let res = data;
 						if (type == 'display' || type == 'filter') {
-							let now;
-							if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
-								// time from API server
-								now = oData.jobtotals.currtime_epoch;
-							} else {
-								// old API - time from web browser
-								const now_ts_ms = (new Date()).getTime();
-								now = parseInt((now_ts_ms / 1000), 10);
-							}
+							let now = Dashboard.get_currtime_epoch();
 							const sched = parseInt(data, 10);
 							res = Units.get_time_diff_duration(now, sched);
 						}
@@ -1246,7 +1240,7 @@ var Dashboard = {
 	txt: null,
 	pie: null,
 	bytes_files_graph: null,
-	txt: null,
+	txt: {},
 	noval: '-',
 	ids: {
 		clients: {
@@ -1290,6 +1284,12 @@ var Dashboard = {
 		scheduled_jobs_days_list: {
 			table: 'dashboard_scheduled_days_job_list',
 			count: 'dashboard_scheduled_days_jobs_count'
+		},
+		job_age: {
+			list: 'dashboard_job_age_list',
+			prev: 'dashboard_job_age_prev',
+			next: 'dashboard_job_age_next',
+			loader: 'dashboard_job_age_loader'
 		}
 	},
 	last_jobs_table: null,
@@ -1301,7 +1301,7 @@ var Dashboard = {
 		sqlite: 'SQLite'
 	},
 	set_text: function(txt) {
-		this.txt = txt;
+		this.txt = $.extend(this.txt, txt);
 	},
 	update_all: function(statistics) {
 		this.stats = statistics;
@@ -1338,16 +1338,7 @@ var Dashboard = {
 	},
 	update_scheduled_jobs: function() {
 		const jobs_today = [];
-		let today_now_epoch;
-		if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
-			// get API server time
-			today_now_epoch = oData.jobtotals.currtime_epoch;
-		} else {
-			// old API - get local web browser time
-			const today = new Date();
-			let today_now_epoch = (today.getTime() / 1000);
-			today_now_epoch = parseInt(today_now_epoch, 10);
-		}
+		let today_now_epoch = this.get_currtime_epoch();
 		let job_sched_epoch;
 		for (const job of oData.status_schedule) {
 			job_sched_epoch = parseInt(job.schedtime_epoch, 10);
@@ -1362,14 +1353,7 @@ var Dashboard = {
 	},
 	update_scheduled_today_jobs: function(jobs) {
 		const jobs_today = [];
-		let today;
-		if (oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
-			// get API server time
-			today = new Date(oData.jobtotals.currtime_epoch * 1000);
-		} else {
-			// old API - get local web browser time
-			today = new Date();
-		}
+		let today = this.get_currtime();
 		today.setHours(23, 59, 59, 999);
 		let today_end_day_epoch = (today.getTime() / 1000)
 		today_end_day_epoch = parseInt(today_end_day_epoch, 10);
@@ -1454,7 +1438,8 @@ var Dashboard = {
 					color: (ThemeMode.is_dark() ? 'white': 'black')
 				},
 				legend: {
-					container: $('#' + this.ids.pie_summary.legend_container_id)
+					container: $('#' + this.ids.pie_summary.legend_container_id),
+					show_percents: true
 				},
 				title: this.txt.js_sum_title
 			}
@@ -1470,7 +1455,8 @@ var Dashboard = {
 		}
 		const t = new Date().getTime() / 1000;
 		const now = parseInt(t / 86400, 10) * 86400;
-		const def_min = this.stats.opts.job_age ? now - this.stats.opts.job_age + 86400 : null;
+		const age = this.stats.opts?.job_age || 0;
+		const def_min = age > 0 ? now - age + 86400 : null;
 		const def_max = now;
 		this.bytes_files_graph = new GraphLinesClass({
 			data: this.stats.jobs_total_bytes_files,
@@ -1509,6 +1495,98 @@ var Dashboard = {
 				title: this.txt.bytes_files_title
 			}
 		});
+	},
+	get_currtime: function() {
+		let now;
+		if (oData && oData.jobtotals && oData.jobtotals.hasOwnProperty('currtime_epoch')) {
+			// get API server time
+			now = new Date(oData.jobtotals.currtime_epoch * 1000);
+		} else {
+			// old API - get local web browser time
+			now = new Date();
+		}
+		return now;
+	},
+	get_currtime_epoch: function() {
+		let now = this.get_currtime();
+		let now_ms = now.getTime();
+		now = parseInt((now_ms / 1000), 10);
+		return now;
+	},
+	init_job_age: function(age) {
+		const list = document.getElementById(this.ids.job_age.list);
+		list.value = age;
+		if (list.value != age) {
+			// Prepare age label
+			const job_age = Units.format_time_period(age);
+			const job_age_unit = job_age.format + (job_age.value > 1 ? 's' : '');
+			age_label = this.txt.job_age_custom.replace('%time', job_age.value);
+			age_label = age_label.replace('%unit', job_age_unit);
+
+			// Add new age option
+			const option = document.createElement('OPTION');
+			const label = document.createTextNode(age_label);
+			option.value = age;
+			option.appendChild(label);
+			list.insertBefore(option, list.options[list.options.length - 1]);
+		}
+		this.set_job_age(age);
+	},
+	set_job_age: function(age) {
+		DATA_AGE = age;
+		const list = document.getElementById(this.ids.job_age.list);
+		list.value = age;
+		this.set_job_age_dates(age);
+		this.set_job_age_nav();
+		this.show_job_age_loader(true);
+	},
+	set_job_age_prev: function() {
+		const list = document.getElementById(this.ids.job_age.list);
+		if (list.selectedIndex > 0) {
+			list.selectedIndex--;
+			this.set_job_age(list.value);
+			oMonitor();
+		}
+	},
+	set_job_age_next: function() {
+		const list = document.getElementById(this.ids.job_age.list);
+		if (list.selectedIndex < (list.options.length - 1)) {
+			list.selectedIndex++;
+			this.set_job_age(list.value);
+			oMonitor();
+		}
+	},
+	set_job_age_dates: function(age) {
+		const list = document.getElementById(this.ids.job_age.list);
+		if (age > 0) {
+			const date_to = this.get_currtime_epoch();
+			const date_from = date_to - age;
+			const date_to_str = Units.format_date(date_to, true);
+			const date_from_str = Units.format_date(date_from, true);
+			list.title = [date_from_str, date_to_str].join(' - ');
+		} else {
+			list.title = '';
+		}
+	},
+	set_job_age_nav: function() {
+		const list = document.getElementById(this.ids.job_age.list);
+		const prev = document.getElementById(this.ids.job_age.prev);
+		const next = document.getElementById(this.ids.job_age.next);
+		if (list.selectedIndex == 0) {
+			prev.style.visibility = 'hidden';
+			next.style.visibility = 'visible';
+		} else if (list.selectedIndex == (list.options.length - 1)) {
+			prev.style.visibility = 'visible';
+			next.style.visibility = 'hidden';
+		} else {
+			prev.style.visibility = 'visible';
+			next.style.visibility = 'visible';
+		}
+
+	},
+	show_job_age_loader: function(show) {
+		const loader = document.getElementById(this.ids.job_age.loader);
+		loader.style.visibility = show ? 'visible' : 'hidden';
 	}
 };
 
