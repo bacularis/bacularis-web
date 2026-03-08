@@ -1285,7 +1285,6 @@ var GraphPieClass = jQuery.klass({
 		}
 	},
 	initialize: function(prop) {
-		const self = this;
 		this.data = prop.data;
 		this.container = document.getElementById(prop.container_id);
 		const opts = prop.hasOwnProperty('graph_options') ? prop.graph_options : {};
@@ -1294,13 +1293,17 @@ var GraphPieClass = jQuery.klass({
 		this.draw_graph();
 	},
 	prepare_series: function() {
-		var series = [];
-		var label, serie;
-		var types = Object.keys(this.data);
-		var data_count;
+		const series = [];
+		const types = Object.keys(this.data);
+		const total_count = types.reduce((accumulator, curr_val) => accumulator + this.data[curr_val].length, 0);
+		let label, serie, data_count, data_perc;
 		for (var i = 0; i < types.length; i++) {
 			label = types[i];
 			data_count = this.data[label].length;
+			if (this.graph_options?.legend?.show_percents) {
+				data_perc = total_count > 0 && data_count > 0 ? ((data_count * 100) / total_count).toFixed(1) : '0';
+				label += ' ' + data_perc + '%';
+			}
 			serie = {
 				data: [[0, data_count]],
 				label: label + ' (' + data_count.toString() + ')',
