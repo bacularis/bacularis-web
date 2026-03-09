@@ -48,7 +48,7 @@ class Dashboard extends BaculumWebPage
 		return [
 			[
 				'page' => 'Dashboard',
-				'label' => 'Dasboard',
+				'label' => 'Dashboard',
 				'icon' => 'fa-solid fa-tachometer-alt fa-fw',
 				'actions' => [
 					[
