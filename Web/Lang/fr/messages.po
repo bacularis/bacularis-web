@@ -1752,9 +1752,6 @@ msgstr "Paramètres de l'application"
 msgid "Update slots"
 msgstr "Mettre à jour les emplacements"
 
-msgid "Max. number of jobs"
-msgstr "Nombre maximum de jobs visibles dans les tables"
-
 msgid "Max. number of jobs value must be integer greather than 0."
 msgstr "La valeur maximum du nombre de jobs doit être supérieur à 0."
 
@@ -4094,9 +4091,6 @@ msgstr "navigateur plat"
 
 msgid "tree browser"
 msgstr "navigateur d'arbre"
-
-msgid "Job age for graphs"
-msgstr "Âge du job sur les graphiques des jobs du tableau de bord"
 
 msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
 msgstr "Définir l'âge pour les jobs pour afficher les graphiques des jobs sur la page du tableau de bord. Définir zéro signifie afficher les graphiques pour tous les jobs sans limitation."
@@ -7379,3 +7373,9 @@ msgstr "Formats and units"
 
 msgid "Show welcome screen after loggin in"
 msgstr "Show welcome screen after loggin in"
+
+msgid "Max. number of jobs"
+msgstr "Max. number of jobs"
+
+msgid "Job age for graphs"
+msgstr "Job age for graphs"

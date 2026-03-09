@@ -1753,7 +1753,7 @@ msgid "Update slots"
 msgstr "Aktualizacja slotów"
 
 msgid "Max. number of jobs"
-msgstr "Maks. liczba zadań widzialna w tabelach"
+msgstr "Maks. liczba zadań"
 
 msgid "Max. number of jobs value must be integer greather than 0."
 msgstr "Maks. liczba zadań musi być liczbą całkowitą większą od zera."

@@ -1752,9 +1752,6 @@ msgstr "Configurações da aplicação"
 msgid "Update slots"
 msgstr "Atualizar slots"
 
-msgid "Max. number of jobs"
-msgstr "Número máximo de jobs visíveis"
-
 msgid "Max. number of jobs value must be integer greather than 0."
 msgstr "O número máximo de jobs deve ser um valor inteiro maior que 0."
 
@@ -7379,3 +7376,6 @@ msgstr "Formats and units"
 
 msgid "Show welcome screen after loggin in"
 msgstr "Show welcome screen after loggin in"
+
+msgid "Max. number of jobs"
+msgstr "Max. number of jobs"

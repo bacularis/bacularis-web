@@ -1752,9 +1752,6 @@ msgstr "Настройки приложения"
 msgid "Update slots"
 msgstr "Обновить слоты"
 
-msgid "Max. number of jobs"
-msgstr "Макс. количество заданий, видимых в таблицах"
-
 msgid "Max. number of jobs value must be integer greather than 0."
 msgstr "Макс. количество заданий должно быть целым числовым больше чем 0."
 
@@ -7378,3 +7375,6 @@ msgstr "Formats and units"
 
 msgid "Show welcome screen after loggin in"
 msgstr "Show welcome screen after loggin in"
+
+msgid "Max. number of jobs"
+msgstr "Max. number of jobs"
