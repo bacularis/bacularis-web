@@ -954,17 +954,11 @@ msgstr "Szybki dostęp do zadań"
 msgid "Finished jobs"
 msgstr "Zakończone zadania"
 
-msgid "The most often used:"
-msgstr "Najczęściej używany:"
-
 msgid "Number of clients"
 msgstr "Ilość klientów"
 
 msgid "jobs"
 msgstr "zadań"
-
-msgid "Job count the most used:"
-msgstr "Ilość zadań na najczęściej używanym:"
 
 msgid "level"
 msgstr "poziom"
@@ -1758,7 +1752,7 @@ msgstr "Ustawienia aplikacji"
 msgid "Update slots"
 msgstr "Aktualizacja slotów"
 
-msgid "Max. number of jobs visible in tables"
+msgid "Max. number of jobs"
 msgstr "Maks. liczba zadań widzialna w tabelach"
 
 msgid "Max. number of jobs value must be integer greather than 0."
@@ -4101,8 +4095,8 @@ msgstr "lista katalogów"
 msgid "tree browser"
 msgstr "drzewo katalogów"
 
-msgid "Job age on the dashboard job graphs"
-msgstr "Wiek zadań na grafach na stronie głównej"
+msgid "Job age for graphs"
+msgstr "Wiek zadań dla grafów"
 
 msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
 msgstr "Ustaw wiek zadań do wyświetlania grafów zadań na stronie głównej. Ustawienie zera oznacza wyświetlanie grafów dla wszystkich zadań bez ograniczeń."
@@ -6972,8 +6966,8 @@ msgstr "Jednorazowe użycie"
 msgid "Web access parameters"
 msgstr "Parametry web access"
 
-msgid "Number of latest jobs in table on dashboard"
-msgstr "Liczba najnowszych zadań w tabeli na stronie głównej"
+msgid "Number of recent jobs"
+msgstr "Liczba najnowszych zadań"
 
 
 msgid "Estimation loading... This may take some time."
@@ -7357,3 +7351,30 @@ msgstr "Last %d days"
 
 msgid "Last %time %unit (custom)"
 msgstr "Last %time %unit (custom)"
+
+msgid "Most used client"
+msgstr "Most used client"
+
+msgid "Jobs run"
+msgstr "Jobs run"
+
+msgid "Most executed job"
+msgstr "Most executed job"
+
+msgid "Runs"
+msgstr "Runs"
+
+msgid "Most used pool"
+msgstr "Most used pool"
+
+msgid "Jobs stored"
+msgstr "Jobs stored"
+
+msgid "Tables"
+msgstr "Tables"
+
+msgid "Formats and units"
+msgstr "Formats and units"
+
+msgid "Show welcome screen after loggin in"
+msgstr "Show welcome screen after loggin in"

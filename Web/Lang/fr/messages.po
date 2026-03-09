@@ -954,17 +954,11 @@ msgstr "Accès rapide au job"
 msgid "Finished jobs"
 msgstr "Jobs terminés"
 
-msgid "The most often used:"
-msgstr "Le plus souvent utilisés :"
-
 msgid "Number of clients"
 msgstr "Nombre de clients"
 
 msgid "jobs"
 msgstr "jobs"
-
-msgid "Job count the most used:"
-msgstr "Nombre de jobs le plus utilisé :"
 
 msgid "level"
 msgstr "niveau"
@@ -1758,7 +1752,7 @@ msgstr "Paramètres de l'application"
 msgid "Update slots"
 msgstr "Mettre à jour les emplacements"
 
-msgid "Max. number of jobs visible in tables"
+msgid "Max. number of jobs"
 msgstr "Nombre maximum de jobs visibles dans les tables"
 
 msgid "Max. number of jobs value must be integer greather than 0."
@@ -4101,7 +4095,7 @@ msgstr "navigateur plat"
 msgid "tree browser"
 msgstr "navigateur d'arbre"
 
-msgid "Job age on the dashboard job graphs"
+msgid "Job age for graphs"
 msgstr "Âge du job sur les graphiques des jobs du tableau de bord"
 
 msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
@@ -6974,8 +6968,8 @@ msgstr "One-time use"
 msgid "Web access parameters"
 msgstr "Web access parameters"
 
-msgid "Number of latest jobs in table on dashboard"
-msgstr "Number of latest jobs in table on dashboard"
+msgid "Number of recent jobs"
+msgstr "Number of recent jobs"
 
 msgid "Estimation loading... This may take some time."
 msgstr "Estimation loading... This may take some time."
@@ -7358,3 +7352,30 @@ msgstr "Last %d days"
 
 msgid "Last %time %unit (custom)"
 msgstr "Last %time %unit (custom)"
+
+msgid "Most used client"
+msgstr "Most used client"
+
+msgid "Jobs run"
+msgstr "Jobs run"
+
+msgid "Most executed job"
+msgstr "Most executed job"
+
+msgid "Runs"
+msgstr "Runs"
+
+msgid "Most used pool"
+msgstr "Most used pool"
+
+msgid "Jobs stored"
+msgstr "Jobs stored"
+
+msgid "Tables"
+msgstr "Tables"
+
+msgid "Formats and units"
+msgstr "Formats and units"
+
+msgid "Show welcome screen after loggin in"
+msgstr "Show welcome screen after loggin in"

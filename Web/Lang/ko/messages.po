@@ -960,17 +960,11 @@ msgstr "빠른 작업 접근"
 msgid "Finished jobs"
 msgstr "종료된 작업"
 
-msgid "The most often used:"
-msgstr "가장 자주 사용되는:"
-
 msgid "Number of clients"
 msgstr "클라이언트 수"
 
 msgid "jobs"
 msgstr "작업들"
-
-msgid "Job count the most used:"
-msgstr "가장 많이 사용된 작업 수:"
 
 msgid "level"
 msgstr "레벨"
@@ -1764,7 +1758,7 @@ msgstr "어플리케이션 설정"
 msgid "Update slots"
 msgstr "슬롯 업데이트"
 
-msgid "Max. number of jobs visible in tables"
+msgid "Max. number of jobs"
 msgstr "최대. 테이블에 표시 작업 수"
 
 msgid "Max. number of jobs value must be integer greather than 0."
@@ -4107,7 +4101,7 @@ msgstr "플랫 탐색기"
 msgid "tree browser"
 msgstr "트리 탐색기"
 
-msgid "Job age on the dashboard job graphs"
+msgid "Job age for graphs"
 msgstr "대시보드 작업 그래프의 작업 기간"
 
 msgid "Set age for jobs to display the job graphs on the dashboard page. Setting zero means displaying the graphs for all jobs without limitation."
@@ -6979,8 +6973,8 @@ msgstr "One-time use"
 msgid "Web access parameters"
 msgstr "Web access parameters"
 
-msgid "Number of latest jobs in table on dashboard"
-msgstr "Number of latest jobs in table on dashboard"
+msgid "Number of recent jobs"
+msgstr "Number of recent jobs"
 
 msgid "Estimation loading... This may take some time."
 msgstr "Estimation loading... This may take some time."
@@ -7363,3 +7357,30 @@ msgstr "Last %d days"
 
 msgid "Last %time %unit (custom)"
 msgstr "Last %time %unit (custom)"
+
+msgid "Most used client"
+msgstr "Most used client"
+
+msgid "Jobs run"
+msgstr "Jobs run"
+
+msgid "Most executed job"
+msgstr "Most executed job"
+
+msgid "Runs"
+msgstr "Runs"
+
+msgid "Most used pool"
+msgstr "Most used pool"
+
+msgid "Jobs stored"
+msgstr "Jobs stored"
+
+msgid "Tables"
+msgstr "Tables"
+
+msgid "Formats and units"
+msgstr "Formats and units"
+
+msgid "Show welcome screen after loggin in"
+msgstr "Show welcome screen after loggin in"
