@@ -27,8 +27,8 @@
 				</div>
 				<h5><%[ Clients ]%></h5>
 				<div class="w3-text">
-					<p class="w3-small"><%[ The most often used: ]%> <strong><span id="client_most"></span></strong></p>
-					<p class="w3-small"><%[ Job count the most used: ]%> <strong><span id="client_jobs"></span> <%[ jobs ]%></strong></p>
+					<p class="w3-small"><%[ Most used client ]%>: <strong><span id="client_most"></span></strong></p>
+					<p class="w3-small"><%[ Jobs run ]%>: <strong><span id="client_jobs"></span> <%[ jobs ]%></strong></p>
 				</div>
 				
 			</div>
@@ -41,8 +41,8 @@
 				</div>
 				<h5><%[ Finished jobs ]%></h5>
 				<div class="w3-text">
-					<p class="w3-small"><%[ The most often used: ]%> <strong><span id="job_most"></span></strong></p>
-					<p class="w3-small"><%[ Execution count most used: ]%> <strong><span id="job_most_count"></span> <%[ times ]%></strong></p>
+					<p class="w3-small"><%[ Most executed job ]%>: <strong><span id="job_most"></span></strong></p>
+					<p class="w3-small"><%[ Runs ]%>: <strong><span id="job_most_count"></span> <%[ times ]%></strong></p>
 				</div>
 			</div>
 		</div>
@@ -54,8 +54,8 @@
 				</div>
 				<h5><%[ Pools ]%></h5>
 				<div class="w3-text">
-					<p class="w3-small"><%[ The most often used: ]%> <strong><span id="pool_most"></span></strong></p>
-					<p class="w3-small"><%[ Job count the most used: ]%> <strong><span id="pool_jobs"></span> <%[ jobs ]%></strong></p>
+					<p class="w3-small"><%[ Most used pool ]%>: <strong><span id="pool_most"></span></strong></p>
+					<p class="w3-small"><%[ Jobs stored ]%>: <strong><span id="pool_jobs"></span> <%[ jobs ]%></strong></p>
 				</div>
 			</div>
 		</div>
