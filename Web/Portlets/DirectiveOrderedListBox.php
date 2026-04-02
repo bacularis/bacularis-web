@@ -15,7 +15,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-
 /**
  * OrderedListBox directive template.
  * It enables to save list box items in given order.
