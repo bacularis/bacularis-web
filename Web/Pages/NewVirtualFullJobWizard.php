@@ -36,7 +36,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 		parent::onLoad($param);
 		$step_index = $this->NewVirtualFullJobWizard->getActiveStepIndex();
 		if ($this->IsPostBack && !$this->IsCallback) {
-			if ($step_index == 2 || $step_index == 3) {
+			if ($step_index == 0 || $step_index == 2 || $step_index == 3) {
 				$this->setStorageServerSideValidators();
 				$this->setStorageClientSideValidators();
 			} elseif ($step_index == 4 || $step_index == 5) {
