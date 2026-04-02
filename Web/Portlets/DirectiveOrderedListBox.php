@@ -15,7 +15,6 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Prado;
 
 /**
  * OrderedListBox directive template.
@@ -31,6 +30,11 @@ class DirectiveOrderedListBox extends DirectiveTemplate
 		$values = explode('!', $this->DirectiveHidden->getValue());
 		$vals = array_filter($values);
 		return count($vals) > 0 ? $vals : null;
+	}
+
+	public function dataBind()
+	{
+		// this must be empty to keep data item list
 	}
 
 	public function createDirective()
@@ -51,29 +55,26 @@ class DirectiveOrderedListBox extends DirectiveTemplate
 				$items = $resource_names[$resource];
 			}
 		}
-
 		$directive_value = $this->getDirectiveValue() ?: [];
-		$labels = [];
-		for ($i = 0; $i < count($items); $i++) {
-			$control = Prado::createComponent('\Prado\Web\UI\WebControls\TListItem');
-			$control->setValue($items[$i]);
-			$idx = array_search($items[$i], $directive_value);
+		$this->Directive->DataSource = array_combine($items, $items);
+		$this->Directive->dataBind();
+
+		$data_items = $this->Directive->getItems();
+		foreach ($data_items as $item) {
+			$value = $item->getValue();
+			$idx = array_search($value, $directive_value);
 			if ($idx !== false) {
 				// element selected
 				$pos = $idx + 1;
-				$labels[$i] = sprintf(
+				$label = sprintf(
 					'[%d] %s',
 					$pos,
-					$items[$i]
+					$value
 				);
-				$control->setAttribute('data-pos', $pos);
-				$control->setSelected(true);
-			} else {
-				// element not selected
-				$labels[$i] = $items[$i];
+				$item->setAttribute('data-pos', $pos);
+				$item->setSelected(true);
+				$item->setText($label);
 			}
-			$control->setText($labels[$i]);
-			$this->Directive->addParsedObject($control);
 		}
 
 		$default_value = $this->getDefaultValue();
@@ -84,19 +85,7 @@ class DirectiveOrderedListBox extends DirectiveTemplate
 				$directive_value = [];
 			}
 		}
-		$selected_indices = [];
-		for ($i = 0; $i < count($items); $i++) {
-			if (is_array($directive_value) && in_array($items[$i], $directive_value)) {
-				$selected_indices[] = $i;
-			}
-		}
-
-		if (!empty($directive_value)) {
-			$this->Directive->setSelectedIndices($selected_indices);
-		}
-		$this->Directive->dataBind();
 		$validate = $this->getRequired();
 		$this->DirectiveValidator->setVisible($validate);
-		$this->setIsDirectiveCreated(true);
 	}
 }
