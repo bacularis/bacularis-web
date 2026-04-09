@@ -25,6 +25,7 @@ $config
 	'list_syntax' => ['syntax' => 'short'],
 	'method_chaining_indentation' => true,
 	'modernize_types_casting' => true,
+	'modifier_keywords' => true,
 	'no_blank_lines_after_phpdoc' => true,
 	'no_null_property_initialization' => true,
 	'no_whitespace_before_comma_in_array' => true,
@@ -38,7 +39,6 @@ $config
 	'ternary_operator_spaces' => true,
 	'ternary_to_null_coalescing' => true,
 	'trim_array_spaces' => true,
-	'visibility_required' => true,
 	'whitespace_after_comma_in_array' => true,
     ])
     ->setFinder($finder);
