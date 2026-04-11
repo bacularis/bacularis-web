@@ -424,11 +424,10 @@ class OSProfileConfig extends ConfigFileModule
 			'CentOS Stream 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream8/',
 			'CentOS Stream 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream9/',
 			'CentOS Stream 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/centosstream10/',
-			'Fedora 39' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora39/',
-			'Fedora 40' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora40/',
 			'Fedora 41' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora41/',
 			'Fedora 42' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora42/',
 			'Fedora 43' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora43/',
+			'Fedora 44' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora44/',
 			'Oracle Linux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux8/',
 			'Oracle Linux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux9/',
 			'Oracle Linux 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux10/',
@@ -443,9 +442,9 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 20.04 Focal' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ focal main',
 			'Ubuntu 22.04 Jammy' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ jammy main',
 			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main',
-			'Ubuntu 24.10 Oracular' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ oracular main',
 			'Ubuntu 25.04 Plucky' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ plucky main',
-			'Ubuntu 25.10 Questing' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ questing main'
+			'Ubuntu 25.10 Questing' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ questing main',
+			'Ubuntu 26.04 Resolute' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ resolute main'
 		]
 	];
 
