@@ -479,7 +479,7 @@ class StorageList extends BaculumWebPage
 					],
 					[
 						'address' => $page_url . '#btn_new_tape_storage',
-						'label' => 'Add tape job',
+						'label' => 'Add tape storage',
 						'icon' => 'fa-solid fa-magic fa-fw',
 						'visible' => $this->isSdConfigVisible()
 					],
