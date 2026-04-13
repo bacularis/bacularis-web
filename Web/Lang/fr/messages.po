@@ -7166,8 +7166,8 @@ msgstr "Recent jobs"
 msgid "Scheduled for today"
 msgstr "Scheduled for today"
 
-msgid "Scheduled for the next 5 days"
-msgstr "Scheduled for the next 5 days"
+msgid "Scheduled for next 5 days"
+msgstr "Scheduled for next 5 days"
 
 msgid "Starts in"
 msgstr "Starts in"
@@ -7379,3 +7379,6 @@ msgstr "Max. number of jobs"
 
 msgid "Job age for graphs"
 msgstr "Job age for graphs"
+
+msgid "Running"
+msgstr "Running"

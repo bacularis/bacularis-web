@@ -2,7 +2,7 @@
 <com:TContent ID="Main">
 	<!-- Header -->
 	<header class="w3-container">
-		<h5>
+		<h5 style="margin-top: 4px;">
 			<b><i class="fa fa-tachometer-alt"></i> <%[ Dashboard ]%></b>
 			<div id="btn_run_job" class="w3-show-inline-block" data-btn="<%=$this->RunJobBtn->ClientID%>">
 				<com:TActiveLinkButton
@@ -120,7 +120,7 @@
 						</a>
 						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_days_jobs_subtab', 'dashboard_scheduled_days_jobs', 'dashboard_jobs');">
 							<div id="dashboard_scheduled_days_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
-								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for the next 5 days ]%> &nbsp;(<span id="dashboard_scheduled_days_jobs_count">0</span>)
+								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for next 5 days ]%> &nbsp;(<span id="dashboard_scheduled_days_jobs_count">0</span>)
 
 							</div>
 						</a>

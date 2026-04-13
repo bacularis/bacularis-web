@@ -1,7 +1,7 @@
 <div id="crumbs">
 	<com:TRepeater ID="CrumbsNav">
 		<prop:HeaderTemplate>
-			<ul>
+			<ul class="margin-top-small w3-margin-right">
 		</prop:HeaderTemplate>
 		<prop:ItemTemplate>
 				<li id="item<%#$this->getItemIndex()%>">

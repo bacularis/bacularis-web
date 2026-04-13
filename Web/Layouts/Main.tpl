@@ -43,13 +43,13 @@
 			/>
 			<!-- !PAGE CONTENT! -->
 			<div class="w3-main page_main_el" id="page_main" style="margin-left: 250px; margin-top: 43px;">
-				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small w3-margin-top w3-margin-right" style="border-radius: 3px; line-height: 26px;">
-					<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running jobs: ]%> <span id="running_jobs"></span></span>
+				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small margin-top-small w3-margin-right" style="border-radius: 3px; line-height: 26px;">
+					<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running ]%>: <span id="running_jobs"></span></span>
 				</span>
-				<span id="msg_envelope" class="w3-tag w3-large w3-green w3-text-white w3-right w3-padding-small w3-margin-top w3-margin-right" style="cursor: pointer; border-radius: 3px; <%=((!$this->Application->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) ? 'display: none' : '')%>" title="<%[ Display messages log window ]%>">
+				<span id="msg_envelope" class="w3-tag w3-large w3-green w3-text-white w3-right w3-padding-small margin-top-small w3-margin-right" style="cursor: pointer; border-radius: 3px; <%=((!$this->Application->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) ? 'display: none' : '')%>" title="<%[ Display messages log window ]%>">
 					<i class="fas fa-envelope w3-large"></i>
 				</span>
-				<com:TLabel ID="UserAPIHostsContainter"CssClass="w3-right w3-margin-top w3-margin-right">
+				<com:TLabel ID="UserAPIHostsContainter"CssClass="w3-right margin-top-small w3-margin-right">
 					<%[ API host: ]%>
 					<com:TDropDownList
 						ID="UserAPIHosts"
@@ -61,7 +61,7 @@
 						Style="padding: 5px"
 					/>
 				</com:TLabel>
-				<span class="w3-right w3-padding-small w3-margin-top w3-margin-right">
+				<span class="w3-right w3-padding-small margin-top-small w3-margin-right">
 					<label><i class="fa-solid fa-sun"></i>
 						<label class="switch small" onclick="ThemeMode.toggle_mode();">
 							<input type="checkbox" id="theme_mode_switcher" />
@@ -75,7 +75,10 @@
 					const KEEP_TABLE_SETTINGS = <%=(count($this->web_config) > 0 && key_exists('keep_table_settings', $this->web_config['baculum'])) ? $this->web_config['baculum']['keep_table_settings'] : WebConfig::DEF_KEEP_TABLE_SETTINGS%>;
 					const MAX_LATEST_JOBS = <%=(count($this->web_config) > 0 && key_exists('max_latest_jobs', $this->web_config['baculum'])) ? $this->web_config['baculum']['max_latest_jobs'] : JobInfo::DEFAULT_MAX_LATEST_JOBS%>;
 				</script>
-				<com:Bacularis.Web.Portlets.Breadcrumbs />
+				<span class="w3-left">
+					<com:Bacularis.Web.Portlets.Breadcrumbs />
+				</span>
+				<div style="clear: left"></div>
 				<com:TContentPlaceHolder ID="Main" />
 				<!-- Footer -->
 				<footer class="w3-container w3-right-align w3-small"><%[ Version: ]%> <%=Params::BACULARIS_VERSION%></footer>

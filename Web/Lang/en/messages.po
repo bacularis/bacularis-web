@@ -7161,8 +7161,8 @@ msgstr "Recent jobs"
 msgid "Scheduled for today"
 msgstr "Scheduled for today"
 
-msgid "Scheduled for the next 5 days"
-msgstr "Scheduled for the next 5 days"
+msgid "Scheduled for next 5 days"
+msgstr "Scheduled for next 5 days"
 
 msgid "Starts in"
 msgstr "Starts in"
@@ -7368,3 +7368,6 @@ msgstr "Formats and units"
 
 msgid "Show welcome screen after loggin in"
 msgstr "Show welcome screen after loggin in"
+
+msgid "Running"
+msgstr "Running"
