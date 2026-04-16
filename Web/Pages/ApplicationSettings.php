@@ -30,6 +30,7 @@
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
+use Bacularis\Web\Modules\SearchCategory;
 use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\WebConfig;
 
@@ -121,6 +122,22 @@ class ApplicationSettings extends BaculumWebPage
 				$this->LogCategorySecurity->Checked = in_array(AuditLog::CATEGORY_SECURITY, AuditLog::DEF_CATEGORIES);
 			}
 
+			// Search box
+			$categories = [];
+			if (key_exists('enable_resource_search', $this->web_config['baculum'])) {
+				$this->EnableSearch->Checked = ($this->web_config['baculum']['enable_resource_search'] == 1);
+				$categories = $this->web_config['baculum']['resource_search_categories'] ?? [];
+			} else {
+				$this->EnableSearch->Checked = true; // search box is enabled by default
+				$categories = SearchCategory::getAllCategories();
+			}
+			$this->SearchCategoryJob->Checked = in_array(SearchCategory::CATEGORY_JOB, $categories);
+			$this->SearchCategoryClient->Checked = in_array(SearchCategory::CATEGORY_CLIENT, $categories);
+			$this->SearchCategoryStorage->Checked = in_array(SearchCategory::CATEGORY_STORAGE, $categories);
+			$this->SearchCategoryPool->Checked = in_array(SearchCategory::CATEGORY_POOL, $categories);
+			$this->SearchCategoryVolume->Checked = in_array(SearchCategory::CATEGORY_VOLUME, $categories);
+			$this->SearchCategoryDirConfig->Checked = in_array(SearchCategory::CATEGORY_DIR_CONFIG, $categories);
+
 			if (!$this->IsPostBack && !$this->IsCallback) {
 				$api_hosts = $this->User->getAPIHosts();
 				$this->SelfTestAPIHosts->DataSource = array_combine($api_hosts, $api_hosts);
@@ -184,6 +201,28 @@ class ApplicationSettings extends BaculumWebPage
 	{
 		if (count($this->web_config) > 0) {
 			$this->web_config['baculum']['enable_messages_log'] = ($this->EnableMessagesLog->Checked === true) ? 1 : 0;
+			$this->web_config['baculum']['enable_resource_search'] = ($this->EnableSearch->Checked === true) ? 1 : 0;
+			$categories = [];
+			if ($this->SearchCategoryJob->Checked) {
+				$categories[] = SearchCategory::CATEGORY_JOB;
+			}
+			if ($this->SearchCategoryClient->Checked) {
+				$categories[] = SearchCategory::CATEGORY_CLIENT;
+			}
+			if ($this->SearchCategoryStorage->Checked) {
+				$categories[] = SearchCategory::CATEGORY_STORAGE;
+			}
+			if ($this->SearchCategoryPool->Checked) {
+				$categories[] = SearchCategory::CATEGORY_POOL;
+			}
+			if ($this->SearchCategoryVolume->Checked) {
+				$categories[] = SearchCategory::CATEGORY_VOLUME;
+			}
+			if ($this->SearchCategoryDirConfig->Checked) {
+				$categories[] = SearchCategory::CATEGORY_DIR_CONFIG;
+			}
+			$this->web_config['baculum']['resource_search_categories'] = $categories;
+
 			$this->getModule('web_config')->setConfig($this->web_config);
 
 			$this->getModule('audit')->audit(

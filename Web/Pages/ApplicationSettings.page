@@ -389,6 +389,92 @@
 				</div>
 			</div>
 		</div>
+		<div class="w3-container w3-row w3-padding">
+			<div class="w3-quarter w3-col"><%[ Enable global search box ]%>:</div>
+			<div class="w3-quarter w3-col">
+				<com:TCheckBox
+					ID="EnableSearch"
+					CssClass="w3-check"
+					Attributes.onclick="const el = $('#application_settings_features_search_box_categories'); if (this.checked) { el.slideDown('fast'); } else { el.slideUp('fast'); }"
+				/>
+				<i class="fas fa-info-circle help_icon w3-text-green" onclick="$(this).next().slideToggle('fast');"></i>
+				<div class="directive_help" style="display: none">
+					<dd><%[ This is the search field available on every regular page at the top of the interface. The search engine searches for Bacula resources by name or part of their name. ]%></dd>
+				</div>
+			</div>
+		</div>
+		<div id="application_settings_features_search_box_categories" style="display: <%=$this->EnableSearch->Checked ? 'block' : 'none'%>">
+			<div class="w3-container w3-row w3-padding">
+				<div class="w3-quarter w3-col"><%[ Search box categories ]%>:</div>
+				<div class="w3-quarter w3-col">&nbsp;</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryJob->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">Job:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryJob"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryClient->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">Client:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryClient"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryStorage->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">Storage:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryStorage"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryPool->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">Pool:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryPool"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryVolume->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">Volume:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryVolume"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+			<div class="w3-container w3-row w3-padding">
+				<label for="<%=$this->SearchCategoryDirConfig->ClientID%>">
+					<div class="w3-quarter w3-col" style="padding-left: 100px">DIR Config:</div>
+				</label>
+				<div class="w3-quarter w3-col">
+					<com:TCheckBox
+						ID="SearchCategoryDirConfig"
+						CssClass="w3-check"
+					/>
+				</div>
+			</div>
+		</div>
 		<div class="w3-center">
 			<com:TActiveLinkButton
 				CssClass="w3-button w3-green"
