@@ -7382,3 +7382,30 @@ msgstr "Job age for graphs"
 
 msgid "Running"
 msgstr "Running"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Type to search"
+msgstr "Type to search"
+
+msgid "Recent"
+msgstr "Recent"
+
+msgid "Categories"
+msgstr "Categories"
+
+msgid "Scroll up/down"
+msgstr "Scroll up/down"
+
+msgid "No result found."
+msgstr "No result found."
+
+msgid "Enable global search box"
+msgstr "Enable global search box"
+
+msgid "Search box categories"
+msgstr "Search box categories"
+
+msgid "This is the search field available on every regular page at the top of the interface. The search engine searches for Bacula resources by name or part of their name."
+msgstr "This is the search field available on every regular page at the top of the interface. The search engine searches for Bacula resources by name or part of their name."

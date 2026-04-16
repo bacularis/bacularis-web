@@ -69,6 +69,9 @@
 						</label> <i class="fa-solid fa-moon"></i>
 					</label>
 				</span>
+				<span class="w3-right margin-top-small w3-margin-right w3-hide-small">
+					<com:Bacularis.Web.Portlets.ResourceSearchField Visible="<%=$this->isResourceSearch()%>" />
+				</span>
 				<script type="text/javascript">
 					const SIZE_VALUES_UNIT = '<%=(count($this->web_config) > 0 && key_exists('size_values_unit', $this->web_config['baculum'])) ? $this->web_config['baculum']['size_values_unit'] : WebConfig::DEF_SIZE_VAL_UNIT%>';
 					const DATE_TIME_FORMAT = '<%=(count($this->web_config) > 0 && key_exists('date_time_format', $this->web_config['baculum'])) ? $this->web_config['baculum']['date_time_format'] : WebConfig::DEF_DATE_TIME_FORMAT%>';

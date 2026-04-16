@@ -41,6 +41,8 @@
 		<module id="log_parser" class="Bacularis\Web\Modules\LogParser" />
 		<module id="audit" class="Bacularis\Web\Modules\WebAuditLog" />
 		<module id="web_access_resource" class="Bacularis\Web\Modules\WebAccessBaculaResource" />
+		<module id="search_category" class="Bacularis\Web\Modules\SearchCategory" />
+		<module id="resource_search" class="Bacularis\Web\Modules\ResourceSearch" />
 		<!-- auth modules -->
 		<module id="basic_webuser" class="Bacularis\Web\Modules\BasicWebUserConfig" />
 		<module id="page_category" class="Bacularis\Web\Modules\PageCategory" />

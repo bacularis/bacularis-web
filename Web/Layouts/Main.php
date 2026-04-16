@@ -73,4 +73,16 @@ class Main extends TTemplateControl
 			$this->getResponse()->reload();
 		}
 	}
+
+	/**
+	 * Determines if search box is displayed or not.
+	 *
+	 * @return bool true if search box should be displayed, false otherwise
+	 */
+	public function isResourceSearch(): bool
+	{
+		$config = $this->getPage()->web_config['baculum'] ?? [];
+		$enable_resource_search = $config['enable_resource_search'] ?? 1;
+		return ($enable_resource_search == 1);
+	}
 }

@@ -118,6 +118,12 @@ class WebConfig extends ConfigFileModule
 	public const DEF_AUDIT_LOG_CATEGORIES = AuditLog::DEF_CATEGORIES;
 
 	/**
+	 * Default resource search enabled value.
+	 */
+	public const DEF_ENABLE_RESOURCE_SEARCH = ResourceSearch::DEF_ENABLED;
+
+
+	/**
 	 * Supported user/password authentication methods.
 	 */
 	public const AUTH_METHOD_LOCAL = 'local';
@@ -242,7 +248,9 @@ class WebConfig extends ConfigFileModule
 			'enable_audit_log' => self::DEF_ENABLE_AUDIT_LOG,
 			'audit_log_max_lines' => self::DEF_AUDIT_LOG_MAX_LINES,
 			'audit_log_types' => self::DEF_AUDIT_LOG_TYPES,
-			'audit_log_categories' => self::DEF_AUDIT_LOG_CATEGORIES
+			'audit_log_categories' => self::DEF_AUDIT_LOG_CATEGORIES,
+			'enable_resource_search' => self::DEF_ENABLE_RESOURCE_SEARCH,
+			'resource_search_categories' => SearchCategory::getAllCategories()
 		];
 		if (key_exists('baculum', $config)) {
 			$config['baculum'] = array_merge($baculum, $config['baculum']);
