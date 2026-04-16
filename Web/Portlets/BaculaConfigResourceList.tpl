@@ -487,4 +487,17 @@ oBaculaConfigResourceWindow<%=$this->ClientID%> = {
 		cb.dispatch();
 	}
 };
+
+// Opens given resource edit configuration window. Used (e.g. in search box)
+function open_resource_config<%=$this->ClientID%>() {
+	const resource_name = get_url_param('resource_name');
+	if (!resource_name) {
+		return;
+	}
+	oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window(resource_name);
+}
+
+$(() => {
+	open_resource_config<%=$this->ClientID%>();
+});
 </script>
