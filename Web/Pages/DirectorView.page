@@ -943,6 +943,32 @@ function load_dir_res_config(resource) {
 	cb.setCallbackParameter(resource);
 	cb.dispatch();
 }
+
+// Open director tab (used e.g. in search box links)
+function open_director_resource_tab() {
+	const component_type = get_url_param('component_type');
+	const resource_type = get_url_param('resource_type');
+	const resource_name = get_url_param('resource_name');
+	if (component_type) {
+		// open director tab
+		$('#btn_director_config').click();
+	}
+	if (!component_type || !resource_type || !resource_name) {
+		return;
+	}
+	const ct_lc = component_type.toLowerCase();
+	const rt_lc = resource_type.toLowerCase()
+	let btn_id = '%component-type_%resource-type_config_btn';
+	btn_id = btn_id.replace('%component-type', ct_lc);
+	btn_id = btn_id.replace('%resource-type', rt_lc);
+	const form_id = '%component-type_resources_config_form'.replace('%component-type', ct_lc);
+	const config_id = '%component-type_config'.replace('%component-type', ct_lc);
+	load_dir_res_config(resource_type);
+	W3SubTabs.open(btn_id, form_id, config_id);
+}
+$(() => {
+	open_director_resource_tab();
+});
 		</script>
 
 		<!-- Apply patterns -->
