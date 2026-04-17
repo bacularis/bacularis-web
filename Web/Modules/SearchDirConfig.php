@@ -46,7 +46,7 @@ class SearchDirConfig extends SearchResourceBase implements ISearchCategory
 			['config', 'dir', $query],
 			$host
 		);
-		if ($result->error == 0) {
+		if ($result->error == 0 && is_array($result->output)) {
 			$search_result = $result->output;
 		}
 		$res = $this->prepareResult($search_result);

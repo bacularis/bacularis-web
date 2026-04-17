@@ -46,7 +46,7 @@ class SearchJobs extends SearchResourceBase implements ISearchCategory
 			['jobs', 'resnames', $query],
 			$host
 		);
-		if ($result->error == 0) {
+		if ($result->error == 0 && is_object($result->output)) {
 			$sess = $this->getApplication()->getSession();
 			$director = $sess->itemAt('director');
 			$search_result = $result->output->{$director} ?? [];
