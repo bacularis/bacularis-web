@@ -173,7 +173,7 @@ class RunJob extends Portlets
 		}
 		natcasesort($client_list);
 		$this->Client->DataSource = $client_list;
-		if (is_object($jobdata)) {
+		if (is_object($jobdata) && property_exists($jobdata, 'clientid')) {
 			$this->Client->SelectedValue = $jobdata->clientid;
 		}
 		$this->Client->dataBind();
@@ -214,7 +214,7 @@ class RunJob extends Portlets
 		}
 		natcasesort($pool_list);
 		$this->Pool->DataSource = $pool_list;
-		if (is_object($jobdata)) {
+		if (is_object($jobdata) && property_exists($jobdata, 'poolid')) {
 			$this->Pool->SelectedValue = $jobdata->poolid;
 		}
 		$this->Pool->dataBind();
