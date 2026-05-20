@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\WebEnvironment;
 use Bacularis\Web\Pages\Requirements as WebRequirements;
 
 /**
@@ -67,3 +68,8 @@ if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW']) && isse
 	// initialize required auth superglobal $_SERVER array
 	[$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] = explode(':', $decoded_credentials);
 }
+
+/**
+ * Set up HTTP Host if needed.
+ */
+WebEnvironment::setupHTTPHost();
