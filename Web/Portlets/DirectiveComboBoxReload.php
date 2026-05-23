@@ -30,10 +30,27 @@ class DirectiveComboBoxReload extends DirectiveComboBox
 		if ($this->getCmdParam() === 'save') {
 			// reset control data to not remember it longer after saving
 			$control->setData([]);
-		} elseif ($name === 'oncallback') {
-			$this->setValue();
-			$control->setShowAllDirectives(true);
-			$control->loadConfig($sender, $param, $name);
 		}
+	}
+
+	public function reloadValue($sender, $param)
+	{
+		if ($this->getCmdParam() === 'save') {
+			/**
+			 * When directive is saved, we cannot loadConfig
+			 * because it resets all saved values and saves nothing.
+			 */
+			return;
+		} elseif (!$this->getDirectiveValue() && !$this->getValue()) {
+			/**
+			 * Case for empty selected value.
+			 * Do not reload it if selected index has not been really changed.
+			 */
+			return;
+		}
+		$this->setValue();
+		$control = $this->getSourceTemplateControl();
+		$control->setShowAllDirectives(true);
+		$control->loadConfig($sender, $param, 'oncallback');
 	}
 }

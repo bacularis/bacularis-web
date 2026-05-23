@@ -3,6 +3,7 @@
 	<div class="w3-col w3-threequarter directive_value">
 		<com:TActiveDropDownList ID="Directive"
 			OnCallback="saveValue"
+			OnSelectedIndexChanged="reloadValue"
 			CssClass="w3-select w3-border w3-twothird"
 			Visible="<%=$this->display_directive%>"
 			ActiveControl.EnableUpdate="false"
