@@ -37,6 +37,7 @@ namespace Bacularis\Web\Modules;
  */
 class JobInfo extends WebModule
 {
+	public const JOB_NAME_PATTERN = '[a-zA-Z0-9:.\-_ ]+';
 	public const RESOURCE_PATTERN = '/(?P<resource>\S+(?=:))?:?(\s+((?P<directive>\S+)=(?P<value>[\s\S]*?(?=\s\S+=.+|$))))/';
 	public const JOB_TO_VERIFY_PATTERN = '/(?P<directive>JobToVerify)\s(?P<value>[\s\S]*\S)\s*(--\>[\s\S]+)$/';
 	public const COMMAND_ACL_USED_BY_WEB = [
