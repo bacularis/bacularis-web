@@ -333,11 +333,11 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$this->DirectiveSetting->showOptions($load_values && !$copy_mode);
 	}
 
-	public function loadDirectives($sender, $param, $name)
+	public function loadDirectives($sender, $param)
 	{
 		$show_all_directives = !$this->getShowAllDirectives();
 		$this->setShowAllDirectives($show_all_directives);
-		$this->loadConfig($sender, $param, $name);
+		$this->loadConfig($sender, $param, 'onloaddirectives');
 		$this->getPage()->getCallbackClient()->callClientFunction(
 			'oBaculaConfigSection.show_sections',
 			[$show_all_directives, $this->ClientID . '_directives']
