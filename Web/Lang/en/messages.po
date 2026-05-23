@@ -7398,3 +7398,165 @@ msgstr "Search box categories"
 
 msgid "This is the search field available on every regular page at the top of the interface. The search engine searches for Bacula resources by name or part of their name."
 msgstr "This is the search field available on every regular page at the top of the interface. The search engine searches for Bacula resources by name or part of their name."
+
+msgid "AWS account"
+msgstr "AWS account"
+
+msgid "AWS accounts"
+msgstr "AWS accounts"
+
+msgid "Configure AWS accounts used for backup and restore operations. You can use the same account or different accounts for individual EC2 instance and EBS volume backups. AWS accounts are also used to retrieve and display AWS resources on this Cloud page."
+msgstr "Configure AWS accounts used for backup and restore operations. You can use the same account or different accounts for individual EC2 instance and EBS volume backups. AWS accounts are also used to retrieve and display AWS resources on this Cloud page."
+
+msgid "Add AWS account"
+msgstr "Add AWS account"
+
+msgid "Account name"
+msgstr "Account name"
+
+msgid "Add Amazon AWS account"
+msgstr "Add Amazon AWS account"
+
+msgid "Static credentials"
+msgstr "Static credentials"
+
+msgid "static credentials"
+msgstr "static credentials"
+
+msgid "assume role"
+msgstr "assume role"
+
+msgid "Edit Amazon AWS account"
+msgstr "Edit Amazon AWS account"
+
+msgid "Role ARN"
+msgstr "Role ARN"
+
+msgid "Credential source"
+msgstr "Credential source"
+
+msgid "Access keys - Bacularis outside AWS"
+msgstr "Access keys - Bacularis outside AWS"
+
+msgid "Instance role - Bacularis running on AWS service"
+msgstr "Instance role - Bacularis running on AWS service"
+
+msgid "Service"
+msgstr "Service"
+
+msgid "EC2 instances"
+msgstr "EC2 instances"
+
+msgid "Configure EC2 instance backups. Backing up an EC2 instance automatically includes all attached volumes, volume AWS metadata, and EC2 instance metadata. After restore, the recovered EC2 instance remains fully consistent with the original instance."
+msgstr "Configure EC2 instance backups. Backing up an EC2 instance automatically includes all attached volumes, volume AWS metadata, and EC2 instance metadata. After restore, the recovered EC2 instance remains fully consistent with the original instance."
+
+msgid "Instance name"
+msgstr "Instance name"
+
+msgid "Instance ID"
+msgstr "Instance ID"
+
+msgid "Platform"
+msgstr "Platform"
+
+msgid "Avail. zone"
+msgstr "Avail. zone"
+
+msgid "Public IP addr."
+msgstr "Public IP addr."
+
+msgid "Private IP addr."
+msgstr "Private IP addr."
+
+msgid "Root dev. name"
+msgstr "Root dev. name"
+
+msgid "AWS tags"
+msgstr "AWS tags"
+
+msgid "Create backup"
+msgstr "Create backup"
+
+msgid "Create AWS EC2 instance backup"
+msgstr "Create AWS EC2 instance backup"
+
+msgid "In this window, you will create a backup job, configure the plugin settings, and define a fileset."
+msgstr "In this window, you will create a backup job, configure the plugin settings, and define a fileset."
+
+msgid "Once completed, the EC2 instance backup job will be ready to use."
+msgstr "Once completed, the EC2 instance backup job will be ready to use."
+
+msgid "What to back up?"
+msgstr "What to back up?"
+
+msgid "Backup type"
+msgstr "Backup type"
+
+msgid "EC2 instance backup"
+msgstr "EC2 instance backup"
+
+msgid "Instances"
+msgstr "Instances"
+
+msgid "Where to back up?"
+msgstr "Where to back up?"
+
+msgid "When to back up?"
+msgstr "When to back up?"
+
+msgid "Run the new job now"
+msgstr "Run the new job now"
+
+msgid "EC2 plugin options"
+msgstr "EC2 plugin options"
+
+msgid "Service endpoints"
+msgstr "Service endpoints"
+
+msgid "Max. backup HTTP workers"
+msgstr "Max. backup HTTP workers"
+
+msgid "Exclude root volume"
+msgstr "Exclude root volume"
+
+msgid "Exclude data volume IDs"
+msgstr "Exclude data volume IDs"
+
+msgid "Snapshot description"
+msgstr "Snapshot description"
+
+msgid "Snapshot tags in form: nameA=valA,nameB=valB"
+msgstr "Snapshot tags in form: nameA=valA,nameB=valB"
+
+msgid "Copy tags from the volumes to corresponding snapshots"
+msgstr "Copy tags from the volumes to corresponding snapshots"
+
+msgid "Other job directives"
+msgstr "Other job directives"
+
+msgid "comma separated"
+msgstr "comma separated"
+
+msgid "EBS volumes"
+msgstr "EBS volumes"
+
+msgid "Configure backups for selected EBS volumes. Use EBS volume backups when you do not need to back up entire EC2 instances or when you want to protect only specific volumes. EBS volume backups save both volume data and metadata, ensuring that restored volumes remain fully consistent with the original volumes."
+msgstr "Configure backups for selected EBS volumes. Use EBS volume backups when you do not need to back up entire EC2 instances or when you want to protect only specific volumes. EBS volume backups save both volume data and metadata, ensuring that restored volumes remain fully consistent with the original volumes."
+
+msgid "Volume ID"
+msgstr "Volume ID"
+
+msgid "Encrypted"
+msgstr "Encrypted"
+
+msgid "Unencrypted"
+msgstr "Unencrypted"
+
+msgid "Once completed, the EBS volume backup job will be ready to use."
+msgstr "Once completed, the EBS volume backup job will be ready to use."
+
+msgid "EBS volume backup"
+msgstr "EBS volume backup"
+
+msgid "Create AWS EBS volume backup"
+msgstr "Create AWS EBS volume backup"
