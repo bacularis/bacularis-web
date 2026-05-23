@@ -1,0 +1,84 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
+<com:TContent ID="Main">
+	<!-- Header -->
+	<com:Bacularis.Web.Portlets.PageHeader
+		Icon="fa-solid fa-cloud fa-fw"
+		Title="Cloud"
+		CssClass="w3-show-inline-block"
+	/>
+	<div class="w3-bar w3-green w3-margin-bottom">
+		<button id="btn_cloud_amazon" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'cloud_amazon'); set_page_tables([]);">Amazon</button>
+		<span class="w3-right w3-margin-right">
+			<%[ FD API host ]%>
+			<com:TActiveDropDownList
+				ID="UserFDAPIHosts"
+				CssClass="w3-select"
+				Width="200px"
+				OnCallback="setFDAPIHost"
+				Attributes.onclick="oAmazonCreateEBSVolumeBackup.get_backup_client();"
+			/>
+		</span>
+	</div>
+
+	<div class="w3-container tab_item" id="cloud_amazon">
+		<div id="cloud_amazon_list" class="w3-container w3-padding">
+			<%[ AWS account ]%>: &nbsp;<com:TActiveDropDownList
+				ID="AmazonAccountCurrent"
+				CssClass="w3-select w3-border w3-show-inline-block"
+				Width="200px"
+				OnCallback="setCurrentAccount"
+			/>
+
+			<!-- Amazon submenu -->
+			<div class="w3-row w3-margin-bottom">
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('cloud_amazon_subtab_accounts', 'cloud_amazon_accounts', 'cloud_amazon_list'); oAmazonAccountList.table.responsive.recalc();">
+					<div id="cloud_amazon_subtab_accounts" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding w3-border-red"><%[ AWS accounts ]%></div>
+				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('cloud_amazon_subtab_ec2_instances', 'cloud_amazon_ec2_instance_list', 'cloud_amazon_list'); oAmazonEC2InstanceList.table.responsive.recalc();">
+					<div id="cloud_amazon_subtab_ec2_instances" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding"><%[ EC2 instances ]%></div>
+				</a>
+				<a href="javascript:void(0)" onclick="W3SubTabs.open('cloud_amazon_subtab_ebs_volumes', 'cloud_amazon_ebs_volume_list', 'cloud_amazon_list'); oAmazonEBSVolumeList.table.responsive.recalc();">
+					<div id="cloud_amazon_subtab_ebs_volumes" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding"><%[ EBS volumes ]%></div>
+				</a>
+			</div>
+
+			<!-- Accounts -->
+			<div id="cloud_amazon_accounts" class="subtab_item">
+				<com:Bacularis.Web.Portlets.AmazonAccounts
+					ID="AmazonAccounts"
+					OnSaveAccount="postSaveAccount"
+					OnRemoveAccount="postRemoveAccount"
+				/>
+			</div>
+
+			<!-- EC2 instances -->
+			<div id="cloud_amazon_ec2_instance_list" class="subtab_item" style="display: none">
+				<com:Bacularis.Web.Portlets.AmazonEC2Instances
+					ID="AmazonEC2Instances"
+				/>
+			</div>
+
+			<!-- EBS volumes -->
+			<div id="cloud_amazon_ebs_volume_list" class="subtab_item" style="display: none">
+				<com:Bacularis.Web.Portlets.AmazonEBSVolumes
+					ID="AmazonEBSVolumes"
+				/>
+			</div>
+		</div>
+	</div>
+	<com:TCallback ID="SetAmazonAccounts" OnCallback="setAmazonAccounts" />
+<script>
+const oCloud = {
+	init: function() {
+		this.load_amazon_accounts();
+	},
+	load_amazon_accounts: function() {
+		const cb = <%=$this->SetAmazonAccounts->ActiveControl->Javascript%>;
+		cb.dispatch();
+	}
+};
+$(() => {
+	oCloud.init();
+});
+</script>
+</com:TContent>
