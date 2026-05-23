@@ -344,7 +344,7 @@ $(function() {
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 			<com:TActiveLabel ID="IdPWindowError" CSsClass="error" Display="None" />
 			<div class="w3-row directive_field">
-				<div class="w3-col w3-third"><com:TLabel ForControl="IdPDescription" Text="<%[ Identity provider name ]%>"/>:</div>
+				<div class="w3-col w3-third"><com:TLabel ForControl="IdPFullName" Text="<%[ Identity provider name ]%>"/>:</div>
 				<div class="w3-col w3-twothird">
 					<com:TActiveTextBox
 						ID="IdPFullName"
