@@ -38,6 +38,7 @@
 	<url ServiceParameter="Security" pattern="web/security/" />
 	<url ServiceParameter="Deployment" pattern="web/deployment/" />
 	<url ServiceParameter="Patterns" pattern="web/patterns/" />
+	<url ServiceParameter="Cloud" pattern="web/cloud/" />
 	<url ServiceParameter="AddOns" pattern="web/add-ons/" />
 	<url ServiceParameter="NewUserWizard" pattern="web/new/user/" />
 	<url ServiceParameter="ConsoleView" pattern="web/console/" />
