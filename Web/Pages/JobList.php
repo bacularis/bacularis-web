@@ -31,6 +31,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\JobAction;
 use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Prado\Prado;
@@ -176,58 +177,11 @@ class JobList extends BaculumWebPage
 	 */
 	public function runJob(string $name): object
 	{
-		// Pre-run job actions
-		$plugin_manager = $this->getModule('plugin_manager');
-		$plugin_manager->callPluginActionByType(
-			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-			'run',
-			'pre-run-manually',
-			'Job',
-			$name
-		);
-
-		// Run job
-		$params = ['name' => $name];
-		$result = $this->getModule('api')->create(
-			['jobs', 'run'],
-			$params
-		);
-		if ($result->error === 0) {
-			// Post-run job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'post-run-manually',
-				'Job',
-				$name
-			);
-
-			$misc = $this->getModule('misc');
-			$started_jobid = $misc->findJobIdStartedJob($result->output);
-			$audit = $this->getModule('audit');
-			if (is_numeric($started_jobid)) {
-				$audit->audit(
-					AuditLog::TYPE_INFO,
-					AuditLog::CATEGORY_ACTION,
-					"Run job. Job: $name, JobId: $started_jobid"
-				);
-			} else {
-				$errmsg = implode('<br />', $result->output);
-				$this->getPage()->getCallbackClient()->callClientFunction(
-					'show_error',
-					[$errmsg, $result->error]
-				);
-
-				$audit->audit(
-					AuditLog::TYPE_WARNING,
-					AuditLog::CATEGORY_ACTION,
-					"Run job failed. Job: $name"
-				);
-			}
-		} else {
+		$result = JobAction::runJobByName($name);
+		if ($result->error != 0) {
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'show_error',
-				[$result->output, $result->error]
+				[nl2br($result->output), $result->error]
 			);
 		}
 		return $result;
@@ -254,103 +208,15 @@ class JobList extends BaculumWebPage
 	 */
 	private function rerunJob($jobid)
 	{
+		$jobid = (int) $jobid;
 		if ($jobid <= 0) {
 			return;
 		}
-		$jobdata = $this->getModule('api')->get(
-			['jobs', $jobid],
-			null,
-			true,
-			self::USE_CACHE
-		)->output;
-		$params = [];
-		$params['id'] = $jobid;
-		$level = trim($jobdata->level);
-		$params['level'] = !empty($level) ? $level : 'F'; // Admin job has empty level
-		$job_show = $this->getModule('api')->get(
-			['jobs', $jobid, 'show'],
-			null,
-			true,
-			self::USE_CACHE
-		)->output;
-		$job_info = $this->getModule('job_info')->parseResourceDirectives($job_show);
-		$job_info_keys = array_keys($job_info);
-		$storage_idx = array_search('storage', $job_info_keys) ?: -1;
-		$autochanger_idx = array_search('autochanger', $job_info_keys) ?: -1;
-		if ($jobdata->filesetid > 0) {
-			$params['filesetid'] = $jobdata->filesetid;
-		} else {
-			$params['fileset'] = key_exists('fileset', $job_info) ? $job_info['fileset']['name'] : '';
-		}
-		$params['clientid'] = $jobdata->clientid;
-		$storage = key_exists('storage', $job_info) ? $job_info['storage']['name'] : null;
-		$autochanger = key_exists('autochanger', $job_info) ? $job_info['autochanger']['name'] : null;
-		$params['storage'] = ($autochanger_idx > -1 && ($storage_idx == -1 || $autochanger_idx < $storage_idx)) ? $autochanger : $storage;
-
-		/**
-		 * For 'c' type (Copy Job) and 'g' type (Migration Job) the in job table in poolid property is written
-		 * write pool, not read pool. Here in 'pool' property is set read pool and from this reason for 'c'
-		 * and 'g' types the pool cannot be taken from job table.
-		 */
-		if ($jobdata->poolid > 0 && $jobdata->type != 'c' && $jobdata->type != 'g') {
-			$params['poolid'] = $jobdata->poolid;
-		} else {
-			$params['pool'] = key_exists('pool', $job_info) ? $job_info['pool']['name'] : '';
-		}
-		$params['priority'] = key_exists('job', $job_info) ? $job_info['job']['priority'] : self::DEFAULT_JOB_PRIORITY;
-		$accurate = key_exists('job', $job_info) && key_exists('accurate', $job_info['job']) ? $job_info['job']['accurate'] : 0;
-		$params['accurate'] = ($accurate == 1);
-
-		// Pre-run job actions
-		$plugin_manager = $this->getModule('plugin_manager');
-		$plugin_manager->callPluginActionByType(
-			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-			'run',
-			'pre-run-manually',
-			'Job',
-			$job_info['job']['name']
-		);
-
-		// Run job
-		$result = $this->getModule('api')->create(
-			['jobs', 'run'],
-			$params
-		);
-		if ($result->error === 0) {
-			// Post-run job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'post-run-manually',
-				'Job',
-				$job_info['job']['name']
-			);
-
-			$misc = $this->getModule('misc');
-			$started_jobid = $misc->findJobIdStartedJob($result->output);
-			$audit = $this->getModule('audit');
-			if (is_numeric($started_jobid)) {
-				$audit->audit(
-					AuditLog::TYPE_INFO,
-					AuditLog::CATEGORY_ACTION,
-					"Run job. Job: {$job_info['job']['name']}, JobId: $started_jobid"
-				);
-			} else {
-				$errmsg = implode('<br />', $result->output);
-				$this->getPage()->getCallbackClient()->callClientFunction(
-					'show_error',
-					[$errmsg, $result->error]
-				);
-				$audit->audit(
-					AuditLog::TYPE_WARNING,
-					AuditLog::CATEGORY_ACTION,
-					"Run job failed. Job: {$job_info['job']['name']}"
-				);
-			}
-		} else {
+		$result = JobAction::runJobById($jobid);
+		if ($result->error != 0) {
 			$this->getPage()->getCallbackClient()->callClientFunction(
 				'show_error',
-				[$result->output, $result->error]
+				[nl2br($result->output), $result->error]
 			);
 		}
 		return $result;
@@ -624,49 +490,11 @@ class JobList extends BaculumWebPage
 	 */
 	private function verifyJob(string $verify_job, int $jobid): object
 	{
-		// Pre-run verify job actions
-		$plugin_manager = $this->getModule('plugin_manager');
-		$plugin_manager->callPluginActionByType(
-			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-			'run',
-			'pre-run-manually',
-			'Job',
-			$verify_job
-		);
-
 		// Run verify job
-		$api = $this->getModule('api');
-		$params = ['name' => $verify_job, 'jobid' => $jobid];
-		$result = $api->create(
-			['jobs', 'run'],
-			$params
+		$result = JobAction::runJobByName(
+			$verify_job,
+			['jobid' => $jobid]
 		);
-		$audit = $this->getModule('audit');
-		if ($result->error === 0) {
-			// Post-run verify job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'post-run-manually',
-				'Job',
-				$verify_job
-			);
-			$misc = $this->getModule('misc');
-			$started_jobid = $misc->findJobIdStartedJob($result->output);
-			if (is_numeric($started_jobid)) {
-				$audit->audit(
-					AuditLog::TYPE_INFO,
-					AuditLog::CATEGORY_ACTION,
-					"Run job. Job: $verify_job, JobId: $started_jobid"
-				);
-			} else {
-				$audit->audit(
-					AuditLog::TYPE_WARNING,
-					AuditLog::CATEGORY_ACTION,
-					"Run job failed. Job: $verify_job"
-				);
-			}
-		}
 		return $result;
 	}
 
