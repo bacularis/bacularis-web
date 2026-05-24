@@ -120,7 +120,7 @@
 				</div>
 			</div>
 			<div class="pointer bold w3-margin-bottom" onclick="$('#amazon_create_ec2_instance_backup_plugin_opts').slideToggle('fast');"><i class="fa-solid fa-wrench"></i> &nbsp;<%[ EC2 plugin options ]%></div>
-			<div id="amazon_create_ec2_instance_backup_plugin_opts" style="display: none">
+			<div id="amazon_create_ec2_instance_backup_plugin_opts">
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-quarter">
 						<label for="<%=$this->AmazonCreateEC2InstanceBackupAccount->ClientID%>">
@@ -133,6 +133,14 @@
 							CssClass="w3-select w3-border w3-show-inline-block"
 							AutoPostBack="false"
 							Width="200px"
+						/>
+						<i class="fas fa-asterisk w3-text-red opt_req"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewEC2Instanceirective"
+							ControlToValidate="AmazonCreateEC2InstanceBackupAccount"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
 						/>
 					</div>
 				</div>
@@ -147,6 +155,14 @@
 							ID="AmazonCreateEC2InstanceBackupRegion"
 							AutoPostBack="false"
 							CssClass="w3-select w3-border w3-show-inline-block"
+						/>
+						<i class="fas fa-asterisk w3-text-red opt_req"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewEC2InstanceDirective"
+							ControlToValidate="AmazonCreateEC2InstanceBackupRegion"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
 						/>
 					</div>
 				</div>

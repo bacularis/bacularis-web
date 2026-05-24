@@ -52,6 +52,8 @@ class Cloud extends BaculumWebPage
 		// Set FD API host
 		$selected = $sender->SelectedValue;
 		$this->AmazonAccounts->setFDAPIHost($selected);
+		$this->AmazonEC2Instances->setFDAPIHost($selected);
+		$this->AmazonEBSVolumes->setFDAPIHost($selected);
 
 		// Remember current FD API host selection
 		$sess = $this->getSession();

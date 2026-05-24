@@ -38,6 +38,7 @@ class AmazonEBSVolumes extends AmazonBase
 		$this->setEBSVolumeList(null, null);
 		$fd_api_host = $this->getFDAPIHost();
 		$this->AmazonEBSVolumeBackupWindow->setFDAPIHost($fd_api_host);
+		$this->AmazonEBSVolumeBackupWindow->initialize();
 	}
 
 	/**

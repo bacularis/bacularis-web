@@ -34,6 +34,11 @@ class AmazonCreateEC2InstanceBackupWindow extends AmazonBackupWindowBase
 		if ($page->IsCallback || $page->IsPostBack) {
 			return;
 		}
+		$this->initialize();
+	}
+
+	public function initialize()
+	{
 		$this->loadResource('JobDefs', $this->AmazonCreateEC2InstanceBackupJobDefs);
 		$this->loadResource('Storage', $this->AmazonCreateEC2InstanceBackupStorage);
 		$this->loadResource('Pool', $this->AmazonCreateEC2InstanceBackupPool);

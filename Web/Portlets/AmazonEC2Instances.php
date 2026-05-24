@@ -36,6 +36,9 @@ class AmazonEC2Instances extends AmazonBase
 	public function initialize()
 	{
 		$this->setEC2InstanceList(null, null);
+		$fd_api_host = $this->getFDAPIHost();
+		$this->AmazonEC2InstanceBackupWindow->setFDAPIHost($fd_api_host);
+		$this->AmazonEC2InstanceBackupWindow->initialize();
 	}
 
 	/**

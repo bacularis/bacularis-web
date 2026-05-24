@@ -34,6 +34,11 @@ class AmazonCreateEBSVolumeBackupWindow extends AmazonBackupWindowBase
 		if ($page->IsCallback || $page->IsPostBack) {
 			return;
 		}
+		$this->initialize();
+	}
+
+	public function initialize()
+	{
 		$this->loadResource('JobDefs', $this->AmazonCreateEBSVolumeBackupJobDefs);
 		$this->loadResource('Storage', $this->AmazonCreateEBSVolumeBackupStorage);
 		$this->loadResource('Pool', $this->AmazonCreateEBSVolumeBackupPool);

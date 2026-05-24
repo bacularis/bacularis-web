@@ -114,7 +114,8 @@ abstract class AmazonBackupWindowBase extends AmazonBase
 		$host = $this->getFDAPIHost();
 		$result = $api->get(
 			['cloud', 'amazon', 'accounts', $account_name],
-			$host
+			$host,
+			false
 		);
 		$account = [];
 		if ($result->error == 0) {
