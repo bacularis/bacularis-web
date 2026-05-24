@@ -290,13 +290,13 @@ var oAmazonCreateEBSVolumeBackup = {
 	fd_name: '',
 	init: function() {
 		this.set_default_values();
-		this.get_backup_client();
 	},
 	open_window: function(volumes) {
 		this.clear_volume_form();
 		this.clear_form();
 
 		this.set_volumes(volumes);
+		this.get_backup_client();
 
 		const win = document.getElementById(this.ids.win);
 		win.style.display = 'block';

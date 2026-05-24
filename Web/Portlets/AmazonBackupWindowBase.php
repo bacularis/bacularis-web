@@ -212,15 +212,17 @@ abstract class AmazonBackupWindowBase extends AmazonBase
 	protected function getBackupClient()
 	{
 		$fd_api_host = $this->getFDAPIHost();
+		$host_config = $this->getModule('host_config');
+		$hconf = $host_config->getHostConfig($fd_api_host);
 		$api = $this->getModule('api');
-		$result = $api->get(['config'], $fd_api_host);
+		$result = $api->get(['config', 'dir', 'Client']);
 		if ($result->error != 0) {
 			return;
 		}
 		$fd_name = '-';
 		for ($i = 0; $i < count($result->output); $i++) {
-			if ($result->output[$i]->component_type == 'fd') {
-				$fd_name = $result->output[$i]->component_name;
+			if ($result->output[$i]->Client->Address == $hconf['address']) {
+				$fd_name = $result->output[$i]->Client->Name;
 			}
 		}
 		return $fd_name;
