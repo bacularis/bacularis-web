@@ -136,7 +136,7 @@
 						/>
 						<i class="fas fa-asterisk w3-text-red opt_req"></i>
 						<com:TRequiredFieldValidator
-							ValidationGroup="NewEC2Instanceirective"
+							ValidationGroup="NewEC2InstanceDirective"
 							ControlToValidate="AmazonCreateEC2InstanceBackupAccount"
 							ErrorMessage="<%[ Field required. ]%>"
 							ControlCssClass="field_invalid"
