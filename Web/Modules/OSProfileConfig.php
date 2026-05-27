@@ -81,7 +81,7 @@ class OSProfileConfig extends ConfigFileModule
 				'packages_cat_remove' => '/usr/bin/apt -y remove --purge postgresql postgresql-client',
 				'packages_cat_info' => '/usr/bin/dpkg -l postgresql postgresql-client',
 				'packages_cat_enable' => '/usr/bin/systemctl enable postgresql',
-				'packages_cat_pre_install_cmd' => '',
+				'packages_cat_pre_install_cmd' => '/usr/bin/apt -y install perl',
 				'packages_cat_pre_upgrade_cmd' => '',
 				'packages_cat_pre_remove_cmd' => '',
 				'packages_cat_post_install_cmd' => '/usr/share/bacularis/protected/tools/setup_catalog.sh /usr/share/bacula-director postgresql /etc/bacula',
