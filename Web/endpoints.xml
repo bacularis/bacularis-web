@@ -31,6 +31,7 @@
 	<url ServiceParameter="ScheduleList" pattern="web/schedule/" />
 	<url ServiceParameter="ScheduleStatusList" pattern="web/schedule/status/" />
 	<url ServiceParameter="ScheduleView" pattern="web/schedule/{schedule}/" parameters.schedule="[a-zA-Z0-9:.\-_ ]+" />
+	<url ServiceParameter="NetworkDiagram" pattern="web/network-diagram/" /> 
 	<url ServiceParameter="Graphs" pattern="web/graphs/" />
 	<url ServiceParameter="Console" pattern="web/webconsole/" />
 	<url ServiceParameter="AccountSettings" pattern="web/account/" />
