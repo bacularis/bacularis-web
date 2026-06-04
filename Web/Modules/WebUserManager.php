@@ -30,6 +30,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\AuthBasic;
+use Bacularis\Common\Modules\Protocol\HTTP\Redirection;
 use Prado\Prado;
 use Prado\Security\IUserManager;
 use Prado\Security\TAuthorizationRule;
@@ -73,9 +74,15 @@ class WebUserManager extends WebModule implements IUserManager
 	{
 		$this->user_factory = Prado::createComponent($this->user_class, $this);
 		$this->setAuthorizedFlag(null);
-		$this->getModule('auth')->attachEventHandler(
+		$auth = $this->getModule('auth');
+		$auth->attachEventHandler(
 			'OnAuthenticate',
 			[$this, 'doAuthentication']
+		);
+		$this->Application->attachEventHandler(
+			'OnEndRequest',
+			[$this, 'leave'],
+			5
 		);
 		$this->Application->attachEventHandler(
 			'onAuthorization',
@@ -489,5 +496,20 @@ class WebUserManager extends WebModule implements IUserManager
 	{
 		$web_session = $this->getModule('web_session');
 		$web_session->destroySession($val);
+	}
+
+	public function leave($sender, $param)
+	{
+		$application = $this->getApplication();
+		if ($application->getResponse()->getStatusCode() === 401) {
+			$service = $application->getService();
+			if ($service instanceof TPageService) {
+				$auth = $this->getModule('auth');
+				$returnUrl = $application->getRequest()->getRequestUri();
+				$auth->setReturnUrl($returnUrl);
+				$url = $service->constructUrl($auth->getLoginPage());
+				Redirection::redirect($url);
+			}
+		}
 	}
 }

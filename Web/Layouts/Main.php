@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Layouts;
 
+use Bacularis\Common\Modules\Protocol\HTTP\Reload;
 use Bacularis\Web\Modules\JobInfo;
 use Prado\Web\UI\TTemplateControl;
 
@@ -70,7 +71,7 @@ class Main extends TTemplateControl
 		if (!empty($api_host)) {
 			$this->User->setDefaultAPIHost($api_host);
 			$this->getPage()->resetSessionUserVars();
-			$this->getResponse()->reload();
+			Reload::refresh();
 		}
 	}
 

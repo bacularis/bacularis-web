@@ -29,8 +29,9 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Common\Modules\Protocol\HTTP\Redirection;
 use Bacularis\Web\Modules\HostConfig;
+use Prado\Web\UI\TCommandEventParameter;
 
 /**
  * Bacula hosts control.
@@ -90,7 +91,7 @@ class BaculaHosts extends HostListTemplate
 			$this->loadConfig(null, null);
 			if ($host === HostConfig::MAIN_CATALOG_HOST) {
 				$url = $this->Service->constructUrl('WebConfigWizard', [], false);
-				$this->getResponse()->redirect($url);
+				Redirection::redirect($url);
 			}
 		}
 	}

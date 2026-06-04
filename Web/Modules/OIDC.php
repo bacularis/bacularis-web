@@ -21,6 +21,7 @@ use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
 use Bacularis\Common\Modules\Protocol\HTTP\Headers as HTTPHeaders;
+use Bacularis\Common\Modules\Protocol\HTTP\Redirection as HTTPRedirection;
 use Bacularis\Common\Modules\RSAKey;
 use Bacularis\Common\Modules\SSLCertificate;
 use Prado\Prado;
@@ -133,7 +134,7 @@ class OIDC extends WebModule
 		$query = http_build_query($params);
 		$url = $oidc_idp_config['authorization_endpoint'] ?? '';
 		$url .= '?' . $query;
-		$this->Response->redirect($url);
+		HTTPRedirection::redirect($url);
 	}
 
 	public function acquireToken(string $code)
@@ -499,7 +500,7 @@ class OIDC extends WebModule
 		$this->params->removeIDToken();
 
 		// Logout request
-		$this->Response->redirect($logout_url);
+		HTTPRedirection::redirect($logout_url);
 	}
 
 	/**
@@ -1049,7 +1050,7 @@ class OIDC extends WebModule
 			'LoginPage',
 			['error' => $emsg]
 		);
-		$this->Response->redirect($page);
+		HTTPRedirection::redirect($page);
 	}
 
 	/**
