@@ -67,4 +67,3 @@ if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW']) && isse
 	// initialize required auth superglobal $_SERVER array
 	[$_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']] = explode(':', $decoded_credentials);
 }
-
