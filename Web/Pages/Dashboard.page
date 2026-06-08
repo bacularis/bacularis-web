@@ -112,13 +112,13 @@
 								<i class="fa-solid fa-tasks fa-fw"></i> &nbsp;<%[ Recent jobs ]%> &nbsp;(<span id="dashboard_recent_jobs_count">0</span>)
 							</div>
 						</a>
-						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_today_jobs_subtab', 'dashboard_scheduled_today_jobs', 'dashboard_jobs');">
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_today_jobs_subtab', 'dashboard_scheduled_today_jobs', 'dashboard_jobs'); Dashboard.scheduled_jobs_today_table.table.responsive.recalc();">
 							<div id="dashboard_scheduled_today_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
 								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for today ]%> &nbsp;(<span id="dashboard_scheduled_today_jobs_count">0</span>)
 
 							</div>
 						</a>
-						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_days_jobs_subtab', 'dashboard_scheduled_days_jobs', 'dashboard_jobs');">
+						<a href="javascript:void(0)" onclick="W3SubTabs.open('dashboard_scheduled_days_jobs_subtab', 'dashboard_scheduled_days_jobs', 'dashboard_jobs'); Dashboard.scheduled_jobs_days_table.table.responsive.recalc();">
 							<div id="dashboard_scheduled_days_jobs_subtab" class="subtab_btn w3-third w3-bottombar w3-hover-light-grey w3-padding">
 								<i class="fa-solid fa-clock fa-fw"></i> &nbsp;<%[ Scheduled for next 5 days ]%> &nbsp;(<span id="dashboard_scheduled_days_jobs_count">0</span>)
 
