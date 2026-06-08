@@ -588,7 +588,7 @@
 		<div class="w3-modal-content w3-card-4 w3-animate-zoom">
 			<header class="w3-container w3-green">
 				<span onclick="document.getElementById('admin_user_required_info').style.display = 'none';" class="w3-button w3-display-topright">×</span>
-				<h2 id="get_users_table_title"><%[ New authentication method notice ]%></h2>
+				<h2><%[ New authentication method notice ]%></h2>
 			</header>
 			<div class="w3-margin-left w3-margin-right">
 				<p><%[ You have switched to a new authentication method. Before logging out, please make sure that: ]%>
