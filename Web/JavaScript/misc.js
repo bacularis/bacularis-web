@@ -585,6 +585,16 @@ function render_time_period(data, type, row) {
 	return ret;
 }
 
+function render_time_duration(data, type, row) {
+	let ret;
+	if (type == 'display' || type == 'filter') {
+		ret = Units.format_time_duration(data);
+	} else {
+		ret = data;
+	}
+	return ret;
+}
+
 function render_job_duration(data, type, row) {
 	let ret;
 	let duration = 0;
