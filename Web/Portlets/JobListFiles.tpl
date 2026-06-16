@@ -67,7 +67,7 @@
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">UID</th>
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">GID</th>
 						<th class="w3-center w3-hide-small" style="width: 40px">Size</th>
-						<th class="w3-center w3-hide-small" style="width: 155px">MTIME</th>
+						<th class="w3-center w3-hide-small" style="width: 160px">MTIME</th>
 						<th class="w3-center"><%[ File ]%></th>
 						<th class="w3-center w3-hide-small" style="width: 50px"><%[ State ]%></th>
 					</tr>
@@ -81,7 +81,7 @@
 				<td class="w3-hide-small"><span class="size w3-right"><%#$this->Data->lstat->size%></span></td>
 				<td class="udatetime w3-hide-small"><%#$this->Data->lstat->mtime%></td>
 				<td style="word-wrap: break-word"><%#$this->Data->file%></td>
-				<td class="<%#$this->Data->fileindex > 0 ? 'w3-text-green' : 'w3-text-orange'%> w3-center w3-hide-small"><strong><%#$this->Data->fileindex > 0 ? Prado::localize('saved') : Prado::localize('deleted')%></strong></td>
+				<td class="<%#$this->Data->fileindex > 0 ? 'w3-text-success' : 'w3-text-orange'%> w3-center w3-hide-small"><strong><%#$this->Data->fileindex > 0 ? Prado::localize('saved') : Prado::localize('deleted')%></strong></td>
 			</tr>
 		</prop:ItemTemplate>
 		<prop:FooterTemplate>

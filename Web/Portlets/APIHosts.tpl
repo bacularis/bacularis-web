@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ The API hosts define connection parameters to hosts with the Bacularis API instances. You can create the API host connections dedicated for specific users by assigning API hosts to them on the Users tab. There is possible to create many API host connections to the same Bacularis API instance. ]%></p>
 	<div class="w3-panel">
-		<button type="button" id="add_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_api_host_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></button>
+		<button type="button" id="add_api_host_btn" class="w3-button w3-green" onclick="oAPIHosts.load_api_host_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add API host ]%></button>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostList" ViewName="api_host_list" />
@@ -189,7 +189,7 @@ set_table: function() {
 			}
 		},
 		columnDefs: [{
-			className: 'dtr-control',
+			className: 'dtr-control-custom',
 			orderable: false,
 			targets: 0
 		},
@@ -643,28 +643,28 @@ oAPIHosts.load_api_host_list();
 							</td>
 							<td valign="middle">
 								<com:TActiveLabel ID="APIHostTestLoader" Display="None"><i class="fa fa-sync w3-spin"></i></com:TActiveLabel>
-								<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
+								<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
 								<com:TActiveLabel ID="APIHostTestResultErr" Display="None" CssClass="w3-text-red" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<%[ Connection error ]%></com:TActiveLabel>
 							</td>
 						</tr>
 						<tr>
 							<td><%[ Catalog support ]%></td>
 							<td>
-								<com:TActiveLabel ID="APIHostCatalogSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+								<com:TActiveLabel ID="APIHostCatalogSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 								<com:TActiveLabel ID="APIHostCatalogSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 							</td>
 						</tr>
 						<tr>
 							<td><%[ Console support ]%></td>
 							<td>
-								<com:TActiveLabel ID="APIHostConsoleSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+								<com:TActiveLabel ID="APIHostConsoleSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 								<com:TActiveLabel ID="APIHostConsoleSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 							</td>
 						</tr>
 						<tr>
 							<td><%[ Config support ]%></td>
 							<td>
-								<com:TActiveLabel ID="APIHostConfigSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+								<com:TActiveLabel ID="APIHostConfigSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 								<com:TActiveLabel ID="APIHostConfigSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 							</td>
 						</tr>

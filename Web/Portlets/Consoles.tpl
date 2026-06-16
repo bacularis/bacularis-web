@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ The console ACLs enable to define available resources for users. The consoles are used in the Bacula configuration on the API host side. There is possible to assign the consoles to the API basic users or to the OAuth2 clients. The assign relation for the basic users is: Console ACL -&gt; API basic user -&gt; API host -&gt; User account. For OAuth2 clients the assign relation is: Console ACL -&gt; OAuth2 client -&gt; API host -&gt; User account. ]%></p>
 	<div class="w3-panel">
-		<button type="button" id="add_console_btn" class="w3-button w3-green" onclick="oConsoles.load_console_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new console ]%></button>
+		<button type="button" id="add_console_btn" class="w3-button w3-green" onclick="oConsoles.load_console_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add console ]%></button>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsConsoleList" ViewName="config_resource_list" />
@@ -241,7 +241,7 @@ set_table: function() {
 			}
 		},
 		columnDefs: [{
-			className: 'dtr-control',
+			className: 'dtr-control-custom',
 			orderable: false,
 			targets: 0
 		},

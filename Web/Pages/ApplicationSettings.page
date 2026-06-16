@@ -675,6 +675,7 @@ var oAppSettingsAuditLog = {
 		this.table = $('#' + this.ids.table).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -732,7 +733,7 @@ var oAppSettingsAuditLog = {
 							span.style.width = '70px';
 							span.classList.add('w3-tag', 'w3-small');
 							if (data == this.types.info) {
-								span.classList.add('w3-green');
+								span.classList.add('w3-success');
 							} else if (data == this.types.warning) {
 								span.classList.add('w3-orange');
 							} else if (data == this.types.error) {
@@ -941,7 +942,7 @@ var oAppSettingsSelfTest = {
 							const img = document.createElement('I');
 							img.classList.add('fa-solid', 'w3-large');
 							if (data == this.test_states.info) {
-								img.classList.add('fa-check-square', 'w3-text-green');
+								img.classList.add('fa-check-square', 'w3-text-success');
 								img.title = '<%[ OK ]%>';
 							} else if (data == this.test_states.warning) {
 								img.classList.add('fa-exclamation-triangle', 'w3-text-orange');

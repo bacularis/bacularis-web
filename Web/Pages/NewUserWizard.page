@@ -184,7 +184,7 @@
 							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
-					<span><a href="javascript:void(0)" onclick="oRoleWindow.open();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a></span>
+					<span><a href="javascript:void(0)" onclick="oRoleWindow.open();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add role ]%></a></span>
 				</div>
 			</div>
 			<div id="role_window" class="w3-modal">
@@ -431,8 +431,8 @@ var oRoles = {
 							<p style="margin: 0 16px 0 0"><%[ Use CTRL + left-click to multiple item selection ]%></p>
 						</div> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 					</div>
-					<span id="add_api_host_btn" style="display: <%=$this->APIHostsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host ]%></a></span>
-					<span id="add_api_host_group_btn" style="display: <%=$this->APIHostGroupsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHostGroups.open_new_api_host_group_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host group ]%></a></span>
+					<span id="add_api_host_btn" style="display: <%=$this->APIHostsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHosts.open_new_api_host_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add API host ]%></a></span>
+					<span id="add_api_host_group_btn" style="display: <%=$this->APIHostGroupsOpt->Checked ? 'inline': 'none'%>"><a href="javascript:void(0)" onclick="oAPIHostGroups.open_new_api_host_group_window();" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add API host group ]%></a></span>
 					<div id="new_api_host_window" class="w3-modal">
 						<div class="w3-modal-content w3-animate-top w3-card-4">
 							<header class="w3-container w3-green">
@@ -712,6 +712,7 @@ var oAPIHostList = {
 		this.table = $('#' + this.ids.api_host_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			layout: {
 				topStart: [
 					{
@@ -795,7 +796,7 @@ var oAPIHostList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -886,7 +887,7 @@ $(function() {
 										/> &nbsp;<i class="fa fa-asterisk w3-text-red opt_req"></i>
 									</div>
 								</div>
-								<span><a href="javascript:void(0)" onclick="$('#new_console_window').show(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new console ]%></a></span>
+								<span><a href="javascript:void(0)" onclick="$('#new_console_window').show(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add console ]%></a></span>
 							</div>
 
 							<!-- Select full access -->

@@ -20,7 +20,7 @@
 				</div>
 				<div class="w3-right-align">
 					<%[ Filter ]%>:
-					<span class="w3-tag w3-green w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'info');" style="padding: 1px 12px; user-select: none;">
+					<span class="w3-tag w3-success w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'info');" style="padding: 1px 12px; user-select: none;">
 						<%[ info ]%> (<span id="msg_envelope_info_cnt">0</span>)
 					</span>
 					<span class="w3-tag w3-orange w3-opacity pointer" onclick="MsgEnvelope.set_filter(this, 'warning');" style="padding: 1px 12px; user-select: none;">

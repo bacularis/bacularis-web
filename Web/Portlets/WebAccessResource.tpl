@@ -394,7 +394,7 @@ var oWebAccessResourceList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -641,7 +641,7 @@ class WebAccessParamsBase {
 		const val = document.createElement('DIV');
 		val.classList.add('w3-twothird', 'bold');
 		if (/ok\//.test(value)) {
-			val.classList.add('w3-text-green');
+			val.classList.add('w3-text-success');
 			value = value.replace(/^ok\//, '');
 		} else if (/error\//.test(value)) {
 			val.classList.add('w3-text-red');

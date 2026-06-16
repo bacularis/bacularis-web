@@ -3,7 +3,7 @@
 		<%[ Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system. ]%>
 	</p>
 	<div class="w3-panel">
-		<button type="button" id="add_role_mapping_btn" class="w3-button w3-green" onclick="oRoleMapping.load_role_mapping_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new role mapping ]%></a>
+		<button type="button" id="add_role_mapping_btn" class="w3-button w3-green" onclick="oRoleMapping.load_role_mapping_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add role mapping ]%></a>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsRoleMappingList" ViewName="role_mapping_list" />
@@ -202,7 +202,7 @@ var oRoleMappingList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -642,7 +642,7 @@ $(function() {
 					</ul>
 				</div>
 				<div id="role_mapping_new_mapping_btn" class="w3-margin-top w3-margin-bottom w3-center">
-					<button type="button" class="w3-button w3-green" onclick="oRoleMapping.add_role_mapping();"><%[ Add new mapping ]%></button>
+					<button type="button" class="w3-button w3-green" onclick="oRoleMapping.add_role_mapping();"><%[ Add mapping ]%></button>
 				</div>
 				<div id="role_mapping_new_mapping" class="w3-card w3-padding w3-margin-top w3-margin-bottom" style="display: none;">
 					<h3><%[ New mapping ]%></h3>

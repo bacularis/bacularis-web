@@ -705,9 +705,9 @@ var oIdPOIDCUserSecurity = {
 		const self = oIdPOIDCUserSecurity;
 		const loader = document.getElementById(self.ids.load_discovery);
 		const result = document.getElementById(self.ids.result_discovery);
-		result.classList.remove('fa-check', 'fa-times', 'w3-text-green', 'w3-text-red');
+		result.classList.remove('fa-check', 'fa-times', 'w3-text-success', 'w3-text-red');
 		if (state) {
-			result.classList.add('fa-check', 'w3-text-green');
+			result.classList.add('fa-check', 'w3-text-success');
 		} else {
 			result.classList.add('fa-times', 'w3-text-red');
 		}

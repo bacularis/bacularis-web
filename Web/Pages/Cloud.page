@@ -14,6 +14,7 @@
 				ID="UserFDAPIHosts"
 				CssClass="w3-select"
 				Width="200px"
+				Style="border: 0"
 				OnCallback="setFDAPIHost"
 				Attributes.onclick="oAmazonCreateEBSVolumeBackup.get_backup_client();"
 			/>

@@ -247,7 +247,7 @@ var oAPIHostList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -335,7 +335,7 @@ var oSteps = {
 		const step = document.getElementById(step_id);
 		step.removeChild(step.firstChild);
 		const icon = document.createElement('I');
-		icon.classList.add('fa-solid', 'fa-check', 'w3-text-green');
+		icon.classList.add('fa-solid', 'fa-check', 'w3-text-success');
 		step.appendChild(icon);
 	},
 	mark_step_err: function(step_id) {
@@ -1120,7 +1120,7 @@ var oDeployAPIHost = {
 								<i class="fa fa-play"></i> &nbsp; <%[ Test ]%>
 							</com:TActiveLinkButton> &nbsp;
 							<i id="deploy_api_host_connection_check_loader" class="fa-solid fa-sync w3-spin" style="display: none"></i>
-							<i id="deploy_api_host_connection_check_result_ok" class="fa-solid fa-check w3-text-green" style="display: none"></i>
+							<i id="deploy_api_host_connection_check_result_ok" class="fa-solid fa-check w3-text-success" style="display: none"></i>
 							<i id="deploy_api_host_connection_check_result_error" class="fa-solid fa-times w3-text-red" style="display: none"></i>
 							 &nbsp;<span id="deploy_api_host_connection_check_result_link" class="w3-tiny bold pointer" style="display: none" onclick="oDeployAPIHost.toggle_host_connection_result();"></span>
 							<div class="w3-code" id="deploy_api_host_connection_check_result_output" style="display: none">
@@ -1587,28 +1587,28 @@ var oDeployAPIHost = {
 								</td>
 								<td valign="middle">
 									<com:TActiveLabel ID="APIHostTestLoader" Display="None"><i class="fa fa-sync w3-spin"></i></com:TActiveLabel>
-									<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostTestResultOk" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostTestResultErr" Display="None" CssClass="w3-text-red" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<%[ Connection error ]%></com:TActiveLabel>
 								</td>
 							</tr>
 							<tr>
 								<td><%[ Catalog support ]%></td>
 								<td>
-									<com:TActiveLabel ID="APIHostCatalogSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostCatalogSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostCatalogSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 								</td>
 							</tr>
 							<tr>
 								<td><%[ Console support ]%></td>
 								<td>
-									<com:TActiveLabel ID="APIHostConsoleSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostConsoleSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostConsoleSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 								</td>
 							</tr>
 							<tr>
 								<td><%[ Config support ]%></td>
 								<td>
-									<com:TActiveLabel ID="APIHostConfigSupportYes" Display="None" CssClass="w3-text-green" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
+									<com:TActiveLabel ID="APIHostConfigSupportYes" Display="None" CssClass="w3-text-success" EnableViewState="false"><i class="fa fa-check"></i> &nbsp;<strong><%[ Supported ]%></strong></com:TActiveLabel>
 									<com:TActiveLabel ID="APIHostConfigSupportNo" Display="None" CssClass="w3-text-dark-grey" EnableViewState="false"><i class="fa fa-times"></i> &nbsp;<strong><%[ Not supported ]%></strong></com:TActiveLabel>
 								</td>
 							</tr>
@@ -1649,7 +1649,7 @@ var oDeployAPIHost = {
 			<%[ The OS profiles define the Bacularis and Bacula install and configuration options. They are used for deploying and they are adapted to specific operating system. There are pre-defined OS profiles for selected operating systems but there is possible to create own OS profiles to support other not supported systems so far. ]%>
 		</p>
 		<div class="w3-panel">
-			<button type="button" id="add_os_profile_btn" class="w3-button w3-green" onclick="oOSProfiles.load_osprofile_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OS profile ]%></button>
+			<button type="button" id="add_os_profile_btn" class="w3-button w3-green" onclick="oOSProfiles.load_osprofile_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add OS profile ]%></button>
 		</div>
 		<!-- Tag tools -->
 		<com:Bacularis.Web.Portlets.TagTools ID="TagToolsOSProfileList" ViewName="os_profile_list" />
@@ -1818,7 +1818,7 @@ var oOSProfileList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -3514,7 +3514,7 @@ $(function() {
 			<%[ The repo auths enable to configure the package repository credentials. It can be useful if the package repository access is protected by credentials. The repo auths are used in the OS profiles or they work automatically if the 'Default' option is selected. ]%>
 		</p>
 		<div class="w3-panel">
-			<button type="button" id="add_repo_auth_btn" class="w3-button w3-green" onclick="oRepoAuths.load_repo_auth_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new repo auth ]%></button>
+			<button type="button" id="add_repo_auth_btn" class="w3-button w3-green" onclick="oRepoAuths.load_repo_auth_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add repo auth ]%></button>
 		</div>
 		<table id="repo_auth_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
@@ -3587,6 +3587,7 @@ var oRepoAuthList = {
 		this.table = $('#' + this.ids.repo_auth_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -3668,7 +3669,7 @@ var oRepoAuthList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -3918,7 +3919,7 @@ $(function() {
 			<%[ The SSH configs may be useful to provide to the SSH client some common parameters such as username, SSH key or port. This way user does not need to type them for every Bacularis deployment. SSH configs can be defined for one given host or for many hosts at once if the host wildcards are used. ]%>
 		</p>
 		<div class="w3-panel">
-			<button type="button" id="add_ssh_config_btn" class="w3-button w3-green" onclick="oSSHConfigs.load_ssh_config_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH config ]%></button>
+			<button type="button" id="add_ssh_config_btn" class="w3-button w3-green" onclick="oSSHConfigs.load_ssh_config_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add SSH config ]%></button>
 		</div>
 		<table id="ssh_config_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
@@ -3991,6 +3992,7 @@ var oSSHConfigList = {
 		this.table = $('#' + this.ids.ssh_config_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -4056,7 +4058,7 @@ var oSSHConfigList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -4263,7 +4265,7 @@ $(function() {
 			<%[ The SSH keys function provides storing private keys for using in in the SSH configs or directly in the deploy Bacularis window. ]%>
 		</p>
 		<div class="w3-panel">
-			<button type="button" id="add_ssh_key_btn" class="w3-button w3-green" onclick="oSSHKeys.load_ssh_key_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add new SSH key ]%></button>
+			<button type="button" id="add_ssh_key_btn" class="w3-button w3-green" onclick="oSSHKeys.load_ssh_key_window();"><i class="fa fa-plus"></i> &nbsp;<%[ Add SSH key ]%></button>
 		</div>
 		<table id="ssh_key_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 			<thead>
@@ -4329,6 +4331,7 @@ var oSSHKeyList = {
 		this.table = $('#' + this.ids.ssh_key_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -4374,7 +4377,7 @@ var oSSHKeyList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			}],

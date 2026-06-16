@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ The API host groups are named sets of API hosts which can be used to assign to users instead of assigning single API hosts. The API group function is more flexible solution than assigning API hosts directly and may be useful in environments where users have access to more than one API host. ]%></p>
 	<div class="w3-panel">
-		<button type="button" id="add_api_host_group_btn" class="w3-button w3-green" onclick="oAPIHostGroups.load_api_host_group_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API host group ]%></button>
+		<button type="button" id="add_api_host_group_btn" class="w3-button w3-green" onclick="oAPIHostGroups.load_api_host_group_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add API host group ]%></button>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsAPIHostGroupList" ViewName="api_host_group_list" />
@@ -176,7 +176,7 @@ var oAPIHostGroupList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

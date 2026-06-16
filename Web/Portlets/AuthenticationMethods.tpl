@@ -67,7 +67,7 @@
 						</prop:ClientSide.OnComplete>
 					</com:TActiveLinkButton>
 					&nbsp;<i id="basic_auth_user_file_test_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-					<span id="basic_auth_user_file_test_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+					<span id="basic_auth_user_file_test_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-success"></i> &nbsp;<%[ OK ]%></span>
 					<div>
 						<i id="basic_auth_user_file_test_error" class="fas fa-times-circle w3-text-red" style="display: none;"></i>
 						<com:TActiveLabel
@@ -169,7 +169,7 @@
 				</prop:ClientSide.OnComplete>
 			</com:TActiveLinkButton>
 			&nbsp;<i id="basic_get_users_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-			<span id="basic_get_users_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+			<span id="basic_get_users_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-success"></i> &nbsp;<%[ OK ]%></span>
 			<i id="basic_get_users_error" class="fas fa-times-circle w3-text-red" style="display: none;"></i>
 			<com:TActiveLabel ID="TestBasicGetUsersMsg" CssClass="w3-text-red" Display="None" />
 		</div>
@@ -411,7 +411,7 @@
 				</prop:ClientSide.OnComplete>
 			</com:TActiveLinkButton>
 			&nbsp;<i id="ldap_test_connection_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-			<span id="ldap_test_connection_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+			<span id="ldap_test_connection_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-success"></i> &nbsp;<%[ OK ]%></span>
 			<i id="ldap_test_connection_error" class="fas fa-times-circle w3-text-red" style="display: none;"></i>
 			<com:TActiveLabel ID="TestLdapConnectionMsg" CssClass="w3-text-red" Display="None" />
 		</div>
@@ -555,7 +555,7 @@
 				</prop:ClientSide.OnComplete>
 			</com:TActiveLinkButton>
 			&nbsp;<i id="ldap_get_users_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-			<span id="ldap_get_users_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+			<span id="ldap_get_users_ok" class="w3-text-success" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
 			<i id="ldap_get_users_error" class="fas fa-times-circle w3-text-red" style="display: none;"></i>
 			<com:TActiveLabel ID="TestLdapGetUsersMsg" CssClass="w3-text-red" Display="None" />
 		</div>
@@ -579,7 +579,7 @@
 			</prop:ClientSide.OnComplete>
 		</com:TActiveLinkButton>
 		&nbsp;<i id="auth_method_save_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-		<span id="auth_method_save_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+		<span id="auth_method_save_ok" class="w3-text-success" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
 		<span id="auth_method_save_error" class="w3-text-red" style="display: none"><i class="fas fa-times-circle w3-text-red"></i><%[ Error ]%></span>
 	</div>
 

@@ -1032,9 +1032,6 @@ msgstr "Administrador"
 msgid "Normal user"
 msgstr "Usuário"
 
-msgid "Add new user"
-msgstr "Adicionar usuário"
-
 msgid "Username:"
 msgstr "Nome do usuário:"
 
@@ -1509,7 +1506,7 @@ msgstr "Recurso para criar"
 msgid "Create"
 msgstr "Criar"
 
-msgid "Add new resource"
+msgid "Add resource"
 msgstr "Adicionar recurso"
 
 msgid "Please select host"
@@ -1797,7 +1794,7 @@ msgstr "Por favor, selecione o Cliente e o FileSet com a definição de arquivos
 msgid "If your FileSet for this backup does not exist yet, you can create it."
 msgstr "Se o FileSet para este backup ainda não existir, você poderá criar um novo."
 
-msgid "Add new FileSet"
+msgid "Add FileSet"
 msgstr "Adicionar Novo FileSet"
 
 msgid "New FileSet"
@@ -1857,13 +1854,13 @@ msgstr "Outras configurações do Job"
 msgid "Step 6 - summary"
 msgstr "Etapa 6 - Resumo"
 
-msgid "Add new Pool"
+msgid "Add Pool"
 msgstr "Adicionar Nova Pool"
 
 msgid "New Pool"
 msgstr "Nova Pool"
 
-msgid "Add new Schedule"
+msgid "Add Schedule"
 msgstr "Adicionar Nova Agenda"
 
 msgid "New Schedule"
@@ -2673,9 +2670,6 @@ msgstr "Nome da função"
 msgid "Resources"
 msgstr "Recursos"
 
-msgid "Add new role"
-msgstr "Adicionar nova função"
-
 msgid "Role field cannot be empty."
 msgstr "O campo função não pode ser vazio."
 
@@ -2967,9 +2961,6 @@ msgstr "Autenticação de usuário local"
 msgid "Console ACLs"
 msgstr "Console ACLs"
 
-msgid "Add new console"
-msgstr "Adicionar novo console"
-
 msgid "Edit console"
 msgstr "Editar console"
 
@@ -2982,7 +2973,7 @@ msgstr "Clientes OAuth2"
 msgid "Short name"
 msgstr "Apelido"
 
-msgid "Add new OAuth2 client"
+msgid "Add OAuth2 client"
 msgstr "Adicionar novos clientes OAuth2"
 
 msgid "Short name:"
@@ -2996,9 +2987,6 @@ msgstr "definir todos os escopos"
 
 msgid "Edit OAuth2 client account"
 msgstr "Editar conta de cliente OAuth2"
-
-msgid "Add new API host"
-msgstr "Adicionar novo host de API"
 
 msgid "Get existing API host settings:"
 msgstr "Obter configurações de host de API existentes:"
@@ -3880,7 +3868,7 @@ msgid "The API basic users are configured on the API hosts and they are used to 
 msgstr "Os usuários básicos da API estão configurados nos hosts da API e são usados para acessar os hosts da API. As alterações introduzidas nesta página são feitas diretamente no host API atualmente utilizado. \n"
 "Você pode usar as credenciais básicas do usuário para conectar hosts da API no Bacularis Web na aba 'Servidores da API'. As contas de usuário básicas também são possíveis de criar diretamente no painel da API do Bacularis."
 
-msgid "Add new API basic user"
+msgid "Add API basic user"
 msgstr "Adicionar novo usuário básico de API"
 
 msgid "API basic username:"
@@ -4810,17 +4798,14 @@ msgstr "Install options"
 msgid "Add new component to current Director (for client and storage only)"
 msgstr "Add new component to current Director (for client and storage only)"
 
-msgid "Add new OS profile"
-msgstr "Add new OS profile"
+msgid "Add OS profile"
+msgstr "Add OS profile"
 
 msgid "Repository type"
 msgstr "Repository type"
 
 msgid "Pre-defined"
 msgstr "Pre-defined"
-
-msgid "Add OS profile"
-msgstr "Add OS profile"
 
 msgid "Edit OS profile"
 msgstr "Edit OS profile"
@@ -4870,8 +4855,8 @@ msgstr "Catalog"
 msgid "NOTE: This is predefined OS profile that cannot be modified nor removed."
 msgstr "NOTE: This is predefined OS profile that cannot be modified nor removed."
 
-msgid "Add new SSH config"
-msgstr "Add new SSH config"
+msgid "Add SSH config"
+msgstr "Add SSH config"
 
 msgid "Hostname"
 msgstr "Hostname"
@@ -4882,26 +4867,20 @@ msgstr "Port"
 msgid "SSH key"
 msgstr "SSH key"
 
-msgid "Add SSH config"
-msgstr "Add SSH config"
-
 msgid "Edit SSH config"
 msgstr "Edit SSH config"
 
 msgid "SSH config with the given name already exists."
 msgstr "SSH config with the given name already exists."
 
-msgid "Add new SSH key"
-msgstr "Add new SSH key"
+msgid "Add SSH key"
+msgstr "Add SSH key"
 
 msgid "Key name"
 msgstr "Key name"
 
 msgid "Fingerprint"
 msgstr "Fingerprint"
-
-msgid "Add SSH key"
-msgstr "Add SSH key"
 
 msgid "Add package repository"
 msgstr "Add package repository"
@@ -5011,8 +4990,8 @@ msgstr "Virtual Full Pool"
 msgid "Storage to write Virtual Full"
 msgstr "Storage to write Virtual Full"
 
-msgid "Add new Virtual Full Pool"
-msgstr "Add new Virtual Full Pool"
+msgid "Add Virtual Full Pool"
+msgstr "Add Virtual Full Pool"
 
 msgid "Select the pool and storage that will write Virtual Full."
 msgstr "Select the pool and storage that will write Virtual Full."
@@ -5149,17 +5128,14 @@ msgstr "API host method"
 msgid "API host groups"
 msgstr "API host groups"
 
-msgid "Add new API host group"
-msgstr "Add new API host group"
+msgid "Add API host group"
+msgstr "Add API host group"
 
 msgid "API group name"
 msgstr "API group name"
 
 msgid "Edit API host group"
 msgstr "Edit API host group"
-
-msgid "Add API host group"
-msgstr "Add API host group"
 
 msgid "API host group:"
 msgstr "API host group:"
@@ -5618,8 +5594,8 @@ msgstr "Repo auth with the given name already exists."
 msgid "Repo auths"
 msgstr "Repo auths"
 
-msgid "Add new repo auth"
-msgstr "Add new repo auth"
+msgid "Add repo auth"
+msgstr "Add repo auth"
 
 msgid "Repo auth name"
 msgstr "Repo auth name"
@@ -5638,9 +5614,6 @@ msgstr "Authentication type:"
 
 msgid "Default:"
 msgstr "Default:"
-
-msgid "Add repo auth"
-msgstr "Add repo auth"
 
 msgid "Edit repo auth"
 msgstr "Edit repo auth"
@@ -6305,8 +6278,8 @@ msgstr "FIDO U2F two-factor authentication"
 msgid "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
 msgstr "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
 
-msgid "Add new security key"
-msgstr "Add new security key"
+msgid "Add security key"
+msgstr "Add security key"
 
 msgid "Are you sure you want to remove key '%key_name'?"
 msgstr "Are you sure you want to remove key '%key_name'?"
@@ -6557,14 +6530,11 @@ msgstr "New user role"
 msgid "New user API host"
 msgstr "New user API host"
 
-msgid "Add new identity provider"
-msgstr "Add new identity provider"
+msgid "Add identity provider"
+msgstr "Add identity provider"
 
 msgid "Edit identity provider"
 msgstr "Edit identity provider"
-
-msgid "Add identity provider"
-msgstr "Add identity provider"
 
 msgid "Identity provider identifier"
 msgstr "Identity provider identifier"
@@ -6655,9 +6625,6 @@ msgstr "Public key (PEM format)"
 
 msgid "Public key ID"
 msgstr "Public key ID"
-
-msgid "Add new organization"
-msgstr "Add new organization"
 
 msgid "Add organization"
 msgstr "Add organization"
@@ -7211,8 +7178,8 @@ msgstr "Role mapping"
 msgid "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
 msgstr "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
 
-msgid "Add new role mapping"
-msgstr "Add new role mapping"
+msgid "Add role mapping"
+msgstr "Add role mapping"
 
 msgid "Mapping name"
 msgstr "Mapping name"
@@ -7220,17 +7187,14 @@ msgstr "Mapping name"
 msgid "Mappings"
 msgstr "Mappings"
 
-msgid "Add role mapping"
-msgstr "Add role mapping"
-
 msgid "General options"
 msgstr "General options"
 
 msgid "Mapping name:"
 msgstr "Mapping name:"
 
-msgid "Add new mapping"
-msgstr "Add new mapping"
+msgid "Add mapping"
+msgstr "Add mapping"
 
 msgid "New mapping"
 msgstr "New mapping"
@@ -7240,9 +7204,6 @@ msgstr "Role name:"
 
 msgid "Mapped roles:"
 msgstr "Mapped roles:"
-
-msgid "Add mapping"
-msgstr "Add mapping"
 
 msgid "Edit role mapping"
 msgstr "Edit role mapping"

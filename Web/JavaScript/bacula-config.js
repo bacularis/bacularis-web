@@ -150,7 +150,7 @@ var oBaculaConfigSection = {
 		center: 'w3-center',
 		white: 'tabs-window',
 		lgray: 'tabs-normal',
-		top: 'w3-top',
+		top: 'page_top',
 		modal: 'w3-modal',
 		sidebar: 'w3-sidebar'
 	},
@@ -192,19 +192,29 @@ var oBaculaConfigSection = {
 		// Determine top position basing on the top bar and if config form is in modal or not.
 		const top = document.querySelector('.' + this.css.top);
 		if (top) {
-			sect_el.style.top = top.offsetHeight;
 			let color;
-			if ($(sect_el).closest('.' + this.css.modal).length == 1) {
+			const modal = $(sect_el).closest('.' + this.css.modal);
+			if (modal.length == 1) {
 				// in modal
-				sect_el.style.top = '-' + (top.offsetHeight + 14) + 'px';
+				const modal_content = modal.find('div.w3-modal-content');
+				if (modal_content.length > 0) {
+					setTimeout(() => {
+						// move scrolls to top
+						window.scrollTo(0, 0);
+						modal.get(0).scrollTop = 0;
+						// compute tab menu position
+						const diff = modal_content.get(0).getBoundingClientRect().top;
+						sect_el.style.top = '-' + diff + 'px';
+					}, 300);
+				}
 				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.white;
 			} else if ($(sect_el).closest('.' + this.css.sidebar).length == 1) {
 				// in sidebar
-				sect_el.style.top = '35px';
+				sect_el.style.top = '-10px';
 				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.white;
 			} else {
 				// in non-modal
-				sect_el.style.top = top.offsetHeight + 'px';
+				//sect_el.style.top = top.offsetHeight + 'px';
 				color = ThemeMode.is_dark() ? ThemeMode.css.light_dark : this.css.lgray;
 			}
 			sect_el.classList.add(color);
@@ -223,7 +233,7 @@ var oBaculaConfigSection = {
 			const section = e.target.getAttribute(self.attrs.data_section_subtab);
 			const selector = '#' + root_id + ' h3[' + self.attrs.data_section  + '="' + section + '"]';
 			const target = root_el.querySelector(selector);
-			let offset = -50 - window.scrollY;
+			let offset = -8 - window.scrollY;
 			const scroll_el = getClosestScrollEl(sect_el);
 			if (scroll_el) {
 				offset += scroll_el.scrollTop;

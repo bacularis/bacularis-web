@@ -234,7 +234,7 @@
 						</div>
 					</com:TActivePanel>
 					<com:TActivePanel ID="ConfigureReadyTOTP2FA" Display="None">
-						<p class="w3-text-green w3-center bold"><%[ TOTP 2FA is configured. ]%></p>
+						<p class="w3-text-success w3-center bold"><%[ TOTP 2FA is configured. ]%></p>
 					</com:TActivePanel>
 				</div>
 				<div class="w3-center w3-margin-top w3-border-top" style="padding: 10px 0;">
@@ -401,7 +401,7 @@ oAccountSettingsTOTP2FA.init();
 				<div class="w3-margin-left w3-margin-right" style="max-height: 645px; margin: 10px auto;">
 					<div id="fidou2f_security_key_list">
 						<button type="button" class="w3-green w3-button w3-margin-bottom" onclick="oAccountSettingsFIDOU2F.add_key();">
-							<i class="fa-solid fa-plus"></i> &nbsp;<%[ Add new security key ]%>
+							<i class="fa-solid fa-plus"></i> &nbsp;<%[ Add security key ]%>
 						</button>
 						<table id="fidou2f_key_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom" style="width: 100%">
 							<thead>

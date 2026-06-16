@@ -1,6 +1,6 @@
 <div>
 	<div class="w3-panel">
-		<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new user ]%></button>
+		<button type="button" id="add_user_btn" class="w3-button w3-green" onclick="oUsers.load_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add user ]%></button>
 		<button type="button" id="new_user_wizard_btn" class="w3-button w3-green<%=!$this->getApplication()->getSession()->itemAt('dir') ? ' hide': ''%>" onclick="document.location.href='<%=$this->Service->constructUrl('NewUserWizard')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New user ]%></button>
 	</div>
 	<!-- Tag tools -->
@@ -319,7 +319,7 @@ var oUserList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

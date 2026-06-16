@@ -39,6 +39,7 @@
 				ID="UserAPIHosts"
 				CssClass="w3-select"
 				Width="200px"
+				Style="border: 0"
 			/>
 		</com:TLabel>
 	</div>
@@ -1331,7 +1332,7 @@ var oGraphicalStorageStatus = {
 		var bytes_progress;
 		if (job.type === 'B' && est.est_bytes > 0) {
 			bytes_progress = document.createElement('DIV');
-			bytes_progress.className = 'progressbar';
+			bytes_progress.className = 'progressbar w3-center';
 			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var bytes_label = document.createElement('DIV');
 			bytes_label.className = 'progressbar-label';
@@ -1357,7 +1358,7 @@ var oGraphicalStorageStatus = {
 		var files_progress;
 		if (job.type === 'B' && est.est_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
@@ -1375,7 +1376,7 @@ var oGraphicalStorageStatus = {
 			});
 		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
 			var fexamined = parseInt(job.files_examined, 10);
@@ -1848,6 +1849,7 @@ var oDriveList = {
 		this.table = $('#' + this.ids.drive_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -1925,7 +1927,7 @@ var oDriveList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -2129,6 +2131,7 @@ var oSlotList = {
 			data: this.data,
 			pageLength: 100,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -2262,7 +2265,7 @@ var oSlotList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

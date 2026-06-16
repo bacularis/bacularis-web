@@ -1,5 +1,5 @@
 <div class="config_resources w3-margin-left" style="display: none">
-	<com:TActiveLabel ID="RemoveResourceOk" Display="None" CssClass="w3-text-green" />
+	<com:TActiveLabel ID="RemoveResourceOk" Display="None" CssClass="w3-text-success" />
 	<com:TActiveLabel ID="RemoveResourceError" Display="None" CssClass="w3-text-red" />
 	<com:TActiveRepeater ID="RepeaterResources" OnItemCreated="createResourceListElement">
 		<prop:ItemTemplate>

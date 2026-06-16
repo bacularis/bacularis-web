@@ -84,7 +84,7 @@
 			</com:TActiveLinkButton>
 			<span class="save_progress" style="width: 70px; visibility: hidden; display: inline-block;"><i class="fa fa-sync-alt w3-spin"></i></span>
 			<div class="save_done" style="display: none; min-width: 70px;">
-				<com:TActiveLabel ID="SaveDirectiveOk" Display="None" CssClass="w3-text-green"><i class="fa fa-check save_done"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
+				<com:TActiveLabel ID="SaveDirectiveOk" Display="None" CssClass="w3-text-success"><i class="fa fa-check save_done"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
 				<com:TActiveLabel ID="SaveDirectiveError" Display="None" CssClass="w3-text-red"><i class="fa fa-times-circle save_done"></i> &nbsp;<%[ Error ]%></com:TActiveLabel>
 				<com:TActiveLabel ID="SaveDirectiveErrMsg" Display="None" CssClass="w3-text-red" />
 			</div>

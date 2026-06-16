@@ -1022,8 +1022,8 @@ msgstr "Administrator"
 msgid "Normal user"
 msgstr "Normal user"
 
-msgid "Add new user"
-msgstr "Add new user"
+msgid "Add user"
+msgstr "Add user"
 
 msgid "Username:"
 msgstr "Username:"
@@ -1499,8 +1499,8 @@ msgstr "Resource to create:"
 msgid "Create"
 msgstr "Create"
 
-msgid "Add new resource"
-msgstr "Add new resource"
+msgid "Add resource"
+msgstr "Add resource"
 
 msgid "Please select host"
 msgstr "Please select host"
@@ -1790,8 +1790,8 @@ msgstr "Please select Client from which you want to backup data and please selec
 msgid "If your FileSet for this backup does not exist yet, you can create it."
 msgstr "If your FileSet for this backup does not exist yet, you can create it."
 
-msgid "Add new FileSet"
-msgstr "Add new FileSet"
+msgid "Add FileSet"
+msgstr "Add FileSet"
 
 msgid "New FileSet"
 msgstr "New FileSet"
@@ -1850,14 +1850,14 @@ msgstr "Other directives"
 msgid "Step 6 - summary"
 msgstr "Step 6 - summary"
 
-msgid "Add new Pool"
-msgstr "Add new Pool"
+msgid "Add Pool"
+msgstr "Add Pool"
 
 msgid "New Pool"
 msgstr "New Pool"
 
-msgid "Add new Schedule"
-msgstr "Add new Schedule"
+msgid "Add Schedule"
+msgstr "Add Schedule"
 
 msgid "New Schedule"
 msgstr "New Schedule"
@@ -2633,9 +2633,6 @@ msgstr "E-mail"
 msgid "Description"
 msgstr "Description"
 
-msgid "Add user"
-msgstr "Add user"
-
 msgid "Username field cannot be empty."
 msgstr "Username field cannot be empty."
 
@@ -2666,8 +2663,8 @@ msgstr "Role name"
 msgid "Resources"
 msgstr "Resources"
 
-msgid "Add new role"
-msgstr "Add new role"
+msgid "Add role"
+msgstr "Add role"
 
 msgid "Role field cannot be empty."
 msgstr "Role field cannot be empty."
@@ -2686,9 +2683,6 @@ msgstr "The following roles are predefined and cannot be removed: %predefined_ro
 
 msgid "The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles."
 msgstr "The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles."
-
-msgid "Add role"
-msgstr "Add role"
 
 msgid "Authentication method"
 msgstr "Authentication method"
@@ -2960,14 +2954,11 @@ msgstr "Local user authentication"
 msgid "Console ACLs"
 msgstr "Console ACLs"
 
-msgid "Add new console"
-msgstr "Add new console"
+msgid "Add console"
+msgstr "Add console"
 
 msgid "Edit console"
 msgstr "Edit console"
-
-msgid "Add console"
-msgstr "Add console"
 
 msgid "OAuth2 clients"
 msgstr "OAuth2 clients"
@@ -2975,8 +2966,8 @@ msgstr "OAuth2 clients"
 msgid "Short name"
 msgstr "Short name"
 
-msgid "Add new OAuth2 client"
-msgstr "Add new OAuth2 client"
+msgid "Add OAuth2 client"
+msgstr "Add OAuth2 client"
 
 msgid "Short name:"
 msgstr "Short name:"
@@ -2989,9 +2980,6 @@ msgstr "set all scopes"
 
 msgid "Edit OAuth2 client account"
 msgstr "Edit OAuth2 client account"
-
-msgid "Add new API host"
-msgstr "Add new API host"
 
 msgid "Get existing API host settings:"
 msgstr "Get existing API host settings:"
@@ -3872,8 +3860,8 @@ msgstr "API OAuth2 clients"
 msgid "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API."
 msgstr "The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API."
 
-msgid "Add new API basic user"
-msgstr "Add new API basic user"
+msgid "Add API basic user"
+msgstr "Add API basic user"
 
 msgid "API basic username:"
 msgstr "API basic username:"
@@ -4802,17 +4790,14 @@ msgstr "Install options"
 msgid "Add new component to current Director (for client and storage only)"
 msgstr "Add new component to current Director (for client and storage only)"
 
-msgid "Add new OS profile"
-msgstr "Add new OS profile"
+msgid "Add OS profile"
+msgstr "Add OS profile"
 
 msgid "Repository type"
 msgstr "Repository type"
 
 msgid "Pre-defined"
 msgstr "Pre-defined"
-
-msgid "Add OS profile"
-msgstr "Add OS profile"
 
 msgid "Edit OS profile"
 msgstr "Edit OS profile"
@@ -4862,8 +4847,8 @@ msgstr "Catalog"
 msgid "NOTE: This is predefined OS profile that cannot be modified nor removed."
 msgstr "NOTE: This is predefined OS profile that cannot be modified nor removed."
 
-msgid "Add new SSH config"
-msgstr "Add new SSH config"
+msgid "Add SSH config"
+msgstr "Add SSH config"
 
 msgid "Hostname"
 msgstr "Hostname"
@@ -4874,26 +4859,20 @@ msgstr "Port"
 msgid "SSH key"
 msgstr "SSH key"
 
-msgid "Add SSH config"
-msgstr "Add SSH config"
-
 msgid "Edit SSH config"
 msgstr "Edit SSH config"
 
 msgid "SSH config with the given name already exists."
 msgstr "SSH config with the given name already exists."
 
-msgid "Add new SSH key"
-msgstr "Add new SSH key"
+msgid "Add SSH key"
+msgstr "Add SSH key"
 
 msgid "Key name"
 msgstr "Key name"
 
 msgid "Fingerprint"
 msgstr "Fingerprint"
-
-msgid "Add SSH key"
-msgstr "Add SSH key"
 
 msgid "Add package repository"
 msgstr "Add package repository"
@@ -5003,8 +4982,8 @@ msgstr "Virtual Full Pool"
 msgid "Storage to write Virtual Full"
 msgstr "Storage to write Virtual Full"
 
-msgid "Add new Virtual Full Pool"
-msgstr "Add new Virtual Full Pool"
+msgid "Add Virtual Full Pool"
+msgstr "Add Virtual Full Pool"
 
 msgid "Select the pool and storage that will write Virtual Full."
 msgstr "Select the pool and storage that will write Virtual Full."
@@ -5141,17 +5120,14 @@ msgstr "API host method"
 msgid "API host groups"
 msgstr "API host groups"
 
-msgid "Add new API host group"
-msgstr "Add new API host group"
+msgid "Add API host group"
+msgstr "Add API host group"
 
 msgid "API group name"
 msgstr "API group name"
 
 msgid "Edit API host group"
 msgstr "Edit API host group"
-
-msgid "Add API host group"
-msgstr "Add API host group"
 
 msgid "API host group:"
 msgstr "API host group:"
@@ -5610,8 +5586,8 @@ msgstr "Repo auth with the given name already exists."
 msgid "Repo auths"
 msgstr "Repo auths"
 
-msgid "Add new repo auth"
-msgstr "Add new repo auth"
+msgid "Add repo auth"
+msgstr "Add repo auth"
 
 msgid "Repo auth name"
 msgstr "Repo auth name"
@@ -5630,9 +5606,6 @@ msgstr "Authentication type:"
 
 msgid "Default:"
 msgstr "Default:"
-
-msgid "Add repo auth"
-msgstr "Add repo auth"
 
 msgid "Edit repo auth"
 msgstr "Edit repo auth"
@@ -6297,8 +6270,8 @@ msgstr "FIDO U2F two-factor authentication"
 msgid "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
 msgstr "The FIDO U2F/CTAP1 standard adds to the authentication the second factor which uses the hardware security key. This is very strong and secure method using the asymetric cryptograhpy. A good practice is to add two security keys to be able log in even then, when you loose the main key."
 
-msgid "Add new security key"
-msgstr "Add new security key"
+msgid "Add security key"
+msgstr "Add security key"
 
 msgid "Are you sure you want to remove key '%key_name'?"
 msgstr "Are you sure you want to remove key '%key_name'?"
@@ -6549,14 +6522,11 @@ msgstr "New user role"
 msgid "New user API host"
 msgstr "New user API host"
 
-msgid "Add new identity provider"
-msgstr "Add new identity provider"
+msgid "Add identity provider"
+msgstr "Add identity provider"
 
 msgid "Edit identity provider"
 msgstr "Edit identity provider"
-
-msgid "Add identity provider"
-msgstr "Add identity provider"
 
 msgid "Identity provider identifier"
 msgstr "Identity provider identifier"
@@ -6647,9 +6617,6 @@ msgstr "Public key (PEM format)"
 
 msgid "Public key ID"
 msgstr "Public key ID"
-
-msgid "Add new organization"
-msgstr "Add new organization"
 
 msgid "Add organization"
 msgstr "Add organization"
@@ -7203,8 +7170,8 @@ msgstr "Role mapping"
 msgid "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
 msgstr "Role mappings enable the use of roles provided by the Identity and Access Management (IAM) system in Bacularis. This is achieved by creating mappings that map IAM roles to Bacularis roles. This allows the administrator to manage Bacularis roles from within the IAM system."
 
-msgid "Add new role mapping"
-msgstr "Add new role mapping"
+msgid "Add role mapping"
+msgstr "Add role mapping"
 
 msgid "Mapping name"
 msgstr "Mapping name"
@@ -7212,17 +7179,11 @@ msgstr "Mapping name"
 msgid "Mappings"
 msgstr "Mappings"
 
-msgid "Add role mapping"
-msgstr "Add role mapping"
-
 msgid "General options"
 msgstr "General options"
 
 msgid "Mapping name:"
 msgstr "Mapping name:"
-
-msgid "Add new mapping"
-msgstr "Add new mapping"
 
 msgid "New mapping"
 msgstr "New mapping"

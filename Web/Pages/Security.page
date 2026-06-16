@@ -19,7 +19,7 @@
 	</div>
 
 	<div class="w3-container tab_item" id="security_auth">
-		<div id="auth_list" class="w3-container w3-padding">
+		<div id="auth_list">
 
 			<!-- Authentication submenu -->
 			<div class="w3-row w3-margin-bottom">
@@ -67,7 +67,7 @@
 		/>
 	</div>
 	<div class="w3-container tab_item" id="security_roles" style="display: none;">
-		<div id="roles" class="w3-container w3-padding">
+		<div id="roles">
 			<!-- Authentication submenu -->
 			<div class="w3-row w3-margin-bottom">
 				<a href="javascript:void(0)" onclick="W3SubTabs.open('roles_subtab_role_list', 'role_list', 'roles'); oRoleList.table.responsive.recalc();">

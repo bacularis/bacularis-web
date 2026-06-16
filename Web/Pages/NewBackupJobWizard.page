@@ -196,7 +196,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_fileset').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add new FileSet ]%></a></span>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_fileset').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom" ><i class="fa fa-plus"></i> &nbsp;<%[ Add FileSet ]%></a></span>
 				<div id="fileset_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
 					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
 					<p><%[ The resource has been created successfully. ]%></p>
@@ -277,7 +277,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					 />
-				<span><a href="javascript:void(0)" onclick="$('#job_wizard_pool_directives').hide(); $('#job_wizard_new_pool').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Pool ]%></a></span>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_pool_directives').hide(); $('#job_wizard_new_pool').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add Pool ]%></a></span>
 				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_pool').hide(); $('#job_wizard_pool_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Pool directives for Job ]%></a></span>
 				<div id="pool_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
 					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>
@@ -409,7 +409,7 @@
 					ShowResetButton="false"
 					ShowRemoveButton="false"
 					/>
-				<span><a href="javascript:void(0)" onclick="$('#job_wizard_schedule_directives').hide(); $('#job_wizard_new_schedule').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add new Schedule ]%></a></span>
+				<span><a href="javascript:void(0)" onclick="$('#job_wizard_schedule_directives').hide(); $('#job_wizard_new_schedule').slideToggle(); oBaculaConfigSection.show_sections(true);" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-plus"></i> &nbsp;<%[ Add Schedule ]%></a></span>
 				<span><a href="javascript:void(0)" onclick="$('#job_wizard_new_schedule').hide(); $('#job_wizard_reschedule_directives').slideToggle();" class="w3-button w3-green w3-margin-top w3-margin-bottom"><i class="fa fa-angle-down"></i> &nbsp;<%[ Show Reschedule directives ]%></a></span>
 				<div id="schedule_save_ok" class="w3-panel w3-green w3-display-container" style="display: none">
 					<span onclick="this.parentElement.style.display='none'" class="w3-button w3-green w3-large w3-display-topright">x</span>

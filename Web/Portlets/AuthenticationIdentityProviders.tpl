@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ If you use your own identity provider (IdP) to authenticate users, you can configure Bacularis to use it. You can define one or multiple identity providers across different domains. This also enables single sign-on (SSO) support with the OpenID Connect authentication protocol. Identity providers are associated with organizations. Each organization can have its own identity provider. ]%></p>
 	<div class="w3-panel">
-		<button type="button" id="add_idp_btn" class="w3-button w3-green" onclick="oIdPs.load_idp_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new identity provider ]%></button>
+		<button type="button" id="add_idp_btn" class="w3-button w3-green" onclick="oIdPs.load_idp_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add identity provider ]%></button>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsIdPList" ViewName="idp_list" />
@@ -184,7 +184,7 @@ var oIdPList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

@@ -193,10 +193,10 @@ var oBulkCancelJobsModal = {
 		const el = document.getElementById(this.ids.jobid_prefix + jobid);
 		if (stat) {
 			el.classList.remove('w3-text-red');
-			el.classList.add('w3-text-green');
+			el.classList.add('w3-text-success');
 			el.textContent =' <%[ cancelling ]%>';
 		} else {
-			el.classList.remove('w3-text-green');
+			el.classList.remove('w3-text-success');
 			el.classList.add('w3-text-red');
 			el.textContent =' <%[ error ]%>';
 		}

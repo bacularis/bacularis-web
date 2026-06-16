@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ Organizations help divide users into departments or other groups (e.g., sales department, finance department...). This facilitates user management within structures and allows separate authentication type for each organization. They are also useful for enabling single sign-on (SSO) with using the OpenID Connect authentication protocol. ]%></p>
 	<div class="w3-panel">
-		<button type="button" id="add_organization_btn" class="w3-button w3-green" onclick="oOrganizations.load_organization_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new organization ]%></button>
+		<button type="button" id="add_organization_btn" class="w3-button w3-green" onclick="oOrganizations.load_organization_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add organization ]%></button>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsOrganizationList" ViewName="organization_list" />
@@ -211,7 +211,7 @@ var oOrganizationList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

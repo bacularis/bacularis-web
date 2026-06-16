@@ -1,74 +1,62 @@
 <%@ MasterClass="Bacularis\Web\Layouts\Main" Theme="Baculum-v2"%>
 <com:TContent ID="Main">
 	<!-- Header -->
-	<header class="w3-container">
+	<header class="w3-container" style="display: none">
 		<h5 style="margin-top: 4px;">
 			<b><i class="fa fa-tachometer-alt"></i> <%[ Dashboard ]%></b>
-			<div id="btn_run_job" class="w3-show-inline-block" data-btn="<%=$this->RunJobBtn->ClientID%>">
-				<com:TActiveLinkButton
-					ID="RunJobBtn"
-					OnClick="loadRunJobModal"
-					Attributes.onclick="document.getElementById('run_job').style.display='block'"
-					CssClass="w3-button w3-green w3-margin-left"
-					Style="font-size: 10px"
-				>
-					<i class="fa fa-cogs w3-small"></i> &nbsp;<strong><%[ Run job ]%></strong>
-				</com:TActiveLinkButton>
-			</div>
 		</h5>
-		<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 	</header>
 	<div class="w3-row-padding w3-margin-bottom">
 		<div class="w3-quarter">
-			<div class="w3-container w3-card-4 w3-red w3-padding-24 w3-tooltip w3-animate-top usage_box">
-				<div class="w3-left"><i class="fa fa-desktop w3-xxlarge w3-margin-right"></i></div>
+			<div class="w3-container w3-card w3-border w3-padding-24 w3-animate-top usage_box">
+				<div class="w3-left"><i class="fa fa-desktop w3-text-blue w3-xxlarge w3-margin-right"></i></div>
 				<div class="w3-right">
 					<h4 id="client_no">-</h4>
 				</div>
 				<h5><%[ Clients ]%></h5>
-				<div class="w3-text">
-					<p class="w3-small"><%[ Most used client ]%>: <strong><span id="client_most"></span></strong></p>
-					<p class="w3-small"><%[ Jobs run ]%>: <strong><span id="client_jobs"></span> <%[ jobs ]%></strong></p>
+				<div class="w3-text w3-hide-medium">
+					<div class="w3-small"><%[ Most used client ]%>: <strong><span id="client_most"></span></strong></div>
+					<div class="w3-small"><%[ Jobs run ]%>: <strong><span id="client_jobs"></span> <%[ jobs ]%></strong></div>
 				</div>
 				
 			</div>
 		</div>
 		<div class="w3-quarter">
-			<div class="w3-container w3-card-4 w3-blue w3-padding-24 w3-tooltip w3-animate-top usage_box" style="background-color: #2196F3!important">
-				<div class="w3-left"><i class="fa fa-tasks w3-xxlarge w3-margin-right"></i></div>
+			<div class="w3-container w3-card w3-border w3-padding-24 w3-animate-top usage_box">
+				<div class="w3-left"><i class="fa fa-tasks w3-text-light-green w3-xxlarge w3-margin-right"></i></div>
 				<div class="w3-right">
 					<h4 id="job_no">-</h4>
 				</div>
 				<h5><%[ Finished jobs ]%></h5>
-				<div class="w3-text">
+				<div class="w3-text w3-hide-medium">
 					<p class="w3-small"><%[ Most executed job ]%>: <strong><span id="job_most"></span></strong></p>
 					<p class="w3-small"><%[ Runs ]%>: <strong><span id="job_most_count"></span> <%[ times ]%></strong></p>
 				</div>
 			</div>
 		</div>
 		<div class="w3-quarter">
-			<div class="w3-container w3-card-4 w3-teal w3-padding-24 w3-tooltip w3-animate-top usage_box">
-				<div class="w3-left"><i class="fa fa-tape w3-xxlarge w3-margin-right"></i></div>
+			<div class="w3-container w3-card w3-border w3-padding-24 w3-animate-top usage_box">
+				<div class="w3-left"><i class="fa fa-tape w3-text-purple w3-xxlarge w3-margin-right"></i></div>
 				<div class="w3-right">
 					<h4 id="pool_no">-</h4>
 				</div>
 				<h5><%[ Pools ]%></h5>
-				<div class="w3-text">
+				<div class="w3-text w3-hide-medium">
 					<p class="w3-small"><%[ Most used pool ]%>: <strong><span id="pool_most"></span></strong></p>
 					<p class="w3-small"><%[ Jobs stored ]%>: <strong><span id="pool_jobs"></span> <%[ jobs ]%></strong></p>
 				</div>
 			</div>
 		</div>
 		<div class="w3-quarter">
-			<div class="w3-container w3-card-4 w3-orange w3-text-white w3-padding-24 w3-tooltip w3-animate-top usage_box">
-				<div class="w3-left"><i class="fa fa-copy w3-xxlarge w3-margin-right"></i></div>
+			<div class="w3-container w3-card w3-border w3-padding-24 w3-animate-top usage_box">
+				<div class="w3-left"><i class="fa fa-copy w3-text-orange w3-xxlarge w3-margin-right"></i></div>
 				<div class="w3-right">
 					<h4 id="jobs_total_bytes">-</h4>
 				</div>
 				<h5><%[ Total ]%></h5>
-				<div class="w3-text">
+				<div class="w3-text w3-hide-medium">
 					<p class="w3-small"><%[ Total files: ]%><strong><span id="jobs_total_files"></span></strong></p>
-					<p class="w3-small"><%[ Database type: ]%> <strong><span id="database_type"></span></strong>&nbsp;<%[ Database size: ]%> <strong><span id="database_size"></span></strong></p>
+					<p class="w3-small">DB: <strong><span id="database_type"></span></strong>&nbsp;<%[ DB size: ]%> <strong><span id="database_size"></span></strong></p>
 				</div>
 			</div>
 		</div>
@@ -77,6 +65,18 @@
 		<div class="w3-row-padding" style="margin:0 -16px">
 			<div class="w3-quarter">
 				<div class="w3-margin-bottom" style="display: flex; justify-content: space-between;">
+					<div id="btn_run_job" class="w3-show-inline-block" data-btn="<%=$this->RunJobBtn->ClientID%>">
+						<com:TActiveLinkButton
+							ID="RunJobBtn"
+							OnClick="loadRunJobModal"
+							Attributes.onclick="document.getElementById('run_job').style.display='block'"
+							CssClass="w3-button w3-green w3-margin-left"
+							Style="font-size: 10px"
+						>
+							<i class="fa fa-cogs w3-small"></i> &nbsp;<strong><%[ Run job ]%></strong>
+						</com:TActiveLinkButton>
+					</div>
+					<com:Bacularis.Web.Portlets.RunJob ID="RunJobModal" />
 					<div id="dashboard_job_age_range" class="w3-small w3-show-inline-block"></div>
 					<div class="w3-right-align w3-show-inline-block">
 						<i id="dashboard_job_age_loader" class="fa-solid fa-sync w3-spin" style="visibility: hidden"></i>
@@ -95,11 +95,13 @@
 						<i id="dashboard_job_age_next"  class="fa-solid fa-chevron-right fa-fw pointer" onclick="Dashboard.set_job_age_next();" title="<%[ Next ]%>"></i>
 					</div>
 				</div>
-				<div>
+				<div class="w3-card w3-padding w3-border" style="position: relative">
+					<h6 class="bold" id="jobs_summary_title"></h6>
 					<div id="jobs_summary_graph"></div>
 					<div id="jobs_summary_legend"></div>
 				</div>
-				<div class="w3-margin-top">
+				<div class="w3-card w3-padding w3-border w3-margin-top">
+					<h6 class="bold w3-margin-bottom" id="jobs_bytes_files_title"></h6>
 					<div id="jobs_bytes_files_graph"></div>
 					<div id="jobs_bytes_files_legend"></div>
 				</div>
@@ -167,7 +169,7 @@
 							<tbody id="last_jobs_list_body">
 							</tbody>
 						</table>
-						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+						<button type="button" class="w3-button w3-green w3-right w3-margin-bottom" onclick="document.location.href='<%=$this->Service->constructUrl('JobList')%>'"><%[ More jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
 					</div>
 					<div id="dashboard_scheduled_today_jobs" class="subtab_item" style="display: none">
 						<table id="dashboard_scheduled_today_job_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full" style="width: 100%">
@@ -199,7 +201,7 @@
 								</tr>
 							</tfoot>
 						</table>
-						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+						<button type="button" class="w3-button w3-green w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
 					</div>
 					<div id="dashboard_scheduled_days_jobs" class="subtab_item" style="display: none">
 						<table id="dashboard_scheduled_days_job_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full" style="width: 100%">
@@ -231,7 +233,7 @@
 								</tr>
 							</tfoot>
 						</table>
-						<button type="button" class="w3-button w3-dark-grey w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
+						<button type="button" class="w3-button w3-green w3-right w3-margin-bottom w3-margin-top" onclick="document.location.href='<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>#director_schedule_status'"><%[ More scheduled jobs ]%> &nbsp;<i class="fa fa-arrow-right"></i></button>
 					</div>
 				</div>
 			</div>

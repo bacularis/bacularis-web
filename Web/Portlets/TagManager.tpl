@@ -221,6 +221,7 @@ oTagManagerList = {
 		this.table = $('#' + this.ids.tag_manager_list).DataTable({
 			data: data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -323,7 +324,7 @@ oTagManagerList = {
 			},
 			columnDefs: [
 				{
-					className: 'dtr-control',
+					className: 'dtr-control-custom',
 					orderable: false,
 					targets: 0
 				},

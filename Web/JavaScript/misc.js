@@ -706,7 +706,7 @@ var JobStatus = {
 	get_icon: function(s) {
 		var css = 'fa ';
 		if (this.is_ok(s)) {
-			css += 'fa-check-square w3-text-green';
+			css += 'fa-check-square w3-text-success';
 		} else if (this.is_error(s)) {
 			css += 'fa-exclamation-circle w3-text-red';
 		} else if (this.is_waiting(s)) {
@@ -893,6 +893,7 @@ var oLastJobsList = {
 			data: data,
 			bInfo: false,
 			paging: false,
+			autoWidth: false,
 			deferRender: true,
 			fixedHeader: {
 				header: true,
@@ -1071,7 +1072,7 @@ var oLastJobsList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -1117,6 +1118,7 @@ var oScheduledJobsList = {
 		this.table = $('#' + this.ids.scheduled_jobs_list).DataTable({
 			data: data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -1195,7 +1197,7 @@ var oScheduledJobsList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -1277,10 +1279,12 @@ var Dashboard = {
 			jobs: 'pool_jobs'
 		},
 		pie_summary: {
+			title_id: 'jobs_summary_title',
 			container_id: 'jobs_summary_graph',
 			legend_container_id: 'jobs_summary_legend'
 		},
 		bytes_files_graph: {
+			title_id: 'jobs_bytes_files_title',
 			container_id: 'jobs_bytes_files_graph',
 			legend_container_id: 'jobs_bytes_files_legend'
 		},
@@ -1413,13 +1417,19 @@ var Dashboard = {
 		document.getElementById(this.ids.jobs.most_count).textContent = occupancy;
 	},
 	update_jobtotals: function() {
-		document.getElementById(this.ids.jobtotals.total_bytes).textContent = Units.get_formatted_size(this.stats.jobtotals.bytes || 0);
-		document.getElementById(this.ids.jobtotals.total_files).textContent = ' ' + Numbers.add_commas(this.stats.jobtotals.files || 0);
+		const bytes = document.getElementById(this.ids.jobtotals.total_bytes);
+		bytes.textContent = Units.get_formatted_size(this.stats.jobtotals.bytes || 0);
+		bytes.title = Numbers.add_commas(this.stats.jobtotals.bytes || 0);
+		const files = document.getElementById(this.ids.jobtotals.total_files)
+		files.textContent = ' ' + Units.get_number_short(this.stats.jobtotals.files || 0);
+		files.title = Numbers.add_commas(this.stats.jobtotals.files || 0);
 	},
 	update_database: function() {
 		if (this.stats.dbsize.dbsize) {
 			document.getElementById(this.ids.database.type).textContent = this.dbtype[this.stats.dbsize.dbtype];
-			document.getElementById(this.ids.database.size).textContent = Units.get_formatted_size(this.stats.dbsize.dbsize);
+			const dbsize = document.getElementById(this.ids.database.size);
+			dbsize.textContent = Units.get_formatted_size(this.stats.dbsize.dbsize);
+			dbsize.title = Numbers.add_commas(this.stats.dbsize.dbsize);
 		}
 	},
 	update_pools: function() {
@@ -1439,6 +1449,8 @@ var Dashboard = {
 			// no container, no update
 			return;
 		}
+		const title = document.getElementById(this.ids.pie_summary.title_id);
+		title.textContent = this.txt.js_sum_title;
 		this.pie = new GraphPieClass({
 			data: this.stats.jobs_summary,
 			container_id: this.ids.pie_summary.container_id,
@@ -1449,9 +1461,9 @@ var Dashboard = {
 				},
 				legend: {
 					container: $('#' + this.ids.pie_summary.legend_container_id),
-					show_percents: true
-				},
-				title: this.txt.js_sum_title
+					show_percents: true,
+					noColumns: 1
+				}
 			}
 		});
 	},
@@ -1463,6 +1475,8 @@ var Dashboard = {
 			// no container, no update
 			return;
 		}
+		const title = document.getElementById(this.ids.bytes_files_graph.title_id);
+		title.textContent = this.txt.bytes_files_title;
 		const t = new Date().getTime() / 1000;
 		const now = parseInt(t / 86400, 10) * 86400;
 		const age = this.stats.opts?.job_age || 0;
@@ -1501,8 +1515,7 @@ var Dashboard = {
 				},
 				legend: {
 					container: $('#' + this.ids.bytes_files_graph.legend_container_id)
-				},
-				title: this.txt.bytes_files_title
+				}
 			}
 		});
 	},
@@ -1783,8 +1796,8 @@ var MsgEnvelope = {
 	},
 	mark_envelope_error: function() {
 		var envelope = document.getElementById(this.ids.envelope);
-		if (envelope.classList.contains('w3-green')) {
-			envelope.classList.replace('w3-green', 'w3-red');
+		if (envelope.classList.contains('w3-success')) {
+			envelope.classList.replace('w3-success', 'w3-red');
 		}
 		if (envelope.classList.contains('w3-orange')) {
 			envelope.classList.replace('w3-orange', 'w3-red');
@@ -1793,18 +1806,18 @@ var MsgEnvelope = {
 	},
 	mark_envelope_warning: function() {
 		var envelope = document.getElementById(this.ids.envelope);
-		if (envelope.classList.contains('w3-green')) {
-			envelope.classList.replace('w3-green', 'w3-orange');
+		if (envelope.classList.contains('w3-success')) {
+			envelope.classList.replace('w3-success', 'w3-orange');
 		}
 		envelope.querySelector('I').classList.add('blink');
 	},
 	mark_envelope_ok: function() {
 		var envelope = document.getElementById(this.ids.envelope);
 		if (envelope.classList.contains('w3-red')) {
-			envelope.classList.replace('w3-red', 'w3-green');
+			envelope.classList.replace('w3-red', 'w3-success');
 		}
 		if (envelope.classList.contains('w3-orange')) {
-			envelope.classList.replace('w3-orange', 'w3-green');
+			envelope.classList.replace('w3-orange', 'w3-success');
 		}
 		envelope.querySelector('I').classList.remove('blink');
 

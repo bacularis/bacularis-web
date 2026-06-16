@@ -137,6 +137,7 @@ var oJobScheduleList = {
 		this.table = $('#' + this.ids.schedule_list).DataTable({
 			data: this.get_data(),
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -195,7 +196,7 @@ var oJobScheduleList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

@@ -139,7 +139,7 @@
 			</prop:ClientSide.OnComplete>
 		</com:TActiveLinkButton>
 		&nbsp;<i id="auth_general_save_loading" class="fas fa-sync w3-spin" style="visibility: hidden;"></i>
-		<span id="auth_general_save_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-green"></i> &nbsp;<%[ OK ]%></span>
+		<span id="auth_general_save_ok" class="w3-text-green" style="display: none;"><i class="fas fa-check w3-text-success"></i> &nbsp;<%[ OK ]%></span>
 		<span id="auth_general_save_error" class="w3-text-red" style="display: none"><i class="fas fa-times-circle w3-text-red"></i><%[ Error ]%></span>
 	</div>
 </div>

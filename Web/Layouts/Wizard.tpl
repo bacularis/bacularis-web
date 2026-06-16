@@ -29,7 +29,7 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/opentip/css/opentip.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
-			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/bacularis.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />
 			<!-- Top container -->
 			<com:TContentPlaceHolder ID="Wizard" />

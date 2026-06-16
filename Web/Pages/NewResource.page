@@ -38,7 +38,7 @@
 			<div class="w3-modal-content w3-animate-top w3-card-4">
 				<header class="w3-container w3-green">
 					<span onclick="document.getElementById('new_resource').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-					<h2><%[ Add new resource ]%></h2>
+					<h2><%[ Add resource ]%></h2>
 				</header>
 				<div class="w3-row w3-margin">
 					<div class="w3-third"><%[ Host: ]%></div>

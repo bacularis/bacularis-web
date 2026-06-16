@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ The OAuth2 clients are configured on the API hosts. To create the OAuth2 clients from this page, you need to have an 'oauth2' scope in OAuth2 account related to your current admin user account. The OAuth2 client accounts are also possible to create directly in the panel of the Bacularis API. ]%></p>
 	<div id="oauth2_client_btn" class="w3-panel">
-		<button type="button" id="add_oauth2_client_btn" class="w3-button w3-green" onclick="oOAuth2Clients.load_oauth2_client_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new OAuth2 client ]%></button>
+		<button type="button" id="add_oauth2_client_btn" class="w3-button w3-green" onclick="oOAuth2Clients.load_oauth2_client_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add OAuth2 client ]%></button>
 	</div>
 	<table id="oauth2_client_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 		<thead>
@@ -74,6 +74,7 @@ var oOAuth2ClientList = {
 		this.table = $('#' + this.ids.oauth2_client_list).DataTable({
 			data: this.data,
 			deferRender: true,
+			autoWidth: false,
 			fixedHeader: {
 				header: true,
 				headerOffset: $('#main_top_bar').height()
@@ -162,7 +163,7 @@ var oOAuth2ClientList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

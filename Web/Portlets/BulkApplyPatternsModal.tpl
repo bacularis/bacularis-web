@@ -185,7 +185,7 @@ var oBulkApplyPatternsModal = {
 
 		if (success) {
 			item_status.classList.replace('fa-sync-alt', 'fa-check');
-			item_status.classList.add('w3-text-green');
+			item_status.classList.add('w3-text-success');
 			text.textContent = ' <%[ OK ]%>';
 			row.appendChild(text);
 		} else {

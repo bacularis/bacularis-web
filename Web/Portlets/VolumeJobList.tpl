@@ -105,6 +105,7 @@ var oJobsOnVolumeList = {
 		this.table = $('#' + this.ids.jobs_on_volume_list).DataTable({
 			data: data,
 			deferRender: true,
+			autoWidth: false,
 			layout: {
 				topStart: [
 					{
@@ -282,7 +283,7 @@ var oJobsOnVolumeList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

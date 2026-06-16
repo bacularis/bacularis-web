@@ -1,10 +1,11 @@
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-animate-left w3-margin-bottom" style="z-index:3;width:250px;" id="sidebar"><br />
-	<div class="w3-container w3-row" style="margin-bottom: 8px">
-		<div class="w3-col s3">
-			<img src="<%~ ../../../../../Common/Images/avatar2.png %>" class="w3-circle w3-margin-right" style="width: 33px" />
-		</div>
-		<div class="w3-col s9 w3-bar">
+<nav class="w3-sidebar w3-animate-left w3-margin-bottom" style="z-index: 4; width:250px;" id="sidebar">
+	<div class="w3-container w3-center w3-margin-top" style="height: 30px;">
+		<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" rel="logo" style="width: 68%; height: auto;" />
+	</div>
+	<div class="w3-container w3-border-bottom" style="min-height: 84px; margin-bottom: 5px;">
+
+		<div class="w3-center w3-margin-top">
 			<span><%[ Welcome ]%>, <strong><%=$this->User->getUsername()%></strong></span><br />
 			<div class="w3-tiny" style="display: <%=count($this->organization) == 0 ? 'none' : 'block'%>">
 				Org: <strong><%=$this->organization['full_name'] ?? ''%></strong>
@@ -21,11 +22,7 @@
 			<a href="<%=$this->Service->constructUrl('ApplicationSettings')%>" class="w3-bar-item w3-button<%=$this->getModule('users')->isPageAllowed($this->User, 'ApplicationSettings') ? '' : ' hide'%>" title="<%[ Application settings ]%>"><i class="fa fa-cog"></i></a>
 		</div>
 	</div>
-	<div class="w3-container">
-	</div>
 	<div class="w3-bar-block" style="margin-bottom: 45px;">
-		<!--a href="#" class="w3-bar-item w3-button w3-padding-16 w3-black w3-hover-black w3-hide-large" onclick="W3SideBar.close(); return false;" title="close menu">  <%[ Close Menu ]%> <i class="fa fa-window-close fa-fw w3-right w3-xlarge"></i></a-->
-		<div class="w3-black" style="height: 3px"></div>
 		<a id="dashboard_btn" href="<%=$this->Service->constructUrl('Dashboard')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'Dashboard' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'Dashboard') ? '' : ' hide'%>"><i class="fa fa-tachometer-alt fa-fw"></i>  <%[ Dashboard ]%></a>
 		<a id="jobs_btn" href="<%=$this->Service->constructUrl('JobList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('JobList', 'JobView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'JobList') ? '' : ' hide'%>"><i class="fa fa-tasks fa-fw"></i>  <%[ Jobs ]%></a>
 		<a href="<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('DirectorView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'DirectorView') ? '' : ' hide'%>"><i class="fa fa-sitemap fa-fw"></i>  <%[ Director ]%></a>
@@ -44,6 +41,21 @@
 		<a href="/panel/" class="w3-bar-item w3-button w3-padding<%=(!$this->is_api || !$this->User->isInRole(WebUserRoles::ADMIN)) ? ' hide' : ''%>" target="_blank"><i class="fas fa-exchange-alt fa-rotate-90 fa-fw"></i>  <%[ API Panel ]%></a>
 	</div>
 </nav>
+<script>
+const set_logo_sidebar = () => {
+	if (ThemeMode.is_dark()) {
+		document.querySelectorAll('[rel="logo"]').forEach(function(el) {
+			el.src = '<%~ ../../../../../Common/Images/logo_xl_white.png %>';
+		});
+	} else {
+		document.querySelectorAll('[rel="logo"]').forEach(function(el) {
+			el.src = '<%~ ../../../../../Common/Images/logo_xl.png %>';
+		});
+	}
+};
+ThemeMode.add_cb(set_logo_sidebar);
+set_logo_sidebar();
+</script>
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="W3SideBar.close(); return false;" style="cursor:pointer" title="close side menu" id="overlay_bg"></div>

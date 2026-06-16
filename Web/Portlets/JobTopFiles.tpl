@@ -32,7 +32,7 @@
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">UID</th>
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">GID</th>
 						<th class="w3-center w3-hide-small" style="width: 40px">Size</th>
-						<th class="w3-center w3-hide-small" style="width: 135px">MTIME</th>
+						<th class="w3-center w3-hide-small" style="width: 165px">MTIME</th>
 						<th class="w3-center"><%[ File ]%></th>
 						<th class="w3-center w3-hide-small" style="width: 50px"><%[ State ]%></th>
 					</tr>
@@ -45,7 +45,7 @@
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">UID</th>
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">GID</th>
 						<th class="w3-center w3-hide-small" style="width: 40px">Size</th>
-						<th class="w3-center w3-hide-small" style="width: 135px">MTIME</th>
+						<th class="w3-center w3-hide-small" style="width: 160px">MTIME</th>
 						<th class="w3-center"><%[ File ]%></th>
 						<th class="w3-center w3-hide-small" style="width: 50px"><%[ State ]%></th>
 					</tr>
@@ -87,6 +87,7 @@ var oJobTopFiles<%=$this->ClientID%> = {
 		this.table = $('#' + this.ids.file_list).DataTable({
 			data: data,
 			deferRender: true,
+			autoWidth: false,
 			layout: {
 				topStart: [
 					{
@@ -136,7 +137,7 @@ var oJobTopFiles<%=$this->ClientID%> = {
 							const span = document.createElement('SPAN');
 							span.classList.add('bold');
 							if (data > 0) {
-								span.classList.add('w3-text-green');
+								span.classList.add('w3-text-success');
 								span.textContent = saved;
 							} else {
 								span.classList.add('w3-text-orange');
@@ -162,7 +163,7 @@ var oJobTopFiles<%=$this->ClientID%> = {
 			},
 			columnDefs: [
 				{
-					className: 'dtr-control',
+					className: 'dtr-control-custom',
 					orderable: false,
 					targets: 0
 				},

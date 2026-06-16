@@ -12,7 +12,7 @@
 			</com:TActivePanel>
 		</div>
 	</div>
-	<table id="<%=$this->ClientID%>_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%; table-layout: fixed;">
+	<table id="<%=$this->ClientID%>_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 		<thead>
 			<tr>
 				<th></th>
@@ -195,8 +195,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								icon.classList.add('fa-solid', 'fa-arrows-turn-to-dots', 'fa-fw', 'pointer');
 								icon.setAttribute('onclick', 'oBaculaConfigResourceDeps<%=$this->ClientID%>.load_deps("' + restype + '", "' + resname + '");');
 								return icon.outerHTML;
-							},
-							width: '110px'
+							}
 						},
 						{
 							data: 'Name',
@@ -242,8 +241,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								span.appendChild(edit_btn);
 								span.appendChild(del_btn);
 								return span.outerHTML;
-							},
-							width: '220px'
+							}
 						}
 			],
 			responsive: {
@@ -253,7 +251,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -356,11 +354,12 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					target: 0
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

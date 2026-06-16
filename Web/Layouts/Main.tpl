@@ -29,62 +29,84 @@
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-buttons-dt/css/buttons.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../vendor/npm-asset/datatables.net-fixedheader-dt/css/fixedHeader.dataTables.min.css %> />
 			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/w3css/w3.css %> />
-			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/baculum.css %> />
+			<com:BStyleSheet StyleSheetUrl=<%~ ../../../../../Common/CSS/bacularis.css %> />
 			<com:Bacularis.Common.Portlets.TableDefaults />
-			<!-- Top container -->
-			<div id="main_top_bar" class="w3-bar w3-top w3-black w3-large" style="z-index: 5">
-				<button type="button" class="w3-bar-item w3-button w3-hover-none w3-hover-text-light-grey" onclick="W3SideBar.open();"><i class="fa fa-bars"></i>  Menu</button>
-				<img class="w3-bar-item w3-right" src="<%~ ../../../../../Common/Images/logo.png %>" alt="" style="margin-top: 3px" />
-			</div>
 			<com:Bacularis.Web.Portlets.MainSideBar />
 			<com:Bacularis.Web.Portlets.QuickResourceEdit
 				ID="QuickResourceEdit"
 				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN) && in_array($this->Service->getRequestedPagePath(), ['JobList', 'ClientList', 'StorageList', 'PoolList'])%>"
 			/>
-			<!-- !PAGE CONTENT! -->
-			<div class="w3-main page_main_el" id="page_main" style="margin-left: 250px; margin-top: 43px;">
-				<span class="w3-tag w3-large w3-purple w3-right w3-padding-small margin-top-small w3-margin-right" style="border-radius: 3px; line-height: 26px;">
-					<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running ]%>: <span id="running_jobs"></span></span>
-				</span>
-				<span id="msg_envelope" class="w3-tag w3-large w3-green w3-text-white w3-right w3-padding-small margin-top-small w3-margin-right" style="cursor: pointer; border-radius: 3px; <%=((!$this->Application->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) ? 'display: none' : '')%>" title="<%[ Display messages log window ]%>">
-					<i class="fas fa-envelope w3-large"></i>
-				</span>
-				<com:TLabel ID="UserAPIHostsContainter"CssClass="w3-right margin-top-small w3-margin-right">
-					<%[ API host: ]%>
-					<com:TDropDownList
-						ID="UserAPIHosts"
-						CssClass="w3-select w3-border w3-small w3-white"
-						OnTextChanged="setAPIHost"
-						AutoPostBack="true"
-						Width="200px"
-						Height="34px"
-						Style="padding: 5px"
-					/>
-				</com:TLabel>
-				<span class="w3-right w3-padding-small margin-top-small w3-margin-right">
-					<label><i class="fa-solid fa-sun"></i>
-						<label class="switch small" onclick="ThemeMode.toggle_mode();">
-							<input type="checkbox" id="theme_mode_switcher" />
-							<span class="slider small round"></span>
-						</label> <i class="fa-solid fa-moon"></i>
-					</label>
-				</span>
-				<span class="w3-right margin-top-small w3-margin-right w3-hide-small">
-					<com:Bacularis.Web.Portlets.ResourceSearchField Visible="<%=$this->isResourceSearch()%>" />
-				</span>
-				<script type="text/javascript">
-					const SIZE_VALUES_UNIT = '<%=(count($this->web_config) > 0 && key_exists('size_values_unit', $this->web_config['baculum'])) ? $this->web_config['baculum']['size_values_unit'] : WebConfig::DEF_SIZE_VAL_UNIT%>';
-					const DATE_TIME_FORMAT = '<%=(count($this->web_config) > 0 && key_exists('date_time_format', $this->web_config['baculum'])) ? $this->web_config['baculum']['date_time_format'] : WebConfig::DEF_DATE_TIME_FORMAT%>';
-					const KEEP_TABLE_SETTINGS = <%=(count($this->web_config) > 0 && key_exists('keep_table_settings', $this->web_config['baculum'])) ? $this->web_config['baculum']['keep_table_settings'] : WebConfig::DEF_KEEP_TABLE_SETTINGS%>;
-					const MAX_LATEST_JOBS = <%=(count($this->web_config) > 0 && key_exists('max_latest_jobs', $this->web_config['baculum'])) ? $this->web_config['baculum']['max_latest_jobs'] : JobInfo::DEFAULT_MAX_LATEST_JOBS%>;
-				</script>
-				<span class="w3-left">
-					<com:Bacularis.Web.Portlets.Breadcrumbs />
-				</span>
-				<div style="clear: left"></div>
-				<com:TContentPlaceHolder ID="Main" />
-				<!-- Footer -->
-				<footer class="w3-container w3-right-align w3-small"><%[ Version: ]%> <%=Params::BACULARIS_VERSION%></footer>
+			<div id="page_main" class="page_main_el page_top">
+				<div id="top_bar_items">
+					<div>
+						<!-- Collapse menu -->
+						<div>
+							<button id="menu_open_btn" type="button" class="w3-bar-item w3-button w3-hover-none w3-hover-text-light-grey w3-xlarge" onclick="W3SideBar.open();">
+								<i class="fa-solid fa-bars"></i>
+							</button>
+						</div>
+
+						<!-- Breadcrumb navigation -->
+						<div id="bd_container">
+							<com:Bacularis.Web.Portlets.Breadcrumbs />
+						</div>
+					</div>
+
+					<div>
+						<!-- Search field -->
+						<div class="margin-top-small w3-margin-right w3-hide-small">
+							<com:Bacularis.Web.Portlets.ResourceSearchField Visible="<%=$this->isResourceSearch()%>" />
+						</div>
+
+						<!-- Light/dark mode switcher -->
+						<div class="w3-padding-small margin-top-small" style="width: 105px;">
+							<label><i class="fa-solid fa-sun"></i>
+								<label class="switch small" onclick="ThemeMode.toggle_mode();">
+									<input type="checkbox" id="theme_mode_switcher" />
+									<span class="slider small round"></span>
+								</label> <i class="fa-solid fa-moon"></i>
+							</label>
+						</div>
+
+						<!-- API host list -->
+						<div style="width: 285px; display: <%=$this->UserAPIHostsContainter->Visible ? 'block' : 'none'%>">
+							<com:TLabel ID="UserAPIHostsContainter" CssClass="w3-right margin-top-small w3-margin-right">
+								<%[ API host: ]%>
+								<com:TDropDownList
+									ID="UserAPIHosts"
+									CssClass="w3-select w3-border w3-small w3-white"
+									OnTextChanged="setAPIHost"
+									AutoPostBack="true"
+									Width="200px"
+									Height="34px"
+									Style="padding: 5px"
+								/>
+							</com:TLabel>
+						</div>
+
+						<!-- Messages window button -->
+						<div id="msg_envelope" class="w3-tag w3-large w3-success w3-text-white w3-padding-small margin-top-small w3-margin-right" style="cursor: pointer; border-radius: 3px; <%=((!$this->Application->getModule('web_config')->isMessagesLogEnabled() || !$this->User->isInRole(WebUserRoles::ADMIN)) ? 'display: none' : '')%>" title="<%[ Display messages log window ]%>">
+							<i class="fas fa-envelope w3-large"></i>
+						</div>
+
+						<!-- Running job number -->
+						<div class="w3-tag w3-large w3-purple w3-padding-small margin-top-small w3-margin-right" style="border-radius: 3px; line-height: 26px; width: 130px">
+							<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running ]%>: <span id="running_jobs"></span></span>
+						</div>
+					</div>
+					<script type="text/javascript">
+						const SIZE_VALUES_UNIT = '<%=(count($this->web_config) > 0 && key_exists('size_values_unit', $this->web_config['baculum'])) ? $this->web_config['baculum']['size_values_unit'] : WebConfig::DEF_SIZE_VAL_UNIT%>';
+						const DATE_TIME_FORMAT = '<%=(count($this->web_config) > 0 && key_exists('date_time_format', $this->web_config['baculum'])) ? $this->web_config['baculum']['date_time_format'] : WebConfig::DEF_DATE_TIME_FORMAT%>';
+						const KEEP_TABLE_SETTINGS = <%=(count($this->web_config) > 0 && key_exists('keep_table_settings', $this->web_config['baculum'])) ? $this->web_config['baculum']['keep_table_settings'] : WebConfig::DEF_KEEP_TABLE_SETTINGS%>;
+						const MAX_LATEST_JOBS = <%=(count($this->web_config) > 0 && key_exists('max_latest_jobs', $this->web_config['baculum'])) ? $this->web_config['baculum']['max_latest_jobs'] : JobInfo::DEFAULT_MAX_LATEST_JOBS%>;
+					</script>
+				</div>
+				<!-- !PAGE CONTENT! -->
+				<div class="w3-main">
+					<com:TContentPlaceHolder ID="Main" />
+					<!-- Footer -->
+					<footer class="w3-container w3-right-align w3-small"><%[ Version: ]%> <%=Params::BACULARIS_VERSION%></footer>
+				</div>
 			</div>
 		</com:TForm>
 		<div id="small" class="w3-hide-large"></div>
@@ -94,9 +116,9 @@
 <com:Bacularis.Web.Portlets.MsgEnvelope Visible="<%=($this->Application->getModule('web_config')->isMessagesLogEnabled() && $this->User->isInRole(WebUserRoles::ADMIN))%>" />
 <com:Bacularis.Web.Portlets.ConstantPicker />
 <script>
-var is_small = $('#small').is(':visible');
+var is_small = () => $('#small').is(':visible');
 $(function() {
-	if (is_small) {
+	if (is_small()) {
 		W3SideBar.close();
 	}
 	set_custom_search_field();

@@ -1,7 +1,7 @@
 <div>
 	<p class="w3-hide-small"><%[ The API basic users are configured on the API hosts and they are used to access the API hosts. Changes introduced on this page are directly done on currently used API host. You can use the basic user credentials to connect API hosts to the Bacularis Web on the 'API hosts' tab. The basic user accounts are also possible to create directly in the panel of the Bacularis API. ]%></p>
 	<div id="api_basic_user_btn" class="w3-panel">
-		<button type="button" id="add_api_basic_user_btn" class="w3-button w3-green" onclick="oAPIBasicUsers.load_api_basic_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new API basic user ]%></button>
+		<button type="button" id="add_api_basic_user_btn" class="w3-button w3-green" onclick="oAPIBasicUsers.load_api_basic_user_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add API basic user ]%></button>
 	</div>
 	<table id="api_basic_user_list_table" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 		<thead>
@@ -68,6 +68,7 @@ set_table: function() {
 	this.table = $('#' + this.ids.api_basic_user_list).DataTable({
 		data: this.data,
 		deferRender: true,
+		autoWidth: false,
 		fixedHeader: {
 			header: true,
 			headerOffset: $('#main_top_bar').height()
@@ -149,7 +150,7 @@ set_table: function() {
 			}
 		},
 		columnDefs: [{
-			className: 'dtr-control',
+			className: 'dtr-control-custom',
 			orderable: false,
 			targets: 0
 		},

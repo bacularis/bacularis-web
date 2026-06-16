@@ -3,7 +3,7 @@
 		<%[ Roles define the Bacularis resources to which users can have access. Roles enable to organize the web interface to give selected users limitted access to some resources, pages and functions. One user can have assigned one or more roles. ]%>
 	</p>
 	<div class="w3-panel">
-		<button type="button" id="add_role_btn" class="w3-button w3-green" onclick="oRoles.load_role_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add new role ]%></a>
+		<button type="button" id="add_role_btn" class="w3-button w3-green" onclick="oRoles.load_role_window()"><i class="fa fa-plus"></i> &nbsp;<%[ Add role ]%></a>
 	</div>
 	<!-- Tag tools -->
 	<com:Bacularis.Web.Portlets.TagTools ID="TagToolsRoleList" ViewName="role_list" />
@@ -224,7 +224,7 @@ var oRoleList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

@@ -8,7 +8,7 @@
 				<th></th>
 				<th><%[ Volume name ]%></th>
 				<th><%[ Volume ID ]%></th>
-				<th class="w3-right"><%[ Size ]%> (GB)</th>
+				<th><%[ Size ]%> (GB)</th>
 				<th class="w3-center"><%[ State ]%></th>
 				<th class="w3-center"><%[ Vol. type ]%></th>
 				<th class="w3-center"><%[ Avail. zone ]%></th>
@@ -235,7 +235,7 @@ var oAmazonEBSVolumeList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},

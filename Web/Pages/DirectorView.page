@@ -7,7 +7,7 @@
 		ItemName="<%=$this->getDirectorName()%>"
 	/>
 	<div class="w3-bar w3-green w3-margin-bottom">
-		<button id="btn_director_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'director_actions');"><%[ Actions ]%></button>
+		<button id="btn_director_actions" type="button" class="w3-bar-item w3-button tab_btn w3-grey" onclick="W3Tabs.open(this.id, 'director_actions'); set_page_tables([oBaculaConfigResourceList<%=$this->DirectorResourcesConfig->ClientID%>, oJobScheduleList]);"><%[ Actions ]%></button>
 		<a id="btn_director_config" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn<%=!$this->isDirConfigVisible() ? ' hide': ''%>" onclick="load_director_config(); W3Tabs.open(this.id, 'director_config'); set_page_tables([oBaculaConfigResourceList<%=$this->DirectorResourcesConfig->ClientID%>, oJobScheduleList]);">
 			<%[ Configure director ]%>
 		</a>
@@ -526,7 +526,7 @@ var oGraphicalDirectorStatus = {
 		var bytes_progress;
 		if (job.type === 'B' && est.est_bytes > 0) {
 			bytes_progress = document.createElement('DIV');
-			bytes_progress.className = 'progressbar';
+			bytes_progress.className = 'progressbar w3-center';
 			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var bytes_label = document.createElement('DIV');
 			bytes_label.className = 'progressbar-label';
@@ -556,7 +556,7 @@ var oGraphicalDirectorStatus = {
 		var files_progress;
 		if (job.type === 'B' && est.est_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
@@ -574,7 +574,7 @@ var oGraphicalDirectorStatus = {
 			});
 		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
 			var fexamined = parseInt(job.files_examined, 10);

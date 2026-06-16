@@ -381,7 +381,7 @@ var oRunningJobStatus = {
 		var bytes_progress;
 		if (job.type === 'B' && est.est_bytes > 0) {
 			bytes_progress = document.createElement('DIV');
-			bytes_progress.className = 'progressbar';
+			bytes_progress.className = 'progressbar w3-center';
 			bytes_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var bytes_label = document.createElement('DIV');
 			bytes_label.className = 'progressbar-label';
@@ -442,7 +442,7 @@ var oRunningJobStatus = {
 		var files_progress;
 		if (job.type === 'B' && est.est_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			files_progress.title = '<%[ Progress bar displays estimated values ]%>';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
@@ -460,7 +460,7 @@ var oRunningJobStatus = {
 			});
 		} else if (job.type === 'R' && job.hasOwnProperty('expected_files') && job.expected_files > 0) {
 			files_progress = document.createElement('DIV');
-			files_progress.className = 'progressbar';
+			files_progress.className = 'progressbar w3-center';
 			var files_label = document.createElement('DIV');
 			files_label.className = 'progressbar-label';
 			var fexamined = parseInt(job.files_examined, 10);
@@ -828,7 +828,7 @@ var oJobReportSummary = {
 			format_fn: (data) => {
 				const el = document.createElement('SPAN');
 				if (data == 0) {
-					el.classList.add('w3-text-green');
+					el.classList.add('w3-text-success');
 				} else {
 					el.classList.add('w3-text-red');
 				}
@@ -987,8 +987,8 @@ $(function() {
 	<div class="w3-container tab_item" id="job_graphs" style="display: <%=$this->getJobId() == 0 ? 'block' : 'none'%>">
 		<div id="job_graph_container">
 			<div>
-				<div id="jobs_summary_graph"></div>
-				<div id="jobs_summary_legend"></div>
+				<div id="jobs_summary_graph" style="height: 300px; width: 100%;"></div>
+				<div id="jobs_summary_legend_job" style="display: flex; justify-content: center;"></div>
 			</div>
 			<div>
 				<div id="job_size_graph" style="height: 390px"></div>
@@ -1001,7 +1001,7 @@ $(function() {
 var oJobGraphs = {
 	ids: {
 		jobs_summary_graph : 'jobs_summary_graph',
-		jobs_summary_legend : 'jobs_summary_legend',
+		jobs_summary_legend : 'jobs_summary_legend_job',
 		job_size_graph : 'job_size_graph',
 		job_files_graph : 'job_files_graph',
 		job_graphs: 'job_graphs'
@@ -1704,7 +1704,7 @@ var oJobHistoryList = {
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -1824,7 +1824,7 @@ fragment = fragment ? '#' + fragment : '';
 							</tr>
 						</tfoot>
 					</table>
-					<span class="w3-tag w3-small bold w3-green" style="padding: 6px; width: 100px; margin: 2px 8px;">+ Added</span><small> - file is created or modified and it is included in current JobId</small>
+					<span class="w3-tag w3-small bold w3-success" style="padding: 6px; width: 100px; margin: 2px 8px;">+ Added</span><small> - file is created or modified and it is included in current JobId</small>
 					<span class="w3-tag w3-small bold w3-red" style="padding: 6px; width: 100px; margin: 2px 8px;">– Removed</span><small> - file is marked as removed in current JobId (Accurate mode is required for that) and this change is included in current JobId</small>
 					<span class="w3-tag w3-small bold w3-blue-gray" style="padding: 6px; width: 100px; margin: 2px 8px;">☓ Not included</span><small> - file is not included in current JobId</small>
 				</div>
@@ -2007,7 +2007,7 @@ var oJobFileDiff = {
 							span.style.width = '110px';
 							span.classList.add('w3-tag', 'w3-small', 'bold');
 							if (data === this.file_states.added.name) {
-								span.classList.add('w3-green');
+								span.classList.add('w3-success');
 								span.textContent = '+ ' + this.file_states.added.label;
 							} else if (data === this.file_states.removed.name) {
 								span.classList.add('w3-red');
@@ -2034,7 +2034,7 @@ var oJobFileDiff = {
 							span.style.width = '110px';
 							span.classList.add('w3-tag', 'w3-small', 'bold');
 							if (data === this.file_states.added.name) {
-								span.classList.add('w3-green');
+								span.classList.add('w3-success');
 								span.textContent = '+ ' + this.file_states.added.label;
 							} else if (data === this.file_states.removed.name) {
 								span.classList.add('w3-red');

@@ -46,7 +46,7 @@
 	<div class="w3-container tab_item" id="job_history">
 		<com:Bacularis.Web.Portlets.TabViews ID="JobHistoryViews" />
 		<div class="w3-container">
-			<table id="job_list" class="display nowrap w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
+			<table id="job_list" class="display w3-table w3-striped w3-hoverable w3-margin-bottom selectable" style="width: 100%">
 				<thead>
 					<tr>
 						<th></th>
@@ -640,11 +640,12 @@ var oJobHistoryList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					target: 0
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
 			},
@@ -1315,9 +1316,11 @@ var oJobList = {
 					render: function(data, type, row) {
 						return (data == 1 ? '<%[ Yes ]%>' : '<%[ No ]%>');
 					},
-					responsivePriority: 5
 				},
-				{data: 'maxjobs'},
+				{
+					data: 'maxjobs',
+					visible: false
+				},
 				{
 					data: 'priority',
 					visible: false
@@ -1334,7 +1337,7 @@ var oJobList = {
 				{
 					data: 'job',
 					render: function(data, type, row) {
-						let btns = '';
+						const container = document.createElement('DIV');
 						let img;
 						// Run job button
 						const run_job = document.createElement('BUTTON');
@@ -1346,7 +1349,9 @@ var oJobList = {
 						run_job.appendChild(img);
 						run_job.setAttribute('data-btn-id', data);
 						run_job.setAttribute('onclick', 'const rjc = get_run_job_callback(); rjc.setCallbackParameter("' + data + '"); rjc.dispatch();');
-						btns += (run_job.outerHTML + ' ');
+						container.appendChild(run_job);
+						let space = document.createTextNode(' ');
+						container.appendChild(space);
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
 							const quick_edit = document.createElement('BUTTON');
@@ -1357,7 +1362,9 @@ var oJobList = {
 							img.className = 'fa fa-edit';
 							quick_edit.appendChild(img);
 							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + data + "')");
-							btns += (quick_edit.outerHTML + ' ');
+							container.appendChild(quick_edit);
+							space = document.createTextNode(' ');
+							container.appendChild(space);
 						}
 
 						// Details button
@@ -1369,22 +1376,28 @@ var oJobList = {
 						img.className = 'fa fa-list-ul';
 						details.appendChild(img);
 						details.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
-						btns += details.outerHTML;
+						container.appendChild(details);
 
-						return btns;
+						return container.outerHTML;
 					}
 				}
 			],
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					target: 0
 				}
 			},
 			columnDefs: [{
-				className: 'dtr-control',
+				className: 'dtr-control-custom',
 				orderable: false,
 				targets: 0
+			},
+			{
+				className: 'action_col',
+				orderable: false,
+				targets: [ 11 ]
 			},
 			{
 				className: "dt-center",
@@ -2294,7 +2307,7 @@ class JobHistoryReport {
 			},
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
-			autoWidth: true,
+			autoWidth: false,
 			columns: [
 				{
 					orderable: false,
