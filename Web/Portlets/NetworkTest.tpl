@@ -65,7 +65,7 @@
 				<div class="w3-row w3-container">
 					<h4><%[ Result ]%></h4>
 				</div>
-				<div class="w3-row w3-padding w3-card" style="height: 88px">
+				<div class="w3-row w3-padding w3-margin w3-card" style="height: 88px">
 					<div class="w3-col w3-third" style="margin-top: 21px">
 						<div class="w3-right">
 							<i class="w3-xlarge fa-solid fa-desktop"></i> &nbsp;<label for=""><%[ Client ]%><label>
@@ -76,7 +76,7 @@
 						<i class="w3-xlarge fa-solid fa-database"></i> &nbsp;<label for=""><%[ Storage ]%><label>
 					</div>
 				</div>
-				<div class="w3-row w3-padding w3-card" style="height: 88px">
+				<div class="w3-row w3-padding w3-margin w3-card" style="height: 88px">
 					<div class="w3-col w3-third" style="margin-top: 21px">
 						<div class="w3-right">
 							<i class="w3-xlarge fa-solid fa-desktop"></i> &nbsp;<label for=""><%[ Client ]%><label>
@@ -87,14 +87,14 @@
 						<i class="w3-xlarge fa-solid fa-database"></i> &nbsp;<label for=""><%[ Storage ]%><label>
 					</div>
 				</div>
-				<div class="w3-row w3-padding w3-card w3-small w3-center" style="height: 30px">
+				<div class="w3-row w3-padding w3-margin w3-card w3-small w3-center" style="height: 34px;">
 					<span class="w3-left-align"># <%[ Packets ]%>: <span id="stat_result_packets<%=$this->ClientID%>" class="bold w3-margin-right w3-show-inline-block" style="width: 50px">-</span></span>
 					<span class="w3-left-align"><%[ Duration ]%>: <span id="stat_result_duration<%=$this->ClientID%>" class="bold w3-margin-right w3-show-inline-block" style="width: 50px">-</span></span>
 					<span class="w3-left-align"><%[ Round-trip time (RTT) ]%>: <span id="stat_result_rtt<%=$this->ClientID%>" class="bold w3-margin-right w3-show-inline-block" style="width: 50px">-</span></span>
 					<span class="w3-left-align"><%[ Minimum time ]%>: <span id="stat_result_min<%=$this->ClientID%>" class="bold w3-margin-right w3-show-inline-block" style="width: 50px">-</span></span>
 					<span class="w3-left-align"><%[ Maximum time ]%>: <span id="stat_result_max<%=$this->ClientID%>" class="bold w3-margin-right w3-show-inline-block" style="width: 50px">-</span></span>
 				</div>
-				<div class="w3-row w3-padding w3-card" style="min-height: 30px">
+				<div class="w3-row w3-padding w3-margin w3-card" style="min-height: 30px">
 					<i class="fa-solid fa-file-lines"></i> <a href="javascript:void(0)" onclick="$('#network_test_raw_output<%=$this->ClientID%>').toggle('fast');"><%[ Raw output ]%></a>
 					<div id="network_test_raw_output<%=$this->ClientID%>" class="w3-code" style="display: none">
 						<a id="raw_output_copy<%=$this->ClientID%>" href="javascript:void(0)" class="w3-margin-top w3-margin-right w3-right raw" title="<%[ Copy ]%>" onclick="oNetworkTest<%=$this->ClientID%>.copy_raw();">
