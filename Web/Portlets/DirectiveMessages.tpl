@@ -3,7 +3,7 @@
 <com:Bacularis.Web.Portlets.NewMessagesMenu ID="MessagesMenu" />
 <com:TActiveRepeater ID="RepeaterMessages" OnItemCreated="createDirectiveListElement" OnItemDataBound="loadMessageTypes">
 	<prop:ItemTemplate>
-		<div class="w3-card directive" style="padding: 16px;">
+		<div class="w3-card directive" style="padding: 16px; margin: 6px auto;">
 			<com:TActiveLinkButton
 				CssClass="w3-right"
 				OnCommand="SourceTemplateControl.removeMessages"

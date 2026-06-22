@@ -11,7 +11,7 @@
 			ItemRenderer="Bacularis.Web.Portlets.FileSetOptionRenderer"
 		>
 			<prop:HeaderTemplate>
-				<div class="w3-border w3-padding w3-margin-bottom directive">
+				<div class="w3-border w3-padding w3-margin-bottom directive block_container">
 			</prop:HeaderTemplate>
 			<prop:FooterTemplate>
 				</div>
@@ -19,7 +19,7 @@
 		</com:TActiveRepeater>
 		<com:TActiveRepeater ID="RepeaterFileSetInclude"  ItemRenderer="Bacularis.Web.Portlets.DirectiveRenderer" CssClass="incexc_item">
 			<prop:HeaderTemplate>
-				<div class="w3-border w3-padding w3-margin-bottom directive include_file">
+				<div class="w3-border w3-padding w3-margin-bottom directive include_file block_container">
 					<h3><%[ Files ]%></h3>
 			</prop:HeaderTemplate>
 			<prop:FooterTemplate>
@@ -28,7 +28,7 @@
 		</com:TActiveRepeater>
 		<com:TActiveRepeater ID="RepeaterFileSetPlugin"  ItemRenderer="Bacularis.Web.Portlets.DirectiveRenderer" CssClass="incexc_item">
 			<prop:HeaderTemplate>
-				<div class="w3-border w3-padding w3-margin-bottom directive include_plugin">
+				<div class="w3-border w3-padding w3-margin-bottom directive include_plugin block_container">
 					<h3><%[ Plugins ]%></h3>
 			</prop:HeaderTemplate>
 			<prop:FooterTemplate>
