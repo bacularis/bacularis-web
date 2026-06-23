@@ -20,7 +20,7 @@ use Bacularis\Common\Modules\JWT;
 use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Common\Modules\Protocol\HTTP\Client as HTTPClient;
-use Bacularis\Common\Modules\Protocol\HTTP\Headers as HTTPHeaders;
+use Bacularis\Common\Modules\Protocol\HTTP\Header as HTTPHeader;
 use Bacularis\Common\Modules\Protocol\HTTP\Redirection as HTTPRedirection;
 use Bacularis\Common\Modules\RSAKey;
 use Bacularis\Common\Modules\SSLCertificate;
@@ -1123,7 +1123,7 @@ class OIDC extends WebModule
 					$result = HTTPClient::get($discovery_url);
 					if ($result['error'] === 0) {
 						self::$discovery_info = json_decode($result['output'], true);
-						$max_age = HTTPHeaders::getCacheControlMaxAge(
+						$max_age = HTTPHeader::getCacheControlMaxAge(
 							$result['headers']['cache-control'] ?? ''
 						);
 						$this->params->setConfigCache($name, $max_age, self::$discovery_info);
@@ -1154,7 +1154,7 @@ class OIDC extends WebModule
 				if ($result['error'] === 0) {
 					$jwks = json_decode($result['output'], true);
 					self::$jwks = $jwks;
-					$max_age = HTTPHeaders::getCacheControlMaxAge(
+					$max_age = HTTPHeader::getCacheControlMaxAge(
 						$result['headers']['cache-control'] ?? ''
 					);
 					$this->params->setJWKSCache($name, $max_age, self::$jwks);
