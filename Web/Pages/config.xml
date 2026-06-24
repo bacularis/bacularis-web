@@ -29,7 +29,7 @@
 		<module id="idp_config" class="Bacularis\Web\Modules\IdentityProviderConfig" />
 		<module id="web_access_config" class="Bacularis\Web\Modules\WebAccessConfig" />
 		<!-- data modules -->
-		<module id="api" class="Bacularis\Web\Modules\BaculumAPIClient" />
+		<module id="api" class="Bacularis\Web\Modules\BacularisAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
 		<module id="doc_dir" class="Bacularis\Web\Modules\DirectiveDoc" />
 		<module id="globalization" class="TGlobalization">
