@@ -19,7 +19,7 @@ namespace Bacularis\Web\Modules;
  * GPG command module.
  *
  * @author Marcin Haba <marcin.haba@bacula.pl>
- * @category API
+ * @category Module
  */
 class GPG extends WebModule
 {
