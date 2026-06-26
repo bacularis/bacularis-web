@@ -41,23 +41,54 @@ use Bacularis\Common\Modules\SessionRecord;
  */
 class OAuth2Record extends SessionRecord implements ISessionItem
 {
+	/**
+	 * Host record session file name.
+	 */
+	private const SESSION_FILE_NAME = 'Bacularis.Web.Config.session';
+
+	/**
+	 * Host record sesion file extension.
+	 */
+	private const SESSION_FILE_EXT = '.dump';
+
+	/**
+	 * OAuth2 session properties.
+	 */
 	public $host;
 	public $state;
 	public $tokens;
 	public $refresh_time;
 
-	public static function getRecordId()
+	/**
+	 * Get session record identifier.
+	 *
+	 * @return string record identifier
+	 */
+	public static function getRecordId(): string
 	{
 		return 'oauth2_cli_params';
 	}
 
-	public static function getPrimaryKey()
+	/**
+	 * Get session record primary key.
+	 *
+	 * @return string primary key name
+	 */
+	public static function getPrimaryKey(): string
 	{
 		return 'host';
 	}
 
-	public static function getSessionFile()
+	/**
+	 * Get full session file path.
+	 *
+	 * @return string session file path
+	 */
+	public static function getSessionFile(): string
 	{
-		return Prado::getPathOfNamespace('Bacularis.Web.Config.session', '.dump');
+		return Prado::getPathOfNamespace(
+			self::SESSION_FILE_NAME,
+			self::SESSION_FILE_EXT
+		);
 	}
 }
