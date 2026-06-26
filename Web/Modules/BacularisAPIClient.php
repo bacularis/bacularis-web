@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\AuthBasic;
+use Bacularis\Common\Modules\AuthOAuth2;
 use Bacularis\Common\Modules\Errors\BconsoleError;
 use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Common\Modules\Logging;
@@ -70,6 +71,23 @@ class BacularisAPIClient extends WebModule
 	 * OAuth2 client helper.
 	 */
 	private $oauth2_client;
+
+	/**
+	 * Test mode state.
+	 * Used to test connection parameters.
+	 */
+	private $test_mode = false;
+
+	/**
+	 * Test mode name parameter.
+	 */
+	private $test_name;
+
+	/**
+	 * Host record object.
+	 */
+	private $host_record;
+
 
 	/**
 	 * Get OAuth2 client helper.
@@ -257,6 +275,9 @@ class BacularisAPIClient extends WebModule
 	 */
 	protected function getHostParams(?string $host): array
 	{
+		if ($this->test_mode) {
+			$host = $this->test_name;
+		}
 		$host_params = HostRecord::findByPk($host);
 		if (is_null($host_params)) {
 			$host_config = $this->getModule('host_config');
@@ -270,10 +291,65 @@ class BacularisAPIClient extends WebModule
 	 *
 	 * @param null|string $host host name
 	 * @param array $params host parameters
+	 * @param bool $test_mode set test mode
+	 * @return string current host name
 	 */
-	public function setHostParams(?string $host, array $params): void
+	public function setHostParams(?string $host, array $params): string
 	{
-		new HostRecord($host, $params);
+		if ($this->test_mode) {
+			$host = $this->test_name;
+		}
+		if (is_null($this->host_record)) {
+			$this->host_record = new HostRecord();
+		}
+		if (is_null($host)) {
+			// On this level host must have name
+			return '';
+		}
+		$this->host_record->setHost($host, $params);
+		return $host;
+	}
+
+	/**
+	 * Unset/delete host specific parameters.
+	 *
+	 * @param null|string $host host name
+	 * @return bool true if host params are unset, false otherwise
+	 */
+	public function unsetHostParams(?string $host): bool
+	{
+		$success = false;
+		if ($this->test_mode) {
+			$host = $this->test_name;
+		}
+		$host_params = HostRecord::findByPk($host);
+		if (is_array($host_params)) {
+			$success = HostRecord::deleteByPk($host);
+			if ($this->test_mode && $host_params['auth_type'] === AuthOAuth2::NAME) {
+				OAuth2Record::deleteByPk($host);
+			}
+		}
+		return $success;
+	}
+
+	/**
+	 * Enable/disable API client test mode.
+	 *
+	 * @param bool $state test mode state
+	 */
+	public function setTestMode($state): void
+	{
+		if ($state) {
+			if (!$this->test_mode && is_null($this->test_name)) {
+				$crypto = $this->getModule('crypto');
+				$this->test_name = 'test_' . $crypto->getRandomString(12);
+			}
+		} else {
+			if ($this->test_mode && is_string($this->test_name)) {
+				$this->test_name = null;
+			}
+		}
+		$this->test_mode = $state;
 	}
 
 	/**
