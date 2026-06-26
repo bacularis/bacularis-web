@@ -27,6 +27,12 @@ use Bacularis\Web\Modules\OAuth2Record;
 class APIHosts extends Security
 {
 	/**
+	 * Window types.
+	 */
+	public const WIN_TYPE_ADD = 'add';
+	public const WIN_TYPE_EDIT = 'edit';
+
+	/**
 	 * Initialize page.
 	 *
 	 * @param mixed $param oninit event parameter
@@ -235,9 +241,12 @@ class APIHosts extends Security
 
 	public function connectionAPITest($sender, $param)
 	{
-		$host = $this->APIHostAddress->Text;
+		$host = $this->APIHostName->Text;
 		if (empty($host)) {
-			$host = false;
+			$host = $this->APIHostAddress->Text;
+			if (empty($host)) {
+				$host = false;
+			}
 		}
 		$host_params = [
 			'protocol' => $this->APIHostProtocol->SelectedValue,
@@ -259,14 +268,15 @@ class APIHosts extends Security
 		}
 		$api = $this->getModule('api');
 
+		// Enable API test mode
+		$api->setTestMode(true);
+
 		// Catalog test
-		OAuth2Record::deleteByPk($host);
-		$api->setHostParams($host, $host_params);
-		$catalog = $api->get(['catalog'], $host, false);
+		$host_tmp = $api->setHostParams($host, $host_params);
+		$catalog = $api->get(['catalog'], $host_tmp, false);
 
 		// Console test
-		OAuth2Record::deleteByPk($host);
-		$api->setHostParams($host, $host_params);
+		$host_tmp = $api->setHostParams($host, $host_params);
 		$sess = $this->getApplication()->getSession();
 		$sess->open();
 		$director = null;
@@ -275,17 +285,19 @@ class APIHosts extends Security
 			$director = $sess->remove('director');
 		}
 
-		$console = $api->set(['console'], ['version'], $host, false);
+		$console = $api->set(['console'], ['version'], $host_tmp, false);
 		if (!is_null($director)) {
 			// Revert director setting if any
 			$sess->add('director', $director);
 		}
 
 		// Config test
-		OAuth2Record::deleteByPk($host);
-		$api->setHostParams($host, $host_params);
-		$config = $api->get(['config'], $host, false);
-		OAuth2Record::deleteByPk($host);
+		$host_tmp = $api->setHostParams($host, $host_params);
+		$config = $api->get(['config'], $host_tmp, false);
+
+		// Disable API test mode
+		$api->unsetHostParams($host);
+		$api->setTestMode(false);
 
 		$is_catalog = (is_object($catalog) && $catalog->error === 0);
 		$is_console = (is_object($console) && $console->error === 0);
@@ -296,13 +308,13 @@ class APIHosts extends Security
 			$status_ok = $is_console;
 		}
 
-		if (!$is_catalog) {
+		if (!$is_catalog && is_object($catalog)) {
 			$this->APIHostTestResultErr->Text .= $catalog->output . '<br />';
 		}
-		if (!$is_console) {
+		if (!$is_console && is_object($console)) {
 			$this->APIHostTestResultErr->Text .= $console->output . '<br />';
 		}
-		if (!$is_config) {
+		if (!$is_config && is_object($config)) {
 			$config_output = '';
 			if (!is_string($config->output)) {
 				/**
@@ -395,9 +407,21 @@ class APIHosts extends Security
 		}
 		$host_exists = key_exists($host_name, $config);
 		$config[$host_name] = $cfg_host;
+
+		$cb = $this->getPage()->getCallbackClient();
+		$eid = 'api_host_window_error';
+		$cb->hide($eid);
+		if ($this->APIHostWindowType->Value === self::WIN_TYPE_ADD && $host_exists) {
+			// API host name already exists, stop here
+			$emsg = "Host '$host_name' already exists. Please choose different name.";
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+			return;
+		}
+
+		// save API host configuration
 		$result = $hc->setConfig($config);
 		$this->setAPIHostList(null, null);
-		$cb = $this->getPage()->getCallbackClient();
 		$cb->hide('api_host_window');
 
 		if ($result === true) {

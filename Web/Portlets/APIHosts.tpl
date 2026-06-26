@@ -244,111 +244,111 @@ set_bulk_actions: function() {
 };
 
 var oAPIHosts = {
-load_api_host_window: function(name) {
-	var title_add = document.getElementById('api_host_window_title_add');
-	var title_edit = document.getElementById('api_host_window_title_edit');
-	const host_groups = document.getElementById('api_host_groups');
-	const host_groups_area = document.getElementById('api_host_api_host_group');
-	host_groups_area.style.display = 'none';
-	const host_groups_chkb = document.getElementById('<%=$this->APIHostUseHostGroups->ClientID%>');
-	host_groups_chkb.checked = false;
-	var api_host_win_type = document.getElementById('<%=$this->APIHostWindowType->ClientID%>');
-	var host_name = document.getElementById('<%=$this->APIHostName->ClientID%>');
-	// callback is sent both for new and edit api_host because there is realized
-	// checking if password is allowed to set or not
-	var cb = <%=$this->LoadAPIHost->ActiveControl->Javascript%>;
-	cb.setCallbackParameter(name);
-	cb.dispatch();
-	if (name) {
-		// edit existing api_host
-		title_add.style.display = 'none';
-		title_edit.style.display = 'inline-block';
-		host_groups.style.display = 'none';
-		api_host_win_type.value = 'edit';
-		host_name.setAttribute('readonly', '');
-	} else {
-		// add new api_host
-		title_add.style.display = 'inline-block';
-		title_edit.style.display = 'none';
-		host_groups.style.display = 'block';
-		api_host_win_type.value = 'add';
-		host_name.removeAttribute('readonly');
-		this.clear_api_host_window();
+	load_api_host_window: function(name) {
+		var title_add = document.getElementById('api_host_window_title_add');
+		var title_edit = document.getElementById('api_host_window_title_edit');
+		const host_groups = document.getElementById('api_host_groups');
+		const host_groups_area = document.getElementById('api_host_api_host_group');
+		host_groups_area.style.display = 'none';
+		const host_groups_chkb = document.getElementById('<%=$this->APIHostUseHostGroups->ClientID%>');
+		host_groups_chkb.checked = false;
+		var api_host_win_type = document.getElementById('<%=$this->APIHostWindowType->ClientID%>');
+		var host_name = document.getElementById('<%=$this->APIHostName->ClientID%>');
+		// callback is sent both for new and edit api_host because there is realized
+		// checking if password is allowed to set or not
+		var cb = <%=$this->LoadAPIHost->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		if (name) {
+			// edit existing api_host
+			title_add.style.display = 'none';
+			title_edit.style.display = 'inline-block';
+			host_groups.style.display = 'none';
+			api_host_win_type.value = 'edit';
+			host_name.setAttribute('readonly', '');
+		} else {
+			// add new api_host
+			title_add.style.display = 'inline-block';
+			title_edit.style.display = 'none';
+			host_groups.style.display = 'block';
+			api_host_win_type.value = 'add';
+			host_name.removeAttribute('readonly');
+			this.clear_api_host_window();
+		}
+		document.getElementById('api_host_window').style.display = 'block';
+	},
+	load_api_host_list: function() {
+		var cb = <%=$this->APIHostList->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_api_host_list_cb: function(list) {
+		oAPIHostList.data = list;
+		oAPIHostList.init();
+	},
+	clear_api_host_window: function() {
+		[
+			'<%=$this->APIHostAddress->ClientID%>',
+			'<%=$this->APIHostPort->ClientID%>',
+			'<%=$this->APIHostOAuth2ClientId->ClientID%>',
+			'<%=$this->APIHostOAuth2ClientSecret->ClientID%>',
+			'<%=$this->APIHostOAuth2RedirectURI->ClientID%>',
+			'<%=$this->APIHostOAuth2Scope->ClientID%>',
+			'<%=$this->APIHostName->ClientID%>',
+			'<%=$this->APIHostBasicLogin->ClientID%>',
+			'<%=$this->APIHostBasicPassword->ClientID%>'
+
+		].forEach(function(id) {
+			document.getElementById(id).value = '';
+		});
+
+		document.getElementById('<%=$this->APIHostProtocol->ClientID%>').value = 'https';
+
+		[
+			'<%=$this->APIHostTestResultOk->ClientID%>',
+			'<%=$this->APIHostTestResultErr->ClientID%>',
+			'<%=$this->APIHostCatalogSupportYes->ClientID%>',
+			'<%=$this->APIHostCatalogSupportNo->ClientID%>',
+			'<%=$this->APIHostConsoleSupportYes->ClientID%>',
+			'<%=$this->APIHostConsoleSupportNo->ClientID%>',
+			'<%=$this->APIHostConfigSupportYes->ClientID%>',
+			'<%=$this->APIHostConfigSupportNo->ClientID%>',
+			'<%=$this->APIHostTestLoader->ClientID%>'
+		].forEach(function(id) {
+			document.getElementById(id).style.display= 'none';
+		});
+	},
+	save_api_host_cb: function() {
+		document.getElementById('api_host_window').style.display = 'none';
+	},
+	load_access_window: function(name) {
+		this.clear_access_window();
+		document.getElementById('api_host_access_window_console').style.display = 'none';
+		const cb = <%=$this->LoadAPIHostResourceAccess->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(name);
+		cb.dispatch();
+		document.getElementById('api_host_access_window_title').textContent = name;
+		document.getElementById('api_host_access_window').style.display = 'block';
+		document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value = name;
+	},
+	clear_access_window: function() {
+		// empty fields
+		[
+			'<%=$this->APIHostResourceAccessJobs->ClientID%>'
+		].forEach((id) => {
+			$('#' + id).empty();
+		});
+
+		// reset radio buttons
+		document.getElementById('<%=$this->APIHostResourceAccessAllResources->ClientID%>').checked = true;
+		document.getElementById('api_host_access_window_select_jobs').style.display = 'none';
+		document.getElementById('api_host_access_window_error').style.display = 'none';
+	},
+	unassign_console: function() {
+		const api_host = document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value;
+		const cb = <%=$this->UnassignAPIHostConsole->ActiveControl->Javascript%>;
+		cb.setCallbackParameter(api_host);
+		cb.dispatch();
 	}
-	document.getElementById('api_host_window').style.display = 'block';
-},
-load_api_host_list: function() {
-	var cb = <%=$this->APIHostList->ActiveControl->Javascript%>;
-	cb.dispatch();
-},
-load_api_host_list_cb: function(list) {
-	oAPIHostList.data = list;
-	oAPIHostList.init();
-},
-clear_api_host_window: function() {
-	[
-		'<%=$this->APIHostAddress->ClientID%>',
-		'<%=$this->APIHostPort->ClientID%>',
-		'<%=$this->APIHostOAuth2ClientId->ClientID%>',
-		'<%=$this->APIHostOAuth2ClientSecret->ClientID%>',
-		'<%=$this->APIHostOAuth2RedirectURI->ClientID%>',
-		'<%=$this->APIHostOAuth2Scope->ClientID%>',
-		'<%=$this->APIHostName->ClientID%>',
-		'<%=$this->APIHostBasicLogin->ClientID%>',
-		'<%=$this->APIHostBasicPassword->ClientID%>'
-
-	].forEach(function(id) {
-		document.getElementById(id).value = '';
-	});
-
-	document.getElementById('<%=$this->APIHostProtocol->ClientID%>').value = 'https';
-
-	[
-		'<%=$this->APIHostTestResultOk->ClientID%>',
-		'<%=$this->APIHostTestResultErr->ClientID%>',
-		'<%=$this->APIHostCatalogSupportYes->ClientID%>',
-		'<%=$this->APIHostCatalogSupportNo->ClientID%>',
-		'<%=$this->APIHostConsoleSupportYes->ClientID%>',
-		'<%=$this->APIHostConsoleSupportNo->ClientID%>',
-		'<%=$this->APIHostConfigSupportYes->ClientID%>',
-		'<%=$this->APIHostConfigSupportNo->ClientID%>',
-		'<%=$this->APIHostTestLoader->ClientID%>'
-	].forEach(function(id) {
-		document.getElementById(id).style.display= 'none';
-	});
-},
-save_api_host_cb: function() {
-	document.getElementById('api_host_window').style.display = 'none';
-},
-load_access_window: function(name) {
-	this.clear_access_window();
-	document.getElementById('api_host_access_window_console').style.display = 'none';
-	const cb = <%=$this->LoadAPIHostResourceAccess->ActiveControl->Javascript%>;
-	cb.setCallbackParameter(name);
-	cb.dispatch();
-	document.getElementById('api_host_access_window_title').textContent = name;
-	document.getElementById('api_host_access_window').style.display = 'block';
-	document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value = name;
-},
-clear_access_window: function() {
-	// empty fields
-	[
-		'<%=$this->APIHostResourceAccessJobs->ClientID%>'
-	].forEach((id) => {
-		$('#' + id).empty();
-	});
-
-	// reset radio buttons
-	document.getElementById('<%=$this->APIHostResourceAccessAllResources->ClientID%>').checked = true;
-	document.getElementById('api_host_access_window_select_jobs').style.display = 'none';
-	document.getElementById('api_host_access_window_error').style.display = 'none';
-},
-unassign_console: function() {
-	const api_host = document.getElementById('<%=$this->APIHostResourceAccessName->ClientID%>').value;
-	const cb = <%=$this->UnassignAPIHostConsole->ActiveControl->Javascript%>;
-	cb.setCallbackParameter(api_host);
-	cb.dispatch();
-}
 }
 
 $(function() {
@@ -364,6 +364,7 @@ oAPIHosts.load_api_host_list();
 			<h2 id="api_host_window_title_edit" style="display: none"><%[ Edit API host ]%></h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+			<div id="api_host_window_error" class="w3-text-red" style="display: none;"></div>
 			<div id="api_host_settings">
 				<div class="w3-row directive_field">
 					<div class="w3-col w3-third"><com:TLabel ForControl="APIHostSettings" Text="<%[ Get existing API host settings: ]%>" /></div>
