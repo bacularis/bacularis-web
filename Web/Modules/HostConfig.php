@@ -134,7 +134,7 @@ class HostConfig extends ConfigFileModule
 	{
 		$host_config = [];
 		$config = $this->getConfig();
-		if (array_key_exists($host, $config)) {
+		if (key_exists($host, $config)) {
 			$host_config = $config[$host];
 		}
 		return $host_config;
@@ -154,6 +154,18 @@ class HostConfig extends ConfigFileModule
 		$config[$host] = $host_config;
 		$result = $this->setConfig($config);
 		return $result;
+	}
+
+	/**
+	 * Check if host config exists.
+	 *
+	 * @param string $host host name
+	 * @return bool true on success, false otherwise
+	 */
+	public function hostConfigExists($host): bool
+	{
+		$config = $this->getConfig();
+		return (key_exists($host, $config));
 	}
 
 	/**

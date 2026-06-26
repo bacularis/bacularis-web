@@ -310,14 +310,14 @@ class NewUserWizard extends BaculumWebPage
 	 */
 	public function createAPIHost($sender, $param)
 	{
-		$api_hosts = $this->getModule('host_config')->getConfig();
+		$host_config = $this->getModule('host_config');
 		$admin_api_host = $this->AdminAPIHost->getSelectedValue();
-		if (!key_exists($admin_api_host, $api_hosts)) {
+		if (!$host_config->hostConfigExists($admin_api_host)) {
 			return;
 		}
 
 		// Prepare parameters for API host config
-		$api_host = $api_hosts[$admin_api_host];
+		$api_host = $host_config->getHostConfig($admin_api_host);
 		$new_web = [
 			'auth_type' => '',
 			'login' => '',
@@ -333,6 +333,9 @@ class NewUserWizard extends BaculumWebPage
 		$new_web['url_prefix'] = '';
 		$new_web['auth_type'] = $api_host['auth_type'];
 		$new_api['name'] = $name = trim($this->NewAPIHostName->Text);
+		if (empty($name)) {
+			$name = $api_host['address'];
+		}
 		$crypto = $this->getModule('crypto');
 		if ($api_host['auth_type'] === 'basic') {
 			// Sanitize basic user string
@@ -349,6 +352,17 @@ class NewUserWizard extends BaculumWebPage
 			$new_api['client_secret'] = $new_web['client_secret'] = $crypto->getRandomString(50);
 			$new_api['redirect_uri'] = $new_web['redirect_uri'] = $api_host['redirect_uri'];
 			$new_api['scope'] = $new_web['scope'] = 'console jobs directors clients storages devices volumes pools bvfs joblog filesets schedules config oauth2';
+		}
+
+		$cb = $this->getCallbackClient();
+		$eid = 'new_api_host_window_error';
+		$cb->hide($eid);
+		if ($host_config->hostConfigExists($name)) {
+			// API host name already exists, stop here
+			$emsg = "Host '$name' already exists. Please choose different name.";
+			$cb->update($eid, $emsg);
+			$cb->show($eid);
+			return;
 		}
 
 
@@ -373,16 +387,12 @@ class NewUserWizard extends BaculumWebPage
 
 		if ($result->error === 0) {
 			// save API host config on Web side
-			$host_config = $this->getModule('host_config');
 			$config = $host_config->getConfig();
-			if (empty($name)) {
-				$name = $api_host['address'];
-			}
 			$config[$name] = $new_web;
 			$result = $host_config->setConfig($config);
 			if ($result !== true) {
 				// Error
-				$this->getCallbackClient()->update(
+				$cb->update(
 					$this->NewAPIHostError,
 					'Error while creating API account'
 				);
@@ -390,14 +400,14 @@ class NewUserWizard extends BaculumWebPage
 			} else {
 				$this->setAPIHosts($name);
 				// Everything fine - close window
-				$this->getCallbackClient()->callClientFunction(
+				$cb->callClientFunction(
 					'oAPIHosts.show_new_api_host_window',
 					[false]
 				);
 			}
 		} else {
 			// Error
-			$this->getCallbackClient()->update(
+			$cb->update(
 				$this->NewAPIHostError,
 				$result->output
 			);

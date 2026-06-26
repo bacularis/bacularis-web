@@ -440,6 +440,7 @@ var oRoles = {
 								<h2><%[ Add API host ]%></h2>
 							</header>
 							<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
+								<div id="new_api_host_window_error" class="w3-text-red" style="display: none;"></div>
 								<p><%[ Select existing API host account to create the new account: ]%></p>
 								<div class="w3-row directive_field">
 									<div class="w3-col w3-third"><com:TLabel ForControl="AdminAPIHost" Text="<%[ Admin API host: ]%>"/></div>
