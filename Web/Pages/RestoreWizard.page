@@ -499,10 +499,10 @@ var oJobsToRestoreList = {
 					render: function (data, type, row) {
 						var ret;
 						if (type == 'display') {
-							var radio = document.createElement('INPUT');
+							const radio = document.createElement('INPUT');
 							radio.type = 'radio';
-							radio.name = 'backup_to_restore';
-							radio.value = [data, row.name, row.type, row.endtime, row.jobstatus].join('|');
+							radio.name = 'jobid';
+							radio.value = data;
 							radio.className = 'w3-radio';
 							radio.style.top = '3px';
 							if ('<%=$this->Session->contains('restore_job') ? $this->Session['restore_job']['jobid'] : ''%>' == data) {
@@ -610,9 +610,11 @@ $(function() {
 			</div>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step3" Title="<%[ Step 3 - select files to restore ]%>" StepType="Auto">
-			<com:TPanel ID="NoFileFound" Style="height: 38px" Display="None">
-					<%[ No file found for selected backup. It can mean file records for this backup are pruned. Restoring selected files is not available but if you continue, there will be performed full restore all backup files. ]%>
-			</com:TPanel>
+			<com:TActivePanel ID="NoFileFound" CssClass="w3-panel w3-success w3-display-container w3-margin-bottom" Style="width: 70%; margin: 0 auto;" Display="None">
+					<span onclick="this.parentElement.style.display='none';" class="w3-button w3-large w3-display-topright">×</span>
+					<h3><%[ Information ]%></h3>
+					<p><%[ No file found for selected backup. It can mean file records for this backup are pruned. Restoring selected files is not available but if you continue, there will be performed full restore all backup files. ]%></p>
+			</com:TActivePanel>
 			<com:TCallback
 				ID="LoadPath"
 				OnCallback="loadPath"
@@ -796,7 +798,7 @@ var oRestoreBrowserFiles = {
 	init: function(items) {
 		this.set_events();
 		this.show_browser(this.browsers.flat);
-		this.load_items();
+		this.load_browser_content();
 		this.set_browser_headers();
 	},
 	get_browser_type: function() {
@@ -846,10 +848,6 @@ var oRestoreBrowserFiles = {
 		if (path) {
 			cb.setCallbackParameter(path);
 		}
-		cb.dispatch();
-	},
-	load_items: function() {
-		var cb = <%=$this->SetBrowserFiles->ActiveControl->Javascript%>;
 		cb.dispatch();
 	},
 	populate: function(items) {
@@ -1091,7 +1089,6 @@ $(function() {
 	oRestoreBrowserFiles.init();
 });
 </script>
-						<com:TCallback ID="SetBrowserFiles" OnCallback="Page.loadBrowserFiles" />
 						<com:TCallback ID="AddFileToRestore" OnCallback="Page.addFileToRestore">
 							<prop:ClientSide.OnComplete>
 								Formatters.set_formatters();
@@ -1716,11 +1713,11 @@ $(function() {
 					<legend><%[ Files for restore ]%></legend>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Selected directories count: ]%></div>
-						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements(true)->dirid) ? count($this->getRestoreElements(true)->dirid) : '0'%></div>
+						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements()['dirid']) ? count($this->getRestoreElements()['dirid']) : '0'%></div>
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Selected files count: ]%></div>
-						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements(true)->fileid) ? count($this->getRestoreElements(true)->fileid) : '0'%></div>
+						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements()['fileid']) ? count($this->getRestoreElements()['fileid']) : '0'%></div>
 					</div>
 				</fieldset>
 				<fieldset>
