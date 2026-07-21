@@ -35,7 +35,7 @@ use Bacularis\Web\Portlets\Portlets;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
  */
-class Bconsole extends Portlets
+class BaculaConsole extends Portlets
 {
 	public const MAX_CONSOLE_OUTPUT_BATCH = -10000;
 
