@@ -278,7 +278,7 @@ class BacularisAPIClient extends WebModule
 		if ($this->test_mode) {
 			$host = $this->test_name;
 		}
-		$host_params = HostRecord::findByPk($host);
+		$host_params = is_string($host) ? HostRecord::findByPk($host) : null;
 		if (is_null($host_params)) {
 			$host_config = $this->getModule('host_config');
 			$host_params = $host_config->getHostConfig($host);
