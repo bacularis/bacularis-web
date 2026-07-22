@@ -30,6 +30,7 @@
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Errors\GenericError;
 
 /**
  * Restore wizard page.
@@ -47,6 +48,8 @@ class RestoreWizard extends BaculumWebPage
 
 	// Restore modes - view state name
 	private const RESTORE_MODE = 'RestoreMode';
+
+	private const FILE_BROWSER_MODE = 'FileBrowserMode';
 
 	/**
 	 * Job levels allowed to restore.
@@ -68,6 +71,12 @@ class RestoreWizard extends BaculumWebPage
 	public const BROWSER_TYPE_TREE = 1;
 
 	/**
+	 * Browser modes
+	 */
+	public const BROWSER_MODE_SIMPLE = 1;
+	public const BROWSER_MODE_DETAILED = 2;
+
+	/**
 	 * File browser special directories.
 	 */
 	private $browser_root_dir = [
@@ -75,6 +84,7 @@ class RestoreWizard extends BaculumWebPage
 		'type' => 'dir',
 		'fileid' => null,
 		'pathid' => null,
+		'path' => '',
 		'filenameid' => null,
 		'jobid' => null,
 		'lstat' => '',
@@ -85,6 +95,7 @@ class RestoreWizard extends BaculumWebPage
 		'type' => 'dir',
 		'fileid' => null,
 		'pathid' => null,
+		'path' => '',
 		'filenameid' => null,
 		'jobid' => null,
 		'lstat' => '',
@@ -126,6 +137,7 @@ class RestoreWizard extends BaculumWebPage
 		if ($this->Request->contains('jobid')) {
 			// Restore by given jobid
 			$this->setRestoreMode(self::RESTORE_MODE_JOBID);
+			$this->setFileBrowserMode(self::BROWSER_MODE_DETAILED);
 			$jobid = (int) $this->Request['jobid'];
 			$this->setUpRestoreByJobId($jobid);
 		} else {
@@ -144,6 +156,36 @@ class RestoreWizard extends BaculumWebPage
 	{
 		parent::onPreRender($param);
 		$this->setNavigationButtons();
+	}
+
+	/**
+	 * Set file browser mode.
+	 *
+	 * @param string $mode file browser mode
+	 */
+	private function setFileBrowserMode(int $mode): void
+	{
+		// Reset selected file list if browser mode has changed
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode === self::BROWSER_MODE_DETAILED && $mode == self::BROWSER_MODE_SIMPLE) {
+			$this->setFilesToRestore();
+		} elseif ($fb_mode === self::BROWSER_MODE_SIMPLE && $mode == self::BROWSER_MODE_DETAILED) {
+			$this->setFilesToRestore();
+		}
+
+		$this->setViewState(self::FILE_BROWSER_MODE, $mode);
+	}
+
+	/**
+	 * Get file browser mode.
+	 *
+	 * @return int file browser mode
+	 */
+	public function getFileBrowserMode(): ?int
+	{
+		return $this->getViewState(
+			self::FILE_BROWSER_MODE
+		);
 	}
 
 	/**
@@ -222,7 +264,15 @@ class RestoreWizard extends BaculumWebPage
 	 * @param string $endtime backup job time
 	 * @param string $jobstatus backup job status
 	 */
-	private function setBackupJobToRestore(int $jobid, string $name, string $type, string $endtime, string $jobstatus): void
+	private function setBackupJobToRestore(
+		int $jobid,
+		string $name,
+		string $type,
+		int $clientid,
+		int $filesetid,
+		string $endtime,
+		string $jobstatus
+	): void
 	{
 		$this->Session->open();
 		$this->Session->add(
@@ -231,6 +281,8 @@ class RestoreWizard extends BaculumWebPage
 				'jobid' => $jobid,
 				'name' => $name,
 				'type' => $type,
+				'clientid' => $clientid,
+				'filesetid' => $filesetid,
 				'endtime' => $endtime,
 				'jobstatus' => $jobstatus
 			]
@@ -260,6 +312,7 @@ class RestoreWizard extends BaculumWebPage
 	public function wizardNext($sender, $param)
 	{
 		if ($param->CurrentStepIndex === 0) {
+			$this->setFileBrowserMode((int) $this->FileBrowserMode->Value);
 			$this->loadBackupsForClient();
 			$this->loadGroupBackupToRestore();
 			$this->loadGroupBackupFileSets(null, null);
@@ -307,6 +360,7 @@ class RestoreWizard extends BaculumWebPage
 		if ($param->CurrentStepIndex === 1) {
 		} elseif ($param->CurrentStepIndex === 2) {
 			$this->loadBackupsForClient();
+			$this->resetRestoreSession();
 		} elseif ($param->CurrentStepIndex === 3) {
 			$this->loadSelectedFiles(null, null);
 			$this->loadFileVersions(null, null);
@@ -569,6 +623,9 @@ class RestoreWizard extends BaculumWebPage
 	{
 		$jobids = [];
 
+		// First finish previous session (if any)
+		$this->resetRestoreSession();
+
 		// Prepare jobid to set restore point
 		$jobid = 0;
 		$prev_jobid = $this->Session['restore_job']['jobid'] ?? 0;
@@ -599,9 +656,16 @@ class RestoreWizard extends BaculumWebPage
 		// remember elementary jobids
 		$this->setElementaryBackups($jobids);
 
-		if (!empty($jobids)) {
+		$fb_mode = $this->getFileBrowserMode();
+		if (!empty($jobids) && $fb_mode == self::BROWSER_MODE_DETAILED) {
 			// Generating Bvfs may take a moment
 			$this->generateBvfsCache($jobids);
+		}
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			// Reset simple browser session identifier
+			$this->setRestoreCommandId();
+			// Initialize the simple browser
+			$this->initSimpleRestoreSession($jobids);
 		}
 	}
 
@@ -626,14 +690,25 @@ class RestoreWizard extends BaculumWebPage
 			$limit = (int) ($this->RestoreBrowserLimit->Text);
 		}
 
-		// Get BVFS directory list
 		$dirs = [];
-		if ($this->Session->contains('restore_pathid')) {
-			$pathid = $this->Session['restore_pathid'];
-			$dirs = $this->getBVFSDirectoriesByPathId($pathid, $jobids, $offset, $limit);
-		} else {
-			$path = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
-			$dirs = $this->getBVFSDirectoriesByPath($path, $jobids, $offset, $limit);
+		$files = [];
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			// Get BVFS directory list
+			if ($this->Session->contains('restore_pathid')) {
+				$pathid = $this->Session['restore_pathid'];
+				$dirs = $this->getBVFSDirectoriesByPathId($pathid, $jobids, $offset, $limit);
+			} else {
+				$path = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
+				$dirs = $this->getBVFSDirectoriesByPath($path, $jobids, $offset, $limit);
+			}
+		} elseif  ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			// Get bconsole directory list
+			$path = $this->FileBrowserTypeFlat->Checked ? '/' . implode($this->Session['restore_path']) : '/';
+			[, $dirs, $files] = $this->getSimpleDirectoriesFilesByPath($path, (int) $offset, (int) $limit);
+			if (is_null($dirs) && is_null($files)) {
+				return [null];
+			}
 		}
 
 		$dir_count = count($dirs);
@@ -642,23 +717,28 @@ class RestoreWizard extends BaculumWebPage
 		} elseif ($dir_count == 0) {
 			$this->RestoreBrowserDirCount->Text = 0;
 		} else {
-			$this->RestoreBrowserDirCount->Text = ($dir_count - 1);
+			$this->RestoreBrowserDirCount->Text = ($fb_mode == self::BROWSER_MODE_SIMPLE) ? $dir_count : ($dir_count - 1);
 		}
 
-		// Get BVFS file list
-		$files = [];
-		if ($this->Session->contains('restore_pathid')) {
-			$pathid = $this->Session['restore_pathid'];
-			$files = $this->getBVFSFilesByPathId($pathid, $jobids, $offset, $limit);
-		} else {
-			$path = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
-			$files = $this->getBVFSFilesByPath($path, $jobids, $offset, $limit);
+		if ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			// Get BVFS file list
+			if ($this->Session->contains('restore_pathid')) {
+				$pathid = $this->Session['restore_pathid'];
+				$files = $this->getBVFSFilesByPathId($pathid, $jobids, $offset, $limit);
+			} else {
+				$path = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
+				$files = $this->getBVFSFilesByPath($path, $jobids, $offset, $limit);
+			}
 		}
 		$this->RestoreBrowserFileCount->Text = count($files);
 
 		$elements = array_merge($dirs, $files);
 		$elements = $this->addExtraPropsToElements($elements);
+
 		if (count($this->Session['restore_path']) > 0) {
+			if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+				array_unshift($elements, $this->browser_up_dir);
+			}
 			array_unshift($elements, $this->browser_root_dir);
 		}
 		if ($this->Session->contains('restore_pathid')) {
@@ -697,6 +777,8 @@ class RestoreWizard extends BaculumWebPage
 			$jobid,
 			$job->name,
 			$job->type,
+			(int) $job->clientid,
+			(int) $job->filesetid,
 			$job->endtime,
 			$job->jobstatus
 		);
@@ -860,6 +942,207 @@ class RestoreWizard extends BaculumWebPage
 	}
 
 	/**
+	 * Get directory files by path in simple browser mode.
+	 *
+	 * @param string $path path to load
+	 * @param int $offset item list offset
+	 * @param int $limit item list limit
+	 * @return array list of items from path in form [[jobids], [dirs], [files]]
+	 */
+	private function getSimpleDirectoriesFilesByPath(string $path, int $offset = 0, int $limit = 0): array
+	{
+		$jobs = $dirs = $files = [];
+		$sid = $this->getRestoreSessionId();
+		$cid = $this->getRestoreCommandId();
+
+		if (!$cid) {
+			$params = [
+				'session-id' => $sid,
+				'command' => 'cd',
+				'path' => $path
+			];
+			$api = $this->getModule('api');
+			$result = $api->create(
+				['jobs', 'restore', 'command'],
+				$params
+			);
+			$params = [
+				'session-id' => $sid,
+				'command' => 'ls',
+				'path' => $path,
+				'async' => 1
+			];
+			$ret = $api->create(
+				['jobs', 'restore', 'command'],
+				$params
+			);
+			if ($ret->error == 0) {
+				$out = json_decode($ret->output[0], true);
+				$cid = $out['command-id'] ?? '';
+				$this->setRestoreCommandId($cid);
+			}
+		}
+
+		$result = $this->getSimpleRestoreOutput($offset, $limit);
+		if ($result['error'] == 0) {
+			if ($result['output']) {
+				$dirs = array_map(function ($item) use ($path) {
+					$item['filenameid'] = 0;
+					$item['path'] = $path . $item['name'];
+					return $item;
+				}, $result['output']['dirs']);
+
+				$files = array_map(function ($item) use ($path) {
+					$item['filenameid'] = -1;
+					$item['path'] = $path . $item['name'];
+					return $item;
+				}, $result['output']['files']);
+				$jobs = $result['output']['jobs'];
+			} elseif ($path == '/') {
+				$dirs = $files = null;
+			}
+			$this->setRestoreCommandId();
+		} elseif ($result['error'] == GenericError::ERROR_INVALID_PATH) {
+			// No dirs/files in the catalog - full restore required
+			// Nothing to do
+		} else {
+			$dirs = $files = null;
+		}
+
+		return [$jobs, $dirs, $files];
+	}
+
+	/**
+	 * Initialize restore session with simple restore mode.
+	 *
+	 * @param array $jobids job identifiers to restore
+	 */
+	private function initSimpleRestoreSession(array $jobids): void
+	{
+		$success = false;
+		$api = $this->getModule('api');
+		$sid = $this->getRestoreSessionId();
+		$cid = $this->getRestoreCommandId();
+		if (!$sid && !$cid) {
+			$params = [
+				'jobid' => implode(',', $jobids) ?? 0,
+				'clientid' => $this->Session['restore_job']['clientid'] ?? '',
+				'filesetid' => $this->Session['restore_job']['filesetid'] ?? '',
+			];
+			$result = $api->create(
+				['jobs', 'restore', 'start'],
+				$params
+			);
+			$success = ($result->error == 0);
+			if ($success) {
+				$sid = $result->output->{'session-id'};
+				$cid = $result->output->{'command-id'};
+				$this->setRestoreSessionId($sid);
+				$this->setRestoreCommandId($cid);
+			}
+		}
+	}
+
+	/**
+	 * Get output for simple restore browser.
+	 *
+	 * @param int $offset output list offset
+	 * @param int $limit output list limit
+	 * @return array restore command output and error code
+	 */
+	private function getSimpleRestoreOutput(int $offset, int $limit): array
+	{
+		$sid = $this->getRestoreSessionId();
+		$cid = $this->getRestoreCommandId();
+		$ret = ['output' => [], 'error' => -1];
+		if ($sid && $cid) {
+			$ret = $this->waitOnSimpleRestoreOutput(
+				$sid,
+				$cid,
+				$offset,
+				$limit
+			);
+			if ($ret['error'] == 0) {
+				$this->setRestoreCommandId();
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * Wait on restore command output.
+	 *
+	 * @param string $sid session identifier
+	 * @param string $cid command identifier
+	 * @param int $offset output list offset
+	 * @param int $limit output list limit
+	 * @return array command output and error code
+	 */
+	private function waitOnSimpleRestoreOutput(string $sid, string $cid, int $offset = 0, int $limit = 0): array
+	{
+		$params = [
+			'session-id' => $sid,
+			'command-id' => $cid,
+			'offset' => $offset,
+			'limit' => $limit,
+			'timeout' => 3000
+		];
+		$query = '?' . http_build_query($params);
+		$api = $this->getModule('api');
+		$result = $api->get(
+			['jobs', 'restore', 'output', $query],
+		);
+		$ret = ['output' => $result->output, 'error' => $result->error];
+		if ($result->error == 0) {
+			if (is_object($result->output)) {
+				$misc = $this->getModule('misc');
+				$ret['output'] = $misc->objectToArray($result->output);
+			}
+		}
+		return $ret;
+	}
+
+	/**
+	 * Reset restore session.
+	 *
+	 * @param bool $force if true, clears session even if exists but not used
+	 * @return bool true on success, false otherwise
+	 */
+	private function resetRestoreSession($force = false): bool
+	{
+		$success = true;
+		$fb_mode = $this->getFileBrowserMode();
+		$sid = $this->getRestoreSessionId();
+		if (($fb_mode == self::BROWSER_MODE_SIMPLE || $force) && $sid) {
+			$params = [
+				'session-id' => $sid,
+				'command' => 'quit',
+				'async' => 1
+			];
+			$api = $this->getModule('api');
+			$result = $api->create(
+				['jobs', 'restore', 'command'],
+				$params
+			);
+			$success = ($result->error == 0);
+
+			// Clear related session values
+			$this->Session->open();
+			$this->Session->remove('restore_sessionid');
+			$this->Session->remove('restore_commandid');
+		}
+
+		// Clear general session values
+		$this->Session->remove('restore_path');
+		$this->Session->remove('restore_pathid');
+
+		// Reset path field
+		$this->loadBrowserPath();
+
+		return $success;
+	}
+
+	/**
 	 * Set plugin parameters.
 	 * The parameters are not set if backup does not contain plugin data.
 	 */
@@ -936,10 +1219,11 @@ class RestoreWizard extends BaculumWebPage
 	public static function addUniqid($el)
 	{
 		$el['uniqid'] = sprintf(
-			'%d:%d:%d',
-			$el['jobid'],
-			$el['pathid'],
-			$el['fileid']
+			'%d:%d:%d:%s',
+			$el['jobid'] ?? '',
+			$el['pathid'] ?? '',
+			$el['fileid'] ?? '',
+			$el['path'] ?? ''
 		);
 		return $el;
 	}
@@ -1223,6 +1507,9 @@ class RestoreWizard extends BaculumWebPage
 			}
 			return;
 		}
+		if ($this->getFileBrowserMode() != self::BROWSER_MODE_DETAILED) {
+			return;
+		}
 		$clientid = $this->BackupClient->SelectedValue;
 		$params = [
 			'clientid' => $clientid,
@@ -1380,6 +1667,48 @@ class RestoreWizard extends BaculumWebPage
 	}
 
 	/**
+	 * Set restore session identifer.
+	 *
+	 * @param string $sid restore session identifier
+	 */
+	private function setRestoreSessionId(string $sid = ''): void
+	{
+		$this->Session->open();
+		$this->Session->add('restore_sessionid', $sid);
+	}
+
+	/**
+	 * Get restore session identifier.
+	 *
+	 * @return string session identifier or empty string if session id not Set
+	 */
+	private function getRestoreSessionId(): string
+	{
+		return ($this->Session['restore_sessionid'] ?? '');
+	}
+
+	/**
+	 * Set restore command identifer.
+	 *
+	 * @param string $cid restore command identifier
+	 */
+	private function setRestoreCommandId(string $cid = ''): void
+	{
+		$this->Session->open();
+		$this->Session->add('restore_commandid', $cid);
+	}
+
+	/**
+	 * Get restore command identifier.
+	 *
+	 * @return string command identifier or empty string if command id not set
+	 */
+	private function getRestoreCommandId(): string
+	{
+		return ($this->Session['restore_commandid'] ?? '');
+	}
+
+	/**
 	 * Mark file to restore.
 	 *
 	 * @param string $uniqid file identifier
@@ -1438,7 +1767,7 @@ class RestoreWizard extends BaculumWebPage
 	 *
 	 * @return array list fileids and dirids
 	 */
-	public function getRestoreElements(): array
+	public function getRestoreBVFSElements(): array
 	{
 		$fileids = [];
 		$dirids = [];
@@ -1464,6 +1793,83 @@ class RestoreWizard extends BaculumWebPage
 	}
 
 	/**
+	 * Get simple browser elements marked to restore.
+	 *
+	 * @return array list of simple browser elements marked to restore
+	 */
+	private function getRestoreSimpleElements(): array
+	{
+		$dirs = [];
+		$files = [];
+		$ftores = $this->getFilesToRestore();
+		foreach ($ftores as $uniqid => $properties) {
+			if ($properties['type'] == 'dir') {
+				$dirs[] = $properties['path'];
+			} elseif ($properties['type'] == 'file') {
+				$files[] = $properties['path'];
+			}
+		}
+		$ret = [
+			'dirs' => $dirs,
+			'files' => $files
+		];
+		return $ret;
+	}
+
+	/**
+	 * Get elements marked to restore.
+	 *
+	 * @return array list of elements marked to restore
+	 */
+	private function getRestoreElements(): array
+	{
+		$elements = [];
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			$elements = $this->getRestoreSimpleElements();
+		} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			$elements = $this->getRestoreBVFSElements();
+		}
+		return $elements;
+	}
+
+	/**
+	 * Get selected to restore directory count.
+	 *
+	 * @return int number of directories to restore
+	 */
+	public function getSelectedDirectoryCount(): int
+	{
+		$cnt = 0;
+		$elements = $this->getRestoreElements();
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			$cnt = count($elements['dirs']);
+		} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			$cnt = count($elements['dirid']);
+		}
+		return $cnt;
+	}
+
+	/**
+	 * Get selected to restore files count.
+	 *
+	 * @return int number of files to restore
+	 */
+	public function getSelectedFileCount(): int
+	{
+		$cnt = 0;
+		$elements = $this->getRestoreElements();
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			$cnt = count($elements['files']);
+		} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			$cnt = count($elements['fileid']);
+		}
+		return $cnt;
+	}
+
+	/**
 	 * Wizard finish method.
 	 */
 	public function wizardCompleted(): void
@@ -1471,27 +1877,47 @@ class RestoreWizard extends BaculumWebPage
 		$jobids = $this->getElementaryBackup();
 		$path = self::BVFS_PATH_PREFIX . getmypid();
 		$restore_elements = $this->getRestoreElements();
-		$cmd_props = ['jobids' => implode(',', $jobids), 'path' => $path];
+		$cmd_props = [];
+		$restore_props = [
+			'client' => $this->BackupClient->SelectedItem->Text,
+			'restoreclient' => $this->RestoreClient->SelectedItem->Text
+		];
 		$is_element = false;
-		if (count($restore_elements['fileid']) > 0) {
-			$cmd_props['fileid'] = implode(',', $restore_elements['fileid']);
-			$is_element = true;
-		}
-		if (count($restore_elements['dirid']) > 0) {
-			$cmd_props['dirid'] = implode(',', $restore_elements['dirid']);
-			$is_element = true;
-		}
-		if (count($restore_elements['findex']) > 0) {
-			$cmd_props['findex'] = implode(',', $restore_elements['findex']);
-			$is_element = true;
+		$sess = $this->getApplication()->getSession();
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			// Simple bconsole restore
+			if (count($restore_elements['dirs']) > 0) {
+				$restore_props['directory'] = $restore_elements['dirs'];
+				$is_element = true;
+			}
+			if (count($restore_elements['files']) > 0) {
+				$restore_props['file'] = $restore_elements['files'];
+				$is_element = true;
+			}
+			$restore_props['filesetid'] = $sess['restore_job']['filesetid'];
+		} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			// BVFS restore
+			$cmd_props = [
+				'jobids' => implode(',', $jobids),
+				'path' => $path
+			];
+			if (count($restore_elements['fileid']) > 0) {
+				$cmd_props['fileid'] = implode(',', $restore_elements['fileid']);
+				$is_element = true;
+			}
+			if (count($restore_elements['dirid']) > 0) {
+				$cmd_props['dirid'] = implode(',', $restore_elements['dirid']);
+				$is_element = true;
+			}
+			if (count($restore_elements['findex']) > 0) {
+				$cmd_props['findex'] = implode(',', $restore_elements['findex']);
+				$is_element = true;
+			}
 		}
 
 		$jobid = null;
 		$ret = new StdClass();
-		$restore_props = [
-			'client' => $this->RestoreClient->SelectedItem->Text
-		];
-		$sess = $this->getApplication()->getSession();
 		if ($sess->itemAt('file_relocation') == 2) {
 			if (!empty($this->RestoreStripPrefix->Text)) {
 				$restore_props['strip_prefix'] = $this->RestoreStripPrefix->Text;
@@ -1520,20 +1946,32 @@ class RestoreWizard extends BaculumWebPage
 		$api = $this->getModule('api');
 		$misc = $this->getModule('misc');
 		if ($is_element) {
-			// Single file restore
-			$api->create(
-				['bvfs', 'restore'],
-				$cmd_props
-			);
-			$restore_props['rpath'] = $path;
+			$ret = (object) ['output' => [], 'error' => 0];
+			if ($fb_mode == self::BROWSER_MODE_DETAILED) {
+				// BVFS restore
+				$api->create(
+					['bvfs', 'restore'],
+					$cmd_props
+				);
+				$restore_props['rpath'] = $path;
+				$ret = $api->create(
+					['jobs', 'restore'],
+					$restore_props
+				);
+			} elseif ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+				$restore_props['id'] = $this->Session['restore_job']['jobid'];
+				$restore_props['session-id'] = $this->getRestoreSessionId();
+				$ret = $api->create(
+					['jobs', 'restore', 'finish'],
+					$restore_props
+				);
+			}
 
-			$ret = $api->create(
-				['jobs', 'restore'],
-				$restore_props
-			);
 			$jobid = $misc->findJobIdStartedJob($ret->output);
-			// Remove temporary BVFS table
-			$api->set(['bvfs', 'cleanup'], ['path' => $path]);
+			if ($fb_mode == self::BROWSER_MODE_DETAILED) {
+				// Remove temporary BVFS table
+				$api->set(['bvfs', 'cleanup'], ['path' => $path]);
+			}
 		} elseif ($this->Session->contains('restore_job')) {
 			// Full backup restore
 			$restore_props['full'] = 1;
@@ -1572,6 +2010,7 @@ class RestoreWizard extends BaculumWebPage
 				AuditLog::CATEGORY_ACTION,
 				"Run restore failed. Job: {$restore_props['restorejob']}"
 			);
+			$this->resetWizard();
 		}
 	}
 
@@ -1743,7 +2182,7 @@ class RestoreWizard extends BaculumWebPage
 		$volumes = [];
 		$api = $this->getModule('api');
 		foreach ($this->getFilesToRestore() as $uniqid => $props) {
-			[$jobid, $pathid, $fileid] = explode(':', $uniqid, 3);
+			[$jobid, $pathid, $fileid,] = explode(':', $uniqid, 4);
 			if ($jobid === '0') {
 				/**
 				 * No way to determine proper jobid for elements.
@@ -1778,6 +2217,7 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->open();
 		$this->setFileVersions();
 		$this->setFilesToRestore();
+		$this->resetRestoreSession(true);
 		$this->Session->remove('backup_jobids');
 		$this->Session->remove('files_versions');
 		$this->Session->remove('files_restore');

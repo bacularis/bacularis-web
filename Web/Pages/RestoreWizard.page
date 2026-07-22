@@ -18,7 +18,7 @@
 					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
 						<div class="w3-left"><i class="fa fa-desktop w3-xxlarge"></i></div>
 						<div class="w3-clear"></div>
-						<h4><com:TTranslate Text="Client" /></h4>
+						<h4><com:TTranslate Text="Source" /></h4>
 					</div>
 				</div>
 				<div class="w3-col w3-padding-16" style="width: 20%">
@@ -114,26 +114,140 @@
 				</com:TLinkButton>
 			</div>
 		</prop:FinishNavigationTemplate>
-		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - select source backup client ]%>" StepType="Auto">
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1 - select restore source and browser mode ]%>" StepType="Auto">
 			<div class="w3-half" style="margin: auto; float: none;">
 				<h2><%[ Restore wizard ]%></h2>
 				<p>
-					<%[ This wizard enables you to do in easy way restore files to destination Bacula Client. ]%>
-					<%[ To start, please select backup Client which data you want to restore. ]%>
+					<%[ Select the backup client and choose how you want to browse files for restore. ]%>
 				</p>
+				<h3><%[ Backup client ]%></h3>
 				<div class="w3-panel">
 					<div class="w3-third"><com:TLabel ForControl="BackupClient" Text="<%[ Backup from client: ]%>" /></div>
 					<div class="w3-third">
 						<com:TDropDownList ID="BackupClient" CssClass="w3-select w3-border" CausesValidation="false" />
 					</div>
 				</div>
-				<div class="w3-section">
-					<div class="w3-third"><com:TLabel ForControl="EnableCopyJobRestore" Text="<%[ Enable restore from copy jobs feature: ]%>" /></div>
+				<h3><%[ File browser mode ]%> <small class="w3-text-blue pointer" style="font-size: 12px; margin-left: 10px;" onclick="oRestoreWizardStep1.show_restore_modes_help(true);"><i class="fa-solid fa-info-circle"></i> &nbsp;<%[ Help me choose ]%></small></h3>
+				<div style="display: flex; align-items: stretch;">
+					<div style="width: 50%; padding: 0 8px; user-select: none;">
+						<div id="restore_wizard_file_browser_detailed" class="w3-card w3-padding pointer" style="display: flex; flex-direction: column; flex: 1; height: 100%; border-radius: 12px;" onclick="oRestoreWizardStep1.set_file_browser_mode(2);">
+							<div>
+								<h4><%[ Detailed file browser ]%></h4>
+								<p><%[ Browse files and directories with file details, versions, and catalog metadata. ]%></p>
+								<p><%[ Best for precise restore when you need more information before selecting files. ]%></p>
+							</div>
+							<div style="margin-top: auto;">
+								<%[ Method ]%>: <strong>Bacula BVFS</strong>
+							</div>
+						</div>
+					</div>
+					<div style="width: 50%; padding: 0 8px; user-select: none;">
+						<div id="restore_wizard_file_browser_simple" class="w3-card w3-padding pointer" style="display: flex; flex-direction: column; flex: 1; height: 100%; border-radius: 12px;" onclick="oRestoreWizardStep1.set_file_browser_mode(1);">
+							<div>
+								<h4><%[ Simple file browser ]%></h4>
+								<p><%[ Browse and select files and directories by name only, without additional file details. ]%></p>
+								<p><%[ Faster to prepare and useful for large backups with many files. ]%></p>
+							</div>
+							<div style="margin-top: auto;">
+								<%[ Method ]%>: <strong>Bacula bconsole restore</strong>
+							</div>
+						</div>
+					</div>
+					<com:TActiveHiddenField ID="FileBrowserMode" />
+				</div>
+				<h3><%[ Additional restore options ]%></h3>
+				<div class="w3-panel">
+					<div class="w3-third"><com:TLabel ForControl="EnableCopyJobRestore" Text="<%[ Include copy jobs: ]%>" /></div>
 					<div class="w3-third">
 						<com:TCheckBox ID="EnableCopyJobRestore" CssClass="w3-check" CausesValidation="false" Checked="true" />
 					</div>
 				</div>
 			</div>
+			<div id="restore_wizard_file_browser_modes" class="w3-modal">
+				<div class="w3-modal-content w3-animate-top w3-card-4">
+					<header class="w3-container w3-green"> 
+						<span onclick="oRestoreWizardStep1.show_restore_modes_help(false);" class="w3-button w3-display-topright">×</span>
+						<h2><%[ File browser modes ]%></h2>
+					</header>
+					<div class="w3-container w3-margin-left w3-margin-right w3-padding">
+						<p><%[ Both modes let you browse and select files or directories. The difference is the level of file details and restore preparation speed. ]%></p>
+						<table class="display w3-table w3-striped w3-hoverable w3-margin-bottom list_full dataTable dtr-column">
+							<thead>
+								<tr>
+									<th><%[ Use case ]%></th>
+									<th><%[ Recommended mode ]%></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><%[ I need to see file versions ]%></td>
+									<td><%[ Detailed file browser ]%></td>
+								</tr>
+								<tr>
+									<td><%[ I want to compare file details before restoring ]%></td>
+									<td><%[ Detailed file browser ]%></td>
+								</tr>
+								<tr>
+									<td><%[ I only need to browse names and select files ]%></td>
+									<td><%[ Simple file browser ]%></td>
+								</tr>
+								<tr>
+									<td><%[ I restore data from a backup with many files ]%></td>
+									<td><%[ Simple file browser ]%></td>
+								</tr>
+								<tr>
+									<td><%[ BVFS cache preparation takes too long ]%></td>
+									<td><%[ Simple file browser ]%></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<footer class="w3-container w3-center w3-margin-bottom">
+						<button type="button" class="w3-button w3-green" onclick="oRestoreWizardStep1.show_restore_modes_help(false);">
+							<i class="fa-solid fa-times"></i> &nbsp;<%[ Close ]%>
+						</button>
+					</footer>
+				</div>
+			</div>
+			<script>
+const oRestoreWizardStep1 = {
+	ids: {
+		restore_modes_win: 'restore_wizard_file_browser_modes',
+		file_browser_detailed_box: 'restore_wizard_file_browser_detailed',
+		file_browser_simple_box: 'restore_wizard_file_browser_simple',
+		file_browser_mode: '<%=$this->FileBrowserMode->ClientID%>'
+	},
+	init: function(mode) {
+		this.set_file_browser_mode(mode);
+	},
+	file_browser_modes: {
+		simple: 1,
+		detailed: 2
+	},
+	show_restore_modes_help: function(show) {
+		const win = document.getElementById(this.ids.restore_modes_win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	set_file_browser_mode: function(mode) {
+		const input = document.getElementById(this.ids.file_browser_mode);
+		input.value = mode;
+
+		const simple_box = document.getElementById(this.ids.file_browser_simple_box);
+		const detailed_box = document.getElementById(this.ids.file_browser_detailed_box);
+		const active_css = 'block-active-xl';
+		if (mode == this.file_browser_modes.simple) {
+			detailed_box.classList.remove(active_css);
+			simple_box.classList.add(active_css);
+		} else if (mode == this.file_browser_modes.detailed) {
+			simple_box.classList.remove(active_css);
+			detailed_box.classList.add(active_css);
+		}
+	}
+};
+$(() => {
+	oRestoreWizardStep1.init(<%=$this->FileBrowserMode->Value ?: 2%>);
+});
+			</script>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step2" Title="<%[ Step 2 - select backup to restore ]%>" StepType="Auto">
 			<div class="w3-margin-bottom">
@@ -618,12 +732,12 @@ $(function() {
 			<com:TCallback
 				ID="LoadPath"
 				OnCallback="loadPath"
+				ClientSide.RequestTimeOut="60000"
 			>
 				<prop:ClientSide.OnLoading>
-					document.getElementById('restore-browser-files-loading').style.display = 'block';
+					oRestoreBrowserFiles.show_loader(true);
 				</prop:ClientSide.OnLoading>
 				<prop:ClientSide.OnComplete>
-					document.getElementById('restore-browser-files-loading').style.display = 'none';
 					make_draggable();
 				</prop:ClientSide.OnComplete>
 			</com:TCallback>
@@ -641,43 +755,45 @@ $(function() {
 					</button>
 				</div>
 			</div>
-			<div class="w3-row w3-hide-small w3-small">
-				<span id="file_browser_item_count">
-					<span><%[ # Directories: ]%></span>
-					<com:TActiveLabel
-						ID="RestoreBrowserDirCount"
-						CssClass="w3-show-inline-block"
-						Style="min-width: 20px;"
-						Text="0"
-					/>
-					<span><%[ # Files: ]%></span>
-					<com:TActiveLabel
-						ID="RestoreBrowserFileCount"
-						CssClass="w3-show-inline-block"
-						Style="min-width: 20px;"
-						Text="0"
-					/>
-				</span>
-				<span class="w3-show-inline-block w3-margin-left">
-					<com:TActiveRadioButton
-						ID="FileBrowserTypeFlat"
-						Groupname="FileBrowserType"
-						Value="0"
-						Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
-						Checked="true"
-						Style="vertical-align: text-top"
-					/> &nbsp;<label for="<%=$this->FileBrowserTypeFlat->ClientID%>"><%[ flat browser ]%></label>
-				</span>
-				<span class="w3-show-inline-block" style="margin-left: 7px">
-					<com:TActiveRadioButton
-						ID="FileBrowserTypeTree"
-						Groupname="FileBrowserType"
-						Value="1"
-						Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
-						Style="vertical-align: text-top"
-					/> &nbsp;<label for="<%=$this->FileBrowserTypeTree->ClientID%>"><%[ tree browser ]%></label>
-				</span>
-				<div class="w3-right w3-half w3-hide-small" style="text-align: right; margin-top: 5px">
+			<div class="w3-row w3-hide-small w3-small" style="display: flex; align-items: self-end;">
+				<div style="width: 50%">
+					<span id="file_browser_item_count">
+						<span><%[ # Directories: ]%></span>
+						<com:TActiveLabel
+							ID="RestoreBrowserDirCount"
+							CssClass="w3-show-inline-block"
+							Style="min-width: 20px;"
+							Text="0"
+						/>
+						<span><%[ # Files: ]%></span>
+						<com:TActiveLabel
+							ID="RestoreBrowserFileCount"
+							CssClass="w3-show-inline-block"
+							Style="min-width: 20px;"
+							Text="0"
+						/>
+					</span>
+					<span class="w3-margin-left" style="display: <%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? 'none' : 'inline-block'%>">
+						<com:TActiveRadioButton
+							ID="FileBrowserTypeFlat"
+							Groupname="FileBrowserType"
+							Value="0"
+							Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
+							Checked="true"
+							Style="vertical-align: text-top"
+						/> &nbsp;<label for="<%=$this->FileBrowserTypeFlat->ClientID%>"><%[ flat browser ]%></label>
+					</span>
+					<span style="display: <%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? 'none' : 'inline-block'%>; margin-left: 7px">
+						<com:TActiveRadioButton
+							ID="FileBrowserTypeTree"
+							Groupname="FileBrowserType"
+							Value="1"
+							Attributes.onclick="oRestoreBrowserFiles.show_browser(this.value);"
+							Style="vertical-align: text-top"
+						/> &nbsp;<label for="<%=$this->FileBrowserTypeTree->ClientID%>"><%[ tree browser ]%></label>
+					</span>
+				</div>
+				<div class="w3-right w3-hide-small" style="text-align: right; margin-top: 5px; width: 50%;">
 					<span><%[ Backup client ]%>:</span>
 					<com:TActiveLabel
 						ID="RestoreBrowserClient"
@@ -712,13 +828,13 @@ $(function() {
 			</div>
 			<table id="restore-browser">
 				<tr>
-					<td rowspan="2" style="height: 100%">
+					<td rowspan="2" style="height: 100%; padding-top: 3px;">
+						<div id="restore-browser-files" class="w3-border">
 						<div id="restore-browser-files-loading" style="display: none">
 							<div style="position: relative; height: 100%;">
 								<i class="fa-solid fa-sync-alt fa-5x w3-spin"></i>
 							</div>
 						</div>
-						<div id="restore-browser-files" class="w3-border">
 							<div id="restore-browser-files-content-flat"></div>
 							<div id="restore-browser-files-content-tree" style="display: none;"></div>
 						</div>
@@ -764,7 +880,8 @@ var oRestoreBrowserFiles = {
 		path_btn: 'load_path_btn',
 		item_count: 'file_browser_item_count',
 		prev_page: 'restore-browser-prev-page',
-		next_page: 'restore-browser-next-page'
+		next_page: 'restore-browser-next-page',
+		loader: 'restore-browser-files-loading'
 	},
 	cls: {
 		draggable: 'draggable',
@@ -795,6 +912,8 @@ var oRestoreBrowserFiles = {
 	},
 	items: new Map(),
 	excluded_items: ['.', '..'],
+	content_repeats: 0,
+	max_content_repeats: 30,
 	init: function(items) {
 		this.set_events();
 		this.show_browser(this.browsers.flat);
@@ -851,8 +970,22 @@ var oRestoreBrowserFiles = {
 		cb.dispatch();
 	},
 	populate: function(items) {
+console.log(items);
 		let container;
 		let self = oRestoreBrowserFiles;
+		if (items.length === 1 && items[0] === null && self.content_repeats <= self.max_content_repeats) {
+			// Repeat the query
+			setTimeout(
+				() => oRestoreBrowserFiles.load_browser_content(),
+				1000
+			);
+			self.content_repeats++;
+			self.show_loader(true);
+			return;
+		}
+		self.show_loader(false);
+		self.content_repeats = 0;
+
 		const browser_type = self.get_browser_type();
 		if (browser_type == self.browsers.flat) {
 			self.clear_browser();
@@ -903,8 +1036,8 @@ var oRestoreBrowserFiles = {
 
 			const vposition = el.style.left;
 			const ul = el.querySelector('UL');
-			if(vposition == null || vposition == '0px'){
-				e.stop();
+			if (vposition == null || vposition == '0px' || (item.type === this.types.file && <%=$this->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? 'true' : 'false'%>)) {
+				e.stopPropagation();
 			} else if (browser_type == this.browsers.tree && item.type === this.types.directory && el.querySelector('LI')) {
 				// directory already loaded, so open it or close but without any data request.
 				$(ul).slideToggle('fast', () => {
@@ -922,12 +1055,15 @@ var oRestoreBrowserFiles = {
 				request.setCallbackParameter(cbp);
 				var ocf = request.options.onComplete;
 				request.options.onComplete = () => {
-					ocf();
+					if (typeof(ocf) == 'function') {
+						ocf();
+					}
 					Formatters.set_formatters();
 					make_draggable();
 					if (browser_type == this.browsers.tree && item.type === this.types.directory) {
 						this.toggle_directory_icon(el, ul);
 					}
+					this.show_loader(false);
 				};
 				request.dispatch();
 			}
@@ -1083,6 +1219,27 @@ var oRestoreBrowserFiles = {
 		status.innerHTML = JobStatus.get_icon(status.textContent).outerHTML;
 		var time_point = document.getElementById(this.ids.time_point);
 		time_point.textContent = Units.format_date_str(time_point.textContent, true);
+	},
+	show_loader: function(show) {
+		const loader = document.getElementById(this.ids.loader);
+		const flat_browser = document.getElementById(this.ids.content_flat);
+		const tree_browser = document.getElementById(this.ids.content_tree);
+		const browser_type = this.get_browser_type();
+		if (show) {
+			loader.style.display = 'flex';
+			if (browser_type == this.browsers.flat) {
+				flat_browser.style.display = 'none';
+			} else if (browser_type == this.browsers.tree) {
+				tree_browser.style.display = 'none';
+			}
+		} else {
+			loader.style.display = 'none';
+			if (browser_type == this.browsers.flat) {
+				flat_browser.style.display = 'block';
+			} else if (browser_type == this.browsers.tree) {
+				tree_browser.style.display = 'block';
+			}
+		}
 	}
 };
 $(function() {
@@ -1096,14 +1253,11 @@ $(function() {
 						</com:TCallback>
 						<com:TCallback ID="GetVersions" OnCallback="Page.getVersions">
 							<prop:ClientSide.OnLoading>
-								document.getElementById('restore-browser-files-loading').style.display = 'block';
+								oRestoreBrowserFiles.show_loader(true);
 							</prop:ClientSide.OnLoading>
-							<prop:ClientSide.OnComplete>
-								document.getElementById('restore-browser-files-loading').style.display = 'none';
-							</prop:ClientSide.OnComplete>
 						</com:TCallback>
 					</td>
-					<td style="height: 50%">
+					<td style="<%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? 'display: none' : 'height: 50%'%>">
 						<div id="restore-browser-versions" class="w3-border" style="position: relative">
 							<div id="restore-browser-versions-content" class="file-browser-detail"></div>
 						</div>
@@ -1260,7 +1414,7 @@ $(function() {
 					</td>
 				</tr>
 				<tr>
-					<td style="height: 50%; vertical-align: bottom;">
+					<td style="height: <%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? '100%' : '50%'%>; vertical-align: bottom;">
 						<div id="restore-browser-selected" class="w3-border">
 							<com:TCallback
 								ID="RemoveSelectedItem"
@@ -1290,7 +1444,7 @@ var oRestoreBrowserSelectedFiles = {
 		item_sel_btn: 'item_selected_del_btn'
 	},
 	txts: {
-		no_files: "<%[ To add a file to restore please click 'Add' link or please drag here the file from the top frame or from the frame on the left. ]%>"
+		no_files: '<%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? Prado::localize('To add a file to restore, click the "Add" link or drag the file from the box on the left.') : Prado::localize('To add a file to restore please click "Add" link or please drag here the file from the top frame or from the frame on the left.')%>'
 	},
 	types: {
 		directory: 'dir',
@@ -1448,11 +1602,6 @@ $(function() {
 
 					// workaround for setting proper browser height on Firefox
 					$(rb).find('tbody')[0].style.height = comp_rb_height;
-
-					var rb_files = document.getElementById('restore-browser-files');
-					var rb_load = document.querySelector('#restore-browser-files-loading > div');
-					rb_load.style.width = rb_files.offsetWidth + 'px';
-					rb_load.style.height = rb_files.offsetHeight + 'px';
 				}
 				function make_draggable() {
 					$('.draggable').draggable({
@@ -1573,28 +1722,30 @@ $(function() {
 						</div>
 					</div>
 				</div>
-				<h4><%[ Volumes ]%></h4>
-				<p><%[ During restore there will be used following volumes: ]%></p>
-				<com:TRepeater ID="RestoreVolumes">
-					<prop:HeaderTemplate>
-						<table class="w3-table w3-striped w3-border w3-hoverable w3-margin-bottom dataTable" style="width: 100%">
-							<thead>
+				<div style="display: <%=$this->Page->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? 'none' : 'block'%>">
+					<h4><%[ Volumes ]%></h4>
+					<p><%[ During restore there will be used following volumes: ]%></p>
+					<com:TRepeater ID="RestoreVolumes">
+						<prop:HeaderTemplate>
+							<table class="w3-table w3-striped w3-border w3-hoverable w3-margin-bottom dataTable" style="width: 100%">
+								<thead>
+									<tr>
+										<th><%[ In Changer ]%></th>
+										<th><%[ Volume ]%></th>
+									</tr>
+								</thead>
+						</prop:HeaderTemplate>
+						<prop:ItemTemplate>
 								<tr>
-									<th><%[ In Changer ]%></th>
-									<th><%[ Volume ]%></th>
+									<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
+									<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
 								</tr>
-							</thead>
-					</prop:HeaderTemplate>
-					<prop:ItemTemplate>
-							<tr>
-								<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
-								<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
-							</tr>
-					</prop:ItemTemplate>
-					<prop:FooterTemplate>
-						</table>
-					</prop:FooterTemplate>
-				</com:TRepeater>
+						</prop:ItemTemplate>
+						<prop:FooterTemplate>
+							</table>
+						</prop:FooterTemplate>
+					</com:TRepeater>
+				</div>
 			</div>
 			<com:TCallback ID="SetWhereToRestore" OnCallback="setWherePath" />
 			<com:TCallback ID="SavePluginSettingsForm" OnCallback="savePluginSettingsForm" />
@@ -1712,12 +1863,12 @@ $(function() {
 				<fieldset>
 					<legend><%[ Files for restore ]%></legend>
 					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><%[ Selected directories count: ]%></div>
-						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements()['dirid']) ? count($this->getRestoreElements()['dirid']) : '0'%></div>
+						<div class="w3-col w3-third"><%[ Number of selected directories ]%>:</div>
+						<div class="w3-col w3-third bold"><%=$this->getSelectedDirectoryCount()%></div>
 					</div>
 					<div class="w3-section w3-row">
-						<div class="w3-col w3-third"><%[ Selected files count: ]%></div>
-						<div class="w3-col w3-third bold"><%=isset($this->getRestoreElements()['fileid']) ? count($this->getRestoreElements()['fileid']) : '0'%></div>
+						<div class="w3-col w3-third"><%[ Number of selected files ]%>:</div>
+						<div class="w3-col w3-third bold"><%=$this->getSelectedFileCount()%></div>
 					</div>
 				</fieldset>
 				<fieldset>

@@ -1376,12 +1376,6 @@ msgstr "Path:"
 msgid "Restore wizard"
 msgstr "Restore wizard"
 
-msgid "This wizard enables you to do in easy way restore files to destination Bacula Client."
-msgstr "This wizard enables you to do in easy way restore files to destination Bacula Client."
-
-msgid "To start, please select backup Client which data you want to restore."
-msgstr "To start, please select backup Client which data you want to restore."
-
 msgid "There are two ways to select backup to restore. The selected backup way provides list of jobs from which there is possible to select a job. If you need the latest backups from the Client alternatively you can use Group most recent backups way which will select backups for you basing on backup job name and fileset resource."
 msgstr "There are two ways to select backup to restore. The selected backup way provides list of jobs from which there is possible to select a job. If you need the latest backups from the Client alternatively you can use Group most recent backups way which will select backups for you basing on backup job name and fileset resource."
 
@@ -7521,3 +7515,82 @@ msgstr "EBS volume backup"
 
 msgid "Create AWS EBS volume backup"
 msgstr "Create AWS EBS volume backup"
+
+msgid "Select the backup client and choose how you want to browse files for restore."
+msgstr "Select the backup client and choose how you want to browse files for restore."
+
+msgid "Step 1 - select restore source and browser mode"
+msgstr "Step 1 - select restore source and browser mode"
+
+msgid "Help me choose"
+msgstr "Help me choose"
+
+msgid "File browser mode"
+msgstr "File browser mode"
+
+msgid "Detailed file browser"
+msgstr "Detailed file browser"
+
+msgid "Browse files and directories with file details, versions, and catalog metadata."
+msgstr "Browse files and directories with file details, versions, and catalog metadata."
+
+msgid "Best for precise restore when you need more information before selecting files."
+msgstr "Best for precise restore when you need more information before selecting files."
+
+msgid "Method"
+msgstr "Method"
+
+msgid "Simple file browser"
+msgstr "Simple file browser"
+
+msgid "Browse and select files and directories by name only, without additional file details."
+msgstr "Browse and select files and directories by name only, without additional file details."
+
+msgid "Faster to prepare and useful for large backups with many files."
+msgstr "Faster to prepare and useful for large backups with many files."
+
+msgid "Include copy jobs:"
+msgstr "Include copy jobs:"
+
+msgid "File browser modes"
+msgstr "File browser modes"
+
+msgid "Both modes let you browse and select files or directories. The difference is the level of file details and restore preparation speed."
+msgstr "Both modes let you browse and select files or directories. The difference is the level of file details and restore preparation speed."
+
+msgid "Use case"
+msgstr "Use case"
+
+msgid "Recommended mode"
+msgstr "Recommended mode"
+
+msgid "I need to see file versions"
+msgstr "I need to see file versions"
+
+
+msgid "I want to compare file details before restoring"
+msgstr "I want to compare file details before restoring"
+
+msgid "I only need to browse names and select files"
+msgstr "I only need to browse names and select files"
+
+msgid "I restore data from a backup with many files"
+msgstr "I restore data from a backup with many files"
+
+msgid "BVFS cache preparation takes too long"
+msgstr "BVFS cache preparation takes too long"
+
+msgid "Number of selected directories"
+msgstr "Number of selected directories"
+
+msgid "Number of selected files"
+msgstr "Number of selected files"
+
+msgid "To add a file to restore, click the \"Add\" link or drag the file from the box on the left."
+msgstr "To add a file to restore, click the \"Add\" link or drag the file from the box on the left."
+
+msgid "Source"
+msgstr "Source"
+
+msgid "Additional restore options"
+msgstr "Additional restore options"
