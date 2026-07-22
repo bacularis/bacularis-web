@@ -261,6 +261,8 @@ class RestoreWizard extends BaculumWebPage
 	 * @param int $jobid backup job identifier
 	 * @param string $name backup job name
 	 * @param string $type backup job type
+	 * @param int $clientid client identifier
+	 * @param int $filesetid fileset identifier
 	 * @param string $endtime backup job time
 	 * @param string $jobstatus backup job status
 	 */
@@ -272,8 +274,7 @@ class RestoreWizard extends BaculumWebPage
 		int $filesetid,
 		string $endtime,
 		string $jobstatus
-	): void
-	{
+	): void {
 		$this->Session->open();
 		$this->Session->add(
 			'restore_job',
@@ -702,7 +703,7 @@ class RestoreWizard extends BaculumWebPage
 				$path = $this->FileBrowserTypeFlat->Checked ? implode($this->Session['restore_path']) : '';
 				$dirs = $this->getBVFSDirectoriesByPath($path, $jobids, $offset, $limit);
 			}
-		} elseif  ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+		} elseif ($fb_mode == self::BROWSER_MODE_SIMPLE) {
 			// Get bconsole directory list
 			$path = $this->FileBrowserTypeFlat->Checked ? '/' . implode($this->Session['restore_path']) : '/';
 			[, $dirs, $files] = $this->getSimpleDirectoriesFilesByPath($path, (int) $offset, (int) $limit);
