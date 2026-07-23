@@ -970,7 +970,6 @@ var oRestoreBrowserFiles = {
 		cb.dispatch();
 	},
 	populate: function(items) {
-console.log(items);
 		let container;
 		let self = oRestoreBrowserFiles;
 		if (items.length === 1 && items[0] === null && self.content_repeats <= self.max_content_repeats) {
