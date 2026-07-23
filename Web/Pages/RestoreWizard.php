@@ -1083,6 +1083,7 @@ class RestoreWizard extends BaculumWebPage
 				'jobid' => implode(',', $jobids) ?? 0,
 				'clientid' => $this->Session['restore_job']['clientid'] ?? '',
 				'filesetid' => $this->Session['restore_job']['filesetid'] ?? '',
+				'restorejob' => $this->RestoreJob->SelectedValue
 			];
 			$result = $api->create(
 				['jobs', 'restore', 'start'],

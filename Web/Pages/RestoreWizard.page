@@ -1627,7 +1627,7 @@ $(function() {
 						<com:TDropDownList ID="RestoreClient" CssClass="w3-select w3-border" CausesValidation="false" />
 					</div>
 				</div>
-				<div class="w3-section w3-row directive_field">
+				<div class="w3-section w3-row directive_field<%=$this->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? ' hide' : ''%>">
 					<div class="w3-col w3-third"><com:TLabel ForControl="RestoreJob" Text="<%[ Restore job: ]%>" /></div>
 					<div class="w3-col w3-half">
 						<com:TActiveDropDownList ID="RestoreJob" CssClass="w3-select w3-border" CausesValidation="false" OnCallback="setWherePath" />
@@ -1885,7 +1885,7 @@ $(function() {
 				</fieldset>
 				<fieldset>
 					<legend><%[ Restore job options ]%></legend>
-					<div class="w3-section w3-row">
+					<div class="w3-section w3-row<%=$this->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? ' hide' : ''%>">
 						<div class="w3-col w3-third"><%[ Restore job: ]%></div>
 						<div class="w3-col w3-third bold"><%=$this->RestoreJob->Text%></div>
 					</div>
