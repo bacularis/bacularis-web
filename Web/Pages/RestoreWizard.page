@@ -913,7 +913,7 @@ var oRestoreBrowserFiles = {
 	items: new Map(),
 	excluded_items: ['.', '..'],
 	content_repeats: 0,
-	max_content_repeats: 30,
+	max_content_repeats: 150,
 	init: function(items) {
 		this.set_events();
 		this.show_browser(this.browsers.flat);
