@@ -31,6 +31,7 @@ use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Errors\GenericError;
+use Bacularis\Common\Modules\Protocol\HTTP\Redirection;
 
 /**
  * Restore wizard page.
@@ -123,6 +124,13 @@ class RestoreWizard extends BaculumWebPage
 	public const BVFS_PATH_PREFIX = 'b2';
 
 	/**
+	 * Maximum session idle time (in seconds).
+	 * It is taken into account for simple restore only.
+	 * Default: 4 hours
+	 */
+	private const SESSION_IDLE_TIMEOUT = 14400;
+
+	/**
 	 * Initialize restore page.
 	 *
 	 * @param TXmlElement $param page config
@@ -155,6 +163,9 @@ class RestoreWizard extends BaculumWebPage
 	public function onPreRender($param)
 	{
 		parent::onPreRender($param);
+		if ($this->IsCallBack) {
+			$this->refreshWizardSession();
+		}
 		$this->setNavigationButtons();
 	}
 
@@ -290,6 +301,47 @@ class RestoreWizard extends BaculumWebPage
 		);
 	}
 
+	private function refreshWizardSession(): void
+	{
+		$sess = $this->getApplication()->getSession();
+		$key = 'restore_sess_timeout';
+		$time_epoch = $sess->itemAt($key);
+		$fb_mode = $this->getFileBrowserMode();
+		if ($fb_mode != self::BROWSER_MODE_SIMPLE) {
+			if (is_int($time_epoch)) {
+				$sess->open();
+				$sess->remove($key);
+			}
+			// Wizard session is used for simple restore only
+			return;
+		}
+		$now = time();
+		if (is_null($time_epoch)) {
+			// Create new session timeout
+			$te = $now + self::SESSION_IDLE_TIMEOUT;
+			$sess->open();
+			$sess->add($key, $te);
+		} elseif (is_int($time_epoch)) {
+			$te = $time_epoch - $now;
+			if ($te > 0) {
+				// SESSION IS ACTIVE - update it
+				$te = $now + self::SESSION_IDLE_TIMEOUT;
+				$sess->open();
+				$sess->add($key, $te);
+			} else {
+				// TIME OUT - exit wizard
+				$sess->open();
+				$sess->remove($key);
+				if ($this->IsCallBack) {
+					$cb = $this->getCallbackClient();
+					$cb->evaluateScript('{ alert("Session timed out. Please run wizard again."); window.location.href = "/";}');
+				} else {
+					Redirection::redirect('/');
+				}
+			}
+		}
+	}
+
 	/**
 	 * Set navigation buttons.
 	 * Used for restore specific jobid (hide previous button)
@@ -312,6 +364,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	public function wizardNext($sender, $param)
 	{
+		$this->refreshWizardSession();
 		if ($param->CurrentStepIndex === 0) {
 			$this->setFileBrowserMode((int) $this->FileBrowserMode->Value);
 			$this->loadBackupsForClient();
@@ -358,6 +411,7 @@ class RestoreWizard extends BaculumWebPage
 	 */
 	public function wizardPrev($sender, $param)
 	{
+		$this->refreshWizardSession();
 		if ($param->CurrentStepIndex === 1) {
 		} elseif ($param->CurrentStepIndex === 2) {
 			$this->loadBackupsForClient();
@@ -1123,7 +1177,9 @@ class RestoreWizard extends BaculumWebPage
 			$api = $this->getModule('api');
 			$result = $api->create(
 				['jobs', 'restore', 'command'],
-				$params
+				$params,
+				null,
+				false
 			);
 			$success = ($result->error == 0);
 
@@ -1150,33 +1206,53 @@ class RestoreWizard extends BaculumWebPage
 	private function setPluginInfo(): void
 	{
 		$jobids = $this->getElementaryBackup();
-		$q = [
-			'jobids' => implode(',', $jobids),
-			'output' => 'json',
-			'path' => '/'
-		];
-		$query = '?' . http_build_query($q);
-		$api = $this->getModule('api');
-		$bvfs_dirs = $api->get(
-			['bvfs', 'lsdirs', $query]
-		);
+		$fb_mode = $this->getFileBrowserMode();
+
+		// Get list of dirs in main root directory
+		$path = '/';
+		if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+			[, $dirs, ] = $this->getSimpleDirectoriesFilesByPath($path);
+		} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+			$dirs = $this->getBVFSDirectoriesByPath($path, $jobids);
+		}
+		if (!is_array($dirs)) {
+			return;
+		}
+
+		// Check if directory contains Bacularis plugin item
 		$dir = '';
-		if ($bvfs_dirs->error == 0) {
-			for ($i = 0; $i < count($bvfs_dirs->output); $i++) {
-				if ($bvfs_dirs->output[$i]->type == 'dir' && strpos($bvfs_dirs->output[$i]->name, '#') !== false) {
-					$dir = $bvfs_dirs->output[$i]->name;
-					break;
-				}
+		for ($i = 0; $i < count($dirs); $i++) {
+			if ($dirs[$i]['type'] == 'dir' && strpos($dirs[$i]['name'], '#') !== false) {
+				$dir = $dirs[$i]['name'];
+				break;
 			}
 		}
 		if ($dir) {
-			$q['path'] = '/' . $dir;
-			$query = '?' . http_build_query($q);
-			$bvfs_dirs = $api->get(
-				['bvfs', 'lsdirs', $query]
-			);
-			if ($bvfs_dirs->error === 0 && count($bvfs_dirs->output) === 2 && $bvfs_dirs->output[1]->type == 'dir') {
-				$name = rtrim($bvfs_dirs->output[1]->name, '/');
+			// Bacularis plugin item found
+			$path = '/' . $dir;
+			$pconfig_name = '';
+			if ($fb_mode == self::BROWSER_MODE_SIMPLE) {
+				[, $dirs, ] = $this->getSimpleDirectoriesFilesByPath($path);
+				if (count($dirs) != 1) {
+					// Invalid number of items in plugin dir
+					return;
+				}
+				if ($dirs[0]['type'] == 'dir') {
+					$pconfig_name = $dirs[0]['name'];
+				}
+
+			} elseif ($fb_mode == self::BROWSER_MODE_DETAILED) {
+				$dirs = $this->getBVFSDirectoriesByPath($path, $jobids);
+				if (count($dirs) != 2) {
+					// Invalid number of items in plugin dir
+					return;
+				}
+				if ($dirs[1]['type'] == 'dir') {
+					$pconfig_name = $dirs[1]['name'];
+				}
+			}
+			if ($pconfig_name) {
+				$name = rtrim($pconfig_name, '/');
 				$this->loadPluginSettings($name);
 			}
 		} else {
@@ -2229,5 +2305,6 @@ class RestoreWizard extends BaculumWebPage
 		$this->Session->remove('restore_job');
 		$this->Session->remove('file_relocation');
 		$this->Session->add('plugin_info', []);
+		$this->Session->remove('restore_sess_timeout');
 	}
 }
