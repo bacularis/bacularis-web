@@ -330,6 +330,7 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 					'paging'
 				]
 			},
+			autoWidth: false,
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			columns: [
