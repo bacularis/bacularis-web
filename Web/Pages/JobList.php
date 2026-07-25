@@ -305,40 +305,6 @@ class JobList extends BaculumWebPage
 	}
 
 	/**
-	 * Load job log.
-	 *
-	 * @param TCallback $sender callback object
-	 * @param TCallbackEventPrameter $param event parameter
-	 */
-	public function loadJobLog($sender, $param)
-	{
-		$jobid = (int) ($param->getCallbackParameter());
-		if ($jobid == 0) {
-			return;
-		}
-
-		$params = ['joblog', $jobid];
-
-		// add time to log if defiend in configuration
-		if (key_exists('time_in_job_log', $this->web_config['baculum'])) {
-			$query_params = [
-				'show_time' => $this->web_config['baculum']['time_in_job_log']
-			];
-			$params[] = '?' . http_build_query($query_params);
-		}
-		$result = $this->getModule('api')->get($params);
-
-		$log = '';
-		if ($result->error === 0) {
-			$log = implode(PHP_EOL, $result->output);
-		}
-		$this->getCallbackClient()->update(
-			'job_history_report_details_joblog_' . $jobid,
-			$log
-		);
-	}
-
-	/**
 	 * Delete job configuration resources - bulk action
 	 * NOTE: Action available only for users wiht admin role assigned.
 	 *

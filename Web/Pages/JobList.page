@@ -916,7 +916,7 @@ $(function() {
 				oMonitor();
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
-		<com:Bacularis.Web.Portlets.JobLog />
+		<com:Bacularis.Web.Portlets.JobLogWindow LogCSS="w3-small" />
 	</div>
 
 	<!-- Tag tools -->
@@ -1636,7 +1636,7 @@ var oJobListDeleteJobResourceWindow = {
 				&nbsp;<span class="w3-show-inline-block" style="min-width: 20px"><i class="fa fa-exclamation-triangle w3-text-orange w3-large" title="X/Y jobs finished with error."></i><sup class="w3-right w3-tiny"> X</sup></span> - <%[ X jobs with at least one job finished successfully ]%>
 				&nbsp;<span class="w3-show-inline-block" style="min-width: 20px"><i class="fa fa-exclamation-circle w3-text-red w3-large" title="X/X jobs finished with error."></i><sup class="w3-right w3-tiny"> X</sup></span> - <%[ all X jobs finished with error or cancelled ]%>
 				<div id="job_history_report_details" class="w3-modal" style="display: none">
-					<div class="w3-modal-content w3-card-4 w3-animate-top" style="width: 900px">
+					<div class="w3-modal-content w3-card-4 w3-animate-top" style="width: 950px">
 						<header class="w3-container w3-green">
 							<span onclick="$('#job_history_report_details').hide();" class="w3-button w3-xlarge w3-display-topright">&times;</span>
 							<h2 id="job_history_report_details_title"></h2>
@@ -1676,7 +1676,12 @@ var oJobListDeleteJobResourceWindow = {
 				</div>
 			</div>
 		</div>
-		<com:TCallback ID="LoadJobLog" OnCallback="loadJobLog" />
+		<div id="job_history_report_details_job_log_box" style="display: none;">
+			<com:Bacularis.Web.Portlets.JobLogBox
+				ID="JobHistoryLogBox"
+				LogCSS="w3-small"
+			/>
+		</div>
 <script>
 const oReportGeneral = {
 	months: [
@@ -1740,7 +1745,8 @@ class JobHistoryReportDetails {
 			table: 'job_history_report_details_table',
 			body: 'job_history_report_details_table_body',
 			title: 'job_history_report_details_title',
-			date: 'job_history_report_details_date'
+			date: 'job_history_report_details_date',
+			logbox: 'job_history_report_details_job_log_box'
 		};
 		this.css = {
 			shown: 'shown',
@@ -1762,6 +1768,7 @@ class JobHistoryReportDetails {
 	}
 	destroy() {
 		if (this.table) {
+			this.revert_logbox();
 			this.table.destroy();
 			delete this;
 		}
@@ -1773,25 +1780,35 @@ class JobHistoryReportDetails {
 	add_events() {
 		const self = this;
 		$('#' + this.ids.body).off('click');
-		$('#' + this.ids.body).on('click', 'td.details-control', function () {
-			const tr = $(this).closest('tr');
-			var row = self.table.row(tr);
+		$('#' + this.ids.body).on('click', 'td.details-control', function (e) {
+			// Get currently clicked row
+			const tr = $(this).closest('tr').get(0);
 
-			if (row.child.isShown()) {
-				// close extra job log row
-				row.child.hide();
-				tr.removeClass(self.css.shown);
+			// Hide previous element if it was different than the current one
+			const prev = document.querySelector('#' + self.ids.body + ' tr.' + self.css.shown);
+			if (prev && prev !== tr) {
+				prev.classList.remove(self.css.shown);
+				prev.nextElementSibling.style.display = 'none';
+			}
+
+			if (tr.classList.contains(self.css.shown)) {
+				// Clicked button to hide log
+				tr.classList.remove(self.css.shown);
+				tr.nextElementSibling.style.display = 'none';
 			} else {
-				// open extra job log row
-				if (!tr.hasClass(self.css.loaded)) {
-					const rd = row.data();
-					const id = 'job_history_report_details_joblog_' + rd.jobid;
-					self.get_job_log(rd.jobid);
-					row.child('<div class="w3-code"><pre class="w3-small" id="' + id + '"><div class="w3-center"><i class="fas fa-sync-alt w3-spin w3-xxlarge"></i></div></pre></div>');
-					tr.addClass(self.css.loaded);
-				}
-				tr.addClass(self.css.shown);
+				// Clicked button to show log
+				const row = self.table.row($(tr));
+				const rd = row.data();
+				const id = 'job_history_report_details_joblog_' + rd.jobid;
+				const logbox = document.getElementById('job_log_box<%=$this->JobHistoryLogBox->ClientiD%>');
+				row.child(logbox);
 				row.child.show();
+				$(() => {
+					oJobLogBox<%=$this->JobHistoryLogBox->ClientiD%>.init_log(rd.jobid, rd.name);
+					oJobLogBox<%=$this->JobHistoryLogBox->ClientiD%>.get_log();
+				});
+				tr.classList.add(self.css.shown);
+				tr.nextElementSibling.style.display = '';
 			}
 		});
 	}
@@ -1816,11 +1833,6 @@ class JobHistoryReportDetails {
 			}
 		}
 		return ret;
-	}
-	get_job_log(jobid) {
-		const cb = <%=$this->LoadJobLog->ActiveControl->Javascript%>;
-		cb.setCallbackParameter(jobid);
-		cb.dispatch();
 	}
 	get_table_defs() {
 		const defs = {
@@ -1922,6 +1934,11 @@ class JobHistoryReportDetails {
 			}
 		}
 		return $.extend(true, {}, defs);
+	}
+	revert_logbox() {
+		const logbox = document.getElementById('job_log_box<%=$this->JobHistoryLogBox->ClientiD%>');
+		const container = document.getElementById(this.ids.logbox);
+		container.appendChild(logbox);
 	}
 }
 class JobHistoryReport {

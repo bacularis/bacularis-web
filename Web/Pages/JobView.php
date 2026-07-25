@@ -162,7 +162,7 @@ class JobView extends BaculumWebPage
 		if ($this->IsCallBack || $this->IsPostBack) {
 			return;
 		}
-		$this->refreshJobLog(null, null);
+		$this->refreshJob(null, null);
 	}
 
 	public function loadSchedules($sender, $param)
@@ -573,38 +573,10 @@ class JobView extends BaculumWebPage
 	 * @param $sender TActiveLabel sender object
 	 * @param $param TCallbackParameter parameter object
 	 */
-	public function refreshJobLog($sender, $param)
+	public function refreshJob($sender, $param)
 	{
 		if ($this->getJobId() == 0) {
 			return;
-		}
-		$params = ['joblog', $this->getJobId()];
-
-		// add time to log if defiend in configuration
-		if (key_exists('time_in_job_log', $this->web_config['baculum'])) {
-			$query_params = [
-				'show_time' => $this->web_config['baculum']['time_in_job_log']
-			];
-			$params[] = '?' . http_build_query($query_params);
-		}
-		$log = $this->getModule('api')->get($params);
-
-		$joblog = [];
-		if (!is_array($log->output) || count($log->output) == 0) {
-			$msg = Prado::localize("Output for selected job is not available yet or you do not have enabled logging job logs to the catalog database.\n\nTo watch job log you need to add to the job Messages resource the following directive:\n\nCatalog = all, !debug, !skipped, !saved");
-			$joblog = [$msg];
-		} else {
-			$joblog = $log->output;
-
-			if ($this->is_running) {
-				// search for media requests to display warning
-				$this->findLogMediaRequest($joblog);
-			} else {
-				$this->getCallbackClient()->callClientFunction(
-					'oRunningJobStatus.show_warning',
-					[false]
-				);
-			}
 		}
 		if ($this->is_running) {
 			$this->RunningIcon->Display = 'Dynamic';
@@ -619,12 +591,27 @@ class JobView extends BaculumWebPage
 			$this->DeleteBtn->Display = 'Dynamic';
 			$this->RestoreBtn->Display = $this->isShowRestoreBtn() ? 'Dynamic' : 'None';
 		}
-		if ($this->getJobLogOrder() === self::SORT_DESC) {
-			$joblog = array_reverse($joblog);
-		}
-		$joblog = $this->getModule('log_parser')->parse($joblog);
+	}
 
-		$this->JobLog->Text = implode(PHP_EOL, $joblog);
+	public function analyseJobLog($sender, $param)
+	{
+		if ($this->getJobId() == 0) {
+			return;
+		}
+
+		if ($this->is_running) {
+			// search for media requests to display warning
+			$parameter = (array) $param->getCallbackParameter();
+			if (key_exists('joblog', $parameter)) {
+				$this->findLogMediaRequest($parameter['joblog']);
+			}
+		} else {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oRunningJobStatus.show_warning',
+				[false]
+			);
+		}
 	}
 
 	private function findLogMediaRequest($joblog)
@@ -764,35 +751,12 @@ class JobView extends BaculumWebPage
 	public function cancel($sender, $param)
 	{
 		$this->getModule('api')->set(['jobs', $this->getJobId(), 'cancel'], ['a' => 'b']);
-		$this->refreshJobLog(null, null);
+		$this->refreshJob(null, null);
 	}
 
 	public function delete($sender, $param)
 	{
 		$this->getModule('api')->remove(['jobs', $this->getJobId()]);
-	}
-
-	public function setJobLogOrder($order)
-	{
-		$order = TPropertyValue::ensureInteger($order);
-		setcookie('log_order', $order, time() + 60 * 60 * 24 * 365, '/'); // set cookie for one year
-		$_COOKIE['log_order'] = $order;
-	}
-
-	public function getJobLogOrder()
-	{
-		return (key_exists('log_order', $_COOKIE) ? (int) ($_COOKIE['log_order']) : self::SORT_DESC);
-	}
-
-	public function changeJobLogOrder($sender, $param)
-	{
-		$order = $this->getJobLogOrder();
-		if ($order === self::SORT_DESC) {
-			$this->setJobLogOrder(self::SORT_ASC);
-		} else {
-			$this->setJobLogOrder(self::SORT_DESC);
-		}
-		$this->refreshJobLog(null, null);
 	}
 
 	/**

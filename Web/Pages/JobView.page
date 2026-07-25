@@ -913,20 +913,10 @@ $(function() {
 });
 			</script>
 			<div id="joblog_text_output" class="subtab_item" style="display: none">
-				<div class="w3-right w3-margin-top w3-margin-right" title="<%[ Refresh job log ]%>">
-					<a href="javascript:void(0)"class="w3-margin-bottom raw" onclick="job_callback_func(true);"><%[ Refresh log ]%> &nbsp;<i class="fa fa-sync"></i></a>
-				</div>
-				<com:TActiveLinkButton
-					ID="LogOrderBtn"
-					CssClass="w3-margin-top w3-margin-right w3-right raw"
-					OnClick="changeJobLogOrder"
-					Attributes.title="<%[ Set job log order (ascending/descending) ]%>"
-				>
-					<%[ Log order ]%> &nbsp;<i class="fa fa-sort-amount-down"></i>
-				</com:TActiveLinkButton>
-				<div class="w3-code">
-					<pre><com:TActiveLabel ID="JobLog" /></pre>
-				</div>
+				<com:Bacularis.Web.Portlets.JobLogBox
+					ID="JobLogBox"
+					OnLogRefresh="Page.analyseJobLog"
+				/>
 			</div>
 			<div id="jobfiles_list" class="subtab_item" style="display: none">
 				<com:Bacularis.Web.Portlets.JobListFiles
@@ -935,18 +925,19 @@ $(function() {
 			</div>
 		</div>
 		<com:TCallback
-			ID="RefreshJobLog"
-			OnCallback="refreshJobLog"
+			ID="RefreshJob"
+			OnCallback="refreshJob"
 			ClientSide.OnLoading="show_joblog_loader(true)"
 			ClientSide.OnComplete="show_joblog_loader(false); job_callback_duration = new Date().getTime();"
 		/>
 		<script type="text/javascript">
 			var job_callback_duration;
 			var job_callback_func = function(force) {
-				var callback = <%=$this->RefreshJobLog->ActiveControl->Javascript%>;
+				var callback = <%=$this->RefreshJob->ActiveControl->Javascript%>;
 				var reload = document.getElementById('<%=$this->RunningIcon->ClientID%>').style.display != 'none';
 				if ((reload && W3Tabs.is_open('job_log')) || force) {
 					callback.dispatch();
+					oJobLogBox<%=$this->JobLogBox->ClientID%>.get_log();
 				}
 			}
 			var show_joblog_loader = function(show) {
@@ -962,6 +953,7 @@ $(function() {
 					job_callback_func(true);
 				}
 			}, 3000);
+			oJobLogBox<%=$this->JobLogBox->ClientID%>.init_log('<%=$this->getJobId()%>', '<%=$this->getJobName()%>');
 		</script>
 	</div>
 	<div id="job_delete_confirm" class="w3-modal" style="display: none">
