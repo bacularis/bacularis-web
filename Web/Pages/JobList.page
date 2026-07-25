@@ -1801,6 +1801,8 @@ class JobHistoryReportDetails {
 				const rd = row.data();
 				const id = 'job_history_report_details_joblog_' + rd.jobid;
 				const logbox = document.getElementById('job_log_box<%=$this->JobHistoryLogBox->ClientiD%>');
+				logbox.style.maxHeight = '550px';
+				logbox.style.overflow = 'auto';
 				row.child(logbox);
 				row.child.show();
 				$(() => {
