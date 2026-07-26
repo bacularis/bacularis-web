@@ -1187,7 +1187,7 @@ var oDeployAPIHost = {
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Catalog: ]%></div>
-							<div class="w3-rest">
+							<div class="w3-col w3-twothird">
 								<div id="api_host_command_catalog" class="w3-show-inline-block"></div>
 							</div>
 						</div>
@@ -1195,7 +1195,7 @@ var oDeployAPIHost = {
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Director: ]%></div>
-							<div class="w3-rest">
+							<div class="w3-col w3-twothird">
 								<div id="api_host_command_director" class="w3-show-inline-block"></div>
 							</div>
 						</div>
@@ -1203,7 +1203,7 @@ var oDeployAPIHost = {
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Storage: ]%></div>
-							<div class="w3-rest">
+							<div class="w3-col w3-twothird">
 								<div id="api_host_command_storage" class="w3-show-inline-block"></div>
 							</div>
 						</div>
@@ -1211,7 +1211,7 @@ var oDeployAPIHost = {
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Client: ]%></div>
-							<div class="w3-rest">
+							<div class="w3-col w3-twothird">
 								<div id="api_host_command_client" class="w3-show-inline-block"></div>
 							</div>
 						</div>
@@ -1219,7 +1219,7 @@ var oDeployAPIHost = {
 					<div class="w3-container" style="min-height: 45px;">
 						<div class="w3-row directive_field">
 							<div class="w3-col w3-third"><%[ Console: ]%></div>
-							<div class="w3-rest">
+							<div class="w3-col w3-twothird">
 								<div id="api_host_command_console" class="w3-show-inline-block"></div>
 							</div>
 						</div>
@@ -1229,7 +1229,7 @@ var oDeployAPIHost = {
 						<div class="w3-container">
 							<div class="w3-row directive_field">
 								<div class="w3-col w3-third"><%[ Add new component to current Director (for client and storage only) ]%>:</div>
-								<div class="w3-rest">
+								<div class="w3-col w3-twothird">
 									<input type="checkbox" id="api_host_command_add_component_to_director" class="w3-check" checked />
 								</div>
 							</div>
