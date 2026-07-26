@@ -165,7 +165,7 @@ class JobLogBox extends Portlets
 	 */
 	private function getLogOrder()
 	{
-		return (key_exists('log_order', $_COOKIE) ? (int) ($_COOKIE['log_order']) : self::SORT_DESC);
+		return (key_exists('log_order', $_COOKIE) ? (int) ($_COOKIE['log_order']) : self::SORT_ASC);
 	}
 
 	/**
