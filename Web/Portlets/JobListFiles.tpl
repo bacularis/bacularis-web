@@ -67,7 +67,7 @@
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">UID</th>
 						<th class="w3-center w3-hide-small" style="width: 39px; padding: 10px 3px">GID</th>
 						<th class="w3-center w3-hide-small" style="width: 40px">Size</th>
-						<th class="w3-center w3-hide-small" style="width: 160px">MTIME</th>
+						<th class="w3-center w3-hide-small" style="width: 161px">MTIME</th>
 						<th class="w3-center"><%[ File ]%></th>
 						<th class="w3-center w3-hide-small" style="width: 50px"><%[ State ]%></th>
 					</tr>
