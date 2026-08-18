@@ -837,7 +837,7 @@ var oGraphicalStorageStatus = {
 			var ach_max_jobs = document.createElement('SPAN');
 			var ach_sep = document.createTextNode(' / ');
 			var maxjobs = info.maxjobs == 0 ? '<%[ unlimited ]%>' : info.maxjobs;
-			ach_jobs_label.textContent = '<%[ Running jobs: ]%> ';
+			ach_jobs_label.textContent = "<%[ Running jobs: ]%> ";
 			ach_num_jobs.textContent = ' ' + info.numjobs;
 			ach_max_jobs.textContent = maxjobs;
 			ach_info.appendChild(ach_jobs_label);
@@ -1021,7 +1021,7 @@ var oGraphicalStorageStatus = {
 		// Maximum concurrent jobs
 		var mcj = device.maximum_concurrent_jobs == 0 ? '<%[ unlimited ]%>' : device.maximum_concurrent_jobs;
 		var running_max_jobs = dev_running_jobs.length + ' / ' + mcj;
-		this.add_row(table, '<%[ Running jobs ]%> / <%[ Maximum concurrent jobs: ]%>', running_max_jobs);
+		this.add_row(table, "<%[ Running jobs ]%> / <%[ Maximum concurrent jobs: ]%>", running_max_jobs);
 
 		// Maximum volume size
 		var mvs = Units.get_formatted_size(device.maximum_volume_size);
