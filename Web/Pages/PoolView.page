@@ -134,7 +134,7 @@ const oPoolVolumeStatus = {
 	},
 	txt: {
 		pool_volume_status: {
-			graph_title: '<%[ Pool volume status summary ]%>'
+			graph_title: "<%[ Pool volume status summary ]%>"
 		}
 	},
 	graphs: {

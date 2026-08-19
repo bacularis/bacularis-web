@@ -296,7 +296,7 @@ var oJobHistoryList = {
 					}
 				});
 				if (running_jobs.length > 0) {
-					var emsg = '<%[ Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again. ]%>';
+					var emsg = "<%[ Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again. ]%>";
 					emsg = emsg.replace('%running_jobs', '<hr />' + running_jobs.join('<br />') + '<hr />');
 					oBulkActionsModal.set_error(emsg);
 					return false;

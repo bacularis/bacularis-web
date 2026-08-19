@@ -899,7 +899,7 @@ var oRestoreBrowserFiles = {
 		size: 'size'
 	},
 	txts: {
-		no_files: '<%[ It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired) ]%>',
+		no_files: "<%[ It seems that there is no files for choosing or file records in database for this job has been purged (file retention period expired) ]%>",
 		add: '<%[ Add ]%>'
 	},
 	browsers: {
@@ -1278,7 +1278,7 @@ var oRestoreBrowserVersions = {
 		link: 'link'
 	},
 	txts: {
-		no_files: '<%[ To see file versions please click a file on the left files browser. ]%>',
+		no_files: "<%[ To see file versions please click a file on the left files browser. ]%>",
 		add: '<%[ Add ]%>',
 		jobid: '<%[ JobId: ]%>',
 		volume: '<%[ Volume: ]%>',

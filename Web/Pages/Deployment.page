@@ -379,19 +379,19 @@ var oAPIHostCommands = {
 		commands: {
 			install: {
 				desc: '<%[ Installing %component ]%>:',
-				title: '<%[ Install Bacula components on API host ]%>',
+				title: "<%[ Install Bacula components on API host ]%>",
 				btn: ' <%[ Install ]%>',
 				icon: 'fa-solid fa-box-open'
 			},
 			upgrade: {
 				desc: '<%[ Upgrading %component ]%>:',
-				title: '<%[ Upgrade Bacula components on API host ]%>',
+				title: "<%[ Upgrade Bacula components on API host ]%>",
 				btn: ' <%[ Upgrade ]%>',
 				icon: 'fa-solid fa-arrows-up-to-line'
 			},
 			remove: {
 				desc: '<%[ Uninstalling %component ]%>:',
-				title: '<%[ Uninstall Bacula components on API host ]%>',
+				title: "<%[ Uninstall Bacula components on API host ]%>",
 				btn: ' <%[ Uninstall ]%>',
 				icon: 'fa-solid fa-trash-alt'
 			}
@@ -761,7 +761,7 @@ var oDeployAPIHost = {
 		},
 		{
 			id: 'access_link',
-			desc: '<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['access_link']) %>',
+			desc: "<%= Prado::localize(Deployment::DEPLOY_STEPS_TXT['access_link']) %>",
 			cb: <%=$this->DeployAPIAccessLink->ActiveControl->Javascript%>
 		}
 	],

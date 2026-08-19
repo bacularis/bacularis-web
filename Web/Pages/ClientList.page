@@ -372,7 +372,7 @@ var oClientList = {
 										ret += details.outerHTML;
 										return ret;
 									});
-									showTip(span, '<%[ Client jobs ]%> (<%[ running ]%>):', jobs_running.join(''), {
+									showTip(span, "<%[ Client jobs ]%> (<%[ running ]%>):", jobs_running.join(''), {
 										offset: [-55, 0],
 										tipJoint: 'right middle'
 									});

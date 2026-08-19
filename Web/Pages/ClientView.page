@@ -383,7 +383,7 @@ var oGraphicalClientStatus = {
 		header.textContent = '<%[ Job: ]%> #' + (job_nb+1) + ' ' + job.job;
 		var running_img = document.createElement('I');
 		running_img.className = 'fas fa-cog w3-spin w3-margin-left';
-		running_img.setAttribute('title', '<%[ Job is running ]%>');
+		running_img.setAttribute('title', "<%[ Job is running ]%>");
 		header.appendChild(running_img);
 
 		var table = document.createElement('TABLE');
@@ -461,7 +461,7 @@ var oGraphicalClientStatus = {
 		} else {
 			bytes_progress = '<%[ Not available ]%>';
 		}
-		this.add_job_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+		this.add_job_row(table, "<%[ Byte progress bar: ]%>", bytes_progress);
 
 
 		// Progress bar files
@@ -635,7 +635,7 @@ function init_graphical_client_status(data) {
 function status_client_show_error(error) {
 	var errmsg = error;
 	if (error === 'timeout') {
-		errmsg = '<%[ Status request timed out. The most probably the Bacula client is not available or it is not running. ]%>';
+		errmsg = "<%[ Status request timed out. The most probably the Bacula client is not available or it is not running. ]%>";
 	}
 	var err_el = document.getElementById('status_client_error');
 	err_el.textContent = errmsg;

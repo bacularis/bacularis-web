@@ -396,7 +396,7 @@ var oGraphicalStorageStatus = {
 		},
 		type: {
 			label: '<%[ Device type: ]%>',
-			init_item: '<%[ All device types ]%>',
+			init_item: "<%[ All device types ]%>",
 			val: null
 		},
 		media_type: {
@@ -409,7 +409,7 @@ var oGraphicalStorageStatus = {
 			init_item: '<%[ All statuses ]%>',
 			val: null,
 			items: {
-				running: '<%[ running ]%>',
+				running: "<%[ running ]%>",
 				idle: '<%[ idle ]%>'
 			},
 			change: function(value) {
@@ -929,7 +929,7 @@ var oGraphicalStorageStatus = {
 		var dev_running_jobs_len = dev_running_jobs.length;
 		if (dev_running_jobs_len > 0) {
 			dev_running_img.className = 'fas fa-cog fa-spin';
-			dev_running_desc.innerHTML = '&nbsp; <%[ running ]%> (' + dev_running_jobs_len + ')';
+			dev_running_desc.innerHTML = "&nbsp; <%[ running ]%> (" + dev_running_jobs_len + ')';
 		} else {
 			dev_running_img.className = 'fas fa-minus';
 			dev_running_desc.innerHTML = '&nbsp; <%[ idle ]%>';
@@ -1016,7 +1016,7 @@ var oGraphicalStorageStatus = {
 		table.className = 'w3-table w3-stripped status_table device_table';
 
 		// Archive device
-		this.add_row(table, '<%[ Archive device: ]%>', device.archive_device);
+		this.add_row(table, "<%[ Archive device: ]%>", device.archive_device);
 
 		// Maximum concurrent jobs
 		var mcj = device.maximum_concurrent_jobs == 0 ? '<%[ unlimited ]%>' : device.maximum_concurrent_jobs;
@@ -1249,7 +1249,7 @@ var oGraphicalStorageStatus = {
 		job_running_label.innerHTML = '<%[ Status: ]%> &nbsp;';
 		var job_running_desc = document.createElement('SPAN');
 		job_running_img.className = 'fas fa-cog fa-spin';
-		job_running_desc.innerHTML = '&nbsp; <%[ running ]%>';
+		job_running_desc.innerHTML = "&nbsp; <%[ running ]%>";
 		job_running.appendChild(job_running_label);
 		job_running.appendChild(job_running_img);
 		job_running.appendChild(job_running_desc);
@@ -1351,7 +1351,7 @@ var oGraphicalStorageStatus = {
 		} else {
 			bytes_progress = '<%[ Not available ]%>';
 		}
-		this.add_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+		this.add_row(table, "<%[ Byte progress bar: ]%>", bytes_progress);
 
 
 		// Progress bar files
@@ -1417,7 +1417,7 @@ var oGraphicalStorageStatus = {
 		}
 		// Write device
 		if (job.write_device) {
-			this.add_row(table, '<%[ Write device: ]%>', job.write_device);
+			this.add_row(table, "<%[ Write device: ]%>", job.write_device);
 		}
 		// Write pool
 		if (job.write_volume) {
@@ -1687,7 +1687,7 @@ function init_graphical_storage_status(data) {
 function status_storage_show_error(error) {
 	var errmsg = error;
 	if (error === 'timeout') {
-		errmsg = '<%[ Status request timed out. The most probably the Bacula storage is not available or it is not running. ]%>';
+		errmsg = "<%[ Status request timed out. The most probably the Bacula storage is not available or it is not running. ]%>";
 	}
 	var err_el = document.getElementById('status_storage_error');
 	err_el.textContent = errmsg;
@@ -2045,7 +2045,7 @@ var oSlotList = {
 	actions: [
 		{
 			action: 'label',
-			label: '<%[ Label using barcodes ]%>',
+			label: "<%[ Label using barcodes ]%>",
 			value: 'slot_ach',
 			callback: <%=$this->LabelUsingBarcodesAction->ActiveControl->Javascript%>,
 			before: function() {
@@ -2054,7 +2054,7 @@ var oSlotList = {
 		},
 		{
 			action: 'move_to_ie',
-			label: '<%[ Move to import/export slot ]%>',
+			label: "<%[ Move to import/export slot ]%>",
 			value: 'slot_ach',
 			before: function() {
 				oSlots.show_move_to_ie_window(true);
@@ -2065,7 +2065,7 @@ var oSlotList = {
 				var ie_slots_count = ie_slots.length;
 				var vols_count =  oSlots.move_to_ie_slots.length;
 				if (vols_count > ie_slots_count) {
-					var emsg = '<%[ There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count. ]%>';
+					var emsg = "<%[ There are to few import/export slots to transfer selected volumes. Free import/export slots count: %slots_count, selected volumes count: %vols_count. ]%>";
 					emsg = emsg.replace('%slots_count', ie_slots_count);
 					emsg = emsg.replace('%vols_count', vols_count);
 					oBulkActionsModal.set_error(emsg);
@@ -2076,7 +2076,7 @@ var oSlotList = {
 		},
 		{
 			action: 'update_barcodes',
-			label: '<%[ Update slots using barcodes ]%>',
+			label: "<%[ Update slots using barcodes ]%>",
 			value: 'slot_ach',
 			callback: <%=$this->UpdateSlotsBarcodesAction->ActiveControl->Javascript%>,
 			before: function() {
@@ -2612,7 +2612,7 @@ var oSlots = {
 		var fie_len = oSlots.full_ie_slots.length;
 		var es_len = oSlots.empty_slots.length;
 		if  (fie_len > es_len) {
-			var emsg = '<%[ There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count. ]%>';
+			var emsg = "<%[ There are to few regular slots to transfer selected volumes from import/export slots. Full import/export slot count: %ie_slot_count, free regular slot count: %slot_count. ]%>";
 			emsg = emsg.replace('%ie_slot_count', fie_len);
 			emsg = emsg.replace('%slot_count', es_len);
 			oBulkActionsModal.set_error(emsg);

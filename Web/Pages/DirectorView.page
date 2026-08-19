@@ -515,7 +515,7 @@ var oGraphicalDirectorStatus = {
 		this.add_row(table, 'JobId', jobid);
 
 		// Job status description
-		this.add_row(table, '<%[ Job status desc.: ]%>', job.status_desc);
+		this.add_row(table, "<%[ Job status desc.: ]%>", job.status_desc);
 
 		var bytes = parseInt(job.jobbytes, 10);
 		var files = parseInt(job.jobfiles, 10);
@@ -549,7 +549,7 @@ var oGraphicalDirectorStatus = {
 			var jobbytes = Units.get_formatted_size(job.jobbytes);
 			this.add_row(table, '<%[ Job bytes: ]%>', jobbytes);
 		}
-		this.add_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+		this.add_row(table, "<%[ Byte progress bar: ]%>", bytes_progress);
 
 
 		// Progress bar files
@@ -754,7 +754,7 @@ var oGraphicalDirectorStatus = {
 		this.add_row(table, 'JobId', jobid);
 
 		// Job status description
-		this.add_row(table, '<%[ Job status desc.: ]%>', job.status_desc);
+		this.add_row(table, "<%[ Job status desc.: ]%>", job.status_desc);
 
 		// Job bytes
 		var jobbytes = Units.get_formatted_size(job.jobbytes);
@@ -906,7 +906,7 @@ function init_graphical_director_status(data) {
 function status_director_show_error(error) {
 	var errmsg = error;
 	if (error === 'timeout') {
-		errmsg = '<%[ Status request timed out. The most probably the Bacula director is not available or it is not running. ]%>';
+		errmsg = "<%[ Status request timed out. The most probably the Bacula director is not available or it is not running. ]%>";
 	}
 	var err_el = document.getElementById('status_director_error');
 	err_el.textContent = errmsg;

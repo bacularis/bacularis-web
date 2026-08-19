@@ -302,7 +302,7 @@ var oWebAccessResourceList = {
 						} else if (row.time_method == '<%=WebAccessConfig::WEB_ACCESS_TIME_METHOD_DATE_RANGE%>') {
 							ret = '<%[ Date range ]%>';
 						}
-						params['<%[ Time access ]%>'] = ret;
+						params["<%[ Time access ]%>"] = ret;
 
 						if (row.time_method == '<%=WebAccessConfig::WEB_ACCESS_TIME_METHOD_UNLIMITED%>') {
 							params['<%[ Valid from ]%>'] = '-';

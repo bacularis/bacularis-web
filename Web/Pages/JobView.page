@@ -432,7 +432,7 @@ var oRunningJobStatus = {
 		} else {
 			bytes_progress = '<%[ Not available ]%>';
 		}
-		this.add_job_row(table, '<%[ Byte progress bar: ]%>', bytes_progress);
+		this.add_job_row(table, "<%[ Byte progress bar: ]%>", bytes_progress);
 
 		if (this.estimated_vals.hasOwnProperty('files')) {
 			est.est_files = this.estimated_vals.files;

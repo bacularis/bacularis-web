@@ -142,7 +142,7 @@ var oAPIHostGroupList = {
 						access_btn.type = 'button';
 						const i = document.createElement('I');
 						i.className = 'fa-solid fa-shield';
-						const label = document.createTextNode(' <%[ Set access ]%>');
+						const label = document.createTextNode(" <%[ Set access ]%>");
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
 						access_btn.appendChild(label);
