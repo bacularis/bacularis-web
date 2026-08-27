@@ -1745,9 +1745,9 @@ var oSelectionType = {
 	set_modify_source_pool_txt: function(type) {
 		var txt;
 		if (type === 'PoolOccupancy') {
-			txt = '<%[ Because you selected migrate using Pool occupancy, to chosen source pool %pool will be added two directives: Migration Low Bytes and Migration High Bytes. ]%>'.replace('%pool', '<%=$this->Pool->getDirectiveValue()%>');
+			txt = "<%[ Because you selected migrate using Pool occupancy, to chosen source pool %pool will be added two directives: Migration Low Bytes and Migration High Bytes. ]%>".replace('%pool', '<%=$this->Pool->getDirectiveValue()%>');
 		} else if (type == 'PoolTime') {
-			txt = '<%[ Because you selected migrate using Pool time, to chosen source pool %pool will be added the Migration Time directive. ]%>'.replace('%pool', '<%=$this->Pool->getDirectiveValue()%>');
+			txt = "<%[ Because you selected migrate using Pool time, to chosen source pool %pool will be added the Migration Time directive. ]%>".replace('%pool', '<%=$this->Pool->getDirectiveValue()%>');
 		}
 		if (txt) {
 			var el = document.getElementById(this.ids.txts.modify_source_pool);

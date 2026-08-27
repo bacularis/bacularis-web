@@ -1261,7 +1261,7 @@ var oGraphicalStorageStatus = {
 		var jobid_a = document.createElement('A');
 		jobid_a.href = '/web/job/history/' + job.jobid + '/';
 		jobid_a.appendChild(jobid_img);
-		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		jobid_a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', job.jobid);
 		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
 		this.add_row(table, 'JobId', jobid);
 
@@ -1519,7 +1519,7 @@ var oGraphicalStorageStatus = {
 		var jobid_a = document.createElement('A');
 		jobid_a.href = '/web/job/history/' + job.jobid + '/';
 		jobid_a.appendChild(jobid_img);
-		jobid_a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', job.jobid);
+		jobid_a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', job.jobid);
 		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
 		this.add_row(table, 'JobId', jobid);
 

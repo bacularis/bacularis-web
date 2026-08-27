@@ -518,7 +518,7 @@ var oJobsToRestoreList = {
 						var a = document.createElement('A');
 						a.href = '/web/job/history/' + data + '/';
 						a.appendChild(i);
-						a.title = '<%[ Go to job with jobid %jobid ]%>'.replace('%jobid', data);
+						a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', data);
 						return (data + ' ' + a.outerHTML);
 					}
 				},
