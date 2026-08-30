@@ -50,6 +50,8 @@ class JobList extends BaculumWebPage
 
 	public const DEFAULT_JOB_PRIORITY = 10;
 
+	public const MAX_SCHEDULE_DAYS = 90;
+
 	public function onInit($param)
 	{
 		parent::onInit($param);
@@ -136,13 +138,33 @@ class JobList extends BaculumWebPage
 					'enabled' => $result->output[$i]->enabled,
 					'priority' => $result->output[$i]->priority,
 					'type' => chr($result->output[$i]->jobtype),
-					'maxjobs' => $result->output[$i]->maxjobs
+					'maxjobs' => $result->output[$i]->maxjobs,
+					'schedule' => ($result->output[$i]->schedule ?? '')
 				];
 			}
 			$cb = $this->getCallbackClient();
 			$cb->callClientFunction(
 				'oJobList.load_job_list_cb',
 				[$jobs]
+			);
+		}
+	}
+
+	public function loadScheduleStatus($sender, $param)
+	{
+		$query = [
+			'days' => self::MAX_SCHEDULE_DAYS,
+			'group_by' => 'name',
+			'group_limit' => 20
+		];
+		$qparams = http_build_query($query);
+		$api = $this->getModule('api');
+		$result = $api->get(['schedules', 'status', '?' . $qparams]);
+		if ($result->error === 0) {
+			$cb = $this->getCallbackClient();
+			$cb->callClientFunction(
+				'oSchedule.load_schedule_status_cb',
+				$result->output
 			);
 		}
 	}
@@ -462,6 +484,86 @@ class JobList extends BaculumWebPage
 			['jobid' => $jobid]
 		);
 		return $result;
+	}
+
+	public function postSaveRestoreTest($sender, $param)
+	{
+		// Refresh Restore Policy list
+		$this->RestorePolicies->setRestorePolicyList($sender, $param);
+
+		// Refresh Restore Destination list
+		$this->RestoreDestinations->setRestoreDestinationList($sender, $param);
+
+		// Refresh Verification Rules list
+		$this->VerificationRules->setVerificationRuleList($sender, $param);
+
+	}
+
+	public function postRemoveRestoreTest($sender, $param)
+	{
+		// Refresh Restore Policy list
+		$this->RestorePolicies->setRestorePolicyList($sender, $param);
+
+		// Refresh Restore Destination list
+		$this->RestoreDestinations->setRestoreDestinationList($sender, $param);
+
+		// Refresh Verification Rules list
+		$this->VerificationRules->setVerificationRuleList($sender, $param);
+
+	}
+
+	public function postSaveRestorePolicy($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Restore Policy list in Restore Tests
+		$this->RestoreTests->setRestorePolicyList();
+	}
+
+	public function postRemoveRestorePolicy($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Restore Policy list in Restore Tests
+		$this->RestoreTests->setRestorePolicyList();
+	}
+
+	public function postSaveRestoreDestination($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Restore Destination list in Restore Tests
+		$this->RestoreTests->setRestoreDestinationList();
+	}
+
+	public function postRemoveRestoreDestination($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Restore Destination list in Restore Tests
+		$this->RestoreTests->setRestoreDestinationList();
+	}
+
+	public function postSaveVerificationRules($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Verification Rules list in Restore Tests
+		$this->RestoreTests->setVerificationRuleList();
+	}
+
+	public function postRemoveVerificationRules($sender, $param)
+	{
+		// Refresh Restore Test list
+		$this->RestoreTests->setRestoreTestList($sender, $param);
+
+		// Refresh Verification Rules list in Restore Tests
+		$this->RestoreTests->setVerificationRuleList();
 	}
 
 	public function getNavData()

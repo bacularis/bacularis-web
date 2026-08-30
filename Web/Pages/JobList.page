@@ -34,6 +34,9 @@
 		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc(); oJobHistoryReport.table.fixedHeader.adjust(); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]);">
 			<%[ Reports ]%>
 		</a>
+		<a id="btn_restore_verification" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'restore_verification'); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]); oRestoreTests.load_restore_test_list();" style="display: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'inline-block' : 'none'%>;">
+			<%[ Restore verification ]%>
+		</a>
 	</div>
 
 	<!-- Global bulk action modal -->
@@ -1043,6 +1046,8 @@ $(function() {
 						<th><%[ Type ]%></th>
 						<th><%[ Last successful job ]%></th>
 						<th><%[ Last failed job ]%></th>
+						<th><%[ Next run ]%></th>
+						<th><%[ Starts in ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. con. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -1060,6 +1065,8 @@ $(function() {
 						<th><%[ Type ]%></th>
 						<th><%[ Last successful job ]%></th>
 						<th><%[ Last failed job ]%></th>
+						<th><%[ Next run ]%></th>
+						<th><%[ Starts in ]%></th>
 						<th><%[ Enabled ]%></th>
 						<th>Max. con. jobs</th>
 						<th><%[ Priority ]%></th>
@@ -1290,7 +1297,7 @@ var oJobList = {
 						return ret;
 					},
 					responsivePriority: 7,
-					width: '15%'
+					width: '10%'
 				},
 				{
 					data: 'job',
@@ -1309,7 +1316,48 @@ var oJobList = {
 						return ret;
 					},
 					responsivePriority: 6,
-					width: '15%'
+					width: '10%'
+				},
+				{
+					data: 'job',
+					render: (data, type, row) => {
+						let ret = '-';
+						if (oSchedule.schedules.hasOwnProperty(data)) {
+							let now = Dashboard.get_currtime_epoch();
+							let sched = oJobList.find_next_sched(data, now);
+							ret = render_date_ts_local(sched, type);
+						} else if (row.schedule && row.enabled == 1) {
+							ret = '<%[ > 90 days ]%>'
+						}
+						return ret;
+					},
+					visible: false
+				},
+				{
+					data: 'job',
+					render: (data, type, row) => {
+						let ret = '-';
+						if (oSchedule.schedules.hasOwnProperty(data)) {
+							let now = Dashboard.get_currtime_epoch();
+							const sched = oJobList.find_next_sched(data, now);
+							if (type == 'display' || type == 'filter') {
+								if (sched) {
+									const span = document.createElement('SPAN');
+									res = Units.get_time_diff_duration(now, sched);
+									span.title = render_date_ts_local(sched, type)
+									span.textContent = res;
+									ret = span;
+								}
+							} else {
+								ret = sched;
+							}
+						} else if (row.schedule && row.enabled == 1) {
+							ret = '<%[ > 90 days ]%>'
+						}
+						return ret;
+					},
+					responsivePriority: 8,
+					width: '10%'
 				},
 				{
 					data: 'enabled',
@@ -1397,11 +1445,11 @@ var oJobList = {
 			{
 				className: 'action_col',
 				orderable: false,
-				targets: [ 11 ]
+				targets: [ 13 ]
 			},
 			{
 				className: "dt-center",
-				targets: [ 1, 2, 4, 5, 6, 7, 8, 9, 10, 11 ]
+				targets: [ 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
 			}],
 			select: {
 				style:    'os',
@@ -1410,7 +1458,7 @@ var oJobList = {
 			},
 			order: [3, 'asc'],
 			initComplete: function () {
-				this.api().columns([3, 4, 7, 8, 9]).every(function () {
+				this.api().columns([3, 4, 9, 10, 11]).every(function () {
 					var column = this;
 					var select = $('<select class="dt-select"><option value=""></option></select>')
 					.appendTo($(column.footer()).empty())
@@ -1458,6 +1506,19 @@ var oJobList = {
 			ret = tdiff || empty;
 		}
 		return ret;
+	},
+	find_next_sched: function(data, now) {
+		let sch, find;
+		let len = oSchedule.schedules[data].length;
+		len = len > 8 ? 8 : len;
+		for (let i = 0; i < len; i++) {
+			sch = parseInt(oSchedule.schedules[data][i].schedtime_epoch, 10);
+			if (sch > now) {
+				find = sch;
+				break;
+			}
+		}
+		return find;
 	},
 	set_bulk_actions: function() {
 		this.table_toolbar = get_table_toolbar(this.table, this.actions, {
@@ -1593,6 +1654,8 @@ var oJobListDeleteJobResourceWindow = {
 };
 </script>
 	</div>
+
+	<!-- Job reports -->
 	<div class="w3-container tab_item" id="job_reports" style="display: none">
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="W3SubTabs.open('job_reports_job_history_report_tab', 'job_reports_job_history_report_content'); if (oJobHistoryReport.table) { oJobHistoryReport.table.responsive.recalc(); }; set_page_tables([oJobHistoryReport]);">
@@ -2626,11 +2689,91 @@ class JobRunningOverTimeReport {
 		const end_time = new Date(); // now
 		oReportGeneral.create_report_list(date_el, start_time, end_time, this.opts);
 	}
-}
+};
+const oSchedule = {
+	schedules: {},
+	load_schedules: function() {
+		const cb = <%=$this->LoadScheduleStatus->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	load_schedule_status_cb: function(st) {
+		const self = oSchedule;
+		self.schedules = st;
+	}
+};
+window.oSchedule = oSchedule;
+$(() => {
+	oSchedule.load_schedules();
+});
 </script>
 	</div>
+
+	<!-- Restore verification -->
+	<div class="w3-container tab_item" id="restore_verification" style="display: none">
+		<div class="w3-container" style="margin-bottom: 8px">
+			<button type="button" id="btn_new_restore_verification" class="w3-button w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewRestoreVerification')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New restore verification ]%></button>
+		</div>
+		<!-- Restore verification submenu -->
+		<div class="w3-row w3-margin-bottom">
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('restore_verification_subtab_restore_tests', 'restore_tests', 'restore_verification'); oRestoreTestList.table.responsive.recalc();">
+				<div id="restore_verification_subtab_restore_tests" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding w3-border-red"><%[ Restore tests ]%></div>
+			</a>
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('restore_verification_subtab_restore_policies', 'restore_policies', 'restore_verification'); oRestorePolicyList.table.responsive.recalc();">
+				<div id="restore_verification_subtab_restore_policies" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Restore policies ]%></div>
+			</a>
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('restore_verification_subtab_restore_destinations', 'restore_destinations', 'restore_verification'); oRestoreDestinationList.table.responsive.recalc();">
+				<div id="restore_verification_subtab_restore_destinations" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Restore destinations ]%></div>
+			</a>
+			<a href="javascript:void(0)" onclick="W3SubTabs.open('restore_verification_subtab_verification_rules', 'verification_rules', 'restore_verification'); oVerificationRuleList.table.responsive.recalc();">
+				<div id="restore_verification_subtab_verification_rules" class="subtab_btn w3-quarter w3-bottombar w3-hover-light-grey w3-padding"><%[ Verification rules ]%></div>
+			</a>
+		</div>
+
+		<!-- Restore tests -->
+		<div id="restore_tests" class="subtab_item">
+			<com:Bacularis.Web.Portlets.RestoreTests
+				ID="RestoreTests"
+				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
+				OnSaveRestoreTest="postSaveRestoreTest"
+				OnRemoveRestoreTest="postRemoveRestoreTest"
+			/>
+		</div>
+
+		<!-- Restore policies -->
+		<div id="restore_policies" class="subtab_item" style="display: none">
+			<com:Bacularis.Web.Portlets.RestorePolicies
+				ID="RestorePolicies"
+				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
+				OnSaveRestorePolicy="postSaveRestorePolicy"
+				OnRemoveRestorePolicy="postRemoveRestorePolicy"
+			/>
+		</div>
+
+		<!-- Restore destinations -->
+		<div id="restore_destinations" class="subtab_item" style="display: none">
+			<com:Bacularis.Web.Portlets.RestoreDestinations
+				ID="RestoreDestinations"
+				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
+				OnSaveRestoreDestination="postSaveRestoreDestination"
+				OnRemoveRestoreDestination="postRemoveRestoreDestination"
+			/>
+		</div>
+
+		<!-- Verification rules -->
+		<div id="verification_rules" class="subtab_item" style="display: none">
+			<com:Bacularis.Web.Portlets.VerificationRules
+				ID="VerificationRules"
+				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
+				OnSaveVerificationRules="postSaveVerificationRules"
+				OnRemoveVerificationRules="postRemoveVerificationRules"
+			/>
+		</div>
+	</div>
+	<com:TCallback ID="LoadScheduleStatus" OnCallback="loadScheduleStatus" />
 <script>
-MonitorParams = {jobs: null};
+MonitorParams = {
+	jobs: null
+};
 let oJobHistoryReport;
 let oJobRunningOverTimeReport;
 $(function() {
@@ -2639,6 +2782,7 @@ $(function() {
 			oJobHistoryReport = new JobHistoryReport();
 			oJobList.load_job_list();
 			oJobRunningOverTimeReport = new JobRunningOverTimeReport();
+			oRestoreTests.load_restore_test_list();
 		}, 1000);
 	});
 	ThemeMode.add_cb(() => {
