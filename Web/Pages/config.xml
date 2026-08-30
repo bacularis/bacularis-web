@@ -28,6 +28,10 @@
 		<module id="org_config" class="Bacularis\Web\Modules\OrganizationConfig" />
 		<module id="idp_config" class="Bacularis\Web\Modules\IdentityProviderConfig" />
 		<module id="web_access_config" class="Bacularis\Web\Modules\WebAccessConfig" />
+		<module id="restore_test_config" class="Bacularis\Web\Modules\RestoreTestConfig" />
+		<module id="restore_policy_config" class="Bacularis\Web\Modules\RestorePolicyConfig" />
+		<module id="restore_destination_config" class="Bacularis\Web\Modules\RestoreDestinationConfig" />
+		<module id="verification_rule_config" class="Bacularis\Web\Modules\VerificationRuleConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BacularisAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
@@ -63,6 +67,7 @@
 		<module id="scp" class="Bacularis\Web\Modules\SCP" />
 		<module id="gpg" class="Bacularis\Web\Modules\GPG" />
 		<module id="deploy_api" class="Bacularis\Web\Modules\DeployAPIHost" />
+		<module id="restore_test_manager" class="Bacularis\Web\Modules\RestoreTestManager" />
 		<!-- Common modules available for web (temporary here due to no way to update composer project) -->
 		<module id="base32" class="Bacularis\Common\Modules\Base32" />
 		<module id="totp" class="Bacularis\Common\Modules\Totp" />
