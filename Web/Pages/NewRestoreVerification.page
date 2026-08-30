@@ -1,0 +1,872 @@
+<%@ MasterClass="Bacularis\Web\Layouts\Wizard" Theme="Baculum-v2"%>
+<com:TContent ID="Wizard">
+	<com:TWizard ID="NewRestoreVerificationWizard"
+		CssClass="wizard"
+		StepStyle.CssClass="steps w3-container"
+		HeaderStyle.CssClass="wizard-body w3-container"
+		NavigationStyle.CustomStyle="margin-bottom: 55px"
+		UseDefaultLayout="false"
+		ShowSideBar="false"
+		OnNextButtonClick="wizardNext"
+		OnCancelButtonClick="wizardStop"
+		OnCompleteButtonClick="wizardCompleted"
+		>
+		<prop:HeaderTemplate>
+			<div class="w3-hide-small">
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 0 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-tasks w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="What to test" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 1 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-question w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="How to test" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 2 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-download w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Where to restore" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white w3-margin-right <%=($this->Parent->ActiveStepIndex === 3 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-clock w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="When to run" /></h4>
+					</div>
+				</div>
+				<div class="w3-left w3-padding-16" style="width: 20%">
+					<div class="step w3-padding w3-text-white <%=($this->Parent->ActiveStepIndex === 4 ? 'w3-light-green' : 'w3-green')%>">
+						<div class="w3-left"><i class="fa fa-paper-plane w3-xxlarge"></i></div>
+						<div class="w3-clear"></div>
+						<h4><com:TTranslate Text="Review" /></h4>
+					</div>
+				</div>
+			</div>
+			<div class="step_title w3-panel w3-green"><h4><%=$this->Parent->ActiveStep->Title%></h4></div>
+		</prop:HeaderTemplate>
+		<prop:StartNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewRestoreVerification"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StartNavigationTemplate>
+		<prop:StepNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="NextStep"
+					ValidationGroup="NewRestoreVerification"
+					CssClass="w3-button w3-green"
+				>
+					<%[ Next ]%>&nbsp; <i class="fa fa-angle-right"></i>
+				</com:TLinkButton>
+			</div>
+		</prop:StepNavigationTemplate>
+		<prop:FinishNavigationTemplate>
+			<div class="w3-center w3-section">
+				<com:TLinkButton
+					CommandName="Cancel"
+					CausesValidation="false"
+					CssClass="w3-button w3-red"
+				>
+					<i class="fa fa-times"></i> &nbsp;<%[ Cancel ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="PreviousStep"
+					CausesValidation="false"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-angle-left"></i> &nbsp;<%[ Previous ]%>
+				</com:TLinkButton>
+				<com:TLinkButton
+					CommandName="Complete"
+					ValidationGroup="NewRestoreVerification"
+					CssClass="w3-button w3-green"
+				>
+					<i class="fa fa-paper-plane"></i> &nbsp;<%[ Create restore test ]%>
+				</com:TLinkButton>
+			</div>
+		</prop:FinishNavigationTemplate>
+
+		<com:TWizardStep ID="Step1" Title="<%[ Step 1: What to test ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h2><%[ Create restore test ]%></h2>
+				<p><%[ Restore tests help you check whether your backups can actually be restored. ]%><br />
+				<%[ Bacularis restores selected data to a safe test location and verifies it using selected verification rules. ]%></p>
+
+				<div class="w3-row directive_field" style="margin-top: 40px">
+					<div class="w3-col w3-third"><label for="<%=$this->RestoreTestName->ClientID%>"><%[ Restore test name ]%>:</label></div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveTextBox
+							ID="RestoreTestName"
+							AutoPostBack="false"
+							MaxLength="160"
+							CssClass="w3-input w3-border w3-show-inline-block"
+							Attributes.placeholder="My new restore test"
+						/>
+						<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewRestoreVerification"
+							ControlToValidate="RestoreTestName"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
+						<com:TRegularExpressionValidator
+							ValidationGroup="NewRestoreVerification"
+							RegularExpression="<%=Bacularis\Web\Modules\RestoreTestConfig::NAME_PATTERN%>"
+							ControlToValidate="RestoreTestName"
+							ErrorMessage="<%[ Invalid value. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
+					</div>
+				</div>
+
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third"><label for="<%=$this->BackupJob->ClientID%>"><%[ Backup job ]%>:</label></div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveDropDownList
+							ID="BackupJob"
+							CssClass="w3-select w3-border"
+							PromptText="<%[ Select backup job ]%>"
+							PromptValue=" "
+							OnSelectedIndexChanged="loadBackupVersions"
+							ClientSide.OnComplete="oRestoreVerification.clear_paths();"
+						/>
+						<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewRestoreVerification"
+							ControlToValidate="BackupJob"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
+					</div>
+				</div>
+
+				<div class="w3-section">
+					<button type="button" class="w3-button w3-green" onclick="oRestoreVerification.open_paths_window();">
+						<i class="fa-solid fa-plus"></i> &nbsp;<%[ Select files from backup ]%>
+					</button>
+					<com:TActiveTextBox
+						ID="SelectedPaths"
+						CssClass="w3-input"
+						Display="None"
+					/>
+					<com:TCustomValidator
+						ID="SelectedPathsValidator"
+						ValidationGroup="NewRestoreVerification"
+						ControlToValidate="SelectedPaths"
+						ClientValidationFunction="validate_restore_verification_paths"
+						OnServerValidate="validateSelectedPaths"
+						Text="<%[ Select at least one path to verify. ]%>"
+						Display="Dynamic"
+					/>
+				</div>
+
+				<div id="restore_verification_selected_paths_container" class="w3-section" style="display: none">
+					<table class="w3-table w3-striped w3-margin-bottom dataTable dtr-column">
+						<thead>
+							<tr class="row">
+								<th class="w3-center" style="width: 90%"><%[ Path ]%></th>
+								<th class="w3-center" style="display: none"><%[ Action ]%></th>
+							</tr>
+						</thead>
+						<tbody id="restore_verification_selected_paths"></tbody>
+					</table>
+				</div>
+			</div>
+
+			<div id="restore_verification_paths_window" class="w3-modal">
+				<div class="w3-modal-content w3-animate-top w3-card-4" style="width: 1200px">
+					<header class="w3-container w3-green">
+						<span onclick="oRestoreVerification.show_paths_window(false);" class="w3-button w3-display-topright">&times;</span>
+						<h2><%[ Select backup version ]%></h2>
+					</header>
+					<div class="w3-container w3-margin">
+						<p><%[ Choose a backup version to browse its file list and select files for verification. ]%></p>
+						<p><%[ This backup version is used only for file selection. Scheduled tests will use the latest successful backup of the selected backup job. ]%></p>
+
+						<div class="w3-row directive_field">
+							<div class="w3-col w3-third"><label for="<%=$this->BackupVersion->ClientID%>"><%[ Backup version ]%>:</label></div>
+							<div class="w3-col w3-twothird">
+								<com:TActiveDropDownList
+									ID="BackupVersion"
+									CssClass="w3-select w3-border"
+									PromptText="<%[ Select backup version ]%>"
+									PromptValue=" "
+									OnSelectedIndexChanged="loadJobFiles"
+									ClientSide.OnComplete="job_list_files_msg(); show_job_list_files_loader(false); Formatters.set_formatters(); $('#restore_verification_paths_window_file_list').slideDown('fast');"
+								/>
+								<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+								<com:TRequiredFieldValidator
+									ValidationGroup="RestoreVerificationPaths"
+									ControlToValidate="BackupVersion"
+									ErrorMessage="<%[ Field required. ]%>"
+									ControlCssClass="field_invalid"
+									Display="Dynamic"
+								/>
+							</div>
+						</div>
+					</div>
+					<div id="restore_verification_paths_window_selected_container" class="w3-container w3-margin-left w3-margin-right w3-margin-top" style="display: none">
+						<h4><%[ Selected paths ]%></h4>
+						<table class="w3-table w3-striped w3-margin-bottom dataTable dtr-column">
+							<thead>
+								<tr class="row">
+									<th class="w3-center" style="width: 90%"><%[ Path ]%></th>
+									<th class="w3-center"><%[ Action ]%></th>
+								</tr>
+							</thead>
+							<tbody id="restore_verification_paths_window_selected_list"></tbody>
+						</table>
+						<div class="w3-container w3-center">
+							<button type="button" class="w3-button w3-red" onclick="oRestoreVerification.show_paths_window(false);"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>
+							<button type="button" class="w3-button w3-section w3-green w3-padding" onclick="oRestoreVerification.use_selected_paths();"><i class="fa-solid fa-check"></i> &nbsp;<%[ Use selected paths ]%></button>
+						</div>
+					</div>
+					<div id="restore_verification_paths_window_file_list" class="w3-container w3-margin-left w3-margin-right w3-margin-top" style="display: none">
+						<h4><%[ Select paths ]%></h4>
+						<com:Bacularis.Web.Portlets.JobListFiles
+							ID="BackupFiles"
+							NameSelectItem="<i class='fa-solid fa-plus'></i> <%= Prado::localize('Select') %>"
+							NameUnselectItem="<i class='fa-solid fa-check w3-center'></i>"
+							ActionSelectItem="oRestoreVerification.item_action"
+						/>
+						<p><%[ Only selected files will be restored during this test. ]%></p>
+					</div>
+				</div>
+			</div>
+			<com:TCallback ID="ClearJobFiles" OnCallback="clearJobFiles" />
+			<script>
+function validate_restore_verification_paths(sender, parameter) {
+	return document.getElementById('<%=$this->SelectedPaths->ClientID%>').value.length > 2;
+}
+
+window.oRestoreVerification = {
+	ids: {
+		win: 'restore_verification_paths_window',
+		main_selected_cont: 'restore_verification_selected_paths_container',
+		main_selected_list: 'restore_verification_selected_paths',
+		win_selected_cont: 'restore_verification_paths_window_selected_container',
+		win_selected_list: 'restore_verification_paths_window_selected_list',
+		file_list: 'restore_verification_paths_window_file_list',
+		selected_paths: '<%=$this->SelectedPaths->ClientID%>',
+		backup_job: '<%=$this->BackupJob->ClientID%>',
+		backup_version: '<%=$this->BackupVersion->ClientID%>'
+	},
+	paths: {},
+	load_form_value: function() {
+		const selected_paths = document.getElementById(this.ids.selected_paths);
+		if (!selected_paths || selected_paths.value.length === 0) {
+			return;
+		}
+		let paths;
+		try {
+			paths = JSON.parse(selected_paths.value);
+		} catch (e) {
+			paths = [];
+		}
+		if (!Array.isArray(paths)) {
+			return;
+		}
+		this.paths = {};
+		for (let i = 0; i < paths.length; i++) {
+			this.paths[paths[i]] = {file: paths[i]};
+		}
+		this.update_selected_list();
+	},
+	open_paths_window: function() {
+		const backup_job = document.getElementById(this.ids.backup_job);
+		if (!backup_job.value || backup_job.value === ' ') {
+			Prado.Validation.validate(Prado.Validation.getForm(), 'NewRestoreVerification');
+			return;
+		}
+		this.show_paths_window(true);
+	},
+	show_paths_window: function(show) {
+		const win = document.getElementById(this.ids.win);
+		win.style.display = show ? 'block' : 'none';
+	},
+	clear_paths: function() {
+		this.paths = {};
+		this.update_selected_list();
+		this.update_form_value();
+		this.show_file_list(false);
+		document.getElementById(this.ids.backup_version).value = '';
+		const cb = <%=$this->ClearJobFiles->ActiveControl->Javascript%>;
+		cb.dispatch();
+	},
+	show_file_list: function(show) {
+		const cont = document.getElementById(this.ids.file_list);
+		cont.style.display = show ? 'block' : 'none';
+	},
+	update_selected_list: function() {
+		this.render_paths(this.ids.win_selected_list, true);
+		this.render_paths(this.ids.main_selected_list, false);
+		const show = (Object.keys(this.paths).length > 0);
+		document.getElementById(this.ids.win_selected_cont).style.display = show ? 'block' : 'none';
+		document.getElementById(this.ids.main_selected_cont).style.display = show ? 'block' : 'none';
+	},
+	render_paths: function(container_id, removable) {
+		const cont = document.getElementById(container_id);
+		while (cont.firstChild) {
+			cont.removeChild(cont.firstChild);
+		}
+		let tr, td_path, td_action, btn, img;
+		for (const path in this.paths) {
+			tr = document.createElement('TR');
+			td_path = document.createElement('TD');
+			td_action = document.createElement('TD');
+			td_path.style.overflowWrap = 'anywhere';
+			td_path.style.wordBreak = 'break-word';
+			td_path.textContent = this.paths[path].file;
+			td_action.classList.add('w3-center');
+			if (removable) {
+				btn = document.createElement('BUTTON');
+				img = document.createElement('I');
+				btn.type = 'button';
+				btn.classList.add('w3-button', 'w3-red');
+				img.classList.add('fa-solid', 'fa-trash-alt');
+				btn.appendChild(img);
+				btn.addEventListener('click', () => {
+					delete(this.paths[path]);
+					this.update_selected_list();
+					this.update_form_value();
+				});
+				td_action.appendChild(btn);
+			} else {
+				td_action.style.display = 'none';
+			}
+			tr.appendChild(td_path);
+			tr.appendChild(td_action);
+			cont.appendChild(tr);
+		}
+	},
+	update_form_value: function() {
+		const paths = [];
+		for (const path in this.paths) {
+			paths.push(path);
+		}
+		document.getElementById(this.ids.selected_paths).value = JSON.stringify(paths);
+	},
+	item_action: function(el, item) {
+		if (!this.paths.hasOwnProperty(item.file)) {
+			this.paths[item.file] = item;
+			this.item_selected(el);
+		}
+		this.update_selected_list();
+	},
+	item_selected: function(el) {
+		el.innerHTML = el.getAttribute('data-unselect');
+		setTimeout(() => {
+			el.innerHTML = el.getAttribute('data-select');
+		}, 900);
+	},
+	use_selected_paths: function() {
+		this.update_form_value();
+		this.update_selected_list();
+		this.show_paths_window(false);
+	}
+};
+oRestoreVerification.load_form_value();
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step2" Title="<%[ Step 2: How to test ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h2><%[ How to test ]%></h2>
+				<p><%[ Choose how Bacularis should verify the restored data. ]%></p>
+
+				<div class="w3-row directive_field" style="margin-top: 20px">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="VerificationMethodBasic"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							Checked="true"
+							GroupName="RestoreVerificationMethod"
+							Attributes.onclick="$('#restore_verification_rule_sets').slideUp('fast');"
+						/> <label for="<%=$this->VerificationMethodBasic->ClientID%>">&nbsp;<%[ Basic verification ]%></label>
+						<p class="w3-margin-left" style="margin-bottom: 0;"><%[ Checks that selected restored files exist and are not empty. ]%></p>
+						<p class="w3-margin-left" style="margin-top: 0;"><%[ Recommended for simple restore tests. ]%></p>
+					</div>
+				</div>
+
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="VerificationMethodAdvanced"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							GroupName="RestoreVerificationMethod"
+							Attributes.onclick="$('#restore_verification_rule_sets').slideUp('fast');"
+						/> <label for="<%=$this->VerificationMethodAdvanced->ClientID%>">&nbsp;<%[ Advanced verification ]%></label>
+						<p class="w3-margin-left" style="margin-bottom: 0;"><%[ Compares selected restored files with metadata from the Bacula catalog, ]%></p>
+						<p class="w3-margin-left" style="margin-top: 0;"><%[ such as file size and checksum, when available. ]%></p>
+					</div>
+				</div>
+
+				<div class="w3-row directive_field w3-margin-bottom">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="VerificationMethodExistingRules"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							GroupName="RestoreVerificationMethod"
+							Attributes.onclick="$('#restore_verification_rule_sets').slideDown('fast');"
+						/> <label for="<%=$this->VerificationMethodExistingRules->ClientID%>">&nbsp;<%[ Use existing verification rules ]%></label>
+						<p class="w3-margin-left" style="margin-bottom: 0;"><%[ Select an existing rule set prepared earlier. ]%></p>
+					</div>
+				</div>
+
+				<div id="restore_verification_rule_sets" style="display: <%=$this->VerificationMethodExistingRules->Checked ? 'block' : 'none'%>">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->VerificationRules->ClientID%>" class="w3-margin-left"><%[ Rule sets to choose ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveListBox
+								ID="VerificationRules"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+								SelectionMode="Multiple"
+								Rows="5"
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<com:TCustomValidator
+								ValidationGroup="NewRestoreVerification"
+								ControlToValidate="VerificationRules"
+								ClientValidationFunction="validate_restore_verification_rules"
+								OnServerValidate="validateVerificationRules"
+								Text="<%[ Field required. ]%>"
+								Display="Dynamic"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div style="margin-top: 32px;">
+					<p><%[ This restore job will be used by the new restore test to restore selected backup data to the chosen destination. ]%></p>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->RestoreJob->ClientID%>"><%[ Restore job ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveDropDownList
+								ID="RestoreJob"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="NewRestoreVerification"
+								ControlToValidate="RestoreJob"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+function validate_restore_verification_rules(sender, parameter) {
+	const rule_sets = document.getElementById('<%=$this->VerificationRules->ClientID%>');
+	const existing_rules = document.getElementById('<%=$this->VerificationMethodExistingRules->ClientID%>');
+	if (!existing_rules.checked) {
+		return true;
+	}
+	for (let i = 0; i < rule_sets.options.length; i++) {
+		if (rule_sets.options[i].selected) {
+			return true;
+		}
+	}
+	return false;
+}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step3" Title="<%[ Step 3: Where to restore ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h2><%[ Where to restore ]%></h2>
+				<p><%[ Where should the test restore run? ]%></p>
+				<p><%[ Choose a restore destination. Data will be restored to a dedicated test path on the selected client, not to the original production location. ]%></p>
+
+				<div class="w3-row directive_field" style="margin-top: 40px">
+					<div class="w3-col w3-third"><label for="<%=$this->RestoreDestination->ClientID%>"><%[ Restore destination ]%>:</label></div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveDropDownList
+							ID="RestoreDestination"
+							CssClass="w3-select w3-border"
+							AutoPostBack="false"
+							PromptText="<%[ Select restore destination ]%>"
+							PromptValue=" "
+						/>
+						<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+						<com:TRequiredFieldValidator
+							ValidationGroup="NewRestoreVerification"
+							ControlToValidate="RestoreDestination"
+							ErrorMessage="<%[ Field required. ]%>"
+							ControlCssClass="field_invalid"
+							Display="Dynamic"
+						/>
+					</div>
+				</div>
+
+				<div class="w3-section">
+					<button type="button" class="w3-button w3-green" onclick="oRestoreVerificationDestination.show_create(true);">
+						<i class="fa-solid fa-plus"></i> &nbsp;<%[ Create destination ]%>
+					</button>
+				</div>
+
+				<com:TActiveHiddenField ID="CreateDestinationVisible" Value="0" />
+				<div id="restore_verification_create_destination" class="w3-margin-top w3-padding w3-card" style="display: <%=$this->CreateDestinationVisible->Value === '1' ? 'block' : 'none'%>">
+					<h3 class="w3-margin-left"><%[ Create destination ]%></h3>
+					<com:TActiveLabel ID="RestoreDestinationError" CssClass="error" Display="None" />
+					<com:TActivePanel ID="RestorePathWarning" CssClass="w3-panel w3-orange" Display="None">
+						<p><strong><%[ This wizard supports only safe prefixed restores. ]%></strong></p>
+						<p><%[ The restore path cannot be "/". Choose a dedicated test directory, for example ]%><br />
+						/tmp/bacularis-restore-tests/{job_name}/{date}/.</p>
+						<p><%[ Original-path restore may overwrite data on the selected client. To use it, configure the destination manually on the Restore destinations page. ]%></p>
+					</com:TActivePanel>
+
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->DestinationName->ClientID%>" class="w3-margin-left"><%[ Destination name ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveTextBox
+								ID="DestinationName"
+								AutoPostBack="false"
+								MaxLength="160"
+								CssClass="w3-input w3-border w3-show-inline-block"
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RestoreVerificationDestination"
+								ControlToValidate="DestinationName"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+							<com:TRegularExpressionValidator
+								ValidationGroup="RestoreVerificationDestination"
+								RegularExpression="<%=Bacularis\Web\Modules\RestoreDestinationConfig::NAME_PATTERN%>"
+								ControlToValidate="DestinationName"
+								ErrorMessage="<%[ Invalid value. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+						</div>
+					</div>
+
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->RestoreClient->ClientID%>" class="w3-margin-left"><%[ Restore client ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveDropDownList
+								ID="RestoreClient"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RestoreVerificationDestination"
+								ControlToValidate="RestoreClient"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+						</div>
+					</div>
+
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->RestorePath->ClientID%>" class="w3-margin-left"><%[ Restore path ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveTextBox
+								ID="RestorePath"
+								AutoPostBack="false"
+								CssClass="w3-input w3-border w3-show-inline-block"
+								Text="/tmp/bacularis-restore-tests/{job_name}/{date}/"
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<i class="fas fa-info-circle help_icon w3-text-green" style="display: inline-block;" onclick="var h = $(this).nextAll('div.directive_help'); var disp = h.get(0).style.display; $('div.directive_help').slideUp('fast'); if (disp == 'none') { h.slideDown('fast'); }"></i>
+							<com:TRequiredFieldValidator
+								ValidationGroup="RestoreVerificationDestination"
+								ControlToValidate="RestorePath"
+								ErrorMessage="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+							<com:TCustomValidator
+								ValidationGroup="RestoreVerificationDestination"
+								ControlToValidate="RestorePath"
+								ClientValidationFunction="validate_restore_destination_path"
+								OnServerValidate="validateRestorePath"
+								Text="<%[ Invalid value. ]%>"
+								Display="Dynamic"
+							/>
+							<com:TCustomValidator
+								ValidationGroup="NewRestoreVerification"
+								ControlToValidate="RestorePath"
+								ClientValidationFunction="validate_restore_destination_path"
+								OnServerValidate="validateRestorePath"
+								Text="<%[ Invalid value. ]%>"
+								Display="Dynamic"
+							/>
+							<div class="directive_help" style="display: none">
+								<p><%[ The following keywords can be used in paths: ]%></p>
+								<ul>
+									<li><strong>{date}</strong> - <%[ current date, ex: 2026-08-19_00:29:18 ]%></li>
+									<li><strong>{test_id}</strong> - <%[ test identifier, ex: rt-OjuKleyqh423W5wHGcr0JARiUVm9EzgN ]%></li>
+									<li><strong>{job_name}</strong> - <%[ job name ex: My Job 123 ]%></li>
+									<li><strong>{restore_test}</strong> - <%[ restore test name ex: MyRestoreTest ]%></li>
+									<li><strong>{restore_job}</strong> - <%[ name of job used for restore ex: RestoreFiles ]%></li>
+									<li><strong>{restore_policy}</strong> - <%[ restore policy name ex: DailyCycle ]%></li>
+									<li><strong>{restore_destination}</strong> - <%[ restore destination name ex: ServerA3 ]%></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="w3-center w3-section">
+						<button type="button" class="w3-button w3-red" onclick="oRestoreVerificationDestination.show_create(false); oRestoreVerificationDestination.clear_destination(false);">
+							<i class="fa-solid fa-times"></i> &nbsp;<%[ Cancel ]%>
+						</button>
+						<com:TActiveLinkButton
+							ID="CreateDestination"
+							ValidationGroup="RestoreVerificationDestination"
+							OnCallback="saveRestoreDestination"
+							CssClass="w3-button w3-green"
+						>
+							<i class="fa-solid fa-plus"></i> &nbsp;<%[ Create ]%>
+						</com:TActiveLinkButton>
+					</div>
+				</div>
+			</div>
+			<script>
+function validate_restore_destination_path(sender, parameter) {
+	const create_cont = document.getElementById('restore_verification_create_destination');
+	const warning = document.getElementById('<%=$this->RestorePathWarning->ClientID%>');
+	if (create_cont.style.display === 'none') {
+		warning.style.display = 'none';
+		return true;
+	}
+	const valid = parameter.trim() !== '/';
+	warning.style.display = valid ? 'none' : '';
+	return valid;
+}
+
+const oRestoreVerificationDestination = {
+	ids: {
+		create_cont: 'restore_verification_create_destination',
+		create_visible: '<%=$this->CreateDestinationVisible->ClientID%>',
+		restore_path_warning: '<%=$this->RestorePathWarning->ClientID%>'
+	},
+	paths: {
+		default: '/tmp/bacularis-restore-tests/{job_name}/{date}/'
+	},
+	show_create: function(show) {
+		document.getElementById(this.ids.create_cont).style.display = show ? 'block' : 'none';
+		document.getElementById(this.ids.create_visible).value = show ? '1' : '0';
+		if (!show) {
+			document.getElementById(this.ids.restore_path_warning).style.display = 'none';
+		}
+	},
+	save_destination_cb: function() {
+		const self = oRestoreVerificationDestination;
+		self.show_create(false);
+	},
+	clear_destination: function() {
+		[
+			'<%=$this->DestinationName->ClientID%>',
+			'<%=$this->RestoreClient->ClientID%>'
+		].forEach((id) => {
+			document.getElementById(id).value = '';
+		});
+		document.getElementById('<%=$this->RestorePath->ClientID%>').value = this.paths.default;
+	}
+};
+window.oRestoreVerificationDestination = oRestoreVerificationDestination;
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step4" Title="<%[ Step 4: When to run ]%>" StepType="Auto">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h2><%[ When to run ]%></h2>
+
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="RunMethodExistingPolicy"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							Checked="true"
+							GroupName="RestoreVerificationRunMethod"
+							Attributes.onclick="$('#restore_verification_policy').slideDown('fast');"
+						/> <label for="<%=$this->RunMethodExistingPolicy->ClientID%>">&nbsp;<%[ Use existing restore policy ]%></label>
+					</div>
+				</div>
+
+				<div id="restore_verification_policy" class="w3-section" style="display: <%=$this->RunMethodExistingPolicy->Checked ? 'block' : 'none'%>">
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->RestorePolicy->ClientID%>" class="w3-margin-left"><%[ Policy ]%>:</label></div>
+						<div class="w3-col w3-twothird">
+							<com:TActiveDropDownList
+								ID="RestorePolicy"
+								CssClass="w3-select w3-border"
+								AutoPostBack="false"
+								PromptText="<%[ Select policy ]%>"
+								PromptValue=" "
+							/>
+							<i class="fa-solid fa-asterisk w3-text-red opt_req"></i>
+							<com:TCustomValidator
+								ValidationGroup="NewRestoreVerification"
+								ControlToValidate="RestorePolicy"
+								ClientValidationFunction="validate_restore_policy"
+								OnServerValidate="validateRestorePolicy"
+								Text="<%[ Field required. ]%>"
+								ControlCssClass="field_invalid"
+								Display="Dynamic"
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="RunMethodAfterBackup"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							GroupName="RestoreVerificationRunMethod"
+							Attributes.onclick="$('#restore_verification_policy').slideUp('fast');"
+						/> <label for="<%=$this->RunMethodAfterBackup->ClientID%>">&nbsp;<%[ After each successful backup ]%></label>
+						<p class="w3-margin-left" style="margin-bottom: 0;"><%[ Run this restore test after a successful run of the selected backup job. ]%></p>
+						<p class="w3-margin-left" style="margin-top: 0;"><%[ This creates a new restore policy. ]%></p>
+						<p class="w3-margin-left" style="margin-top: 0;"><%[ Modifies backup job used by restore test with this policy by adding a RunScript entry that starts the test after a successful backup. ]%></p>
+					</div>
+				</div>
+
+				<div class="w3-row directive_field">
+					<div class="w3-col w3-third">&nbsp;</div>
+					<div class="w3-col w3-twothird">
+						<com:TActiveRadioButton
+							ID="RunMethodManual"
+							CssClass="w3-check w3-border"
+							AutoPostBack="false"
+							GroupName="RestoreVerificationRunMethod"
+							Attributes.onclick="$('#restore_verification_policy').slideUp('fast');"
+						/> <label for="<%=$this->RunMethodManual->ClientID%>">&nbsp;<%[ Manually only ]%></label>
+						<p class="w3-margin-left"><%[ The test will be created but will not run automatically. ]%></p>
+					</div>
+				</div>
+			</div>
+			<script>
+function validate_restore_policy(sender, parameter) {
+	const existing_policy = document.getElementById('<%=$this->RunMethodExistingPolicy->ClientID%>');
+	if (!existing_policy.checked) {
+		return true;
+	}
+	return parameter !== '';
+}
+			</script>
+		</com:TWizardStep>
+		<com:TWizardStep ID="Step5" Title="<%[ Review restore test ]%>" StepType="Finish">
+			<div class="w3-half" style="float: none; margin: auto">
+				<h2><%[ Review restore test ]%></h2>
+				<p><%[ Bacularis will create a restore test with the following settings: ]%></p>
+				<com:TActiveLabel ID="CreateRestoreTestError" CssClass="error" Display="None" />
+				<fieldset>
+					<legend><%[ What ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Restore test ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getRestoreTestNameSummary()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Backup job ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getBackupJobSummary()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Backup version ]%></div>
+						<div class="w3-threequarter bold"><%[ Latest successful backup during test runs ]%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Files ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getFilesSummary()%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ How ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Verification ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getVerificationSummary()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Restore job ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getRestoreJobSummary()%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ Destination ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Name ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getDestinationNameSummary()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Restore client ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getDestinationClientSummary()%></div>
+					</div>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Restore path ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getDestinationPathSummary()%></div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend><%[ When ]%></legend>
+					<div class="w3-container w3-padding-small">
+						<div class="w3-quarter"><%[ Run mode ]%></div>
+						<div class="w3-threequarter bold"><%=$this->getRunModeSummary()%></div>
+					</div>
+				</fieldset>
+				<div class="w3-container w3-padding-small w3-margin-top">
+					<com:TActiveCheckBox
+						ID="RunRestoreTestNow"
+						CssClass="w3-check w3-border"
+						AutoPostBack="false"
+					/> <label for="<%=$this->RunRestoreTestNow->ClientID%>">&nbsp;<%[ Run restore test now after creating it ]%></label>
+					<p class="w3-margin-left"><%[ This may start a restore job immediately on the selected destination. ]%></p>
+				</div>
+			</div>
+		</com:TWizardStep>
+	</com:TWizard>
+</com:TContent>
