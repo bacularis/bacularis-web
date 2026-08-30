@@ -62,6 +62,17 @@ class WebAccessConfig extends ConfigFileModule
 	public const WEB_ACCESS_SOURCE_METHOD_NO_RESTRICTION = 'no_restriction';
 	public const WEB_ACCESS_SOURCE_METHOD_IP_RESTRICTION = 'ip_restriction';
 
+	private const WEB_ACCESS_OPTIONS = [
+		'access_type' => 'req',
+		'api_hosts' => 'req',
+		'component_type' => 'req',
+		'component_name' => 'req',
+		'resource_type' => 'req',
+		'resource_name' => 'req',
+		'action' => 'req',
+		'action_params' => 'req'
+	];
+
 	/**
 	 * Stores web access config.
 	 */
@@ -133,9 +144,41 @@ class WebAccessConfig extends ConfigFileModule
 	 */
 	public function setWebAccessConfig(string $name, array $settings): bool
 	{
+		$result = false;
+		if ($this->validateOptions($settings)) {
+			$config = $this->getConfig();
+			$config[$name] = $settings;
+			$result = $this->setConfig($config);
+		}
+		return $result;
+	}
+
+	/**
+	 * Update single web access config.
+	 *
+	 * @param string $name web access config name
+	 * @param array $settings selected web access config settings
+	 * @return bool true on success, otherwise false
+	 */
+	public function updateWebAccessConfig(string $name, array $settings): bool
+	{
+		$result = false;
 		$config = $this->getConfig();
-		$config[$name] = $settings;
-		$result = $this->setConfig($config);
+		if (key_exists($name, $config)) {
+			foreach ($settings as $key => $val) {
+				if (is_array($val)) {
+					foreach ($val as $k => $v) {
+						$config[$name][$key][$k] = $v;
+					}
+				} else {
+					$config[$name][$key] = $val;
+				}
+			}
+			$result = true;
+		}
+		if ($result) {
+			$result = $this->setConfig($config);
+		}
 		return $result;
 	}
 
@@ -202,5 +245,26 @@ class WebAccessConfig extends ConfigFileModule
 		$rb_bin = random_bytes($rb_len);
 		$token = Miscellaneous::encodeBase64URL($rb_bin);
 		return $token;
+	}
+
+	/**
+	 * Validate web access configuration options.
+	 *
+	 * @param array $config web access configuration
+	 * @return bool true on success, otherwise false
+	 */
+	public static function validateOptions(array $config)
+	{
+		$valid = true;
+		foreach (self::WEB_ACCESS_OPTIONS as $option => $type) {
+			if ($type != 'req') {
+				continue;
+			}
+			if (!key_exists($option, $config)) {
+				$valid = false;
+				break;
+			}
+		}
+		return $valid;
 	}
 }

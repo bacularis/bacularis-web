@@ -84,7 +84,7 @@ class WebAccess extends BaculumPage
 				sprintf(
 					'Web access action started successfully: Action: %s, Params: %s',
 					$config['action'],
-					json_encode($config['action_params'])
+					json_encode($config['action_params'] ?? '{}')
 				)
 			);
 		} else {
@@ -248,12 +248,11 @@ class WebAccess extends BaculumPage
 			switch ($config['access_type']) {
 				case WebAccessConfig::WEB_ACCESS_TYPE_RESOURCE: {
 					$web_access_resource = $this->getModule('web_access_resource');
-					$result = $web_access_resource->executeCommand(
+					$status = $web_access_resource->executeCommand(
 						$config,
 						$action,
 						$params
 					);
-					$status = ($result->error === 0);
 					break;
 				}
 			}

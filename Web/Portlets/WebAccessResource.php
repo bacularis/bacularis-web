@@ -110,8 +110,8 @@ class WebAccessResource extends Portlets
 		// Action name
 		$this->WebAccessResourceActionName->DataSource = [
 			' ' => Prado::localize('Select action'),
-			WebAccessBaculaResource::ACTION_RUN_NAME => WebAccessBaculaResource::ACTION_RUN_DESC
-			//WebAccessBaculaResource::ACTION_CANCEL_NAME => WebAccessBaculaResource::ACTION_CANCEL_DESC
+			WebAccessBaculaResource::ACTION_RUN_NAME => WebAccessBaculaResource::ACTION_RUN_DESC,
+			WebAccessBaculaResource::ACTION_RUN_RESTORE_TEST_NAME => WebAccessBaculaResource::ACTION_RUN_RESTORE_TEST_DESC
 		];
 		$this->WebAccessResourceActionName->dataBind();
 
@@ -120,7 +120,7 @@ class WebAccessResource extends Portlets
 			$web_access_config = $this->getModule('web_access_config');
 			$config = $web_access_config->getWebAccessConfig($name);
 			$this->WebAccessResourceActionName->setSelectedValue($config['action']);
-			$params = $config['action_params'];
+			$params = $config['action_params'] ?? [];
 
 			$cb = $this->getPage()->getCallbackClient();
 			$cb->hide('web_access_resource_access_method_x_days');
@@ -241,10 +241,15 @@ class WebAccessResource extends Portlets
 	{
 		$cb = $this->getPage()->getCallbackClient();
 		$cb->hide('run_job_action_params_line_cont');
+		$cb->hide('verify_restore_action_params_line_cont');
 		$action = $this->WebAccessResourceActionName->SelectedValue;
 		switch ($action) {
 			case WebAccessBaculaResource::ACTION_RUN_NAME: {
 				$this->setRunJobActionParams($params);
+				break;
+			}
+			case WebAccessBaculaResource::ACTION_RUN_RESTORE_TEST_NAME: {
+				$this->setVerifyRestoreActionParams($params);
 				break;
 			}
 		}
@@ -260,6 +265,10 @@ class WebAccessResource extends Portlets
 		switch ($action) {
 			case WebAccessBaculaResource::ACTION_RUN_NAME: {
 				$action_params = $this->getRunJobActionParams();
+				break;
+			}
+			case WebAccessBaculaResource::ACTION_RUN_RESTORE_TEST_NAME: {
+				$action_params = $this->getVerifyRestoreActionParams();
 				break;
 			}
 		}
@@ -307,6 +316,33 @@ class WebAccessResource extends Portlets
 		$verify_opts = $this->getJobVerifyOptions();
 		$config = array_merge($config, $verify_opts);
 		return $config;
+	}
+
+	/**
+	 * Get parameters for verify restore action.
+	 *
+	 * @return array verify restore action parameters
+	 */
+	private function getVerifyRestoreActionParams(): array
+	{
+		$config = [
+			'restore_test' => $this->getRestoreTest()
+		];
+		return $config;
+	}
+
+	/**
+	 * Set parameters for verify restore action.
+	 *
+	 * @param array $params selected action parameters
+	 */
+	private function setVerifyRestoreActionParams(array $params = []): void
+	{
+		$restore_test = $params['restore_test'] ?? '';
+		$this->setRestoreTest($restore_test);
+
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->show('verify_restore_action_params_line_cont');
 	}
 
 	/**
@@ -649,6 +685,29 @@ class WebAccessResource extends Portlets
 	{
 		$priority = (int) $this->WebAccessResourceActionParamPriority->Text;
 		return $priority;
+	}
+
+	/**
+	 * Set restore test.
+	 */
+	private function setRestoreTest(string $restore_test): void
+	{
+		$rtest_config = $this->getModule('restore_test_config');
+		$restore_tests = $rtest_config->getConfig();
+		$rts = array_keys($restore_tests);
+		$this->WebAccessResourceActionParamRestoreTest->DataSource = array_combine($rts, $rts);
+		$this->WebAccessResourceActionParamRestoreTest->SelectedValue = $restore_test;
+		$this->WebAccessResourceActionParamRestoreTest->dataBind();
+	}
+
+	/**
+	 * Get restore test.
+	 *
+	 * @return string selected restore test
+	 */
+	private function getRestoreTest(): string
+	{
+		return $this->WebAccessResourceActionParamRestoreTest->getSelectedItem()->getValue();
 	}
 
 	/**

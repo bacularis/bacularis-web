@@ -462,6 +462,7 @@ var oWebAccessResource = {
 		acc_number_use: 'web_access_resource_access_method_x_number_use',
 		run_job_action: '<%=$this->WebAccessResourceActionName->ClientID%>',
 		job_params_cont: 'run_job_action_params_line_cont',
+		verify_restore_params_cont: 'verify_restore_action_params_line_cont',
 		run_job_params: 'run_job_action_params_line',
 		time_unlimited: '<%=$this->WebAccessResourceAccessMethodAllTheTime->ClientID%>',
 		time_given_days: '<%=$this->WebAccessResourceAccessMethodXDays->ClientID%>',
@@ -525,6 +526,7 @@ var oWebAccessResource = {
 		// Hide fields
 		[
 			this.ids.job_params_cont,
+			this.ids.verify_restore_params_cont,
 			this.ids.run_job_params
 		].forEach((id) => {
 			const el = document.getElementById(id);
@@ -906,6 +908,18 @@ $(function() {
 						<div class="w3-col w3-third"><label for="<%=$this->WebAccessResourceActionParamAccurate->ClientID%>"><%[ Accurate: ]%></label></div>
 						<div class="field"><com:TActiveCheckBox ID="WebAccessResourceActionParamAccurate" AutoPostBack="false" CssClass="w3-check" /></div>
 					</com:TActivePanel>
+				</div>
+			</div>
+			<div id="verify_restore_action_params_line_cont" style="display: none">
+				<i class="fas fa-wrench"></i> &nbsp;<a href="javascript:void(0)" onclick="$('#verify_restore_action_params_line').toggle('fast');"><%[ Modify action parameters ]%></a>
+				<div id="verify_restore_action_params_line" style="display: none">
+					<h3><%[ Run job action params ]%></h3>
+					<div class="w3-row directive_field">
+						<div class="w3-col w3-third"><label for="<%=$this->WebAccessResourceActionParamRestoreTest->ClientID%>"><%[ Restore test: ]%></label></div>
+						<div class="w3-half">
+							<com:TActiveDropDownList ID="WebAccessResourceActionParamRestoreTest" AutoPostBack="false" CssClass="w3-select w3-border" />
+						</div>
+					</div>
 				</div>
 			</div>
 			<h3><%[ Access limits ]%></h3>
