@@ -1641,7 +1641,8 @@ var MsgEnvelope = {
 		],
 		error: [
 			/ERR=/i,
-			/error: /i
+			/error: /i,
+			/\[error\]/i
 		]
 	},
 	filters: {
