@@ -37,6 +37,7 @@ use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
 use Bacularis\Common\Modules\PluginConfigBase;
+use Bacularis\Web\Modules\BaculaConfigAction;
 use Bacularis\Web\Modules\BWebException;
 
 /**
@@ -473,7 +474,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$directives = $this->getDirectiveValues();
 		$load_values = $this->getLoadValues();
 		$res_name_dir = key_exists('Name', $directives) ? $directives['Name'] : null;
-		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
 		$resource_name = $this->getResourceName();
 		if (!$res_name_dir && $resource_name) {
 			// In some cases with double control load Name value stays empty. Recreate it here.
@@ -487,71 +487,25 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			return;
 		}
 
-		$plugin_manager = $this->getModule('plugin_manager');
-
-		$params = [
-			'config',
-			$component_type,
-			$resource_type,
-			$resource_name
-		];
 		$result = null;
 		if ($load_values === false || $this->getCopyMode() === true) {
-			// Pre-create job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'pre-create',
+			$result = BaculaConfigAction::createResource(
+				$component_type,
 				$resource_type,
-				$resource_name
-			);
-
-			// Create a new resource
-			$result = $this->getModule('api')->create(
-				$params,
-				['config' => json_encode($directives)],
+				$resource_name,
+				$directives,
 				$host,
 				false
 			);
-
-			if ($result->error == 0) {
-				// Post-create job actions
-				$plugin_manager->callPluginActionByType(
-					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-					'run',
-					'post-create',
-					$resource_type,
-					$resource_name
-				);
-			}
 		} else {
-			// Pre-update job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'pre-update',
+			$result = BaculaConfigAction::updateResource(
+				$component_type,
 				$resource_type,
-				$resource_name
-			);
-
-			// Update existing resource
-			$result = $this->getModule('api')->set(
-				$params,
-				['config' => json_encode($directives)],
+				$resource_name,
+				$directives,
 				$host,
 				false
 			);
-
-			// Post-update job actions
-			if ($result->error == 0) {
-				$plugin_manager->callPluginActionByType(
-					PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-					'run',
-					'post-update',
-					$resource_type,
-					$resource_name
-				);
-			}
 
 			if ($resource_name !== $res_name_dir) {
 				// rename resource
@@ -560,53 +514,18 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 					'resource_name' => $resource_name
 				]);
 				$this->onRename($param);
-
-				if ($result->error === 0) {
-					$this->getModule('audit')->audit(
-						AuditLog::TYPE_INFO,
-						AuditLog::CATEGORY_CONFIG,
-						"Rename Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name} => {$res_name_dir}"
-					);
-				} else {
-					$emsg = 'Error while renaming resource: ' . $result->output;
-					Logging::log(
-						Logging::CATEGORY_APPLICATION,
-						$emsg
-					);
-					$this->getModule('audit')->audit(
-						AuditLog::TYPE_ERROR,
-						AuditLog::CATEGORY_CONFIG,
-						"Problem with renaming Bacula config resource. Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}"
-					);
-				}
 			}
 		}
 
-		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 		if ($result->error === 0) {
 			$this->SaveDirectiveOk->Display = 'Dynamic';
 			$this->SaveDirectiveError->Display = 'None';
 			$this->SaveDirectiveErrMsg->Text = '';
-			if ($this->getComponentType() == 'dir') {
-				$this->getModule('api')->set(['console'], ['reload']);
-			}
-			$action = $load_values && !$this->getCopyMode() ? 'Save Bacula config resource.' : 'Create Bacula config resource.';
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_INFO,
-				AuditLog::CATEGORY_CONFIG,
-				sprintf($amsg, $action)
-			);
 		} else {
 			$this->SaveDirectiveOk->Display = 'None';
 			$this->SaveDirectiveError->Display = 'Dynamic';
 			$this->SaveDirectiveErrMsg->Display = 'Dynamic';
 			$this->SaveDirectiveErrMsg->Text = "Error {$result->error}: {$result->output}";
-			$action = $load_values && !$this->getCopyMode() ? 'Problem with saving Bacula config resource.' : 'Problem with creating Bacula config resource.';
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_ERROR,
-				AuditLog::CATEGORY_CONFIG,
-				sprintf($amsg, $action)
-			);
 		}
 		$this->onSave(null);
 	}
@@ -689,51 +608,18 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 		$resource_type = $this->getResourceType();
 		$resource_name = $this->getResourceName();
 
-		// Pre-remove job actions
-		$plugin_manager = $this->getModule('plugin_manager');
-		$plugin_manager->callPluginActionByType(
-			PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-			'run',
-			'pre-remove',
-			$resource_type,
-			$resource_name
-		);
-
-		$params = [
-			'config',
+		$result = BaculaConfigAction::removeResource(
 			$component_type,
 			$resource_type,
-			$resource_name
-		];
-		$result = $this->getModule('api')->remove(
-			$params,
+			$resource_name,
 			$host,
 			false
 		);
 
-		if ($result->error == 0) {
-			// Post-remove job actions
-			$plugin_manager->callPluginActionByType(
-				PluginConfigBase::PLUGIN_TYPE_RUN_ACTION,
-				'run',
-				'post-remove',
-				$resource_type,
-				$resource_name
-			);
-		}
-
-		$component_full_name = $this->getModule('misc')->getComponentFullName($component_type);
-		$amsg = "%s Component: {$component_full_name}, Resource: {$resource_type}, Name: {$resource_name}";
 		if ($result->error === 0) {
-			$this->getModule('api')->set(['console'], ['reload']);
 			$this->showRemovedResourceInfo(
 				$resource_type,
 				$resource_name
-			);
-			$this->getModule('audit')->audit(
-				AuditLog::TYPE_INFO,
-				AuditLog::CATEGORY_CONFIG,
-				sprintf($amsg, 'Remove Bacula config resource.')
 			);
 		} else {
 			$error_message = '';
@@ -745,11 +631,6 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 				);
 			} else {
 				$error_message = $result->output;
-				$this->getModule('audit')->audit(
-					AuditLog::TYPE_ERROR,
-					AuditLog::CATEGORY_CONFIG,
-					sprintf($amsg, 'Problem with removing Bacula config resource.')
-				);
 			}
 			$this->showRemovedResourceError($error_message);
 		}

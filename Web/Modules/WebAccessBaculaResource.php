@@ -32,6 +32,8 @@ class WebAccessBaculaResource extends WebModule
 	public const ACTION_RUN_DESC = 'Run';
 	public const ACTION_CANCEL_NAME = 'cancel';
 	public const ACTION_CANCEL_DESC = 'Cancel';
+	public const ACTION_RUN_RESTORE_TEST_NAME = 'restore-test';
+	public const ACTION_RUN_RESTORE_TEST_DESC = 'Verify restore';
 
 	/**
 	 * Execute web access resource command.
@@ -41,23 +43,29 @@ class WebAccessBaculaResource extends WebModule
 	 * @param array $params action parameters
 	 * @return null|object command result object or null if action not found
 	 */
-	public function executeCommand(array $config, string $action, array $params)
+	public function executeCommand(array $config, string $action, array $params): bool
 	{
-		$result = null;
+		$success = false;
 		$api = $this->getModule('api');
+		$audit = $this->getModule('audit');
 		switch ($action) {
 			case self::ACTION_RUN_NAME: {
 				$api_host = $config['api_hosts'][0] ?? null;
 				$resource_name = $config['resource_name'] ?? '';
 				$params['name'] = $resource_name;
+				if (!$this->areRunParamsValid($params)) {
+					$success = true; // this is not critical, so do not throw error
+					break;
+				}
 				$cmd = ['jobs', 'run'];
 				$result = $api->create($cmd, $params, $api_host, false);
-				if ($result->error != 0) {
-					$this->getModule('audit')->audit(
+				$success = ($result->error == 0);
+				if (!$success) {
+					$audit->audit(
 						AuditLog::TYPE_ERROR,
 						AuditLog::CATEGORY_APPLICATION,
 						sprintf(
-							'Web access resource acction failed: Error: %d, Message: %s',
+							'Web access resource action failed: Error: %d, Message: %s',
 							$result->error,
 							$result->output
 						)
@@ -65,7 +73,55 @@ class WebAccessBaculaResource extends WebModule
 				}
 				break;
 			}
+			case self::ACTION_RUN_RESTORE_TEST_NAME: {
+				$api_host = $config['api_hosts'][0] ?? null;
+				$restore_test = $params['restore_test'] ?? '';
+				$rt_manager = $this->getModule('restore_test_manager');
+				$success = $rt_manager->prepareTest($api_host, $restore_test);
+				if (!$success) {
+					$audit->audit(
+						AuditLog::TYPE_ERROR,
+						AuditLog::CATEGORY_APPLICATION,
+						sprintf(
+							'Web access restore test action failed: Restore Test: "%s".',
+							$restore_test
+						)
+					);
+				}
+				break;
+			}
 		}
-		return $result;
+		return $success;
+	}
+
+	/**
+	 * Validate web access parameters.
+	 * If parameters are valid, web access action can be running.
+	 *
+	 * @param array $params action parameters
+	 * @return bool true if params are valid, otherwise false
+	 */
+	private function areRunParamsValid(array $params): bool
+	{
+		$valid = true;
+		$audit = $this->getModule('audit');
+		if (isset($params['allowed_levels']) && !empty($params['allowed_levels'])) {
+			$misc = $this->getModule('misc');
+			$allowed_levels = explode(',', $params['allowed_levels']);
+			$level = $this->Request->contains('level') ? substr($this->Request['level'], 0, 1) : '';
+			$level_long = $misc->getJobLevelLong($level);
+			$valid = (!empty($level) && in_array($level, $allowed_levels));
+			if (!$valid) {
+				$audit->audit(
+					AuditLog::TYPE_WARNING,
+					AuditLog::CATEGORY_APPLICATION,
+					sprintf(
+						"Web access resource action is not running. Current job level '{$level_long}' is not intended to run this action. Params: %s",
+						json_encode($params)
+					)
+				);
+			}
+		}
+		return $valid;
 	}
 }
