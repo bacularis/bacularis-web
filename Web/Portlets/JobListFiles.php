@@ -38,6 +38,9 @@ namespace Bacularis\Web\Portlets;
 class JobListFiles extends Portlets
 {
 	public const JOBID = 'JobId';
+	public const ACTION_SELECT_ITEM = 'ActionSelectItem';
+	public const NAME_SELECT_ITEM = 'NameSelectItem';
+	public const NAME_UNSELECT_ITEM = 'NameUnselectItem';
 
 	public const DEFAULT_PAGE_SIZE = 100;
 
@@ -99,6 +102,13 @@ class JobListFiles extends Portlets
 		}
 	}
 
+	public function clearFileList($sender, $param)
+	{
+			$this->FileList->DataSource = [];
+			$this->FileList->dataBind();
+			$this->FileListCount->Text = 0;
+	}
+
 	/**
 	 * Set job identifier to show files.
 	 *
@@ -118,5 +128,65 @@ class JobListFiles extends Portlets
 	public function getJobId()
 	{
 		return $this->getViewState(self::JOBID, 0);
+	}
+
+	/**
+	 * Set select item action.
+	 *
+	 * @param string $action action function handler
+	 */
+	public function setActionSelectItem(string $action): void
+	{
+		$this->setViewState(self::ACTION_SELECT_ITEM, $action);
+	}
+
+	/**
+	 * Get select item action.
+	 *
+	 * @return string action function handler or empty string if no action defined
+	 */
+	public function getActionSelectItem(): string
+	{
+		return $this->getViewState(self::ACTION_SELECT_ITEM, '');
+	}
+
+	/**
+	 * Set select item action name.
+	 *
+	 * @param string $action action name
+	 */
+	public function setNameSelectItem(string $name): void
+	{
+		$this->setViewState(self::NAME_SELECT_ITEM, $name);
+	}
+
+	/**
+	 * Get select item action name.
+	 *
+	 * @return string action name or empty string if name defined
+	 */
+	public function getNameSelectItem(): string
+	{
+		return $this->getViewState(self::NAME_SELECT_ITEM, '');
+	}
+
+	/**
+	 * Set unselect item action name.
+	 *
+	 * @param string $action action name
+	 */
+	public function setNameUnselectItem(string $name): void
+	{
+		$this->setViewState(self::NAME_UNSELECT_ITEM, $name);
+	}
+
+	/**
+	 * Get unselect item action name.
+	 *
+	 * @return string action name or empty string if name defined
+	 */
+	public function getNameUnselectItem(): string
+	{
+		return $this->getViewState(self::NAME_UNSELECT_ITEM, '');
 	}
 }
