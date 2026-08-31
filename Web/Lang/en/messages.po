@@ -7594,3 +7594,474 @@ msgstr "Source"
 
 msgid "Additional restore options"
 msgstr "Additional restore options"
+
+msgid "DB size:"
+msgstr "DB size:"
+
+msgid "Select backup job"
+msgstr "Select backup job"
+
+msgid "ex: 123321"
+msgstr "ex: 123321"
+
+msgid "Select Bacula verify job"
+msgstr "Select Bacula verify job"
+
+msgid "Select restore destination"
+msgstr "Select restore destination"
+
+msgid "Select restore policy"
+msgstr "Select restore policy"
+
+msgid "Select Bacula restore job"
+msgstr "Select Bacula restore job"
+
+msgid "Select client"
+msgstr "Select client"
+
+msgid "Select job"
+msgstr "Select job"
+
+msgid "Restore verification"
+msgstr "Restore verification"
+
+msgid "Go to previous page"
+msgstr "Go to previous page"
+
+msgid "Go to next page"
+msgstr "Go to next page"
+
+msgid "Log page offset and limit"
+msgstr "Log page offset and limit"
+
+msgid "Refresh"
+msgstr "Refresh"
+
+msgid "Job state"
+msgstr "Job state"
+
+msgid "Next run"
+msgstr "Next run"
+
+msgid "> 90 days"
+msgstr "> 90 days"
+
+msgid "New restore verification"
+msgstr "New restore verification"
+
+msgid "Restore tests"
+msgstr "Restore tests"
+
+msgid "Restore policies"
+msgstr "Restore policies"
+
+msgid "Restore destinations"
+msgstr "Restore destinations"
+
+msgid "Verification rules"
+msgstr "Verification rules"
+
+msgid "Configure restore tests that automatically restore selected backup data and verify the result. A restore test defines what should be tested, where the data should be restored, which policy should be used, and which verification rules should check the restored files."
+msgstr "Configure restore tests that automatically restore selected backup data and verify the result. A restore test defines what should be tested, where the data should be restored, which policy should be used, and which verification rules should check the restored files."
+
+msgid "Add restore test"
+msgstr "Add restore test"
+
+msgid "Backup source"
+msgstr "Backup source"
+
+msgid "Policy"
+msgstr "Policy"
+
+msgid "Destination"
+msgstr "Destination"
+
+msgid "Last result"
+msgstr "Last result"
+
+msgid "Last run"
+msgstr "Last run"
+
+msgid "Last run date"
+msgstr "Last run date"
+
+msgid "Edit restore test"
+msgstr "Edit restore test"
+
+msgid "Restore test name"
+msgstr "Restore test name"
+
+msgid "Backup selection"
+msgstr "Backup selection"
+
+msgid "Choose which backup should be restored and verified."
+msgstr "Choose which backup should be restored and verified."
+
+msgid "Source type"
+msgstr "Source type"
+
+msgid "Backup job"
+msgstr "Backup job"
+
+msgid "Single backup jobid"
+msgstr "Single backup jobid"
+
+msgid "Backup version"
+msgstr "Backup version"
+
+msgid "Latest successful backup any level"
+msgstr "Latest successful backup any level"
+
+msgid "Latest successful backup any level within selected time range"
+msgstr "Latest successful backup any level within selected time range"
+
+msgid "Latest successful backup matching selected levels"
+msgstr "Latest successful backup matching selected levels"
+
+msgid "Date from"
+msgstr "Date from"
+
+msgid "Date to"
+msgstr "Date to"
+
+msgid "Selected levels"
+msgstr "Selected levels"
+
+msgid "Job identifier (JobId)"
+msgstr "Job identifier (JobId)"
+
+msgid "Check"
+msgstr "Check"
+
+msgid "Verification"
+msgstr "Verification"
+
+msgid "Choose how restored data should be checked."
+msgstr "Choose how restored data should be checked."
+
+msgid "Verification method"
+msgstr "Verification method"
+
+msgid "Rule-based verification"
+msgstr "Rule-based verification"
+
+msgid "Use Bacularis verification rules and checker plugins."
+msgstr "Use Bacularis verification rules and checker plugins."
+
+msgid "The selected backup is treated as a backup point in time. Bacularis uses the complete backup chain for that point, while the \"What to restore\" option below defines which data is actually restored."
+msgstr "The selected backup is treated as a backup point in time. Bacularis uses the complete backup chain for that point, while the \"What to restore\" option below defines which data is actually restored."
+
+msgid "Works with safe restore destinations using a restore prefix."
+msgstr "Works with safe restore destinations using a restore prefix."
+
+msgid "Native Bacula Verify job"
+msgstr "Native Bacula Verify job"
+
+msgid "Use a Bacula Verify job with level DiskToCatalog."
+msgstr "Use a Bacula Verify job with level DiskToCatalog."
+
+msgid "This method verifies the selected backup one-to-one against the Bacula catalog."
+msgstr "This method verifies the selected backup one-to-one against the Bacula catalog."
+
+msgid "Requires an isolated destination and original restore paths."
+msgstr "Requires an isolated destination and original restore paths."
+
+msgid "Bacula Verify job"
+msgstr "Bacula Verify job"
+
+msgid "Restore plan"
+msgstr "Restore plan"
+
+msgid "Choose what to restore, where to restore it and how the test should run."
+msgstr "Choose what to restore, where to restore it and how the test should run."
+
+msgid "What to restore"
+msgstr "What to restore"
+
+msgid "Entire backup restore point"
+msgstr "Entire backup restore point"
+
+msgid "Restore all data from the selected backup point in time, including the complete backup chain required for that restore point."
+msgstr "Restore all data from the selected backup point in time, including the complete backup chain required for that restore point."
+
+msgid "All paths from verification rules"
+msgstr "All paths from verification rules"
+
+msgid "Restore all paths defined in selected verification rules. Bacularis uses the complete backup chain for the selected backup point, but restores only those paths."
+msgstr "Restore all paths defined in selected verification rules. Bacularis uses the complete backup chain for the selected backup point, but restores only those paths."
+
+msgid "Random paths from verification rules"
+msgstr "Random paths from verification rules"
+
+msgid "Restore a random subset of paths defined in selected verification rules. Bacularis uses the complete backup chain for the selected backup point, but restores only the randomly selected paths."
+msgstr "Restore a random subset of paths defined in selected verification rules. Bacularis uses the complete backup chain for the selected backup point, but restores only the randomly selected paths."
+
+msgid "Selected backup only"
+msgstr "Selected backup only"
+
+msgid "Native Bacula Verify verifies the selected backup one-to-one against the Bacula catalog."
+msgstr "Native Bacula Verify verifies the selected backup one-to-one against the Bacula catalog."
+
+msgid "The full backup chain is not restored for this method."
+msgstr "The full backup chain is not restored for this method."
+
+msgid "When to run"
+msgstr "When to run"
+
+msgid "Bacula restore job"
+msgstr "Bacula restore job"
+
+msgid "Restore job"
+msgstr "Restore job"
+
+msgid "Web access interface"
+msgstr "Web access interface"
+
+msgid "These settings define how the Bacula Director script connects to Bacularis web interface when starting an automatic restore test. The default values match the standard Bacularis installation settings. If Bacularis uses HTTPS, a different host, or a different port, update these values accordingly."
+msgstr "These settings define how the Bacula Director script connects to Bacularis web interface when starting an automatic restore test. The default values match the standard Bacularis installation settings. If Bacularis uses HTTPS, a different host, or a different port, update these values accordingly."
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Access for IP addresses"
+msgstr "Access for IP addresses"
+
+msgid "Admin job directives"
+msgstr "Admin job directives"
+
+msgid "These directives are used to create Bacula admin job that runs restore verification. They are required by the admin job, but not used because of nature of admin jobs."
+msgstr "These directives are used to create Bacula admin job that runs restore verification. They are required by the admin job, but not used because of nature of admin jobs."
+
+msgid "Restore policies define when restore tests should run. A policy can run tests after a successful backup, according to a Bacula schedule, or only when started manually."
+msgstr "Restore policies define when restore tests should run. A policy can run tests after a successful backup, according to a Bacula schedule, or only when started manually."
+
+msgid "Add restore policy"
+msgstr "Add restore policy"
+
+msgid "Trigger"
+msgstr "Trigger"
+
+msgid "Used by"
+msgstr "Used by"
+
+msgid "The following restore policies are used by restore tests and cannot be removed: %used_restore_policies Please unassign these restore policies from the restore tests and try removing them again."
+msgstr "The following restore policies are used by restore tests and cannot be removed: %used_restore_policies Please unassign these restore policies from the restore tests and try removing them again."
+
+msgid "After backup"
+msgstr "After backup"
+
+msgid "Manually"
+msgstr "Manually"
+
+msgid "Edit restore policy"
+msgstr "Edit restore policy"
+
+msgid "Restore policy name"
+msgstr "Restore policy name"
+
+msgid "How to run"
+msgstr "How to run"
+
+msgid "Choose how restore tests using this policy should be started. They can run according to a Bacula schedule, automatically after successful backup jobs, or manually."
+msgstr "Choose how restore tests using this policy should be started. They can run according to a Bacula schedule, automatically after successful backup jobs, or manually."
+
+msgid "Use Bacula schedule"
+msgstr "Use Bacula schedule"
+
+msgid "After successful backup job"
+msgstr "After successful backup job"
+
+msgid "Modifies backup jobs used by restore tests with this policy by adding a RunScript entry that starts the test after a successful backup."
+msgstr "Modifies backup jobs used by restore tests with this policy by adding a RunScript entry that starts the test after a successful backup."
+
+msgid "Run after levels"
+msgstr "Run after levels"
+
+msgid "Restore destinations define safe test environments for restore verification. Each destination specifies the Bacula client and the restore path where test data will be restored."
+msgstr "Restore destinations define safe test environments for restore verification. Each destination specifies the Bacula client and the restore path where test data will be restored."
+
+msgid "Add restore destination"
+msgstr "Add restore destination"
+
+msgid "Restore mode"
+msgstr "Restore mode"
+
+msgid "Path"
+msgstr "Path"
+
+msgid "Capabilities"
+msgstr "Capabilities"
+
+msgid "The following restore destinations are used by restore tests and cannot be removed: %used_restore_destinations Please unassign these restore destinations from the restore tests and try removing them again."
+msgstr "The following restore destinations are used by restore tests and cannot be removed: %used_restore_destinations Please unassign these restore destinations from the restore tests and try removing them again."
+
+msgid "Prefixed path"
+msgstr "Prefixed path"
+
+msgid "Original path"
+msgstr "Original path"
+
+msgid "Edit restore destination"
+msgstr "Edit restore destination"
+
+msgid "Restore destination name"
+msgstr "Restore destination name"
+
+msgid "Restore target client"
+msgstr "Restore target client"
+
+msgid "Restore client"
+msgstr "Restore client"
+
+msgid "Safe prefixed restore"
+msgstr "Safe prefixed restore"
+
+msgid "Restore path"
+msgstr "Restore path"
+
+msgid "The following keywords can be used in paths:"
+msgstr "The following keywords can be used in paths:"
+
+msgid "current date, ex: 2026-08-19_00:29:18"
+msgstr "current date, ex: 2026-08-19_00:29:18"
+
+msgid "test identifier, ex: rt-OjuKleyqh423W5wHGcr0JARiUVm9EzgN"
+msgstr "test identifier, ex: rt-OjuKleyqh423W5wHGcr0JARiUVm9EzgN"
+
+msgid "job name ex: My Job 123"
+msgstr "job name ex: My Job 123"
+
+msgid "restore test name ex: MyRestoreTest"
+msgstr "restore test name ex: MyRestoreTest"
+
+msgid "name of job used for restore ex: RestoreFiles"
+msgstr "name of job used for restore ex: RestoreFiles"
+
+msgid "restore policy name ex: DailyCycle"
+msgstr "restore policy name ex: DailyCycle"
+
+msgid "restore destination name ex: ServerA3"
+msgstr "restore destination name ex: ServerA3"
+
+msgid "Original-path restore in isolated environment"
+msgstr "Original-path restore in isolated environment"
+
+msgid "I confirm this is an isolated test environment"
+msgstr "I confirm this is an isolated test environment"
+
+msgid "File restore checks"
+msgstr "File restore checks"
+
+msgid "Native Bacula verify"
+msgstr "Native Bacula verify"
+
+msgid "Plugin checks"
+msgstr "Plugin checks"
+
+msgid "Custom command checks"
+msgstr "Custom command checks"
+
+msgid "Verification rules define what should be checked after restore and which conditions restored files must meet. Rules can use custom values, operators, and metadata from the Bacula catalog."
+msgstr "Verification rules define what should be checked after restore and which conditions restored files must meet. Rules can use custom values, operators, and metadata from the Bacula catalog."
+
+msgid "Add verification rule"
+msgstr "Add verification rule"
+
+msgid "Checkers"
+msgstr "Checkers"
+
+msgid "The following verification rules are used by restore tests and cannot be removed: %used_rules Please unassign these verification rules from the restore tests and try removing them again."
+msgstr "The following verification rules are used by restore tests and cannot be removed: %used_rules Please unassign these verification rules from the restore tests and try removing them again."
+
+msgid "Edit verification rule"
+msgstr "Edit verification rule"
+
+msgid "Verification rule name"
+msgstr "Verification rule name"
+
+msgid "Rules"
+msgstr "Rules"
+
+msgid "Apply rules to selected paths"
+msgstr "Apply rules to selected paths"
+
+msgid "Basic"
+msgstr "Basic"
+
+msgid "Metadata"
+msgstr "Metadata"
+
+msgid "Checksum"
+msgstr "Checksum"
+
+msgid "Strict"
+msgstr "Strict"
+
+msgid "Check that selected files or directories exist and are not empty."
+msgstr "Check that selected files or directories exist and are not empty."
+
+msgid "Compare restored files with metadata stored in the Bacula catalog."
+msgstr "Compare restored files with metadata stored in the Bacula catalog."
+
+msgid "Compare restored file checksums with values stored in the Bacula catalog."
+msgstr "Compare restored file checksums with values stored in the Bacula catalog."
+
+msgid "Compare restored files with Bacula catalog metadata and checksums."
+msgstr "Compare restored files with Bacula catalog metadata and checksums."
+
+msgid "Choose an attribute, operator and value."
+msgstr "Choose an attribute, operator and value."
+
+msgid "Custom rule"
+msgstr "Custom rule"
+
+msgid "Attribute"
+msgstr "Attribute"
+
+msgid "Operator"
+msgstr "Operator"
+
+msgid "Add path"
+msgstr "Add path"
+
+msgid "Add paths from backup"
+msgstr "Add paths from backup"
+
+msgid "Select verification paths"
+msgstr "Select verification paths"
+
+msgid "Selected paths"
+msgstr "Selected paths"
+
+msgid "Use selected paths"
+msgstr "Use selected paths"
+
+msgid "Add another rule for this path"
+msgstr "Add another rule for this path"
+
+msgid "No paths selected. Select one or more paths before applying verification rules."
+msgstr "No paths selected. Select one or more paths before applying verification rules."
+
+msgid "Basic rules were applied to %count selected paths."
+msgstr "Basic rules were applied to %count selected paths."
+
+msgid "Metadata rules were applied to %count selected paths."
+msgstr "Metadata rules were applied to %count selected paths."
+
+msgid "Checksum rules were applied to %count selected paths."
+msgstr "Checksum rules were applied to %count selected paths."
+
+msgid "Strict rules were applied to %count selected paths."
+msgstr "Strict rules were applied to %count selected paths."
+
+msgid "Custom rules were applied to %count selected paths."
+msgstr "Custom rules were applied to %count selected paths."
+
+msgid "Invalid data format."
+msgstr "Invalid data format."
+
+msgid "Exhausted use"
+msgstr "Exhausted use"
+
+msgid "Restore test:"
+msgstr "Restore test:"
