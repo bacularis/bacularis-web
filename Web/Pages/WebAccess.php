@@ -50,6 +50,9 @@ class WebAccess extends BaculumPage
 	public function onInit($param)
 	{
 		parent::onInit($param);
+		$wc_mod = $this->getModule('web_config');
+		$web_config = $wc_mod->getConfig('baculum');
+		Logging::$debug_enabled = (isset($web_config['debug']) && $web_config['debug'] == 1);
 		$token = $this->Request->contains('token') ? $this->Request->itemAt('token') : '';
 		$this->runAction($token);
 	}
