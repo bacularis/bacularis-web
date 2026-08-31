@@ -125,7 +125,7 @@ class RestoreTestManager extends WebModule
 			$test_id,
 			$jobids,
 			$base_job,
-			$rt_config['restore_job']
+			$rt_config
 		);
 		if (!$result['status']) {
 			return false;
@@ -528,17 +528,17 @@ class RestoreTestManager extends WebModule
 	 * @param string $test_id restore test identifier
 	 * @param array $jobids elementary job identifiers to restore
 	 * @param object $base_job job selected to test restore
-	 * @param string $restore_job restore job name used to do restore test
+	 * @param array $rt_config restore test configuration
 	 * @return array restore start state (bool), session identifier and command identifier
 	 */
-	private function startRestoreSession(string $test_id, array $jobids, object $base_job, string $restore_job): array
+	private function startRestoreSession(string $test_id, array $jobids, object $base_job, array $rt_config): array
 	{
 		$params = [
 			'jobid' => implode(',', $jobids) ?? 0,
 			'clientid' => $base_job->clientid,
 			'filesetid' => $base_job->filesetid,
-			'restorejob' => $restore_job,
-			'comment' => "Test Job: {$base_job->name} JobId: {$base_job->jobid}"
+			'restorejob' => $rt_config['restore_job'],
+			'comment' => "Test Job: {$base_job->name} JobId: {$base_job->jobid} Test Name: {$rt_config['name']}"
 		];
 		$api = $this->getModule('api');
 		$result = $api->create(
@@ -629,7 +629,7 @@ class RestoreTestManager extends WebModule
 					'jobid' => $base_job->jobid,
 					'verifyjob' => $base_job->name,
 					'fileset' => $base_job->fileset,
-					'comment' => "Test Job: {$base_job->name} JobId: {$base_job->jobid}"
+					'comment' => "Test Job: {$base_job->name} JobId: {$base_job->jobid} Test Name: {$rt_config['name']}"
 				]
 			];
 			$ret = WebAccessAction::update($rt_config['web_verify_token'], $config);

@@ -173,7 +173,7 @@ const oRestoreTestList = {
 					data: 'name',
 					render: (data, type, row) => {
 						let ret = '-';
-						const fjob = this.get_test_result_job(row);
+						const fjob = this.get_test_job(row);
 						if (fjob) {
 							ret = this.render_last_job(fjob, type);
 						}
@@ -186,7 +186,7 @@ const oRestoreTestList = {
 					data: 'name',
 					render: (data, type, row) => {
 						let ret = '-';
-						const fjob = this.get_test_result_job(row);
+						const fjob = this.get_test_job(row);
 						if (fjob) {
 							ret = render_date_ts(fjob.starttime_epoch, type, row);
 						}
@@ -426,6 +426,13 @@ const oRestoreTestList = {
 		}
 		return ret;
 	},
+	get_test_job: function(rtest) {
+		let fjob;
+		if (this.job_stats.hasOwnProperty(rtest.name) && this.job_stats[rtest.name].length > 0) {
+			fjob = this.job_stats[rtest.name][0];
+		}
+		return fjob;
+	},
 	get_test_result_job: function(rtest) {
 		let fjob;
 		if (this.job_stats.hasOwnProperty(rtest.name)) {
@@ -438,9 +445,9 @@ const oRestoreTestList = {
 			if (this.job_stats.hasOwnProperty(job_name)) {
 				let pat;
 				if (rtest.source_type == this.source_type.backup_job) {
-					pat = '^Test Job: ' + rtest.source_backup_job + ' JobId: \\d+$';
+					pat = '^Test Job: ' + rtest.source_backup_job + ' JobId: \\d+ Test Name: ' + rtest.name + '$';
 				} else if (rtest.source_type == this.source_type.backup_jobid) {
-					pat = '^Test Job: .+ JobId: ' + rtest.source_backup_jobid + '$';
+					pat = '^Test Job: .+ JobId: ' + rtest.source_backup_jobid + ' Test Name: ' + rtest.name + '$';
 				}
 				const regex = new RegExp(pat);
 				const rlen = this.job_stats[job_name].length;
