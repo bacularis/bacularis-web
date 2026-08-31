@@ -594,6 +594,11 @@ class JobList extends BaculumWebPage
 						'icon' => 'fa-solid fa-table-columns fa-fw'
 					],
 					[
+						'address' => $page_url . '#restore_verification',
+						'label' => 'Restore verification',
+						'icon' => 'fa-solid fa-table-columns fa-fw'
+					],
+					[
 						'address' => $page_url . '#btn_add_job',
 						'label' => 'Add job',
 						'icon' => 'fa-solid fa-plus fa-fw',
