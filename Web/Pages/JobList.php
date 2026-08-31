@@ -164,7 +164,7 @@ class JobList extends BaculumWebPage
 			$cb = $this->getCallbackClient();
 			$cb->callClientFunction(
 				'oSchedule.load_schedule_status_cb',
-				$result->output
+				[$result->output]
 			);
 		}
 	}

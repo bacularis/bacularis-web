@@ -1322,12 +1322,14 @@ var oJobList = {
 					data: 'job',
 					render: (data, type, row) => {
 						let ret = '-';
-						if (oSchedule.schedules.hasOwnProperty(data)) {
-							let now = Dashboard.get_currtime_epoch();
-							let sched = oJobList.find_next_sched(data, now);
-							ret = render_date_ts_local(sched, type);
-						} else if (row.schedule && row.enabled == 1) {
-							ret = '<%[ > 90 days ]%>'
+						if (Object.keys(oSchedule.schedules).length > 0) {
+							if (oSchedule.schedules.hasOwnProperty(data)) {
+								let now = Dashboard.get_currtime_epoch();
+								let sched = oJobList.find_next_sched(data, now);
+								ret = render_date_ts_local(sched, type);
+							} else if (row.schedule && row.enabled == 1) {
+								ret = '<%[ > 90 days ]%>'
+							}
 						}
 						return ret;
 					},
@@ -1337,22 +1339,24 @@ var oJobList = {
 					data: 'job',
 					render: (data, type, row) => {
 						let ret = '-';
-						if (oSchedule.schedules.hasOwnProperty(data)) {
-							let now = Dashboard.get_currtime_epoch();
-							const sched = oJobList.find_next_sched(data, now);
-							if (type == 'display' || type == 'filter') {
-								if (sched) {
-									const span = document.createElement('SPAN');
-									res = Units.get_time_diff_duration(now, sched);
-									span.title = render_date_ts_local(sched, type)
-									span.textContent = res;
-									ret = span;
+						if (Object.keys(oSchedule.schedules).length > 0) {
+							if (oSchedule.schedules.hasOwnProperty(data)) {
+								let now = Dashboard.get_currtime_epoch();
+								const sched = oJobList.find_next_sched(data, now);
+								if (type == 'display' || type == 'filter') {
+									if (sched) {
+										const span = document.createElement('SPAN');
+										res = Units.get_time_diff_duration(now, sched);
+										span.title = render_date_ts_local(sched, type)
+										span.textContent = res;
+										ret = span;
+									}
+								} else {
+									ret = sched;
 								}
-							} else {
-								ret = sched;
+							} else if (row.schedule && row.enabled == 1) {
+								ret = '<%[ > 90 days ]%>'
 							}
-						} else if (row.schedule && row.enabled == 1) {
-							ret = '<%[ > 90 days ]%>'
 						}
 						return ret;
 					},

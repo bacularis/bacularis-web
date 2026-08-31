@@ -200,18 +200,20 @@ const oRestoreTestList = {
 					data: 'name',
 					render: (data, type, row) => {
 						let ret = '-';
-						let sched;
-						let now = Dashboard.get_currtime_epoch();
-						if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_SCHEDULE%>' && oSchedule.schedules.hasOwnProperty(data)) {
-							sched = oRestoreTestList.find_next_sched(data, now);
-							if (sched) {
-								ret = render_date_ts_local(sched, type);
-							}
-						} else if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_AFTER_BACKUP%>' && oSchedule.schedules.hasOwnProperty(row.source_backup_job)) {
-							const job_levels = row.rp_config.job_levels || null;
-							sched = oRestoreTestList.find_next_sched(row.source_backup_job, now, job_levels);
-							if (sched) {
-								ret = render_date_ts_local(sched, type);
+						if (Object.keys(oSchedule.schedules).length > 0) {
+							let sched;
+							let now = Dashboard.get_currtime_epoch();
+							if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_SCHEDULE%>' && oSchedule.schedules.hasOwnProperty(data)) {
+								sched = oRestoreTestList.find_next_sched(data, now);
+								if (sched) {
+									ret = render_date_ts_local(sched, type);
+								}
+							} else if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_AFTER_BACKUP%>' && oSchedule.schedules.hasOwnProperty(row.source_backup_job)) {
+								const job_levels = row.rp_config.job_levels || null;
+								sched = oRestoreTestList.find_next_sched(row.source_backup_job, now, job_levels);
+								if (sched) {
+									ret = render_date_ts_local(sched, type);
+								}
 							}
 						}
 						return ret;
@@ -222,23 +224,25 @@ const oRestoreTestList = {
 					data: 'name',
 					render: (data, type, row) => {
 						let ret = '-';
-						let now = Dashboard.get_currtime_epoch();
-						let sched;
-						if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_SCHEDULE%>' && oSchedule.schedules.hasOwnProperty(data)) {
-							sched = oRestoreTestList.find_next_sched(data, now);
-						} else if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_AFTER_BACKUP%>' && oSchedule.schedules.hasOwnProperty(row.source_backup_job)) {
-							const job_levels = row.rp_config.job_levels || null;
-							sched = oRestoreTestList.find_next_sched(row.source_backup_job, now, job_levels);
-						}
-						if (sched) {
-							if (type == 'display' || type == 'filter') {
-								const span = document.createElement('SPAN');
-								res = Units.get_time_diff_duration(now, sched);
-								span.title = render_date_ts_local(sched, type)
-								span.textContent = res;
-								ret = span;
-							} else {
-								ret = sched;
+						if (Object.keys(oSchedule.schedules).length > 0) {
+							let now = Dashboard.get_currtime_epoch();
+							let sched;
+							if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_SCHEDULE%>' && oSchedule.schedules.hasOwnProperty(data)) {
+								sched = oRestoreTestList.find_next_sched(data, now);
+							} else if (row.rp_config.run_method == '<%=RestorePolicyConfig::RUN_METHOD_AFTER_BACKUP%>' && oSchedule.schedules.hasOwnProperty(row.source_backup_job)) {
+								const job_levels = row.rp_config.job_levels || null;
+								sched = oRestoreTestList.find_next_sched(row.source_backup_job, now, job_levels);
+							}
+							if (sched) {
+								if (type == 'display' || type == 'filter') {
+									const span = document.createElement('SPAN');
+									res = Units.get_time_diff_duration(now, sched);
+									span.title = render_date_ts_local(sched, type)
+									span.textContent = res;
+									ret = span;
+								} else {
+									ret = sched;
+								}
 							}
 						}
 						return ret;
