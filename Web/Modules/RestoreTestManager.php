@@ -1104,7 +1104,7 @@ class RestoreTestManager extends WebModule
 		if ($emsg) {
 			$audit->audit(
 				AuditLog::TYPE_ERROR,
-				AuditLog::CATEGORY_ACTION,
+				AuditLog::CATEGORY_APPLICATION,
 				$emsg
 			);
 		}
