@@ -937,16 +937,18 @@
 			},
 			"PruneJobs": {
 				"Required": false,
-				"ValueType": "bool",
+				"ValueType": "prune",
 				"DefaultValue": 0,
-				"FieldType": "CheckBox",
+				"FieldType": "ComboBox",
+				"Data": ["yes", "no", "never"],
 				"Section": "Pruning"
 			},
 			"PruneFiles": {
 				"Required": false,
-				"ValueType": "bool",
+				"ValueType": "prune",
 				"DefaultValue": 0,
-				"FieldType": "CheckBox",
+				"FieldType": "ComboBox",
+				"Data": ["yes", "no", "never"],
 				"Section": "Pruning"
 			},
 			"PruneVolumes": {
@@ -2601,16 +2603,18 @@
 			},
 			"PruneJobs": {
 				"Required": false,
-				"ValueType": "bool",
+				"ValueType": "prune",
 				"DefaultValue": 0,
-				"FieldType": "CheckBox",
+				"FieldType": "ComboBox",
+				"Data": ["yes", "no", "never"],
 				"Section": "Pruning"
 			},
 			"PruneFiles": {
 				"Required": false,
-				"ValueType": "bool",
+				"ValueType": "prune",
 				"DefaultValue": 0,
-				"FieldType": "CheckBox",
+				"FieldType": "ComboBox",
+				"Data": ["yes", "no", "never"],
 				"Section": "Pruning"
 			},
 			"PruneVolumes": {
@@ -5071,6 +5075,13 @@
 				"DefaultValue": 300,
 				"FieldType": "TimePeriod",
 				"Section": "Networking"
+			},
+			"AllowedScriptDirectories": {
+				"Required": false,
+				"ValueType": "alist_str",
+				"DefaultValue": 0,
+				"FieldType": "MultiTextBox",
+				"Section": "Limitations"
 			}
 		}
 	}

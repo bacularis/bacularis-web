@@ -84,6 +84,7 @@ class DirectiveComboBox extends DirectiveTemplate
 		$this->Directive->DataSource = $items;
 
 		$directive_value = $this->getDirectiveValue();
+		$this->setValueCompatibility($directive_value);
 		$default_value = $this->getDefaultValue();
 		if ($in_config === false && empty($directive_value)) {
 			if ($default_value !== 0) {
@@ -102,6 +103,26 @@ class DirectiveComboBox extends DirectiveTemplate
 		if ($cssclass) {
 			$cssclass .= ' ' . $this->Directive->getCssClass();
 			$this->Directive->setCssClass($cssclass);
+		}
+	}
+
+	private function setValueCompatibility(&$directive_value): void
+	{
+		$data = $this->getData();
+		$in_config = $this->getInConfig();
+		if ($in_config && is_array($data) && !in_array($directive_value, $data, true)) {
+			// Directive is set in config but not exists on data list
+			if (is_bool($directive_value)) {
+				/**
+				 * This can happen if in Bacula changed data type from bool into string
+				 * for example it happened for PurgeJobs and PurgeFiles
+				 */
+				if ($directive_value && in_array('yes', $data)) {
+					$directive_value = 'yes';
+				} elseif (!$directive_value && in_array('no', $data)) {
+					$directive_value = 'no';
+				}
+			}
 		}
 	}
 }
