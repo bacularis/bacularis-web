@@ -294,7 +294,8 @@ var oVerificationRuleList = {
 
 var oVerificationRules = {
 	ids: {
-		win: 'verification_rule_window'
+		win: 'verification_rule_window',
+		rule_name: '<%=$this->VerificationRuleFullName->ClientID%>'
 	},
 	load_verification_rule_list: function() {
 		const cb = <%=$this->VerificationRuleList->ActiveControl->Javascript%>;
@@ -308,6 +309,7 @@ var oVerificationRules = {
 		let title_add = document.getElementById('verification_rule_window_title_add');
 		let title_edit = document.getElementById('verification_rule_window_title_edit');
 		let verification_rule_win_type = document.getElementById('<%=$this->VerificationRuleWindowType->ClientID%>');
+		let verification_rule_name = document.getElementById(this.ids.rule_name);
 		const cb = <%=$this->LoadVerificationRule->ActiveControl->Javascript%>;
 		cb.setCallbackParameter(name);
 		cb.dispatch();
@@ -316,15 +318,20 @@ var oVerificationRules = {
 			title_add.style.display = 'none';
 			title_edit.style.display = 'inline-block';
 			verification_rule_win_type.value = 'edit';
+			verification_rule_name.setAttribute('readonly', '');
 		} else {
 			// add new verification_rule
 			title_add.style.display = 'inline-block';
 			title_edit.style.display = 'none';
 			verification_rule_win_type.value = 'add';
+			verification_rule_name.removeAttribute('readonly');
 			this.clear_verification_rule_window();
 		}
 		const verification_rule_win = document.getElementById(this.ids.win);
 		verification_rule_win.style.display = 'block';
+		if (!name) {
+			verification_rule_name.focus();
+		}
 	},
 	load_verification_rule_window_cb: function(rules) {
 		oVerificationRulePathList.load(rules);
@@ -387,6 +394,14 @@ $(function() {
 						ValidationGroup="VerificationRuleGroup"
 						ControlToValidate="VerificationRuleFullName"
 						ErrorMessage="<%[ Field required. ]%>"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+					/>
+					<com:TRegularExpressionValidator
+						ValidationGroup="VerificationRuleGroup"
+						RegularExpression="<%=VerificationRuleConfig::NAME_PATTERN%>"
+						ControlToValidate="VerificationRuleFullName"
+						ErrorMessage="<%[ Invalid value. ]%>"
 						ControlCssClass="field_invalid"
 						Display="Dynamic"
 					/>
