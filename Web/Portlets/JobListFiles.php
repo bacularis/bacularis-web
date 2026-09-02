@@ -104,9 +104,9 @@ class JobListFiles extends Portlets
 
 	public function clearFileList($sender, $param)
 	{
-			$this->FileList->DataSource = [];
-			$this->FileList->dataBind();
-			$this->FileListCount->Text = 0;
+		$this->FileList->DataSource = [];
+		$this->FileList->dataBind();
+		$this->FileListCount->Text = 0;
 	}
 
 	/**
@@ -153,7 +153,7 @@ class JobListFiles extends Portlets
 	/**
 	 * Set select item action name.
 	 *
-	 * @param string $action action name
+	 * @param string $name select action name
 	 */
 	public function setNameSelectItem(string $name): void
 	{
@@ -173,7 +173,7 @@ class JobListFiles extends Portlets
 	/**
 	 * Set unselect item action name.
 	 *
-	 * @param string $action action name
+	 * @param string $name unselect action name
 	 */
 	public function setNameUnselectItem(string $name): void
 	{

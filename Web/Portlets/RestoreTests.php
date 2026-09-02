@@ -59,9 +59,9 @@ class RestoreTests extends RestoreTestVerification
 
 		$cb = $this->getPage()->getCallbackClient();
 		$cb->callClientFunction(
-			'oRestoreTests.load_restore_test_list_cb', [
-			$vals
-		]);
+			'oRestoreTests.load_restore_test_list_cb',
+			[$vals]
+		);
 
 		// Refresh job list
 		$cb->callClientFunction('oJobList.load_job_list');
@@ -406,7 +406,7 @@ class RestoreTests extends RestoreTestVerification
 
 			// Create/update admin job
 			$action = '';
-			$ares = ['state' => false, 'output'  => ''];
+			$ares = ['state' => false, 'output' => ''];
 			if ($restore_test_win_type === self::TYPE_ADD_WINDOW) {
 				$ares = $this->createAdminJob($rt_config);
 				$action = 'create';

@@ -592,8 +592,7 @@ class RestoreTestManager extends WebModule
 		string $restore_dest_path,
 		string $sid,
 		object $base_job
-	): bool
-	{
+	): bool {
 		$lock = $this->createLock();
 		if (!$lock) {
 			$this->endRestoreSession($sid);
@@ -762,6 +761,8 @@ class RestoreTestManager extends WebModule
 
 	/**
 	 * Remove lock in restore process.
+	 *
+	 * @param mixed $fp lock file handler
 	 */
 	private function removeLock($fp): void
 	{
@@ -911,6 +912,8 @@ class RestoreTestManager extends WebModule
 	 * Check if rule set is possible to use.
 	 *
 	 * @param string $rs_config single rule set configuration
+	 * @param array $rt_config restore test configuration
+	 * @return bool true if rule is possible to use, otherwise false
 	 */
 	private function isRuleSetSupported(array $rs_config, array $rt_config): bool
 	{
@@ -1214,7 +1217,7 @@ class RestoreTestManager extends WebModule
 			$npaths = [];
 			foreach ($paths as $rule_set => $value) {
 				foreach ($value as $path => $props) {
-					if (!in_array($path , $all_paths)) {
+					if (!in_array($path, $all_paths)) {
 						// Path not in restored paths, filtering - skip it
 						continue;
 					}

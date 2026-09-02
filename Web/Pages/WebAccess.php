@@ -15,6 +15,7 @@
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\BaculumPage;
+use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\WebAccessConfig;
 
 /**

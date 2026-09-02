@@ -238,13 +238,13 @@ class VerificationRules extends RestoreTestVerification
 		$cfg_rule = [];
 		$cfg_rule['description'] = str_replace(["\r", "\n"], ['', ' '], $this->VerificationRuleDescription->Text);
 		$cfg_rule['enabled'] = $this->VerificationRuleEnabled->Checked ? '1' : '0';
-		$cfg_rule['rules'] = array_filter($misc->objectToArray($rules), function($item) {
+		$cfg_rule['rules'] = array_filter($misc->objectToArray($rules), function ($item) {
 			$ret = true;
 			foreach ($item as $rule) {
 				if (!key_exists('checker', $rule) ||
-				    !key_exists('operator', $rule) ||
-				    !key_exists('value', $rule)) {
-				    	$ret = false;
+					!key_exists('operator', $rule) ||
+					!key_exists('value', $rule)) {
+					$ret = false;
 					break;
 				}
 			}

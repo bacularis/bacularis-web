@@ -238,6 +238,10 @@ trait TRestoreVerification
 
 	/**
 	 * Get restore test admin job configuration.
+	 *
+	 * @param array $rt_config restore test configuration
+	 * @param array $resource admin job resource directives
+	 * @return array admin job configuration
 	 */
 	private function getAdminJobConfig(array $rt_config, array $resource): array
 	{

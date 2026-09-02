@@ -265,7 +265,7 @@ class BaculaConfigAction
 			);
 		}
 		if ($resource_name != $config['Name']) {
-			$amsg =  "%s Host: {$host}, Component: {$component_full_type}, Resource: {$resource_type}, Name: {$resource_name} => {$config['Name']}";
+			$amsg = "%s Host: {$host}, Component: {$component_full_type}, Resource: {$resource_type}, Name: {$resource_name} => {$config['Name']}";
 			if ($success) {
 				$action = "Rename Bacula config resource.";
 				$audit->audit(

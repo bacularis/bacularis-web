@@ -689,6 +689,8 @@ class WebAccessResource extends Portlets
 
 	/**
 	 * Set restore test.
+	 *
+	 * @param string $restore_test restore test name
 	 */
 	private function setRestoreTest(string $restore_test): void
 	{

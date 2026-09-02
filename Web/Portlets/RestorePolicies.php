@@ -257,7 +257,7 @@ class RestorePolicies extends RestoreTestVerification
 		}
 		for ($i = 0; $i < count($restore_tests); $i++) {
 			$rt_config = $rtest_config->getRestoreTestConfig($restore_tests[$i]);
-			$token  = '';
+			$token = '';
 			if ($action == 'update') {
 				$token = $this->createRunWebAccessToken($rt_config, $rp_config);
 				if (!$token) {
