@@ -257,7 +257,7 @@ var oVerificationRuleList = {
 				.search(val ? '^' + val + '$' : '', true, false)
 				.draw();
 			});
-			if ([5].indexOf(column[0][0]) != -1) { // Enabled columns
+			if ([4].indexOf(column[0][0]) != -1) { // Enabled columns
 				column.data().unique().sort().each(function (d, j) {
 					var ds = d;
 					if (column[0][0] == 4) { // Enabled column
