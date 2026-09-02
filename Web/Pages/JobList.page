@@ -1326,7 +1326,9 @@ var oJobList = {
 							if (oSchedule.schedules.hasOwnProperty(data)) {
 								let now = Dashboard.get_currtime_epoch();
 								let sched = oJobList.find_next_sched(data, now);
-								ret = render_date_ts_local(sched, type);
+								if (sched) {
+									ret = render_date_ts_local(sched, type);
+								}
 							} else if (row.schedule && row.enabled == 1) {
 								ret = '<%[ > 90 days ]%>'
 							}
@@ -1351,7 +1353,7 @@ var oJobList = {
 										span.textContent = res;
 										ret = span;
 									}
-								} else {
+								} else if (sched) {
 									ret = sched;
 								}
 							} else if (row.schedule && row.enabled == 1) {
