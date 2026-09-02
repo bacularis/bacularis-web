@@ -867,7 +867,8 @@ class NewRestoreVerification extends BaculumWebPage
 			'config',
 			'dir',
 			'Job',
-			$this->BackupJob->SelectedValue
+			$this->BackupJob->SelectedValue,
+			'?apply_jobdefs=1'
 		];
 		$api = $this->getModule('api');
 		$result = $api->get($params);
