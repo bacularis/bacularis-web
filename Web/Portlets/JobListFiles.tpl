@@ -81,7 +81,7 @@
 				<td class="w3-center w3-hide-small"><%#$this->Data->lstat->gid%></td>
 				<td class="w3-hide-small"><span class="size w3-right"><%#$this->Data->lstat->size%></span></td>
 				<td class="udatetime w3-hide-small"><%#$this->Data->lstat->mtime%></td>
-				<td style="overflow-wrap: anywhere; word-break: break-word;"><%#$this->Data->file%></td>
+				<td style="overflow-wrap: anywhere; word-break: break-word;"><%#$this->Data->file_fmt ?? $this->Data->file%></td>
 				<td class="<%#$this->Data->fileindex > 0 ? 'w3-text-success' : 'w3-text-orange'%> w3-center w3-hide-small"><strong><%#$this->Data->fileindex > 0 ? Prado::localize('saved') : Prado::localize('deleted')%></strong></td>
 				<%#$this->getTemplateControl()->getActionSelectItem() ? '<td class="w3-center"><a href="javascript:void(0)" class="w3-button w3-green bold" data-item="' . htmlspecialchars(json_encode($this->Data, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" onclick="' . $this->getTemplateControl()->getActionSelectItem() . '(this, JSON.parse(this.dataset.item)); return false;" data-select="' . $this->getTemplateControl()->getNameSelectItem() . '" data-unselect="' . $this->getTemplateControl()->getNameUnselectItem() . '">' . $this->getTemplateControl()->getNameSelectItem() . '</a></td>' : ''%>
 			</tr>

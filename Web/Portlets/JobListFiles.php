@@ -98,7 +98,7 @@ class JobListFiles extends Portlets
 			$key_len = strlen($keyword);
 			$key = substr($file_list[$i]->file, $pos, $key_len);
 			$str2 = substr($file_list[$i]->file, ($pos + $key_len));
-			$file_list[$i]->file = $str1 . '<strong class="w3-text-red">' . $key . '</strong>' . $str2;
+			$file_list[$i]->file_fmt = $str1 . '<strong class="w3-text-red">' . $key . '</strong>' . $str2;
 		}
 	}
 
