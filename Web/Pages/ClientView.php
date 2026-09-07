@@ -30,6 +30,7 @@
 use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 use Bacularis\Common\Modules\Params;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -76,7 +77,7 @@ class ClientView extends BaculumWebPage
 			}
 			if (property_exists($clientshow->output, 'address')) {
 				$this->setClientAddress($clientshow->output->address);
-				$this->OFDAddress->Text = $clientshow->output->address;
+				$this->OFDAddress->Text = Miscellaneous::html_value($clientshow->output->address);
 			}
 			if (property_exists($clientshow->output, 'fdport')) {
 				$this->OFDPort->Text = $clientshow->output->fdport;
