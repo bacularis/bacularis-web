@@ -126,12 +126,13 @@ var oBulkCancelJobsModal = {
 			jobstatus.style.display = 'inline-block';
 			jobstatus.style.width = '20px';
 			jobstatus.style.textAlign = 'center';
-			jobstatus.innerHTML = JobStatus.get_icon(jobs[i].jobstatus).outerHTML;
+			jobstatus.appendChild(JobStatus.get_icon(jobs[i].jobstatus));
 
 			colm = document.createElement('DIV');
 			colm.classList.add('w3-half', 'w3-col');
 			colm.style.padding = '2px 0';
-			colm.innerHTML =  jobstatus.outerHTML + ' [' + jobs[i].jobid + '] ' + jobs[i].name;
+			colm.appendChild(jobstatus);
+			colm.appendChild(document.createTextNode(' [' + jobs[i].jobid + '] ' + jobs[i].name));
 
 			colr = document.createElement('DIV');
 			colr.id = this.ids.jobid_prefix + jobs[i].jobid;

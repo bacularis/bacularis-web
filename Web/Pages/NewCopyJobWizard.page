@@ -1949,15 +1949,15 @@ function show_storage_warning(storage, pool, jobs) {
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Job Name</div>
-						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Name->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Description</div>
-						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Description->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">JobDefs</div>
-						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->JobDefs->getDirectiveValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -1965,14 +1965,14 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Source Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Pool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Pool->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Source Storage</div>
 						<div class="w3-threequarter bold">
-							<%=$this->SourceStorage->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->SourceStorage->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->SourceStorage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -1982,14 +1982,14 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Selection Type</div>
 						<div class="w3-threequarter bold">
-							<%=$this->sel_types[$this->SelectionType->getDirectiveValue()]%>
+							<%=Miscellaneous::html_value($this->sel_types[$this->SelectionType->getDirectiveValue()])%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('SelectionType', $this->SelectionType->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Selection Pattern</div>
 						<div class="w3-threequarter bold">
-							<%=$this->getPage()->getSelectionPatternValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->getPage()->getSelectionPatternValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('SelectionPattern', ($this->getSelectionPatternControl() ? $this->getSelectionPatternControl()->getDirectiveValue() : '')) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -1999,14 +1999,14 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Destination Pool (NextPool)</div>
 						<div class="w3-threequarter bold">
-							<%=$this->NextPool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->NextPool->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('NextPool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Destination Storage</div>
 						<div class="w3-threequarter bold">
-							<%=$this->DestinationStorage->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->DestinationStorage->getDirectiveValue())%>
 						</div>
 					</div>
 				</fieldset>
@@ -2015,42 +2015,42 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Maximum Spawned Jobs</div>
 						<div class="w3-threequarter bold">
-							<%=$this->MaximumSpawnedJobs->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->MaximumSpawnedJobs->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('MaximumSpawnedJobs', $this->MaximumSpawnedJobs->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Schedule</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<%=Miscellaneous::html_value($this->Schedule->getDirectiveValue() ?: '-') %>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Messages</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Messages->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Level</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Level->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Level->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Level', $this->Level->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Client</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Client->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Client->getDirectiveValue())%>
 							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">FileSet</div>
 						<div class="w3-threequarter bold">
-							<%=$this->FileSet->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->FileSet->getDirectiveValue())%>
 							<span class="w3-small normal">(<%[ Not used ]%>) <%=$this->isInJobDefs('Fileset', $this->FileSet->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>

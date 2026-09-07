@@ -300,7 +300,7 @@ var oJobHistoryList = {
 				});
 				if (running_jobs.length > 0) {
 					var emsg = "<%[ Following jobs are running and cannot be deleted: %running_jobs To delete them, please stop these jobs and try again. ]%>";
-					emsg = emsg.replace('%running_jobs', '<hr />' + running_jobs.join('<br />') + '<hr />');
+					emsg = emsg.replace('%running_jobs', "\n\n" + running_jobs.join("\n") + "\n\n");
 					oBulkActionsModal.set_error(emsg);
 					return false;
 				}
@@ -1640,7 +1640,7 @@ var oJobListDeleteJobResourceWindow = {
 	error: function(emsg) {
 		const self = oJobListDeleteJobResourceWindow;
 		const error_text = document.getElementById(self.ids.error_text);
-		error_text.innerHTML = emsg;
+		error_text.textContent = emsg;
 		const error_box = document.getElementById(self.ids.error_box);
 		error_box.style.display = emsg ? 'block' : 'none';
 	},

@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Prado\Prado;
@@ -789,6 +790,17 @@ class NewMigrateJobWizard extends BaculumWebPage
 	public function wizardStop($sender, $param)
 	{
 		$this->goToPage('JobList');
+	}
+
+	/**
+	 * Get pool directive value as JSON safe for JavaScript context.
+	 *
+	 * @return string pool directive value JSON
+	 */
+	public function getPoolDirectiveValueJSON(): string
+	{
+		$pool = $this->Pool->getDirectiveValue();
+		return Miscellaneous::json_value($pool);
 	}
 
 	/**

@@ -310,7 +310,7 @@ class <%=$this->ClientID%>JobHistoryRangeSlider {
 $(function() {
 	<%=$this->ClientID%>_job_history_range_slider_obj = new <%=$this->ClientID%>JobHistoryRangeSlider({
 		days: <%=$this->getDays()%>,
-		job_name: '<%=$this->getJobName()%>'
+		job_name: <%=$this->getJobNameJSON()%>
 	});
 });
 </script>

@@ -251,15 +251,15 @@
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage name ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageName->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageName->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Description ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageDescription->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageDescription->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageAPIHost->getSelectedValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -272,20 +272,20 @@
 					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Number of backup/restore devices ]%></div>
-							<div class="w3-threequarter bold"><%=$this->StorageNumberOfBackupRestoreDevices->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageNumberOfBackupRestoreDevices->Text ?: '-')%></div>
 						</div>
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Number of restore reserved devices ]%></div>
-							<div class="w3-threequarter bold"><%=$this->StorageNumberOfRestoreDevices->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageNumberOfRestoreDevices->Text ?: '-')%></div>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Data volume directory ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageDataVolumeDir->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageDataVolumeDir->Text ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Media type ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageMediaType->Text ?: '-')%></div>
 					</div>
 				</fieldset>
 			</div>
@@ -346,7 +346,7 @@ var oNewFileStorageStep3 = {
 	},
 	set_storage_create_error_window: function(errors) {
 		const err = document.getElementById(this.ids.storage_create_errors);
-		err.innerHTML = errors;
+		err.textContent = errors;
 		err.style.display = 'block';
 		this.show_storage_create_error_window(true);
 	},

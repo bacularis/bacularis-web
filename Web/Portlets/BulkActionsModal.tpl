@@ -23,7 +23,7 @@
 			<h2><%[ Validation error ]%></h2>
 		</header>
 		<div class="w3-margin-left w3-margin-right" style="max-height: 400px; overflow-x: auto;">
-			<p id="<%=$this->ClientID%>bulk_actions_validation_error_txt"></p>
+			<p id="<%=$this->ClientID%>bulk_actions_validation_error_txt" style="white-space: pre-line;"></p>
 		</div>
 		<footer class="w3-container w3-center w3-border-top">
 			<button type="button" class="w3-button w3-section w3-green" onclick="oBulkActionsModal.show_error(false);"><i class="fas fa-check"></i> &nbsp;<%[ OK ]%></button>
@@ -54,7 +54,7 @@ var oBulkActionsModal = {
 	},
 	set_error: function(emsg) {
 		const error = document.getElementById(this.ids.validation_err_text);
-		error.innerHTML = emsg;
+		error.textContent = emsg;
 		this.show_error(true);
 	},
 	show_error: function(show) {

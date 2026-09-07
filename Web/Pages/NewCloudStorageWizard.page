@@ -484,15 +484,15 @@ $(function() {
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage name ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageName->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageName->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Description ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageDescription->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageDescription->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageAPIHost->getSelectedValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -505,39 +505,39 @@ $(function() {
 					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Number of backup/restore devices ]%></div>
-							<div class="w3-threequarter bold"><%=$this->StorageNumberOfBackupRestoreDevices->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageNumberOfBackupRestoreDevices->Text ?: '-')%></div>
 						</div>
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Number of restore reserved devices ]%></div>
-							<div class="w3-threequarter bold"><%=$this->StorageNumberOfRestoreDevices->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageNumberOfRestoreDevices->Text ?: '-')%></div>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Data volume directory ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageDataVolumeDir->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageDataVolumeDir->Text ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Media type ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageMediaType->Text ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
 					<legend><%[ Cloud ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Cloud driver ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudDriver->getSelectedValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudDriver->getSelectedValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Hostname ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudHostName->Text%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudHostName->Text)%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Bucket name ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudBucket->Text%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudBucket->Text)%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Access key ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudAccessKey->Text%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudAccessKey->Text)%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Secret key ]%></div>
@@ -545,7 +545,7 @@ $(function() {
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Region ]%></div>
-						<div class="w3-threequarter bold"><%=($this->StorageCloudRegion->Text ?: '-')%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudRegion->Text ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Upload ]%></div>
@@ -555,19 +555,19 @@ $(function() {
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Protocol ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudProtocol->getSelectedValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudProtocol->getSelectedValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Uri style ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudUriStyle->getSelectedValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudUriStyle->getSelectedValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Truncate cache ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudTruncateCache->getSelectedValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudTruncateCache->getSelectedValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Blob endpoint ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageCloudBlobEndpoint->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageCloudBlobEndpoint->Text ?: '-')%></div>
 					</div>
 				</fieldset>
 			</div>
@@ -628,7 +628,7 @@ var oNewCloudStorageStep4 = {
 	},
 	set_storage_create_error_window: function(errors) {
 		const err = document.getElementById(this.ids.storage_create_errors);
-		err.innerHTML = errors;
+		err.textContent = errors;
 		err.style.display = 'block';
 		this.show_storage_create_error_window(true);
 	},

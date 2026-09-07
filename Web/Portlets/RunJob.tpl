@@ -3,7 +3,7 @@
 		<header class="w3-container w3-green"> 
 			<span onclick="close_run_job_window();" class="w3-button w3-display-topright">&times;</span>
 			<h2>
-				<%[ Run job ]%><%=$this->getJobName() ? ' - ' . $this->getJobName() : ''%>
+				<%[ Run job ]%><%=$this->getJobName() ? ' - ' . Miscellaneous::html_value($this->getJobName()) : ''%>
 				&nbsp; <i id="run_job_select_job_loader" class="fa-solid fa-sync fa-spin" style="display: none;"></i>
 			</h2>
 		</header>

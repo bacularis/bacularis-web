@@ -1839,7 +1839,7 @@ $(function() {
 					<legend><%[ Source parameters ]%></legend>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Backup data from client: ]%></div>
-						<div class="w3-col w3-third bold"><%=$this->BackupClient->SelectedItem->Text%></div>
+						<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->BackupClient->SelectedItem->Text)%></div>
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Backup selection method: ]%></div>
@@ -1851,11 +1851,11 @@ $(function() {
 					<com:TPanel Visible="<%=$this->GroupBackupSelection->Checked%>">
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ Backup to restore: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->GroupBackupToRestore->SelectedValue%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->GroupBackupToRestore->SelectedValue)%></div>
 						</div>
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ FileSet to restore: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->GroupBackupFileSet->SelectedItem->Text%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->GroupBackupFileSet->SelectedItem->Text)%></div>
 						</div>
 					</com:TPanel>
 				</fieldset>
@@ -1874,12 +1874,12 @@ $(function() {
 					<legend><%[ Destination parameters ]%></legend>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Restore to client: ]%></div>
-						<div class="w3-col w3-third bold"><%=$this->RestoreClient->SelectedItem->Text%></div>
+						<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreClient->SelectedItem->Text)%></div>
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Restore to path: ]%></div>
-						<div class="w3-col w3-third bold" style="display: <%=$this->RestoreToDirectory->Checked ? 'block' : 'none'%>"><%=$this->RestorePath->Text%></div>
-						<div class="w3-col w3-third bold" style="display: <%=count($this->Session['plugin_info']) == 0 && $this->RestoreToOriginalLocation->Checked ? 'block' : 'none'%>"><%[ original location ]%> - <%=$this->RestorePath->Text%></div>
+						<div class="w3-col w3-third bold" style="display: <%=$this->RestoreToDirectory->Checked ? 'block' : 'none'%>"><%=Miscellaneous::html_value($this->RestorePath->Text)%></div>
+						<div class="w3-col w3-third bold" style="display: <%=count($this->Session['plugin_info']) == 0 && $this->RestoreToOriginalLocation->Checked ? 'block' : 'none'%>"><%[ original location ]%> - <%=Miscellaneous::html_value($this->RestorePath->Text)%></div>
 						<div class="w3-col w3-third bold" style="display: <%=count($this->Session['plugin_info']) > 0 && $this->RestoreToOriginalLocation->Checked ? 'block' : 'none'%>"><%[ original location ]%> - <%[ plugin restore options decide ]%></div>
 					</div>
 				</fieldset>
@@ -1887,7 +1887,7 @@ $(function() {
 					<legend><%[ Restore job options ]%></legend>
 					<div class="w3-section w3-row<%=$this->getFileBrowserMode() == RestoreWizard::BROWSER_MODE_SIMPLE ? ' hide' : ''%>">
 						<div class="w3-col w3-third"><%[ Restore job: ]%></div>
-						<div class="w3-col w3-third bold"><%=$this->RestoreJob->Text%></div>
+						<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreJob->Text)%></div>
 					</div>
 					<div class="w3-section w3-row">
 						<div class="w3-col w3-third"><%[ Replace files: ]%></div>
@@ -1909,21 +1909,21 @@ $(function() {
 					<div style="display: <%=$this->file_relocation_opt == 2 ? 'block' : 'none'%>">
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ Strip prefix: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->RestoreStripPrefix->Text%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreStripPrefix->Text)%></div>
 						</div>
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ Add prefix: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->RestoreAddPrefix->Text%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreAddPrefix->Text)%></div>
 						</div>
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ Add suffix: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->RestoreAddSuffix->Text%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreAddSuffix->Text)%></div>
 						</div>
 					</div>
 					<div style="display: <%=$this->file_relocation_opt == 3 ? 'block' : 'none'%>">
 						<div class="w3-section w3-row">
 							<div class="w3-col w3-third"><%[ RegexWhere: ]%></div>
-							<div class="w3-col w3-third bold"><%=$this->RestoreRegexWhere->Text%></div>
+							<div class="w3-col w3-third bold"><%=Miscellaneous::html_value($this->RestoreRegexWhere->Text)%></div>
 						</div>
 					</div>
 				</fieldset>

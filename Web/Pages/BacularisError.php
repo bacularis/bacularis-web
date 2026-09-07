@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**

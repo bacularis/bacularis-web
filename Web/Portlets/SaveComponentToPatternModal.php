@@ -134,7 +134,7 @@ class SaveComponentToPatternModal extends Portlets
 			);
 		} else {
 			if (count($warnings) > 0) {
-				$warns = implode('<br />', $warnings);
+				$warns = implode("\n\n", $warnings);
 				$cb->callClientFunction(
 					'oSaveComponentToPattern.set_warning',
 					$warns
@@ -184,7 +184,7 @@ class SaveComponentToPatternModal extends Portlets
 		$config_name = str_replace($from, $to, $config_name);
 
 		if (!$this->SaveComponentToPatternOverwriteConfig->Checked && $conf_config->confConfigExists($config_name)) {
-			$ret['warning'] = sprintf('Config <strong>"%s"</strong> already exists. This config has not been saved. To save it, you can change the config name or use overwrite config option.', $config_name);
+			$ret['warning'] = sprintf('Config "%s" already exists. This config has not been saved. To save it, you can change the config name or use overwrite config option.', $config_name);
 		} else {
 			$description = 'Config created by saving existing component configuration';
 			$setting = [

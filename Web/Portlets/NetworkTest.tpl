@@ -186,11 +186,21 @@ var oNetworkTest<%=$this->ClientID%> = {
 	},
 	set_write_speed: function(speed) {
 		const ws = document.getElementById(this.ids.write_speed);
-		ws.innerHTML = speed;
+		ws.textContent = '';
+		if (speed instanceof HTMLElement) {
+			ws.appendChild(speed);
+		} else {
+			ws.textContent = speed;
+		}
 	},
 	set_read_speed: function(speed) {
 		const rs = document.getElementById(this.ids.read_speed);
-		rs.innerHTML = speed;
+		rs.textContent = '';
+		if (speed instanceof HTMLElement) {
+			rs.appendChild(speed);
+		} else {
+			rs.textContent = speed;
+		}
 	},
 	set_stat_packets: function(packets) {
 		const pk = document.getElementById(this.ids.packets);
@@ -221,10 +231,10 @@ var oNetworkTest<%=$this->ClientID%> = {
 		this.show_error(false);
 		const wloader = document.createElement('I');
 		wloader.classList.add('fa-solid', 'fa-sync-alt', 'fa-spin');
-		this.set_write_speed(wloader.outerHTML);
+		this.set_write_speed(wloader);
 		const rloader = document.createElement('I');
 		rloader.classList.add('fa-solid', 'fa-sync-alt', 'fa-spin');
-		this.set_read_speed(rloader.outerHTML);
+		this.set_read_speed(rloader);
 		this.reset_stats();
 	},
 	show_results: function(show) {

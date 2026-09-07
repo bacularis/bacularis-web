@@ -402,15 +402,15 @@ const oNewTapeStorageStep2 = {
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage name ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageName->Text%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageName->Text)%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Description ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageDescription->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageDescription->Text ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Storage daemon API host ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageAPIHost->getSelectedValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageAPIHost->getSelectedValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -422,16 +422,16 @@ const oNewTapeStorageStep2 = {
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Media type ]%></div>
-						<div class="w3-threequarter bold"><%=$this->StorageMediaType->Text ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageMediaType->Text ?: '-')%></div>
 					</div>
 					<div style="display: <%=$this->StorageTypeAutochanger->Checked ? 'block' : 'none'%>">
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Changer device file ]%>:</div>
-							<div class="w3-threequarter bold"><%=$this->AutochangerFile->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->AutochangerFile->Text ?: '-')%></div>
 						</div>
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Changer command ]%>:</div>
-							<div class="w3-threequarter bold"><%=$this->AutochangerCommand->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->AutochangerCommand->Text ?: '-')%></div>
 						</div>
 						<com:TRepeater
 							ID="BackupRestoreDevicesSummaryRepeater"
@@ -441,11 +441,11 @@ const oNewTapeStorageStep2 = {
 								<h5><%[ Drive ]%> <%=$this->ItemIndex%></h5>
 								<div class="w3-container w3-padding-small">
 									<div class="w3-quarter"><%[ Tape drive device file ]%></div>
-									<div class="w3-threequarter bold"><%=$this->Data['drive_file']%></div>
+									<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Data['drive_file'])%></div>
 								</div>
 								<div class="w3-container w3-padding-small">
 									<div class="w3-quarter"><%[ Drive index ]%></div>
-									<div class="w3-threequarter bold"><%=$this->Data['drive_index']%></div>
+									<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Data['drive_index'])%></div>
 								</div>
 								<div class="w3-container w3-padding-small">
 									<div class="w3-quarter"><%[ Drive type ]%></div>
@@ -459,7 +459,7 @@ const oNewTapeStorageStep2 = {
 						<h5><%[ Drive ]%></h5>
 						<div class="w3-container w3-padding-small">
 							<div class="w3-quarter"><%[ Tape drive device file ]%></div>
-							<div class="w3-threequarter bold"><%=$this->StorageSingleTapeDrive->Text ?: '-'%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->StorageSingleTapeDrive->Text ?: '-')%></div>
 						</div>
 					</div>
 				</fieldset>
@@ -474,12 +474,12 @@ const oNewTapeStorageStep2 = {
 						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (RHEL, CentOS and others) ]%>:</p>
 						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo1');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
 <pre class="w3-code" id="restart_storage_sudo1">
-apache ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
+apache ALL = (root) NOPASSWD: <%=Miscellaneous::html_value(preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text))%>
 </pre>
 						<p><%[ For Apache, Nginx and Lighttpd web servers with default PHP-FPM configuration (Debian, Ubuntu and others) ]%>:</p>
 						<a class="raw" href="javascript: void(0)" onclick="oNewTapeStorageStep3.copy(this, 'restart_storage_sudo2');"><i class="w3-large fas fa-copy" title="<%[ Copy to clipboard ]%>"></i> &nbsp;<%[ Copy ]%></a>
 <pre class="w3-code" id="restart_storage_sudo2">
-www-data ALL = (root) NOPASSWD: <%=preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text)%>
+www-data ALL = (root) NOPASSWD: <%=Miscellaneous::html_value(preg_replace('/( .*)?$/', '', $this->AutochangerCommand->Text))%>
 </pre>
 						<small><%[ NOTE: If you want to configure the sudo runas user/group, you can do it in the autochanger config in the API panel. ]%></small>
 					</com:TPanel>
@@ -559,7 +559,7 @@ var oNewTapeStorageStep3 = {
 	},
 	set_storage_create_error_window: function(errors) {
 		const err = document.getElementById(this.ids.storage_create_errors);
-		err.innerHTML = errors;
+		err.textContent = errors;
 		err.style.display = 'block';
 		this.show_storage_create_error_window(true);
 	},

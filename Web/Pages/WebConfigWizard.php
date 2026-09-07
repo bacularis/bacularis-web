@@ -28,6 +28,7 @@
  */
 
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\WebUserRoles;

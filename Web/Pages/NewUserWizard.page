@@ -1009,7 +1009,7 @@ const oConsoles = {
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Username ]%></div>
-						<div class="w3-threequarter bold"><%=$this->Username->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Username->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Password ]%></div>
@@ -1017,21 +1017,21 @@ const oConsoles = {
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Organization ]%></div>
-						<div class="w3-threequarter bold"><%=$this->Organization->Data[$this->Organization->DirectiveValue] ?? '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Organization->Data[$this->Organization->DirectiveValue] ?? '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
 					<legend><%[ Roles ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ Roles ]%></div>
-						<div class="w3-threequarter bold"><%=implode('<br />', $this->getMultiSelectValues($this->UserRoles))%></div>
+						<div class="w3-threequarter bold"><%=implode('<br />', $this->getHTMLMultiSelectValues($this->UserRoles))%></div>
 					</div>
 				</fieldset>
 				<fieldset>
 					<legend><%[ API hosts ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter"><%[ API hosts ]%></div>
-						<div class="w3-threequarter bold"><%=implode('<br />', $this->getMultiSelectValues($this->UserAPIHosts))%></div>
+						<div class="w3-threequarter bold"><%=implode('<br />', $this->getHTMLMultiSelectValues($this->UserAPIHosts))%></div>
 					</div>
 				</fieldset>
 				<fieldset>

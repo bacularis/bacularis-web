@@ -72,14 +72,14 @@ var oVerificationRuleList = {
 				const lines = [];
 				for (let i = 0; i < rules.length; i++) {
 					const rule = rules[i];
-					let line = '<strong>' + escape_html(rule) + ':</strong>';
+					let line = rule + ':';
 					for (let j = 0; j < used_rules[rule].length; j++) {
-						line += '<br /> - ' + escape_html(used_rules[rule][j]);
+						line += "\n - " + used_rules[rule][j];
 					}
 					lines.push(line);
 				}
 				const msg = '<%[ The following verification rules are used by restore tests and cannot be removed: %used_rules Please unassign these verification rules from the restore tests and try removing them again. ]%>';
-				const emsg = msg.replace('%used_rules', '<hr />' + lines.join('<br /><br />') + '<hr />');
+				const emsg = msg.replace('%used_rules', "\n\n" + lines.join("\n\n") + "\n\n");
 				oBulkActionsModal.set_error(emsg);
 				return false;
 			}

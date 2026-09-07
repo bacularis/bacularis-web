@@ -125,7 +125,13 @@ oComponentAction<%=$this->ClientID%> = {
 	set_output: function(action, result) {
 		var out = document.getElementById(this.ids.output);
 		if (Array.isArray(result.output)) {
-			out.innerHTML = result.output.join('<br />');
+			out.textContent = '';
+			for (var i = 0; i < result.output.length; i++) {
+				if (i > 0) {
+					out.appendChild(document.createElement('BR'));
+				}
+				out.appendChild(document.createTextNode(result.output[i]));
+			}
 		} else if (result.output) {
 			out.textContent = result.output;
 		} else if (result.error === 0) {

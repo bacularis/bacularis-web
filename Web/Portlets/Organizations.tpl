@@ -337,7 +337,7 @@ var oOrganizations = {
 		// reset color picker
 		const cpi = document.getElementById('<%=$this->OrganizationLoginBtnColor->ClientID%>');
 		const cpb = document.getElementById('<%=$this->OrganizationLoginBtnColor->ClientID%>_button');
-		cpi.value = cpb.style.backgroundColor = '<%=$this->OrganizationLoginBtnColor->Text%>';
+		cpi.value = cpb.style.backgroundColor = <%=$this->getOrganizationLoginBtnColorJSON()%>;
 
 		// reset auth type/idp
 		const type_idp = document.getElementById('organization_window_auth_type_idp');

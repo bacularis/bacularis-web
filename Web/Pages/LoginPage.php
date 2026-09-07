@@ -27,14 +27,15 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Prado;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\Protocol\WebAuthn\Authenticate as WebAuthnAuth;
 use Bacularis\Web\Modules\BaculumWebPage;
-use Bacularis\Web\Modules\OrganizationConfig;
 use Bacularis\Web\Modules\IdentityProviderConfig;
-use Bacularis\Web\Modules\WebUserConfig;
+use Bacularis\Web\Modules\OrganizationConfig;
 use Bacularis\Web\Modules\WebConfig;
+use Bacularis\Web\Modules\WebUserConfig;
+use Prado\Prado;
 
 /**
  * User login page.
@@ -458,7 +459,8 @@ class LoginPage extends BaculumWebPage
 	private function setMessage(): void
 	{
 		if ($this->Request->contains('error')) {
-			$this->Msg->Text = urldecode($this->Request['error']);
+			$error = urldecode($this->Request['error']);
+			$this->Msg->Text = Miscellaneous::html_value($error);
 			$this->MsgBox->Display = 'Dynamic';
 		}
 	}

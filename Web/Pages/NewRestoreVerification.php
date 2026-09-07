@@ -14,6 +14,7 @@
  */
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Common\Modules\RestoreDestinationCapability;
 use Bacularis\Common\Modules\RestoreVerification;
@@ -1249,7 +1250,7 @@ class NewRestoreVerification extends BaculumWebPage
 	 */
 	private function html(string $text): string
 	{
-		return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+		return Miscellaneous::html_value($text);
 	}
 
 	/**

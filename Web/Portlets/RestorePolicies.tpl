@@ -71,14 +71,14 @@ const oRestorePolicyList = {
 				const lines = [];
 				for (let i = 0; i < restore_policies.length; i++) {
 					const restore_policy = restore_policies[i];
-					let line = '<strong>' + escape_html(restore_policy) + ':</strong>';
+					let line = restore_policy + ':';
 					for (let j = 0; j < used_restore_policies[restore_policy].length; j++) {
-						line += '<br /> - ' + escape_html(used_restore_policies[restore_policy][j]);
+						line += "\n - " + used_restore_policies[restore_policy][j];
 					}
 					lines.push(line);
 				}
 				const msg = '<%[ The following restore policies are used by restore tests and cannot be removed: %used_restore_policies Please unassign these restore policies from the restore tests and try removing them again. ]%>';
-				const emsg = msg.replace('%used_restore_policies', '<hr />' + lines.join('<br /><br />') + '<hr />');
+				const emsg = msg.replace('%used_restore_policies', "\n\n" + lines.join("\n\n") + "\n\n");
 				oBulkActionsModal.set_error(emsg);
 				return false;
 			}

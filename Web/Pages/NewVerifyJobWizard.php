@@ -13,6 +13,7 @@
  * terms pursuant to its AGPLv3 Section 7.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 

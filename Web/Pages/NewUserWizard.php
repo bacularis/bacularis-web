@@ -13,13 +13,14 @@
  * terms pursuant to its AGPLv3 Section 7.
  */
 
-use Prado\Prado;
-use Prado\Exceptions\TNotSupportedException;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
 use Bacularis\Web\Modules\WebUserConfig;
+use Prado\Exceptions\TNotSupportedException;
+use Prado\Prado;
 
 /**
  * New user wizard page.
@@ -1029,6 +1030,21 @@ class NewUserWizard extends BaculumWebPage
 	}
 
 	/**
+	 * Helper method to get HTML safe multi-select control values.
+	 *
+	 * @param object $control multi-select control
+	 * @return array selected HTML safe values
+	 */
+	public function getHTMLMultiSelectValues($control): array
+	{
+		$selected = $this->getMultiSelectValues($control);
+		foreach ($selected as $index => $value) {
+			$selected[$index] = Miscellaneous::html_value($value);
+		}
+		return $selected;
+	}
+
+	/**
 	 * Get API hosts with consoles summary to display in the wizard summary step.
 	 *
 	 * @return string API hosts with consoles summary
@@ -1038,7 +1054,8 @@ class NewUserWizard extends BaculumWebPage
 		$result = [];
 		$api_hosts = $this->getAPIHostsWithConsoles();
 		for ($i = 0; $i < count($api_hosts); $i++) {
-			$result[] = Prado::localize('API host:') . ' ' . $api_hosts[$i]['api_host'] . ', ' . Prado::localize('Console:') . ' ' . ($api_hosts[$i]['console'] ? Prado::localize('Yes') : Prado::localize('No'));
+			$api_host = Miscellaneous::html_value($api_hosts[$i]['api_host']);
+			$result[] = Prado::localize('API host:') . ' ' . $api_host . ', ' . Prado::localize('Console:') . ' ' . ($api_hosts[$i]['console'] ? Prado::localize('Yes') : Prado::localize('No'));
 		}
 		return implode('<br />', $result);
 	}

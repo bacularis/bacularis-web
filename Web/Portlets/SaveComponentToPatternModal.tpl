@@ -89,7 +89,7 @@
 				<a href="javascript:void(0)" class="raw" onclick="oSaveComponentToPattern.global_check_uncheck_all_resources(this);"><i class="fa-solid fa-check-double"></i> <%[ Global check/uncheck all ]%></a>
 			</div>
 			<div id="save_component_to_pattern_modal_table_container"></div>
-			<p id="save_component_to_pattern_warning_msg" class="w3-orange w3-padding" style="display: none"><p>
+			<p id="save_component_to_pattern_warning_msg" class="w3-orange w3-padding" style="display: none; white-space: pre-line;"><p>
 			<p id="save_component_to_pattern_error_msg" class="w3-red w3-padding" style="display: none"><p>
 		</div>
 		<footer class="w3-container w3-center w3-border-top">
@@ -323,7 +323,7 @@ var oSaveComponentToPattern = {
 	set_warning: function(msg) {
 		const self = oSaveComponentToPattern;
 		const err = document.getElementById(self.ids.warning_msg);
-		err.innerHTML = msg;
+		err.textContent = msg;
 		err.style.display = msg ? 'block' : 'none';
 	},
 	set_error: function(msg) {

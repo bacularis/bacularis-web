@@ -25,7 +25,7 @@ function show_error(output, error) {
 	} else {
 		err_code_cont.style.display = 'none';
 	}
-	err_msg.innerHTML = output;
+	err_msg.textContent = output;
 	err_box.style.display = 'block';
 }
 </script>

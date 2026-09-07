@@ -14,6 +14,7 @@
  */
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
@@ -943,6 +944,17 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 	public function wizardStop($sender, $param)
 	{
 		$this->goToDefaultPage();
+	}
+
+	/**
+	 * Get Virtual Full backup storage values as JSON safe for JavaScript context.
+	 *
+	 * @return string Virtual Full backup storage values JSON
+	 */
+	public function getVirtualFullBackupStorageJSON(): string
+	{
+		$storage = $this->VirtualFullBackupStorage->getDirectiveValue() ?: [];
+		return Miscellaneous::json_value($storage);
 	}
 
 	/**

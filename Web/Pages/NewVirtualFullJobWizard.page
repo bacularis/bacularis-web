@@ -325,7 +325,7 @@ function set_storage_list() {
 	cb.dispatch();
 }
 function set_storage_list_cb(storage) {
-	storage_from_pool = storage || [<%=$this->VirtualFullBackupStorage->getDirectiveValue() ? '"' . implode('","', $this->VirtualFullBackupStorage->getDirectiveValue()) . '"' : ''%>];
+	storage_from_pool = storage || <%=$this->getVirtualFullBackupStorageJSON()%>;
 	previous_storage = storage;
 	const select = document.getElementById('<%=$this->VirtualFullBackupStorage->Directive->ClientID%>');
 	const opts = select.options;
@@ -503,11 +503,11 @@ function show_storage_warning(storage, pool, jobs) {
 				/> &nbsp;<label for="<%=$this->VirtualFullTypeProgressive->ClientID%>"><strong><%[ Progressive Virtual Full backup ]%></strong> - <%[ This backup consolidates incremental and differential backups but keeps constant number of backups not consolidated. Optionally removes old already consolidated jobs. In this setting we have one full backup and some incrementals/differential that are dynamically consolidated in time. ]%></label></p>
 				<div id="virtual_full_type_progressive" style="display: <%=$this->VirtualFullTypeProgressive->Checked ? 'block' : 'none'%>">
 					<div id="virtual_full_existing_job_history" style="display: <%=$this->WhatToDoWithVirtualFullExistingJob->Checked ? 'block' : 'none'%>">
-						<h3><%[ Job history ]%> - <%=$this->ExistingJob->getValue()%> - <%[ Last 90 days ]%></h3>
+						<h3><%[ Job history ]%> - <%=Miscellaneous::html_value($this->ExistingJob->getValue())%> - <%[ Last 90 days ]%></h3>
 						<com:Bacularis.Web.Portlets.JobHistoryRangeSlider
 							ID="JobHistorySlider"
 							Days="90"
-							JobName="<%=$this->ExistingJob->getValue()%>"
+							JobName="<%=Miscellaneous::html_value($this->ExistingJob->getValue())%>"
 						/>
 					</div>
 					<com:Bacularis.Web.Portlets.DirectiveTextBox
@@ -920,20 +920,20 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container">
 						<div style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
 							<div class="w3-quarter"><%[ New Job Name ]%></div>
-							<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Name->getDirectiveValue())%></div>
 						</div>
 						<div style="display: <%=$this->WhatToDoWithVirtualFullExistingJob->Checked ? 'block' : 'none'%>">
 							<div class="w3-quarter"><%[ Existing Job Name ]%></div>
-							<div class="w3-threequarter bold"><%=$this->ExistingJob->getDirectiveValue()%></div>
+							<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->ExistingJob->getDirectiveValue())%></div>
 						</div>
 					</div>
 					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">Description</div>
-						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Description->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">JobDefs</div>
-						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->JobDefs->getDirectiveValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
@@ -941,14 +941,14 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container">
 						<div class="w3-quarter">Client</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Client->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Client->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">FileSet</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Fileset->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Fileset->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Fileset', $this->Fileset->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -958,28 +958,28 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">Storage</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Storage->getDirectiveValue() ? implode(',', $this->Storage->getDirectiveValue()) : '-'%>
+							<%=Miscellaneous::html_value($this->Storage->getDirectiveValue() ? implode(',', $this->Storage->getDirectiveValue()) : '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container" style="display: <%=$this->WhatToDoWithVirtualFullNewJob->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Pool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Pool->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">NextPool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->NextPool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->NextPool->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('NextPool', $this->NextPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter"><%[ Storage to write Virtual Full ]%></div>
 						<div class="w3-threequarter bold">
-							<%=implode(',', $this->VirtualFullBackupStorage->getDirectiveValue())%>
+							<%=Miscellaneous::html_value(implode(',', $this->VirtualFullBackupStorage->getDirectiveValue()))%>
 						</div>
 					</div>
 				</fieldset>
@@ -995,7 +995,7 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container" style="display: <%=$this->VirtualFullTypeProgressive->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">Backups to keep</div>
 						<div class="w3-threequarter bold">
-							<%=$this->BackupsToKeep->getDirectiveValue() ?: $this->BackupsToKeep->getDefaultValue()%>
+							<%=Miscellaneous::html_value($this->BackupsToKeep->getDirectiveValue() ?: $this->BackupsToKeep->getDefaultValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('BackupsToKeep', $this->BackupsToKeep->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -1012,8 +1012,8 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container">
 						<div class="w3-quarter">Schedule</div>
 						<div class="w3-threequarter bold">
-							<%=$this->VirtualFullScheduleBasic->Checked ? $this->VirtualFullScheduleBasicName->getDirectiveValue() : '' %>
-							<%=$this->VirtualFullScheduleExisting->Checked ? $this->VirtualFullScheduleExistingList->getDirectiveValue() : '' %>
+							<%=$this->VirtualFullScheduleBasic->Checked ? Miscellaneous::html_value($this->VirtualFullScheduleBasicName->getDirectiveValue()) : '' %>
+							<%=$this->VirtualFullScheduleExisting->Checked ? Miscellaneous::html_value($this->VirtualFullScheduleExistingList->getDirectiveValue()) : '' %>
 							<%=$this->VirtualFullScheduleNoSchedule->Checked ? '-' : '' %>
 							<span class="w3-small normal"><%=$this->VirtualFullScheduleExisting->Checked && $this->isInJobDefs('Schedule', $this->VirtualFullScheduleExistingList->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
@@ -1023,33 +1023,33 @@ function show_storage_warning(storage, pool, jobs) {
 						<div class="w3-container">
 							<div class="w3-quarter"><%[ Run level ]%></div>
 							<div class="w3-threequarter bold">
-								<%=$this->VirtualFullScheduleBasicLevel->getValue()%>
+								<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicLevel->getValue())%>
 							</div>
 						</div>
 						<div class="w3-container">
 							<div class="w3-quarter"><%[ Run daily ]%></div>
 							<div class="w3-threequarter bold">
-								<%[ From ]%>: <%=$this->VirtualFullScheduleBasicScheduleFrom->getSelectedItem()->Text%>
-								<%[ To ]%>: <%=$this->VirtualFullScheduleBasicScheduleTo->getSelectedItem()->Text%>
+								<%[ From ]%>: <%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleFrom->getSelectedItem()->Text)%>
+								<%[ To ]%>: <%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleTo->getSelectedItem()->Text)%>
 							</div>
 						</div>
 						<div class="w3-container">
 							<div class="w3-quarter"><%[ Run at ]%></div>
 							<div class="w3-threequarter bold">
-								<%=$this->VirtualFullScheduleBasicScheduleAtHour->getSelectedItem()->Text%>:<%=$this->VirtualFullScheduleBasicScheduleAtMinute->getSelectedItem()->Text%>
+								<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleAtHour->getSelectedItem()->Text)%>:<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleAtMinute->getSelectedItem()->Text)%>
 							</div>
 						</div>
 						<strong><%[ Virtual Full backup ]%></strong>
 						<div class="w3-container">
 							<div class="w3-quarter"><%[ Run on ]%></div>
 							<div class="w3-threequarter bold">
-								<%=$this->VirtualFullScheduleBasicScheduleRunVFOn->getSelectedItem()->Text%>
+								<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleRunVFOn->getSelectedItem()->Text)%>
 							</div>
 						</div>
 						<div class="w3-container">
 							<div class="w3-quarter"><%[ Run at ]%></div>
 							<div class="w3-threequarter bold">
-								<%=$this->VirtualFullScheduleBasicScheduleVFAtHour->getSelectedItem()->Text%>:<%=$this->VirtualFullScheduleBasicScheduleVFAtMinute->getSelectedItem()->Text%>
+								<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleVFAtHour->getSelectedItem()->Text)%>:<%=Miscellaneous::html_value($this->VirtualFullScheduleBasicScheduleVFAtMinute->getSelectedItem()->Text)%>
 							</div>
 						</div>
 					</div>
@@ -1066,14 +1066,14 @@ function show_storage_warning(storage, pool, jobs) {
 					<div class="w3-container">
 						<div class="w3-quarter">Priority</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue()%>
+							<%=Miscellaneous::html_value($this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Priority', $this->Priority->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Messages</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Messages->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>

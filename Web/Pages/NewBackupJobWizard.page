@@ -481,15 +481,15 @@
 					<legend><%[ General ]%></legend>
 					<div class="w3-container">
 						<div class="w3-quarter">Job Name</div>
-						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Name->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Description</div>
-						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Description->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">JobDefs</div>
-						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->JobDefs->getDirectiveValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -497,14 +497,14 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Client</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Client->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Client->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">FileSet</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Fileset->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Fileset->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Fileset', $this->Fileset->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -514,7 +514,7 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Storage</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Storage->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Storage->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -535,35 +535,35 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Spool Size</div>
 						<div class="w3-threequarter bold size">
-							<%=$this->SpoolSize->getDirectiveValue() ?: '0'%>
+							<%=Miscellaneous::html_value($this->SpoolSize->getDirectiveValue() ?: '0')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('SpoolSize', $this->SpoolSize->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Pool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Pool->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Full Backup Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->FullBackupPool->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->FullBackupPool->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('FullBackupPool', $this->FullBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Incremental Backup Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->IncrementalBackupPool->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->IncrementalBackupPool->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('IncrementalBackupPool', $this->IncrementalBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Differential Backup Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->DifferentialBackupPool->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->DifferentialBackupPool->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('DifferentialBackupPool', $this->DifferentialBackupPool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -573,7 +573,7 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Level</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Level->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Level->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Level', $this->Level->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -587,14 +587,14 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Maximum Concurrent Jobs</div>
 						<div class="w3-threequarter bold">
-							<%=$this->MaximumConcurrentJobs->getDirectiveValue() ?: $this->MaximumConcurrentJobs->getDefaultValue()%>
+							<%=Miscellaneous::html_value($this->MaximumConcurrentJobs->getDirectiveValue() ?: $this->MaximumConcurrentJobs->getDefaultValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('MaximumConcurrentJobs', $this->MaximumConcurrentJobs->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Priority</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue()%>
+							<%=Miscellaneous::html_value($this->Priority->getDirectiveValue() ?: $this->Priority->getDefaultValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Priority', $this->Priority->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -611,7 +611,7 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Schedule</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<%=Miscellaneous::html_value($this->Schedule->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -632,14 +632,14 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Reschedule Interval</div>
 						<div class="w3-threequarter bold time">
-							<%=$this->RescheduleInterval->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->RescheduleInterval->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleInterval', $this->RescheduleInterval->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container">
 						<div class="w3-quarter">Reschedule Times</div>
 						<div class="w3-threequarter bold">
-							<%=$this->RescheduleTimes->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->RescheduleTimes->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('RescheduleTimes', $this->RescheduleTimes->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -649,7 +649,7 @@
 					<div class="w3-container">
 						<div class="w3-quarter">Messages</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Messages->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>

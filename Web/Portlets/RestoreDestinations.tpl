@@ -77,14 +77,14 @@ var oRestoreDestinationList = {
 				const lines = [];
 				for (let i = 0; i < restore_destinations.length; i++) {
 					const restore_destination = restore_destinations[i];
-					let line = '<strong>' + escape_html(restore_destination) + ':</strong>';
+					let line = restore_destination + ':';
 					for (let j = 0; j < used_restore_destinations[restore_destination].length; j++) {
-						line += '<br /> - ' + escape_html(used_restore_destinations[restore_destination][j]);
+						line += "\n - " + used_restore_destinations[restore_destination][j];
 					}
 					lines.push(line);
 				}
 				const msg = '<%[ The following restore destinations are used by restore tests and cannot be removed: %used_restore_destinations Please unassign these restore destinations from the restore tests and try removing them again. ]%>';
-				const emsg = msg.replace('%used_restore_destinations', '<hr />' + lines.join('<br /><br />') + '<hr />');
+				const emsg = msg.replace('%used_restore_destinations', "\n\n" + lines.join("\n\n") + "\n\n");
 				oBulkActionsModal.set_error(emsg);
 				return false;
 			}

@@ -71,7 +71,7 @@ var oConfigList = {
 				});
 				if (configs_in_use.length > 0) {
 					var emsg = '<%[ The following configs are used in patterns and cannot be deleted: %used_configs To delete them, please unassign these configs from patterns and try again. ]%>';
-					emsg = emsg.replace('%used_configs', '<hr />' + configs_in_use.join('<br />') + '<hr />');
+					emsg = emsg.replace('%used_configs', "\n\n" + configs_in_use.join("\n") + "\n\n");
 					oBulkActionsModal.set_error(emsg);
 					return false;
 				}

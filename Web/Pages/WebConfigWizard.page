@@ -85,6 +85,7 @@
 					ID="NextButton"
 					CommandName="NextStep"
 					CssClass="w3-button w3-green"
+					ValidationGroup="NewHostGroup"
 				>
 					<%[ Next ]%> &nbsp;<i class="fa fa-angle-right"></i>
 				</com:TLinkButton>
@@ -187,15 +188,15 @@
 					<legend><%[ Access to Baculum API ]%></legend>
 					<div class="w3-container w3-section">
 						<div class="w3-third"><%[ Protocol: ]%></div>
-						<div class="w3-third bold"><%=$this->AddNewHost->APIProtocol->SelectedValue%></div>
+						<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIProtocol->SelectedValue)%></div>
 					</div>
 					<div class="w3-container w3-section">
 						<div class="w3-third"><%[ IP Address/Hostname: ]%></div>
-						<div class="w3-third bold"><%=$this->AddNewHost->APIAddress->Text%></div>
+						<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIAddress->Text)%></div>
 					</div>
 					<div class="w3-container w3-section">
 						<div class="w3-third"><%[ Port: ]%></div>
-						<div class="w3-third bold"><%=$this->AddNewHost->APIPort->Text%></div>
+						<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIPort->Text)%></div>
 					</div>
 					<div style="display: <%=$this->AddNewHost->AuthBasic->Checked ? 'block' : 'none'%>">
 						<div class="w3-container w3-section">
@@ -204,7 +205,7 @@
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ API Login: ]%></div>
-							<div class="w3-third bold"><%=$this->AddNewHost->APIBasicLogin->Text%></div>
+							<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIBasicLogin->Text)%></div>
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ API Password: ]%></div>
@@ -218,7 +219,7 @@
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ OAuth2 Client ID: ]%></div>
-							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2ClientId->Text%></div>
+							<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIOAuth2ClientId->Text)%></div>
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ OAuth2 Client Secret: ]%></div>
@@ -226,11 +227,11 @@
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ OAuth2 Redirect URI: ]%></div>
-							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2RedirectURI->Text%></div>
+							<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIOAuth2RedirectURI->Text)%></div>
 						</div>
 						<div class="w3-container w3-section">
 							<div class="w3-third"><%[ OAuth2 Scope: ]%></div>
-							<div class="w3-third bold"><%=$this->AddNewHost->APIOAuth2Scope->Text%></div>
+							<div class="w3-third bold"><%=Miscellaneous::html_value($this->AddNewHost->APIOAuth2Scope->Text)%></div>
 						</div>
 					</div>
 				</fieldset>
@@ -238,7 +239,7 @@
 					<legend><%[ Access to Baculum Web ]%></legend>
 					<div class="w3-container w3-section">
 						<div class="w3-third"><%[ Administration login: ]%></div>
-						<div class="w3-third bold"><%=$this->WebLogin->Text%></div>
+						<div class="w3-third bold"><%=Miscellaneous::html_value($this->WebLogin->Text)%></div>
 					</div>
 					<div class="w3-container w3-section">
 						<div class="w3-third"><%[ Administration password: ]%></div>

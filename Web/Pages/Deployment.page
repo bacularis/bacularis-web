@@ -497,7 +497,8 @@ var oAPIHostCommands = {
 				const output = document.createElement('DIV');
 				output.classList.add('w3-code');
 				output.style.display = 'none';
-				output.innerHTML = result.output.replace(/\n/g, '<br />');
+				output.style.whiteSpace = 'pre-wrap';
+				output.textContent = result.output;
 
 				// details
 				const details = document.createElement('I');
@@ -547,7 +548,8 @@ var oAPIHostCommands = {
 				const output = document.createElement('DIV');
 				output.classList.add('w3-code');
 				output.style.display = 'none';
-				output.innerHTML = result.output.replace(/\n/g, '<br />');
+				output.style.whiteSpace = 'pre-wrap';
+				output.textContent = result.output;
 
 				// details
 				const details = document.createElement('I');
@@ -594,7 +596,8 @@ var oAPIHostCommands = {
 			const output = document.createElement('DIV');
 			output.classList.add('w3-code');
 			output.style.display = 'none';
-			output.innerHTML = result.output.replace(/\n/g, '<br />');
+			output.style.whiteSpace = 'pre-wrap';
+			output.textContent = result.output;
 
 			// details
 			const details = document.createElement('I');
@@ -874,7 +877,8 @@ var oDeployAPIHost = {
 			error.style.display = 'inline-block';
 			ok.style.display = 'none';
 		}
-		raw.innerHTML = result.join("<br />");
+		raw.style.whiteSpace = 'pre-wrap';
+		raw.textContent = result.join("\n");
 		link.style.display = 'inline-block';
 	},
 	toggle_host_connection_result: function() {

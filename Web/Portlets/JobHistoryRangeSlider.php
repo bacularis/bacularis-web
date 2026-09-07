@@ -15,6 +15,8 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
+
 /**
  * Job history range slider control.
  *
@@ -41,6 +43,17 @@ class JobHistoryRangeSlider extends Portlets
 	public function getJobName()
 	{
 		return $this->getViewState(self::JOB_NAME);
+	}
+
+	/**
+	 * Get job name as JSON safe for JavaScript context.
+	 *
+	 * @return string job name JSON
+	 */
+	public function getJobNameJSON(): string
+	{
+		$value = $this->getJobName();
+		return Miscellaneous::json_value($value);
 	}
 
 	public function setDays($days)

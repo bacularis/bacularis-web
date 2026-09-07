@@ -409,7 +409,7 @@ var oPoolListDeletePoolResourceWindow = {
 	error: function(emsg) {
 		const self = oPoolListDeletePoolResourceWindow;
 		const error_text = document.getElementById(self.ids.error_text);
-		error_text.innerHTML = emsg;
+		error_text.textContent = emsg;
 		const error_box = document.getElementById(self.ids.error_box);
 		error_box.style.display = emsg ? 'block' : 'none';
 	},

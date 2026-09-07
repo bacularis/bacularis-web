@@ -432,15 +432,14 @@ class RestorePolicies extends RestoreTestVerification
 		$msg = 'The following restore policies are used by restore tests and cannot be removed:';
 		$lines = [];
 		foreach ($used_restore_policies as $restore_policy => $restore_tests) {
-			$line = '<strong>' . htmlspecialchars($restore_policy, ENT_QUOTES, 'UTF-8') . ':</strong>';
+			$line = $restore_policy . ':';
 			for ($i = 0; $i < count($restore_tests); $i++) {
-				$restore_test = htmlspecialchars($restore_tests[$i], ENT_QUOTES, 'UTF-8');
-				$line .= '<br /> - ' . $restore_test;
+				$line .= "\n - " . $restore_tests[$i];
 			}
 			$lines[] = $line;
 		}
 		$msg .= ' Please unassign these restore policies from the restore tests and try removing them again.';
-		return $msg . '<hr />' . implode('<br /><br />', $lines) . '<hr />';
+		return $msg . "\n\n" . implode("\n\n", $lines) . "\n\n";
 	}
 
 	/**

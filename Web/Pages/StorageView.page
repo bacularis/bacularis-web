@@ -791,7 +791,7 @@ var oGraphicalStorageStatus = {
 		if (value instanceof HTMLElement) {
 			tdr.appendChild(value);
 		} else {
-			tdr.innerHTML = value;
+			tdr.textContent = value;
 		}
 		tr.appendChild(tdl);
 		tr.appendChild(tdr);
@@ -973,7 +973,7 @@ var oGraphicalStorageStatus = {
 			}
 		}
 		var dev_type_desc = document.createElement('SPAN');
-		dev_type_desc.innerHTML = '&nbsp; ' + device.type;
+		dev_type_desc.textContent = ' ' + device.type;
 		dev_type.appendChild(dev_type_colinfo);
 		dev_type.appendChild(dev_type_icon);
 		dev_type.appendChild(dev_type_desc);
@@ -987,7 +987,7 @@ var oGraphicalStorageStatus = {
 		dev_media_type_colinfo.innerHTML = '<%[ Media type ]%>: &nbsp;';
 		dev_media_type_img.className = 'fas fa-hashtag';
 		var dev_media_type_txt = document.createElement('SPAN');
-		dev_media_type_txt.innerHTML = ' &nbsp;' + device.media_type;
+		dev_media_type_txt.textContent = ' ' + device.media_type;
 		dev_media_type.appendChild(dev_media_type_colinfo);
 		dev_media_type.appendChild(dev_media_type_img);
 		dev_media_type.appendChild(dev_media_type_txt);
@@ -1262,7 +1262,9 @@ var oGraphicalStorageStatus = {
 		jobid_a.href = '/web/job/history/' + job.jobid + '/';
 		jobid_a.appendChild(jobid_img);
 		jobid_a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', job.jobid);
-		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		var jobid = document.createElement('SPAN');
+		jobid.textContent = job.jobid + ' ';
+		jobid.appendChild(jobid_a);
 		this.add_row(table, 'JobId', jobid);
 
 		// Type
@@ -1319,7 +1321,7 @@ var oGraphicalStorageStatus = {
 			} else {
 				processing_file.textContent = job.processing_file;
 			}
-			this.add_row(table, '<%[ Processing file: ]%>', processing_file.outerHTML);
+			this.add_row(table, '<%[ Processing file: ]%>', processing_file);
 		}
 
 		var job_name = job.job.replace(/\.\d{4}-\d{2}-\d{2}_\d{2}.\d{2}.\d{2}_\d{2}$/, '');
@@ -1520,7 +1522,9 @@ var oGraphicalStorageStatus = {
 		jobid_a.href = '/web/job/history/' + job.jobid + '/';
 		jobid_a.appendChild(jobid_img);
 		jobid_a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', job.jobid);
-		var jobid = job.jobid + ' ' + jobid_a.outerHTML;
+		var jobid = document.createElement('SPAN');
+		jobid.textContent = job.jobid + ' ';
+		jobid.appendChild(jobid_a);
 		this.add_row(table, 'JobId', jobid);
 
 		// Type

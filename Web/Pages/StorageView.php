@@ -30,6 +30,7 @@
 use Prado\Prado;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Common\Modules\Errors\DeviceError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
@@ -79,7 +80,7 @@ class StorageView extends BaculumWebPage
 
 			if (property_exists($storageshow->output, 'address')) {
 				$this->setStorageAddress($storageshow->output->address);
-				$this->OSDAddress->Text = $storageshow->output->address;
+				$this->OSDAddress->Text = Miscellaneous::html_value($storageshow->output->address);
 			}
 			if (property_exists($storageshow->output, 'sdport')) {
 				$this->OSDPort->Text = $storageshow->output->sdport;

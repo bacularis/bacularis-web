@@ -66,11 +66,11 @@ var oRoleList = {
 				var emsg = '', msg;
 				if (predef_roles.length > 0) {
 					msg = '<%[ The following roles are predefined and cannot be removed: %predefined_roles ]%>';
-					emsg += msg.replace('%predefined_roles', '<hr />' + predef_roles.join('<br />') + '<hr />');
+					emsg += msg.replace('%predefined_roles', "\n\n" + predef_roles.join("\n") + "\n\n");
 				}
 				if (used_roles.length > 0) {
 					msg = '<%[ The following roles are using by users and cannot be removed: %used_roles To remove them, please unassign all users from these roles. ]%>';
-					emsg += msg.replace('%used_roles', '<hr />' + used_roles.join('<br />') + '<hr />');
+					emsg += msg.replace('%used_roles', "\n\n" + used_roles.join("\n") + "\n\n");
 				}
 				if (emsg) {
 					oBulkActionsModal.set_error(emsg);

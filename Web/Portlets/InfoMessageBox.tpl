@@ -17,7 +17,7 @@ function show_info(text, cb, back) {
 	const info_box = document.getElementById('info_message_box');
 	const info_msg = document.getElementById('info_message_info_msg');
 	const info_btn = $('#info_message_btn');
-	info_msg.innerHTML = text;
+	info_msg.textContent = text;
 	info_box.style.display = 'block';
 	info_btn.off('click');
 	info_btn.on('click', (e) => {

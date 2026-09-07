@@ -27,11 +27,12 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Errors\GenericError;
+use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\Protocol\HTTP\Redirection;
+use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Restore wizard page.

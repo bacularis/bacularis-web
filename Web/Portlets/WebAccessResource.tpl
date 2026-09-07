@@ -476,8 +476,8 @@ var oWebAccessResource = {
 		token: '<%=$this->WebAccessResourceToken->ClientID%>'
 	},
 	defs: {
-		time_given_days: '<%=$this->WebAccessResourceAccessMethodXDays->Text%>',
-		use_number: '<%=$this->WebAccessResourceAccessNumberOfUse->Text%>'
+		time_given_days: <%=$this->getAccessMethodXDaysTextJSON()%>,
+		use_number: <%=$this->getAccessNumberOfUseTextJSON()%>
 	},
 	load_web_access_resource_list: function() {
 		const cb = <%=$this->LoadWebAccessResourceList->ActiveControl->Javascript%>;
@@ -688,8 +688,8 @@ $(function() {
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
 			<span onclick="oWebAccessResource.show_window(false);" class="w3-button w3-display-topright">&times;</span>
-			<h2 id="web_access_resource_window_title_add" style="display: none"><%[ Add web access ]%> - <%=$this->getResourceType()%>: <%=$this->getResourceName()%></h2>
-			<h2 id="web_access_resource_window_title_edit" style="display: none"><%[ Edit web access ]%> - <%=$this->getResourceType()%>: <%=$this->getResourceName()%></h2>
+			<h2 id="web_access_resource_window_title_add" style="display: none"><%[ Add web access ]%> - <%=Miscellaneous::html_value($this->getResourceType())%>: <%=Miscellaneous::html_value($this->getResourceName())%></h2>
+			<h2 id="web_access_resource_window_title_edit" style="display: none"><%[ Edit web access ]%> - <%=Miscellaneous::html_value($this->getResourceType())%>: <%=Miscellaneous::html_value($this->getResourceName())%></h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
 			<h3><%[ Action target ]%></h3>

@@ -360,7 +360,9 @@ var oClientList = {
 										const jobid = document.createElement('LI');
 										jobid.textContent = 'JobId: ' + el.jobid;
 										const jobstatus = document.createElement('LI');
-										jobstatus.innerHTML = '<%[ Job status ]%>: ' + JobStatus.get_icon(el.jobstatus).outerHTML + ' (' + el.jobstatus + ')';
+										jobstatus.appendChild(document.createTextNode('<%[ Job status ]%>: '));
+										jobstatus.appendChild(JobStatus.get_icon(el.jobstatus));
+										jobstatus.appendChild(document.createTextNode(' (' + el.jobstatus + ')'));
 										const starttime = document.createElement('LI');
 										starttime.textContent = '<%[ Start time ]%>: ' + Units.format_date(el.starttime_epoch);
 
@@ -730,7 +732,7 @@ var oClientListDeleteClientResourceWindow = {
 	error: function(emsg) {
 		const self = oClientListDeleteClientResourceWindow;
 		const error_text = document.getElementById(self.ids.error_text);
-		error_text.innerHTML = emsg;
+		error_text.textContent = emsg;
 		const error_box = document.getElementById(self.ids.error_box);
 		error_box.style.display = emsg ? 'block' : 'none';
 	},

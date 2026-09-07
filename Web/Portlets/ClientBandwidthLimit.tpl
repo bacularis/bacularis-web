@@ -3,7 +3,7 @@
 	<div class="w3-modal-content w3-animate-top w3-card-4">
 		<header class="w3-container w3-green">
 			<span onclick="oClientBandwidthLimit.close_popup();" class="w3-button w3-display-topright">&times;</span>
-			<h2><%[ Set client bandwidth limit ]%> - <%[ Client: ]%> <%=$this->getClientName()%></h2>
+			<h2><%[ Set client bandwidth limit ]%> - <%[ Client: ]%> <%=Miscellaneous::html_value($this->getClientName())%></h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin-right">
 			<p><%[ Here you can set bandwidth limit on client. This change is applied on running client. There is no need to restart it. ]%></p>

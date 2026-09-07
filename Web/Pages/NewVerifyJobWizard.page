@@ -416,15 +416,15 @@
 					<legend><%[ General ]%></legend>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Verify Job Name</div>
-						<div class="w3-threequarter bold"><%=$this->Name->getDirectiveValue()%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Name->getDirectiveValue())%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Description</div>
-						<div class="w3-threequarter bold"><%=$this->Description->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->Description->getDirectiveValue() ?: '-')%></div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">JobDefs</div>
-						<div class="w3-threequarter bold"><%=$this->JobDefs->getDirectiveValue() ?: '-'%></div>
+						<div class="w3-threequarter bold"><%=Miscellaneous::html_value($this->JobDefs->getDirectiveValue() ?: '-')%></div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -445,14 +445,14 @@
 							<%=$this->WhatJobData->Checked && $this->HowData->Checked ? 'Data' : ''%>
 							<%=$this->WhatJobData->Checked && $this->HowDiskToCatalog->Checked ? 'DiskToCatalog' : ''%>
 							<%=$this->WhatFilesystem->Checked ? 'Catalog' : ''%><br />
-							<%=$this->WhatFilesystem->Checked ? Prado::localize('Include paths:') . ' ' . $this->NewVerifyJobIncludePaths->Text . '<br />' : ''%>
-							<%=$this->WhatFilesystem->Checked ? Prado::localize('Exclude paths:') . ' ' . ($this->NewVerifyJobExcludePaths->Text ?: '-')  : ''%>
+							<%=$this->WhatFilesystem->Checked ? Prado::localize('Include paths:') . ' ' . Miscellaneous::html_value($this->NewVerifyJobIncludePaths->Text) . '<br />' : ''%>
+							<%=$this->WhatFilesystem->Checked ? Prado::localize('Exclude paths:') . ' ' . Miscellaneous::html_value($this->NewVerifyJobExcludePaths->Text ?: '-')  : ''%>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatJobData->Checked && $this->WhatJobToVerifyJobName->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter"><%[ Job to verify ]%></div>
 						<div class="w3-threequarter bold">
-							<%=$this->VerifyJob->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->VerifyJob->getDirectiveValue())%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('JobToVerify', $this->VerifyJob->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
@@ -488,42 +488,42 @@
 					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatFilesystem->Checked ? 'block' : 'none'%>">
 						<div class="w3-quarter">Client</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Client->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Client->getDirectiveValue())%>
 							<span class="w3-small normal"> <%=$this->isInJobDefs('Client', $this->Client->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small" style="display: <%=$this->WhatFilesystem->Checked ? 'none' : 'block'%>">
 						<div class="w3-quarter">Client</div>
 						<div class="w3-threequarter bold">
-							<%=$this->ClientVerify->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->ClientVerify->getDirectiveValue())%>
 							<span class="w3-small normal"> <%=$this->isInJobDefs('Client', $this->ClientVerify->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Storage</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Storage->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Storage->getDirectiveValue())%>
 							<span class="w3-small normal"> <%=$this->isInJobDefs('Storage', $this->Storage->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Messages</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Messages->getDirectiveValue() ?: '-'%>
+							<%=Miscellaneous::html_value($this->Messages->getDirectiveValue() ?: '-')%>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Messages', $this->Messages->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Schedule</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Schedule->getDirectiveValue() ?: '-' %>
+							<%=Miscellaneous::html_value($this->Schedule->getDirectiveValue() ?: '-') %>
 							<span class="w3-small normal"><%=$this->isInJobDefs('Schedule', $this->Schedule->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>
 					<div class="w3-container w3-padding-small">
 						<div class="w3-quarter">Pool</div>
 						<div class="w3-threequarter bold">
-							<%=$this->Pool->getDirectiveValue()%>
+							<%=Miscellaneous::html_value($this->Pool->getDirectiveValue())%>
 							<span class="w3-small normal"> <%=$this->isInJobDefs('Pool', $this->Pool->getDirectiveValue()) ? ' (' . Prado::localize('inherited from JobDefs') . ')': ''%></span>
 						</div>
 					</div>

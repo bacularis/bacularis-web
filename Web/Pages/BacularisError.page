@@ -4,7 +4,7 @@
 	<h2><%[ Error ]%></h2>
 </div>
 <div class="w3-container">
-	<h3>Error <%=$this->error%> - <%=$this->output%></h3>
+	<h3>Error <%=Miscellaneous::html_value($this->error)%> - <%=Miscellaneous::html_value($this->output)%></h3>
 	<hr />
 	<div class="w3-center">
 		<a class="w3-button w3-green" href="<%=$this->Service->constructUrl('Dashboard')%>"><i class="fa fa-redo-alt"></i> &nbsp;<%[ TRY AGAIN ]%></a>

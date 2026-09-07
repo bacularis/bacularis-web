@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\OrganizationConfig;
 use Bacularis\Web\Modules\WebConfig;
@@ -238,6 +239,17 @@ class Organizations extends Security
 	public function onSaveOrganization($param)
 	{
 		$this->raiseEvent('OnSaveOrganization', $this, $param);
+	}
+
+	/**
+	 * Get organization login button color as JSON safe for JavaScript context.
+	 *
+	 * @return string organization login button color JSON
+	 */
+	public function getOrganizationLoginBtnColorJSON(): string
+	{
+		$value = $this->OrganizationLoginBtnColor->Text;
+		return Miscellaneous::json_value($value);
 	}
 
 	/**

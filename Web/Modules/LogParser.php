@@ -29,6 +29,8 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\Miscellaneous;
+
 /**
  * Bacula logs parser module.
  *
@@ -64,44 +66,57 @@ class LogParser extends WebModule
 
 	private function parseLine($log_line)
 	{
-		if (preg_match(self::CLIENT_PATTERN, $log_line, $match) === 1) {
+		$raw_log_line = $log_line;
+		$log_line = Miscellaneous::html_value($log_line);
+		if (preg_match(self::CLIENT_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('client', $match['client']);
-			$log_line = str_replace($match['client'], $link, $log_line);
-		} elseif (preg_match(self::RESTORE_CLIENT_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['client']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::RESTORE_CLIENT_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('client', $match['restore_client']);
-			$log_line = str_replace($match['restore_client'], $link, $log_line);
-		} elseif (preg_match(self::POOL_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['restore_client']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::POOL_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('pool', $match['pool']);
-			$log_line = str_replace($match['pool'], $link, $log_line);
-		} elseif (preg_match(self::READ_POOL_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['pool']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::READ_POOL_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('pool', $match['read_pool']);
-			$log_line = str_replace($match['read_pool'], $link, $log_line);
-		} elseif (preg_match(self::WRITE_POOL_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['read_pool']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::WRITE_POOL_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('pool', $match['write_pool']);
-			$log_line = str_replace($match['write_pool'], $link, $log_line);
-		} elseif (preg_match(self::STORAGE_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['write_pool']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::STORAGE_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('storage', $match['storage']);
-			$log_line = str_replace($match['storage'], $link, $log_line);
-		} elseif (preg_match(self::READ_STORAGE_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['storage']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::READ_STORAGE_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('storage', $match['read_storage']);
-			$log_line = str_replace($match['read_storage'], $link, $log_line);
-		} elseif (preg_match(self::WRITE_STORAGE_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['read_storage']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::WRITE_STORAGE_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('storage', $match['write_storage']);
-			$log_line = str_replace($match['write_storage'], $link, $log_line);
-		} elseif (preg_match(self::VERIFY_JOB_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['write_storage']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::VERIFY_JOB_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('job', $match['verify_job']);
-			$log_line = str_replace($match['verify_job'], $link, $log_line);
-		} elseif (preg_match(self::JOB_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['verify_job']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::JOB_PATTERN, $raw_log_line, $match) === 1) {
 			$link = $this->getLink('job', $match['job']);
-			$log_line = str_replace($match['job'], $link, $log_line);
-		} elseif (preg_match(self::VOLUME_PATTERN, $log_line, $match) === 1) {
+			$name = Miscellaneous::html_value($match['job']);
+			$log_line = str_replace($name, $link, $log_line);
+		} elseif (preg_match(self::VOLUME_PATTERN, $raw_log_line, $match) === 1) {
 			$volumes = explode('|', $match['volumes']);
 			$vol_count = count($volumes);
 			for ($i = 0; $i < $vol_count; $i++) {
 				$before = ($i > 0) ? '|' : '';
 				$after = ($i > 0 && $i < $vol_count) ? '|' : '';
 				$link = $before . $this->getLink('volume', $volumes[$i]) . $after;
-				$vol_pattern = '/\|?' . $volumes[$i] . '\|?/';
+				$volume = Miscellaneous::html_value($volumes[$i]);
+				$vol_pattern = '/\|?' . preg_quote($volume, '/') . '\|?/';
 				$log_line = preg_replace($vol_pattern, $link, $log_line);
 			}
 		}
@@ -110,11 +125,13 @@ class LogParser extends WebModule
 
 	private function getLink($type, $name)
 	{
+		$url_name = rawurlencode($name);
+		$link_name = Miscellaneous::html_value($name);
 		return sprintf(
 			'<a href="/web/%s/%s">%s</a>',
 			$type,
-			rawurlencode($name),
-			$name
+			$url_name,
+			$link_name
 		);
 	}
 }

@@ -253,7 +253,8 @@ var oJobLogBox<%=$this->ClientID%> = {
 		const oldel = stat.firstChild;
 		const newel = JobStatus.get_icon(jobstatus);
 		if (oldel.className != newel.className) {
-			stat.innerHTML = newel.outerHTML;
+			stat.textContent = '';
+			stat.appendChild(newel);
 		}
 	},
 	copy_to_clipboard: function() {

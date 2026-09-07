@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\WebAccessBaculaResource;
 use Bacularis\Web\Modules\WebAccessConfig;
@@ -993,5 +994,27 @@ class WebAccessResource extends Portlets
 	public function getResourceName(): string
 	{
 		return $this->getViewState(self::RESOURCE_NAME, '');
+	}
+
+	/**
+	 * Get default X days access value as JSON safe for JavaScript context.
+	 *
+	 * @return string default X days access value JSON
+	 */
+	public function getAccessMethodXDaysTextJSON(): string
+	{
+		$value = $this->WebAccessResourceAccessMethodXDays->Text;
+		return Miscellaneous::json_value($value);
+	}
+
+	/**
+	 * Get default number of use access value as JSON safe for JavaScript context.
+	 *
+	 * @return string default number of use access value JSON
+	 */
+	public function getAccessNumberOfUseTextJSON(): string
+	{
+		$value = $this->WebAccessResourceAccessNumberOfUse->Text;
+		return Miscellaneous::json_value($value);
 	}
 }

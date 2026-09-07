@@ -365,7 +365,7 @@ var oRunningJobStatus = {
 			} else {
 				processing_file.textContent = job.processing_file;
 			}
-			this.add_job_row(table, '<%[ Processing file: ]%>', processing_file.outerHTML);
+			this.add_job_row(table, '<%[ Processing file: ]%>', processing_file);
 		}
 
 		var job_name = '<%=$this->getJobName()%>';
@@ -537,7 +537,7 @@ var oRunningJobStatus = {
 		if (value instanceof HTMLElement) {
 			tdr.appendChild(value);
 		} else {
-			tdr.innerHTML = value;
+			tdr.textContent = value;
 		}
 		tr.appendChild(tdl);
 		tr.appendChild(tdr);
@@ -575,9 +575,14 @@ var oRunningJobStatus = {
 	},
 	set_media_request_msg: function(data) {
 		if (data.waiting) {
-			var msg;
-			var label_btn = document.getElementById(oRunningJobStatus.ids.warning.label_btn);
-			label_btn.style.display = 'none';
+				var msg;
+				var label_btn = document.getElementById(oRunningJobStatus.ids.warning.label_btn);
+				label_btn.style.display = 'none';
+				const escape_html = function(value) {
+					const div = document.createElement('div');
+					div.textContent = value || '';
+					return div.innerHTML;
+				};
 			if (data.volume) {
 				if (data.write) {
 					msg = '<%[ The job needs media. ]%> <%[ Please mount volume %volume or label a new one for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
@@ -585,14 +590,14 @@ var oRunningJobStatus = {
 				} else {
 					msg = '<%[ The job needs media. ]%> <%[ Please mount volume %volume for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
 				}
-				msg = msg.replace('%volume', '<strong>' + data.volume + '</strong>');
+					msg = msg.replace('%volume', '<strong>' + escape_html(data.volume) + '</strong>');
 			} else {
 				msg = '<%[ The job needs media. ]%> <%[ Please create a new volume for storage: %storage, pool: %pool, media type: %mediatype. ]%>';
 				label_btn.style.display = '';
 			}
-			msg = msg.replace('%storage', '<strong>' + data.storage + '</strong>');
-			msg = msg.replace('%pool', '<strong>' + data.pool + '</strong>');
-			msg = msg.replace('%mediatype', '<strong>' + data.mediatype + '</strong>');
+				msg = msg.replace('%storage', '<strong>' + escape_html(data.storage) + '</strong>');
+				msg = msg.replace('%pool', '<strong>' + escape_html(data.pool) + '</strong>');
+				msg = msg.replace('%mediatype', '<strong>' + escape_html(data.mediatype) + '</strong>');
 			var message = document.getElementById(oRunningJobStatus.ids.warning.msg);
 			message.innerHTML = msg;
 			oRunningJobStatus.show_warning(true);
