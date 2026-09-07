@@ -72,7 +72,7 @@ set_events: function() {
 			$(this.table_toolbar).animate({
 				width: wa
 			}, 'fast');
-		}.bind(this));
+	}.bind(this));
 	}.bind(this));
 },
 set_table: function() {
@@ -116,10 +116,10 @@ set_table: function() {
 				data: null,
 				defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 			},
-			{data: 'name'},
-			{data: 'protocol'},
-			{data: 'address'},
-			{data: 'port'},
+			{data: 'name', render: render_text},
+			{data: 'protocol', render: render_text},
+			{data: 'address', render: render_text},
+			{data: 'port', render: render_text},
 			{
 				data: 'auth_type',
 				render: function (data, type, row) {
@@ -128,6 +128,8 @@ set_table: function() {
 						at = 'Basic';
 					} else if (at == 'oauth2') {
 						at = 'OAuth2';
+					} else {
+						at = '';
 					}
 					return at;
 				}
@@ -156,9 +158,10 @@ set_table: function() {
 						i.className = 'fa-solid fa-shield';
 						const label = document.createTextNode(" <%[ Set access ]%>");
 						access_btn.appendChild(i);
-						access_btn.innerHTML += '&nbsp';
+						access_btn.appendChild(document.createTextNode(' '));
 						access_btn.appendChild(label);
-						access_btn.setAttribute('onclick', 'oAPIHosts.load_access_window("' + data + '")');
+						access_btn.setAttribute('data-name', data);
+						access_btn.setAttribute('onclick', 'oAPIHosts.load_access_window(this.dataset.name)');
 						span.appendChild(access_btn);
 						span.style.marginRight = '5px';
 						btns += span.outerHTML;
@@ -172,10 +175,11 @@ set_table: function() {
 					i_edit.className = 'fa fa-edit';
 					var label_edit = document.createTextNode(' <%[ Edit ]%>');
 					btn_edit.appendChild(i_edit);
-					btn_edit.innerHTML += '&nbsp';
+					btn_edit.appendChild(document.createTextNode(' '));
 					btn_edit.style.marginRight = '8px';
 					btn_edit.appendChild(label_edit);
-					btn_edit.setAttribute('onclick', 'oAPIHosts.load_api_host_window(\'' + data + '\')');
+					btn_edit.setAttribute('data-name', data);
+					btn_edit.setAttribute('onclick', 'oAPIHosts.load_api_host_window(this.dataset.name)');
 					btns += btn_edit.outerHTML;
 
 					return btns;
@@ -227,10 +231,12 @@ set_filters: function(api) {
 			.draw();
 		});
 		column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-			if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-				select.append('<option value="' + d + '" selected>' + d + '</option>');
-			} else if(d) {
-				select.append('<option value="' + d + '">' + d + '</option>');
+			if (d) {
+				const option = document.createElement('OPTION');
+				option.value = d;
+				option.textContent = d;
+				option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+				select.append(option);
 			}
 		});
 	});
@@ -392,6 +398,14 @@ oAPIHosts.load_api_host_list();
 						<com:TListItem Value="http" Text="HTTP" />
 						<com:TListItem Value="https" Text="HTTPS" Selected="true"/>
 					</com:TActiveDropDownList>&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
+					<com:TRegularExpressionValidator
+						ValidationGroup="APIHostGroup"
+						ControlToValidate="APIHostProtocol"
+						RegularExpression="^(http|https)$"
+						Text="<%[ Invalid protocol. ]%>"
+						CssClass="validator-block"
+						Display="Dynamic"
+					/>
 				</div>
 			</div>
 			<div class="w3-row directive_field">
@@ -408,6 +422,16 @@ oAPIHosts.load_api_host_list();
 					<com:TActiveTextBox ID="APIHostPort" CssClass="w3-input w3-border" CausesValidation="false" Text="9097" Width="70px" Style="display: inline-block" />
 					&nbsp;<i class="fa fa-asterisk w3-text-red" style="line-height: 40px"></i>
 					<com:TRequiredFieldValidator ValidationGroup="APIHostGroup" CssClass="validator-block" Display="Dynamic" ControlCssClass="invalidate" ControlToValidate="APIHostPort" Text="<%[ Please enter API port. ]%>" />
+					<com:TRangeValidator
+						ValidationGroup="APIHostGroup"
+						ControlToValidate="APIHostPort"
+						DataType="Integer"
+						MinValue="1"
+						MaxValue="65535"
+						Text="<%[ Input must be between 1 and 65535. ]%>"
+						CssClass="validator-block"
+						Display="Dynamic"
+					/>
 				</div>
 			</div>
 			<div class="auth_setting">

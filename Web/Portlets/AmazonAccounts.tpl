@@ -115,7 +115,7 @@ var oAmazonAccountList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'name'},
-				{data: 'description'},
+				{data: 'description', render: render_text},
 				{
 					data: 'access_method',
 					render: function(data, type, row) {

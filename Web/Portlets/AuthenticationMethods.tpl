@@ -942,17 +942,20 @@ var oUserSecurity = {
 				]
 			},
 			columns: [
-				{data: 'username'},
+				{data: 'username', render: render_text},
 				{
 					data: 'long_name',
+					render: render_text,
 					visible: (this.user_obj.supported_fields.indexOf('long_name') !== -1)
 				},
 				{
 					data: 'description',
+					render: render_text,
 					visible: (this.user_obj.supported_fields.indexOf('description') !== -1)
 				},
 				{
 					data: 'email',
+					render: render_text,
 					visible: (this.user_obj.supported_fields.indexOf('email') !== -1)
 				}
 			],

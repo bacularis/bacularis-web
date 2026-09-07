@@ -196,13 +196,15 @@ var oUserList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'username'},
-				{data: 'long_name'},
+				{data: 'long_name', render: render_text},
 				{
 					data: 'description',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'email',
+					render: render_text,
 					visible: false
 				},
 				{data: 'roles'},

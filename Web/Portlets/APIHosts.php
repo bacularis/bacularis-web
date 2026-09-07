@@ -16,6 +16,8 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\OAuth2Record;
 
 /**
@@ -147,10 +149,21 @@ class APIHosts extends Security
 	public function setAPIHostList($sender, $param)
 	{
 		$api_hosts = $this->getModule('host_config')->getConfig();
-		$shortnames = array_keys($api_hosts);
-		$attributes = array_values($api_hosts);
-		for ($i = 0; $i < count($attributes); $i++) {
-			$attributes[$i]['name'] = $shortnames[$i];
+		$attributes = [];
+		foreach ($api_hosts as $name => $host) {
+			if (!$this->isValidAPIHostName($name) || !is_array($host)) {
+				continue;
+			}
+			$auth_type = in_array($host['auth_type'] ?? null, ['basic', 'oauth2'], true)
+				? $host['auth_type']
+				: '';
+			$attributes[] = [
+				'name' => $name,
+				'protocol' => $host['protocol'],
+				'address' => $host['address'],
+				'port' => $host['port'],
+				'auth_type' => $auth_type
+			];
 		}
 
 		$cb = $this->getPage()->getCallbackClient();
@@ -172,7 +185,7 @@ class APIHosts extends Security
 		// prepare API host combobox
 		$api_hosts = $this->getModule('host_config')->getConfig();
 
-		if (!empty($name) && key_exists($name, $api_hosts)) {
+		if ($this->isValidAPIHostName($name) && key_exists($name, $api_hosts)) {
 			$this->APIHostAddress->Text = $api_hosts[$name]['address'];
 			$this->APIHostProtocol->SelectedValue = $api_hosts[$name]['protocol'];
 			$this->APIHostPort->Text = $api_hosts[$name]['port'];
@@ -195,7 +208,10 @@ class APIHosts extends Security
 			}
 		}
 
-		$shortnames = array_keys($api_hosts);
+		$shortnames = array_values(array_filter(
+			array_keys($api_hosts),
+			fn ($host) => $this->isValidAPIHostName($host)
+		));
 		natcasesort($shortnames);
 
 		$api_host_names = array_combine($shortnames, $shortnames);
@@ -218,7 +234,7 @@ class APIHosts extends Security
 		$api_host = $this->APIHostSettings->SelectedValue;
 		if (!empty($api_host)) {
 			$config = $this->getModule('host_config')->getConfig();
-			if (key_exists($api_host, $config)) {
+			if ($this->isValidAPIHostName($api_host) && key_exists($api_host, $config)) {
 				// load OAuth2 clients to combobox from selected API host
 				$this->loadAPIOAuth2Clients();
 
@@ -309,10 +325,14 @@ class APIHosts extends Security
 		}
 
 		if (!$is_catalog && is_object($catalog)) {
-			$this->APIHostTestResultErr->Text .= $catalog->output . '<br />';
+			$output = $this->getOutputText($catalog->output);
+			$output = Miscellaneous::html_value($output);
+			$this->APIHostTestResultErr->Text .= $output . '<br />';
 		}
 		if (!$is_console && is_object($console)) {
-			$this->APIHostTestResultErr->Text .= $console->output . '<br />';
+			$output = $this->getOutputText($console->output);
+			$output = Miscellaneous::html_value($output);
+			$this->APIHostTestResultErr->Text .= $output . '<br />';
 		}
 		if (!$is_config && is_object($config)) {
 			$config_output = '';
@@ -325,7 +345,8 @@ class APIHosts extends Security
 			} else {
 				$config_output = $config->output;
 			}
-			$this->APIHostTestResultErr->Text .= $config_output . '<br />';
+			$output = Miscellaneous::html_value($config_output);
+			$this->APIHostTestResultErr->Text .= $output . '<br />';
 		}
 
 		$this->APIHostTestResultOk->Display = ($status_ok === true) ? 'Dynamic' : 'None';
@@ -384,9 +405,9 @@ class APIHosts extends Security
 			'redirect_uri' => '',
 			'scope' => ''
 		];
-		$cfg_host['protocol'] = $this->APIHostProtocol->Text;
-		$cfg_host['address'] = $this->APIHostAddress->Text;
-		$cfg_host['port'] = $this->APIHostPort->Text;
+		$cfg_host['protocol'] = $this->APIHostProtocol->SelectedValue;
+		$cfg_host['address'] = trim($this->APIHostAddress->Text);
+		$cfg_host['port'] = trim($this->APIHostPort->Text);
 		$cfg_host['url_prefix'] = '';
 		if ($this->APIHostAuthBasic->Checked == true) {
 			$cfg_host['auth_type'] = 'basic';
@@ -414,6 +435,7 @@ class APIHosts extends Security
 		if ($this->APIHostWindowType->Value === self::WIN_TYPE_ADD && $host_exists) {
 			// API host name already exists, stop here
 			$emsg = "Host '$host_name' already exists. Please choose different name.";
+			$emsg = Miscellaneous::html_value($emsg);
 			$cb->update($eid, $emsg);
 			$cb->show($eid);
 			return;
@@ -465,6 +487,10 @@ class APIHosts extends Security
 	public function removeAPIHosts($sender, $param)
 	{
 		$names = explode('|', $param->getCallbackParameter());
+		$names = array_values(array_filter(
+			$names,
+			fn ($name) => $this->isValidAPIHostName($name)
+		));
 		$hc = $this->getModule('host_config');
 		$config = $hc->getConfig();
 		$cfg = [];
@@ -513,6 +539,9 @@ class APIHosts extends Security
 	public function loadAPIHostResourceAccessWindow($sender, $param)
 	{
 		$api_host = $param->getCallbackParameter();
+		if (!$this->isValidAPIHostName($api_host)) {
+			return;
+		}
 		$this->setAPIHostJobs(
 			$this->APIHostResourceAccessJobs,
 			$api_host,
@@ -535,6 +564,9 @@ class APIHosts extends Security
 	public function saveAPIHostResourceAccess($sender, $param)
 	{
 		$api_host = $this->APIHostResourceAccessName->Value;
+		if (!$this->isValidAPIHostName($api_host)) {
+			return;
+		}
 		$cb = $this->getPage()->getCallbackClient();
 		if ($this->APIHostResourceAccessAllResources->Checked) {
 			$state = $this->setResourceConsole(
@@ -628,6 +660,9 @@ class APIHosts extends Security
 	public function unassignAPIHostConsole($sender, $param)
 	{
 		$api_host = $param->getCallbackParameter();
+		if (!$this->isValidAPIHostName($api_host)) {
+			return;
+		}
 		$success = $this->unassignAPIHostConsoleInternal($api_host);
 		if ($success) {
 			$this->setAPIHostJobs(
@@ -639,6 +674,29 @@ class APIHosts extends Security
 			$cb = $this->getPage()->getCallbackClient();
 			$cb->hide('api_host_access_window_console');
 		}
+	}
+
+	/**
+	 * Check whether an API host name is valid.
+	 *
+	 * @param mixed $name API host name
+	 * @return bool true if the name is valid
+	 */
+	private function isValidAPIHostName($name): bool
+	{
+		return is_string($name)
+			&& preg_match('/^' . HostConfig::HOST_NAME_PATTERN . '$/D', $name) === 1;
+	}
+
+	/**
+	 * Convert an API response value to text.
+	 *
+	 * @param mixed $output API response value
+	 * @return string response value as text
+	 */
+	private function getOutputText($output): string
+	{
+		return is_string($output) ? $output : var_export($output, true);
 	}
 
 }

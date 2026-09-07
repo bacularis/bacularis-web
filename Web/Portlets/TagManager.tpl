@@ -260,14 +260,7 @@ oTagManagerList = {
 				},
 				{
 					data: 'tag',
-					render: function(data, type, row) {
-						if (type == 'display' || type == 'filter') {
-							const span = document.createElement('SPAN');
-							span.textContent = data;
-							return span.innerHTML;
-						}
-						return data;
-					}
+					render: render_text
 				},
 				{
 					data: 'color',

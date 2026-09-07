@@ -148,9 +148,10 @@ var oRoleList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'role'},
-				{data: 'long_name'},
+				{data: 'long_name', render: render_text},
 				{
 					data: 'description',
+					render: render_text,
 					visible: false
 				},
 				{data: 'user_count'},

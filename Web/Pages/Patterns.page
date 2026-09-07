@@ -1102,7 +1102,7 @@ var oConstantList = {
 					data: 'description',
 					render: render_string_short
 				},
-				{data: 'value'},
+				{data: 'value', render: render_text},
 				{
 					data: 'name',
 					render: (data, type, row) => {
@@ -1484,7 +1484,7 @@ var oVariableList = {
 					data: 'description',
 					render: render_string_short
 				},
-				{data: 'default_value'},
+				{data: 'default_value', render: render_text},
 				{
 					data: 'name',
 					render: (data, type, row) => {

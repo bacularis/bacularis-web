@@ -176,7 +176,7 @@ var oRestoreDestinationList = {
 						return ret;
 					}
 				},
-				{data: 'restore_path'},
+				{data: 'restore_path', render: render_text},
 				{
 					data: 'capability_sets',
 					render: render_string_short,

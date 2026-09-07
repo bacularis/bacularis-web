@@ -126,7 +126,7 @@ var oJobTopFiles<%=$this->ClientID%> = {
 					data: 'lstat.mtime',
 					render: render_date_ts
 				},
-				{data: 'file'},
+				{data: 'file', render: render_text},
 				{
 					data: 'fileindex',
 					render: (data, type, row) => {

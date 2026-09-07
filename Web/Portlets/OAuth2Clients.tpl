@@ -111,8 +111,8 @@ var oOAuth2ClientList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
-				{data: 'client_id'},
+				{data: 'name', render: render_text},
+				{data: 'client_id', render: render_text},
 				{
 					data: 'redirect_uri',
 					render: render_string_short

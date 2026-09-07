@@ -117,7 +117,7 @@ var oIdPList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'name'},
-				{data: 'full_name'},
+				{data: 'full_name', render: render_text},
 				{data: 'idp_type'},
 				{
 					data: 'enabled',

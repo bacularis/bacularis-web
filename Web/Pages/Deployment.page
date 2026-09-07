@@ -137,9 +137,9 @@ var oAPIHostList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'name'},
-				{data: 'protocol'},
-				{data: 'address'},
-				{data: 'port'},
+				{data: 'protocol', render: render_text},
+				{data: 'address', render: render_text},
+				{data: 'port', render: render_text},
 				{
 					data: 'auth_type',
 					render: function (data, type, row) {
@@ -157,6 +157,9 @@ var oAPIHostList = {
 					render: function (data, type, row) {
 						const label = document.createTextNode('<%[ open ]%>');
 						const a = document.createElement('A');
+						if (row.protocol != 'http' && row.protocol != 'https') {
+							return '';
+						}
 						a.href = row.protocol + '://' + data + ':' + row.port + '/panel';
 						a.target = '_blank';
 						a.classList.add('w3-block', 'w3-center');
@@ -1383,8 +1386,8 @@ var oOSProfileList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'name'},
-				{data: 'description'},
-				{data: 'repository_type'},
+				{data: 'description', render: render_text},
+				{data: 'repository_type', render: render_text},
 				{
 					data: null,
 					render: function(data, type, row) {
@@ -3245,7 +3248,7 @@ var oRepoAuthList = {
 				},
 				{data: 'name'},
 				{data: 'auth_type'},
-				{data: 'username'},
+				{data: 'username', render: render_text},
 				{
 					data: 'default',
 					render: function(data, type, row) {
@@ -3648,10 +3651,10 @@ var oSSHConfigList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'Hostname'},
-				{data: 'Port'},
-				{data: 'User'},
-				{data: 'IdentityFile'},
+				{data: 'Hostname', render: render_text},
+				{data: 'Port', render: render_text},
+				{data: 'User', render: render_text},
+				{data: 'IdentityFile', render: render_text},
 				{
 					data: 'Hostname',
 					render: function (data, type, row) {
