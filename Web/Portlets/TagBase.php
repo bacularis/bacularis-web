@@ -28,7 +28,7 @@ class TagBase extends Portlets
 	 * Convert callback data to an array after validating its JSON representation.
 	 *
 	 * @param mixed $parameter callback parameter
-	 * @return array|null decoded callback data or null if it is not a JSON object
+	 * @return null|array decoded callback data or null if it is not a JSON object
 	 */
 	protected function getCallbackData($parameter): ?array
 	{
@@ -61,7 +61,7 @@ class TagBase extends Portlets
 	/**
 	 * Check tag properties received from the client.
 	 *
-	 * @param array|null $data tag data
+	 * @param null|array $data tag data
 	 * @param bool $require_access whether accessibility must be present
 	 * @return bool true if all tag properties are valid
 	 */
