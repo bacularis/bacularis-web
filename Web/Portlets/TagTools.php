@@ -15,10 +15,10 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Web\Modules\TagConfig;
+use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\TagAssignConfig;
+use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\WebUserConfig;
 
 /**
@@ -27,7 +27,7 @@ use Bacularis\Web\Modules\WebUserConfig;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
  */
-class TagTools extends Portlets
+class TagTools extends TagBase
 {
 	private const DATA_VIEW_NAME = 'DataViewName';
 
@@ -90,12 +90,16 @@ class TagTools extends Portlets
 		);
 		$tag_list = [];
 		foreach ($tags as $tag => $vals) {
-			$tag_list[$tag] = [
+			$vals = is_array($vals) ? $vals : [];
+			$tag_data = [
 				'tag' => $tag,
-				'color' => $vals['color'],
-				'severity' => $vals['severity'],
-				'access' => $vals['access']
+				'color' => $vals['color'] ?? null,
+				'severity' => $vals['severity'] ?? null,
+				'access' => $vals['access'] ?? null
 			];
+			if ($this->isValidTagData($tag_data, true)) {
+				$tag_list[$tag] = $tag_data;
+			}
 		}
 		ksort($tag_list, SORT_NATURAL | SORT_FLAG_CASE);
 		$this->tags = $tag_list;
@@ -137,6 +141,18 @@ class TagTools extends Portlets
 			$this->enable_global_tags
 		);
 		$this->tag_assign = ($tag_assign[$view] ?? []);
+		foreach ($this->tag_assign as $key => $assignment) {
+			if (!is_array($assignment) || !is_array($assignment['tag'] ?? null)) {
+				unset($this->tag_assign[$key]);
+				continue;
+			}
+			$this->tag_assign[$key]['tag'] = array_values(array_filter(
+				$assignment['tag'],
+				function ($tag): bool {
+					return is_string($tag) && key_exists($tag, $this->tags);
+				}
+			));
+		}
 
 		if ($this->getPage()->IsCallback) {
 			$cb = $this->getPage()->getCallbackClient();
@@ -155,12 +171,14 @@ class TagTools extends Portlets
 	 */
 	public function createTag($sender, $param): void
 	{
-		[
-			'tag' => $tag,
-			'color' => $color,
-			'severity' => $severity,
-			'access' => $access
-		] = (array) $param->getCallbackParameter();
+		$data = $this->getCallbackData($param->getCallbackParameter());
+		if (!$this->isValidTagData($data, true)) {
+			return;
+		}
+		$tag = $data['tag'];
+		$color = $data['color'];
+		$severity = $data['severity'];
+		$access = $data['access'];
 		$org_id = $this->getPage()->User->getOrganization();
 		$user_id = $this->getPage()->User->getUsername();
 		$tag_config = $this->getModule('tag_config');
@@ -211,11 +229,22 @@ class TagTools extends Portlets
 	 */
 	public function assignTag($sender, $param): void
 	{
-		[
-			'tags' => $tags,
-			'id' => $id,
-			'value' => $value
-		] = (array) $param->getCallbackParameter();
+		$data = $this->getCallbackData($param->getCallbackParameter());
+		if ($data === null || !is_array($data['tags'] ?? null)
+			|| !is_string($data['id'] ?? null) || !is_string($data['value'] ?? null)) {
+			return;
+		}
+		$tags = $data['tags'];
+		$id = $data['id'];
+		$value = $data['value'];
+		$tag_names = [];
+		foreach ($tags as $tag_data) {
+			if (!is_array($tag_data) || !$this->isValidTagData($tag_data, true)
+				|| !key_exists($tag_data['tag'], $this->tags)) {
+				return;
+			}
+			$tag_names[] = $tag_data['tag'];
+		}
 		$tag_assign_config = $this->getModule('tag_assign_config');
 		$org_id = $this->getPage()->User->getOrganization();
 		$user_id = $this->getPage()->User->getUsername();
@@ -223,17 +252,19 @@ class TagTools extends Portlets
 		$result = true;
 		$tout = [];
 		$key = "{$id}_{$value}";
-		for ($i = 0; $i < count($tags); $i++) {
-			[$oid, $uid] = ($tags[$i]->access == TagConfig::ACCESSIBILITY_GLOBAL ? ['', TagAssignConfig::GLOBAL_SECTION] : [$org_id, $user_id]);
+		for ($i = 0; $i < count($tag_names); $i++) {
+			$tag_name = $tag_names[$i];
+			$tag_data = $this->tags[$tag_name];
+			[$oid, $uid] = ($tag_data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? ['', TagAssignConfig::GLOBAL_SECTION] : [$org_id, $user_id]);
 			$result = $tag_assign_config->setTagAssignConfig(
 				$oid,
 				$uid,
 				$view,
 				$key,
-				$tags[$i]->tag
+				$tag_name
 			);
 			if (!$result) {
-				$tout = [$tags[$i], $id, $value];
+				$tout = [$tag_data, $id, $value];
 				break;
 			}
 		}
@@ -256,7 +287,7 @@ class TagTools extends Portlets
 
 		// Remove tags that were assigned to element but now they were unassigned
 		$tag_all = $this->tag_assign[$key]['tag'] ?? [];
-		$tag_assign = array_map(fn ($tag) => $tag->tag, $tags);
+		$tag_assign = $tag_names;
 		$tag_to_rm = array_diff($tag_all, $tag_assign);
 		$tag_to_rm = array_values($tag_to_rm);
 
@@ -274,12 +305,17 @@ class TagTools extends Portlets
 	 */
 	public function unassignTag($sender, $param): void
 	{
-		[
-			'tag' => $tag,
-			'id' => $id,
-			'value' => $value
-		] = (array) $param->getCallbackParameter();
-		$this->unassignTagInternal($id, $value, (array) $tag);
+		$data = $this->getCallbackData($param->getCallbackParameter());
+		if ($data === null || !is_string($data['id'] ?? null) || !is_string($data['value'] ?? null)
+			|| !is_array($data['tag'] ?? null)
+			|| !$this->isValidTagData($data['tag'], true)) {
+			return;
+		}
+		$tag = $data['tag'];
+		if (!key_exists($tag['tag'], $this->tags)) {
+			return;
+		}
+		$this->unassignTagInternal($data['id'], $data['value'], $this->tags[$tag['tag']]);
 	}
 
 	/**
@@ -342,4 +378,5 @@ class TagTools extends Portlets
 	{
 		return $this->getViewState(self::DATA_VIEW_NAME, '');
 	}
+
 }

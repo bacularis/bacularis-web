@@ -15,8 +15,8 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Logging;
 use Bacularis\Web\Modules\TagConfig;
 use Bacularis\Web\Modules\WebUserConfig;
 
@@ -26,7 +26,7 @@ use Bacularis\Web\Modules\WebUserConfig;
  * @author Marcin Haba <marcin.haba@bacula.pl>
  * @category Control
  */
-class TagManager extends Portlets
+class TagManager extends TagBase
 {
 	private const USERNAME = 'Username';
 
@@ -52,12 +52,19 @@ class TagManager extends Portlets
 		$tags = $tag_config->getTagConfig($org_id, $user_id);
 		$tag_names = array_keys($tags);
 		$tag_values = array_values($tags);
-		$tags = array_map(fn ($tag, $val) => array_merge($val, ['tag' => $tag]), $tag_names, $tag_values);
+		$tag_list = [];
+		foreach ($tag_names as $index => $tag) {
+			$tag_value = is_array($tag_values[$index]) ? $tag_values[$index] : [];
+			$tag_data = array_merge($tag_value, ['tag' => $tag]);
+			if ($this->isValidTagData($tag_data)) {
+				$tag_list[] = $tag_data;
+			}
+		}
 
 		$cb = $this->getPage()->getCallbackClient();
 		$cb->callClientFunction(
 			'oTagManagerList.update',
-			[$tags]
+			[$tag_list]
 		);
 	}
 
@@ -90,6 +97,9 @@ class TagManager extends Portlets
 	public function editTag($sender, $param): void
 	{
 		$tag = $param->getCallbackParameter();
+		if (!$this->isValidTagName($tag)) {
+			return;
+		}
 		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
 		$tag_props = $tag_config->getTagConfig($org_id, $user_id, $tag);
@@ -109,11 +119,13 @@ class TagManager extends Portlets
 	 */
 	public function saveTag($sender, $param): void
 	{
-		[
-			'tag' => $tag,
-			'color' => $color,
-			'severity' => $severity
-		] = (array) $param->getCallbackParameter();
+		$data = $this->getCallbackData($param->getCallbackParameter());
+		if (!$this->isValidTagData($data)) {
+			return;
+		}
+		$tag = $data['tag'];
+		$color = $data['color'];
+		$severity = $data['severity'];
 		$tag_vals = [
 			$tag => [
 				'color' => $color,
@@ -149,6 +161,9 @@ class TagManager extends Portlets
 	public function deleteTag($sender, $param): void
 	{
 		$tag = $param->getCallbackParameter();
+		if (!$this->isValidTagName($tag)) {
+			return;
+		}
 		[$org_id, $user_id] = $this->getUsername();
 		$tag_config = $this->getModule('tag_config');
 
@@ -211,4 +226,5 @@ class TagManager extends Portlets
 	{
 		return $this->getViewState(self::USERNAME, ['', '']);
 	}
+
 }

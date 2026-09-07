@@ -32,8 +32,8 @@
 							<com:TActiveRepeater ID="TagList">
 								<prop:ItemTemplate>
 									<div class="w3-row">
-										<div class="pointer w3-tag btag" style="width: 290px; color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['fg']%>; background-color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['bg']%>;" data-tag="<%#$this->Data['tag']%>" onclick="oTagTools_<%#$this->TemplateControl->ClientID%>.mark_selected('<%#$this->Data['tag']%>');">
-											<%#$this->Data['tag']%>
+										<div class="pointer w3-tag btag" style="width: 290px; color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['fg']%>; background-color: <%#@TagConfig::TAG_COLORS[$this->Data['color']]['bg']%>;" data-tag="<%#Miscellaneous::html_value($this->Data['tag'])%>" onclick="oTagTools_<%#$this->TemplateControl->ClientID%>.mark_selected(this.dataset.tag);">
+											<%#Miscellaneous::html_value($this->Data['tag'])%>
 											<span class="w3-right w3-small" style="cursor: help" title="<%#(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? Prado::localize('global tag') : Prado::localize('local tag')) . ', ' . Prado::localize('severity') . ': ' . TagConfig::TAG_SEVERITY[$this->Data['severity']]['name'])%>">
 												<%#(($this->Data['access'] == TagConfig::ACCESSIBILITY_GLOBAL ? 'G' : 'L') . $this->Data['severity'])%>
 											</span>
@@ -204,7 +204,7 @@ oTagColorPalette_<%=$this->ClientID%> = {
 	ids: {
 		colors: 'tag_tools_colors_<%=$this->ClientiD%>'
 	},
-	palette: <%=json_encode($this->palette)%>,
+	palette: <%=Miscellaneous::json_value($this->palette)%>,
 	init: function() {
 		this.add_events();
 		this.set_default_color();
@@ -315,8 +315,8 @@ oTagTools_<%=$this->ClientID%> = {
 		error: 'add_tags_error_<%=$this->ClientID%>'
 	},
 	oname: 'oTagTools_<%=$this->ClientID%>',
-	tags: <%=json_encode($this->tags)%>,
-	tag_assign: <%=json_encode($this->tag_assign)%>,
+	tags: <%=Miscellaneous::json_value($this->tags)%>,
+	tag_assign: <%=Miscellaneous::json_value($this->tag_assign)%>,
 	selected: [],
 	element: {},
 	init: function(props) {

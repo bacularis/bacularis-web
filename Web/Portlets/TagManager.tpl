@@ -89,7 +89,7 @@ oTagManagerAction = {
 		tag: '<%=$this->TagName->ClientID%>',
 		severity: 'tag_manager_severity_level'
 	},
-	palette: <%=json_encode($this->palette)%>,
+	palette: <%=Miscellaneous::json_value($this->palette)%>,
 	init: function() {
 		this.add_events();
 	},
@@ -179,8 +179,13 @@ oTagManagerAction = {
 	mark_color: function(color) {
 		this.unmark_all_colors();
 		const container = document.getElementById(this.ids.colors);
-		const el = container.querySelector('div[data-name="' + color + '"]');
-		this.mark_color_el(el);
+		const colors = container.querySelectorAll('div[data-name]');
+		for (const el of colors) {
+			if (el.getAttribute('data-name') == color) {
+				this.mark_color_el(el);
+				break;
+			}
+		}
 	},
 	mark_color_el: function(el) {
 		el.setAttribute('data-selected', 'true');
@@ -253,7 +258,17 @@ oTagManagerList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'tag'},
+				{
+					data: 'tag',
+					render: function(data, type, row) {
+						if (type == 'display' || type == 'filter') {
+							const span = document.createElement('SPAN');
+							span.textContent = data;
+							return span.innerHTML;
+						}
+						return data;
+					}
+				},
 				{
 					data: 'color',
 					render: function (data, type, row) {
@@ -295,7 +310,8 @@ oTagManagerList = {
 						edit_btn.style.marginRight = '6px';
 						edit_btn.type = 'button';
 						edit_btn.title = '<%[ Edit ]%>';
-						edit_btn.setAttribute('onclick', 'oTagManagerAction.edit("' + data + '");');
+						edit_btn.setAttribute('data-tag', data);
+						edit_btn.setAttribute('onclick', 'oTagManagerAction.edit(this.dataset.tag);');
 						const edit_img = document.createElement('I');
 						edit_img.className = 'fa-solid fa-edit';
 						edit_btn.appendChild(edit_img);
@@ -306,7 +322,8 @@ oTagManagerList = {
 						del_btn.className = 'w3-button w3-red';
 						del_btn.type = 'button';
 						del_btn.title = '<%[ Delete ]%>';
-						del_btn.setAttribute('onclick', 'oTagManagerAction.delete("' + data + '");');
+						del_btn.setAttribute('data-tag', data);
+						del_btn.setAttribute('onclick', 'oTagManagerAction.delete(this.dataset.tag);');
 						del_img = document.createElement('I');
 						del_img.className = 'fa-solid fa-trash-alt';
 						del_btn.appendChild(del_img);
@@ -349,19 +366,19 @@ oTagManagerList = {
 					});
 					if (column[0][0] == 3) { // severity
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + Tag.get_severity_desc(d) + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + Tag.get_severity_desc(d) + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = Tag.get_severity_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
