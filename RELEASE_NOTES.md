@@ -30,4 +30,4 @@ CVE identifiers will be added once they are assigned and published.
 - Escape client address in client details view
 - Fix selected path in verification rules if the search field was used to
   find items
-
+- Table field escaping fixes
