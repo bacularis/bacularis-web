@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 
 /**
@@ -236,7 +237,10 @@ class VerificationRules extends RestoreTestVerification
 		$rule_exists = $rule_config->verificationRuleConfigExists($name);
 
 		$cfg_rule = [];
-		$cfg_rule['description'] = str_replace(["\r", "\n"], ['', ' '], $this->VerificationRuleDescription->Text);
+		$description = $this->VerificationRuleDescription->Text;
+		// INI scalar values are stored on a single line.
+		$description = str_replace(["\r\n", "\r", "\n"], ' ', $description);
+		$cfg_rule['description'] = $description;
 		$cfg_rule['enabled'] = $this->VerificationRuleEnabled->Checked ? '1' : '0';
 		$cfg_rule['rules'] = array_filter($misc->objectToArray($rules), function ($item) {
 			$ret = true;
@@ -257,7 +261,8 @@ class VerificationRules extends RestoreTestVerification
 		if ($rule_win_type === self::TYPE_ADD_WINDOW && $rule_exists) {
 			$msg = 'Verification rule with name \'%s\' already exists.';
 			$emsg = sprintf($msg, $name);
-			$cb->update($this->VerificationRuleWindowError, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($this->VerificationRuleWindowError, $emsg_html);
 			$cb->show($this->VerificationRuleWindowError);
 			return;
 		}

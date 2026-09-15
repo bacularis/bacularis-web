@@ -170,7 +170,7 @@ var oGraphicalClientStatus = {
 	data: {},
 	refresh_timeout: null,
 	running_jobids: [],
-	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
+	dir_version: <%=$this->getDirectorUnameJSON()%>,
 	ids: {
 		running_jobs: 'status_client_running_jobs',
 		refresh_interval: 'status_client_refresh_interval',
@@ -784,7 +784,7 @@ var oJobForClientList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'jobid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'type',
 					render: function(data, type, row) {
@@ -803,6 +803,7 @@ var oJobForClientList = {
 				},
 				{
 					data: 'client',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -866,6 +867,7 @@ var oJobForClientList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -874,6 +876,7 @@ var oJobForClientList = {
 				},
 				{
 					data: 'fileset',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -894,15 +897,18 @@ var oJobForClientList = {
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'filetable',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
 				{
 					data: 'firstvol',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
@@ -914,6 +920,9 @@ var oJobForClientList = {
 				{
 					data: 'jobid',
 					render: function (data, type, row) {
+						if (type != 'display') {
+							return data;
+						}
 						const btn = document.createElement('BUTTON');
 						btn.className = 'w3-button w3-green';
 						btn.type = 'button';
@@ -921,8 +930,10 @@ var oJobForClientList = {
 						const i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						btn.appendChild(i);
-						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
-						return btn.outerHTML;
+						btn.addEventListener('click', function() {
+							document.location.href = '/web/job/history/%jobid/'.replace('%jobid', data);
+						});
+						return btn;
 					}
 				}
 			],
@@ -966,19 +977,20 @@ var oJobForClientList = {
 					});
 					if (column[0][0] == 14) {
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.title = JobStatus.get_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -988,7 +1000,7 @@ var oJobForClientList = {
 };
 MonitorParams = {
 	jobs: {
-		client: ['<%=$this->getClientName()%>']
+		client: [<%=$this->getClientNameJSON()%>]
 	}
 };
 $(function() {
@@ -1021,23 +1033,29 @@ function load_fd_res_config(resource) {
 }
 		</script>
 
-		<!-- Apply patterns -->
-		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
-			ID="BulkApplyPatternsClient"
-			ComponentType="fd"
-		/>
-		<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
-		</button>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<!-- Apply patterns -->
+				<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
+					ID="BulkApplyPatternsClient"
+					ComponentType="fd"
+				/>
+				<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
+					<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
+				</button>
 
-		<!-- Save component config to pattern -->
-		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
-			ID="SaveComponentToPattern"
-			ComponentType="fd"
-		/>
-		<button type="button" onclick="const host = $('#<%=$this->UserAPIHosts->ClientID%>').val(); oSaveComponentToPattern.set_configs_window(host, 'fd'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
-		</button>
+				<!-- Save component config to pattern -->
+				<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+					ID="SaveComponentToPattern"
+					ComponentType="fd"
+				/>
+				<button type="button" onclick="const host = $('#<%=$this->UserAPIHosts->ClientID%>').val(); oSaveComponentToPattern.set_configs_window(host, 'fd'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+				</button>
+			</prop:TrueTemplate>
+		</com:TConditional>
 
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_fd_filedaemon_config('FileDaemon'); W3SubTabs.open('filedaemon_filedaemon_config_btn', 'filedaemon_filedaemon_config_form', 'filedaemon_config');">

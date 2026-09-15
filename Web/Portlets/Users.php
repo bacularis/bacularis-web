@@ -687,22 +687,27 @@ class Users extends Security
 			$cb->callClientFunction('oUserOrganizationWindow.show', [false]);
 		} elseif (count($result['error']) > 0) {
 			$emsg = Prado::localize('Error while setting user organization.');
-			$cb->update($eid, $emsg);
-			$cb->show($eid);
+			$cb->callClientFunction(
+				'oUserOrganizationWindow.set_error',
+				[$emsg]
+			);
 		} elseif (count($result['unassigned']) > 0) {
 			$org_config = $this->getModule('org_config');
 			$text = 'The following selected users could not be assigned to the destination organization because the same users already exists there:';
 			$emsg = Prado::localize($text);
-			$usrs = [];
+			$conflicts = [];
 			for ($i = 0; $i < count($result['unassigned']); $i++) {
 				$org_cfg = $org_config->getOrganizationConfig($result['unassigned'][$i]['org_id']);
 				$org = count($org_cfg) > 0 ? $org_cfg['full_name'] : ($result['unassigned'][$i]['org_id'] ?: '-');
-				$usrs[] = "{$result['unassigned'][$i]['user_id']} (Org: {$org})";
+				$conflicts[] = [
+					'user_id' => $result['unassigned'][$i]['user_id'],
+					'organization' => $org
+				];
 			}
-			$usrs_list = '<li>' . implode('</li><li>', $usrs) . '</li>';
-			$emsg = $emsg . '<ul>' . $usrs_list . '</ul>';
-			$cb->update($eid, $emsg);
-			$cb->show($eid);
+			$cb->callClientFunction(
+				'oUserOrganizationWindow.set_error',
+				[$emsg, $conflicts]
+			);
 		}
 	}
 

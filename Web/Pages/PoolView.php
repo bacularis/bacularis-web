@@ -27,8 +27,9 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Prado;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Pool view page.
@@ -127,6 +128,38 @@ class PoolView extends BaculumWebPage
 		return $this->getViewState(self::POOL_NAME);
 	}
 
+	/**
+	 * Get pool ID as JSON safe for JavaScript context.
+	 *
+	 * @return string pool ID JSON
+	 */
+	public function getPoolIdJSON(): string
+	{
+		$pool_id = $this->getPoolId();
+		return Miscellaneous::json_value($pool_id);
+	}
+
+	/**
+	 * Get pool name as JSON safe for JavaScript context.
+	 *
+	 * @return string pool name JSON
+	 */
+	public function getPoolNameJSON(): string
+	{
+		$pool_name = $this->getPoolName();
+		return Miscellaneous::json_value($pool_name);
+	}
+
+	/**
+	 * Get volumes as JSON safe for JavaScript context.
+	 *
+	 * @return string volumes JSON
+	 */
+	public function getVolumesJSON(): string
+	{
+		return Miscellaneous::json_value($this->volumes_in_pool);
+	}
+
 	public function setPool()
 	{
 		$pool = $this->Application->getModule('api')->get(
@@ -181,19 +214,19 @@ class PoolView extends BaculumWebPage
 		}
 
 		$this->setPoolName($pool->name);
-		$this->MaxVols->Text = $pool->maxvols;
-		$this->MaxVolJobs->Text = $pool->maxvoljobs;
-		$this->MaxVolBytes->Text = $pool->maxvolbytes;
-		$this->MaxVolFiles->Text = $pool->maxvolfiles;
-		$this->VolUseDuration->Text = $pool->voluseduration;
-		$this->VolRetention->Text = $pool->volretention;
+		$this->MaxVols->Text = Miscellaneous::html_value($pool->maxvols);
+		$this->MaxVolJobs->Text = Miscellaneous::html_value($pool->maxvoljobs);
+		$this->MaxVolBytes->Text = Miscellaneous::html_value($pool->maxvolbytes);
+		$this->MaxVolFiles->Text = Miscellaneous::html_value($pool->maxvolfiles);
+		$this->VolUseDuration->Text = Miscellaneous::html_value($pool->voluseduration);
+		$this->VolRetention->Text = Miscellaneous::html_value($pool->volretention);
 		$this->Recycle->Text = $pool->recycle === 1 ? Prado::localize('Yes') : Prado::localize('No');
 		$this->AutoPrune->Text = $pool->autoprune === 1 ? Prado::localize('Yes') : Prado::localize('No');
-		$this->RecyclePool->Text = $recyclepool;
+		$this->RecyclePool->Text = Miscellaneous::html_value($recyclepool);
 		$this->Enabled->Text = $pool->enabled === 1 ? Prado::localize('Yes') : Prado::localize('No');
 		$this->ActionOnPurge->Text = $pool->actiononpurge === 1 ? Prado::localize('Yes') : Prado::localize('No');
-		$this->ScratchPool->Text = $scratchpool;
-		$this->NextPool->Text = $nextpool;
+		$this->ScratchPool->Text = Miscellaneous::html_value($scratchpool);
+		$this->NextPool->Text = Miscellaneous::html_value($nextpool);
 	}
 
 	public function setVolumesinPool()
@@ -212,7 +245,8 @@ class PoolView extends BaculumWebPage
 			['pools', $this->getPoolId(), 'update'],
 			[]
 		);
-		$this->PoolLog->Text = implode(PHP_EOL, $result->output);
+		$pool_log = implode(PHP_EOL, $result->output);
+		$this->PoolLog->Text = Miscellaneous::html_value($pool_log);
 		$this->getCallbackClient()->show('pool_log');
 	}
 
@@ -223,10 +257,11 @@ class PoolView extends BaculumWebPage
 			[]
 		);
 		if ($result->error == 0) {
-			$this->PoolLog->Text = implode(PHP_EOL, $result->output);
+			$pool_log = implode(PHP_EOL, $result->output);
 		} else {
-			$this->PoolLog->Text = $result->output;
+			$pool_log = $result->output;
 		}
+		$this->PoolLog->Text = Miscellaneous::html_value($pool_log);
 		$this->getCallbackClient()->show('pool_log');
 	}
 

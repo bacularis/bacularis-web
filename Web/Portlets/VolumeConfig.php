@@ -138,9 +138,10 @@ class VolumeConfig extends Portlets
 			$volume
 		);
 		if ($result->error === 0) {
-			$this->VolumeConfigLog->Text = implode(PHP_EOL, $result->output);
+			$volume_config_log = implode(PHP_EOL, $result->output);
+			$this->VolumeConfigLog->Text = Miscellaneous::html_value($volume_config_log);
 		} else {
-			$this->VolumeConfigLog->Text = $result->output;
+			$this->VolumeConfigLog->Text = Miscellaneous::html_value($result->output);
 		}
 		$this->setVolume();
 		$this->onSave(null);

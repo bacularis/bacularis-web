@@ -704,7 +704,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 
 				if ($result->error !== 0) {
 					$this->CreateResourceErrMsg->Display = 'Dynamic';
-					$this->CreateResourceErrMsg->Text = $result->output;
+					$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 					return; // END
 				}
 			}
@@ -734,7 +734,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 				$pool_modified = true;
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 			}
 		}
 
@@ -776,7 +776,7 @@ class NewMigrateJobWizard extends BaculumWebPage
 				$this->goToPage('JobList');
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 			}
 		}
 	}

@@ -382,7 +382,7 @@ var oVolumeList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'mediaid'},
-				{data: 'volumename'},
+				{data: 'volumename', render: render_text},
 				{data: 'slot'},
 				{
 					data: 'poolid',
@@ -390,6 +390,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -404,13 +405,14 @@ var oVolumeList = {
 				},
 				{
 					data: 'storage',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'deviceid',
 					visible: false
 				},
-				{data: 'volstatus'},
+				{data: 'volstatus', render: render_text},
 				{
 					data: 'enabled',
 					render: function(data, type, row) {
@@ -425,7 +427,7 @@ var oVolumeList = {
 					},
 					visible: false
 				},
-				{data: 'mediatype'},
+				{data: 'mediatype', render: render_text},
 				{
 					data: 'mediatypeid',
 					visible: false
@@ -593,6 +595,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'initialwrite',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -601,6 +604,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'scratchpool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -609,10 +613,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'recyclepool',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -650,14 +656,14 @@ var oVolumeList = {
 					render: (data, type, row) => {
 						const id = 'mediaid';
 						const tt_obj = oTagTools_<%=$this->TagToolsVolumeList->ClientID%>;
-						const table = 'oVolumeList.table';
+						const table = oVolumeList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'mediaid',
 					render: function(data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 						let i;
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
@@ -665,11 +671,14 @@ var oVolumeList = {
 							quick_edit.className = 'w3-button w3-green';
 							quick_edit.type = 'button';
 							quick_edit.title = '<%[ Quick edit ]%>';
+							quick_edit.style.marginRight = '4px';
 							i = document.createElement('I');
 							i.className = 'fa fa-edit';
 							quick_edit.appendChild(i);
-							quick_edit.setAttribute('onclick', "open_quick_volume_edit(" + data + ", '" + row.volumename + "');");
-							btns += (quick_edit.outerHTML + ' ');
+							quick_edit.addEventListener('click', () => {
+								open_quick_volume_edit(data, row.volumename);
+							});
+							btns.appendChild(quick_edit);
 
 							// Jobs on volume button
 							const jobs_on_volume = document.createElement('BUTTON');
@@ -678,9 +687,12 @@ var oVolumeList = {
 							jobs_on_volume.title = '<%[ Volume job list ]%>';
 							i = document.createElement('I');
 							i.className = 'fa fa-check';
+							jobs_on_volume.style.marginRight = '4px';
 							jobs_on_volume.appendChild(i);
-							jobs_on_volume.setAttribute('onclick', "oJobsOnVolumeWindow.open_window(" + data + ", '" + row.volumename + "');");
-							btns += (jobs_on_volume.outerHTML + ' ');
+							jobs_on_volume.addEventListener('click', () => {
+								oJobsOnVolumeWindow.open_window(data, row.volumename);
+							});
+							btns.appendChild(jobs_on_volume);
 						}
 						const details = document.createElement('BUTTON');
 						details.className = 'w3-button w3-green';
@@ -689,8 +701,10 @@ var oVolumeList = {
 						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						details.appendChild(i);
-						details.setAttribute('onclick', "document.location.href = '/web/volume/" + data + "/'");
-						btns += details.outerHTML;
+						details.addEventListener('click', () => {
+							document.location.href = '/web/volume/%mediaid/'.replace('%mediaid', data);
+						});
+						btns.appendChild(details);
 						return btns;
 					}
 				}
@@ -740,19 +754,19 @@ var oVolumeList = {
 					});
 					if (column[0][0] == 3) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -796,7 +810,7 @@ var oVolumeList = {
 	},
 	set_predefined_filters() {
 		const select = document.getElementById(this.ids.table_predefined_filters_value_type);
-		const pools = <%=json_encode($this->pools)%>;
+		const pools = <%=Miscellaneous::json_value($this->pools)%>;
 		let option, label;
 		for (let i = 0; i < pools.length; i++) {
 			option = document.createElement('OPTION');
@@ -852,7 +866,7 @@ function update_volume_list_table(data, init) {
 	}
 }
 $(function() {
-	const volumes = <%=json_encode($this->volumes)%>;
+	const volumes = <%=Miscellaneous::json_value($this->volumes)%>;
 	set_volume_list_data(volumes);
 });
 </script>

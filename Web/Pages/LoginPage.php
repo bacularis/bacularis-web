@@ -50,6 +50,11 @@ class LoginPage extends BaculumWebPage
 	 */
 	public $reload_url = '';
 
+	/**
+	 * Validated and HTML-encoded retry URL.
+	 */
+	public $retry_url_html = '/';
+
 	public $mfa = '';
 
 	public $fidou2f_authdata = [];
@@ -65,7 +70,38 @@ class LoginPage extends BaculumWebPage
 			// do a login try with different user and password to logout current user
 			$this->reload_url = $this->getPage()->getFullLoginUrl($user, $fake_pwd);
 		}
+		$return_url = $this->getModule('auth')->getReturnUrl();
+		$retry_url = $this->getRetryURL($return_url);
+		$this->retry_url_html = Miscellaneous::html_value($retry_url);
 		$this->setMessage();
+	}
+
+	/**
+	 * Validate the retry URL as a same-origin relative path.
+	 *
+	 * @param null|string $url retry URL
+	 * @return string validated retry URL
+	 */
+	private function getRetryURL(?string $url): string
+	{
+		if (empty($url) || strpos($url, '/') !== 0 || strpos($url, '//') === 0) {
+			return '/';
+		}
+		if (strpos($url, '\\') !== false || preg_match('/[\x00-\x1F\x7F]/', $url) === 1) {
+			return '/';
+		}
+
+		$url_parts = parse_url($url);
+		if (!is_array($url_parts)) {
+			return '/';
+		}
+		$origin_parts = ['scheme', 'host', 'port', 'user', 'pass'];
+		for ($i = 0; $i < count($origin_parts); $i++) {
+			if (key_exists($origin_parts[$i], $url_parts)) {
+				return '/';
+			}
+		}
+		return $url;
 	}
 
 	public function onPreLoad($param)
@@ -113,6 +149,7 @@ class LoginPage extends BaculumWebPage
 				$orgs[] = [
 					'name' => $conf['name'],
 					'full_name' => $conf['full_name'],
+					'full_name_html' => Miscellaneous::html_value($conf['full_name']),
 					'auth_type' => $conf['auth_type'],
 					'color' => $conf['login_btn_color'],
 					'icon_css' => IdentityProviderConfig::getIdPIconCSSByType($type)
@@ -367,7 +404,7 @@ class LoginPage extends BaculumWebPage
 		if ($auth_type == OrganizationConfig::AUTH_TYPE_AUTH_METHOD) {
 			$this->OrganizationBox->Display = 'Dynamic';
 			$this->Organization->Value = $org['name'];
-			$this->OrganizationName->Text = $org['full_name'];
+			$this->OrganizationName->Text = Miscellaneous::html_value($org['full_name']);
 			$this->LoginBox->CssClass = 'w3-border w3-card w3-padding';
 		} elseif ($auth_type == OrganizationConfig::AUTH_TYPE_IDP) {
 			if ($org_name) {

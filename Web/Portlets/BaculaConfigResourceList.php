@@ -31,9 +31,11 @@ namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
-use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Bacularis\Web\Modules\HostConfig;
+use Bacularis\Web\Modules\WebUserRoles;
+use Bacularis\Web\Portlets\BaculaConfigDirectives;
 use Prado\Prado;
 
 /**
@@ -74,7 +76,8 @@ class BaculaConfigResourceList extends Portlets
 	{
 		$cbc = $this->getPage()->getCallbackClient();
 		if ($show) {
-			$cbc->update($this->ClientID . '_error_msg', $errmsg);
+			$errmsg_html = Miscellaneous::html_value($errmsg);
+			$cbc->update($this->ClientID . '_error_msg', $errmsg_html);
 			$cbc->hide($this->ClientID . '_container');
 			$cbc->show($this->ClientID . '_error_msg');
 		} else {
@@ -91,14 +94,16 @@ class BaculaConfigResourceList extends Portlets
 		$resource_type = $this->getResourceType();
 
 		// prepare buttons and windows
-		$this->ResourceTypeAddLink->Text = $resource_type;
-		$this->ResourceTypeAddWindowTitle->Text = $resource_type;
-		$this->ResourceTypeEditWindowTitle->Text = $resource_type;
+		$this->ResourceTypeAddLink->Text = Miscellaneous::html_value($resource_type);
+		$this->ResourceTypeAddWindowTitle->Text = Miscellaneous::html_value($resource_type);
+		$this->ResourceTypeEditWindowTitle->Text = Miscellaneous::html_value($resource_type);
 
-		// config bulk actions
-		$this->BulkApplyConfigsJob->setHost($host);
-		$this->BulkApplyConfigsJob->setComponentType($component_type);
-		$this->BulkApplyConfigsJob->setResourceType($resource_type);
+		if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+			// config bulk actions
+			$this->BulkApplyConfigsJob->setHost($host);
+			$this->BulkApplyConfigsJob->setComponentType($component_type);
+			$this->BulkApplyConfigsJob->setResourceType($resource_type);
+		}
 
 		// data view
 		$view_name = sprintf('config_resource_list_%s_%s_%s', $host, $component_type, $resource_type);
@@ -211,7 +216,7 @@ class BaculaConfigResourceList extends Portlets
 		if ($res->error === 0) {
 			for ($i = 0; $i < count($res->output); $i++) {
 				$r = $res->output[$i]->{$resource_type}->Name;
-				$resources[$r] = $r;
+				$resources[$r] = Miscellaneous::html_value($r);
 			}
 			natcasesort($resources);
 		}
@@ -334,7 +339,7 @@ class BaculaConfigResourceList extends Portlets
 
 	private function showRemovedResourceError($error_message)
 	{
-		$this->RemoveResourceError->Text = $error_message;
+		$this->RemoveResourceError->Text = Miscellaneous::html_value($error_message);
 		$err_win_id = 'resource_error_window' . $this->ClientID;
 		$this->getPage()->getCallbackClient()->show($err_win_id);
 	}
@@ -354,6 +359,20 @@ class BaculaConfigResourceList extends Portlets
 		return $this->getViewState(self::HOST);
 	}
 
+	/**
+	 * Get host as JSON safe for JavaScript context.
+	 *
+	 * @return string host JSON
+	 */
+	public function getHostJSON(): string
+	{
+		$host = $this->getHost();
+		if (!$host) {
+			$host = HostConfig::MAIN_CATALOG_HOST;
+		}
+		return Miscellaneous::json_value($host);
+	}
+
 	public function setHost($host)
 	{
 		$this->setViewState(self::HOST, $host);
@@ -362,6 +381,17 @@ class BaculaConfigResourceList extends Portlets
 	public function getComponentType()
 	{
 		return $this->getViewState(self::COMPONENT_TYPE);
+	}
+
+	/**
+	 * Get component type as JSON safe for JavaScript context.
+	 *
+	 * @return string component type JSON
+	 */
+	public function getComponentTypeJSON(): string
+	{
+		$component_type = $this->getComponentType();
+		return Miscellaneous::json_value($component_type);
 	}
 
 	public function setComponentType($type)

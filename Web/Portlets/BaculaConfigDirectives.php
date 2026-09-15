@@ -29,16 +29,17 @@
 
 namespace Bacularis\Web\Portlets;
 
-use StdClass;
-use Prado\Prado;
-use Prado\TPropertyValue;
-use Prado\Web\UI\TCommandEventParameter;
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculaConfigAction;
 use Bacularis\Web\Modules\BWebException;
+use Prado\Prado;
+use Prado\TPropertyValue;
+use Prado\Web\UI\TCommandEventParameter;
+use StdClass;
 
 /**
  * Bacula config directives control.
@@ -164,7 +165,9 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			} catch (BWebException $e) {
 				$error = true;
 				if ($this->getPage()->IsCallBack) {
-					$this->getPage()->getCallbackClient()->update('bcd_error_' . $this->ClientID, $e->getMessage());
+					$error_message = $e->getMessage();
+					$error_message = Miscellaneous::html_value($error_message);
+					$this->getPage()->getCallbackClient()->update('bcd_error_' . $this->ClientID, $error_message);
 				}
 			}
 			// NOTE: for copy mode the resource name is empty
@@ -525,7 +528,8 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 			$this->SaveDirectiveOk->Display = 'None';
 			$this->SaveDirectiveError->Display = 'Dynamic';
 			$this->SaveDirectiveErrMsg->Display = 'Dynamic';
-			$this->SaveDirectiveErrMsg->Text = "Error {$result->error}: {$result->output}";
+			$error_message = "Error {$result->error}: {$result->output}";
+			$this->SaveDirectiveErrMsg->Text = Miscellaneous::html_value($error_message);
 		}
 		$this->onSave(null);
 	}
@@ -680,32 +684,31 @@ class BaculaConfigDirectives extends DirectiveListTemplate
 	 */
 	public static function getDependenciesError($deps, $resource_type, $resource_name)
 	{
-		$bold_func = fn ($item) => "<strong>$item</strong>";
 		$emsg = Prado::localize('Resource %s "%s" is used in the following resources:');
 		$emsg = sprintf(
 			$emsg,
-			$bold_func($resource_type),
-			$bold_func($resource_name)
+			$resource_type,
+			$resource_name
 		);
 		$emsg_deps = Prado::localize('Component: %s, Resource: %s "%s", Directive: %s');
 		$dependencies = [];
 		for ($i = 0; $i < count($deps); $i++) {
 			$dependencies[] = sprintf(
 				$emsg_deps,
-				$bold_func($deps[$i]['component_type']),
-				$bold_func($deps[$i]['resource_type']),
-				$bold_func($deps[$i]['resource_name']),
-				$bold_func($deps[$i]['directive_name'])
+				$deps[$i]['component_type'],
+				$deps[$i]['resource_type'],
+				$deps[$i]['resource_name'],
+				$deps[$i]['directive_name']
 			);
 		}
 		$emsg_sum = Prado::localize('Please unassign resource %s "%s" from these resources and try again.');
 		$emsg_sum = sprintf(
 			$emsg_sum,
-			$bold_func($resource_type),
-			$bold_func($resource_name)
+			$resource_type,
+			$resource_name
 		);
-		$error = [$emsg, implode('<br />', $dependencies),  $emsg_sum];
-		$error_message = implode('<br /><br />', $error);
+		$error = [$emsg, implode("\n", $dependencies),  $emsg_sum];
+		$error_message = implode("\n\n", $error);
 		return $error_message;
 	}
 

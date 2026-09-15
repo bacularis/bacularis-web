@@ -134,7 +134,7 @@ var oJobsOnVolumeList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'jobid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'type',
 					render: function(data, type, row) {
@@ -153,6 +153,7 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'client',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -216,6 +217,7 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -224,6 +226,7 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'fileset',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -244,15 +247,18 @@ var oJobsOnVolumeList = {
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'filetable',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
 				{
 					data: 'firstvol',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
@@ -271,8 +277,10 @@ var oJobsOnVolumeList = {
 						var i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						btn.appendChild(i);
-						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
-						return btn.outerHTML;
+						btn.addEventListener('click', () => {
+							document.location.href = '/web/job/history/' + data + '/';
+						});
+						return btn;
 					}
 				}
 			],
@@ -311,19 +319,20 @@ var oJobsOnVolumeList = {
 					});
 					if (column[0][0] == 14) {
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.title = JobStatus.get_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});

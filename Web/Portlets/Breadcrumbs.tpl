@@ -5,17 +5,17 @@
 		</prop:HeaderTemplate>
 		<prop:ItemTemplate>
 				<li id="item<%#$this->getItemIndex()%>">
-					<a href="<%#$this->Data['page_url']%>" onmouseover="oBreadCrumbs.show_actions(this);" onmouseout="oBreadCrumbs.hide_actions(this);">
+					<a href="<%#Miscellaneous::html_value($this->Data['page_url'])%>" onmouseover="oBreadCrumbs.show_actions(this);" onmouseout="oBreadCrumbs.hide_actions(this);">
 							<%=isset($this->Data['icon']) ? '<i class="' . $this->Data['icon'] . '"></i> ' : ''%> 
-							<%#$this->Data['label']%>
-							<%=isset($this->Data['sub_label']) ? ': ' . $this->Data['sub_label'] : ''%>
+							<%#Miscellaneous::html_value($this->Data['label'])%>
+							<%=isset($this->Data['sub_label']) ? ': ' . Miscellaneous::html_value($this->Data['sub_label']) : ''%>
 							<div class="pointer" style="display: none; vertical-align: middle; height: 20px;" rel="child" onclick="return oBreadCrumbs.prepare_action_list(event, <%#$this->getItemIndex()%>);">
 								<i class="fa-solid fa-chevron-down" rel="child"></i>
 							</div>
 					</a>
 					<script>
 						$(() => {
-							oBreadCrumbs.add_page_data(<%#$this->getItemIndex()%>, <%#json_encode($this->Data ?? [])%>);
+							oBreadCrumbs.add_page_data(<%#$this->getItemIndex()%>, <%#Miscellaneous::json_value($this->Data ?? [])%>);
 						});
 					</script>
 				</li>
@@ -96,8 +96,14 @@ const oBreadCrumbs = {
 		}
 		const a = document.createElement('A');
 		if (item.hasOwnProperty('address')) {
-			a.href = 'javascript:void(0)';
-			a.setAttribute('onclick', 'oBreadCrumbs.go_to_page("' + item.address + '");');
+			const url = this.get_valid_url(item.address);
+			if (url) {
+				a.href = url.href;
+				a.addEventListener('click', (event) => {
+					event.preventDefault();
+					this.go_to_page(url.href);
+				});
+			}
 		}
 		a.classList.add('raw');
 		const label = document.createTextNode(item.label);
@@ -110,15 +116,30 @@ const oBreadCrumbs = {
 		li.appendChild(a);
 		ul.appendChild(li);
 	},
+	get_valid_url: function(address) {
+		let url = null;
+		try {
+			const parsed_url = new URL(address, window.location.href);
+			if (['http:', 'https:'].indexOf(parsed_url.protocol) !== -1 && parsed_url.origin === window.location.origin) {
+				url = parsed_url;
+			}
+		} catch (error) {
+			url = null;
+		}
+		return url;
+	},
 	go_to_page: function(address) {
-		const url = parse_url(address);
+		const url = this.get_valid_url(address);
+		if (!url) {
+			return;
+		}
 		if (window.location.pathname == url.pathname) {
 			// the same page, do not reload the page, just use hash
 			window.location.href = url.hash;
 			set_action_by_url_fragment();
 		} else {
 			// different page, direct to this page
-			window.location.href = address;
+			window.location.href = url.href;
 		}
 		this.show_action_window(false);
 	},

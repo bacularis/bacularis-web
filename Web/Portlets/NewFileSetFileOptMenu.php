@@ -29,9 +29,10 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Bacularis\Common\Modules\BacularisCommonPluginBase;
-use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\BacularisCommonPluginBase;
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Common\Modules\PluginConfigBase;
 use Prado\Prado;
 
 /**

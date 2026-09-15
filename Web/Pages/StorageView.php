@@ -27,11 +27,12 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Prado;
-use Bacularis\Common\Modules\Params;
 use Bacularis\Common\Modules\Errors\DeviceError;
 use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Common\Modules\Params;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
+use Prado\Prado;
 
 /**
  * Storage view page.
@@ -48,6 +49,20 @@ class StorageView extends BaculumWebPage
 	public const DEVICE_NAME = 'DeviceName';
 
 	public const USE_CACHE = true;
+
+	/**
+	 * Get director uname as JSON safe for JavaScript context.
+	 *
+	 * @return string director uname JSON
+	 */
+	public function getDirectorUnameJSON(): string
+	{
+		if (!$this->Session->contains('director_uname')) {
+			return '{}';
+		}
+		$director_uname = $this->Session['director_uname'];
+		return Miscellaneous::json_value($director_uname);
+	}
 
 	public function onInit($param)
 	{
@@ -83,17 +98,18 @@ class StorageView extends BaculumWebPage
 				$this->OSDAddress->Text = Miscellaneous::html_value($storageshow->output->address);
 			}
 			if (property_exists($storageshow->output, 'sdport')) {
-				$this->OSDPort->Text = $storageshow->output->sdport;
+				$this->OSDPort->Text = Miscellaneous::html_value($storageshow->output->sdport);
 			}
 			if (property_exists($storageshow->output, 'maxjobs') && property_exists($storageshow->output, 'numjobs')) {
-				$this->ORunningJobs->Text = $storageshow->output->numjobs . '/' . $storageshow->output->maxjobs;
+				$running_jobs = $storageshow->output->numjobs . '/' . $storageshow->output->maxjobs;
+				$this->ORunningJobs->Text = Miscellaneous::html_value($running_jobs);
 			}
 			if (property_exists($storageshow->output, 'devicename')) {
 				$this->setDeviceName($storageshow->output->devicename);
-				$this->ODeviceName->Text = $storageshow->output->devicename;
+				$this->ODeviceName->Text = Miscellaneous::html_value($storageshow->output->devicename);
 			}
 			if (property_exists($storageshow->output, 'mediatype')) {
-				$this->OMediaType->Text = $storageshow->output->mediatype;
+				$this->OMediaType->Text = Miscellaneous::html_value($storageshow->output->mediatype);
 			}
 			if (property_exists($storageshow->output, 'autochanger')) {
 				$is_autochanger = ($storageshow->output->autochanger == 1);
@@ -109,7 +125,9 @@ class StorageView extends BaculumWebPage
 		if ($sd_api_host) {
 			$this->CompActions->setHost($sd_api_host);
 			$this->CompActions->setComponentType('sd');
-			$this->BulkApplyPatternsStorage->setHost($sd_api_host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsStorage->setHost($sd_api_host);
+			}
 		}
 	}
 
@@ -142,7 +160,8 @@ class StorageView extends BaculumWebPage
 		$raw_status = $this->getModule('api')->get(
 			['storages', $this->getStorageId(), 'status']
 		)->output;
-		$this->StorageLog->Text = implode(PHP_EOL, $raw_status);
+		$storage_log = implode(PHP_EOL, $raw_status);
+		$this->StorageLog->Text = Miscellaneous::html_value($storage_log);
 
 		$query_str = '?output=json&type=header';
 		$graph_status = $this->getModule('api')->get(
@@ -251,7 +270,9 @@ class StorageView extends BaculumWebPage
 			$this->SDStorageDaemonConfig->setResourceName($component_name);
 			$this->SDStorageDaemonConfig->setLoadValues(true);
 			$this->SDStorageDaemonConfig->raiseEvent('OnDirectiveListLoad', $this, null);
-			$this->BulkApplyPatternsStorage->setHost($host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsStorage->setHost($host);
+			}
 		} else {
 			$this->SDStorageDaemonConfigErr->Display = 'Dynamic';
 		}
@@ -271,7 +292,9 @@ class StorageView extends BaculumWebPage
 			$this->StorageDaemonResourcesConfig->setResourceType($resource_type);
 			$this->StorageDaemonResourcesConfig->setComponentName($component_name);
 			$this->StorageDaemonResourcesConfig->loadResourceListTable($sender, $param);
-			$this->BulkApplyPatternsStorage->setHost($host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsStorage->setHost($host);
+			}
 		} else {
 			$this->StorageDaemonResourcesConfig->showError(true);
 		}

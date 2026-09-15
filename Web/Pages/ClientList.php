@@ -29,6 +29,7 @@
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
@@ -45,6 +46,30 @@ class ClientList extends BaculumWebPage
 	public const DISABLE_ENABLE_METHOD_CONFIG = 1;
 
 	public $client_show = [];
+
+	/**
+	 * Get director uname as JSON safe for JavaScript context.
+	 *
+	 * @return string director uname JSON
+	 */
+	public function getDirectorUnameJSON(): string
+	{
+		if (!$this->Session->contains('director_uname')) {
+			return '{}';
+		}
+		$director_uname = $this->Session['director_uname'];
+		return Miscellaneous::json_value($director_uname);
+	}
+
+	/**
+	 * Get client show data as JSON safe for JavaScript context.
+	 *
+	 * @return string client show JSON
+	 */
+	public function getClientShowJSON(): string
+	{
+		return Miscellaneous::json_value($this->client_show);
+	}
 
 	public function onInit($param)
 	{
@@ -158,7 +183,8 @@ class ClientList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while disabling client "%s". ErrorCode: %d, Message: %s.';
 			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 			$cb->hide('client_list_disable_client_btn');
 		}
@@ -292,7 +318,8 @@ class ClientList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while enabling client "%s". ErrorCode: %d, Message: %s.';
 			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 			$cb->hide('client_list_enable_client_btn');
 		}
@@ -396,7 +423,7 @@ class ClientList extends BaculumWebPage
 			return;
 		}
 		$error = null;
-		$err_client = '';
+		$err_client = new StdClass;
 		$api = $this->getModule('api');
 		for ($i = 0; $i < count($clients); $i++) {
 			$params = [

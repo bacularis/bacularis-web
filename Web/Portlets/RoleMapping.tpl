@@ -118,7 +118,7 @@ var oRoleMappingList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'description',
 					render: function(data, type, row) {
@@ -131,7 +131,7 @@ var oRoleMappingList = {
 							} else {
 								span.textContent = data;
 							}
-							ret = span.outerHTML;
+							ret = span;
 						}
 						return ret;
 					}
@@ -173,7 +173,7 @@ var oRoleMappingList = {
 					render: (data, type, row) => {
 						const id = 'role';
 						const tt_obj = oTagTools_<%=$this->TagToolsRoleMappingList->ClientID%>;
-						const table = 'oRoleMappingList.table';
+						const table = oRoleMappingList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -190,8 +190,10 @@ var oRoleMappingList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oRoleMapping.load_role_mapping_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oRoleMapping.load_role_mapping_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -247,10 +249,13 @@ var oRoleMappingList = {
 					} else if (d === '0') {
 						ds = '<%[ Disabled ]%>';
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}
@@ -720,7 +725,7 @@ $(function() {
 					<ul>
 				</prop:HeaderTemplate>
 				<prop:ItemTemplate>
-					<li><%#$this->Data['name']%></li>
+					<li><%#Miscellaneous::html_value($this->Data['name'])%></li>
 				</prop:ItemTemplate>
 				<prop:FooterTemplate>
 					</ul>

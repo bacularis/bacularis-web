@@ -154,7 +154,7 @@ var oConfigList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'description',
 					render: render_string_short
@@ -169,7 +169,7 @@ var oConfigList = {
 						return ret;
 					}
 				},
-				{data: 'resource'},
+				{data: 'resource', render: render_text},
 				{
 					data: 'in_pattern',
 					render: function(data, type, row) {
@@ -181,7 +181,7 @@ var oConfigList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsConfigList->ClientID%>;
-						const table = 'oConfigList.table';
+						const table = oConfigList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -199,8 +199,10 @@ var oConfigList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oConfig.load_config_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oConfig.load_config_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -245,29 +247,31 @@ var oConfigList = {
 					});
 					if (column[0][0] == 3) { // component column
 						column.data().sort().unique().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + Components.get_full_name(d) + '</option>');
-							} else if(d) {
-								select.append('<option value="' + d + '">' + Components.get_full_name(d) + '</option>');
+							if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = Components.get_full_name(d);
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 						});
 					} else if (column[0][0] == 5) { // in pattern column
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
 							if (d) {
-								if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-									select.append('<option value="' + d + '" selected>' + d + '</option>');
-								} else {
-									select.append('<option value="' + d + '">' + d + '</option>');
-								}
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = d;
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 						});
 					} else {
 						column.data().sort().unique().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -661,7 +665,7 @@ var oPatternList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'description',
 					render: render_string_short
@@ -685,7 +689,7 @@ var oPatternList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsPatternList->ClientID%>;
-						const table = 'oPatternList.table';
+						const table = oPatternList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -703,8 +707,10 @@ var oPatternList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oPattern.load_pattern_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oPattern.load_pattern_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -749,19 +755,21 @@ var oPatternList = {
 					});
 					if (column[0][0] == 3) { // component column
 						column.data().sort().unique().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + Components.get_full_name(d) + '</option>');
-							} else if(d) {
-								select.append('<option value="' + d + '">' + Components.get_full_name(d) + '</option>');
+							if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = Components.get_full_name(d);
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 						});
 					} else {
 						column.data().sort().unique().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -1097,7 +1105,7 @@ var oConstantList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'description',
 					render: render_string_short
@@ -1108,7 +1116,7 @@ var oConstantList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsConstantList->ClientID%>;
-						const table = 'oConstantList.table';
+						const table = oConstantList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -1126,8 +1134,10 @@ var oConstantList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oConstant.load_constant_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oConstant.load_constant_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -1171,11 +1181,11 @@ var oConstantList = {
 						.draw();
 					});
 					column.data().sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -1479,7 +1489,7 @@ var oVariableList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'description',
 					render: render_string_short
@@ -1490,7 +1500,7 @@ var oVariableList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsVariableList->ClientID%>;
-						const table = 'oVariableList.table';
+						const table = oVariableList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -1508,8 +1518,10 @@ var oVariableList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oVariable.load_variable_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oVariable.load_variable_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -1553,11 +1565,11 @@ var oVariableList = {
 						.draw();
 					});
 					column.data().sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}

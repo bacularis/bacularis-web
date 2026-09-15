@@ -15,9 +15,10 @@
 
 namespace Bacularis\Web\Portlets;
 
-use Bacularis\Common\Modules\AuthOAuth2;
 use Bacularis\Common\Modules\AuthBasic;
+use Bacularis\Common\Modules\AuthOAuth2;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\OAuth2Record;
 
@@ -130,6 +131,9 @@ class Security extends Portlets
 			$org_items[$org_name] = $org['full_name'] ?: $org_name;
 		}
 		uasort($org_items, 'strnatcasecmp');
+		foreach ($org_items as $org_name => $org_label) {
+			$org_items[$org_name] = Miscellaneous::html_value($org_label);
+		}
 		$control->DataSource = $org_items;
 		if ($def_val) {
 			$control->SelectedValue = $def_val;
@@ -235,6 +239,20 @@ class Security extends Portlets
 	}
 
 	/**
+	 * Update and show an error element using HTML-encoded text.
+	 *
+	 * @param string $error_el_id error element identifier
+	 * @param mixed $error error message
+	 */
+	protected function updateError(string $error_el_id, $error): void
+	{
+		$error_html = Miscellaneous::html_value($error);
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->update($error_el_id, $error_html);
+		$cb->show($error_el_id);
+	}
+
+	/**
 	 * Set API host job list control.
 	 *
 	 * @param object $control control to set jobs
@@ -257,11 +275,7 @@ class Security extends Portlets
 		} else {
 			$emsg = 'Error while loading API host resources. Please check connection with this API host. ErrorCode: %d, ErrorMsg: %s';
 			$emsg = sprintf($emsg, $result->error, $result->output);
-			$cb->update(
-				$error_el_id,
-				$emsg
-			);
-			$cb->show($error_el_id);
+			$this->updateError($error_el_id, $emsg);
 		}
 	}
 
@@ -278,11 +292,8 @@ class Security extends Portlets
 		$cb = $this->getPage()->getCallbackClient();
 		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
 		if (count($host_config) == 0) {
-			$cb->update(
-				$error_el_id,
-				"API host $api_host does not exist"
-			);
-			$cb->show($error_el_id);
+			$emsg = "API host $api_host does not exist";
+			$this->updateError($error_el_id, $emsg);
 			return $state;
 		}
 		$result = null;
@@ -296,11 +307,8 @@ class Security extends Portlets
 			if ($result->error === 0) {
 				$state = true;
 			} else {
-				$cb->update(
-					$error_el_id,
-					$result->output
-				);
-				$cb->show($error_el_id);
+				$emsg = $result->output;
+				$this->updateError($error_el_id, $emsg);
 				return $state;
 			}
 		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
@@ -313,11 +321,8 @@ class Security extends Portlets
 			if ($result->error === 0) {
 				$state = true;
 			} else {
-				$cb->update(
-					$error_el_id,
-					$result->output
-				);
-				$cb->show($error_el_id);
+				$emsg = $result->output;
+				$this->updateError($error_el_id, $emsg);
 				return $state;
 			}
 		}
@@ -341,14 +346,10 @@ class Security extends Portlets
 	 */
 	protected function saveAPIHostResourcePermissions($control, $api_host, $error_el_id)
 	{
-		$cb = $this->getPage()->getCallbackClient();
 		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
 		if (count($host_config) == 0) {
-			$cb->update(
-				$error_el_id,
-				"API host $api_host does not exist"
-			);
-			$cb->show($error_el_id);
+			$emsg = "API host $api_host does not exist";
+			$this->updateError($error_el_id, $emsg);
 			return;
 		}
 		$result = null;
@@ -388,11 +389,8 @@ class Security extends Portlets
 			}
 		}
 		if (is_object($result) && $result->error !== 0) {
-			$cb->update(
-				$error_el_id,
-				$result->output
-			);
-			$cb->show($error_el_id);
+			$emsg = $result->output;
+			$this->updateError($error_el_id, $emsg);
 		}
 	}
 
@@ -415,13 +413,9 @@ class Security extends Portlets
 			'?apply_jobdefs=1'
 		], $api_host);
 
-		$cb = $this->getPage()->getCallbackClient();
 		if ($result->error !== 0) {
-			$cb->update(
-				$error_el_id,
-				$result->output
-			);
-			$cb->show($error_el_id);
+			$emsg = $result->output;
+			$this->updateError($error_el_id, $emsg);
 			return '';
 		}
 
@@ -518,11 +512,8 @@ class Security extends Portlets
 
 		$ret = $acls_base['Name'];
 		if ($result->error != 0) {
-			$cb->update(
-				$error_el_id,
-				$result->output
-			);
-			$cb->show($error_el_id);
+			$emsg = $result->output;
+			$this->updateError($error_el_id, $emsg);
 			$ret = '';
 		}
 		return $ret;
@@ -541,23 +532,16 @@ class Security extends Portlets
 	{
 		$state = false;
 		$host_config = $this->getModule('host_config')->getHostConfig($api_host);
-		$cb = $this->getPage()->getCallbackClient();
 		if (count($host_config) == 0) {
-			$cb->update(
-				$error_el_id,
-				"API host $api_host does not exist"
-			);
-			$cb->show($error_el_id);
+			$emsg = "API host $api_host does not exist";
+			$this->updateError($error_el_id, $emsg);
 			return $state;
 		}
 
 		$result = $this->getModule('api')->get(['directors'], $api_host);
 		if ($result->error !== 0) {
-			$cb->update(
-				$error_el_id,
-				$result->output
-			);
-			$cb->show($error_el_id);
+			$emsg = $result->output;
+			$this->updateError($error_el_id, $emsg);
 			return $state;
 		}
 		$director = $result->output[0];
@@ -579,11 +563,8 @@ class Security extends Portlets
 			if ($result->error === 0) {
 				$state = true;
 			} else {
-				$cb->update(
-					$error_el_id,
-					$result->output
-				);
-				$cb->show($error_el_id);
+				$emsg = $result->output;
+				$this->updateError($error_el_id, $emsg);
 				return $state;
 			}
 		} elseif ($host_config['auth_type'] === AuthOAuth2::NAME) {
@@ -608,11 +589,8 @@ class Security extends Portlets
 			if ($result->error === 0) {
 				$state = true;
 			} else {
-				$cb->update(
-					$error_el_id,
-					$result->output
-				);
-				$cb->show($error_el_id);
+				$emsg = $result->output;
+				$this->updateError($error_el_id, $emsg);
 				return $state;
 			}
 		}

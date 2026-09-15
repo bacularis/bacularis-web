@@ -118,7 +118,7 @@
 <script type="text/javascript">
 var oJobScheduleList = {
 	table: null,
-	data: <%=json_encode($this->schedules)%>,
+	data: <%=Miscellaneous::json_value($this->schedules)%>,
 	ids: {
 		schedule_list: 'schedule_list',
 		schedule_list_body: 'schedule_list_body'
@@ -184,10 +184,10 @@ var oJobScheduleList = {
 					data: 'schedtime_epoch',
 					render: render_date_ts_local
 				},
-				<%=empty($this->Job) ? '{data: "name"},' : ''%>
-				{data: 'client'},
-				{data: 'fileset'},
-				{data: 'schedule'}
+				<%=empty($this->Job) ? '{data: "name", render: render_text},' : ''%>
+				{data: 'client', render: render_text},
+				{data: 'fileset', render: render_text},
+				{data: 'schedule', render: render_text}
 			],
 			responsive: {
 				details: {
@@ -238,19 +238,19 @@ var oJobScheduleList = {
 					});
 					if (column[0][0] == 3) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
-					} else {
+					} else if (column[0][0] != 0) {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});

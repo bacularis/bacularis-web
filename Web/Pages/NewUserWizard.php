@@ -361,7 +361,8 @@ class NewUserWizard extends BaculumWebPage
 		if ($host_config->hostConfigExists($name)) {
 			// API host name already exists, stop here
 			$emsg = "Host '$name' already exists. Please choose different name.";
-			$cb->update($eid, $emsg);
+			$error_message = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $error_message);
 			$cb->show($eid);
 			return;
 		}
@@ -408,9 +409,10 @@ class NewUserWizard extends BaculumWebPage
 			}
 		} else {
 			// Error
+			$error_message = Miscellaneous::html_value($result->output);
 			$cb->update(
 				$this->NewAPIHostError,
-				$result->output
+				$error_message
 			);
 			$this->NewAPIHostError->Display = 'Dynamic';
 		}
@@ -465,9 +467,10 @@ class NewUserWizard extends BaculumWebPage
 				AuditLog::CATEGORY_APPLICATION,
 				"Error while creating API host group. Name: $host_group_name"
 			);
+			$error_message = Miscellaneous::html_value($result->output);
 			$this->getCallbackClient()->update(
 				$this->NewAPIHostGroupError,
-				$result->output
+				$error_message
 			);
 			$this->NewAPIHostGroupError->Display = 'Dynamic';
 		}
@@ -698,9 +701,10 @@ class NewUserWizard extends BaculumWebPage
 		], $api_host);
 
 		if ($result->error !== 0) {
+			$error_message = Miscellaneous::html_value($result->output);
 			$this->getCallbackClient()->update(
 				$this->NewAPIHostConsoleError,
-				$result->output
+				$error_message
 			);
 			$this->NewAPIHostConsoleError->Display = 'Dynamic';
 			return;
@@ -762,9 +766,10 @@ class NewUserWizard extends BaculumWebPage
 			$this->getModule('api')->set(['console'], ['reload']);
 			$this->setResourceConsole($api_host, $acls['Name']);
 		} else {
+			$error_message = Miscellaneous::html_value($result->output);
 			$this->getCallbackClient()->update(
 				$this->NewAPIHostConsoleError,
-				$result->output
+				$error_message
 			);
 			$this->NewAPIHostConsoleError->Display = 'Dynamic';
 		}
@@ -802,17 +807,20 @@ class NewUserWizard extends BaculumWebPage
 	{
 		$host_config = $this->getModule('host_config')->getConfig();
 		if (!key_exists($api_host, $host_config)) {
+			$error_message = "API host $api_host does not exist";
+			$error_message = Miscellaneous::html_value($error_message);
 			$this->getCallbackClient()->update(
 				$this->NewAPIHostConsoleError,
-				"API host $api_host does not exist"
+				$error_message
 			);
 			$this->NewAPIHostConsoleError->Display = 'Dynamic';
 		} else {
 			$result = $this->getModule('api')->get(['directors'], $api_host);
 			if ($result->error !== 0) {
+				$error_message = Miscellaneous::html_value($result->output);
 				$this->getCallbackClient()->update(
 					$this->NewAPIHostConsoleError,
-					$result->output
+					$error_message
 				);
 				$this->NewAPIHostConsoleError->Display = 'Dynamic';
 				return;
@@ -833,9 +841,10 @@ class NewUserWizard extends BaculumWebPage
 					$username
 				], $config, $api_host);
 				if ($result->error !== 0) {
+					$error_message = Miscellaneous::html_value($result->output);
 					$this->getCallbackClient()->update(
 						$this->NewAPIHostConsoleError,
-						$result->output
+						$error_message
 					);
 					$this->NewAPIHostConsoleError->Display = 'Dynamic';
 					return;
@@ -871,9 +880,10 @@ class NewUserWizard extends BaculumWebPage
 				$oa2::deleteByPk($api_host);
 
 				if ($result->error !== 0) {
+					$error_message = Miscellaneous::html_value($result->output);
 					$this->getCallbackClient()->update(
 						$this->NewAPIHostConsoleError,
-						$result->output
+						$error_message
 					);
 					$this->NewAPIHostConsoleError->Display = 'Dynamic';
 					return;

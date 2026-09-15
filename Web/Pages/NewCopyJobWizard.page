@@ -406,7 +406,7 @@ var oVolumeList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'mediaid'},
-				{data: 'volumename'},
+				{data: 'volumename', render: render_text},
 				{data: 'slot'},
 				{
 					data: 'poolid',
@@ -414,6 +414,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -428,13 +429,14 @@ var oVolumeList = {
 				},
 				{
 					data: 'storage',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'deviceid',
 					visible: false
 				},
-				{data: 'volstatus'},
+				{data: 'volstatus', render: render_text},
 				{
 					data: 'enabled',
 					render: function(data, type, row) {
@@ -449,7 +451,7 @@ var oVolumeList = {
 					},
 					visible: false
 				},
-				{data: 'mediatype'},
+				{data: 'mediatype', render: render_text},
 				{
 					data: 'mediatypeid',
 					visible: false
@@ -617,6 +619,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'initialwrite',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -625,6 +628,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'scratchpool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -633,10 +637,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'recyclepool',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -705,19 +711,19 @@ var oVolumeList = {
 					});
 					if (column[0][0] == 3) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -887,6 +893,7 @@ var oJobList = {
 				},
 				{
 					data: 'job',
+					render: render_text,
 					responsivePriority: 1
 				},
 				{
@@ -920,8 +927,10 @@ var oJobList = {
 						btn.appendChild(i);
 						btn.innerHTML += '&nbsp';
 						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternJob->Directive->ClientID%>').value = '" + data + "';");
-						return btn.outerHTML;
+						btn.addEventListener('click', () => {
+							document.getElementById('<%=$this->SelectionPatternJob->Directive->ClientID%>').value = data;
+						});
+						return btn;
 					}
 				}
 			],
@@ -955,11 +964,11 @@ var oJobList = {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -1047,8 +1056,8 @@ var oClientList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'clientid'},
-				{data: 'name'},
-				{data: 'uname'},
+				{data: 'name', render: render_text},
+				{data: 'uname', render: render_text},
 				{
 					data: 'autoprune',
 					render: function(data, type, row) {
@@ -1075,8 +1084,10 @@ var oClientList = {
 						btn.appendChild(i);
 						btn.innerHTML += '&nbsp';
 						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternClient->Directive->ClientID%>').value = '" + data + "';");
-						return btn.outerHTML;
+						btn.addEventListener('click', () => {
+							document.getElementById('<%=$this->SelectionPatternClient->Directive->ClientID%>').value = data;
+						});
+						return btn;
 					}
 				}
 			],
@@ -1113,20 +1124,20 @@ var oClientList = {
 						column.data().unique().sort(sort_natural).each(function (d, j) {
 							var time = Units.format_time_period(d);
 							var time_f = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');
-							if (column.search() == '^' + dtEscapeRegex(time_f) + '$') {
-								select.append('<option value="' + time_f + '" selected>' + time_f + '</option>');
-							} else {
-								select.append('<option value="' + time_f + '">' + time_f + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = time_f;
+							option.textContent = time_f;
+							option.selected = column.search() == '^' + dtEscapeRegex(time_f) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
 							if (d) {
-								if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-									select.append('<option value="' + d + '" selected>' + d + '</option>');
-								} else {
-									select.append('<option value="' + d + '">' + d + '</option>');
-								}
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = d;
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 						});
 					}
@@ -1292,7 +1303,7 @@ var oVolumeList = {
 	},
 	load_data: function() {
 		var cb = <%=$this->LoadVolumeList2->ActiveControl->Javascript%>;
-		cb.setCallbackParameter('<%=$this->Pool->getDirectiveValue()%>');
+		cb.setCallbackParameter(<%=$this->getPoolDirectiveValueJSON()%>);
 		cb.dispatch();
 	},
 	set_table: function(data) {
@@ -1328,7 +1339,7 @@ var oVolumeList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'mediaid'},
-				{data: 'volumename'},
+				{data: 'volumename', render: render_text},
 				{data: 'slot'},
 				{
 					data: 'poolid',
@@ -1336,6 +1347,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1350,13 +1362,14 @@ var oVolumeList = {
 				},
 				{
 					data: 'storage',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'deviceid',
 					visible: false
 				},
-				{data: 'volstatus'},
+				{data: 'volstatus', render: render_text},
 				{
 					data: 'enabled',
 					render: function(data, type, row) {
@@ -1371,7 +1384,7 @@ var oVolumeList = {
 					},
 					visible: false
 				},
-				{data: 'mediatype'},
+				{data: 'mediatype', render: render_text},
 				{
 					data: 'mediatypeid',
 					visible: false
@@ -1539,6 +1552,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'initialwrite',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1547,6 +1561,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'scratchpool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1555,10 +1570,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'recyclepool',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1603,8 +1620,10 @@ var oVolumeList = {
 						btn.appendChild(i);
 						btn.innerHTML += '&nbsp';
 						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.getElementById('<%=$this->SelectionPatternVolume->Directive->ClientID%>').value = '" + data + "';");
-						return btn.outerHTML;
+						btn.addEventListener('click', () => {
+							document.getElementById('<%=$this->SelectionPatternVolume->Directive->ClientID%>').value = data;
+						});
+						return btn;
 					}
 				}
 			],
@@ -1643,19 +1662,19 @@ var oVolumeList = {
 					});
 					if (column[0][0] == 3) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -2055,7 +2074,7 @@ function show_storage_warning(storage, pool, jobs) {
 						</div>
 					</div>
 				</fieldset>
-				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red" Style="white-space: pre-wrap"></com:TActiveLabel>
 			</div>
 		</com:TWizardStep>
 	</com:TWizard>

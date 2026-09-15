@@ -29,6 +29,8 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
+
 /**
  * Job list files control.
  *
@@ -94,10 +96,10 @@ class JobListFiles extends Portlets
 	{
 		for ($i = 0; $i < count($file_list); $i++) {
 			$pos = stripos($file_list[$i]->file, $keyword);
-			$str1 = substr($file_list[$i]->file, 0, $pos);
+			$str1 = Miscellaneous::html_value(substr($file_list[$i]->file, 0, $pos));
 			$key_len = strlen($keyword);
-			$key = substr($file_list[$i]->file, $pos, $key_len);
-			$str2 = substr($file_list[$i]->file, ($pos + $key_len));
+			$key = Miscellaneous::html_value(substr($file_list[$i]->file, $pos, $key_len));
+			$str2 = Miscellaneous::html_value(substr($file_list[$i]->file, ($pos + $key_len)));
 			$file_list[$i]->file_fmt = $str1 . '<strong class="w3-text-red">' . $key . '</strong>' . $str2;
 		}
 	}

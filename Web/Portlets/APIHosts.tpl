@@ -139,14 +139,17 @@ set_table: function() {
 				render: (data, type, row) => {
 					const id = 'name';
 					const tt_obj = oTagTools_<%=$this->TagToolsAPIHostList->ClientID%>;
-					const table = 'oAPIHostList.table';
+					const table = oAPIHostList;
 					return render_tags(type, id, data, tt_obj, table);
 				}
 			},
 			{
 				data: 'name',
 				render: function (data, type, row) {
-					let btns = '';
+					if (type != 'display') {
+						return data;
+					}
+					const btns = document.createElement('SPAN');
 
 					// Set access button
 					if (data !== 'Main') {
@@ -161,26 +164,30 @@ set_table: function() {
 						access_btn.appendChild(document.createTextNode(' '));
 						access_btn.appendChild(label);
 						access_btn.setAttribute('data-name', data);
-						access_btn.setAttribute('onclick', 'oAPIHosts.load_access_window(this.dataset.name)');
+						access_btn.addEventListener('click', function() {
+							oAPIHosts.load_access_window(data);
+						});
 						span.appendChild(access_btn);
 						span.style.marginRight = '5px';
-						btns += span.outerHTML;
+						btns.appendChild(span);
 					}
 
 					// Edit button
-					var btn_edit = document.createElement('BUTTON');
+					const btn_edit = document.createElement('BUTTON');
 					btn_edit.className = 'w3-button w3-green';
 					btn_edit.type = 'button';
-					var i_edit = document.createElement('I');
+					const i_edit = document.createElement('I');
 					i_edit.className = 'fa fa-edit';
-					var label_edit = document.createTextNode(' <%[ Edit ]%>');
+					const label_edit = document.createTextNode(' <%[ Edit ]%>');
 					btn_edit.appendChild(i_edit);
 					btn_edit.appendChild(document.createTextNode(' '));
 					btn_edit.style.marginRight = '8px';
 					btn_edit.appendChild(label_edit);
 					btn_edit.setAttribute('data-name', data);
-					btn_edit.setAttribute('onclick', 'oAPIHosts.load_api_host_window(this.dataset.name)');
-					btns += btn_edit.outerHTML;
+					btn_edit.addEventListener('click', function() {
+						oAPIHosts.load_api_host_window(data);
+					});
+					btns.appendChild(btn_edit);
 
 					return btns;
 				}

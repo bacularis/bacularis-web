@@ -150,13 +150,13 @@ var oAmazonEC2InstanceList = {
 						return name;
 					}
 				},
-				{data: 'instance_id'},
-				{data: 'instance_type'},
-				{data: 'platform_details'},
-				{data: 'placement_availability_zone'},
-				{data: 'public_ip_address'},
-				{data: 'private_ip_address'},
-				{data: 'root_device_name'},
+				{data: 'instance_id', render: render_text},
+				{data: 'instance_type', render: render_text},
+				{data: 'platform_details', render: render_text},
+				{data: 'placement_availability_zone', render: render_text},
+				{data: 'public_ip_address', render: render_text},
+				{data: 'private_ip_address', render: render_text},
+				{data: 'root_device_name', render: render_text},
 				{
 					data: 'tags',
 					render: function(data, type, row) {
@@ -177,8 +177,6 @@ var oAmazonEC2InstanceList = {
 				{
 					data: 'instance_id',
 					render: function (data, type, row) {
-						let btns = '';
-
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -192,14 +190,14 @@ var oAmazonEC2InstanceList = {
 						btn_edit.appendChild(label_edit);
 						const tag = row.tags.find((item) => item.Key == 'Name');
 						const name = tag ? tag.Value : '';
-						const instance = JSON.stringify({
+						const instance = {
 							instance_id: data,
 							name: name
+						};
+						btn_edit.addEventListener('click', () => {
+							oAmazonCreateEC2InstanceBackup.open_window([instance]);
 						});
-						btn_edit.setAttribute('onclick', 'oAmazonCreateEC2InstanceBackup.open_window([' + instance + '])');
-						btns += btn_edit.outerHTML;
-
-						return btns;
+						return btn_edit;
 					}
 				}
 			],
@@ -257,18 +255,23 @@ var oAmazonEC2InstanceList = {
 							ds = '<%[ Disabled ]%>';
 						}
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}

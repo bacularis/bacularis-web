@@ -120,7 +120,7 @@ var oOrganizationList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{data: 'full_name', render: render_text},
 				{data: 'user_no'},
 				{
@@ -140,7 +140,7 @@ var oOrganizationList = {
 					render: function(data, type, row) {
 						let ret = '-';
 						if (row.auth_type == '<%=OrganizationConfig::AUTH_TYPE_IDP%>') {
-							ret = data;
+							ret = render_text(data, type, row);
 						}
 						return ret;
 					}
@@ -150,7 +150,7 @@ var oOrganizationList = {
 					render: function(data, type, row) {
 						let ret = '-';
 						if (row.auth_type == '<%=OrganizationConfig::AUTH_TYPE_IDP%>') {
-							ret = data;
+							ret = render_text(data, type, row);
 						}
 						return ret;
 					}
@@ -177,15 +177,13 @@ var oOrganizationList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsOrganizationList->ClientID%>;
-						const table = 'oOrganizationList.table';
+						const table = oOrganizationList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'name',
 					render: function (data, type, row) {
-						let btns = '';
-
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -197,10 +195,10 @@ var oOrganizationList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oOrganizations.load_organization_window(\'' + data + '\')');
-						btns += btn_edit.outerHTML;
-
-						return btns;
+						btn_edit.addEventListener('click', () => {
+							oOrganizations.load_organization_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -256,18 +254,23 @@ var oOrganizationList = {
 						} else if (d === '0') {
 							ds = '<%[ Disabled ]%>';
 						}
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-						} else if (ds) {
-							select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+						if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = ds;
+							option.title = ds;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						}
 					});
 				} else {
 					column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else if(d) {
-							select.append('<option value="' + d + '">' + d + '</option>');
+						if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						}
 					});
 				}
@@ -510,6 +513,21 @@ $(function() {
 						Text="#FF9900"
 						ClientSide.OnColorSelected="$('#<%=$this->OrganizationLoginBtnColor->ClientID%>_picker').hide();"
 					/>
+					<com:TRequiredFieldValidator
+						ValidationGroup="OrganizationGroup"
+						ControlToValidate="OrganizationLoginBtnColor"
+						ErrorMessage="<%[ Field required. ]%>"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+					/>
+					<com:TRegularExpressionValidator
+						ValidationGroup="OrganizationGroup"
+						RegularExpression="^#[0-9A-Fa-f]{6}$"
+						ControlToValidate="OrganizationLoginBtnColor"
+						ErrorMessage="<%[ Invalid value. Expected format: #RRGGBB. ]%>"
+						ControlCssClass="field_invalid"
+						Display="Dynamic"
+					/>
 				</div>
 			</div>
 		</div>
@@ -543,7 +561,7 @@ $(function() {
 					<ul>
 				</prop:HeaderTemplate>
 				<prop:ItemTemplate>
-					<li><%#$this->Data['name']%></li>
+					<li><%#Miscellaneous::html_value($this->Data['name'])%></li>
 				</prop:ItemTemplate>
 				<prop:FooterTemplate>
 					</ul>

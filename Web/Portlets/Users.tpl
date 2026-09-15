@@ -195,7 +195,7 @@ var oUserList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'username'},
+				{data: 'username', render: render_text},
 				{data: 'long_name', render: render_text},
 				{
 					data: 'description',
@@ -207,13 +207,15 @@ var oUserList = {
 					render: render_text,
 					visible: false
 				},
-				{data: 'roles'},
+				{data: 'roles', render: render_text},
 				{
 					data: 'organization_id',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'organization_name',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -226,7 +228,7 @@ var oUserList = {
 								ret = '<%[ Host groups ]%>';
 							}
 						} else {
-							ret = data;
+							ret = render_text(data, type, row);
 						}
 						return ret;
 					}
@@ -248,6 +250,7 @@ var oUserList = {
 				},
 				{
 					data: 'ips',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -272,14 +275,14 @@ var oUserList = {
 					render: (data, type, row) => {
 						const id = 'username';
 						const tt_obj = oTagTools_<%=$this->TagToolsUserList->ClientID%>;
-						const table = 'oUserList.table';
+						const table = oUserList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'username',
 					render: function (data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 
 						// Set access button
 						const span = document.createElement('SPAN');
@@ -292,10 +295,12 @@ var oUserList = {
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
 						access_btn.appendChild(label);
-						access_btn.setAttribute('onclick', 'oUsers.load_user_access_window(\'' + row.organization_id + '\', \'' + data + '\')');
+						access_btn.addEventListener('click', () => {
+							oUsers.load_user_access_window(row.organization_id, data);
+						});
 						span.appendChild(access_btn);
 						span.style.marginRight = '5px';
-						btns += span.outerHTML;
+						btns.appendChild(span);
 
 						var btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -307,8 +312,10 @@ var oUserList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oUsers.load_user_window(\'' + row.organization_id + '\', \'' + data + '\')');
-						btns += btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oUsers.load_user_window(row.organization_id, data);
+						});
+						btns.appendChild(btn_edit);
 
 						return btns;
 					}
@@ -386,18 +393,21 @@ var oUserList = {
 					} else {
 						ds = item;
 					}
-					if (column.search() == '^' + dtEscapeRegex(item) + '$') {
-						select.append('<option value="' + item + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else {
-						select.append('<option value="' + item + '" title="' + ds + '">' + ds + '</option>');
-					}
+					const option = document.createElement('option');
+					option.value = item;
+					option.textContent = ds;
+					option.title = ds;
+					option.selected = column.search() == '^' + dtEscapeRegex(item) + '$';
+					select.append(option);
 				}
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (d) {
+						const option = document.createElement('option');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}
@@ -1017,7 +1027,7 @@ var oUserRolesWindow = {
 				<h2><%[ Set user organization ]%></h2>
 			</header>
 			<div class="w3-container w3-margin-left w3-margin-right">
-				<p id="user_organization_error" class="error w3-margin-top" style="display: none"></p>
+				<div id="user_organization_error" class="error w3-margin-top" style="display: none"></div>
 				<p>
 					<%[ Select the organization to which you want to assign the selected users. ]%>
 				</p>
@@ -1050,6 +1060,7 @@ var oUserOrganizationWindow = {
 		const organization = document.getElementById(this.ids.organization);
 		organization.value = '';
 		const error = document.getElementById(this.ids.error);
+		error.textContent = '';
 		error.style.display = 'none';
 	},
 	set_user_func: function(func) {
@@ -1060,6 +1071,22 @@ var oUserOrganizationWindow = {
 		const cb = <%=$this->SetUserOrganizationAction->ActiveControl->Javascript%>;
 		cb.setCallbackParameter(users);
 		cb.dispatch();
+	},
+	set_error: function(error_text, conflicts) {
+		const self = oUserOrganizationWindow;
+		const error = document.getElementById(self.ids.error);
+		error.textContent = '';
+		error.appendChild(document.createTextNode(error_text));
+		if (Array.isArray(conflicts) && conflicts.length > 0) {
+			const list = document.createElement('UL');
+			for (const conflict of conflicts) {
+				const item = document.createElement('LI');
+				item.textContent = conflict.user_id + ' (Org: ' + conflict.organization + ')';
+				list.appendChild(item);
+			}
+			error.appendChild(list);
+		}
+		error.style.display = 'block';
 	},
 	show: function(show) {
 		const self = oUserOrganizationWindow;

@@ -92,7 +92,7 @@
 					</div>
 					<i id="resource_loader" class="fa fa-sync w3-spin w3-margin-left w3-margin-top" style="display: none"></i>
 				</div>
-				<com:TActiveLabel ID="NewResourceLog" Display="None" CssClass="w3-panel w3-margin w3-text-red" />
+				<com:TActiveLabel ID="NewResourceLog" Display="None" CssClass="w3-panel w3-margin w3-text-red" Style="white-space: pre-wrap" />
 				<footer class="w3-row w3-container w3-center">
 					<com:TLinkButton
 						CssClass="w3-button w3-green w3-section"
@@ -122,7 +122,7 @@
 				$('#resource_save_ok_box').show();
 			}
 			function save_directive_post_action() {
-				var origin_url = '<%=$this->getOriginUrl()%>';
+				const origin_url = <%=Miscellaneous::json_value($this->origin_url)%>;
 				if (origin_url) {
 					document.location.href = origin_url;
 				}

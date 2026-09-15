@@ -92,21 +92,25 @@ class WebAccessResource extends Portlets
 		$this->WebAccessResourceAPIHosts->SelectedValues = [$def_api_host];
 		$this->WebAccessResourceAPIHosts->dataBind();
 		$this->WebAccessResourceAPIHosts->setEnabled(false);
-		$this->WebAccessResourceAPIHostsTxt->Text = $def_api_host;
+		$this->WebAccessResourceAPIHostsTxt->Text = Miscellaneous::html_value($def_api_host);
 
 		// Componen type
 		$misc = $this->getModule('misc');
 		$comp_short = $this->getComponentType();
-		$this->WebAccessResourceComponentType->Text = $misc->getComponentFullName($comp_short);
+		$component_type = $misc->getComponentFullName($comp_short);
+		$this->WebAccessResourceComponentType->Text = Miscellaneous::html_value($component_type);
 
 		// Component name
-		$this->WebAccessResourceComponentName->Text = $this->getComponentName();
+		$component_name = $this->getComponentName();
+		$this->WebAccessResourceComponentName->Text = Miscellaneous::html_value($component_name);
 
 		// Resource type
-		$this->WebAccessResourceResourceType->Text = $this->getResourceType();
+		$resource_type = $this->getResourceType();
+		$this->WebAccessResourceResourceType->Text = Miscellaneous::html_value($resource_type);
 
 		// Resource name
-		$this->WebAccessResourceResourceName->Text = $this->getResourceName();
+		$resource_name = $this->getResourceName();
+		$this->WebAccessResourceResourceName->Text = Miscellaneous::html_value($resource_name);
 
 		// Action name
 		$this->WebAccessResourceActionName->DataSource = [

@@ -14,7 +14,6 @@
 	<url ServiceParameter="StorageList" pattern="web/storage/" />
 	<url ServiceParameter="StorageView" pattern="web/storage/{storageid}/" parameters.storageid="\d+" />
 	<url ServiceParameter="StorageView" pattern="web/storage/{storage}/" parameters.storage="[a-zA-Z0-9:.\-_ ]+" />
-	<url ServiceParameter="DeviceView" pattern="web/device/{storageid}/{device}/" parameters.storageid="\d+" parameters.device="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="PoolList" pattern="web/pool/" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/{pool}/" parameters.poolid="\d+" parameters.pool="[a-zA-Z0-9:.\-_ ]+" />
 	<url ServiceParameter="PoolView" pattern="web/pool/{poolid}/" parameters.poolid="\d+" />

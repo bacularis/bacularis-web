@@ -290,19 +290,21 @@ class WebUserManager extends WebModule implements IUserManager
 		$users = '';
 		$ips = $application->User->getIps();
 		$pc = $this->getModule('page_category');
-		$add_role = false;
-		if ($pc->isCategorySystem($page_path) || $pc->isCategoryConditional($page_path)) {
-			// allow system pages for all logged in users
+		$allow_disabled_user = false;
+		$is_system_page = $pc->isCategorySystem($page_path);
+		$is_conditional_page = $pc->isCategoryConditional($page_path);
+		if ($is_system_page || $is_conditional_page) {
+			// System and conditional pages do not require application roles.
 			$roles = '';
 			$users = '@';
-			$add_role = true;
+			$allow_disabled_user = ($page_path === PageCategory::BACULARIS_ERROR || $is_conditional_page);
 		}
 
 		if ($pc->isCategoryPublic($page_path)) {
 			// public pages are available for everybody
 			$roles = $ips = '';
 			$users = '*';
-			$add_role = true;
+			$allow_disabled_user = true;
 		}
 
 		// remove authorization rules if any
@@ -330,11 +332,11 @@ class WebUserManager extends WebModule implements IUserManager
 		$rules = [];
 
 		/**
-		 * Add allow rule for enabled users, for special pages (system and public)
+		 * Add allow rule for enabled users, for public/error/bootstrap pages
 		 * and if user doesn't exist in user config and access by default setting
 		 * is enabled.
 		 */
-		if ($application->User->Enabled === true || $add_role === true || (!$application->User->InConfig && $web_config->isDefAccessDefaultSettings())) {
+		if ($application->User->Enabled === true || $allow_disabled_user === true || (!$application->User->InConfig && $web_config->isDefAccessDefaultSettings())) {
 			// Add allow rules for user with set enabled flag
 			$rules[] = $allow_rule;
 		}
@@ -429,7 +431,7 @@ class WebUserManager extends WebModule implements IUserManager
 		$web_config = $this->getModule('web_config');
 		$user = $this->Application->getUser();
 		return ($this->getAuthorizedFlag() === null &&
-			(($user->InConfig && !$web_config->isDefAccessNoAccess()) ||
+			(($user->InConfig && $user->Enabled && !$web_config->isDefAccessNoAccess()) ||
 			(!$user->InConfig && $web_config->isDefAccessDefaultSettings()))
 		);
 	}

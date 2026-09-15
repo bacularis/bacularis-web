@@ -16,7 +16,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\PluginConfigBase;
-use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Bulk apply patterns modal control.
@@ -28,12 +27,6 @@ class BulkApplyPatternsModal extends Portlets
 {
 	public const HOST = 'Host';
 	public const COMPONENT_TYPE = 'ComponentType';
-
-	public function onInit($param)
-	{
-		parent::onInit($param);
-		$this->Visible = $this->User->isInRole(WebUserRoles::ADMIN);
-	}
 
 	public function setPatternsWindow($sender, $param)
 	{

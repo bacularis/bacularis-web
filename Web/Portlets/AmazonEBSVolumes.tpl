@@ -152,13 +152,14 @@ var oAmazonEBSVolumeList = {
 						return name;
 					}
 				},
-				{data: 'volume_id'},
+				{data: 'volume_id', render: render_text},
 				{data: 'size'},
-				{data: 'state'},
-				{data: 'volume_type'},
-				{data: 'availability_zone'},
+				{data: 'state', render: render_text},
+				{data: 'volume_type', render: render_text},
+				{data: 'availability_zone', render: render_text},
 				{
 					data: 'create_time',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -180,6 +181,7 @@ var oAmazonEBSVolumeList = {
 				},
 				{
 					data: 'kms_key_id',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -202,8 +204,6 @@ var oAmazonEBSVolumeList = {
 				{
 					data: 'volume_id',
 					render: function (data, type, row) {
-						let btns = '';
-
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -217,14 +217,14 @@ var oAmazonEBSVolumeList = {
 						btn_edit.appendChild(label_edit);
 						const tag = row.tags.find((item) => item.Key == 'Name');
 						const name = tag ? tag.Value : '';
-						const volume = JSON.stringify({
+						const volume = {
 							volume_id: data,
 							name: name
+						};
+						btn_edit.addEventListener('click', () => {
+							oAmazonCreateEBSVolumeBackup.open_window([volume]);
 						});
-						btn_edit.setAttribute('onclick', 'oAmazonCreateEBSVolumeBackup.open_window([' + volume + '])');
-						btns += btn_edit.outerHTML;
-
-						return btns;
+						return btn_edit;
 					}
 				}
 			],
@@ -286,18 +286,23 @@ var oAmazonEBSVolumeList = {
 							ds = '<%[ Unencrypted ]%>';
 						}
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}

@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\RestoreDestinationCapability;
 use Bacularis\Web\Modules\RestoreDestinationConfig;
 
@@ -193,7 +194,10 @@ class RestoreDestinations extends RestoreTestVerification
 		$restore_destination_exists = $restore_destination_config->restoreDestinationConfigExists($name);
 
 		$cfg_restore_destination = [];
-		$cfg_restore_destination['description'] = str_replace(["\r", "\n"], ['', ' '], $this->RestoreDestinationDescription->Text);
+		$description = $this->RestoreDestinationDescription->Text;
+		// INI scalar values are stored on a single line.
+		$description = str_replace(["\r\n", "\r", "\n"], ' ', $description);
+		$cfg_restore_destination['description'] = $description;
 		$cfg_restore_destination['enabled'] = $this->RestoreDestinationEnabled->Checked ? '1' : '0';
 		$cfg_restore_destination['restore_client'] = $this->RestoreDestinationRestoreTargetClient->SelectedValue;
 		$restore_mode = $this->getRestoreMode();
@@ -213,7 +217,8 @@ class RestoreDestinations extends RestoreTestVerification
 		if ($restore_destination_win_type === self::TYPE_ADD_WINDOW && $restore_destination_exists) {
 			$msg = 'Restore destination with name \'%s\' already exists.';
 			$emsg = sprintf($msg, $name);
-			$cb->update($this->RestoreDestinationWindowError, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($this->RestoreDestinationWindowError, $emsg_html);
 			$cb->show($this->RestoreDestinationWindowError);
 			return;
 		}

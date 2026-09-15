@@ -37,6 +37,11 @@ class WebAccessConfig extends ConfigFileModule
 	public const CONFIG_FILE_FORMAT = 'ini';
 
 	/**
+	 * Web access config lock file extension.
+	 */
+	private const CONFIG_LOCK_FILE_EXT = '.lock';
+
+	/**
 	 * Web access types.
 	 */
 	public const WEB_ACCESS_TYPE_RESOURCE = 'resource';
@@ -112,9 +117,14 @@ class WebAccessConfig extends ConfigFileModule
 	 */
 	public function setConfig(array $config): bool
 	{
-		$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
-		if ($result === true) {
-			$this->config = null;
+		$result = false;
+		$lock = $this->acquireConfigLock();
+		if (is_resource($lock)) {
+			try {
+				$result = $this->setConfigUnlocked($config);
+			} finally {
+				$this->releaseConfigLock($lock);
+			}
 		}
 		return $result;
 	}
@@ -146,9 +156,11 @@ class WebAccessConfig extends ConfigFileModule
 	{
 		$result = false;
 		if ($this->validateOptions($settings)) {
-			$config = $this->getConfig();
-			$config[$name] = $settings;
-			$result = $this->setConfig($config);
+			$modifier = function (array $config) use ($name, $settings): array {
+				$config[$name] = $settings;
+				return $config;
+			};
+			$result = $this->modifyConfig($modifier);
 		}
 		return $result;
 	}
@@ -162,9 +174,10 @@ class WebAccessConfig extends ConfigFileModule
 	 */
 	public function updateWebAccessConfig(string $name, array $settings): bool
 	{
-		$result = false;
-		$config = $this->getConfig();
-		if (key_exists($name, $config)) {
+		$modifier = function (array $config) use ($name, $settings) {
+			if (!key_exists($name, $config)) {
+				return null;
+			}
 			foreach ($settings as $key => $val) {
 				if (is_array($val)) {
 					foreach ($val as $k => $v) {
@@ -174,12 +187,9 @@ class WebAccessConfig extends ConfigFileModule
 					$config[$name][$key] = $val;
 				}
 			}
-			$result = true;
-		}
-		if ($result) {
-			$result = $this->setConfig($config);
-		}
-		return $result;
+			return $config;
+		};
+		return $this->modifyConfig($modifier);
 	}
 
 	/**
@@ -190,13 +200,14 @@ class WebAccessConfig extends ConfigFileModule
 	 */
 	public function removeWebAccessConfig(string $name): bool
 	{
-		$result = false;
-		$config = $this->getConfig();
-		if (key_exists($name, $config)) {
+		$modifier = function (array $config) use ($name) {
+			if (!key_exists($name, $config)) {
+				return null;
+			}
 			unset($config[$name]);
-			$result = $this->setConfig($config);
-		}
-		return $result;
+			return $config;
+		};
+		return $this->modifyConfig($modifier);
 	}
 
 	/**
@@ -207,19 +218,148 @@ class WebAccessConfig extends ConfigFileModule
 	 */
 	public function removeWebAccessConfigs(array $names): bool
 	{
-		$result = false;
-		$config = $this->getConfig();
-		$mod = false;
-		for ($i = 0; $i < count($names); $i++) {
-			if (key_exists($names[$i], $config)) {
-				unset($config[$names[$i]]);
-				$mod = true;
+		$modifier = function (array $config) use ($names) {
+			$modified = false;
+			for ($i = 0; $i < count($names); $i++) {
+				if (key_exists($names[$i], $config)) {
+					unset($config[$names[$i]]);
+					$modified = true;
+				}
 			}
+			return $modified ? $config : null;
+		};
+		return $this->modifyConfig($modifier);
+	}
+
+	/**
+	 * Atomically validate and reserve one WebAccess use.
+	 * The reserved use is consumed regardless of the backend action result.
+	 *
+	 * @param string $name web access config name
+	 * @param callable $validator web access config validation callback
+	 * @return array reservation data with keys: reserved, config, validation
+	 */
+	public function reserveWebAccessUse(string $name, callable $validator): array
+	{
+		$reservation = [
+			'reserved' => false,
+			'config' => [],
+			'validation' => null
+		];
+		$lock = $this->acquireConfigLock();
+		if (!is_resource($lock)) {
+			return $reservation;
 		}
-		if ($mod) {
-			$result = $this->setConfig($config);
+
+		try {
+			$this->config = null;
+			$config = $this->getConfig();
+			$settings = key_exists($name, $config) ? $config[$name] : [];
+			$reservation['config'] = $settings;
+			$reservation['validation'] = $validator($settings);
+			if (
+				!is_array($reservation['validation']) ||
+				!key_exists('error', $reservation['validation']) ||
+				$reservation['validation']['error'] !== 0
+			) {
+				return $reservation;
+			}
+			if ($settings['usage_method'] === self::WEB_ACCESS_USAGE_METHOD_UNLIMITED) {
+				$reservation['reserved'] = true;
+				return $reservation;
+			}
+
+			$settings['access_time'] = time();
+			if (
+				$settings['usage_method'] === self::WEB_ACCESS_USAGE_METHOD_ONE_USE ||
+				$settings['usage_method'] === self::WEB_ACCESS_USAGE_METHOD_NUMBER_USES
+			) {
+				$usage_left = (int) $settings['usage_left'];
+				$settings['usage_left'] = --$usage_left;
+			}
+			$config[$name] = $settings;
+			$reservation['config'] = $settings;
+			$reservation['reserved'] = $this->setConfigUnlocked($config);
+		} finally {
+			$this->releaseConfigLock($lock);
+		}
+		return $reservation;
+	}
+
+	/**
+	 * Modify the current WebAccess configuration under an exclusive lock.
+	 * The modifier returns the complete changed configuration or null when
+	 * no configuration should be written.
+	 *
+	 * @param callable $modifier configuration modifier callback
+	 * @return bool true if changed configuration was saved, otherwise false
+	 */
+	private function modifyConfig(callable $modifier): bool
+	{
+		$result = false;
+		$lock = $this->acquireConfigLock();
+		if (!is_resource($lock)) {
+			return $result;
+		}
+
+		try {
+			$this->config = null;
+			$config = $this->getConfig();
+			$config = $modifier($config);
+			if (is_array($config)) {
+				$result = $this->setConfigUnlocked($config);
+			}
+		} finally {
+			$this->releaseConfigLock($lock);
 		}
 		return $result;
+	}
+
+	/**
+	 * Save the complete WebAccess configuration without acquiring a lock.
+	 * The caller must hold the WebAccess configuration lock.
+	 *
+	 * @param array $config web access config
+	 * @return bool true if config saved successfully, otherwise false
+	 */
+	private function setConfigUnlocked(array $config): bool
+	{
+		$result = $this->writeConfig($config, self::CONFIG_FILE_PATH, self::CONFIG_FILE_FORMAT);
+		if ($result === true) {
+			$this->config = null;
+		}
+		return $result;
+	}
+
+	/**
+	 * Acquire the exclusive WebAccess configuration lock.
+	 *
+	 * @return resource|false lock file handle on success, otherwise false
+	 */
+	private function acquireConfigLock()
+	{
+		$config_path = $this->getConfigRealPath(self::CONFIG_FILE_PATH);
+		$lock_path = $config_path . self::CONFIG_LOCK_FILE_EXT;
+		$lock = fopen($lock_path, 'c');
+		if (!is_resource($lock)) {
+			return false;
+		}
+		if (!flock($lock, LOCK_EX)) {
+			fclose($lock);
+			return false;
+		}
+		return $lock;
+	}
+
+	/**
+	 * Release the WebAccess configuration lock.
+	 *
+	 * @param resource $lock lock file handle
+	 */
+	private function releaseConfigLock($lock): void
+	{
+		flock($lock, LOCK_UN);
+		fclose($lock);
 	}
 
 	/**

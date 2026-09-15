@@ -15,6 +15,8 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
+
 /**
  * Data tab views control.
  *
@@ -57,6 +59,17 @@ class TabViews extends Portlets
 		return $config;
 	}
 
+	/**
+	 * Get view configuration as JSON safe for JavaScript context.
+	 *
+	 * @return string view configuration JSON
+	 */
+	public function getConfigJSON(): string
+	{
+		$config = $this->getConfig();
+		return Miscellaneous::json_value($config);
+	}
+
 	public function saveConfig($sender, $param): void
 	{
 		$view = $param->getCallbackParameter();
@@ -91,6 +104,17 @@ class TabViews extends Portlets
 	public function getDescription(): array
 	{
 		return $this->getViewState(self::DATA_VIEW_DESC, []);
+	}
+
+	/**
+	 * Get view description as JSON safe for JavaScript context.
+	 *
+	 * @return string view description JSON
+	 */
+	public function getDescriptionJSON(): string
+	{
+		$description = $this->getDescription();
+		return Miscellaneous::json_value($description);
 	}
 
 	public function setViewDataFunction(string $data): void

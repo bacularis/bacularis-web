@@ -107,7 +107,7 @@
 <com:TCallback ID="AssignTag" OnCallback="assignTag" />
 <com:TCallback ID="UnassignTag" OnCallback="unassignTag" />
 <script>
-oTagInput_<%=$this->ClientID%> = {
+const oTagInput_<%=$this->ClientID%> = {
 	ids: {
 		input: 'add_tags_input_<%=$this->ClientID%>',
 		suggest: 'tag_tools_suggestions_<%=$this->ClientID%>',
@@ -200,7 +200,7 @@ oTagInput_<%=$this->ClientID%> = {
 	}
 };
 
-oTagColorPalette_<%=$this->ClientID%> = {
+const oTagColorPalette_<%=$this->ClientID%> = {
 	ids: {
 		colors: 'tag_tools_colors_<%=$this->ClientiD%>'
 	},
@@ -261,7 +261,7 @@ oTagColorPalette_<%=$this->ClientID%> = {
 	}
 };
 
-oTagSeverity_<%=$this->ClientID%> = {
+const oTagSeverity_<%=$this->ClientID%> = {
 	ids: {
 		severity: 'tag_tools_severity_level_<%=$this->ClientID%>'
 	},
@@ -283,7 +283,7 @@ oTagSeverity_<%=$this->ClientID%> = {
 	}
 };
 
-oTagAccessibility_<%=$this->ClientID%> = {
+const oTagAccessibility_<%=$this->ClientID%> = {
 	ids: {
 		access_local: 'tag_tools_access_local_<%=$this->ClientID%>',
 		access_global: 'tag_tools_access_global_<%=$this->ClientID%>'
@@ -304,7 +304,7 @@ oTagAccessibility_<%=$this->ClientID%> = {
 	}
 };
 
-oTagTools_<%=$this->ClientID%> = {
+const oTagTools_<%=$this->ClientID%> = {
 	ids: {
 		win: 'tag_tools_window_<%=$this->ClientID%>',
 		title: 'tag_tools_title_<%=$this->ClientID%>',
@@ -383,6 +383,9 @@ oTagTools_<%=$this->ClientID%> = {
 		container.textContent = title;
 	},
 	set_element: function(id, value, table) {
+		if (typeof(value) != 'string' && value.toString) {
+			value = value.toString();
+		}
 		this.element = {
 			id: id,
 			value: value,
@@ -462,8 +465,8 @@ oTagTools_<%=$this->ClientID%> = {
 		this.set_element(id, value, table);
 		const data = {
 			tag: this.get_tag_props(tag),
-			id: id,
-			value: value
+			id: this.element.id,
+			value: this.element.value
 		};
 		const cb = <%=$this->UnassignTag->ActiveControl->Javascript%>;
 		cb.setCallbackParameter(data);
@@ -571,6 +574,7 @@ oTagTools_<%=$this->ClientID%> = {
 		this.error('');
 	}
 };
+window.oTagTools_<%=$this->ClientID%> = oTagTools_<%=$this->ClientID%>;
 $(function() {
 	const input = oTagInput_<%=$this->ClientID%>.init();
 	const palette = oTagColorPalette_<%=$this->ClientID%>.init();

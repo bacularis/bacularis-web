@@ -505,7 +505,8 @@ class NewRestoreVerification extends BaculumWebPage
 		if ($restore_destination_config->restoreDestinationConfigExists($name)) {
 			$msg = 'Restore destination with name \'%s\' already exists.';
 			$emsg = sprintf($msg, $name);
-			$cb->update($this->RestoreDestinationError, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($this->RestoreDestinationError, $emsg_html);
 			$cb->show($this->RestoreDestinationError);
 			return;
 		}

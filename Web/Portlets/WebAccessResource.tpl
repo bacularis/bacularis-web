@@ -138,21 +138,35 @@ var oWebAccessResourceList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'api_hosts'},
+				{
+					data: 'api_hosts',
+					render: function(data, type, row) {
+						let ret = data;
+						if (type == 'display') {
+							const api_hosts = Array.isArray(data) ? data.join(', ') : (data || '');
+							ret = DataTable.render.text().display(api_hosts);
+						}
+						return ret;
+					}
+				},
 				{
 					data: 'component_type',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'component_name',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'resource_type',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'resource_name',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -166,6 +180,8 @@ var oWebAccessResourceList = {
 								ret = '<%[ For X days ]%>';
 							} else if (data == '<%=WebAccessConfig::WEB_ACCESS_TIME_METHOD_DATE_RANGE%>') {
 								ret = '<%[ Date range ]%>';
+							} else {
+								ret = '';
 							}
 						}
 						return ret;
@@ -182,6 +198,8 @@ var oWebAccessResourceList = {
 								ret = '<%[ One-time use ]%>';
 							} else if (data == '<%=WebAccessConfig::WEB_ACCESS_USAGE_METHOD_NUMBER_USES%>') {
 								ret = '<%[ Numer of use ]%>';
+							} else {
+								ret = '';
 							}
 						}
 						return ret;
@@ -196,6 +214,8 @@ var oWebAccessResourceList = {
 								ret = '<%[ No limit ]%>';
 							} else if (data == '<%=WebAccessConfig::WEB_ACCESS_SOURCE_METHOD_IP_RESTRICTION%>') {
 								ret = '<%[ IP addr. restriction ]%>';
+							} else {
+								ret = '';
 							}
 						}
 						return ret;
@@ -229,7 +249,7 @@ var oWebAccessResourceList = {
 					},
 					visible: false
 				},
-				{data: 'action'},
+				{data: 'action', render: render_text},
 				{
 					data: 'action_params',
 					render: function (data, type, row) {
@@ -239,11 +259,13 @@ var oWebAccessResourceList = {
 						img.classList.add('fa-solid', 'fa-fw', 'fa-braille');
 						const txt = document.createElement('SPAN');
 						txt.textContent = ' <%[ Params ]%>';
-						cont.setAttribute('onclick', 'oWebAccessParams.add_params(' + JSON.stringify(data) + '); oWebAccessParams.show_window(true);');
-
+						cont.addEventListener('click', () => {
+							oWebAccessParams.add_params(data);
+							oWebAccessParams.show_window(true);
+						});
 						cont.appendChild(img);
 						cont.appendChild(txt);
-						return cont.outerHTML;
+						return cont;
 					}
 				},
 				{
@@ -261,11 +283,12 @@ var oWebAccessResourceList = {
 						img.classList.add('fa-solid', 'fa-fw', 'fa-copy');
 						const txt = document.createElement('SPAN');
 						txt.textContent = ' <%[ Copy ]%>';
-						cont.setAttribute('onclick', 'oWebAccessResourceList.copy_link.call(this, "' + link + '");');
-
+						cont.addEventListener('click', function () {
+							oWebAccessResourceList.copy_link.call(this, link);
+						});
 						cont.appendChild(img);
 						cont.appendChild(txt);
-						return cont.outerHTML;
+						return cont;
 					}
 				},
 				{
@@ -355,19 +378,19 @@ var oWebAccessResourceList = {
 						}
 
 
-						cont.setAttribute('onclick', 'oWebAccessStats.add_params(' + JSON.stringify(params) + '); oWebAccessStats.show_window(true);');
+						cont.addEventListener('click', () => {
+							oWebAccessStats.add_params(params);
+							oWebAccessStats.show_window(true);
+						});
 
 						cont.appendChild(img);
 						cont.appendChild(txt);
-						return cont.outerHTML;
+						return cont;
 					}
 				},
 				{
 					data: 'token',
 					render: function (data, type, row) {
-						let btns = '';
-
-						// Edit button
 						const span = document.createElement('SPAN');
 						const access_btn = document.createElement('BUTTON');
 						access_btn.className = 'w3-button w3-green';
@@ -378,19 +401,20 @@ var oWebAccessResourceList = {
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
 						access_btn.appendChild(label);
-						access_btn.setAttribute('onclick', 'oWebAccessResource.load_window("' + data + '")');
+						access_btn.addEventListener('click', () => {
+							oWebAccessResource.load_window(data);
+						});
 						span.appendChild(access_btn);
 						span.style.marginRight = '5px';
-						btns += span.outerHTML;
-
-						return btns;
+						return span;
 					}
 				}
 			],
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -427,10 +451,12 @@ var oWebAccessResourceList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});

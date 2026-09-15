@@ -27,11 +27,12 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Common\Modules\Params;
+use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
 use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
-use Bacularis\Common\Modules\Params;
-use Bacularis\Common\Modules\Miscellaneous;
-use Bacularis\Web\Modules\BaculumWebPage;
 
 /**
  * Client view page.
@@ -114,7 +115,9 @@ class ClientView extends BaculumWebPage
 		if ($fd_api_host) {
 			$this->CompActions->setHost($fd_api_host);
 			$this->CompActions->setComponentType('fd');
-			$this->BulkApplyPatternsClient->setHost($fd_api_host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsClient->setHost($fd_api_host);
+			}
 		}
 	}
 
@@ -194,7 +197,9 @@ class ClientView extends BaculumWebPage
 			$this->FDFileDaemonConfig->setResourceName($component_name);
 			$this->FDFileDaemonConfig->setLoadValues(true);
 			$this->FDFileDaemonConfig->raiseEvent('OnDirectiveListLoad', $this, null);
-			$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
+			}
 		} else {
 			$this->FDFileDaemonConfigErr->Display = 'Dynamic';
 		}
@@ -211,7 +216,9 @@ class ClientView extends BaculumWebPage
 			$this->FileDaemonResourcesConfig->setResourceType($resource_type);
 			$this->FileDaemonResourcesConfig->setComponentName($component_name);
 			$this->FileDaemonResourcesConfig->loadResourceListTable($sender, $param);
-			$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsClient->setHost($this->UserAPIHosts->SelectedValue);
+			}
 		} else {
 			$this->FileDaemonResourcesConfig->showError(true);
 		}
@@ -261,6 +268,31 @@ class ClientView extends BaculumWebPage
 	}
 
 	/**
+	 * Get client name as JSON safe for JavaScript context.
+	 *
+	 * @return string client name JSON
+	 */
+	public function getClientNameJSON(): string
+	{
+		$client_name = $this->getClientName();
+		return Miscellaneous::json_value($client_name);
+	}
+
+	/**
+	 * Get director uname as JSON safe for JavaScript context.
+	 *
+	 * @return string director uname JSON
+	 */
+	public function getDirectorUnameJSON(): string
+	{
+		if (!$this->Session->contains('director_uname')) {
+			return '{}';
+		}
+		$director_uname = $this->Session['director_uname'];
+		return Miscellaneous::json_value($director_uname);
+	}
+
+	/**
 	 * Set client address.
 	 *
 	 * @param mixed $address
@@ -285,7 +317,8 @@ class ClientView extends BaculumWebPage
 		$raw_status = $this->getModule('api')->get(
 			['clients', $this->getClientId(), 'status']
 		)->output;
-		$this->ClientLog->Text = implode(PHP_EOL, $raw_status);
+		$client_log = implode(PHP_EOL, $raw_status);
+		$this->ClientLog->Text = Miscellaneous::html_value($client_log);
 
 		$query_str = '?output=json&type=header';
 		$graph_status = $this->getModule('api')->get(

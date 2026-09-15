@@ -18,6 +18,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Ldap;
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\WebConfig;
 use Bacularis\Web\Modules\WebUserRoles;
@@ -455,7 +456,8 @@ class AuthenticationMethods extends Security
 		} else {
 			// Error
 			$cb->show('ldap_get_users_error');
-			$this->TestLdapGetUsersMsg->Text = $ldap->getLdapError();
+			$error = $ldap->getLdapError();
+			$this->TestLdapGetUsersMsg->Text = Miscellaneous::html_value($error);
 			$this->TestLdapGetUsersMsg->Display = 'Dynamic';
 		}
 	}
@@ -681,7 +683,8 @@ class AuthenticationMethods extends Security
 			$cb->show('ldap_test_connection_ok');
 		} else {
 			$cb->show('ldap_test_connection_error');
-			$this->TestLdapConnectionMsg->Text = $ldap->getLdapError();
+			$error = $ldap->getLdapError();
+			$this->TestLdapConnectionMsg->Text = Miscellaneous::html_value($error);
 			$this->TestLdapConnectionMsg->Display = 'Dynamic';
 		}
 	}

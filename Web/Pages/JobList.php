@@ -29,6 +29,7 @@
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobAction;
@@ -464,7 +465,8 @@ class JobList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while starting verify job. Message: %s.';
 			$emsg = sprintf($emsg, $error);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 		}
 	}

@@ -66,11 +66,10 @@ class BulkActionsModal extends Portlets
 		if (!$this->getPage()->IsCallBack) {
 			return;
 		}
-		$id = $this->ClientID . 'bulk_actions_output';
 		$cb = $this->getPage()->getCallbackClient();
-		$cb->update(
-			$id,
-			$output
+		$cb->callClientFunction(
+			'oBulkActionsModal.set_output',
+			[$output]
 		);
 	}
 }

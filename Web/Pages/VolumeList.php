@@ -446,7 +446,8 @@ class VolumeList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while setting volume status. Message: %s.';
 			$emsg = sprintf($emsg, $error);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 		}
 	}
@@ -490,7 +491,8 @@ class VolumeList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while setting volume pool. Message: %s.';
 			$emsg = sprintf($emsg, $error);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 		}
 	}
@@ -534,7 +536,8 @@ class VolumeList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while setting volume retention time. Message: %s.';
 			$emsg = sprintf($emsg, $error);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 		}
 	}
@@ -578,7 +581,8 @@ class VolumeList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while setting volume use duration time. Message: %s.';
 			$emsg = sprintf($emsg, $error);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 		}
 	}

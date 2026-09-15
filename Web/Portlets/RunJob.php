@@ -358,9 +358,10 @@ class RunJob extends Portlets
 
 		if ($result->error === 0) {
 			$this->getPage()->getCallbackClient()->callClientFunction('set_loading_status', ['loading']);
-			$this->RunJobLog->Text = implode('', $result->output);
+			$run_job_log = implode('', $result->output);
+			$this->RunJobLog->Text = Miscellaneous::html_value($run_job_log);
 		} else {
-			$this->RunJobLog->Text = $result->output;
+			$this->RunJobLog->Text = Miscellaneous::html_value($result->output);
 		}
 	}
 
@@ -379,7 +380,8 @@ class RunJob extends Portlets
 
 		if ($result->error === 0) {
 			if (count($result->output) > 0) {
-				$this->RunJobLog->Text = implode('', $result->output);
+				$run_job_log = implode('', $result->output);
+				$this->RunJobLog->Text = Miscellaneous::html_value($run_job_log);
 				$this->getPage()->getCallbackClient()->callClientFunction(
 					'estimate_output_refresh',
 					[$out_id]
@@ -391,7 +393,7 @@ class RunJob extends Portlets
 				);
 			}
 		} else {
-			$this->RunJobLog->Text = $result->output;
+			$this->RunJobLog->Text = Miscellaneous::html_value($result->output);
 		}
 	}
 	public function runJobAgain($sender, $param)

@@ -17,6 +17,7 @@ namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\AuthBasic;
 use Bacularis\Common\Modules\AuthOAuth2;
+use Bacularis\Common\Modules\Errors\AuthenticationError;
 use Bacularis\Common\Modules\Errors\BconsoleError;
 use Bacularis\Common\Modules\Errors\ConnectionError;
 use Bacularis\Common\Modules\Logging;
@@ -87,6 +88,11 @@ class BacularisAPIClient extends WebModule
 	 * Host record object.
 	 */
 	private $host_record;
+
+	/**
+	 * OAuth2 reauthorization attempts made during the current Web request.
+	 */
+	private $oauth2_reauthorization_attempted = [];
 
 
 	/**
@@ -482,14 +488,23 @@ class BacularisAPIClient extends WebModule
 	 */
 	private function request(string $method, array $params, array $options = [], ?string $host = null, bool $show_error = true): object
 	{
+		if (is_null($host)) {
+			$host = $this->User->getDefaultAPIHost();
+		}
 		$request = $this->prepareAPIRequest($method, $params, $options, $host);
 		$response = $this->executeAPIRequest($request);
-		return $this->parseAPIResponse(
+		$resource = $this->parseAPIResponse(
 			$response['body'],
 			$response['error'],
-			$response['errno'],
-			$show_error
+			$response['errno']
 		);
+		if ($this->shouldReauthorizeOAuth2($resource, $host)) {
+			$this->oauth2_reauthorization_attempted[$host] = true;
+			OAuth2Record::deleteByPk($host);
+			return $this->request($method, $params, $options, $host, $show_error);
+		}
+		$this->handleAPIResponseError($resource, $show_error);
+		return $resource;
 	}
 
 	/**
@@ -710,27 +725,58 @@ class BacularisAPIClient extends WebModule
 
 	/**
 	 * Parse and prepare Internal API response.
-	 * If a error occurs then redirect to appropriate error page.
 	 *
 	 * @param string $result response output as JSON string (not object yet)
 	 * @param string $error error message from remote host
 	 * @param int $errno error number from remote host
-	 * @param bool $show_error if true then it shows error as HTML error page
 	 * @return object stdClass parsed response with two top level properties 'output' and 'error'
 	 */
-	private function parseAPIResponse(string $result, string $error, int $errno, bool $show_error = true): object
+	private function parseAPIResponse(string $result, string $error, int $errno): object
 	{
 		Logging::log(
 			Logging::CATEGORY_APPLICATION,
 			$result
 		);
 		$resource = $this->decodeAPIResponse($result, $error, $errno);
-		$this->handleAPIResponseError($resource, $show_error);
 		Logging::log(
 			Logging::CATEGORY_APPLICATION,
 			$resource
 		);
 		return $resource;
+	}
+
+	/**
+	 * Check if an invalid OAuth2 access token should trigger reauthorization.
+	 * Reauthorization is allowed once per API host during the current Web request.
+	 *
+	 * @param object $resource decoded API response
+	 * @param null|string $host host name used for the API request
+	 * @return bool true if OAuth2 authorization should be repeated
+	 */
+	private function shouldReauthorizeOAuth2(object $resource, ?string $host): bool
+	{
+		if ($this->test_mode) {
+			return false;
+		}
+
+		if (
+			!property_exists($resource, 'error') ||
+			$resource->error != AuthenticationError::ERROR_AUTHENTICATION_TO_API_PROBLEM
+		) {
+			return false;
+		}
+
+		if (
+			is_null($host) ||
+			$host === '' ||
+			key_exists($host, $this->oauth2_reauthorization_attempted)
+		) {
+			return false;
+		}
+
+		$host_cfg = $this->getHostParams($host);
+		$oauth2 = $this->getOAuth2Client();
+		return $oauth2->isOAuth2Host($host, $host_cfg);
 	}
 
 	/**

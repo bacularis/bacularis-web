@@ -6,9 +6,9 @@
 	<div class="w3-container w3-border-bottom" style="min-height: 84px; margin-bottom: 5px;">
 
 		<div class="w3-center w3-margin-top">
-			<span><%[ Welcome ]%>, <strong><%=$this->User->getUsername()%></strong></span><br />
+			<span><%[ Welcome ]%>, <strong><%=$this->getUsernameHTML()%></strong></span><br />
 			<div class="w3-tiny" style="display: <%=count($this->organization) == 0 ? 'none' : 'block'%>">
-				Org: <strong><%=$this->organization['full_name'] ?? ''%></strong>
+				Org: <strong><%=$this->getOrganizationFullName()%></strong>
 			</div>
 			<com:TLinkButton
 				ID="Logout"
@@ -27,7 +27,7 @@
 		<a id="jobs_btn" href="<%=$this->Service->constructUrl('JobList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('JobList', 'JobView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'JobList') ? '' : ' hide'%>"><i class="fa fa-tasks fa-fw"></i>  <%[ Jobs ]%></a>
 		<a href="<%=$this->Service->constructUrl('DirectorView', ['director' => $this->getApplication()->getSession()->itemAt('director')])%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('DirectorView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'DirectorView') ? '' : ' hide'%>"><i class="fa fa-sitemap fa-fw"></i>  <%[ Director ]%></a>
 		<a href="<%=$this->Service->constructUrl('ClientList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('ClientList', 'ClientView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'ClientList') ? '' : ' hide'%>"><i class="fa fa-desktop fa-fw"></i>  <%[ Clients ]%></a>
-		<a href="<%=$this->Service->constructUrl('StorageList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('StorageList', 'StorageView', 'DeviceView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'StorageList') ? '' : ' hide'%>"><i class="fa fa-database fa-fw"></i>  <%[ Storages ]%></a>
+		<a href="<%=$this->Service->constructUrl('StorageList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('StorageList', 'StorageView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'StorageList') ? '' : ' hide'%>"><i class="fa fa-database fa-fw"></i>  <%[ Storages ]%></a>
 		<a href="<%=$this->Service->constructUrl('PoolList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('PoolList', 'PoolView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'PoolList') ? '' : ' hide'%>"><i class="fa fa-tape fa-fw"></i>  <%[ Pools ]%></a>
 		<a href="<%=$this->Service->constructUrl('VolumeList')%>" class="w3-bar-item w3-button w3-padding<%=in_array($this->Service->getRequestedPagePath(), array('VolumeList', 'VolumeView')) ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'VolumeList') ? '' : ' hide'%>"><i class="fa fa-hdd fa-fw"></i>  <%[ Volumes ]%></a>
 		<a href="<%=$this->Service->constructUrl('ConsoleView')%>" class="w3-bar-item w3-button w3-padding<%=$this->Service->getRequestedPagePath() == 'ConsoleView' ? ' w3-blue': ''%><%=$this->getModule('users')->isPageAllowed($this->User, 'ConsoleView') ? '' : ' hide'%>"><i class="fa fa-terminal fa-fw"></i>  <%[ Console ]%></a>

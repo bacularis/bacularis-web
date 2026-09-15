@@ -199,7 +199,8 @@ class Organizations extends Security
 			if ($org_exists) {
 				$msg = Prado::localize('Organization with identifier \'%s\' already exists.');
 				$emsg = sprintf($msg, $org_name);
-				$cb->update($this->OrganizationErrorMsg, $emsg);
+				$emsg_html = Miscellaneous::html_value($emsg);
+				$cb->update($this->OrganizationErrorMsg, $emsg_html);
 				$cb->show($this->OrganizationErrorMsg);
 				return;
 			}

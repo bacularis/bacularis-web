@@ -223,11 +223,9 @@ class NewFileStorageWizard extends BaculumWebPage
 				$output = $result->output;
 				$error = $result->error;
 				if ($error != 0) {
-					$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 					$errors[] = "Error: {$error}: $output";
 				}
 			} else {
-				$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 				$errors[] = "Error: {$error}: $output";
 			}
 		}
@@ -237,7 +235,7 @@ class NewFileStorageWizard extends BaculumWebPage
 			$this->storage_created = true;
 		} else {
 			$this->storage_created = false;
-			$this->storage_create_errors = implode('<br /><br />', $errors);
+			$this->storage_create_errors = implode(PHP_EOL . PHP_EOL, $errors);
 		}
 	}
 

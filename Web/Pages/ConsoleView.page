@@ -32,14 +32,20 @@ function load_cons_res_config(resource) {
 }
 		</script>
 
-		<!-- Save component config to pattern -->
-		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
-			ID="SaveComponentToPattern"
-			ComponentType="bcons"
-		/>
-		<button type="button" onclick="const host = '<%=$this->User->getDefaultAPIHost()%>'; oSaveComponentToPattern.set_configs_window(host, 'bcons'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
-		</button>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<!-- Save component config to pattern -->
+				<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+					ID="SaveComponentToPattern"
+					ComponentType="bcons"
+				/>
+				<button type="button" id="console_view_save_component_to_pattern" class="w3-green w3-button">
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+				</button>
+			</prop:TrueTemplate>
+		</com:TConditional>
 
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_cons_res_config('Director'); W3SubTabs.open('console_director_config_btn', 'console_resources_config_form', 'console_config');">
@@ -57,9 +63,17 @@ function load_cons_res_config(resource) {
 			/>
 		</div>
 	</div>
-<script>
-$(function() {
-	<%=$this->getApplication()->getSession()->itemAt('bcons') ? 'load_cons_res_config("Director");': ''%>
-});
-</script>
+	<script>
+	$(function() {
+		if (<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? 'true' : 'false'%>) {
+			const default_api_host = <%=$this->User->getDefaultAPIHostJSON()%>;
+			const save_component_btn = document.getElementById('console_view_save_component_to_pattern');
+			save_component_btn.addEventListener('click', function() {
+				oSaveComponentToPattern.set_configs_window(default_api_host, 'bcons');
+				oSaveComponentToPattern.show_window(true);
+			});
+		}
+		<%=$this->getApplication()->getSession()->itemAt('bcons') ? 'load_cons_res_config("Director");': ''%>
+	});
+	</script>
 </com:TContent>

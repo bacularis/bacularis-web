@@ -233,7 +233,7 @@ function set_label_volume_output(out_id) {
 
 function show_label_volume_window(show) {
 	var logbox = document.getElementById('<%=$this->LabelVolumeLog->ClientID%>');
-	logbox.innerHTML = '';
+	logbox.textContent = '';
 	var logbox_container = document.getElementById('label_volume_log');
 	logbox_container.style.display = 'none';
 	set_labeling_status('start');

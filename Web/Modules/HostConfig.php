@@ -197,12 +197,27 @@ class HostConfig extends ConfigFileModule
 	private function isHostConfigValid(array $config)
 	{
 		$valid = true;
-		$invalid = ['required' => null];
+		$invalid = [
+			'host' => null,
+			'value' => null,
+			'type' => null
+		];
 
 		foreach ($config as $host => $host_config) {
+			$host = (string) $host;
+			$valid_host = preg_match('/^' . self::HOST_NAME_PATTERN . '$/D', $host) === 1;
+			if (!$valid_host) {
+				$invalid = [
+					'host' => $host,
+					'value' => $host,
+					'type' => 'host'
+				];
+				$valid = false;
+				break;
+			}
 			for ($i = 0; $i < count($this->host_required_options); $i++) {
-				if (!array_key_exists($this->host_required_options[$i], $host_config)) {
-					$invalid['required'] = [
+				if (!key_exists($this->host_required_options[$i], $host_config)) {
+					$invalid = [
 						'host' => $host,
 						'value' => $this->host_required_options[$i],
 						'type' => 'option'
@@ -211,12 +226,17 @@ class HostConfig extends ConfigFileModule
 					break;
 				}
 			}
+			if (!$valid) {
+				break;
+			}
 		}
 		if ($valid != true) {
 			$emsg = '';
 			$path = $this->getConfigRealPath(self::CONFIG_FILE_PATH);
-			if ($invalid['required']['type'] === 'option') {
-				$emsg = "ERROR [$path] Required {$invalid['required']['type']} '{$invalid['required']['value']}' not found for host '{$invalid['required']['host']}.";
+			if ($invalid['type'] === 'option') {
+				$emsg = "ERROR [$path] Required {$invalid['type']} '{$invalid['value']}' not found for host '{$invalid['host']}'.";
+			} elseif ($invalid['type'] === 'host') {
+				$emsg = "ERROR [$path] Invalid host name '{$invalid['host']}'.";
 			} else {
 				// it shouldn't happen
 				$emsg = "ERROR [$path] Internal error";

@@ -698,7 +698,7 @@ class NewCopyJobWizard extends BaculumWebPage
 				$pool_modified = true;
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 			}
 		}
 
@@ -740,7 +740,7 @@ class NewCopyJobWizard extends BaculumWebPage
 				$this->goToPage('JobList');
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 			}
 		}
 	}
@@ -754,6 +754,17 @@ class NewCopyJobWizard extends BaculumWebPage
 	public function wizardStop($sender, $param)
 	{
 		$this->goToPage('JobList');
+	}
+
+	/**
+	 * Get pool directive value as JSON safe for JavaScript context.
+	 *
+	 * @return string pool directive value JSON
+	 */
+	public function getPoolDirectiveValueJSON(): string
+	{
+		$pool = $this->Pool->getDirectiveValue();
+		return Miscellaneous::json_value($pool);
 	}
 
 	/**

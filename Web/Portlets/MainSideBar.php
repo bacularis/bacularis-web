@@ -29,6 +29,8 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
+
 /**
  * Main side-bar control.
  *
@@ -64,6 +66,27 @@ class MainSideBar extends Portlets
 		$user_id = $this->User->getUsername();
 		$this->user_exists = $user_config->userExists($org_id, $user_id);
 
+	}
+
+	/**
+	 * Get HTML-escaped current organization full name.
+	 */
+	public function getOrganizationFullName(): string
+	{
+		return Miscellaneous::html_value(
+			$this->organization['full_name'] ?? ''
+		);
+	}
+
+	/**
+	 * Get HTML-escaped current username.
+	 *
+	 * @return string HTML-escaped username
+	 */
+	public function getUsernameHTML(): string
+	{
+		$username = $this->User->getUsername();
+		return Miscellaneous::html_value($username);
 	}
 
 	public function logout($sender, $param)

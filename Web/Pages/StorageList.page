@@ -51,28 +51,33 @@ var oStorageList = {
 	},
 	data: [],
 	data_all: [],
-	table: null,
-	table_toolbar: null,
-	actions: [
-		{
-			action: 'apply_configs',
-			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
-			label: '<%[ Apply configs ]%>',
-			value: 'name',
-			before: function() {
-				const cb = () => {
-					let selected = [];
-					let sel_data = oStorageList.table.rows({selected: true}).data();
-					sel_data.each(function(v, k) {
-						selected.push(v.name);
-					});
-					return selected;
-				};
-				oBulkApplyConfigsModal.set_item_cb(cb);
-				oBulkApplyConfigsModal.show_window(true);
-			}
-		},
-		{
+		table: null,
+		table_toolbar: null,
+		actions: [
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					{
+						action: 'apply_configs',
+						label: '<%[ Apply configs ]%>',
+						value: 'name',
+						before: function() {
+							const cb = () => {
+								let selected = [];
+								let sel_data = oStorageList.table.rows({selected: true}).data();
+								sel_data.each(function(v, k) {
+									selected.push(v.name);
+								});
+								return selected;
+							};
+							oBulkApplyConfigsModal.set_item_cb(cb);
+							oBulkApplyConfigsModal.show_window(true);
+						}
+					},
+				</prop:TrueTemplate>
+			</com:TConditional>
+			{
 			action: 'enable',
 			label: '<%[ Enable ]%>',
 			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
@@ -189,7 +194,7 @@ var oStorageList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'storageid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'autochanger',
 					render: function(data, type, row) {
@@ -201,14 +206,14 @@ var oStorageList = {
 					render: (data, type, row) => {
 						const id = 'storageid';
 						const tt_obj = oTagTools_<%=$this->TagToolsStorageList->ClientID%>;
-						const table = 'oStorageList.table';
+						const table = oStorageList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'storageid',
 					render: function (data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 						let i;
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
@@ -216,11 +221,14 @@ var oStorageList = {
 							quick_edit.className = 'w3-button w3-green';
 							quick_edit.type = 'button';
 							quick_edit.title = '<%[ Quick edit ]%>';
+							quick_edit.style.marginRight = '4px';
 							i = document.createElement('I');
 							i.className = 'fa fa-edit';
 							quick_edit.appendChild(i);
-							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Storage', '" + row.name + "')");
-							btns += (quick_edit.outerHTML + ' ');
+							quick_edit.addEventListener('click', () => {
+								open_quick_resource_edit('dir', 'Storage', row.name);
+							});
+							btns.appendChild(quick_edit);
 						}
 						const details = document.createElement('BUTTON');
 						details.className = 'w3-button w3-green';
@@ -229,8 +237,10 @@ var oStorageList = {
 						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						details.appendChild(i);
-						details.setAttribute('onclick', "document.location.href = '/web/storage/" + data + "/'");
-						btns += details.outerHTML;
+						details.addEventListener('click', () => {
+							document.location.href = '/web/storage/%storageid/'.replace('%storageid', data);
+						});
+						btns.appendChild(details);
 						return btns;
 					},
 					className: 'w3-center'
@@ -271,11 +281,11 @@ var oStorageList = {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -315,11 +325,17 @@ function update_storage_list_table(data, init) {
 	}
 }
 </script>
-	<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-		ID="BulkApplyConfigsStorage"
-		ComponentType="dir"
-		ResourceType="Storage"
-	/>
+	<com:TConditional
+		Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+	>
+		<prop:TrueTemplate>
+			<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+				ID="BulkApplyConfigsStorage"
+				ComponentType="dir"
+				ResourceType="Storage"
+			/>
+		</prop:TrueTemplate>
+	</com:TConditional>
 
 	<!-- Enable storage -->
 	<com:TCallback ID="EnableStorageAction" OnCallback="enableStorage">
@@ -608,7 +624,7 @@ var oDisableStorageWindow = {
 			<div class="w3-container w3-margin-left w3-margin-right">
 				<div id="storage_list_delete_storage_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
 					<h3><%[ Error ]%></h3>
-					<p id="storage_list_delete_storage_resource_confirm_window_error_text"></p>
+					<p id="storage_list_delete_storage_resource_confirm_window_error_text" style="white-space: pre-wrap;"></p>
 				</div>
 				<p>
 					<%[ Are you sure you want to delete the following storage configuration resources? ]%>

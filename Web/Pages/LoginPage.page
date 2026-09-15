@@ -32,7 +32,7 @@
 				</prop:HeaderTemplate>
 				<prop:ItemTemplate>
 					<com:TLinkButton CssClass="w3-button w3-margin-bottom w3-block" OnCommand="SourceTemplateControl.orgLogin" CommandParameter="<%#['name' => $this->Data['name'], 'auth_type' => $this->Data['auth_type']]%>" Style="background-color: <%=$this->Data['color']%>;" Attributes.data-color="<%=$this->Data['color']%>" Attributes.rel="org-btn">
-						<i class="<%#$this->Data['icon_css']%>"></i> &nbsp;<%=$this->Data['full_name']%>
+						<i class="<%#$this->Data['icon_css']%>"></i> &nbsp;<%=$this->Data['full_name_html']%>
 					</com:TLinkButton>
 				</prop:ItemTemplate>
 			</com:TRepeater>
@@ -50,7 +50,7 @@ $(() => {
 			<img src="<%~ ../../../../../Common/Images/logo_xl.png %>" alt="Bacularis - The Bacula web interface" rel="logo" style="width: auto; margin: 0 auto 40px auto;"/>
 			<p class="w3-text-red"><%[ Authorization failed. Please contact the Bacularis administrator to grant permissions. ]%></p>
 			<p class="w3-center">
-				<script>var login_form_reload_url = '<%=$this->reload_url%>';</script>
+				<script>var login_form_reload_url = <%=Miscellaneous::json_value($this->reload_url)%>;</script>
 				<com:TActiveLinkButton
 					OnClick="logout"
 					CssClass="w3-button w3-red"
@@ -65,7 +65,7 @@ $(() => {
 					</prop:ClientSide.OnComplete>
 					<%[ Logout ]%>
 				</com:TActiveLinkButton>
-				 &nbsp;<a class="w3-button w3-green" href="<%=$this->getModule('auth')->getReturnUrl() ?: '/'%>"><%[ Try again ]%></a>
+				 &nbsp;<a class="w3-button w3-green" href="<%=$this->retry_url_html%>"><%[ Try again ]%></a>
 				 &nbsp;<a class="w3-button w3-green" href="<%=$this->Service->constructUrl($this->getDefaultPage())%>"><%[ Go to default page ]%></a>
 			</p>
 		</com:TPanel>
@@ -126,7 +126,7 @@ $(() => {
 	}
 	if (<%=$this->isFIDOU2F() ? 'true' : 'false'%> === true) {
 		oFIDOU2F.authenticate(
-			<%=json_encode($this->fidou2f_authdata)%>,
+			<%=Miscellaneous::json_value($this->fidou2f_authdata)%>,
 			<%=$this->LoginFIDOU2F->ActiveControl->Javascript%>
 		);
 	}

@@ -34,9 +34,15 @@
 		<a id="btn_job_reports" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_reports'); oJobHistoryReport.table.responsive.recalc(); oJobHistoryReport.table.fixedHeader.adjust(); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]);">
 			<%[ Reports ]%>
 		</a>
-		<a id="btn_restore_verification" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'restore_verification'); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]); oRestoreTests.load_restore_test_list();" style="display: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'inline-block' : 'none'%>;">
-			<%[ Restore verification ]%>
-		</a>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<a id="btn_restore_verification" href="javascript:void(0)" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'restore_verification'); set_page_tables([oJobHistoryList, oJobList, oJobHistoryReport]); oRestoreTests.load_restore_test_list();">
+					<%[ Restore verification ]%>
+				</a>
+			</prop:TrueTemplate>
+		</com:TConditional>
 	</div>
 
 	<!-- Global bulk action modal -->
@@ -420,7 +426,7 @@ var oJobHistoryList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'jobid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'type',
 					render: function(data, type, row) {
@@ -439,6 +445,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'client',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -507,6 +514,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -515,6 +523,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'fileset',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -535,15 +544,18 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'filetable',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
 				{
 					data: 'firstvol',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
@@ -557,7 +569,7 @@ var oJobHistoryList = {
 					render: (data, type, row) => {
 						const id = 'jobid';
 						const tt_obj = oTagTools_<%=$this->TagToolsJobHistory->ClientID%>;
-						const table = 'oJobHistoryList.table';
+						const table = oJobHistoryList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -571,8 +583,10 @@ var oJobHistoryList = {
 						img.classList.add('fas', 'fa-display', 'w3-show-block');
 						img.style.cursor = 'pointer';
 						const refresh = (JobStatus.is_running(row.jobstatus) || JobStatus.is_waiting(row.jobstatus)) ? 'true': 'false';
-						img.setAttribute('onclick', 'oJobLogWindow.open_window(' + data + ', "' + row.name + '", ' + refresh + ');');
-						return img.outerHTML;
+						img.addEventListener('click', () => {
+							oJobLogWindow.open_window(data, row.name, refresh);
+						});
+						return img;
 					}
 				},
 				{
@@ -593,7 +607,11 @@ var oJobHistoryList = {
 							i.className = 'fa fa-play';
 							run_job.appendChild(i);
 							run_job.setAttribute('data-btn-id', data);
-							run_job.setAttribute('onclick', 'var rjc = get_rerun_job_callback(); rjc.setCallbackParameter(' + data + '); rjc.dispatch();');
+							run_job.addEventListener('click', () => {
+								const rjc = get_rerun_job_callback();
+								rjc.setCallbackParameter(data);
+								rjc.dispatch();
+							});
 							container.appendChild(run_job);
 						} else {
 							// cancel job button
@@ -605,7 +623,11 @@ var oJobHistoryList = {
 							i.className = 'fa fa-stop';
 							cancel_job.appendChild(i);
 							cancel_job.setAttribute('data-btn-id', data);
-							cancel_job.setAttribute('onclick', 'var cjc = get_cancel_job_callback(); cjc.setCallbackParameter(' + data + '); cjc.dispatch();');
+							cancel_job.addEventListener('click', () => {
+								const cjc = get_cancel_job_callback();
+								cjc.setCallbackParameter(data);
+								cjc.dispatch();
+							});
 							container.appendChild(cancel_job);
 						}
 						var space = document.createTextNode(' ');
@@ -620,7 +642,9 @@ var oJobHistoryList = {
 							i = document.createElement('I');
 							i.className = 'fa fa-edit';
 							quick_edit.appendChild(i);
-							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + row.name + "')");
+							quick_edit.addEventListener('click', () => {
+								open_quick_resource_edit('dir', 'Job', row.name);
+							});
 							container.appendChild(quick_edit);
 							space = document.createTextNode(' ');
 							container.appendChild(space);
@@ -634,9 +658,11 @@ var oJobHistoryList = {
 						i.className = 'fa fa-list-ul';
 						details.title = '<%[ Details ]%>';
 						details.appendChild(i);
-						details.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
+						details.addEventListener('click', () => {
+							document.location.href = '/web/job/history/%jobid/'.replace('%jobid', data);
+						});
 						container.appendChild(details);
-						return container.outerHTML;
+						return container;
 					}
 				}
 			],
@@ -690,19 +716,20 @@ var oJobHistoryList = {
 					});
 					if (column[0][0] == 15) { // NOTE: this column is used also in filters
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.title = JobStatus.get_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -1101,28 +1128,33 @@ var oJobList = {
 	},
 	data: [],
 	data_all: [],
-	table: null,
-	table_toolbar: null,
-	actions: [
-		{
-			action: 'apply_configs',
-			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
-			label: '<%[ Apply configs ]%>',
-			value: 'job',
-			before: function() {
-				const cb = () => {
-					let selected = [];
-					let sel_data = oJobList.table.rows({selected: true}).data();
-					sel_data.each(function(v, k) {
-						selected.push(v.job);
-					});
-					return selected;
-				};
-				oBulkApplyConfigsModal.set_item_cb(cb);
-				oBulkApplyConfigsModal.show_window(true);
-			}
-		},
-		{
+		table: null,
+		table_toolbar: null,
+		actions: [
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					{
+						action: 'apply_configs',
+						label: '<%[ Apply configs ]%>',
+						value: 'job',
+						before: function() {
+							const cb = () => {
+								let selected = [];
+								let sel_data = oJobList.table.rows({selected: true}).data();
+								sel_data.each(function(v, k) {
+									selected.push(v.job);
+								});
+								return selected;
+							};
+							oBulkApplyConfigsModal.set_item_cb(cb);
+							oBulkApplyConfigsModal.show_window(true);
+						}
+					},
+				</prop:TrueTemplate>
+			</com:TConditional>
+			{
 			action: 'run',
 			label: '<%[ Run ]%>',
 			value: 'job',
@@ -1260,7 +1292,7 @@ var oJobList = {
 								title = title.replace('%errors', this.job_weather[data].error);
 								title = title.replace('%count', this.job_weather[data].count);
 								img.title = title;
-								ret = img.outerHTML;
+								ret = img;
 							} else if (type == 'sort') {
 								ret = this.job_weather[data].error;
 							}
@@ -1271,6 +1303,7 @@ var oJobList = {
 				},
 				{
 					data: 'job',
+					render: render_text,
 					responsivePriority: 1
 				},
 				{
@@ -1384,7 +1417,7 @@ var oJobList = {
 					render: (data, type, row) => {
 						const id = 'job';
 						const tt_obj = oTagTools_<%=$this->TagToolsJobList->ClientID%>;
-						const table = 'oJobList.table';
+						const table = oJobList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -1402,7 +1435,11 @@ var oJobList = {
 						img.className = 'fa fa-play';
 						run_job.appendChild(img);
 						run_job.setAttribute('data-btn-id', data);
-						run_job.setAttribute('onclick', 'const rjc = get_run_job_callback(); rjc.setCallbackParameter("' + data + '"); rjc.dispatch();');
+						run_job.addEventListener('click', () => {
+							const rjc = get_run_job_callback();
+							rjc.setCallbackParameter(data);
+							rjc.dispatch();
+						});
 						container.appendChild(run_job);
 						let space = document.createTextNode(' ');
 						container.appendChild(space);
@@ -1415,7 +1452,9 @@ var oJobList = {
 							img = document.createElement('I');
 							img.className = 'fa fa-edit';
 							quick_edit.appendChild(img);
-							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Job', '" + data + "')");
+							quick_edit.addEventListener('click', () => {
+								open_quick_resource_edit('dir', 'Job', data);
+							});
 							container.appendChild(quick_edit);
 							space = document.createTextNode(' ');
 							container.appendChild(space);
@@ -1429,10 +1468,12 @@ var oJobList = {
 						img = document.createElement('I');
 						img.className = 'fa fa-list-ul';
 						details.appendChild(img);
-						details.setAttribute('onclick', "document.location.href = '/web/job/" + data + "/'");
+						details.addEventListener('click', () => {
+							document.location.href = '/web/job/%job/'.replace('%job', data);
+						});
 						container.appendChild(details);
 
-						return container.outerHTML;
+						return container;
 					}
 				}
 			],
@@ -1477,11 +1518,11 @@ var oJobList = {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -1568,11 +1609,17 @@ function update_job_list_table(data, init) {
 			</prop:ClientSide.OnComplete>
 		</com:TCallback>
 		<com:TCallback ID="DeleteJobResourcesAction" OnCallback="deleteJobResources" />
-		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-			ID="BulkApplyConfigsJob"
-			ComponentType="dir"
-			ResourceType="Job"
-		/>
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+						ID="BulkApplyConfigsJob"
+						ComponentType="dir"
+						ResourceType="Job"
+					/>
+				</prop:TrueTemplate>
+			</com:TConditional>
 		<!-- Delete job confirmation window -->
 		<div id="job_list_delete_job_resource_confirm_window" class="w3-modal">
 			<div class="w3-modal-content w3-animate-top w3-card-4">
@@ -1583,7 +1630,7 @@ function update_job_list_table(data, init) {
 				<div class="w3-container w3-margin-left w3-margin-right">
 					<div id="job_list_delete_job_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
 						<h3><%[ Error ]%></h3>
-						<p id="job_list_delete_job_resource_confirm_window_error_text"></p>
+						<p id="job_list_delete_job_resource_confirm_window_error_text" style="white-space: pre-wrap;"></p>
 					</div>
 					<p>
 						<%[ Are you sure you want to delete the following job configuration resources? ]%>
@@ -1943,7 +1990,7 @@ class JobHistoryReportDetails {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'jobid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'type',
 					render: function(data, type, row) {
@@ -1995,11 +2042,11 @@ class JobHistoryReportDetails {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -2149,7 +2196,9 @@ class JobHistoryReport {
 							span.appendChild(sup);
 						}
 
-						span.setAttribute('onclick', 'oJobHistoryReport.open_details_window({job: "' + row.job + '", day: ' + i + '});');
+						span.addEventListener('click', () => {
+							oJobHistoryReport.open_details_window({job: row.job, day: i});
+						});
 					} else {
 						icon = document.createElement('SPAN');
 						icon.textContent = '-';
@@ -2158,7 +2207,7 @@ class JobHistoryReport {
 					}
 					let ret = '';
 					if (type == 'display' || type == 'filter') {
-						ret = span.outerHTML;
+						ret = span;
 					} else if (type == 'sort' || type == 'export') {
 						ret = status;
 					}
@@ -2410,7 +2459,7 @@ class JobHistoryReport {
 							const span = document.createElement('DIV');
 							span.className = 'w3-margin-left';
 							span.textContent = data;
-							ret = span.outerHTML;
+							ret = span;
 						}
 						return ret;
 					},
@@ -2443,11 +2492,11 @@ class JobHistoryReport {
 						.draw();
 					});
 					column.cells('', column[0]).render().unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}
@@ -2714,8 +2763,12 @@ $(() => {
 </script>
 	</div>
 
-	<!-- Restore verification -->
-	<div class="w3-container tab_item" id="restore_verification" style="display: none">
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+		<!-- Restore verification -->
+		<div class="w3-container tab_item" id="restore_verification" style="display: none">
 		<div class="w3-container" style="margin-bottom: 8px">
 			<button type="button" id="btn_new_restore_verification" class="w3-button w3-green" onclick="document.location.href='<%=$this->Service->constructUrl('NewRestoreVerification')%>';"><i class="fa fa-magic"></i> &nbsp;<%[ New restore verification ]%></button>
 		</div>
@@ -2739,7 +2792,6 @@ $(() => {
 		<div id="restore_tests" class="subtab_item">
 			<com:Bacularis.Web.Portlets.RestoreTests
 				ID="RestoreTests"
-				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
 				OnSaveRestoreTest="postSaveRestoreTest"
 				OnRemoveRestoreTest="postRemoveRestoreTest"
 			/>
@@ -2749,7 +2801,6 @@ $(() => {
 		<div id="restore_policies" class="subtab_item" style="display: none">
 			<com:Bacularis.Web.Portlets.RestorePolicies
 				ID="RestorePolicies"
-				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
 				OnSaveRestorePolicy="postSaveRestorePolicy"
 				OnRemoveRestorePolicy="postRemoveRestorePolicy"
 			/>
@@ -2759,7 +2810,6 @@ $(() => {
 		<div id="restore_destinations" class="subtab_item" style="display: none">
 			<com:Bacularis.Web.Portlets.RestoreDestinations
 				ID="RestoreDestinations"
-				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
 				OnSaveRestoreDestination="postSaveRestoreDestination"
 				OnRemoveRestoreDestination="postRemoveRestoreDestination"
 			/>
@@ -2769,13 +2819,14 @@ $(() => {
 		<div id="verification_rules" class="subtab_item" style="display: none">
 			<com:Bacularis.Web.Portlets.VerificationRules
 				ID="VerificationRules"
-				Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
 				OnSaveVerificationRules="postSaveVerificationRules"
 				OnRemoveVerificationRules="postRemoveVerificationRules"
 			/>
+			</div>
 		</div>
-	</div>
-	<com:TCallback ID="LoadScheduleStatus" OnCallback="loadScheduleStatus" />
+			</prop:TrueTemplate>
+		</com:TConditional>
+		<com:TCallback ID="LoadScheduleStatus" OnCallback="loadScheduleStatus" />
 <script>
 MonitorParams = {
 	jobs: null
@@ -2788,7 +2839,7 @@ $(function() {
 			oJobHistoryReport = new JobHistoryReport();
 			oJobList.load_job_list();
 			oJobRunningOverTimeReport = new JobRunningOverTimeReport();
-			oRestoreTests.load_restore_test_list();
+				<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? 'oRestoreTests.load_restore_test_list();' : ''%>
 		}, 1000);
 	});
 	ThemeMode.add_cb(() => {

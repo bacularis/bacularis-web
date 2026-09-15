@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Prado\TPropertyValue;
 
 /**
@@ -87,10 +88,11 @@ class UpdateSlots extends Portlets
 
 		if ($result->error === 0) {
 			$this->getPage()->getCallbackClient()->callClientFunction('set_updating_status', ['loading']);
-			$this->UpdateSlotsLog->Text = implode('', $result->output);
+			$update_slots_log = implode('', $result->output);
+			$this->UpdateSlotsLog->Text = Miscellaneous::html_value($update_slots_log);
 			$this->onUpdateStart($param);
 		} else {
-			$this->UpdateSlotsLog->Text = $result->output;
+			$this->UpdateSlotsLog->Text = Miscellaneous::html_value($result->output);
 			$this->onUpdateFail($param);
 		}
 	}
@@ -123,7 +125,8 @@ class UpdateSlots extends Portlets
 
 		if ($result->error === 0) {
 			if (count($result->output) > 0) {
-				$this->UpdateSlotsLog->Text = implode('', $result->output);
+				$update_slots_log = implode('', $result->output);
+				$this->UpdateSlotsLog->Text = Miscellaneous::html_value($update_slots_log);
 				$this->getPage()->getCallbackClient()->callClientFunction('update_slots_output_refresh', [$out_id]);
 			} else {
 				$this->getPage()->getCallbackClient()->callClientFunction('set_updating_status', ['finish']);
@@ -131,7 +134,7 @@ class UpdateSlots extends Portlets
 				$this->onUpdateComplete($param);
 			}
 		} else {
-			$this->UpdateSlotsLog->Text = $result->output;
+			$this->UpdateSlotsLog->Text = Miscellaneous::html_value($result->output);
 			$this->onUpdateFail($param);
 			$this->onUpdateComplete($param);
 		}

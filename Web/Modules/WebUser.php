@@ -29,12 +29,13 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Web\Modules\WebUserConfig;
 use Prado\Prado;
 use Prado\Security\TUser;
 use Prado\TPropertyValue;
-use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Common\Modules\Logging;
-use Bacularis\Web\Modules\WebUserConfig;
 
 /**
  * Web user module.
@@ -434,6 +435,17 @@ class WebUser extends TUser
 			}
 		}
 		return $def_host;
+	}
+
+	/**
+	 * Get default API host encoded for JavaScript context inside HTML.
+	 *
+	 * @return string default API host JSON
+	 */
+	public function getDefaultAPIHostJSON(): string
+	{
+		$default_api_host = (string) $this->getDefaultAPIHost();
+		return Miscellaneous::json_value($default_api_host);
 	}
 
 	/**

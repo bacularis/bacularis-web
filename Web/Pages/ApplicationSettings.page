@@ -711,10 +711,12 @@ var oAppSettingsAuditLog = {
 				},
 				{
 					data: 'ip_address',
+					render: render_text,
 					width: '10%'
 				},
 				{
 					data: 'username',
+					render: render_text,
 					width: '10%'
 				},
 				{
@@ -749,10 +751,12 @@ var oAppSettingsAuditLog = {
 				},
 				{
 					data: 'category',
+					render: render_text,
 					width: '10%'
 				},
 				{
 					data: 'log',
+					render: render_text,
 					width: '45%'
 				}
 			],
@@ -774,8 +778,14 @@ var oAppSettingsAuditLog = {
 			order: [3, 'desc'],
 			initComplete: function () {
 				this.api().columns([1, 2, 4, 5]).every(function () {
-					var column = this;
-					var select = $('<select class="dt-select"><option value=""></option></select>')
+					const column = this;
+					const select_element = document.createElement('SELECT');
+					select_element.classList.add('dt-select');
+					const empty_option = document.createElement('OPTION');
+					empty_option.value = '';
+					empty_option.textContent = '';
+					select_element.append(empty_option);
+					$(select_element)
 					.appendTo($(column.footer()).empty())
 					.on('change', function () {
 						var val = dtEscapeRegex(
@@ -786,11 +796,11 @@ var oAppSettingsAuditLog = {
 						.draw();
 					});
 					column.data().sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select_element.append(option);
 					});
 				});
 			}
@@ -994,11 +1004,11 @@ var oAppSettingsSelfTest = {
 						.draw();
 					});
 					column.data().sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}

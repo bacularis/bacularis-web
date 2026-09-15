@@ -48,6 +48,11 @@ var oBulkActionsModal = {
 		const output = document.getElementById(this.ids.output);
 		output.textContent = '';
 	},
+	set_output: function(output_text) {
+		const self = oBulkActionsModal;
+		const output = document.getElementById(self.ids.output);
+		output.textContent = output_text;
+	},
 	show_output: function(show) {
 		const modal = document.getElementById(this.ids.modal);
 		modal.style.display = show ? 'block' : '';

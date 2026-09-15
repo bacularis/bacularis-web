@@ -698,7 +698,7 @@ class NewVerifyJobWizard extends BaculumWebPage
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'Dynamic';
-			$this->CreateResourceErrMsg->Text = $result->output;
+			$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 		}
 	}
 

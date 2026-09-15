@@ -50,7 +50,8 @@ class PageCategory extends WebModule
 	public const ACCOUNT_SETTINGS = 'AccountSettings';
 
 	/**
-	 * System pages - always allowed for authenticated users
+	 * System pages - do not require application roles.
+	 * Data and application pages still require an enabled user account.
 	 */
 	public const MONITOR = 'Monitor';
 	public const BACULARIS_ERROR = 'BacularisError';

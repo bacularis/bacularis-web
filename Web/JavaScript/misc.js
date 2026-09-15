@@ -489,6 +489,9 @@ function render_date(data, type, row) {
 	if (t) {
 		if (type == 'display') {
 			t = Units.format_date_str(t);
+			if (typeof(t) == 'string') {
+				t = render_text(t, type, row);
+			}
 		} else {
 			t = date_time_to_ts(t);
 		}
@@ -501,6 +504,9 @@ function render_date_local(data, type, row) {
 	if (t) {
 		if (type == 'display') {
 			t = Units.format_date_str(t, true);
+			if (typeof(t) == 'string') {
+				t = render_text(t, type, row);
+			}
 		} else {
 			t = date_time_to_ts(t);
 		}
@@ -643,17 +649,24 @@ function render_tags(type, id, value, tag_obj, table) {
 		add_btn.classList.add('fa-solid', 'fa-tag', 'w3-left', 'w3-large');
 		add_btn.style.marginLeft = '20px';
 		add_btn.style.padding = '5px 2px';
-		add_btn.setAttribute('onclick', tag_obj.oname + '.open("' + id + '", "' + value + '", ' + table + ');');
+		add_btn.addEventListener('click', function () {
+			window[tag_obj.oname].open(id, value, table.table);
+		});
 		container.appendChild(add_btn);
 		let tag, rm, label;
 		for (const sel of tags) {
 			tag = document.createElement('DIV');
 			tag.classList.add('w3-left');
-			tag.setAttribute('onclick', table + '.search("#' + sel.tag + '").draw();');
+			tag.addEventListener('click', () => {
+				table.table.search('#' + sel.tag).draw();
+			});
 			tag.title = 'Click on tag to filter'
 			rm = document.createElement('I');
 			rm.classList.add('fa-solid', 'fa-times');
-			rm.setAttribute('onclick', tag_obj.oname + '.unassign("' + id + '", "' + value + '", "' + sel.tag + '", this, ' + table + '); event.stopPropagation();');
+			rm.addEventListener('click', function (event) {
+				window[tag_obj.oname].unassign(id, value, sel.tag, this, table.table);
+				event.stopPropagation();
+			});
 			tag.appendChild(rm);
 			tag.classList.add('btag_table');
 			tag.style.color = sel.color_vals.fg;
@@ -662,7 +675,7 @@ function render_tags(type, id, value, tag_obj, table) {
 			tag.appendChild(label);
 			container.appendChild(tag);
 		}
-		ret = container.outerHTML;
+		ret = container;
 	} else if (type == 'sort') {
 		ret = tag_obj.get_tags_sort(id, value);
 	} else {
@@ -1220,11 +1233,11 @@ var oScheduledJobsList = {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}

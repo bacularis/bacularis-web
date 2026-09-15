@@ -61,9 +61,10 @@ class ClientBandwidthLimit extends Portlets
 		// this setting to empty string is required to not cache outputs for the same values
 		$this->BandwidthLog->Text = '';
 		if ($result->error === 0) {
-			$this->BandwidthLog->Text = implode(PHP_EOL, $result->output);
+			$bandwidth_log = implode(PHP_EOL, $result->output);
+			$this->BandwidthLog->Text = Miscellaneous::html_value($bandwidth_log);
 		} else {
-			$this->BandwidthLog->Text = $result->output;
+			$this->BandwidthLog->Text = Miscellaneous::html_value($result->output);
 		}
 
 		$this->getPage()->getCallbackClient()->callClientFunction(

@@ -152,7 +152,7 @@ var oVerificationRuleList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'checkers',
 					render: (data, type, row) => {
@@ -186,15 +186,13 @@ var oVerificationRuleList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsVerificationRuleList->ClientID%>;
-						const table = 'oVerificationRuleList.table';
+						const table = oVerificationRuleList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'name',
 					render: function (data, type, row) {
-						let btns = '';
-
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -206,10 +204,10 @@ var oVerificationRuleList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oVerificationRules.load_verification_rule_window(\'' + data + '\')');
-						btns += btn_edit.outerHTML;
-
-						return btns;
+						btn_edit.addEventListener('click', () => {
+							oVerificationRules.load_verification_rule_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -267,18 +265,23 @@ var oVerificationRuleList = {
 							ds = '<%[ Disabled ]%>';
 						}
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}

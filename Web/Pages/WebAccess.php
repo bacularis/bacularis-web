@@ -16,6 +16,7 @@
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\BaculumPage;
 use Bacularis\Common\Modules\Logging;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\WebAccessConfig;
 
 /**
@@ -68,8 +69,23 @@ class WebAccess extends BaculumPage
 	private function runAction(string $token)
 	{
 		$web_access_config = $this->getModule('web_access_config');
-		$config = $web_access_config->getWebAccessConfig($token);
-		$result = $this->verifyConfig($config);
+		$validator = function (array $config): array {
+			return $this->verifyConfig($config);
+		};
+		$reservation = $web_access_config->reserveWebAccessUse($token, $validator);
+		$config = $reservation['config'];
+		$result = $reservation['validation'];
+		if (!is_array($result)) {
+			$result = [
+				'error' => self::ERROR_ACTION_FAILED,
+				'message' => self::MSG_ACTION_FAILED
+			];
+		} elseif ($result['error'] === self::ERROR_NO_ERROR && !$reservation['reserved']) {
+			$result = [
+				'error' => self::ERROR_ACTION_FAILED,
+				'message' => self::MSG_ACTION_FAILED
+			];
+		}
 		if ($result['error'] === self::ERROR_NO_ERROR) {
 			$state = $this->executeAction($config);
 			if (!$state) {
@@ -78,7 +94,10 @@ class WebAccess extends BaculumPage
 					'message' => self::MSG_ACTION_FAILED
 				];
 			}
-			$this->postAction($token, $config);
+			if ($config['usage_method'] === WebAccessConfig::WEB_ACCESS_USAGE_METHOD_UNLIMITED) {
+				$settings = ['access_time' => time()];
+				$web_access_config->updateWebAccessConfig($token, $settings);
+			}
 		}
 		$audit = $this->getModule('audit');
 		if ($result['error'] === self::ERROR_NO_ERROR) {
@@ -115,8 +134,9 @@ class WebAccess extends BaculumPage
 	 */
 	private function sendResponse(array $result): void
 	{
-		$this->Response->appendHeader('Content-Type: application/json');
-		echo json_encode($result);
+		$this->Response->appendHeader('Content-Type: application/json; charset=UTF-8');
+		$json = Miscellaneous::json_value($result);
+		echo $json;
 		$this->Application->completeRequest();
 		exit();
 	}
@@ -264,34 +284,4 @@ class WebAccess extends BaculumPage
 		return $status;
 	}
 
-	/**
-	 * Run post actions executed after the main action.
-	 * Post-actions are executed only for fully valid requests.
-	 *
-	 * @param array $token token value
-	 * @param array $config web access config
-	 */
-	private function postAction(string $token, array $config)
-	{
-		// Update access time
-		$config['access_time'] = time();
-
-		if (key_exists('usage_method', $config)) {
-			switch ($config['usage_method']) {
-				case WebAccessConfig::WEB_ACCESS_USAGE_METHOD_ONE_USE:
-				case WebAccessConfig::WEB_ACCESS_USAGE_METHOD_NUMBER_USES: {
-					$usage_left = key_exists('usage_left', $config) ? (int) $config['usage_left'] : 0;
-					if ($usage_left > 0) {
-						// Decrement the usage left
-						$config['usage_left'] = --$usage_left;
-					}
-					break;
-				}
-			}
-		}
-
-		// Save config
-		$web_access_config = $this->getModule('web_access_config');
-		$web_access_config->setWebAccessConfig($token, $config);
-	}
 }

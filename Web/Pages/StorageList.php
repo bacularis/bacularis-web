@@ -29,6 +29,7 @@
 
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Errors\BaculaConfigError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Portlets\BaculaConfigDirectives;
@@ -147,7 +148,8 @@ class StorageList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while disabling storage "%s". ErrorCode: %d, Message: %s.';
 			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 			$cb->hide('storage_list_disable_storage_btn');
 		}
@@ -281,7 +283,8 @@ class StorageList extends BaculumWebPage
 		} else {
 			$emsg = 'Error while enabling storage "%s". ErrorCode: %d, Message: %s.';
 			$emsg = sprintf($emsg, $err_cli, $error->error, $error->output);
-			$cb->update($eid, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($eid, $emsg_html);
 			$cb->show($eid);
 			$cb->hide('storage_list_enable_storage_btn');
 		}
@@ -385,7 +388,7 @@ class StorageList extends BaculumWebPage
 			return;
 		}
 		$error = null;
-		$err_storage = '';
+		$err_storage = new StdClass;
 		$api = $this->getModule('api');
 		for ($i = 0; $i < count($storages); $i++) {
 			$params = [

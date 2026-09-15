@@ -17,7 +17,7 @@
 		<button id="btn_pool_config" type="button" class="w3-bar-item w3-button tab_btn<%=$this->isDirConfigVisible() ? '' : ' hide'%>" onclick="W3Tabs.open(this.id, 'pool_config'); return false;"><%[ Configure pool ]%></button>
 	</div>
 	<script>
-const oVolumes = <%=json_encode($this->volumes_in_pool)%>;
+const oVolumes = <%=$this->getVolumesJSON()%>;
 	</script>
 	<div class="w3-container tab_item" id="pool_actions">
 		<com:TActiveLinkButton
@@ -442,7 +442,7 @@ var oVolumeList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'mediaid'},
-				{data: 'volumename'},
+				{data: 'volumename', render: render_text},
 				{data: 'slot'},
 				{
 					data: 'poolid',
@@ -450,6 +450,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -464,13 +465,14 @@ var oVolumeList = {
 				},
 				{
 					data: 'storage',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'deviceid',
 					visible: false
 				},
-				{data: 'volstatus'},
+				{data: 'volstatus', render: render_text},
 				{
 					data: 'enabled',
 					render: function(data, type, row) {
@@ -485,7 +487,7 @@ var oVolumeList = {
 					},
 					visible: false
 				},
-				{data: 'mediatype'},
+				{data: 'mediatype', render: render_text},
 				{
 					data: 'mediatypeid',
 					visible: false
@@ -653,6 +655,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'initialwrite',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -661,6 +664,7 @@ var oVolumeList = {
 				},
 				{
 					data: 'scratchpool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -669,10 +673,12 @@ var oVolumeList = {
 				},
 				{
 					data: 'recyclepool',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -710,24 +716,29 @@ var oVolumeList = {
 					render: (data, type, row) => {
 						const id = 'mediaid';
 						const tt_obj = oTagTools_<%=$this->TagToolsPoolViewVolumeList->ClientID%>;
-						const table = 'oVolumeList.table';
+						const table = oVolumeList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'mediaid',
 					render: function(data, type, row) {
-						var btn = document.createElement('BUTTON');
+						if (type != 'display') {
+							return data;
+						}
+						const btn = document.createElement('BUTTON');
 						btn.className = 'w3-button w3-green';
 						btn.type = 'button';
-						var i = document.createElement('I');
+						const i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
-						var label = document.createTextNode(' <%[ Details ]%>');
+						const label = document.createTextNode(' <%[ Details ]%>');
 						btn.appendChild(i);
-						btn.innerHTML += '&nbsp';
+						btn.appendChild(document.createTextNode('\u00a0'));
 						btn.appendChild(label);
-						btn.setAttribute('onclick', "document.location.href = '/web/volume/" + data + "/'");
-						return btn.outerHTML;
+						btn.addEventListener('click', function() {
+							document.location.href = '/web/volume/%volumeid/'.replace('%volumeid', data);
+						});
+						return btn;
 					}
 				}
 			],
@@ -766,19 +777,19 @@ var oVolumeList = {
 					});
 					if (column[0][0] == 3) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -791,6 +802,11 @@ $(function() {
 });
 let fragment = get_url_fragment();
 fragment = fragment ? '#' + fragment : '';
-<%=$this->getPoolId() > 0 ? "window.history.pushState({}, '', '/web/pool/" . $this->getPoolId() . "/" . $this->getPoolName() . "/' + fragment)" : ''%>;
+const pool_id = <%=$this->getPoolIdJSON()%>;
+const pool_name = <%=$this->getPoolNameJSON()%>;
+if (pool_id > 0) {
+	const pool_path = '/web/pool/' + encodeURIComponent(pool_id) + '/' + encodeURIComponent(pool_name) + '/';
+	window.history.pushState({}, '', pool_path + fragment);
+}
 </script>
 </com:TContent>

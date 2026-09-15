@@ -535,7 +535,7 @@ var oAccountSettingsFIDOU2F = {
 			stateSave: true,
 			stateDuration: KEEP_TABLE_SETTINGS,
 			columns: [
-				{data: 'key_name'},
+				{data: 'key_name', render: render_text},
 				{
 					data: 'added',
 					render: render_date_ts_local
@@ -563,7 +563,9 @@ var oAccountSettingsFIDOU2F = {
 						edit_btn.title = '<%[ Edit ]%>';
 						var i = document.createElement('I');
 						i.className = 'fa fa-edit';
-						edit_btn.setAttribute('onclick', 'oAccountSettingsFIDOU2F.edit_key("' + data + '");');
+						edit_btn.addEventListener('click', () => {
+							oAccountSettingsFIDOU2F.edit_key(data);
+						});
 						edit_btn.appendChild(i);
 						container.appendChild(edit_btn);
 
@@ -574,11 +576,13 @@ var oAccountSettingsFIDOU2F = {
 						rm_btn.title = '<%[ Remove ]%>';
 						var i = document.createElement('I');
 						i.className = 'fa fa-trash-alt';
-						rm_btn.setAttribute('onclick', 'oAccountSettingsFIDOU2F.remove_u2f_creds("' + data + '", "' + row.key_name + '");');
+						rm_btn.addEventListener('click', () => {
+							oAccountSettingsFIDOU2F.remove_u2f_creds(data, row.key_name);
+						});
 						rm_btn.appendChild(i);
 						container.appendChild(rm_btn);
 
-						return container.outerHTML;
+						return container;
 					}
 				}
 			],
@@ -607,11 +611,11 @@ var oAccountSettingsFIDOU2F = {
 						.draw();
 					});
 					column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-						if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-							select.append('<option value="' + d + '" selected>' + d + '</option>');
-						} else {
-							select.append('<option value="' + d + '">' + d + '</option>');
-						}
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					});
 				});
 			}

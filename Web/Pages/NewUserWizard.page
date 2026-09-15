@@ -440,7 +440,7 @@ var oRoles = {
 								<h2><%[ Add API host ]%></h2>
 							</header>
 							<div class="w3-container w3-margin-left w3-margin-right w3-margin-top">
-								<div id="new_api_host_window_error" class="w3-text-red" style="display: none;"></div>
+								<div id="new_api_host_window_error" class="w3-text-red" style="display: none; white-space: pre-wrap;"></div>
 								<p><%[ Select existing API host account to create the new account: ]%></p>
 								<div class="w3-row directive_field">
 									<div class="w3-col w3-third"><com:TLabel ForControl="AdminAPIHost" Text="<%[ Admin API host: ]%>"/></div>
@@ -480,7 +480,7 @@ var oRoles = {
 										<i class="fas fa-save"></i> &nbsp;<%[ Create ]%>
 									</com:TActiveLinkButton>
 								</div>
-								<com:TActiveLabel ID="NewAPIHostError" CssClass="w3-text-red" Display="None" />
+								<com:TActiveLabel ID="NewAPIHostError" CssClass="w3-text-red" Display="None" Style="white-space: pre-wrap" />
 							</div>
 						</div>
 					</div>
@@ -566,7 +566,7 @@ var oRoles = {
 									<i class="fa fa-save"></i> &nbsp;<%[ Save ]%>
 								</com:TActiveLinkButton>
 							</footer>
-							<com:TActiveLabel ID="NewAPIHostGroupError" CssClass="w3-text-red" Display="None" />
+							<com:TActiveLabel ID="NewAPIHostGroupError" CssClass="w3-text-red" Display="None" Style="white-space: pre-wrap" />
 						</div>
 					</div>
 				</div>
@@ -741,7 +741,7 @@ var oAPIHostList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'api_host'},
+				{data: 'api_host', render: render_text},
 				{
 					data: 'console',
 					render: function(data, type, row) {
@@ -770,21 +770,26 @@ var oAPIHostList = {
 				{
 					data: 'api_host',
 					render: function(data, type, row) {
-						let ret = '-';
-						if (data !== 'Main') {
-							var span = document.createElement('SPAN');
-							var edit_btn = document.createElement('BUTTON');
+						let ret = data;
+						if (type == 'display') {
+							ret = '-';
+						}
+						if (type == 'display' && data !== 'Main') {
+							const span = document.createElement('SPAN');
+							const edit_btn = document.createElement('BUTTON');
 							edit_btn.className = 'w3-button w3-green';
 							edit_btn.type = 'button';
-							var i = document.createElement('I');
+							const i = document.createElement('I');
 							i.className = 'fas fa-edit';
-							var label = document.createTextNode(' <%[ Set access ]%>');
+							const label = document.createTextNode(' <%[ Set access ]%>');
 							edit_btn.appendChild(i);
-							edit_btn.innerHTML += '&nbsp';
+							edit_btn.appendChild(document.createTextNode('\u00a0'));
 							edit_btn.appendChild(label);
-							edit_btn.setAttribute('onclick', 'oConsoleWindow.open("' + data + '")');
+							edit_btn.addEventListener('click', function() {
+								oConsoleWindow.open(data);
+							});
 							span.appendChild(edit_btn);
-							ret = span.outerHTML;
+							ret = span;
 						}
 						return ret;
 					}.bind(this)
@@ -911,7 +916,7 @@ $(function() {
 									<i class="fas fa-save"></i> &nbsp;<%[ Save ]%>
 								</com:TActiveLinkButton>
 							</div>
-							<com:TActiveLabel ID="NewAPIHostConsoleError" CssClass="w3-text-red" Display="None" />
+							<com:TActiveLabel ID="NewAPIHostConsoleError" CssClass="w3-text-red" Display="None" Style="white-space: pre-wrap" />
 						</div>
 					</div>
 					<div id="new_console_window" class="w3-modal">

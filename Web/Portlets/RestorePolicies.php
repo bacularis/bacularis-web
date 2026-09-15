@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculaConfigAction;
 use Bacularis\Web\Modules\RestorePolicyConfig;
 use Bacularis\Web\Modules\TRestoreVerification;
@@ -176,7 +177,10 @@ class RestorePolicies extends RestoreTestVerification
 
 		$rp_config = [];
 		$rp_config['name'] = $name;
-		$rp_config['description'] = str_replace(["\r", "\n"], ['', ' '], $this->RestorePolicyDescription->Text);
+		$description = $this->RestorePolicyDescription->Text;
+		// INI scalar values are stored on a single line.
+		$description = str_replace(["\r\n", "\r", "\n"], ' ', $description);
+		$rp_config['description'] = $description;
 		$rp_config['enabled'] = $this->RestorePolicyEnabled->Checked ? '1' : '0';
 		$rp_config['run_method'] = $this->getRunMethod();
 		$rp_config['schedule'] = $this->RestorePolicyHowToRunSchedule->SelectedValue;
@@ -188,7 +192,8 @@ class RestorePolicies extends RestoreTestVerification
 		if ($restore_policy_win_type === self::TYPE_ADD_WINDOW && $restore_policy_exists) {
 			$msg = 'Restore policy with name \'%s\' already exists.';
 			$emsg = sprintf($msg, $name);
-			$cb->update($this->RestorePolicyWindowError, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($this->RestorePolicyWindowError, $emsg_html);
 			$cb->show($this->RestorePolicyWindowError);
 			return;
 		}

@@ -85,28 +85,33 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 		list_body: '<%=$this->ClientID%>_list_body'
 	},
 	data: [],
-	table: null,
-	table_toolbar: null,
-	actions: [
-		{
-			action: 'apply_configs',
-			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
-			label: '<%[ Apply configs ]%>',
-			value: 'Name',
-			before: function() {
-				const cb = () => {
-					let selected = [];
-					let sel_data = oBaculaConfigResourceList<%=$this->ClientID%>.table.rows({selected: true}).data();
-					sel_data.each(function(v, k) {
-						selected.push(v.Name);
-					});
-					return selected;
-				};
-				oBulkApplyConfigsModal.set_item_cb(cb);
-				oBulkApplyConfigsModal.show_window(true);
-			}
-		}
-	],
+		table: null,
+		table_toolbar: null,
+		actions: [
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					{
+						action: 'apply_configs',
+						label: '<%[ Apply configs ]%>',
+						value: 'Name',
+						before: function() {
+							const cb = () => {
+								let selected = [];
+								let sel_data = oBaculaConfigResourceList<%=$this->ClientID%>.table.rows({selected: true}).data();
+								sel_data.each(function(v, k) {
+									selected.push(v.Name);
+								});
+								return selected;
+							};
+							oBulkApplyConfigsModal.set_item_cb(cb);
+							oBulkApplyConfigsModal.show_window(true);
+						}
+					}
+				</prop:TrueTemplate>
+			</com:TConditional>
+		],
 	set_data: function(data) {
 		var self = oBaculaConfigResourceList<%=$this->ClientID%>;
 		self.data = data;
@@ -183,7 +188,7 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 						}
 						<com:Bacularis.Common.Portlets.BSimpleRepeater ID="ResourceListColumnsRepeater">
 							<prop:ItemTemplate>
-								,{data: '<%=$this->Data['name']%>'}
+								,{data: <%=Miscellaneous::json_value($this->Data['name'])%>, render: render_text}
 							</prop:ItemTemplate>
 						</com:Bacularis.Common.Portlets.BSimpleRepeater>
 						,{
@@ -193,20 +198,22 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								const resname = data;
 								const icon = document.createElement('I');
 								icon.classList.add('fa-solid', 'fa-arrows-turn-to-dots', 'fa-fw', 'pointer');
-								icon.setAttribute('onclick', 'oBaculaConfigResourceDeps<%=$this->ClientID%>.load_deps("' + restype + '", "' + resname + '");');
-								return icon.outerHTML;
+								icon.addEventListener('click', () => {
+									oBaculaConfigResourceDeps<%=$this->ClientID%>.load_deps(restype, resname);
+								});
+								return icon;
 							}
 						},
 						{
 							data: 'Name',
 							render: (data, type, row) => {
-								const host = '<%=$this->getHost() ?: HostConfig::MAIN_CATALOG_HOST%>';
-								const comptype = '<%=$this->getComponentType()%>';
+								const host = <%=$this->getHostJSON()%>;
+								const comptype = <%=$this->getComponentTypeJSON()%>;
 								const restype = document.getElementById('<%=$this->ResourceTypeAddLink->ClientID%>').textContent;
 								const resname = data;
 								const id = host + '_' + comptype + '_' + restype;
 								const tt_obj = oTagTools_<%=$this->TagToolsResourceList->ClientID%>;
-								const table = 'oBaculaConfigResourceList<%=$this->ClientID%>.table';
+								const table = oBaculaConfigResourceList<%=$this->ClientID%>;
 								return render_tags(type, id, data, tt_obj, table);
 							}
 						},
@@ -225,7 +232,9 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								edit_btn.appendChild(i);
 								edit_btn.innerHTML += '&nbsp';
 								edit_btn.appendChild(label);
-								edit_btn.setAttribute('onclick', 'oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window("' + data + '");');
+								edit_btn.addEventListener('click', () => {
+									oBaculaConfigResourceWindow<%=$this->ClientID%>.load_resource_window(data);
+								});
 
 								var del_btn = document.createElement('BUTTON');
 								del_btn.className = 'w3-button w3-red';
@@ -236,11 +245,13 @@ var oBaculaConfigResourceList<%=$this->ClientID%> = {
 								del_btn.appendChild(i);
 								del_btn.innerHTML += '&nbsp';
 								del_btn.appendChild(label);
-								del_btn.setAttribute('onclick', 'oBaculaConfigResourceWindow<%=$this->ClientID%>.remove_resource("' + data + '")');
+								del_btn.addEventListener('click', () => {
+									oBaculaConfigResourceWindow<%=$this->ClientID%>.remove_resource(data);
+								});
 
 								span.appendChild(edit_btn);
 								span.appendChild(del_btn);
-								return span.outerHTML;
+								return span;
 							}
 						}
 			],
@@ -340,16 +351,20 @@ var oBaculaConfigResourceDeps<%=$this->ClientID%> = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{
-					data: 'component_type'
+					data: 'component_type',
+					render: render_text
 				},
 				{
-					data: 'resource_type'
+					data: 'resource_type',
+					render: render_text
 				},
 				{
-					data: 'resource_name'
+					data: 'resource_name',
+					render: render_text
 				},
 				{
-					data: 'directive_name'
+					data: 'directive_name',
+					render: render_text
 				}
 			],
 			responsive: {
@@ -402,9 +417,15 @@ function post_init_tab_view<%=$this->ClientID%>() {
 	});
 }
 </script>
-<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-	ID="BulkApplyConfigsJob"
-/>
+<com:TConditional
+	Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+>
+	<prop:TrueTemplate>
+		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+			ID="BulkApplyConfigsJob"
+		/>
+	</prop:TrueTemplate>
+</com:TConditional>
 <com:TCallback ID="RemoveResource" OnCallback="removeResource" />
 <div id="resource_window<%=$this->ClientID%>" class="w3-modal">
 	<div class="w3-modal-content w3-animate-top w3-card-4">
@@ -447,7 +468,7 @@ function post_init_tab_view<%=$this->ClientID%>() {
 			<h2><%[ Error ]%></h2>
 		</header>
 		<div class="w3-container w3-margin-left w3-margin">
-			<com:TActiveLabel ID="RemoveResourceError" />
+			<com:TActiveLabel ID="RemoveResourceError" Style="white-space: pre-wrap" />
 		</div>
 		<footer class="w3-container w3-center">
 			<button type="button" class="w3-button w3-green w3-margin-bottom" onclick="document.getElementById('resource_error_window<%=$this->ClientID%>').style.display = 'none';"><i class="fas fa-times"></i> &nbsp;<%[ Close ]%></button>

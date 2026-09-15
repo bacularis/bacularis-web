@@ -303,9 +303,10 @@ class NewTapeStorageWizard extends BaculumWebPage
 
 			if ($sd_found === true) {
 				if ($sd_state === true) {
+					$sd_name_html = Miscellaneous::html_value($sd_name);
 					$cb->update(
 						'api_host_storage_daemon_name',
-						$sd_name
+						$sd_name_html
 					);
 
 					// Everything is fine. Now load the autochanger list.
@@ -313,13 +314,15 @@ class NewTapeStorageWizard extends BaculumWebPage
 				} else {
 					$message = Prado::localize('The storage daemon configuration capability on API host \'%s\' is configured but not work correctly. Please check the bsdjson configuration on that API host. Error: %s.');
 					$emsg = sprintf($message, $api_host, $sd_error);
-					$cb->update($err_id, $emsg);
+					$emsg_html = Miscellaneous::html_value($emsg);
+					$cb->update($err_id, $emsg_html);
 					$cb->show($err_id);
 				}
 			} else {
 				$message = Prado::localize('The storage daemon configuration capability is not configured on the API host \'%s\'. Please configure the bsdjson on that API host.');
 				$emsg = sprintf($message, $api_host);
-				$cb->update($err_id, $emsg);
+				$emsg_html = Miscellaneous::html_value($emsg);
+				$cb->update($err_id, $emsg_html);
 				$cb->show($err_id);
 			}
 		} else {
@@ -328,7 +331,8 @@ class NewTapeStorageWizard extends BaculumWebPage
 				$result->error,
 				$result->output
 			);
-			$cb->update($err_id, $emsg);
+			$emsg_html = Miscellaneous::html_value($emsg);
+			$cb->update($err_id, $emsg_html);
 			$cb->show($err_id);
 		}
 	}
@@ -650,11 +654,9 @@ class NewTapeStorageWizard extends BaculumWebPage
 					$output = $result->output;
 					$error = $result->error;
 					if ($error != 0) {
-						$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 						$errors[] = "Error: {$error}: $output";
 					}
 				} else {
-					$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 					$errors[] = "Error: {$error}: $output";
 				}
 			}
@@ -691,7 +693,6 @@ class NewTapeStorageWizard extends BaculumWebPage
 				$output = $result->output;
 				$error = $result->error;
 				if ($error != 0) {
-					$output = str_replace([PHP_EOL, '"'], ['<br />', '\"'], $output);
 					$errors[] = "Error: {$error}: $output";
 				}
 			}
@@ -703,7 +704,7 @@ class NewTapeStorageWizard extends BaculumWebPage
 			$this->storage_created = true;
 		} else {
 			$this->storage_created = false;
-			$this->storage_create_errors = implode('<br /><br />', $errors);
+			$this->storage_create_errors = implode(PHP_EOL . PHP_EOL, $errors);
 		}
 	}
 

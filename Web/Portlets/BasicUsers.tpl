@@ -105,7 +105,7 @@ set_table: function() {
 				data: null,
 				defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 			},
-			{data: 'username'},
+			{data: 'username', render: render_text},
 			{
 				data: 'bconsole_cfg_path',
 				render: function(data, type, row) {
@@ -115,10 +115,10 @@ set_table: function() {
 						if (data) {
 							var check = document.createElement('I');
 							check.className = 'fas fa-check';
-							ret = check.outerHTML;
+							ret = check;
 						}
 					} else {
-						ret = data;
+						ret = render_text(data, type, row);
 					}
 					return ret;
 				}
@@ -136,10 +136,12 @@ set_table: function() {
 					edit_btn.appendChild(i);
 					edit_btn.innerHTML += '&nbsp';
 					edit_btn.appendChild(label);
-					edit_btn.setAttribute('onclick', 'oAPIBasicUsers.load_api_basic_user_window("' + data + '")');
+					edit_btn.addEventListener('click', () => {
+						oAPIBasicUsers.load_api_basic_user_window(data);
+					});
 
 					span.appendChild(edit_btn);
-					return span.outerHTML;
+					return span;
 				}.bind(this)
 			}
 		],

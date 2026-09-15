@@ -152,10 +152,10 @@ const oRestoreTestList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
-				{data: 'backup_source'},
-				{data: 'restore_policy'},
-				{data: 'restore_destination'},
+				{data: 'name', render: render_text},
+				{data: 'backup_source', render: render_text},
+				{data: 'restore_policy', render: render_text},
+				{data: 'restore_destination', render: render_text},
 				{
 					data: 'name',
 					render: (data, type, row) => {
@@ -270,15 +270,13 @@ const oRestoreTestList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsRestoreTestList->ClientID%>;
-						const table = 'oRestoreTestList.table';
+						const table = oRestoreTestList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'name',
 					render: function (data, type, row) {
-						let btns = '';
-
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
 						btn_edit.className = 'w3-button w3-green';
@@ -290,10 +288,10 @@ const oRestoreTestList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oRestoreTests.load_restore_test_window(\'' + data + '\')');
-						btns += btn_edit.outerHTML;
-
-						return btns;
+						btn_edit.addEventListener('click', () => {
+							oRestoreTests.load_restore_test_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -351,18 +349,23 @@ const oRestoreTestList = {
 							ds = '<%[ Disabled ]%>';
 						}
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}

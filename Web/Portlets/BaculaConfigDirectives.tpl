@@ -86,10 +86,10 @@
 			<div class="save_done" style="display: none; min-width: 70px;">
 				<com:TActiveLabel ID="SaveDirectiveOk" Display="None" CssClass="w3-text-success"><i class="fa fa-check save_done"></i> &nbsp;<%[ OK ]%></com:TActiveLabel>
 				<com:TActiveLabel ID="SaveDirectiveError" Display="None" CssClass="w3-text-red"><i class="fa fa-times-circle save_done"></i> &nbsp;<%[ Error ]%></com:TActiveLabel>
-				<com:TActiveLabel ID="SaveDirectiveErrMsg" Display="None" CssClass="w3-text-red" />
+				<com:TActiveLabel ID="SaveDirectiveErrMsg" Display="None" CssClass="w3-text-red" Style="white-space: pre-wrap" />
 			</div>
 		</div>
 	</com:TActivePanel>
 	<div id="bcd_loader_<%=$this->ClientID%>" class="config_loader"><i class="fas fa-sync-alt fa-spin fa-9x w3-text-green"></i></div>
-	<div id="bcd_error_<%=$this->ClientID%>" class="w3-text-red"></div>
+	<div id="bcd_error_<%=$this->ClientID%>" class="w3-text-red" style="white-space: pre-wrap"></div>
 </div>

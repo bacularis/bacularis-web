@@ -528,13 +528,18 @@ var oJobsToRestoreList = {
 					render: function(data, type, row) {
 						var ret;
 						if (type == 'display') {
+							const container = document.createElement('DIV');
 							var i = document.createElement('I');
 							i.className = 'fa fa-external-link-alt fa-xs';
 							var a = document.createElement('A');
 							a.href = '/web/job/' + encodeURIComponent(data) + '/';
 							a.appendChild(i);
 							a.title = '<%[ Go to job %job ]%>'.replace('%job', data);
-							ret = (data + ' ' + a.outerHTML);
+							const span = document.createElement('SPAN');
+							span.textContent = data + ' ';
+							container.appendChild(span);
+							container.appendChild(a);
+							ret = container;
 						} else {
 							ret = data;
 						}
@@ -556,7 +561,7 @@ var oJobsToRestoreList = {
 							} else {
 								span.textContent = data;
 							}
-							ret = span.outerHTML;
+							ret = span;
 						}
 						return ret;
 					},
@@ -604,7 +609,7 @@ var oJobsToRestoreList = {
 					render: (data, type, row) => {
 						const id = 'jobid';
 						const tt_obj = oTagTools_<%=$this->TagToolsRestoreListJobHistory->ClientID%>;
-						const table = 'oJobsToRestoreList.table';
+						const table = oJobsToRestoreList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -666,19 +671,20 @@ var oJobsToRestoreList = {
 					});
 					if (column[0][0] === 2 || column[0][0] == 6) {
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.title = JobStatus.get_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');	
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');	
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -1737,7 +1743,7 @@ $(function() {
 						<prop:ItemTemplate>
 								<tr>
 									<td class="center"><com:TLabel Text="<%#($this->Data['inchanger'] == 1 ? Prado::localize('Yes') : Prado::localize('No'))%>" /></td>
-									<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#$this->Data['volume']%>" /></td>
+									<td> <i class="fa fa-hdd"></i> <com:TLabel Text="<%#Miscellaneous::html_value($this->Data['volume'])%>" /></td>
 								</tr>
 						</prop:ItemTemplate>
 						<prop:FooterTemplate>
@@ -1830,7 +1836,7 @@ $(function() {
 					store.value = JSON.stringify(fields);
 					return true;
 				}
-				oPlugins.load_plugin_settings(<%=json_encode($this->Session['plugin_info'])%>);
+				oPlugins.load_plugin_settings(<%=Miscellaneous::json_value($this->Session['plugin_info'])%>);
 			</script>
 		</com:TWizardStep>
 		<com:TWizardStep ID="Step5" Title="<%[ Step 5 - Finish ]%>" StepType="Finish">
@@ -1932,7 +1938,7 @@ $(function() {
 						<h2>Error</h2>
 						<div><br />
 							<span onclick="document.getElementById('restore_error').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
-							<com:TLabel ID="RestoreError" CssClass="w3-text-red" />
+							<com:TLabel ID="RestoreError" CssClass="w3-text-red" Style="white-space: pre-wrap" />
 						</div>
 						<div class="w3-center">
 							<a class="w3-button w3-red w3-section" type="button" href="<%=$this->Service->constructUrl('Dashboard');%>"><i class="fa fa-times"></i> &nbsp;<%[ Exit wizard ]%></a>

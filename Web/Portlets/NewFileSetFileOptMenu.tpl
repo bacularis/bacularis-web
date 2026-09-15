@@ -115,7 +115,7 @@ var oPlugins = {
 		menu: '<%=$this->ClientID%>_new_fileset',
 		plugin_list: '<%=$this->PluginSettingList->ClientID%>'
 	},
-	plugins: <%=json_encode($this->plugins)%>,
+	plugins: <%=Miscellaneous::json_value($this->plugins)%>,
 	show_plugin_settings_window: function(show) {
 		const win = document.getElementById(oPlugins.ids.win);
 		win.style.display = show ? 'block' : 'none';

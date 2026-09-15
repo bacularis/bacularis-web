@@ -151,8 +151,10 @@ var oOAuth2ClientList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oOAuth2Clients.load_oauth2_client_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oOAuth2Clients.load_oauth2_client_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],

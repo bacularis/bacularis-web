@@ -112,7 +112,7 @@ var oAPIHostGroupList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'api_hosts',
 					render: (data, type, row) => data.length
@@ -126,14 +126,14 @@ var oAPIHostGroupList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostGroupList->ClientID%>;
-						const table = 'oAPIHostGroupList.table';
+						const table = oAPIHostGroupList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'name',
 					render: function (data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 
 						// Set access button
 						const span = document.createElement('SPAN');
@@ -146,10 +146,12 @@ var oAPIHostGroupList = {
 						access_btn.appendChild(i);
 						access_btn.innerHTML += '&nbsp';
 						access_btn.appendChild(label);
-						access_btn.setAttribute('onclick', 'oAPIHostGroups.load_access_window("' + data + '")');
+						access_btn.addEventListener('click', () => {
+							oAPIHostGroups.load_access_window(data);
+						});
 						span.appendChild(access_btn);
 						span.style.marginRight = '5px';
-						btns += span.outerHTML;
+						btns.appendChild(span);
 
 						// Edit button
 						const btn_edit = document.createElement('BUTTON');
@@ -162,8 +164,10 @@ var oAPIHostGroupList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oAPIHostGroups.load_api_host_group_window(\'' + data + '\')');
-						btns += btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oAPIHostGroups.load_api_host_group_window(data);
+						});
+						btns.appendChild(btn_edit);
 
 						return btns;
 					}
@@ -214,10 +218,12 @@ var oAPIHostGroupList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});

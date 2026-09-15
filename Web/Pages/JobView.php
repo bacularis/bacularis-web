@@ -27,12 +27,13 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
+use Bacularis\Common\Modules\Errors\ConnectionError;
+use Bacularis\Common\Modules\Miscellaneous;
+use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
 use Prado\Prado;
 use Prado\TPropertyValue;
 use Prado\Web\UI\ActiveControls\TActiveLabel;
-use Bacularis\Common\Modules\Errors\ConnectionError;
-use Bacularis\Web\Modules\BaculumWebPage;
-use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Job view page.
@@ -143,15 +144,17 @@ class JobView extends BaculumWebPage
 		$this->Schedules->setJob($job_name);
 		$this->Schedules->setDays(90);
 
-		// prepare job web access
-		$api_host = $this->User->getDefaultAPIHost();
-		$sess = $this->getApplication()->getSession();
-		$director = $sess->contains('director') ? $sess->itemAt('director') : '';
-		$this->JobWebAccess->setAPIHosts([$api_host]);
-		$this->JobWebAccess->setComponentType('dir');
-		$this->JobWebAccess->setComponentName($director);
-		$this->JobWebAccess->setResourceType('Job');
-		$this->JobWebAccess->setResourceName($job_name);
+		if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+			// prepare job web access
+			$api_host = $this->User->getDefaultAPIHost();
+			$sess = $this->getApplication()->getSession();
+			$director = $sess->contains('director') ? $sess->itemAt('director') : '';
+			$this->JobWebAccess->setAPIHosts([$api_host]);
+			$this->JobWebAccess->setComponentType('dir');
+			$this->JobWebAccess->setComponentName($director);
+			$this->JobWebAccess->setResourceType('Job');
+			$this->JobWebAccess->setResourceName($job_name);
+		}
 
 		$this->setJobInfo($job_name);
 	}
@@ -526,6 +529,17 @@ class JobView extends BaculumWebPage
 	public function getJobInfo()
 	{
 		return $this->getViewState(self::JOB_INFO, []);
+	}
+
+	/**
+	 * Get job information as JSON safe for JavaScript context.
+	 *
+	 * @return string job information JSON
+	 */
+	public function getJobInfoJSON(): string
+	{
+		$job_info = $this->getJobInfo();
+		return Miscellaneous::json_value($job_info);
 	}
 
 	/**

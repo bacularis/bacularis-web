@@ -841,11 +841,11 @@ class RestoreWizard extends BaculumWebPage
 
 		// Set restore point in template
 		if ($this->Session->contains('restore_job')) {
-			$this->RestoreBrowserClient->Text = $job->client;
-			$this->RestoreBrowserName->Text = $this->Session['restore_job']['name'];
-			$this->RestoreBrowserType->Text = $this->Session['restore_job']['type'];
-			$this->RestoreBrowserStatus->Text = $this->Session['restore_job']['jobstatus'];
-			$this->RestoreBrowserTimePoint->Text = $this->Session['restore_job']['endtime'];
+			$this->RestoreBrowserClient->Text = Miscellaneous::html_value($job->client);
+			$this->RestoreBrowserName->Text = Miscellaneous::html_value($this->Session['restore_job']['name']);
+			$this->RestoreBrowserType->Text = Miscellaneous::html_value($this->Session['restore_job']['type']);
+			$this->RestoreBrowserStatus->Text = Miscellaneous::html_value($this->Session['restore_job']['jobstatus']);
+			$this->RestoreBrowserTimePoint->Text = Miscellaneous::html_value($this->Session['restore_job']['endtime']);
 		}
 
 		return $job;
@@ -2082,7 +2082,8 @@ class RestoreWizard extends BaculumWebPage
 			);
 			$this->goToPage('JobView', $url_params);
 		} else {
-			$this->RestoreError->Text = implode('<br />', $ret->output);
+			$restore_error = implode(PHP_EOL, $ret->output);
+			$this->RestoreError->Text = Miscellaneous::html_value($restore_error);
 			$this->show_error = true;
 			$audit->audit(
 				AuditLog::TYPE_WARNING,

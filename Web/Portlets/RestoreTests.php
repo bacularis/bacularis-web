@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\RestoreVerification;
 use Bacularis\Web\Modules\BaculaConfigAction;
 use Bacularis\Web\Modules\RestorePolicyConfig;
@@ -229,12 +230,12 @@ class RestoreTests extends RestoreTestVerification
 		// Job status
 		$job_status = $misc->getJobState($job->jobstatus)['value'] ?? '';
 
-		$this->RestoreTestBackupJobJobIdName->Text = $job->name ?? '';
-		$this->RestoreTestBackupJobJobIdType->Text = $job_type;
-		$this->RestoreTestBackupJobJobIdStatus->Text = $job_status;
-		$this->RestoreTestBackupJobJobIdClient->Text = $job->client ?? '';
-		$this->RestoreTestBackupJobJobIdLevel->Text = $job_level;
-		$this->RestoreTestBackupJobJobIdStartTime->Text = $job->starttime ?? '';
+		$this->RestoreTestBackupJobJobIdName->Text = Miscellaneous::html_value($job->name ?? '');
+		$this->RestoreTestBackupJobJobIdType->Text = Miscellaneous::html_value($job_type);
+		$this->RestoreTestBackupJobJobIdStatus->Text = Miscellaneous::html_value($job_status);
+		$this->RestoreTestBackupJobJobIdClient->Text = Miscellaneous::html_value($job->client ?? '');
+		$this->RestoreTestBackupJobJobIdLevel->Text = Miscellaneous::html_value($job_level);
+		$this->RestoreTestBackupJobJobIdStartTime->Text = Miscellaneous::html_value($job->starttime ?? '');
 
 		if (($job->type ?? '') !== 'B') {
 			$emsg = Prado::localize('This jobid cannot be used for restore tests.');
@@ -295,7 +296,10 @@ class RestoreTests extends RestoreTestVerification
 			$rt_config = $rtest_config->getRestoreTestConfig($name);
 		}
 		$rt_config['name'] = $name;
-		$rt_config['description'] = str_replace(["\r", "\n"], ['', ' '], $this->RestoreTestDescription->Text);
+		$description = $this->RestoreTestDescription->Text;
+		// INI scalar values are stored on a single line.
+		$description = str_replace(["\r\n", "\r", "\n"], ' ', $description);
+		$rt_config['description'] = $description;
 		$rt_config['enabled'] = $this->RestoreTestEnabled->Checked ? '1' : '0';
 		$rt_config['source_type'] = $source_type;
 		$rt_config['source_backup_job'] = $this->RestoreTestBackupJobList->SelectedValue;
@@ -449,7 +453,8 @@ class RestoreTests extends RestoreTestVerification
 	private function showError(string $emsg): void
 	{
 		$cb = $this->getPage()->getCallbackClient();
-		$cb->update($this->RestoreTestWindowError, $emsg);
+		$emsg_html = Miscellaneous::html_value($emsg);
+		$cb->update($this->RestoreTestWindowError, $emsg_html);
 		$cb->show($this->RestoreTestWindowError);
 	}
 

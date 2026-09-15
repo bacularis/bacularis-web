@@ -87,7 +87,7 @@ class PoolList extends BaculumWebPage
 			return;
 		}
 		$error = null;
-		$err_pool = '';
+		$err_pool = new StdClass;
 		$api = $this->getModule('api');
 		for ($i = 0; $i < count($pools); $i++) {
 			$params = [

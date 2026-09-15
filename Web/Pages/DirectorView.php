@@ -27,9 +27,11 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Web\UI\TCommandEventParameter;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\Params;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Bacularis\Web\Modules\WebUserRoles;
+use Prado\Web\UI\TCommandEventParameter;
 
 /**
  * Director view page.
@@ -61,7 +63,9 @@ class DirectorView extends BaculumWebPage
 			$this->DirDirectorConfig->IsDirectiveCreated = false;
 			$this->DirDirectorConfig->raiseEvent('OnDirectiveListLoad', $this, null);
 			$host = $this->User->getDefaultAPIHost();
-			$this->BulkApplyPatternsDirector->setHost($host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsDirector->setHost($host);
+			}
 		}
 	}
 
@@ -76,7 +80,9 @@ class DirectorView extends BaculumWebPage
 			$this->DirectorResourcesConfig->setResourceType($resource_type);
 			$this->DirectorResourcesConfig->setComponentName($component_name);
 			$this->DirectorResourcesConfig->loadResourceListTable($sender, $param);
-			$this->BulkApplyPatternsDirector->setHost($host);
+			if ($this->User->isInRole(WebUserRoles::ADMIN)) {
+				$this->BulkApplyPatternsDirector->setHost($host);
+			}
 		} else {
 			$this->DirectorResourcesConfig->showError(true);
 		}
@@ -111,7 +117,8 @@ class DirectorView extends BaculumWebPage
 				'status'
 			]
 		)->output;
-		$this->DirectorLog->Text = implode(\PHP_EOL, $raw_status);
+		$director_log = implode(\PHP_EOL, $raw_status);
+		$this->DirectorLog->Text = Miscellaneous::html_value($director_log);
 
 		$query_str = '?output=json';
 		$graph_status = $this->getModule('api')->get(

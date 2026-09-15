@@ -287,7 +287,7 @@ var oGraphicalStorageStatus = {
 	data: {},
 	refresh_timeout: null,
 	running_jobs: [],
-	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
+	dir_version: <%=$this->getDirectorUnameJSON()%>,
 	ids: {
 		refresh_interval: 'status_storage_refresh_interval',
 		status_not_supported: 'status_storage_status_not_supported',
@@ -1734,23 +1734,29 @@ function load_sd_res_config(resource) {
 	cb.dispatch();
 }
 		</script>
-		<!-- Apply patterns -->
-		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
-			ID="BulkApplyPatternsStorage"
-			ComponentType="sd"
-		/>
-		<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
-		</button>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<!-- Apply patterns -->
+				<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
+					ID="BulkApplyPatternsStorage"
+					ComponentType="sd"
+				/>
+				<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
+					<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
+				</button>
 
-		<!-- Save component config to pattern -->
-		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
-			ID="SaveComponentToPattern"
-			ComponentType="sd"
-		/>
-		<button type="button" onclick="const host = $('#<%=$this->UserAPIHosts->ClientID%>').val(); oSaveComponentToPattern.set_configs_window(host, 'sd'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
-		</button>
+				<!-- Save component config to pattern -->
+				<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+					ID="SaveComponentToPattern"
+					ComponentType="sd"
+				/>
+				<button type="button" onclick="const host = $('#<%=$this->UserAPIHosts->ClientID%>').val(); oSaveComponentToPattern.set_configs_window(host, 'sd'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+				</button>
+			</prop:TrueTemplate>
+		</com:TConditional>
 
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_sd_storagedaemon_config(); W3SubTabs.open('sd_storagedaemon_config_btn', 'sd_storagedaemon_config_form', 'storage_daemon_config');">
@@ -1887,18 +1893,23 @@ var oDriveList = {
 				},
 				{data: 'index'},
 				{data: 'drive'},
-				{data: 'device'},
+				{data: 'device', render: render_text},
 				{
 					data: 'volume',
 					render: function(data, type, row) {
 						var v = data;
 						if (type == 'display' && row.mediaid > 0) {
+							const container = document.createElement('DIV');
 							var a = document.createElement('A');
-							a.href = '/web/volume/' + row.mediaid + '/';
+							a.href = '/web/volume/%mediaid/'.replace('%mediaid', row.mediaid);
 							var icon = document.createElement('I');
 							icon.className  = 'fa fa-external-link-alt fa-xs';
 							a.appendChild(icon);
-							v += ' ' + a.outerHTML;
+							const vol = document.createElement('SPAN');
+							vol.textContent = v + ' ';
+							container.appendChild(vol);
+							container.appendChild(a);
+							v = container;
 						}
 						return v;
 					}
@@ -1916,11 +1927,13 @@ var oDriveList = {
 						btn.appendChild(i);
 						btn.innerHTML += '&nbsp';
 						btn.appendChild(label);
-						btn.setAttribute('onclick', 'oDrives.unload_drive("' + row.drive + '", ' + data + ')');
+						btn.addEventListener('click', () => {
+							oDrives.unload_drive(row.drive, data);
+						});
 						if (data === '')  {
 							btn.style.visibility = 'hidden';
 						}
-						return btn.outerHTML;
+						return btn;
 					}
 				}
 			],
@@ -2178,7 +2191,6 @@ var oSlotList = {
 					data: 'volume',
 					render: function(data, type, row) {
 						var v = data;
-						var link = '';
 						if (!row.slot_cat) {
 							for (var i = 0; i < oDriveList.data.length; i++) {
 								if (row.slot_ach === oDriveList.data[i].slot_ach) {
@@ -2190,12 +2202,17 @@ var oSlotList = {
 							}
 						}
 						if (type == 'display' && row.mediaid > 0) {
+							const container = document.createElement('DIV');
 							var a = document.createElement('A');
-							a.href = '/web/volume/' + row.mediaid + '/';
+							a.href = '/web/volume/%mediaid/'.replace('%mediaid', row.mediaid);
 							var icon = document.createElement('I');
 							icon.className  = 'fa fa-external-link-alt fa-xs';
 							a.appendChild(icon);
-							link = ' ' + a.outerHTML;
+							const vol = document.createElement('SPAN');
+							vol.textContent = data + ' ';
+							container.appendChild(vol);
+							container.appendChild(a);
+							v = container;
 						}
 						if (!data && !v) {
 							if (row.state == 'F') {
@@ -2204,16 +2221,16 @@ var oSlotList = {
 								v = '<%[ Empty ]%>';
 							}
 						}
-						return (v + link);
+						return v;
 					}
 				},
-				{data: 'volstatus'},
+				{data: 'volstatus', render: render_text},
 				{
 					data: 'volbytes',
 					render: render_bytes
 				},
-				{data: 'pool'},
-				{data: 'mediatype'},
+				{data: 'pool', render: render_text},
+				{data: 'mediatype', render: render_text},
 				{
 					data: 'lastwritten',
 					render: render_date_local
@@ -2237,8 +2254,10 @@ var oSlotList = {
 								clear_io.appendChild(i);
 								clear_io.innerHTML += '&nbsp';
 								clear_io.appendChild(label);
-								clear_io.setAttribute('onclick', 'oSlots.release_ie_window(' + data + ');');
-								ret = clear_io.outerHTML;
+								clear_io.addEventListener('click', () => {
+									oSlots.release_ie_window(data);
+								});
+								ret = clear_io;
 							} else {
 								ret = '<%[ Import/Export ]%>';
 							}
@@ -2252,11 +2271,13 @@ var oSlotList = {
 							load_btn.appendChild(i);
 							load_btn.innerHTML += '&nbsp';
 							load_btn.appendChild(label);
-							load_btn.setAttribute('onclick', 'oSlots.load_drive_window(' + data + ');');
+							load_btn.addEventListener('click', () => {
+								oSlots.load_drive_window(data);
+							});
 							if (row.state === 'E')  {
 								load_btn.style.visibility = 'hidden';
 							}
-							ret = load_btn.outerHTML;
+							ret = load_btn;
 						}
 						return ret;
 					}

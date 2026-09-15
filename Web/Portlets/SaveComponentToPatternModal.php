@@ -17,7 +17,6 @@ namespace Bacularis\Web\Portlets;
 
 use Bacularis\Web\Modules\ConfigConfig;
 use Bacularis\Web\Modules\PatternConfig;
-use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Save Bacula component configuration to configs and pattern.
@@ -29,12 +28,6 @@ class SaveComponentToPatternModal extends Portlets
 {
 	public const HOST = 'Host';
 	public const COMPONENT_TYPE = 'ComponentType';
-
-	public function onInit($param)
-	{
-		parent::onInit($param);
-		$this->Visible = $this->User->isInRole(WebUserRoles::ADMIN);
-	}
 
 	/**
 	 * Prepare create pattern window.

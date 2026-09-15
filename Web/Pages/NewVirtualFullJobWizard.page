@@ -1078,7 +1078,7 @@ function show_storage_warning(storage, pool, jobs) {
 						</div>
 					</div>
 				</fieldset>
-				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red"></com:TActiveLabel>
+				<com:TActiveLabel ID="CreateResourceErrorMsg" Display="None" CssClass="w3-text-red" Style="white-space: pre-wrap"></com:TActiveLabel>
 			</div>
 		</com:TWizardStep>
 	</com:TWizard>

@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Prado\TPropertyValue;
 
 /**

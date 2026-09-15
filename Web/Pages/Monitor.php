@@ -27,6 +27,7 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 use Bacularis\Common\Modules\Errors\GenericError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
 use Bacularis\Web\Modules\JobInfo;
 use Bacularis\Web\Modules\WebConfig;
@@ -218,7 +219,9 @@ class Monitor extends BaculumWebPage
 			$monitor_data['error'] = $error;
 		}
 
-		echo json_encode($monitor_data);
+		$this->Response->appendHeader('Content-Type: application/json; charset=UTF-8');
+		$json = Miscellaneous::json_value($monitor_data);
+		echo $json;
 		exit();
 	}
 }

@@ -972,26 +972,40 @@ function open_director_resource_tab() {
 }
 $(() => {
 	open_director_resource_tab();
+	if (<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? 'true' : 'false'%>) {
+		const default_api_host = <%=$this->User->getDefaultAPIHostJSON()%>;
+		const save_component_btn = document.getElementById('director_view_save_component_to_pattern');
+		save_component_btn.addEventListener('click', function() {
+			oSaveComponentToPattern.set_configs_window(default_api_host, 'dir');
+			oSaveComponentToPattern.show_window(true);
+		});
+	}
 });
 		</script>
 
-		<!-- Apply patterns -->
-		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
-			ID="BulkApplyPatternsDirector"
-			ComponentType="dir"
-		/>
-		<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
-		</button>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<!-- Apply patterns -->
+				<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
+					ID="BulkApplyPatternsDirector"
+					ComponentType="dir"
+				/>
+				<button type="button" onclick="oBulkApplyPatternsModal.show_window(true);" class="w3-green w3-button">
+					<i class="fa-solid fa-stamp"></i> &nbsp;<%[ Apply patterns ]%>
+				</button>
 
-		<!-- Save component config to pattern -->
-		<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
-			ID="SaveComponentToPattern"
-			ComponentType="dir"
-		/>
-		<button type="button" onclick="const host = '<%=$this->User->getDefaultAPIHost()%>'; oSaveComponentToPattern.set_configs_window(host, 'dir'); oSaveComponentToPattern.show_window(true);" class="w3-green w3-button">
-			<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
-		</button>
+				<!-- Save component config to pattern -->
+				<com:Bacularis.Web.Portlets.SaveComponentToPatternModal
+					ID="SaveComponentToPattern"
+					ComponentType="dir"
+				/>
+				<button type="button" id="director_view_save_component_to_pattern" class="w3-green w3-button">
+					<i class="fa-solid fa-save"></i> &nbsp;<%[ Save to pattern ]%>
+				</button>
+			</prop:TrueTemplate>
+		</com:TConditional>
 
 		<div class="w3-row w3-margin-bottom">
 			<a href="javascript:void(0)" onclick="load_director_config(); W3SubTabs.open('director_director_config_btn', 'director_director_config_form', 'director_config');">

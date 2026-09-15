@@ -68,15 +68,21 @@
 			Visible="<%=$this->isDirConfigVisible()%>"
 			OnCallback="loadScheduleConfig"
 		/>
-		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Job history ]%></button>
+		<button id="btn_job_history" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_history'); oJobHistoryList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? ', oWebAccessResourceList' : ''%>]);"><%[ Job history ]%></button>
 		<com:TActiveLinkButton
 			ID="JobSchedulesBtn"
 			CssClass="w3-bar-item w3-button tab_btn"
 			Text="<%[ Job schedules ]%>"
 			OnCallback="loadSchedules"
-			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"
+			Attributes.onclick="W3Tabs.open(this.id, 'job_schedules'); set_page_tables([oJobHistoryList, oJobScheduleList<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? ', oWebAccessResourceList' : ''%>]);"
 		/>
-		<button id="btn_job_web_access" type="button" class="w3-bar-item w3-button tab_btn<%=$this->isWebAccessVisible() ? '' : ' hide'%>" onclick="W3Tabs.open(this.id, 'job_web_access'); oWebAccessResourceList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Web access ]%></button>
+		<com:TConditional
+			Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+		>
+			<prop:TrueTemplate>
+				<button id="btn_job_web_access" type="button" class="w3-bar-item w3-button tab_btn" onclick="W3Tabs.open(this.id, 'job_web_access'); oWebAccessResourceList.table.responsive.recalc(); set_page_tables([oJobHistoryList, oJobScheduleList, oWebAccessResourceList]);"><%[ Web access ]%></button>
+			</prop:TrueTemplate>
+		</com:TConditional>
 	</div>
 
 	<!-- Job Log -->
@@ -102,7 +108,7 @@
 			<i class="fa fa-trash-alt"></i> &nbsp;<%[ Delete job ]%> <%=$this->getJobId()%>
 		</com:TActiveLinkButton>
 		<div class="w3-panel w3-card-2" style="clear: right;">
-			<h5><%[ Job: ]%> <%=$this->getJobUname()%> &nbsp;
+			<h5><%[ Job: ]%> <%=\Bacularis\Common\Modules\Miscellaneous::html_value($this->getJobUname())%> &nbsp;
 				<com:TActiveLabel ID="RunningIcon" Attributes.title="<%[ Job is running ]%>">
 					<i class="fa fa-cog w3-spin"></i>
 				</com:TActiveLabel>
@@ -368,7 +374,7 @@ var oRunningJobStatus = {
 			this.add_job_row(table, '<%[ Processing file: ]%>', processing_file);
 		}
 
-		var job_name = '<%=$this->getJobName()%>';
+		var job_name = <%=\Bacularis\Common\Modules\Miscellaneous::json_value($this->getJobName())%>;
 		var bytes = parseInt(job.jobbytes, 10);
 		var files = parseInt(job.jobfiles, 10);
 		files = files > 0 ? (files - 1) : 0;
@@ -696,7 +702,7 @@ oRunningJobStatus.init();
 
 MonitorParams = {
 	jobs: {
-		name: ['<%=$this->getJobName()%>']
+		name: [<%=\Bacularis\Common\Modules\Miscellaneous::json_value($this->getJobName())%>]
 	}
 };
 $(function() {
@@ -893,7 +899,7 @@ var oJobReportSummary = {
 		}
 	},
 	init: function() {
-		const data = <%=json_encode($this->jobdata)%>;
+		const data = <%=Miscellaneous::json_value($this->jobdata)%>;
 		this.update(data);
 	},
 	update(data) {
@@ -958,7 +964,7 @@ $(function() {
 					job_callback_func(true);
 				}
 			}, 3000);
-			oJobLogBox<%=$this->JobLogBox->ClientID%>.init_log('<%=$this->getJobId()%>', '<%=$this->getJobName()%>');
+			oJobLogBox<%=$this->JobLogBox->ClientID%>.init_log('<%=$this->getJobId()%>', <%=\Bacularis\Common\Modules\Miscellaneous::json_value($this->getJobName())%>);
 		</script>
 	</div>
 	<div id="job_delete_confirm" class="w3-modal" style="display: none">
@@ -1075,7 +1081,7 @@ var oJobGraphs = {
 	},
 	initialized: false,
 	extended_graph_jt: ['B'],
-	job_info: <%=json_encode($this->getJobInfo())%>,
+	job_info: <%=$this->getJobInfoJSON()%>,
 	init: function() {
 		this.set_events();
 	},
@@ -1543,7 +1549,7 @@ var oJobHistoryList = {
 					}
 				},
 				{data: 'jobid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'type',
 					render: function(data, type, row) {
@@ -1562,6 +1568,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'client',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1625,6 +1632,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'pool',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1633,6 +1641,7 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'fileset',
+					render: render_text,
 					visible: false
 				},
 				{
@@ -1653,15 +1662,18 @@ var oJobHistoryList = {
 				},
 				{
 					data: 'comment',
+					render: render_text,
 					visible: false
 				},
 				{
 					data: 'filetable',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
 				{
 					data: 'firstvol',
+					render: render_text,
 					visible: false,
 					defaultContent: ''
 				},
@@ -1675,22 +1687,27 @@ var oJobHistoryList = {
 					render: (data, type, row) => {
 						const id = 'jobid';
 						const tt_obj = oTagTools_<%=$this->TagToolsJobViewJobHistory->ClientID%>;
-						const table = 'oJobHistoryList.table';
+						const table = oJobHistoryList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'jobid',
 					render: function (data, type, row) {
-						var btn = document.createElement('BUTTON');
+						if (type != 'display') {
+							return data;
+						}
+						const btn = document.createElement('BUTTON');
 						btn.className = 'w3-button w3-green';
 						btn.type = 'button';
 						btn.title = '<%[ Details ]%>';
-						var i = document.createElement('I');
+						const i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						btn.appendChild(i);
-						btn.setAttribute('onclick', "document.location.href = '/web/job/history/" + data + "/'");
-						return btn.outerHTML;
+						btn.addEventListener('click', function() {
+							document.location.href = '/web/job/history/%jobid/'.replace('%jobid', data);
+						});
+						return btn;
 					}
 				}
 			],
@@ -1745,19 +1762,20 @@ var oJobHistoryList = {
 					});
 					if (column[0][0] == 16) {
 						column.data().unique().sort().each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + JobStatus.get_desc(d) + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.title = JobStatus.get_desc(d);
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -1775,7 +1793,7 @@ $(document).ready(function(){
 });
 MonitorParams = {
 	jobs: {
-		name: ['<%=$this->getJobName()%>']
+		name: [<%=\Bacularis\Common\Modules\Miscellaneous::json_value($this->getJobName())%>]
 	}
 };
 $(function() {
@@ -1789,7 +1807,7 @@ $(function() {
 });
 let fragment = get_url_fragment();
 fragment = fragment ? '#' + fragment : '';
-<%=$this->getJobId() > 0 ? "window.history.pushState({}, '', '/web/job/history/" . $this->getJobId() . "/" . $this->getJobName() . "/' + fragment)" : ''%>;
+<%=$this->getJobId() > 0 ? "window.history.pushState({}, '', '/web/job/history/" . $this->getJobId() . "/" . \Bacularis\Common\Modules\Miscellaneous::html_value($this->getJobName()) . "/' + fragment)" : ''%>;
 </script>
 		<div id="job_history_job_diff_modal" class="w3-modal" style="display: none;">
 			<div class="w3-modal-content w3-animate-top w3-card-4" style="min-width: 90%;">
@@ -1905,7 +1923,7 @@ var oJobFileDiff = {
 		const param = {
 			a: a,
 			b: b,
-			name: '<%=$this->getJobName()%>',
+			name: <%=\Bacularis\Common\Modules\Miscellaneous::json_value($this->getJobName())%>,
 			method: method
 		};
 		const cb = <%=$this->JobFileDiff->ActiveControl->Javascript%>;
@@ -1988,7 +2006,7 @@ var oJobFileDiff = {
 							div.title = data;
 							const label_short = Strings.get_short_label(data, this.file_label_size);
 							div.textContent = label_short;
-							ret = div.outerHTML;
+							ret = div;
 						}
 						return ret;
 					},
@@ -2013,7 +2031,7 @@ var oJobFileDiff = {
 								span.classList.add('w3-blue-gray');
 								span.textContent = '☓ ' + this.file_states.not_included.label;
 							}
-							ret = span.outerHTML;
+							ret = span;
 						} else if (type == 'filter' || type == 'sort') {
 							ret = data;
 						}
@@ -2040,7 +2058,7 @@ var oJobFileDiff = {
 								span.classList.add('w3-blue-gray');
 								span.textContent = '☓ ' + this.file_states.not_included.label;
 							}
-							ret = span.outerHTML;
+							ret = span;
 						} else if (type == 'filter' || type == 'sort') {
 							ret = data;
 						}
@@ -2057,7 +2075,7 @@ var oJobFileDiff = {
 							div.title = data;
 							const label_short = Strings.get_short_label(data, this.file_label_size);
 							div.textContent = label_short;
-							ret = div.outerHTML;
+							ret = div;
 						}
 						return ret;
 					},
@@ -2106,19 +2124,20 @@ var oJobFileDiff = {
 							if (!d) {
 								d = '-';
 							}
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" title="' + d + '" selected>' + label  + '</option>');
-							} else {
-								select.append('<option value="' + d + '" title="' + d + '">' +  label + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = label;
+							option.title = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').sort().unique().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -2136,11 +2155,16 @@ $(function() {
 			ID="Schedules"
 		/>
 	</div>
-	<div class="w3-container tab_item" id="job_web_access" style="display: none">
-		<p><%[ The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually. ]%></p>
-		<com:Bacularis.Web.Portlets.WebAccessResource
-			ID="JobWebAccess"
-			Visible="<%=$this->User->isInRole(WebUserRoles::ADMIN)%>"
-		/>
-	</div>
+	<com:TConditional
+		Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+	>
+		<prop:TrueTemplate>
+			<div class="w3-container tab_item" id="job_web_access" style="display: none">
+				<p><%[ The web access URLs can be used for different automations. This allows to create URLs that grant controlled access to selected actions (such as run backup). There can be configured various time, usage and IP address access limits. The configuration can be customized for each web access URL individually. ]%></p>
+				<com:Bacularis.Web.Portlets.WebAccessResource
+					ID="JobWebAccess"
+				/>
+			</div>
+		</prop:TrueTemplate>
+	</com:TConditional>
 </com:TContent>

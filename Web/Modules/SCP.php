@@ -57,6 +57,15 @@ class SCP extends WebModule
 	 */
 	public function execCommand($src_file, $dest_path, $address, $creds = [], $ptype = self::PTYPE_REG_CMD)
 	{
+		$misc = $this->getModule('misc');
+		$username = key_exists('username', $creds) ? $creds['username'] : '';
+		$is_valid_username = $username === '' || (is_string($username) && $misc->isValidSSHUsername($username));
+		if (!is_string($address) || !$misc->isValidSSHHost($address) || !$is_valid_username) {
+			return [
+				'output' => ['Invalid SCP connection parameters.'],
+				'exitcode' => 1
+			];
+		}
 		$cmd = $this->prepareCommand(
 			$src_file,
 			$dest_path,
@@ -180,7 +189,8 @@ class SCP extends WebModule
 	 */
 	private function prepareExpectCommand($cmd)
 	{
-		return 'expect -c \'spawn ' . $this->quoteExpectCommand($cmd) . '
+		$spawn_command = $this->quoteExpectCommand($cmd);
+		$expect_program = 'spawn ' . $spawn_command . '
 set timeout ' . self::SCP_COMMAND_TIMEOUT . '
 set prompt "(.*)\[#%>:\$\]  $"
 expect {
@@ -209,7 +219,9 @@ expect {
 lassign [wait] pid spawnid os_error_flag value
 puts "EXITCODE=$value"
 puts "quit"
-exit\' 2>&1';
+exit';
+		$expect_program = escapeshellarg($expect_program);
+		return 'expect -c ' . $expect_program . ' 2>&1';
 	}
 
 	/**

@@ -178,7 +178,7 @@ function set_update_slots_output(out_id) {
 }
 function show_update_slots_window() {
 	var logbox = document.getElementById('<%=$this->UpdateSlotsLog->ClientID%>');
-	logbox.innerHTML = '';
+	logbox.textContent = '';
 	var logbox_container = document.getElementById('update_slots_log');
 	logbox_container.style.display = 'none';
 	set_updating_status('start');

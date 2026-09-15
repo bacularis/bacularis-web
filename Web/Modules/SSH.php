@@ -15,6 +15,7 @@
 
 namespace Bacularis\Web\Modules;
 
+use Bacularis\Common\Modules\AsyncOutput;
 use Prado\Prado;
 
 /**
@@ -51,7 +52,7 @@ class SSH extends WebModule
 	 */
 	private const SSH_BG_COMMAND_PATTERN = "%s %s \"%s\" \"%s\" 2>&1";
 
-	public const OUTPUT_FILE_PREFIX = 'output_';
+	public const OUTPUT_FILE_PREFIX = AsyncOutput::OUTPUT_FILE_PREFIX;
 
 	/**
 	 * SSH command timeout in seconds.
@@ -89,6 +90,16 @@ class SSH extends WebModule
 	 */
 	public function execCommand($address, $creds = [], $command = [], $ptype = self::PTYPE_REG_CMD)
 	{
+		$misc = $this->getModule('misc');
+		$username = key_exists('username', $creds) ? $creds['username'] : '';
+		$is_valid_username = $username === '' || (is_string($username) && $misc->isValidSSHUsername($username));
+		if (!is_string($address) || !$misc->isValidSSHHost($address) || !$is_valid_username) {
+			return [
+				'output' => ['Invalid SSH connection parameters.'],
+				'output_id' => '',
+				'exitcode' => 1
+			];
+		}
 		$cmd = $this->prepareCommand($address, $creds, $command, $ptype);
 		$expect = $this->getModule('expect');
 		$expect->setCommand($cmd['cmd']);
@@ -124,7 +135,6 @@ class SSH extends WebModule
 			'exitcode' => $exitcode
 		];
 	}
-
 
 	/**
 	 * Prepare SSH command to execution.
@@ -179,9 +189,9 @@ class SSH extends WebModule
 		);
 		$file = $output_id = '';
 		if ($ptype == self::PTYPE_BG_CMD) {
-			$file = $this->prepareOutputFile();
-			$f = basename($file);
-			$output_id = str_replace(self::OUTPUT_FILE_PREFIX, '', $f);
+			$output_file = $this->prepareOutputFile();
+			$file = $output_file['path'];
+			$output_id = $output_file['out_id'];
 		}
 		return [
 			'cmd' => $this->prepareExpectCommand($cmd, $file),
@@ -213,13 +223,12 @@ class SSH extends WebModule
 	 * Prepare output file for remote background commands.
 	 * It is for commands that take long time.
 	 *
-	 * @return string output file name with path
+	 * @return array output file path and public output ID
 	 */
-	private function prepareOutputFile()
+	private function prepareOutputFile(): array
 	{
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
-		$fname = tempnam($dir, self::OUTPUT_FILE_PREFIX);
-		return $fname;
+		return AsyncOutput::createOutputFile($dir);
 	}
 
 	/**
@@ -233,8 +242,8 @@ class SSH extends WebModule
 		$output = [];
 		$dir = Prado::getPathOfNamespace('Bacularis.Web.Config');
 
-		if (preg_match('/^[a-z0-9]+$/i', $out_id) === 1) {
-			$file = $dir . '/' . self::OUTPUT_FILE_PREFIX . $out_id;
+		if (AsyncOutput::isValidOutputID($out_id)) {
+			$file = AsyncOutput::getOutputFilePath($dir, $out_id);
 			if (file_exists($file)) {
 				$output = file($file);
 			}
@@ -307,7 +316,8 @@ class SSH extends WebModule
 	 */
 	private function prepareExpectFgCommand($cmd)
 	{
-		return 'expect -c \'spawn ' . $this->quoteExpectCommand($cmd) . '
+		$spawn_command = $this->quoteExpectCommand($cmd);
+		$expect_program = 'spawn ' . $spawn_command . '
 set timeout ' . self::SSH_COMMAND_TIMEOUT . '
 set prompt "(.*)\[#%>:\$\]  $"
 expect {
@@ -348,7 +358,9 @@ expect {
 lassign [wait] pid spawnid os_error_flag value
 puts "\nEXITCODE=$value"
 puts "quit"
-exit\' || echo "
+exit';
+		$expect_program = escapeshellarg($expect_program);
+		return 'expect -c ' . $expect_program . ' || echo "
 EXITCODE=1
 ===
 "';
@@ -363,7 +375,8 @@ EXITCODE=1
 	 */
 	private function prepareExpectBgCommand($cmd, $file)
 	{
-		return 'expect -c \'spawn ' . $this->quoteExpectCommand($cmd) . '
+		$spawn_command = $this->quoteExpectCommand($cmd);
+		$expect_program = 'spawn ' . $spawn_command . '
 set timeout ' . self::SSH_COMMAND_TIMEOUT . '
 set prompt "(.*)\[#%>:\$\]  $"
 expect {
@@ -396,7 +409,10 @@ expect {
 lassign [wait] pid spawnid os_error_flag value
 puts "\nEXITCODE=$value"
 puts "quit"
-exit\' 1>' . $file . ' 2>&1 &';
+exit';
+		$expect_program = escapeshellarg($expect_program);
+		$output_file = escapeshellarg($file);
+		return 'expect -c ' . $expect_program . ' 1>' . $output_file . ' 2>&1 &';
 	}
 
 	/**

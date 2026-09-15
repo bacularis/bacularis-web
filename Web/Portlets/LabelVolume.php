@@ -29,6 +29,7 @@
 
 namespace Bacularis\Web\Portlets;
 
+use Bacularis\Common\Modules\Miscellaneous;
 use Prado\TPropertyValue;
 
 /**
@@ -118,10 +119,11 @@ class LabelVolume extends Portlets
 		}
 		if ($result->error === 0) {
 			$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', ['loading']);
-			$this->LabelVolumeLog->Text = implode('', $result->output);
+			$label_volume_log = implode('', $result->output);
+			$this->LabelVolumeLog->Text = Miscellaneous::html_value($label_volume_log);
 			$this->onLabelStart($param);
 		} else {
-			$this->LabelVolumeLog->Text = $result->output;
+			$this->LabelVolumeLog->Text = Miscellaneous::html_value($result->output);
 			$this->onLabelFail($param);
 		}
 	}
@@ -154,7 +156,8 @@ class LabelVolume extends Portlets
 
 		if ($result->error === 0) {
 			if (count($result->output) > 0) {
-				$this->LabelVolumeLog->Text = implode('', $result->output);
+				$label_volume_log = implode('', $result->output);
+				$this->LabelVolumeLog->Text = Miscellaneous::html_value($label_volume_log);
 				$this->getPage()->getCallbackClient()->callClientFunction('label_volume_output_refresh', [$out_id]);
 			} else {
 				$this->getPage()->getCallbackClient()->callClientFunction('set_labeling_status', ['finish']);
@@ -162,7 +165,7 @@ class LabelVolume extends Portlets
 				$this->onLabelComplete($param);
 			}
 		} else {
-			$this->LabelVolumeLog->Text = $result->output;
+			$this->LabelVolumeLog->Text = Miscellaneous::html_value($result->output);
 			$this->onLabelFail($param);
 			$this->onLabelComplete($param);
 		}

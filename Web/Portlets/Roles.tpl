@@ -147,7 +147,7 @@ var oRoleList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'role'},
+				{data: 'role', render: render_text},
 				{data: 'long_name', render: render_text},
 				{
 					data: 'description',
@@ -158,7 +158,7 @@ var oRoleList = {
 				{
 					data: 'resources',
 					render: function(data, type, row) {
-						ret = data;
+						let ret = data;
 						if (type == 'display') {
 							var span = document.createElement('SPAN');
 							span.title = data;
@@ -167,9 +167,9 @@ var oRoleList = {
 							} else {
 								span.textContent = data;
 							}
-							ret = span.outerHTML;
+							ret = span;
 						} else {
-							ret = data;
+							ret = render_text(data, type, row);
 						}
 						return ret;
 					}
@@ -196,7 +196,7 @@ var oRoleList = {
 					render: (data, type, row) => {
 						const id = 'role';
 						const tt_obj = oTagTools_<%=$this->TagToolsRoleList->ClientID%>;
-						const table = 'oRoleList.table';
+						const table = oRoleList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -213,8 +213,10 @@ var oRoleList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oRoles.load_role_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oRoles.load_role_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -270,10 +272,13 @@ var oRoleList = {
 					} else if (d === '0') {
 						ds = '<%[ Disabled ]%>';
 					}
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" title="' + ds + '" selected>' + ds + '</option>');
-					} else if (ds) {
-						select.append('<option value="' + d + '" title="' + ds + '">' + ds + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || ds) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = ds;
+						option.title = ds;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}

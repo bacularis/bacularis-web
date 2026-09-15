@@ -137,9 +137,10 @@ set_table: function() {
 				data: null,
 				defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 			},
-			{data: 'Name'},
+			{data: 'Name', render: render_text},
 			{
 				data: 'Description',
+				render: render_text,
 				visible: false
 			},
 			{
@@ -210,9 +211,10 @@ set_table: function() {
 			{
 				data: 'Name',
 				render: (data, type, row) => {
-					const id = '<%=$this->User->getDefaultAPIHost()%>_dir_Console';
+					const api_host = <%=$this->User->getDefaultAPIHostJSON()%>;
+					const id = api_host + '_dir_Console';
 					const tt_obj = oTagTools_<%=$this->TagToolsConsoleList->ClientID%>;
-					const table = 'oConsoleList.table';
+					const table = oConsoleList;
 					return render_tags(type, id, data, tt_obj, table);
 				}
 			},
@@ -229,8 +231,10 @@ set_table: function() {
 					btn_edit.innerHTML += '&nbsp';
 					btn_edit.style.marginRight = '8px';
 					btn_edit.appendChild(label_edit);
-					btn_edit.setAttribute('onclick', 'oConsoles.load_console_window(\'' + data + '\')');
-					return btn_edit.outerHTML;
+					btn_edit.addEventListener('click', () => {
+						oConsoles.load_console_window(data);
+					});
+					return btn_edit;
 				}
 			}
 		],

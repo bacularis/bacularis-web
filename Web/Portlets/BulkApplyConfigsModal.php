@@ -16,7 +16,6 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\PluginConfigBase;
-use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Modules\VariableConfig;
 
 /**
@@ -30,12 +29,6 @@ class BulkApplyConfigsModal extends Portlets
 	public const HOST = 'Host';
 	public const COMPONENT_TYPE = 'ComponentType';
 	public const RESOURCE_TYPE = 'ResourceType';
-
-	public function onInit($param)
-	{
-		parent::onInit($param);
-		$this->Visible = $this->User->isInRole(WebUserRoles::ADMIN);
-	}
 
 	public function loadConfigs($sender, $param)
 	{

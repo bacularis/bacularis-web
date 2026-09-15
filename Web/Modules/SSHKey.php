@@ -56,8 +56,13 @@ class SSHKey extends WebModule
 		while ($iterator->valid()) {
 			$key = $iterator->current()->getFilename();
 			$kpath = $iterator->current()->getPathname();
+			$key_name = $this->getNameByKey($key);
+			if (!self::isValidKeyName($key_name)) {
+				$iterator->next();
+				continue;
+			}
 			$keys[] = [
-				'key' => $this->getNameByKey($key),
+				'key' => $key_name,
 				'fingerprint' => $this->getSSHKeyFingerprint($kpath)
 			];
 			$iterator->next();
@@ -74,6 +79,9 @@ class SSHKey extends WebModule
 	 */
 	public function setKey($name, $key)
 	{
+		if (!is_string($name) || !self::isValidKeyName($name)) {
+			return false;
+		}
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$kname = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $kname]);
@@ -98,6 +106,9 @@ class SSHKey extends WebModule
 	 */
 	public function removeKey($name)
 	{
+		if (!is_string($name) || !self::isValidKeyName($name)) {
+			return false;
+		}
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$kname = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $kname]);
@@ -129,10 +140,25 @@ class SSHKey extends WebModule
 	 */
 	public function getPathByName($name)
 	{
+		if (!is_string($name) || !self::isValidKeyName($name)) {
+			return '';
+		}
 		$path = Prado::getPathOfNamespace(self::CONFIG_FILE_PATH);
 		$key = $this->getKeyByName($name);
 		$kpath = implode(DIRECTORY_SEPARATOR, [$path, $key]);
 		return $kpath;
+	}
+
+	/**
+	 * Validate SSH key name.
+	 *
+	 * @param string $name SSH key name
+	 * @return bool true if the key name is valid, otherwise false
+	 */
+	public static function isValidKeyName(string $name): bool
+	{
+		$pattern = '/^' . self::SSH_KEY_NAME_PATTERN . '$/D';
+		return preg_match($pattern, $name) === 1;
 	}
 
 	/**

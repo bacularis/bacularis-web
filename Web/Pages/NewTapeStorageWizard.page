@@ -513,7 +513,7 @@ www-data ALL = (root) NOPASSWD: <%=Miscellaneous::html_value(preg_replace('/( .*
 				<div class="w3-modal-content w3-card-4 w3-padding-large w3-animate-zoom" style="width:600px">
 					<span onclick="$('#storage_create_error_modal').hide();" class="w3-button w3-xlarge w3-hover-red w3-display-topright">&times;</span>
 					<h2><%[ Error while creating storage ]%></h2>
-					<div id="storage_create_errors" class="w3-panel w3-red" style="display: none"></div>
+					<div id="storage_create_errors" class="w3-panel w3-red" style="display: none; white-space: pre-wrap;"></div>
 					<div class="w3-center">
 						<button type="button" class="w3-button w3-red" onclick="$('#storage_create_error_modal').hide();"><i class="fa fa-times"></i> &nbsp;<%[ Close ]%></button>
 					</div>
@@ -591,8 +591,8 @@ var oNewTapeStorageStep3 = {
 		}
 	}
 };
-<%=isset($this->storage_created) && $this->storage_created === true ? 'oNewTapeStorageStep3.set_restart_storage_window("' . $this->storage_address . '", '. $this->storage_running_jobs_no . ');' : ''%>
-<%=isset($this->storage_created) && $this->storage_created === false ? 'oNewTapeStorageStep3.set_storage_create_error_window("' . $this->storage_create_errors . '");' : ''%>
+<%=isset($this->storage_created) && $this->storage_created === true ? 'oNewTapeStorageStep3.set_restart_storage_window(' . Miscellaneous::json_value($this->storage_address) . ', ' . (int) $this->storage_running_jobs_no . ');' : ''%>
+<%=isset($this->storage_created) && $this->storage_created === false ? 'oNewTapeStorageStep3.set_storage_create_error_window(' . Miscellaneous::json_value($this->storage_create_errors) . ');' : ''%>
 			</script>
 		</com:TWizardStep>
 	</com:TWizard>

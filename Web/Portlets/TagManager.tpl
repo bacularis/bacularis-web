@@ -295,6 +295,9 @@ oTagManagerList = {
 				{
 					data: 'tag',
 					render: function (data, type, row) {
+						if (type != 'display') {
+							return data;
+						}
 						const container = document.createElement('DIV');
 
 						// Edit button
@@ -304,7 +307,9 @@ oTagManagerList = {
 						edit_btn.type = 'button';
 						edit_btn.title = '<%[ Edit ]%>';
 						edit_btn.setAttribute('data-tag', data);
-						edit_btn.setAttribute('onclick', 'oTagManagerAction.edit(this.dataset.tag);');
+						edit_btn.addEventListener('click', function() {
+							oTagManagerAction.edit(data);
+						});
 						const edit_img = document.createElement('I');
 						edit_img.className = 'fa-solid fa-edit';
 						edit_btn.appendChild(edit_img);
@@ -316,13 +321,15 @@ oTagManagerList = {
 						del_btn.type = 'button';
 						del_btn.title = '<%[ Delete ]%>';
 						del_btn.setAttribute('data-tag', data);
-						del_btn.setAttribute('onclick', 'oTagManagerAction.delete(this.dataset.tag);');
-						del_img = document.createElement('I');
+						del_btn.addEventListener('click', function() {
+							oTagManagerAction.delete(data);
+						});
+						const del_img = document.createElement('I');
 						del_img.className = 'fa-solid fa-trash-alt';
 						del_btn.appendChild(del_img);
 						container.appendChild(del_btn);
 
-						return container.outerHTML;
+						return container;
 					}
 				}
 			],

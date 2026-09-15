@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PKCE;
 use Bacularis\Web\Modules\IdentityProviderConfig;
 use Bacularis\Web\Modules\OIDC;
@@ -170,7 +171,8 @@ class AuthenticationIdentityProviders extends Security
 			if ($idp_exists) {
 				$emsg = Prado::localize('Identity provider identifier \'%s\' already exists. Please type different identifier.');
 				$emsg = sprintf($emsg, $idp_name);
-				$cb->update($this->IdPWindowError, $emsg);
+				$emsg_html = Miscellaneous::html_value($emsg);
+				$cb->update($this->IdPWindowError, $emsg_html);
 				$cb->show($this->IdPWindowError);
 				return;
 			}

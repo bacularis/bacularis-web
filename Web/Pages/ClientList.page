@@ -88,28 +88,33 @@ var oClientList = {
 	table: null,
 	table_toolbar: null,
 	client_running_jobs: {},
-	dir_version: <%=$this->Session->contains('director_uname') ? (json_encode($this->Session['director_uname']) ?? '{}') : '{}'%>,
-	client_show: {},
-	actions: [
-		{
-			action: 'apply_configs',
-			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
-			label: '<%[ Apply configs ]%>',
-			value: 'name',
-			before: function() {
-				const cb = () => {
-					let selected = [];
-					let sel_data = oClientList.table.rows({selected: true}).data();
-					sel_data.each(function(v, k) {
-						selected.push(v.name);
-					});
-					return selected;
-				};
-				oBulkApplyConfigsModal.set_item_cb(cb);
-				oBulkApplyConfigsModal.show_window(true);
-			}
-		},
-		{
+	dir_version: <%=$this->getDirectorUnameJSON()%>,
+		client_show: {},
+		actions: [
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					{
+						action: 'apply_configs',
+						label: '<%[ Apply configs ]%>',
+						value: 'name',
+						before: function() {
+							const cb = () => {
+								let selected = [];
+								let sel_data = oClientList.table.rows({selected: true}).data();
+								sel_data.each(function(v, k) {
+									selected.push(v.name);
+								});
+								return selected;
+							};
+							oBulkApplyConfigsModal.set_item_cb(cb);
+							oBulkApplyConfigsModal.show_window(true);
+						}
+					},
+				</prop:TrueTemplate>
+			</com:TConditional>
+			{
 			action: 'cancel_client_jobs',
 			enabled: true,
 			label: '<%[ Cancel client jobs ]%>',
@@ -263,7 +268,7 @@ var oClientList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'clientid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'uname',
 					render: (data, type, row) => {
@@ -370,9 +375,13 @@ var oClientList = {
 										details.appendChild(jobstatus);
 										details.appendChild(starttime);
 
-										let ret = el.name;
-										ret += details.outerHTML;
-										return ret;
+										const container = document.createElement('DIV');
+										const job_name = document.createElement('SPAN');
+										job_name.textContent = el.name
+
+										container.appendChild(job_name);
+										container.appendChild(details);
+										return container.outerHTML;
 									});
 									showTip(span, "<%[ Client jobs ]%> (<%[ running ]%>):", jobs_running.join(''), {
 										offset: [-55, 0],
@@ -400,7 +409,7 @@ var oClientList = {
 							if (enabled == 1) {
 								const check = document.createElement('I');
 								check.className = 'fas fa-check';
-								ret = check.outerHTML;
+								ret = check;
 							}
 						} else {
 							ret = enabled;
@@ -413,14 +422,14 @@ var oClientList = {
 					render: (data, type, row) => {
 						const id = 'clientid';
 						const tt_obj = oTagTools_<%=$this->TagToolsClientList->ClientID%>;
-						const table = 'oClientList.table';
+						const table = oClientList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'clientid',
 					render: function (data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 						let i;
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
@@ -428,11 +437,14 @@ var oClientList = {
 							quick_edit.className = 'w3-button w3-green';
 							quick_edit.type = 'button';
 							quick_edit.title = '<%[ Quick edit ]%>';
+							quick_edit.style.marginRight = '4px';
 							i = document.createElement('I');
 							i.className = 'fa fa-edit';
 							quick_edit.appendChild(i);
-							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Client', '" + row.name + "')");
-							btns += (quick_edit.outerHTML + ' ');
+							quick_edit.addEventListener('click', () => {
+								open_quick_resource_edit('dir', 'Client', row.name);
+							});
+							btns.appendChild(quick_edit);
 						}
 						const details = document.createElement('BUTTON');
 						details.className = 'w3-button w3-green';
@@ -441,8 +453,10 @@ var oClientList = {
 						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						details.appendChild(i);
-						details.setAttribute('onclick', "document.location.href = '/web/client/" + data + "/'");
-						btns += details.outerHTML;
+						details.addEventListener('click', () => {
+							document.location.href = '/web/client/%clientid/'.replace('%clientid', data);
+						});
+						btns.appendChild(details);
 						return btns;
 					}
 				}
@@ -484,10 +498,12 @@ var oClientList = {
 					});
 					if (column[0][0] == 3) {
 						column.data().unique().sort(sort_natural).each(function (d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else if (d) {
-								select.append('<option value="' + d + '">' + d + '</option>');
+							if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = d;
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 							select.css('max-width', '265px');
 						});
@@ -495,11 +511,11 @@ var oClientList = {
 						column.data().unique().sort(sort_natural).each(function (d, j) {
 							var time = Units.format_time_period(d);
 							var time_f = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');
-							if (column.search() == '^' + dtEscapeRegex(time_f) + '$') {
-								select.append('<option value="' + time_f + '" selected>' + time_f + '</option>');
-							} else {
-								select.append('<option value="' + time_f + '">' + time_f + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = time_f;
+							option.textContent = time_f;
+							option.selected = column.search() == '^' + dtEscapeRegex(time_f) + '$';
+							select.append(option);
 						});
 					} else if (column[0][0] == 8) { // Enabled flag
 						let items = [];
@@ -517,20 +533,21 @@ var oClientList = {
 							} else if (item === '0') {
 								ds = '<%[ Disabled ]%>';
 							}
-							if (column.search() == '^' + dtEscapeRegex(item) + '$') {
-								select.append('<option value="' + item + '" title="' + ds + '" selected>' + ds + '</option>');
-							} else {
-								select.append('<option value="' + item + '" title="' + ds + '">' + ds + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = item;
+							option.textContent = ds;
+							option.title = ds;
+							option.selected = column.search() == '^' + dtEscapeRegex(item) + '$';
+							select.append(option);
 						};
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
 							if (d) {
-								if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-									select.append('<option value="' + d + '" selected>' + d + '</option>');
-								} else {
-									select.append('<option value="' + d + '">' + d + '</option>');
-								}
+								const option = document.createElement('OPTION');
+								option.value = d;
+								option.textContent = d;
+								option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+								select.append(option);
 							}
 						});
 					}
@@ -634,7 +651,7 @@ function update_client_list_table(data, init) {
 
 MonitorParams = {clients: null};
 $(function() {
-	oClientList.load_client_show_cb(<%=json_encode($this->client_show)%>);
+	oClientList.load_client_show_cb(<%=$this->getClientShowJSON()%>);
 	MonitorCallsInterval.push(function() {
 		oClientList.set_client_running_jobs();
 	});
@@ -645,11 +662,17 @@ $(function() {
 	});
 });
 </script>
-		<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-			ID="BulkApplyConfigsClient"
-			ComponentType="dir"
-			ResourceType="Client"
-		/>
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+						ID="BulkApplyConfigsClient"
+						ComponentType="dir"
+						ResourceType="Client"
+					/>
+				</prop:TrueTemplate>
+			</com:TConditional>
 		<com:TCallback ID="DeleteClientResourcesAction" OnCallback="deleteClientResources">
 			<prop:ClientSide.OnComplete>
 				oClientListDeleteClientResourceWindow.delete_cb();
@@ -667,7 +690,7 @@ $(function() {
 				<div class="w3-container w3-margin-left w3-margin-right">
 					<div id="client_list_delete_client_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
 						<h3><%[ Error ]%></h3>
-						<p id="client_list_delete_client_resource_confirm_window_error_text"></p>
+						<p id="client_list_delete_client_resource_confirm_window_error_text" style="white-space: pre-wrap;"></p>
 					</div>
 					<p>
 						<%[ Are you sure you want to delete the following clients? ]%>

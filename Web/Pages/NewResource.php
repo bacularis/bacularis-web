@@ -27,8 +27,9 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Prado;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * New resource page.
@@ -41,19 +42,36 @@ class NewResource extends BaculumWebPage
 	public const COMPONENT_TYPE = 'ComponentType';
 	public const COMPONENT_NAME = 'ComponentName';
 	public const RESOURCE_TYPE = 'ResourceType';
-	public const ORIGIN_URL = 'OriginUrl';
+
+	/**
+	 * Destination pages allowed for created resource types.
+	 */
+	private const RESOURCE_ORIGIN_PAGES = [
+		'Autochanger' => 'StorageList',
+		'Client' => 'ClientList',
+		'Device' => 'StorageList',
+		'FileDaemon' => 'ClientList',
+		'Fileset' => 'FileSetList',
+		'Job' => 'JobList',
+		'JobDefs' => 'JobList',
+		'Pool' => 'PoolList',
+		'Schedule' => 'ScheduleList',
+		'Storage' => 'StorageList'
+	];
+
+	/**
+	 * Validated destination URL used after creating a resource.
+	 */
+	public $origin_url = '';
 
 	public function onPreRender($param)
 	{
 		parent::onPreRender($param);
-		if ($this->IsCallBack || $this->IsPostBack) {
-			return;
+		if (!$this->IsCallBack && !$this->IsPostBack) {
+			$this->setConfigForm();
+			$this->loadResourcesToCopy();
 		}
-		if (key_exists('HTTP_REFERER', $_SERVER)) {
-			$this->setOriginUrl($_SERVER['HTTP_REFERER']);
-		}
-		$this->setConfigForm();
-		$this->loadResourcesToCopy();
+		$this->origin_url = $this->getOriginURL();
 	}
 
 	private function setConfigForm($resource_name = null)
@@ -163,7 +181,8 @@ class NewResource extends BaculumWebPage
 					}
 				}
 			} else {
-				$this->NewResourceLog->Text = var_export($config, true);
+				$config_output = var_export($config, true);
+				$this->NewResourceLog->Text = Miscellaneous::html_value($config_output);
 				$this->NewResourceLog->Display = 'Dynamic';
 			}
 		} else {
@@ -256,14 +275,20 @@ class NewResource extends BaculumWebPage
 		$this->setViewState(self::RESOURCE_TYPE, $type);
 	}
 
-	public function getOriginUrl()
+	/**
+	 * Get an allowed destination URL for the created resource type.
+	 *
+	 * @return string destination URL
+	 */
+	private function getOriginURL(): string
 	{
-		return $this->getViewState(self::ORIGIN_URL);
-	}
-
-	public function setOriginUrl($url)
-	{
-		$this->setViewState(self::ORIGIN_URL, $url);
+		$resource_type = $this->getResourceType();
+		$page_name = $this->getDefaultPage();
+		if (is_string($resource_type) && key_exists($resource_type, self::RESOURCE_ORIGIN_PAGES)) {
+			$page_name = self::RESOURCE_ORIGIN_PAGES[$resource_type];
+		}
+		$origin_url = $this->Service->constructUrl($page_name);
+		return $origin_url;
 	}
 
 	public function createResource()

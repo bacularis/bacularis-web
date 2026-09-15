@@ -53,9 +53,15 @@
 <com:TCallback ID="LoadDeployAPIHost" OnCallback="TemplateControl.loadDeployAPIHostWindow" />
 <com:TCallback ID="LoadAPIHost" OnCallback="TemplateControl.loadAPIHostWindow" />
 <com:TCallback ID="RemoveAPIHostsAction" OnCallback="TemplateControl.removeAPIHosts" />
-<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
-	ID="BulkApplyPatterns"
-/>
+<com:TConditional
+	Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+>
+	<prop:TrueTemplate>
+		<com:Bacularis.Web.Portlets.BulkApplyPatternsModal
+			ID="BulkApplyPatterns"
+		/>
+	</prop:TrueTemplate>
+</com:TConditional>
 <script>
 var oAPIHostList = {
 	ids: {
@@ -136,18 +142,20 @@ var oAPIHostList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{data: 'protocol', render: render_text},
 				{data: 'address', render: render_text},
 				{data: 'port', render: render_text},
 				{
 					data: 'auth_type',
 					render: function (data, type, row) {
-						var at = data;
-						if (at == 'basic') {
+						let at;
+						if (data == 'basic') {
 							at = 'Basic';
-						} else if (at == 'oauth2') {
+						} else if (data == 'oauth2') {
 							at = 'OAuth2';
+						} else {
+							at = 'Unknown';
 						}
 						return at;
 					}
@@ -172,7 +180,7 @@ var oAPIHostList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsAPIHostList->ClientID%>;
-						const table = 'oAPIHostList.table';
+						const table = oAPIHostList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -193,7 +201,9 @@ var oAPIHostList = {
 						btn_install.innerHTML += '&nbsp';
 						btn_install.style.marginRight = '8px';
 						btn_install.appendChild(label_install);
-						btn_install.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'install\', true)');
+						btn_install.addEventListener('click', () => {
+							oAPIHostCommands.load_window(data, 'install', true);
+						});
 						btns.appendChild(btn_install);
 
 						// upgrade button
@@ -207,7 +217,9 @@ var oAPIHostList = {
 						btn_upgrade.innerHTML += '&nbsp';
 						btn_upgrade.style.marginRight = '8px';
 						btn_upgrade.appendChild(label_upgrade);
-						btn_upgrade.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'upgrade\', true)');
+						btn_upgrade.addEventListener('click', () => {
+							oAPIHostCommands.load_window(data, 'upgrade', true);
+						});
 						btns.appendChild(btn_upgrade);
 
 						// uninstall button
@@ -221,10 +233,12 @@ var oAPIHostList = {
 						btn_uninstall.innerHTML += '&nbsp';
 						btn_uninstall.style.marginRight = '8px';
 						btn_uninstall.appendChild(label_uninstall);
-						btn_uninstall.setAttribute('onclick', 'oAPIHostCommands.load_window(\'' + data + '\', \'remove\', true)');
+						btn_uninstall.addEventListener('click', () => {
+							oAPIHostCommands.load_window(data, 'remove', true);
+						});
 						btns.appendChild(btn_uninstall);
 
-						return btns.outerHTML;
+						return btns;
 					}
 				}
 			],
@@ -276,10 +290,12 @@ var oAPIHostList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});
@@ -514,25 +530,28 @@ var oAPIHostCommands = {
 				details.style.cursor = 'pointer';
 
 				// add patterns button
-				const patterns_btn = document.createElement('BUTTON');
-				patterns_btn.type = 'button';
-				patterns_btn.classList.add('w3-green', 'w3-button', 'w3-tiny', 'w3-margin-left');
-				patterns_btn.addEventListener('click', () => {
-					const component_type = this.components[component].component_type;
-					oBulkApplyPatternsModal.set_patterns_window(result.host, component_type);
-					oBulkApplyPatternsModal.show_window(true);
-				});
-				const patterns_img = document.createElement('I');
-				patterns_img.classList.add('fa-solid', 'fa-stamp');
-				const patterns_label = document.createTextNode(' <%[ Apply patterns ]%>');
-				patterns_btn.appendChild(patterns_img);
-				patterns_btn.appendChild(patterns_label);
+				let patterns_btn = null;
+				if (<%=$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN) ? 'true' : 'false'%>) {
+					patterns_btn = document.createElement('BUTTON');
+					patterns_btn.type = 'button';
+					patterns_btn.classList.add('w3-green', 'w3-button', 'w3-tiny', 'w3-margin-left');
+					patterns_btn.addEventListener('click', () => {
+						const component_type = this.components[component].component_type;
+						oBulkApplyPatternsModal.set_patterns_window(result.host, component_type);
+						oBulkApplyPatternsModal.show_window(true);
+					});
+					const patterns_img = document.createElement('I');
+					patterns_img.classList.add('fa-solid', 'fa-stamp');
+					const patterns_label = document.createTextNode(' <%[ Apply patterns ]%>');
+					patterns_btn.appendChild(patterns_img);
+					patterns_btn.appendChild(patterns_label);
+				}
 
 				container.appendChild(input);
 				container.appendChild(label);
 				container.appendChild(details);
 				container.appendChild(output);
-				if (component != this.components.catalog.component_name) {
+				if (patterns_btn && component != this.components.catalog.component_name) {
 					container.appendChild(patterns_btn);
 				}
 
@@ -1385,7 +1404,7 @@ var oOSProfileList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{data: 'description', render: render_text},
 				{data: 'repository_type', render: render_text},
 				{
@@ -1411,7 +1430,7 @@ var oOSProfileList = {
 					render: (data, type, row) => {
 						const id = 'name';
 						const tt_obj = oTagTools_<%=$this->TagToolsOSProfileList->ClientID%>;
-						const table = 'oOSProfileList.table';
+						const table = oOSProfileList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
@@ -1428,8 +1447,10 @@ var oOSProfileList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oOSProfiles.load_osprofile_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oOSProfiles.load_osprofile_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -1489,19 +1510,24 @@ var oOSProfileList = {
 					}
 					if (pdvals.indexOf(predefined) == -1) {
 						pdvals.push(predefined);
-						if (column.search() === '^' + dtEscapeRegex(predefined) + '$') {
-							select.append('<option value="' + predefined + '" title="' + ds + '" selected>' + ds + '</option>');
-						} else if (ds) {
-							select.append('<option value="' + predefined + '" title="' + ds + '">' + ds + '</option>');
+						if (column.search() === '^' + dtEscapeRegex(predefined) + '$' || ds) {
+							const option = document.createElement('OPTION');
+							option.value = predefined;
+							option.textContent = ds;
+							option.title = ds;
+							option.selected = column.search() === '^' + dtEscapeRegex(predefined) + '$';
+							select.append(option);
 						}
 					}
 				});
 			} else {
 				column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-					if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-						select.append('<option value="' + d + '" selected>' + d + '</option>');
-					} else if(d) {
-						select.append('<option value="' + d + '">' + d + '</option>');
+					if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+						const option = document.createElement('OPTION');
+						option.value = d;
+						option.textContent = d;
+						option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+						select.append(option);
 					}
 				});
 			}
@@ -3246,8 +3272,8 @@ var oRepoAuthList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'name'},
-				{data: 'auth_type'},
+				{data: 'name', render: render_text},
+				{data: 'auth_type', render: render_text},
 				{data: 'username', render: render_text},
 				{
 					data: 'default',
@@ -3279,8 +3305,10 @@ var oRepoAuthList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oRepoAuths.load_repo_auth_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oRepoAuths.load_repo_auth_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -3329,10 +3357,12 @@ var oRepoAuthList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});
@@ -3668,8 +3698,10 @@ var oSSHConfigList = {
 						btn_edit.innerHTML += '&nbsp';
 						btn_edit.style.marginRight = '8px';
 						btn_edit.appendChild(label_edit);
-						btn_edit.setAttribute('onclick', 'oSSHConfigs.load_ssh_config_window(\'' + data + '\')');
-						return btn_edit.outerHTML;
+						btn_edit.addEventListener('click', () => {
+							oSSHConfigs.load_ssh_config_window(data);
+						});
+						return btn_edit;
 					}
 				}
 			],
@@ -3718,10 +3750,12 @@ var oSSHConfigList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});
@@ -3990,7 +4024,7 @@ var oSSHKeyList = {
 					data: null,
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
-				{data: 'key'}
+				{data: 'key', render: render_text}
 			],
 			responsive: {
 				details: {
@@ -4028,10 +4062,12 @@ var oSSHKeyList = {
 				.draw();
 			});
 			column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-				if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-					select.append('<option value="' + d + '" selected>' + d + '</option>');
-				} else if(d) {
-					select.append('<option value="' + d + '">' + d + '</option>');
+				if (column.search() == '^' + dtEscapeRegex(d) + '$' || d) {
+					const option = document.createElement('OPTION');
+					option.value = d;
+					option.textContent = d;
+					option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+					select.append(option);
 				}
 			});
 		});

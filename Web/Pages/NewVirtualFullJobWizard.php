@@ -760,7 +760,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 				$this->getModule('api')->set(['console'], ['reload']);
 			} else {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 				return;
 			}
 		};
@@ -793,7 +793,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			]);
 			if ($result->error != 0) {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 				return;
 			}
 			$job = (array) $result->output;
@@ -827,7 +827,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			]);
 			if ($result->error != 0) {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 				return;
 			}
 			$pool = (array) $result->output;
@@ -844,7 +844,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			);
 			if ($result->error != 0) {
 				$this->CreateResourceErrMsg->Display = 'Dynamic';
-				$this->CreateResourceErrMsg->Text = $result->output;
+				$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 				return;
 			}
 		}
@@ -926,7 +926,7 @@ class NewVirtualFullJobWizard extends BaculumWebPage
 			$this->goToPage('JobList');
 		} else {
 			$this->CreateResourceErrMsg->Display = 'Dynamic';
-			$this->CreateResourceErrMsg->Text = $result->output;
+			$this->CreateResourceErrMsg->Text = Miscellaneous::html_value($result->output);
 			$this->getModule('audit')->audit(
 				AuditLog::TYPE_ERROR,
 				AuditLog::CATEGORY_CONFIG,

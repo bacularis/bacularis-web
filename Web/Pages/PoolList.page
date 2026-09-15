@@ -52,28 +52,33 @@ var oPoolList = {
 		pool_list_body: 'pool_list_body'
 	},
 	data: [],
-	table: null,
-	table_toolbar: null,
-	actions: [
-		{
-			action: 'apply_configs',
-			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) ? 'true' : 'false'%>,
-			label: '<%[ Apply configs ]%>',
-			value: 'name',
-			before: function() {
-				const cb = () => {
-					let selected = [];
-					let sel_data = oPoolList.table.rows({selected: true}).data();
-					sel_data.each(function(v, k) {
-						selected.push(v.name);
-					});
-					return selected;
-				};
-				oBulkApplyConfigsModal.set_item_cb(cb);
-				oBulkApplyConfigsModal.show_window(true);
-			}
-		},
-		{
+		table: null,
+		table_toolbar: null,
+		actions: [
+			<com:TConditional
+				Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+			>
+				<prop:TrueTemplate>
+					{
+						action: 'apply_configs',
+						label: '<%[ Apply configs ]%>',
+						value: 'name',
+						before: function() {
+							const cb = () => {
+								let selected = [];
+								let sel_data = oPoolList.table.rows({selected: true}).data();
+								sel_data.each(function(v, k) {
+									selected.push(v.name);
+								});
+								return selected;
+							};
+							oBulkApplyConfigsModal.set_item_cb(cb);
+							oBulkApplyConfigsModal.show_window(true);
+						}
+					},
+				</prop:TrueTemplate>
+			</com:TConditional>
+			{
 			action: 'delete',
 			enabled: <%=$this->User->isInRole(WebUserRoles::ADMIN) && $this->getApplication()->getSession()->itemAt('dir') ? 'true' : 'false'%>,
 			label: '<%[ Delete ]%>',
@@ -158,7 +163,7 @@ var oPoolList = {
 					defaultContent: '<button type="button" class="w3-button w3-blue"><i class="fa fa-angle-down"></i></button>'
 				},
 				{data: 'poolid'},
-				{data: 'name'},
+				{data: 'name', render: render_text},
 				{
 					data: 'numvols'
 				},
@@ -186,14 +191,14 @@ var oPoolList = {
 					render: (data, type, row) => {
 						const id = 'poolid';
 						const tt_obj = oTagTools_<%=$this->TagToolsPoolList->ClientID%>;
-						const table = 'oPoolList.table';
+						const table = oPoolList;
 						return render_tags(type, id, data, tt_obj, table);
 					}
 				},
 				{
 					data: 'poolid',
 					render: function (data, type, row) {
-						let btns = '';
+						let btns = document.createElement('DIV');
 						let i;
 						if (<%=$this->User->isInRole(WebUserRoles::ADMIN) === false || !$this->getApplication()->getSession()->itemAt('dir') ? 'false' : 'true'%>) {
 							// Quick edit button
@@ -201,11 +206,14 @@ var oPoolList = {
 							quick_edit.className = 'w3-button w3-green';
 							quick_edit.type = 'button';
 							quick_edit.title = '<%[ Quick edit ]%>';
+							quick_edit.style.marginRight = '4px';
 							i = document.createElement('I');
 							i.className = 'fa fa-edit';
 							quick_edit.appendChild(i);
-							quick_edit.setAttribute('onclick', "open_quick_resource_edit('dir', 'Pool', '" + row.name + "')");
-							btns += (quick_edit.outerHTML + ' ');
+							quick_edit.addEventListener('click', () => {
+								open_quick_resource_edit('dir', 'Pool', row.name);
+							});
+							btns.appendChild(quick_edit);
 						}
 						const details = document.createElement('BUTTON');
 						details.className = 'w3-button w3-green';
@@ -214,8 +222,10 @@ var oPoolList = {
 						i = document.createElement('I');
 						i.className = 'fa fa-list-ul';
 						details.appendChild(i);
-						details.setAttribute('onclick', "document.location.href = '/web/pool/" + data + "/'");
-						btns += details.outerHTML;
+						details.addEventListener('click', () => {
+							document.location.href = '/web/pool/%poolid/'.replace('%poolid', data);
+						});
+						btns.appendChild(details);
 						return btns;
 					}
 				}
@@ -256,29 +266,29 @@ var oPoolList = {
 					});
 					if ([3, 4].indexOf(column[0][0]) !== -1) {
 						column.cells('', column[0]).render('display').unique().sort(sort_natural).each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					} else if (column[0][0] == 5) {
 						column.data().unique().sort(sort_natural).each(function (d, j) {
 							var time = Units.format_time_period(d);
 							var time_f = time.value + ' ' + time.format + ((time.value > 0) ? 's': '');
-							if (column.search() == '^' + dtEscapeRegex(time_f) + '$') {
-								select.append('<option value="' + time_f + '" selected>' + time_f + '</option>');
-							} else {
-								select.append('<option value="' + time_f + '">' + time_f + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = time_f;
+							option.textContent = time_f;
+							option.selected = column.search() == '^' + dtEscapeRegex(time_f) + '$';
+							select.append(option);
 						});
 					} else {
 						column.cells('', column[0]).render('display').unique().sort().each(function(d, j) {
-							if (column.search() == '^' + dtEscapeRegex(d) + '$') {
-								select.append('<option value="' + d + '" selected>' + d + '</option>');
-							} else {
-								select.append('<option value="' + d + '">' + d + '</option>');
-							}
+							const option = document.createElement('OPTION');
+							option.value = d;
+							option.textContent = d;
+							option.selected = column.search() == '^' + dtEscapeRegex(d) + '$';
+							select.append(option);
 						});
 					}
 				});
@@ -319,11 +329,17 @@ $(function() {
 	});
 });
 </script>
-	<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
-		ID="BulkApplyConfigsPool"
-		ComponentType="dir"
-		ResourceType="Pool"
-	/>
+	<com:TConditional
+		Condition="$this->User->isInRole(\Bacularis\Web\Modules\WebUserRoles::ADMIN)"
+	>
+		<prop:TrueTemplate>
+			<com:Bacularis.Web.Portlets.BulkApplyConfigsModal
+				ID="BulkApplyConfigsPool"
+				ComponentType="dir"
+				ResourceType="Pool"
+			/>
+		</prop:TrueTemplate>
+	</com:TConditional>
 	<com:TCallback ID="DeletePoolResourcesAction" OnCallback="deletePoolResources">
 		<prop:ClientSide.OnComplete>
 			oPoolListDeletePoolResourceWindow.delete_cb();
@@ -341,7 +357,7 @@ $(function() {
 			<div class="w3-container w3-margin-left w3-margin-right">
 				<div id="pool_list_delete_pool_resource_confirm_window_error_contaner" class="w3-panel w3-red" style="display: none">
 					<h3><%[ Error ]%></h3>
-					<p id="pool_list_delete_pool_resource_confirm_window_error_text"></p>
+					<p id="pool_list_delete_pool_resource_confirm_window_error_text" style="white-space: pre-wrap;"></p>
 				</div>
 				<p>
 					<%[ Are you sure you want to delete the following pools? ]%>

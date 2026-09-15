@@ -112,6 +112,16 @@ class SSHConfig extends ConfigFileModule
 	 */
 	public function setHostConfig($host, array $host_config)
 	{
+		$misc = $this->getModule('misc');
+		$host_pattern = '/^' . self::SSH_CONFIG_NAME_PATTERN . '$/D';
+		$is_valid_host = is_string($host) && preg_match($host_pattern, $host) === 1;
+		$port = key_exists('Port', $host_config) ? $host_config['Port'] : null;
+		$is_valid_port = (is_string($port) || is_int($port)) && $misc->isValidSSHPort((string) $port);
+		$username = key_exists('User', $host_config) ? $host_config['User'] : '';
+		$is_valid_username = $username === '' || (is_string($username) && $misc->isValidSSHUsername($username));
+		if (!$is_valid_host || !$is_valid_port || !$is_valid_username) {
+			return false;
+		}
 		$config = $this->getConfig();
 		$config[$host] = $host_config;
 		return $this->setConfig($config);

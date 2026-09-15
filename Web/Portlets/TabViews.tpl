@@ -55,8 +55,8 @@
 $(function() {
 	<%=$this->ClientID%>_TabViews = new DataView({
 		main_id: '<%=$this->ClientID%>',
-		desc: <%=json_encode($this->getDescription())%>,
-		config: <%=json_encode($this->getConfig())%>,
+		desc: <%=$this->getDescriptionJSON()%>,
+		config: <%=$this->getConfigJSON()%>,
 		data_func: <%=$this->getViewDataFunction() ?: 'null'%>,
 		update_func: <%=$this->getUpdateViewFunction() ?: 'null'%>,
 		save_func: <%=$this->SaveViewConfig->ActiveControl->Javascript%>,

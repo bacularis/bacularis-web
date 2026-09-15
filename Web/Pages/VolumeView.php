@@ -27,8 +27,9 @@
  * Bacula(R) is a registered trademark of Kern Sibbald.
  */
 
-use Prado\Prado;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\BaculumWebPage;
+use Prado\Prado;
 
 /**
  * Volume view page.
@@ -146,31 +147,31 @@ class VolumeView extends BaculumWebPage
 			)->output;
 			$recyclepool = $result->name;
 		}
-		$this->OMaxVolJobs->Text = $volume->maxvoljobs;
-		$this->OMaxVolBytes->Text = $volume->maxvolbytes;
-		$this->OMaxVolFiles->Text = $volume->maxvolfiles;
-		$this->OVolUseDuration->Text = $volume->voluseduration;
-		$this->OVolRetention->Text = $volume->volretention;
+		$this->OMaxVolJobs->Text = Miscellaneous::html_value($volume->maxvoljobs);
+		$this->OMaxVolBytes->Text = Miscellaneous::html_value($volume->maxvolbytes);
+		$this->OMaxVolFiles->Text = Miscellaneous::html_value($volume->maxvolfiles);
+		$this->OVolUseDuration->Text = Miscellaneous::html_value($volume->voluseduration);
+		$this->OVolRetention->Text = Miscellaneous::html_value($volume->volretention);
 		$this->ORecycle->Text = $volume->recycle === 1 ? Prado::localize('Yes') : Prado::localize('No');
 		$this->OEnabled->Text = $volume->enabled === 1 ? Prado::localize('Yes') : Prado::localize('No');
-		$this->OSlot->Text = $volume->slot;
+		$this->OSlot->Text = Miscellaneous::html_value($volume->slot);
 		$this->OInChanger->Text = $volume->inchanger === 1 ? Prado::localize('Yes') : Prado::localize('No');
 		$this->OActionOnPurge->Text = $volume->actiononpurge === 1 ? Prado::localize('Yes') : Prado::localize('No');
-		$this->OScratchPool->Text = $scratchpool;
-		$this->ORecyclePool->Text = $recyclepool;
-		$this->ORecycleCount->Text = $volume->recyclecount;
-		$this->OVolJobs->Text = $volume->voljobs;
-		$this->OVolBytes->Text = $volume->volbytes;
-		$this->OVolFiles->Text = $volume->volfiles;
-		$this->OFirstWritten->Text = $volume->firstwritten ?: '-';
-		$this->OLastWritten->Text = $volume->lastwritten ?: '-';
-		$this->OVolStatus->Text = $volume->volstatus;
+		$this->OScratchPool->Text = Miscellaneous::html_value($scratchpool);
+		$this->ORecyclePool->Text = Miscellaneous::html_value($recyclepool);
+		$this->ORecycleCount->Text = Miscellaneous::html_value($volume->recyclecount);
+		$this->OVolJobs->Text = Miscellaneous::html_value($volume->voljobs);
+		$this->OVolBytes->Text = Miscellaneous::html_value($volume->volbytes);
+		$this->OVolFiles->Text = Miscellaneous::html_value($volume->volfiles);
+		$this->OFirstWritten->Text = Miscellaneous::html_value($volume->firstwritten ?: '-');
+		$this->OLastWritten->Text = Miscellaneous::html_value($volume->lastwritten ?: '-');
+		$this->OVolStatus->Text = Miscellaneous::html_value($volume->volstatus);
 		if (in_array($volume->volstatus, self::VOLSTATUS_ERROR)) {
 			$this->OVolStatus->CssClass = 'w3-text-red';
 		}
-		$this->OWhenExpire->Text = $volume->whenexpire;
-		$this->OVolErrors->Text = $volume->volerrors;
-		$this->OVolMounts->Text = $volume->volmounts;
+		$this->OWhenExpire->Text = Miscellaneous::html_value($volume->whenexpire);
+		$this->OVolErrors->Text = Miscellaneous::html_value($volume->volerrors);
+		$this->OVolMounts->Text = Miscellaneous::html_value($volume->volmounts);
 
 		// Load jobs on volume list
 		$this->VolumeJobList->setMediaId($volume->mediaid);
@@ -184,10 +185,11 @@ class VolumeView extends BaculumWebPage
 			[]
 		);
 		if ($result->error === 0) {
-			$this->VolumeActionLog->Text = implode(PHP_EOL, $result->output);
+			$volume_log = implode(PHP_EOL, $result->output);
 		} else {
-			$this->VolumeActionLog->Text = $result->output;
+			$volume_log = $result->output;
 		}
+		$this->VolumeActionLog->Text = Miscellaneous::html_value($volume_log);
 	}
 
 	public function purge($sender, $param)
@@ -197,10 +199,11 @@ class VolumeView extends BaculumWebPage
 			[]
 		);
 		if ($result->error === 0) {
-			$this->VolumeActionLog->Text = implode(PHP_EOL, $result->output);
+			$volume_log = implode(PHP_EOL, $result->output);
 		} else {
-			$this->VolumeActionLog->Text = $result->output;
+			$volume_log = $result->output;
 		}
+		$this->VolumeActionLog->Text = Miscellaneous::html_value($volume_log);
 	}
 
 	public function getNavData()

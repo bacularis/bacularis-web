@@ -16,9 +16,10 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
-use Bacularis\Common\Modules\Cloud\Amazon\Region as AmazonRegion;
 use Bacularis\Common\Modules\Cloud\Amazon\Account as AmazonAccount;
+use Bacularis\Common\Modules\Cloud\Amazon\Region as AmazonRegion;
 use Bacularis\Common\Modules\Errors\CloudAmazonError;
+use Bacularis\Common\Modules\Miscellaneous;
 use Prado\Prado;
 
 /**
@@ -204,7 +205,8 @@ class AmazonAccounts extends AmazonBase
 			if ($result->error == CloudAmazonError::ERROR_ACCOUNT_ALREADY_EXISTS) {
 				$emsg = Prado::localize('Amazon account \'%s\' already exists. Please type different account name.');
 				$emsg = sprintf($emsg, $account_name);
-				$cb->update($this->AmazonAccountWindowError, $emsg);
+				$emsg_html = Miscellaneous::html_value($emsg);
+				$cb->update($this->AmazonAccountWindowError, $emsg_html);
 				$cb->show($this->AmazonAccountWindowError);
 				return;
 			}
