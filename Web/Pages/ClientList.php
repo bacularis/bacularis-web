@@ -423,7 +423,7 @@ class ClientList extends BaculumWebPage
 			return;
 		}
 		$error = null;
-		$err_client = new StdClass;
+		$err_client = new StdClass();
 		$api = $this->getModule('api');
 		for ($i = 0; $i < count($clients); $i++) {
 			$params = [

@@ -388,7 +388,7 @@ class StorageList extends BaculumWebPage
 			return;
 		}
 		$error = null;
-		$err_storage = new StdClass;
+		$err_storage = new StdClass();
 		$api = $this->getModule('api');
 		for ($i = 0; $i < count($storages); $i++) {
 			$params = [

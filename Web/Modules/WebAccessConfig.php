@@ -334,7 +334,7 @@ class WebAccessConfig extends ConfigFileModule
 	/**
 	 * Acquire the exclusive WebAccess configuration lock.
 	 *
-	 * @return resource|false lock file handle on success, otherwise false
+	 * @return false|resource lock file handle on success, otherwise false
 	 */
 	private function acquireConfigLock()
 	{

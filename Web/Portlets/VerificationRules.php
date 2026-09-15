@@ -307,7 +307,7 @@ class VerificationRules extends RestoreTestVerification
 	 *
 	 * @param mixed $rules verification rules
 	 * @param array $plugins allowed verification checker plugins
-	 * @return array|null validated rules or null on validation error
+	 * @return null|array validated rules or null on validation error
 	 */
 	private function prepareVerificationRules($rules, array $plugins): ?array
 	{
