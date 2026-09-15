@@ -712,7 +712,8 @@ class StorageView extends BaculumWebPage
 	public function unloadDrive($sender, $param)
 	{
 		$data = $param->getCallbackParameter();
-		if (!is_object($data)) {
+		$misc = $this->getModule('misc');
+		if (!is_object($data) || !property_exists($data, 'drive') || !is_string($data->drive) || !$misc->isValidName($data->drive) || !property_exists($data, 'slot') || !is_int($data->slot)) {
 			return;
 		}
 		$parameters = [
