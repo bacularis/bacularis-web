@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\PluginConfigBase;
+use Bacularis\Web\Modules\WebUserRoles;
 
 /**
  * Bulk apply patterns modal control.
@@ -31,9 +32,36 @@ class BulkApplyPatternsModal extends Portlets
 	public function setPatternsWindow($sender, $param)
 	{
 		$param = $param->getCallbackParameter();
+		$this->setHost(null);
+		$this->setComponentType('');
+		if (!is_array($param) || count($param) !== 2 || !key_exists(0, $param) || !key_exists(1, $param) || !is_string($param[0]) || !is_string($param[1])) {
+			return;
+		}
 		[$host, $component_type] = $param;
+		$misc = $this->getModule('misc');
+		if (!$misc->isValidComponentType($component_type) || !$this->isHostAllowed($host)) {
+			return;
+		}
 		$this->setHost($host);
 		$this->setComponentType($component_type);
+	}
+
+	/**
+	 * Check if current user is allowed to use given API host.
+	 *
+	 * Deployment administrators intentionally have access to all configured hosts.
+	 *
+	 * @param string $host API host name
+	 * @return bool true if host is allowed, otherwise false
+	 */
+	private function isHostAllowed(string $host): bool
+	{
+		$page = $this->getPage();
+		if ($page instanceof \Deployment && $page->User->isInRole(WebUserRoles::ADMIN)) {
+			$hosts = $this->getModule('host_config')->getConfig();
+			return key_exists($host, $hosts);
+		}
+		return $page->User->isUserAPIHost($host);
 	}
 
 	public function loadPatterns($sender, $param)
