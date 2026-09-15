@@ -253,7 +253,7 @@ class AuthenticationMethods extends Security
 	 * Convert basic users from simple username list into full form.
 	 * There is option to return user list in config file form or data table form.
 	 *
-	 * @param strong $org_id organization identifier
+	 * @param string $org_id organization identifier
 	 * @param array $users simple user list
 	 * @param bool $config_form_result if true, sets the list in config file form
 	 * @return array user list
@@ -262,14 +262,18 @@ class AuthenticationMethods extends Security
 	{
 		$user_list = [];
 		for ($i = 0; $i < count($users); $i++) {
-			$uid = WebUserConfig::getOrgUserID($org_id, $users[$i]);
 			$user = [
-				'username' => $uid,
+				'username' => $users[$i],
 				'long_name' => '',
 				'email' => '',
 				'description' => ''
 			];
+			if (!$this->isValidImportUser($user)) {
+				continue;
+			}
+			$uid = WebUserConfig::getOrgUserID($org_id, $users[$i]);
 			if ($config_form_result) {
+				$user['username'] = $uid;
 				$user_list[$users[$i]] = $user;
 			} else {
 				$user_list[] = $user;
@@ -318,6 +322,7 @@ class AuthenticationMethods extends Security
 		$users_web = [];
 		$import_opt = (int) $this->GetUsersImportOptions->SelectedValue;
 		$basic_webuser = $this->getModule('basic_webuser');
+		$basic_webuser->setConfigPath($this->BasicAuthUserFile->Text);
 		switch ($import_opt) {
 			case self::IMPORT_OPT_ALL_USERS: {
 				$users_web = $basic_webuser->getUsers();
@@ -328,13 +333,10 @@ class AuthenticationMethods extends Security
 			case self::IMPORT_OPT_SELECTED_USERS: {
 				if ($param instanceof TCallbackEventParameter) {
 					$cb_param = $param->getCallbackParameter();
-					if (is_array($cb_param)) {
-						for ($i = 0; $i < count($cb_param); $i++) {
-							$val = (array) $cb_param[$i];
-							$uid = WebUserConfig::getOrgUserID($org_id, $val['username']);
-							$users_web[$uid] = $val;
-						}
-					}
+					$users_basic = $basic_webuser->getUsers();
+					$users_basic = array_keys($users_basic);
+					$candidates = $this->convertBasicUsers('', $users_basic);
+					$users_web = $this->prepareSelectedUsers($cb_param, $org_id, $candidates);
 				}
 				break;
 			}
@@ -352,6 +354,61 @@ class AuthenticationMethods extends Security
 			}
 		}
 		return $users_web;
+	}
+
+	/**
+	 * Prepare selected users using callback usernames and trusted candidates.
+	 *
+	 * @param mixed $selection callback selection
+	 * @param string $org_id organization identifier
+	 * @param array $candidates trusted user candidates
+	 * @return array selected web users or empty array on invalid selection
+	 */
+	private function prepareSelectedUsers($selection, string $org_id, array $candidates): array
+	{
+		if (!is_array($selection)) {
+			return [];
+		}
+
+		$trusted = [];
+		for ($i = 0; $i < count($candidates); $i++) {
+			if (is_array($candidates[$i]) && $this->isValidImportUser($candidates[$i])) {
+				$trusted[$candidates[$i]['username']] = $candidates[$i];
+			}
+		}
+
+		$users = [];
+		for ($i = 0; $i < count($selection); $i++) {
+			if (!key_exists($i, $selection)) {
+				return [];
+			}
+			$selected = (array) $selection[$i];
+			if (!key_exists('username', $selected) || !is_string($selected['username']) || !key_exists($selected['username'], $trusted)) {
+				return [];
+			}
+			$username = $selected['username'];
+			$uid = WebUserConfig::getOrgUserID($org_id, $username);
+			$users[$uid] = $trusted[$username];
+		}
+		return $users;
+	}
+
+	/**
+	 * Validate user imported from an external authentication source.
+	 *
+	 * @param array $user user record
+	 * @return bool true if user record is valid, otherwise false
+	 */
+	private function isValidImportUser(array $user): bool
+	{
+		$fields = ['username', 'long_name', 'email', 'description'];
+		for ($i = 0; $i < count($fields); $i++) {
+			if (!key_exists($fields[$i], $user) || !is_string($user[$fields[$i]]) || preg_match('/[\x00-\x1F\x7F]/', $user[$fields[$i]]) === 1) {
+				return false;
+			}
+		}
+		$username_pattern = '/^' . WebUserConfig::USER_PATTERN . '$/D';
+		return strlen($user['username']) <= 100 && preg_match($username_pattern, $user['username']) === 1;
 	}
 
 	/**
@@ -524,21 +581,25 @@ class AuthenticationMethods extends Security
 					$desc = $users[$i][$params['desc_attr']][0];
 				}
 			}
+			$user = [
+				'username' => $username,
+				'long_name' => $long_name,
+				'email' => $email,
+				'description' => $desc
+			];
+			if (!$this->isValidImportUser($user)) {
+				continue;
+			}
 
 			if ($config_form_result) {
 				$uid = WebUserConfig::getOrgUserID($org_id, $username);
 				$user_list[$uid] = [
-					'long_name' => $long_name,
-					'email' => $email,
-					'description' => $desc
+					'long_name' => $user['long_name'],
+					'email' => $user['email'],
+					'description' => $user['description']
 				];
 			} else {
-				$user_list[] = [
-					'username' => $username,
-					'long_name' => $long_name,
-					'email' => $email,
-					'description' => $desc
-				];
+				$user_list[] = $user;
 			}
 		}
 		return $user_list;
@@ -639,13 +700,10 @@ class AuthenticationMethods extends Security
 			case self::IMPORT_OPT_SELECTED_USERS: {
 				if ($param instanceof TCallbackEventParameter) {
 					$cb_param = $param->getCallbackParameter();
-					if (is_array($cb_param)) {
-						for ($i = 0; $i < count($cb_param); $i++) {
-							$val = (array) $cb_param[$i];
-							$uid = WebUserConfig::getOrgUserID($org_id, $val['username']);
-							$users_web[$uid] = $val;
-						}
-					}
+					$filter = $ldap->getFilter($params['user_attr'], '*');
+					$users_ldap = $ldap->findUserAttr($filter, $params['attrs']);
+					$candidates = $this->convertLdapUsers('', $users_ldap, $params);
+					$users_web = $this->prepareSelectedUsers($cb_param, $org_id, $candidates);
 				}
 				break;
 			}
