@@ -18,6 +18,7 @@ namespace Bacularis\Web\Portlets;
 use Bacularis\Common\Modules\AuditLog;
 use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
+use Bacularis\Web\Modules\VerificationRuleConfig;
 
 /**
  * Verification rules control.
@@ -230,9 +231,32 @@ class VerificationRules extends RestoreTestVerification
 	{
 		$rule_config = [];
 		$misc = $this->getModule('misc');
-		$parameter = $param->getCallbackParameter() ?? [];
-		$rules = $parameter->rules ?? [];
+		$parameter = $param->getCallbackParameter();
 		$name = trim($this->VerificationRuleFullName->Text);
+		$cb = $this->getPage()->getCallbackClient();
+		$cb->hide($this->VerificationRuleWindowError);
+		$name_pattern = '/\A(?:' . VerificationRuleConfig::NAME_PATTERN . ')\z/D';
+		if (strlen($name) > 360 || preg_match($name_pattern, $name) !== 1 ||
+			!is_object($parameter) || !property_exists($parameter, 'rules')) {
+			$msg = 'Invalid verification rule data.';
+			$cb->update($this->VerificationRuleWindowError, $msg);
+			$cb->show($this->VerificationRuleWindowError);
+			return;
+		}
+
+		$rules = $misc->objectToArray($parameter->rules);
+		$plugin_config = $this->getModule('plugin_config');
+		$plugins = $plugin_config->getPlugins(
+			PluginConfigBase::PLUGIN_TYPE_VERIFICATION
+		);
+		$rules = $this->prepareVerificationRules($rules, $plugins);
+		if (is_null($rules)) {
+			$msg = 'Invalid verification rule data.';
+			$cb->update($this->VerificationRuleWindowError, $msg);
+			$cb->show($this->VerificationRuleWindowError);
+			return;
+		}
+
 		$rule_config = $this->getModule('verification_rule_config');
 		$rule_exists = $rule_config->verificationRuleConfigExists($name);
 
@@ -242,22 +266,9 @@ class VerificationRules extends RestoreTestVerification
 		$description = str_replace(["\r\n", "\r", "\n"], ' ', $description);
 		$cfg_rule['description'] = $description;
 		$cfg_rule['enabled'] = $this->VerificationRuleEnabled->Checked ? '1' : '0';
-		$cfg_rule['rules'] = array_filter($misc->objectToArray($rules), function ($item) {
-			$ret = true;
-			foreach ($item as $rule) {
-				if (!key_exists('checker', $rule) ||
-					!key_exists('operator', $rule) ||
-					!key_exists('value', $rule)) {
-					$ret = false;
-					break;
-				}
-			}
-			return $ret;
-		});
+		$cfg_rule['rules'] = $rules;
 
 		$rule_win_type = $this->VerificationRuleWindowType->Value;
-		$cb = $this->getPage()->getCallbackClient();
-		$cb->hide($this->VerificationRuleWindowError);
 		if ($rule_win_type === self::TYPE_ADD_WINDOW && $rule_exists) {
 			$msg = 'Verification rule with name \'%s\' already exists.';
 			$emsg = sprintf($msg, $name);
@@ -289,6 +300,92 @@ class VerificationRules extends RestoreTestVerification
 		$this->setVerificationRuleList($sender, $param);
 
 		$this->onSaveVerificationRules(null);
+	}
+
+	/**
+	 * Validate and prepare verification rules received from the callback.
+	 *
+	 * @param mixed $rules verification rules
+	 * @param array $plugins allowed verification checker plugins
+	 * @return array|null validated rules or null on validation error
+	 */
+	private function prepareVerificationRules($rules, array $plugins): ?array
+	{
+		if (!is_array($rules)) {
+			return null;
+		}
+
+		$validated_rules = [];
+		foreach ($rules as $path => $path_rules) {
+			if (!is_string($path) || $path === '' || strpos($path, '"') !== false ||
+				substr($path, -1) === '\\' || preg_match('/[\x00-\x1F\x7F]/', $path) === 1 ||
+				!is_array($path_rules)) {
+				return null;
+			}
+
+			$validated_rules[$path] = [];
+			for ($i = 0; $i < count($path_rules); $i++) {
+				if (!key_exists($i, $path_rules) || !is_array($path_rules[$i])) {
+					return null;
+				}
+				$rule = $path_rules[$i];
+				if (count($rule) !== 3 || !key_exists('checker', $rule) ||
+					!key_exists('operator', $rule) || !key_exists('value', $rule) ||
+					!is_string($rule['checker']) || !is_string($rule['operator']) ||
+					!is_string($rule['value']) || !key_exists($rule['checker'], $plugins)) {
+					return null;
+				}
+
+				$checker = $rule['checker'];
+				$operator = $rule['operator'];
+				$value = $rule['value'];
+				$plugin = $plugins[$checker];
+				if (!is_array($plugin) || !key_exists('cls', $plugin) ||
+					!is_string($plugin['cls']) || $plugin['cls'] !== $checker) {
+					return null;
+				}
+				$checker_class = $plugin['cls'];
+				$operators = $checker_class::getOperators();
+				if (!key_exists($operator, $operators)) {
+					return null;
+				}
+
+				$values = $checker_class::getValues();
+				if (!key_exists('type', $values) || !key_exists('values', $values) ||
+					preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
+					return null;
+				}
+				if ($operator === VerificationRuleConfig::EQUAL_CATALOG_VALUE) {
+					if ($value !== '') {
+						return null;
+					}
+				} elseif ($values['type'] === 'list') {
+					if (!is_array($values['values'])) {
+						return null;
+					}
+					$allowed_values = [];
+					foreach ($values['values'] as $allowed_value) {
+						if (is_bool($allowed_value)) {
+							$allowed_values[] = $allowed_value ? 'true' : 'false';
+						} elseif (is_scalar($allowed_value)) {
+							$allowed_values[] = (string) $allowed_value;
+						}
+					}
+					if (!in_array($value, $allowed_values, true)) {
+						return null;
+					}
+				} elseif ($values['type'] !== 'text' || $value === '') {
+					return null;
+				}
+
+				$validated_rules[$path][] = [
+					'checker' => $checker,
+					'operator' => $operator,
+					'value' => $value
+				];
+			}
+		}
+		return $validated_rules;
 	}
 
 	/**
