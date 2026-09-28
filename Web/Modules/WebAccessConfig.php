@@ -45,6 +45,7 @@ class WebAccessConfig extends ConfigFileModule
 	 * Web access types.
 	 */
 	public const WEB_ACCESS_TYPE_RESOURCE = 'resource';
+	public const WEB_ACCESS_TYPE_RESTORE_VERIFICATION = 'restore_verification';
 
 	/**
 	 * Time access method types.
