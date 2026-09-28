@@ -16,6 +16,9 @@
 namespace Bacularis\Web\Modules;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\IBacularisVerificationConfigPlugin;
+use Bacularis\Common\Modules\IBacularisVerificationDataPlugin;
+use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\RestoreDestinationCapability;
 use Bacularis\Common\Modules\RestoreVerification;
 use Bacularis\Web\Modules\VerificationRuleConfig;
@@ -106,16 +109,26 @@ class RestoreTestManager extends WebModule
 			$base_job
 		);
 
+		$finalize_token = '';
 		if ($rt_config['verification_method'] == RestoreTestConfig::RESTORE_VERIFICATION_METHOD_RULES) {
 			// Prepare destination test environment to perform tests
-			$result = $this->sendRestoreTestPlan(
+			$restore_api_host = $this->sendRestoreTestPlan(
 				$test_id,
 				$rt_config,
 				$rd_config,
 				$jobids,
 				$restore_dest_path
 			);
-			if (!$result) {
+			if ($restore_api_host === null) {
+				return false;
+			}
+			$finalize_token = $this->createFinalizeWebAccessToken(
+				$test_id,
+				$restore_api_host,
+				$rt_config,
+				$rd_config
+			);
+			if ($finalize_token === null) {
 				return false;
 			}
 		}
@@ -128,6 +141,9 @@ class RestoreTestManager extends WebModule
 			$rt_config
 		);
 		if (!$result['status']) {
+			if ($finalize_token !== '') {
+				WebAccessAction::remove($finalize_token);
+			}
 			return false;
 		}
 		$sid = $result['sid'];
@@ -139,7 +155,8 @@ class RestoreTestManager extends WebModule
 			$rd_config,
 			$restore_dest_path,
 			$sid,
-			$base_job
+			$base_job,
+			$finalize_token
 		);
 		return $result;
 	}
@@ -583,6 +600,7 @@ class RestoreTestManager extends WebModule
 	 * @param string $restore_dest_path restore destination path
 	 * @param string $sid restore session identifier
 	 * @param object $base_job selected backup job object
+	 * @param string $finalize_token one-time Restore Verification finalize token
 	 * @return bool true on success, otherwise false
 	 */
 	private function finishRestoreSession(
@@ -591,11 +609,15 @@ class RestoreTestManager extends WebModule
 		array $rd_config,
 		string $restore_dest_path,
 		string $sid,
-		object $base_job
+		object $base_job,
+		string $finalize_token
 	): bool {
 		$lock = $this->createLock();
 		if (!$lock) {
 			$this->endRestoreSession($sid);
+			if ($finalize_token !== '') {
+				WebAccessAction::remove($finalize_token);
+			}
 			return false;
 		}
 
@@ -609,18 +631,54 @@ class RestoreTestManager extends WebModule
 		if ($result->error != 0) {
 			$this->endRestoreSession($sid);
 			$this->removeLock($lock);
+			if ($finalize_token !== '') {
+				WebAccessAction::remove($finalize_token);
+			}
 			return false;
 		}
 		$audit = $this->getModule('audit');
 
-		$runscript = '';
+		$runscripts = [];
 		$script = Prado::getPathOfNamespace(self::RESTORE_TEST_SCRIPT);
 		if ($rt_config['verification_method'] == RestoreTestConfig::RESTORE_VERIFICATION_METHOD_RULES) {
-			// Add runscript to restore job runscript
-			$runscript = [
+			if (!Miscellaneous::isValidWebAccessToken($finalize_token)) {
+				$this->endRestoreSession($sid);
+				$this->removeLock($lock);
+				$audit->audit(
+					AuditLog::TYPE_ERROR,
+					AuditLog::CATEGORY_APPLICATION,
+					'Restore Verification finalize Web Access token is missing or invalid.'
+				);
+				return false;
+			}
+
+			$runscripts[] = [
 				'RunsWhen' => 'After',
 				'RunsOnClient' => true,
 				'Command' => "$script verification/verify --test-id=\"$test_id\""
+			];
+
+			$sparams = [
+				"--token=\"$finalize_token\""
+			];
+			$web_protocol = $rt_config['web_protocol'] ?? '';
+			$web_address = $rt_config['web_address'] ?? '';
+			$web_port = $rt_config['web_port'] ?? '';
+			if ($web_protocol != RestoreVerification::DEFAULT_WEB_ACCESS_PROTOCOL) {
+				$sparams[] = "--web-protocol=\"$web_protocol\"";
+			}
+			if ($web_address != RestoreVerification::DEFAULT_WEB_ACCESS_ADDRESS) {
+				$sparams[] = "--web-address=\"$web_address\"";
+			}
+			if ($web_port != RestoreVerification::DEFAULT_WEB_ACCESS_PORT) {
+				$sparams[] = "--web-port=\"$web_port\"";
+			}
+			$params = implode(' ', $sparams);
+			$runscripts[] = [
+				'RunsWhen' => 'After',
+				'RunsOnClient' => false,
+				'RunsOnFailure' => true,
+				'Command' => "$script verification/finalize $params"
 			];
 		} elseif ($rt_config['verification_method'] == RestoreTestConfig::RESTORE_VERIFICATION_METHOD_VERIFY_JOB) {
 			$config = [
@@ -654,7 +712,7 @@ class RestoreTestManager extends WebModule
 				$sparams[] = "--web-port=\"{$web_port}\"";
 			}
 			$params = implode(' ', $sparams);
-			$runscript = [
+			$runscripts[] = [
 				'RunsWhen' => 'After',
 				'RunsOnClient' => false,
 				'Command' => "$script verification/run $params"
@@ -663,7 +721,7 @@ class RestoreTestManager extends WebModule
 
 		$misc = $this->getModule('misc');
 		$config = $misc->objectToArray($result->output);
-		$config['Runscript'] = [$runscript];
+		$config['Runscript'] = $runscripts;
 		$result = BaculaConfigAction::updateResource(
 			'dir',
 			'Job',
@@ -673,6 +731,9 @@ class RestoreTestManager extends WebModule
 		if ($result->error != 0) {
 			$this->endRestoreSession($sid);
 			$this->removeLock($lock);
+			if ($finalize_token !== '') {
+				WebAccessAction::remove($finalize_token);
+			}
 			return false;
 		}
 
@@ -698,6 +759,9 @@ class RestoreTestManager extends WebModule
 			$success = is_numeric($jobid);
 		} else {
 			$success = false;
+			if ($finalize_token !== '') {
+				WebAccessAction::remove($finalize_token);
+			}
 		}
 
 		// Report restore status
@@ -882,6 +946,7 @@ class RestoreTestManager extends WebModule
 	 */
 	private function getRuleSetsPaths(array $rt_config, ?object $file_meta = null): array
 	{
+		$plugin_config = $this->getModule('plugin_config');
 		$vrule_config = $this->getModule('verification_rule_config');
 		$rule_sets = $rt_config['verification_rule_sets'] ?? [];
 		$rulesets = [];
@@ -897,8 +962,17 @@ class RestoreTestManager extends WebModule
 			}
 			foreach ($rule['rules'] as $rpath => &$rvalue) {
 				for ($j = 0; $j < count($rvalue); $j++) {
-					if ($rvalue[$j]['operator'] == VerificationRuleConfig::EQUAL_CATALOG_VALUE && isset($file_meta->{$rpath})) {
+					// Add file metadata to ECV values
+					if (isset($rvalue[$j]['operator']) && $rvalue[$j]['operator'] == VerificationRuleConfig::EQUAL_CATALOG_VALUE && isset($file_meta->{$rpath})) {
 						$rvalue[$j]['value'] = $file_meta->{$rpath};
+					}
+
+					// Checkers that have own config
+					$checker = sprintf('\\Bacularis\\Common\\Plugins\\%s', $rvalue[$j]['checker']);
+					$is_config_checker = is_subclass_of($checker,IBacularisVerificationConfigPlugin::class);
+					$config_name = $rvalue[$j]['checker_config_name'] ?? '';
+					if ($is_config_checker && $config_name !== '') {
+						$rvalue[$j]['checker_config'] = $plugin_config->getConfig($config_name);
 					}
 				}
 			}
@@ -1037,14 +1111,14 @@ class RestoreTestManager extends WebModule
 	 * @param array $rd_config restore destination configuration
 	 * @param array $jobids elementary job identifiers for restore
 	 * @param string $restore_dest_path restore destination path
-	 * @return bool true on success, otherwise false
+	 * @return null|string restore destination API host on success or null on error
 	 */
-	private function sendRestoreTestPlan(string $test_id, array $rt_config, array $rd_config, array $jobids, string $restore_dest_path): bool
+	private function sendRestoreTestPlan(string $test_id, array $rt_config, array $rd_config, array $jobids, string $restore_dest_path): ?string
 	{
 		// Prepare plan structure
 		$plan = $this->prepareRestoreTestPlan($test_id, $rt_config, $jobids, $restore_dest_path);
 		if (!$plan) {
-			return false;
+			return null;
 		}
 
 		// Get restore client configuration
@@ -1056,7 +1130,7 @@ class RestoreTestManager extends WebModule
 			$rd_config['restore_client']
 		);
 		if ($result->error != 0) {
-			return false;
+			return null;
 		}
 
 		// Find valid API host
@@ -1111,7 +1185,63 @@ class RestoreTestManager extends WebModule
 				$emsg
 			);
 		}
-		return $success;
+		return $success ? $api_host : null;
+	}
+
+	/**
+	 * Create one-time Restore Verification finalize Web Access token.
+	 *
+	 * @param string $test_id restore test identifier
+	 * @param string $api_host restore destination API host
+	 * @param array $rt_config restore test configuration
+	 * @param array $rd_config restore destination configuration
+	 * @return null|string token value or null on error
+	 */
+	private function createFinalizeWebAccessToken(string $test_id, string $api_host, array $rt_config, array $rd_config): ?string
+	{
+		if (!RestoreVerification::isValidTestId($test_id) || $api_host === '') {
+			return null;
+		}
+
+		$allowed_ips_config = (string) ($rt_config['web_allowed_ips'] ?? '');
+		$allowed_ips = explode(',', $allowed_ips_config);
+		$allowed_ips = array_map('trim', $allowed_ips);
+		$allowed_ips = array_filter($allowed_ips, 'strlen');
+		$allowed_ips = array_values($allowed_ips);
+		$source_access = WebAccessConfig::WEB_ACCESS_SOURCE_METHOD_NO_RESTRICTION;
+		if ($allowed_ips) {
+			$source_access = WebAccessConfig::WEB_ACCESS_SOURCE_METHOD_IP_RESTRICTION;
+		}
+
+		$action_params = [
+			'test_id' => $test_id,
+			'api_host' => $api_host
+		];
+		$config = [
+			'access_type' => WebAccessConfig::WEB_ACCESS_TYPE_RESTORE_VERIFICATION,
+			'api_hosts' => [$api_host],
+			'component_type' => 'fd',
+			'component_name' => $rd_config['restore_client'],
+			'resource_type' => 'RestoreVerification',
+			'resource_name' => $test_id,
+			'action' => WebAccessRestoreVerification::ACTION_FINALIZE_NAME,
+			'action_params' => $action_params,
+			'time_method' => WebAccessConfig::WEB_ACCESS_TIME_METHOD_UNLIMITED,
+			'time_from' => -1,
+			'time_to' => -1,
+			'usage_method' => WebAccessConfig::WEB_ACCESS_USAGE_METHOD_ONE_USE,
+			'usage_max' => 1,
+			'usage_left' => 1,
+			'source_access' => $source_access,
+			'source_ips_allowed' => $allowed_ips,
+			'access_time' => 0,
+			'create_time' => time()
+		];
+		$result = WebAccessAction::create($config);
+		if (!$result['state']) {
+			return null;
+		}
+		return $result['token'];
 	}
 
 	/**
@@ -1184,8 +1314,10 @@ class RestoreTestManager extends WebModule
 
 		$paths = $this->getRuleSetsPaths($rt_config, $file_meta);
 		$this->filterPaths($paths, $rt_config);
+		$cdata = $this->prepareCheckerData($rt_config['name'], $paths);
 		$plan = [
 			'test_id' => $test_id,
+			'test_name' => $rt_config['name'],
 			'restore' => [
 				'destination_name' => $rt_config['restore_destination'],
 				'destination_capabilities' => $rd_config['capabilities'],
@@ -1196,9 +1328,65 @@ class RestoreTestManager extends WebModule
 					'/' => $target_path
 				]
 			],
+			'history' => $cdata['history'],
 			'paths' => $paths
 		];
 		return $plan;
+	}
+
+	/**
+	 * Prepare checker data.
+	 * History is passed for checkers that support it.
+	 *
+	 * @param string $test_name restore test name
+	 * @param array $paths rule set paths
+	 * @return array checker history
+	 */
+	private function prepareCheckerData(string $test_name, array $paths): array
+	{
+		$data = ['history' => []];
+		$history_config = $this->getModule('restore_verification_history_config');
+		foreach ($paths as $rule_set => $rule_paths) {
+			foreach ($rule_paths as $fpath => $tests) {
+				for ($i = 0; $i < count($tests); $i++) {
+					$checker_name = $tests[$i]['checker'];
+					$checker = sprintf('\\Bacularis\\Common\\Plugins\\%s', $checker_name);
+
+					// Prepare checker config (if supported)
+					$is_config_checker = is_subclass_of($checker, IBacularisVerificationConfigPlugin::class);
+					if ($is_config_checker) {
+						$checker_config = $tests[$i]['checker_config'] ?? [];
+						$checker::setCheckerConfig($checker_config);
+					}
+
+					// Check if checker history is supported
+					$is_data_checker = is_subclass_of($checker, IBacularisVerificationDataPlugin::class);
+					if (!$is_data_checker) {
+						continue;
+					}
+
+					// Prepare checker hash
+					$checker_config_name = $tests[$i]['checker_config_name'] ?? '';
+					$config_hash = RestoreVerification::getCheckerConfigHash($checker, $checker_config_name);
+					if ($config_hash === '') {
+						continue;
+					}
+
+					// Prepare checker history
+					$history = $history_config->getHistory(
+						$test_name,
+						$fpath,
+						$checker_name,
+						$config_hash
+					);
+
+					if ($history) {
+						$data['history'][$fpath][$checker_name][$config_hash] =	$history;
+					}
+				}
+			}
+		}
+		return $data;
 	}
 
 	/**

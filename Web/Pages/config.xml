@@ -32,6 +32,7 @@
 		<module id="restore_policy_config" class="Bacularis\Web\Modules\RestorePolicyConfig" />
 		<module id="restore_destination_config" class="Bacularis\Web\Modules\RestoreDestinationConfig" />
 		<module id="verification_rule_config" class="Bacularis\Web\Modules\VerificationRuleConfig" />
+		<module id="restore_verification_history_config" class="Bacularis\Web\Modules\RestoreVerificationHistoryConfig" />
 		<!-- data modules -->
 		<module id="api" class="Bacularis\Web\Modules\BacularisAPIClient" />
 		<module id="data_desc" class="Bacularis\Web\Modules\DataDescription" />
@@ -45,6 +46,7 @@
 		<module id="log_parser" class="Bacularis\Web\Modules\LogParser" />
 		<module id="audit" class="Bacularis\Web\Modules\WebAuditLog" />
 		<module id="web_access_resource" class="Bacularis\Web\Modules\WebAccessBaculaResource" />
+		<module id="web_access_restore_verification" class="Bacularis\Web\Modules\WebAccessRestoreVerification" />
 		<module id="search_category" class="Bacularis\Web\Modules\SearchCategory" />
 		<module id="resource_search" class="Bacularis\Web\Modules\ResourceSearch" />
 		<!-- auth modules -->

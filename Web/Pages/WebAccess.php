@@ -87,8 +87,10 @@ class WebAccess extends BaculumPage
 			];
 		}
 		if ($result['error'] === self::ERROR_NO_ERROR) {
-			$state = $this->executeAction($config);
-			if (!$state) {
+			$state = $this->executeAction($config, $token);
+			if (is_object($state) && property_exists($state, 'error') && $state->error == self::ERROR_NO_ERROR && property_exists($state, 'output')) {
+				$result['message'] = $state->output;
+			} elseif (!$state || is_object($state)) {
 				$result = [
 					'error' => self::ERROR_ACTION_FAILED,
 					'message' => self::MSG_ACTION_FAILED
@@ -258,9 +260,10 @@ class WebAccess extends BaculumPage
 	 * Execute web access action.
 	 *
 	 * @param array $config web access config
-	 * @return bool true on success, otherwise false
+	 * @param string $token current web access token
+	 * @return bool|object true or result on success, otherwise false
 	 */
-	private function executeAction(array $config): bool
+	private function executeAction(array $config, string $token)
 	{
 		$status = false;
 		$action = $config['action'] ?? null;
@@ -276,6 +279,16 @@ class WebAccess extends BaculumPage
 						$config,
 						$action,
 						$params
+					);
+					break;
+				}
+				case WebAccessConfig::WEB_ACCESS_TYPE_RESTORE_VERIFICATION: {
+					$web_access_restore_verification = $this->getModule('web_access_restore_verification');
+					$status = $web_access_restore_verification->executeCommand(
+						$config,
+						$action,
+						$params,
+						$token
 					);
 					break;
 				}
