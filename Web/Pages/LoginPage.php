@@ -87,7 +87,7 @@ class LoginPage extends BaculumWebPage
 		if (empty($url) || strpos($url, '/') !== 0 || strpos($url, '//') === 0) {
 			return '/';
 		}
-		if (strpos($url, '\\') !== false || preg_match('/[\x00-\x1F\x7F]/', $url) === 1) {
+		if (strpos($url, '\\') !== false || Miscellaneous::isASCIControlChar($url)) {
 			return '/';
 		}
 

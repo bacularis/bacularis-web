@@ -21,8 +21,8 @@ use Bacularis\Common\Modules\Logging;
 use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Web\Modules\HostConfig;
 use Bacularis\Web\Modules\WebConfig;
-use Bacularis\Web\Modules\WebUserRoles;
 use Bacularis\Web\Modules\WebUserConfig;
+use Bacularis\Web\Modules\WebUserRoles;
 use Prado\Prado;
 use Prado\Web\UI\ActiveControls\TCallbackEventParameter;
 use Prado\Web\UI\TCommandEventParameter;
@@ -403,7 +403,7 @@ class AuthenticationMethods extends Security
 	{
 		$fields = ['username', 'long_name', 'email', 'description'];
 		for ($i = 0; $i < count($fields); $i++) {
-			if (!key_exists($fields[$i], $user) || !is_string($user[$fields[$i]]) || preg_match('/[\x00-\x1F\x7F]/', $user[$fields[$i]]) === 1) {
+			if (!key_exists($fields[$i], $user) || !is_string($user[$fields[$i]]) || Miscellaneous::isASCIControlChar($user[$fields[$i]])) {
 				return false;
 			}
 		}
