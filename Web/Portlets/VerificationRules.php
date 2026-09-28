@@ -16,6 +16,7 @@
 namespace Bacularis\Web\Portlets;
 
 use Bacularis\Common\Modules\AuditLog;
+use Bacularis\Common\Modules\IBacularisVerificationConfigPlugin;
 use Bacularis\Common\Modules\Miscellaneous;
 use Bacularis\Common\Modules\PluginConfigBase;
 use Bacularis\Web\Modules\VerificationRuleConfig;
@@ -84,6 +85,17 @@ class VerificationRules extends RestoreTestVerification
 		}
 	}
 
+	private function addVerificationRuleVals(&$rules): void
+	{
+		foreach ($rules as $path => &$props) {
+			for ($i = 0; $i < count($props); $i++) {
+				if (key_exists('checker_config_name', $props[$i])) {
+					$props[$i]['checker'] .= '|' . Miscellaneous::html_value($props[$i]['checker_config_name']);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Get verification rule usage in restore tests.
 	 *
@@ -127,6 +139,7 @@ class VerificationRules extends RestoreTestVerification
 			$this->VerificationRuleDescription->Text = $config['description'] ?? '';
 			$enabled = $config['enabled'] ?? '1';
 			$this->VerificationRuleEnabled->Checked = ($enabled == '1');
+			$this->addVerificationRuleVals($config['rules']);
 			$rules = $config['rules'] ?? [];
 		}
 		$cb = $this->getPage()->getCallbackClient();
@@ -138,9 +151,6 @@ class VerificationRules extends RestoreTestVerification
 
 	/**
 	 * Load checkers.
-	 *
-	 * @param TCallback $sender sender object
-	 * @param TCallbackEventParameter $param callback parameter
 	 */
 	private function loadCheckers()
 	{
@@ -148,24 +158,42 @@ class VerificationRules extends RestoreTestVerification
 		if (!$page->IsCallBack) {
 			return;
 		}
-		$plugin_config = $this->getModule('plugin_config');
-		$plugins = $plugin_config->getPlugins(
-			PluginConfigBase::PLUGIN_TYPE_VERIFICATION
-		);
 
-		$checkers = [];
-		foreach ($plugins as $cls => $props) {
-			$ops = $cls::getOperators();
-			$attr = $cls::getAttribute();
-			$vals = $cls::getValues();
-			$checkers[$cls] = ['operators' => $ops, 'values' => $vals, 'attr' => $attr];
-		}
+		$checkers = $this->getCheckers();
 
 		$cb = $page->getCallbackClient();
 		$cb->callClientFunction(
 			'oVerificationRulePathList.set_checkers',
 			[$checkers]
 		);
+	}
+
+	/**
+	 * Get discovered checker list.
+	 *
+	 * @param array discovered checker list to use
+	 */
+	private function getCheckers(): array
+	{
+		$plugin_config = $this->getModule('plugin_config');
+		$plugins = $plugin_config->getPlugins(
+			PluginConfigBase::PLUGIN_TYPE_VERIFICATION
+		);
+
+		$plugin_config = $this->getModule('plugin_config');
+		$checkers = [];
+		foreach ($plugins as $cls => $props) {
+			$ops = $cls::getOperators();
+			$attr = $cls::getAttribute();
+			$vals = $cls::getValues();
+			$checkers[$cls] = ['operators' => $ops, 'values' => $vals, 'attr' => $attr, 'configs' => null];
+			if (is_subclass_of($cls, IBacularisVerificationConfigPlugin::class)) {
+				// load named configurations for this checker
+				$psettings = $plugin_config->getPluginSettingsByName($cls);
+				$checkers[$cls]['configs'] = array_keys($psettings);
+			}
+		}
+		return $checkers;
 	}
 
 	/**
@@ -318,71 +346,116 @@ class VerificationRules extends RestoreTestVerification
 		$validated_rules = [];
 		foreach ($rules as $path => $path_rules) {
 			if (!is_string($path) || $path === '' || strpos($path, '"') !== false ||
-				substr($path, -1) === '\\' || preg_match('/[\x00-\x1F\x7F]/', $path) === 1 ||
+				substr($path, -1) === '\\' || Miscellaneous::isASCIControlChar($path) ||
 				!is_array($path_rules)) {
+				// invalid path value
 				return null;
 			}
 
 			$validated_rules[$path] = [];
 			for ($i = 0; $i < count($path_rules); $i++) {
 				if (!key_exists($i, $path_rules) || !is_array($path_rules[$i])) {
+					// path list is wrong
 					return null;
 				}
 				$rule = $path_rules[$i];
-				if (count($rule) !== 3 || !key_exists('checker', $rule) ||
-					!key_exists('operator', $rule) || !key_exists('value', $rule) ||
-					!is_string($rule['checker']) || !is_string($rule['operator']) ||
-					!is_string($rule['value']) || !key_exists($rule['checker'], $plugins)) {
+
+				if (!key_exists('checker', $rule) || !is_string($rule['checker'])) {
+					// checker is wrong
 					return null;
 				}
 
+				$ops = $plugins[$rule['checker']]['operators'] ?? [];
+
+				if ($ops && (!key_exists('operator', $rule) || !is_string($rule['operator']))) {
+					// operator is wrong
+					return null;
+				}
+
+				$vals = $plugins[$rule['checker']]['values'] ?? [];
+				if ($vals && (!key_exists('value', $rule) || !is_string($rule['value']))) {
+					// value is wrong
+					return null;
+				}
+
+				$pconfig = null;
 				$checker = $rule['checker'];
-				$operator = $rule['operator'];
-				$value = $rule['value'];
+				if (strpos($checker, '|' !== false)) {
+					[$checker, $pconfig] = explode('|', $rule['checker'], 2);
+
+					$plugin_config = $this->getModule('plugin_config');
+					if (!$plugin_config->isPluginSettings($pconfig)) {
+						// plugin config does not exist
+						return null;
+					}
+				}
+
+				if (!key_exists($checker, $plugins)) {
+					// checker does not exist in plugin list - checker is not installed
+					return null;
+				}
+
+				$operator = $rule['operator'] ?? '';
+				$value = $rule['value'] ?? '';
 				$plugin = $plugins[$checker];
 				if (!is_array($plugin) || !key_exists('cls', $plugin) ||
 					!is_string($plugin['cls']) || $plugin['cls'] !== $checker) {
+					// checker is not valid plugin
 					return null;
 				}
 				$checker_class = $plugin['cls'];
 				$operators = $checker_class::getOperators();
-				if (!key_exists($operator, $operators)) {
+				if ($operators && !key_exists($operator, $operators)) {
+					// operator is not supported by checker
 					return null;
 				}
 
 				$values = $checker_class::getValues();
-				if (!key_exists('type', $values) || !key_exists('values', $values) ||
-					preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
+				if ($values && (!key_exists('type', $values) || !key_exists('values', $values) ||
+					Miscellaneous::isASCIControlChar($value))) {
+					// invalid values or type value
 					return null;
 				}
-				if ($operator === VerificationRuleConfig::EQUAL_CATALOG_VALUE) {
-					if ($value !== '') {
-						return null;
-					}
-				} elseif ($values['type'] === 'list') {
-					if (!is_array($values['values'])) {
-						return null;
-					}
-					$allowed_values = [];
-					foreach ($values['values'] as $allowed_value) {
-						if (is_bool($allowed_value)) {
-							$allowed_values[] = $allowed_value ? 'true' : 'false';
-						} elseif (is_scalar($allowed_value)) {
-							$allowed_values[] = (string) $allowed_value;
+				if ($operators && $values) {
+					if ($operator === VerificationRuleConfig::EQUAL_CATALOG_VALUE) {
+						if ($value !== '') {
+							// not empty value in ECV operator - this is wrong
+							return null;
 						}
-					}
-					if (!in_array($value, $allowed_values, true)) {
+					} elseif ($values['type'] === 'list') {
+						if (!is_array($values['values'])) {
+							// list type values should be array
+							return null;
+						}
+						$allowed_values = [];
+						foreach ($values['values'] as $allowed_value) {
+							if (is_bool($allowed_value)) {
+								$allowed_values[] = $allowed_value ? 'true' : 'false';
+							} elseif (is_scalar($allowed_value)) {
+								$allowed_values[] = (string) $allowed_value;
+							}
+						}
+						if (!in_array($value, $allowed_values, true)) {
+							// provided not allowed list value
+							return null;
+						}
+					} elseif ($values['type'] !== 'text' || $value === '') {
+						// invalid type or empty value
 						return null;
 					}
-				} elseif ($values['type'] !== 'text' || $value === '') {
-					return null;
 				}
 
-				$validated_rules[$path][] = [
+				$val = [
 					'checker' => $checker,
-					'operator' => $operator,
-					'value' => $value
+					'checker_config_name' => $pconfig,
 				];
+				if ($operator) {
+					$val['operator'] = $operator;
+				}
+				if ($value) {
+					$val['value'] = $value;
+				}
+				$validated_rules[$path][] = $val;
 			}
 		}
 		return $validated_rules;

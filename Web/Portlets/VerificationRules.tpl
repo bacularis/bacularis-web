@@ -778,11 +778,26 @@ const oVerificationRulePathList = {
 		option.value = '';
 		select.appendChild(option);
 		for (const checker in this.checkers) {
-			option = document.createElement('OPTION');
-			option.value = checker;
-			label = document.createTextNode(this.checkers[checker].attr);
-			option.appendChild(label);
-			select.appendChild(option);
+			if (Array.isArray(this.checkers[checker].configs)) {
+				option = document.createElement('OPTION');
+				option.value = checker;
+				label = document.createTextNode(this.checkers[checker].attr + ' —  <%[ Default ]%>');
+				option.appendChild(label);
+				select.appendChild(option);
+				for (let i = 0; i < this.checkers[checker].configs.length; i++) {
+					option = document.createElement('OPTION');
+					option.value = checker + '|' + this.checkers[checker].configs[i];
+					label = document.createTextNode(this.checkers[checker].attr + ' — ' + this.checkers[checker].configs[i]);
+					option.appendChild(label);
+					select.appendChild(option);
+				}
+			} else {
+				option = document.createElement('OPTION');
+				option.value = checker;
+				label = document.createTextNode(this.checkers[checker].attr);
+				option.appendChild(label);
+				select.appendChild(option);
+			}
 		}
 		if (rule) {
 			select.value = rule.checker;
@@ -1225,7 +1240,7 @@ const oVerificationRulePathList = {
 			operator: tds[1].querySelector('select')?.value || '',
 			value: tds[2].querySelector('select, input')?.value.trim() || ''
 		};
-		if (!rule.checker || !rule.operator || (!rule.value && rule.operator != this.operators.equal_catalog_value)) {
+		if (!rule.checker) {
 			return;
 		}
 		this.apply_rules_to_paths(paths, [rule]);
@@ -1265,7 +1280,7 @@ const oVerificationRulePathList = {
 			checker = tds[2].querySelector('select')?.value;
 			op = tds[3].querySelector('select')?.value;
 			val = tds[4].querySelector('select, input')?.value.trim();
-			if (!path || (!val && op != this.operators.equal_catalog_value)) {
+			if (!path) {
 				continue;
 			}
 			if (!values.hasOwnProperty(path)) {
