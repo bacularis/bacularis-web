@@ -763,7 +763,8 @@ var oAppSettingsAuditLog = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -938,10 +939,12 @@ var oAppSettingsSelfTest = {
 				},
 				{
 					data: 'section',
+					render: render_text,
 					width: '30%'
 				},
 				{
 					data: 'name',
+					render: render_text,
 					width: '20%'
 				},
 				{
@@ -972,13 +975,15 @@ var oAppSettingsSelfTest = {
 				},
 				{
 					data: 'description',
+					render: render_text,
 					width: '45%'
 				}
 			],
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
