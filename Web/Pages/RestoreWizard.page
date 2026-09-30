@@ -513,13 +513,22 @@ var oJobsToRestoreList = {
 					data: 'jobid',
 					responsivePriority: 1,
 					render: function(data, type, row) {
-						var i = document.createElement('I');
-						i.className = 'fa fa-external-link-alt fa-xs';
-						var a = document.createElement('A');
-						a.href = '/web/job/history/' + data + '/';
-						a.appendChild(i);
-						a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', data);
-						return (data + ' ' + a.outerHTML);
+						let ret = data;
+						if (type == 'display') {
+							const container = document.createElement('DIV');
+							const i = document.createElement('I');
+							i.className = 'fa fa-external-link-alt fa-xs';
+							var a = document.createElement('A');
+							a.href = '/web/job/history/' + data + '/';
+							a.target = '_blank';
+							a.appendChild(i);
+							a.title = "<%[ Go to job with jobid %jobid ]%>".replace('%jobid', data);
+							const jobid = document.createTextNode(data + ' ');
+							container.appendChild(jobid);
+							container.appendChild(a);
+							ret = container;
+						}
+						return ret;
 					}
 				},
 				{
@@ -533,6 +542,7 @@ var oJobsToRestoreList = {
 							i.className = 'fa fa-external-link-alt fa-xs';
 							var a = document.createElement('A');
 							a.href = '/web/job/' + encodeURIComponent(data) + '/';
+							a.target = '_blank';
 							a.appendChild(i);
 							a.title = '<%[ Go to job %job ]%>'.replace('%job', data);
 							const span = document.createElement('SPAN');
@@ -639,7 +649,8 @@ var oJobsToRestoreList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
