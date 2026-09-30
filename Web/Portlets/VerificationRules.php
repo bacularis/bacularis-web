@@ -365,22 +365,9 @@ class VerificationRules extends RestoreTestVerification
 					return null;
 				}
 
-				$ops = $plugins[$rule['checker']]['operators'] ?? [];
-
-				if ($ops && (!key_exists('operator', $rule) || !is_string($rule['operator']))) {
-					// operator is wrong
-					return null;
-				}
-
-				$vals = $plugins[$rule['checker']]['values'] ?? [];
-				if ($vals && (!key_exists('value', $rule) || !is_string($rule['value']))) {
-					// value is wrong
-					return null;
-				}
-
 				$pconfig = null;
 				$checker = $rule['checker'];
-				if (strpos($checker, '|' !== false)) {
+				if (strpos($checker, '|') !== false) {
 					[$checker, $pconfig] = explode('|', $rule['checker'], 2);
 
 					$plugin_config = $this->getModule('plugin_config');
@@ -392,6 +379,18 @@ class VerificationRules extends RestoreTestVerification
 
 				if (!key_exists($checker, $plugins)) {
 					// checker does not exist in plugin list - checker is not installed
+					return null;
+				}
+
+				$ops = $plugins[$checker]['operators'] ?? [];
+				if ($ops && (!key_exists('operator', $rule) || !is_string($rule['operator']))) {
+					// operator is wrong
+					return null;
+				}
+
+				$vals = $plugins[$checker]['values'] ?? [];
+				if ($vals && (!key_exists('value', $rule) || !is_string($rule['value']))) {
+					// value is wrong
 					return null;
 				}
 

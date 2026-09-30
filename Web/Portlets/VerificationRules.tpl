@@ -837,7 +837,8 @@ const oVerificationRulePathList = {
 	},
 	update_rule_operator: function(select, rule, checker) {
 		this.clear_rule_operator(select);
-		const chk = this.checkers.hasOwnProperty(checker) ? this.checkers[checker] : [];
+		const checker_name = this.get_checker_name_from_value(checker);
+		const chk = this.checkers.hasOwnProperty(checker_name) ? this.checkers[checker_name] : [];
 		let option, label;
 		option = document.createElement('OPTION');
 		option.value = '';
@@ -853,7 +854,7 @@ const oVerificationRulePathList = {
 			select.appendChild(option);
 		}
 		if (rule) {
-			select.value = rule.operator;
+			select.value = rule.operator ?? '';
 		}
 	},
 	clear_rule_operator: function(select) {
@@ -873,7 +874,8 @@ const oVerificationRulePathList = {
 	},
 	update_rule_value: function(td, rule, checker) {
 		this.clear_rule_value(td);
-		const chk = this.checkers.hasOwnProperty(checker) ? this.checkers[checker] : [];
+		const checker_name = this.get_checker_name_from_value(checker);
+		const chk = this.checkers.hasOwnProperty(checker_name) ? this.checkers[checker_name] : [];
 		if (!chk.values) {
 			return;
 		}
@@ -921,7 +923,7 @@ const oVerificationRulePathList = {
 		}
 		td.appendChild(select);
 		if (rule) {
-			select.value = rule.value;
+			select.value = rule.value ?? '';
 			if (rule.operator == this.operators.equal_catalog_value) {
 				select.setAttribute('disabled', true);
 			}
@@ -935,7 +937,7 @@ const oVerificationRulePathList = {
 		input.value = values;
 		td.appendChild(input);
 		if (rule) {
-			input.value = rule.value;
+			input.value = rule.value ?? '';
 			if (rule.operator == this.operators.equal_catalog_value) {
 				input.setAttribute('disabled', true);
 			}
@@ -1187,11 +1189,11 @@ const oVerificationRulePathList = {
 		attr.value = rule.checker;
 		attr.dispatchEvent(new Event('change', { bubbles: true }));
 		const op = tds[3].querySelector('select');
-		op.value = rule.operator;
+		op.value = rule.operator ?? '';
 		op.dispatchEvent(new Event('change', { bubbles: true }));
 		const val = tds[4].querySelector('select, input');
 		if (val && rule.operator != this.operators.equal_catalog_value) {
-			val.value = rule.value;
+			val.value = rule.value ?? '';
 		}
 	},
 	show_custom_rule: function(show) {
@@ -1295,6 +1297,9 @@ const oVerificationRulePathList = {
 			values[path].push(rule);
 		}
 		return values;
+	},
+	get_checker_name_from_value: function(checker) {
+		return (checker || '').split('|', 1)[0];
 	}
 };
 window.oVerificationRulePathList = oVerificationRulePathList;
