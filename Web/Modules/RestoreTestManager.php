@@ -969,7 +969,7 @@ class RestoreTestManager extends WebModule
 
 					// Checkers that have own config
 					$checker = sprintf('\\Bacularis\\Common\\Plugins\\%s', $rvalue[$j]['checker']);
-					$is_config_checker = is_subclass_of($checker,IBacularisVerificationConfigPlugin::class);
+					$is_config_checker = is_subclass_of($checker, IBacularisVerificationConfigPlugin::class);
 					$config_name = $rvalue[$j]['checker_config_name'] ?? '';
 					if ($is_config_checker && $config_name !== '') {
 						$rvalue[$j]['checker_config'] = $plugin_config->getConfig($config_name);
@@ -1381,7 +1381,7 @@ class RestoreTestManager extends WebModule
 					);
 
 					if ($history) {
-						$data['history'][$fpath][$checker_name][$config_hash] =	$history;
+						$data['history'][$fpath][$checker_name][$config_hash] = $history;
 					}
 				}
 			}

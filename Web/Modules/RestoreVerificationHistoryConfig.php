@@ -354,7 +354,7 @@ class RestoreVerificationHistoryConfig extends ConfigFileModule
 	 * configuration file is being rewritten.
 	 *
 	 * @param int $operation lock operation
-	 * @return resource|false lock file handle or false on error
+	 * @return false|resource lock file handle or false on error
 	 */
 	private function lockConfig(int $operation)
 	{
