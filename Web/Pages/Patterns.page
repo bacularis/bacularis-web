@@ -209,7 +209,8 @@ var oConfigList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -717,7 +718,8 @@ var oPatternList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -1144,7 +1146,8 @@ var oConstantList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -1528,7 +1531,8 @@ var oVariableList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{

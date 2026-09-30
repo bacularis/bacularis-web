@@ -245,7 +245,8 @@ var oAPIHostList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -1457,7 +1458,8 @@ var oOSProfileList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -3315,7 +3317,8 @@ var oRepoAuthList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
@@ -3708,7 +3711,8 @@ var oSSHConfigList = {
 			responsive: {
 				details: {
 					type: 'column',
-					display: DataTable.Responsive.display.childRow
+					display: DataTable.Responsive.display.childRow,
+					renderer: DataTable.Responsive.renderer.listHiddenNodes()
 				}
 			},
 			columnDefs: [{
