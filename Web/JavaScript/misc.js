@@ -645,9 +645,9 @@ function render_tags(type, id, value, tag_obj, table) {
 		const tags = tag_obj.get_tags(id, value);
 		const container = document.createElement('DIV');
 		container.classList.add('pointer');
+		container.style.display = 'flex';
 		const add_btn = document.createElement('I');
-		add_btn.classList.add('fa-solid', 'fa-tag', 'w3-left', 'w3-large');
-		add_btn.style.marginLeft = '20px';
+		add_btn.classList.add('fa-solid', 'fa-tag', 'w3-large');
 		add_btn.style.padding = '5px 2px';
 		add_btn.addEventListener('click', function () {
 			window[tag_obj.oname].open(id, value, table.table);
@@ -656,7 +656,6 @@ function render_tags(type, id, value, tag_obj, table) {
 		let tag, rm, label;
 		for (const sel of tags) {
 			tag = document.createElement('DIV');
-			tag.classList.add('w3-left');
 			tag.addEventListener('click', () => {
 				table.table.search('#' + sel.tag).draw();
 			});
@@ -669,6 +668,7 @@ function render_tags(type, id, value, tag_obj, table) {
 			});
 			tag.appendChild(rm);
 			tag.classList.add('btag_table');
+			tag.style.display = 'flex';
 			tag.style.color = sel.color_vals.fg;
 			tag.style.backgroundColor = sel.color_vals.bg;
 			label = document.createTextNode(sel.tag);
