@@ -54,7 +54,7 @@
 		</div>
 	</div>
 	<div class="w3-code" style="margin-top: 0 !important;">
-		<pre<%=$this->getLogCSS() ? ' class="' . $this->getLogCSS() . '"' : ''%> style="margin-top: 0 !important;"><span id="job_log<%=$this->ClientID%>"></span></pre>
+		<pre<%=$this->getLogCSS() ? ' class="' . $this->getLogCSS() . '"' : ''%> style="margin-top: 0 !important;"><span id="job_log<%=$this->ClientID%>" style="word-break: break-word"></span></pre>
 	</div>
 </div>
 <com:TCallback ID="GetJobLog" OnCallback="loadLog" />
