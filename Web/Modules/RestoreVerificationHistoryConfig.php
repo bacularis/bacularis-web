@@ -295,6 +295,59 @@ class RestoreVerificationHistoryConfig extends ConfigFileModule
 	}
 
 	/**
+	 * Decode single history value.
+	 *
+	 * @param mixed $value single history item to decode
+	 * @return null|array array with decoded history value or null on error
+	 */
+	private static function decodeHistoryValue($value): ?array
+	{
+		if (!is_string($value) || $value === '') {
+			return null;
+		}
+
+		$history = json_decode($value, true);
+		if (is_array($history)) {
+			return $history;
+		}
+
+		$value = Miscellaneous::stripQuotes($value);
+		$history = json_decode($value, true);
+
+		return is_array($history) ? $history : null;
+	}
+
+	/**
+	 * Normalize history values to canonical JSON strings.
+	 *
+	 * @param array $config configuration with items to change
+	 * @return bool true on success, otherwise false
+	 */
+	private static function normalizeHistoryConfig(array &$config): bool
+	{
+		foreach ($config as &$section) {
+			if (!isset($section[self::HISTORY_VIEW_NAME]) || !is_array($section[self::HISTORY_VIEW_NAME])) {
+				continue;
+			}
+
+			foreach ($section[self::HISTORY_VIEW_NAME] as &$value) {
+				$history = self::decodeHistoryValue($value);
+				if ($history === null) {
+					return false;
+				}
+
+				$json = json_encode($history, self::JSON_FLAGS);
+				if ($json === false) {
+					return false;
+				}
+
+				$value = $json;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Decode checker history JSON.
 	 *
 	 * @param mixed $value JSON history value
@@ -302,13 +355,8 @@ class RestoreVerificationHistoryConfig extends ConfigFileModule
 	 */
 	private static function decodeHistory($value): array
 	{
-		if (!is_string($value) || $value === '') {
-			return [];
-		}
-
-		$value = Miscellaneous::stripQuotes($value);
-		$history = json_decode($value, true);
-		return is_array($history) ? $history : [];
+		$history = self::decodeHistoryValue($value);
+		return $history ?? [];
 	}
 
 	/**
@@ -336,6 +384,9 @@ class RestoreVerificationHistoryConfig extends ConfigFileModule
 	 */
 	private function writeHistoryConfig(array $config): bool
 	{
+		if (!self::normalizeHistoryConfig($config)) {
+			return false;
+		}
 		$result = $this->writeConfig(
 			$config,
 			self::CONFIG_FILE_PATH,
