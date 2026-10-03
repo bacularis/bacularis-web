@@ -98,10 +98,12 @@ class WebAccessRestoreVerification extends WebModule
 			return $this->createErrorResult($message);
 		}
 		if (!property_exists($result, 'error') || $result->error != GenericError::ERROR_NO_ERRORS || !property_exists($result, 'output')) {
+			if (property_exists($result, 'error') && $result->error == GenericError::ERROR_NOT_READY) {
+				return $this->createErrorResult('Restore Verification did not start. The restore job ended before a verification result was created.');
+			}
 			$this->logAPIError($result, 'Unable to get the Restore Verification result.');
 			return $result;
 		}
-
 		$history_items = $this->prepareHistoryItems($result->output);
 		if ($history_items === null) {
 			$message = 'Invalid Restore Verification result structure.';
