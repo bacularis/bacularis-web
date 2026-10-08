@@ -69,7 +69,7 @@
 						</div>
 
 						<!-- API host list -->
-						<div style="width: 285px; display: <%=$this->UserAPIHostsContainter->Visible ? 'block' : 'none'%>">
+						<div style="min-width: 285px; display: <%=$this->UserAPIHostsContainter->Visible ? 'block' : 'none'%>">
 							<com:TLabel ID="UserAPIHostsContainter" CssClass="w3-right margin-top-small w3-margin-right">
 								<%[ API host: ]%>
 								<com:TDropDownList
@@ -90,7 +90,7 @@
 						</div>
 
 						<!-- Running job number -->
-						<div class="w3-tag w3-large w3-purple w3-padding-small margin-top-small w3-margin-right" style="border-radius: 3px; line-height: 26px; width: 130px">
+						<div class="w3-tag w3-large w3-purple w3-padding-small margin-top-small w3-margin-right" style="border-radius: 3px; line-height: 26px; min-width: 130px">
 							<i class="fa fa-cogs w3-large"></i> <span class="w3-medium"><%[ Running ]%>: <span id="running_jobs"></span></span>
 						</div>
 					</div>
