@@ -81,4 +81,5 @@ The Bacularis Team
 * Fix align text and icon in table row details in responsive view
 * Fix checker name in verification rules
 * Fix displaying table buttons in responsive mode
+* Fix top bar element width
 
