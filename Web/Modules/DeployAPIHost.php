@@ -267,7 +267,7 @@ $user_pass
 	{
 		$sudo_cmd = [];
 		$packages_env_keep = [];
-		if ($osprofile['packages_sudo_env_keep']) {
+		if ($osprofile['packages_sudo_env_keep'] ?? '') {
 			$packages_env_keep = explode(' ', $osprofile['packages_sudo_env_keep']);
 			$sudo_cmd[] = "Defaults:{$osprofile['packages_sudo_user']} env_keep += \"{$osprofile['packages_sudo_env_keep']}\"";
 		}
