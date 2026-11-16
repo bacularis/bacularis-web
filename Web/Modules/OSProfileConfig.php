@@ -444,7 +444,8 @@ class OSProfileConfig extends ConfigFileModule
 			'Ubuntu 24.04 Noble' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ noble main',
 			'Ubuntu 25.04 Plucky' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ plucky main',
 			'Ubuntu 25.10 Questing' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ questing main',
-			'Ubuntu 26.04 Resolute' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ resolute main'
+			'Ubuntu 26.04 Resolute' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ resolute main',
+			'Ubuntu 26.10 Stonking' => self::BACULARIS_REPOSITORY_ADDR . '/stable/ubuntu/ stonking main'
 		]
 	];
 
