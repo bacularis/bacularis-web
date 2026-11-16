@@ -428,6 +428,7 @@ class OSProfileConfig extends ConfigFileModule
 			'Fedora 42' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora42/',
 			'Fedora 43' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora43/',
 			'Fedora 44' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora44/',
+			'Fedora 45' => self::BACULARIS_REPOSITORY_ADDR . '/stable/fedora45/',
 			'Oracle Linux 8' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux8/',
 			'Oracle Linux 9' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux9/',
 			'Oracle Linux 10' => self::BACULARIS_REPOSITORY_ADDR . '/stable/oraclelinux10/',
