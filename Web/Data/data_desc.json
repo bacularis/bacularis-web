@@ -1797,6 +1797,13 @@
 				"FieldType": "TimePeriod",
 				"Section": "Pruning"
 			},
+			"CacheRetention": {
+				"Required": false,
+				"ValueType": "time",
+				"DefaultValue": 0,
+				"FieldType": "TimePeriod",
+				"Section": "Pruning"
+			},
 			"MigrationTime": {
 				"Required": false,
 				"ValueType": "time",
