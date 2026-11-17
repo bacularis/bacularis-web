@@ -3840,7 +3840,7 @@ msgid "Enable Bacula messages log window:"
 msgstr "Enable Bacula messages log window:"
 
 msgid "The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned."
-msgstr "The messages log window enables to review Bacula logs in one place available from almost every part on the interface. To collect logs is used the bconsole 'messages' command. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned."
+msgstr "The messages log window enables you to review Bacula logs in one place, available from almost every part on the interface. The bconsole 'messages' command is used to collect logs. The messages log window is displayed after clicking on the envelope icon at the top right side of the interface. This function is enabled by default. If enabled, it is available only for users with the Administrator role assigned."
 
 msgid "Copy configuration from:"
 msgstr "Copy configuration from:"
