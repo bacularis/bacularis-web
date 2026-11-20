@@ -32,7 +32,7 @@
 			ID="DirectiveValidator"
 			ValidationGroup="<%=$this->getValidationGroup()%>"
 			Display="Dynamic"
-			ControlToValidate="Directive"
+			ControlToValidate="DirectiveCombo"
 			FocusOnError="true"
 			Text="Field required."
 			Enabled="<%=$this->getRequired() && $this->getShow()%>"
