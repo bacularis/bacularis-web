@@ -473,6 +473,9 @@ const oDirectiveEditableComboBox = {
 		}
 	}
 };
+
+const oDirectiveEditableComboBoxReload = $.extend(true, {}, oDirectiveEditableComboBox);
+
 const oDirectiveEditableListBox = {
 	switch_mode: function(el) {
 		const container = $(el).closest('div.directive_field');
